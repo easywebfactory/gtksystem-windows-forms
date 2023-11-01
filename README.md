@@ -1,9 +1,8 @@
 # GTKSystem.Windows.Forms
 
 #### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+**一次编译，跨平台运行**
+这是基于GTK3.24.24框架组件开发的跨平台（windows和linux）C#桌面应用程序表单界面组件，该组件的核心优势是使用C#的原生winform表单控件和属性方法，C#原生开发即可，无需学习。。作者博客请看 [https://www.cnblogs.com/easywebfactory/p/17803567.html](https://www.cnblogs.com/easywebfactory/p/17803567.html)
 
 #### 软件架构
 软件架构说明
