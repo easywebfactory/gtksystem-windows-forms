@@ -2,7 +2,8 @@
 
 #### 介绍
 **一次编译，跨平台运行**
-这是基于GTK3.24.24框架组件开发的跨平台（windows和linux）C#桌面应用程序表单界面组件，该组件的核心优势是使用C#的原生winform表单控件和属性方法，C#原生开发即可，无需学习。。作者博客请看 [https://www.cnblogs.com/easywebfactory/p/17803567.html](https://www.cnblogs.com/easywebfactory/p/17803567.html)
+这是基于GTK3.24.24框架组件开发的跨平台（windows和linux）C#桌面应用程序表单界面组件，该组件的核心优势是使用C#的原生winform表单控件和属性方法，C#原生开发即可，无需学习。
+作者博客请看 [https://www.cnblogs.com/easywebfactory/p/17803567.html](https://www.cnblogs.com/easywebfactory/p/17803567.html)
 
 #### 软件架构
 软件架构说明
