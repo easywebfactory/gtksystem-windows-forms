@@ -46,6 +46,9 @@ GTKWinFormsApp\obj\Release\netcoreapp3.1\GTKWinFormsApp.designer.runtimeconfig.j
       "name": "Microsoft.WindowsDesktop.App"
     },
 
+#### demo效果
+<img>https://gitee.com/easywebfactory/gtksystem-windows-forms/blob/master/pic/2023-11-06%20065348.jpg<img>
+
 #### 参与贡献
 
 1. https://gitee.com/easywebfactory/
