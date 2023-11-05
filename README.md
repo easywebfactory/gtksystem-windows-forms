@@ -47,8 +47,7 @@ GTKWinFormsApp\obj\Release\netcoreapp3.1\GTKWinFormsApp.designer.runtimeconfig.j
     },
 
 #### demo效果
-<img>https://gitee.com/easywebfactory/gtksystem-windows-forms/blob/master/pic/2023-11-06%20065348.jpg<img>
-
+![demo](https://gitee.com/easywebfactory/gtksystem-windows-forms/blob/master/pic/2023-11-06%20065348.jpg "demo")
 #### 参与贡献
 
 1. https://gitee.com/easywebfactory/
