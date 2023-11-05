@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_LastSelectedProfileId>F:\我的项目\GTK\GTKWindowsForms\Source\GTKSystem.Windows.Forms\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="GTKControls\Button.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\CheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\CheckedListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\DataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\DateTimePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="GTKControls\GroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\Label.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\LinkLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MaskedTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MonthCalendar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\NumericUpDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\Panel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\PictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\RadioButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\RichTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\SplitContainer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\SplitterPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\TabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\TextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\TreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>

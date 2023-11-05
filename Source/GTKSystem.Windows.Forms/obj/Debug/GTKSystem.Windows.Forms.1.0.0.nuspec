@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>GTKSystem.Windows.Forms</id>
+    <version>1.0.0</version>
+    <authors>chenhongjin</authors>
+    <projectUrl>https://www.cnblogs.com/easywebfactory</projectUrl>
+    <description>Package Description</description>
+    <releaseNotes>已实现大部分常用功能，可以跨平台windows和linux（统信系统上测试）直接运行，无需分平台编译</releaseNotes>
+    <copyright>qq:438865652/email:438865652@qq.com</copyright>
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="GtkSharp" version="3.24.24.34" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="F:\GTK项目\GTKWinFormsDemo\GTKSystem.Windows.Forms\bin\Debug\netcoreapp3.1\GTKSystem.Windows.Forms.dll" target="lib\netcoreapp3.1\GTKSystem.Windows.Forms.dll" />
+  </files>
+</package>

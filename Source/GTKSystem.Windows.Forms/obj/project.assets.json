@@ -1,0 +1,257 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "AtkSharp/3.24.24.34": {
+        "type": "package",
+        "dependencies": {
+          "GLibSharp": "3.24.24.34"
+        },
+        "compile": {
+          "lib/netstandard2.0/AtkSharp.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/AtkSharp.dll": {}
+        }
+      },
+      "CairoSharp/3.24.24.34": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/CairoSharp.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/CairoSharp.dll": {}
+        }
+      },
+      "GdkSharp/3.24.24.34": {
+        "type": "package",
+        "dependencies": {
+          "CairoSharp": "3.24.24.34",
+          "GLibSharp": "3.24.24.34",
+          "GioSharp": "3.24.24.34",
+          "PangoSharp": "3.24.24.34"
+        },
+        "compile": {
+          "lib/netstandard2.0/GdkSharp.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/GdkSharp.dll": {}
+        }
+      },
+      "GioSharp/3.24.24.34": {
+        "type": "package",
+        "dependencies": {
+          "GLibSharp": "3.24.24.34"
+        },
+        "compile": {
+          "lib/netstandard2.0/GioSharp.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/GioSharp.dll": {}
+        }
+      },
+      "GLibSharp/3.24.24.34": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/GLibSharp.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/GLibSharp.dll": {}
+        }
+      },
+      "GtkSharp/3.24.24.34": {
+        "type": "package",
+        "dependencies": {
+          "AtkSharp": "3.24.24.34",
+          "CairoSharp": "3.24.24.34",
+          "GLibSharp": "3.24.24.34",
+          "GdkSharp": "3.24.24.34",
+          "GioSharp": "3.24.24.34",
+          "PangoSharp": "3.24.24.34"
+        },
+        "compile": {
+          "lib/netstandard2.0/GtkSharp.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/GtkSharp.dll": {}
+        },
+        "build": {
+          "build/GtkSharp.targets": {}
+        }
+      },
+      "PangoSharp/3.24.24.34": {
+        "type": "package",
+        "dependencies": {
+          "CairoSharp": "3.24.24.34",
+          "GLibSharp": "3.24.24.34"
+        },
+        "compile": {
+          "lib/netstandard2.0/PangoSharp.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/PangoSharp.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "AtkSharp/3.24.24.34": {
+      "sha512": "CNfTGhGDxcnow5e/u0THtOJeNWaZNDeeFmzYTMdC1tdUkmAtTFDareTGesLx+Gfj75m3415AKJSC9wQ6VyacYQ==",
+      "type": "package",
+      "path": "atksharp/3.24.24.34",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "atksharp.3.24.24.34.nupkg.sha512",
+        "atksharp.nuspec",
+        "lib/netstandard2.0/AtkSharp.dll"
+      ]
+    },
+    "CairoSharp/3.24.24.34": {
+      "sha512": "hr75uYPGFlmB3RvpL3/6ZJtb+UiKsrpkyjb5VGI+8y1/lkY405FMBhPZKlxFqoEH0iIZ9gAMPBqKzT1lSVaDqA==",
+      "type": "package",
+      "path": "cairosharp/3.24.24.34",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "cairosharp.3.24.24.34.nupkg.sha512",
+        "cairosharp.nuspec",
+        "lib/netstandard2.0/CairoSharp.dll"
+      ]
+    },
+    "GdkSharp/3.24.24.34": {
+      "sha512": "COORB6Qd4yu6HWRbzVZXrkzr1T96Gy0wO7ckJfpYxWLbDUDnZVd/g2PICp9T05a0ZvLvkE++vsSjAWobwQeS0g==",
+      "type": "package",
+      "path": "gdksharp/3.24.24.34",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "gdksharp.3.24.24.34.nupkg.sha512",
+        "gdksharp.nuspec",
+        "lib/netstandard2.0/GdkSharp.dll"
+      ]
+    },
+    "GioSharp/3.24.24.34": {
+      "sha512": "Qyz8bhKjLMTWoxXu6cdNEtTLNUuw7Y1sPdXlyTfyWMP/JmsUE9smCsCC0kyQNSFW17flxdSoeDpG8l6zzJF0vQ==",
+      "type": "package",
+      "path": "giosharp/3.24.24.34",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "giosharp.3.24.24.34.nupkg.sha512",
+        "giosharp.nuspec",
+        "lib/netstandard2.0/GioSharp.dll"
+      ]
+    },
+    "GLibSharp/3.24.24.34": {
+      "sha512": "PSA7YJbxpnpeltjekoUk93FI9HWUMc2NtkxNIaWzHz7BavkkZDFmx8EKTKtuBrqbZZmEhlv5472NwGdiycSfxw==",
+      "type": "package",
+      "path": "glibsharp/3.24.24.34",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "glibsharp.3.24.24.34.nupkg.sha512",
+        "glibsharp.nuspec",
+        "lib/netstandard2.0/GLibSharp.dll"
+      ]
+    },
+    "GtkSharp/3.24.24.34": {
+      "sha512": "CVAz7ACMxW9xPhlrrg4Xe+v3jUnpN+emQl78aaXHtoiE7pf0tR8mP8mw0/eBHxMObrmg6DsLxbEFqE/7Yo4Uow==",
+      "type": "package",
+      "path": "gtksharp/3.24.24.34",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/GtkSharp.targets",
+        "gtksharp.3.24.24.34.nupkg.sha512",
+        "gtksharp.nuspec",
+        "lib/netstandard2.0/GtkSharp.dll"
+      ]
+    },
+    "PangoSharp/3.24.24.34": {
+      "sha512": "QpBEIiE29sxkewdW7l7rVRJR1p3SGoPauHrjm0A3yxpYxj+St5x45weHI8jquMJAZBUdVQuXYHSZDW1lQeJ+PQ==",
+      "type": "package",
+      "path": "pangosharp/3.24.24.34",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/PangoSharp.dll",
+        "pangosharp.3.24.24.34.nupkg.sha512",
+        "pangosharp.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "GtkSharp >= 3.24.24.34"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\chj\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "0.3.24.1",
+    "restore": {
+      "projectUniqueName": "F:\\我的项目\\GTK\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
+      "projectName": "GTKSystem.Windows.Forms",
+      "projectPath": "F:\\我的项目\\GTK\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
+      "packagesPath": "C:\\Users\\chj\\.nuget\\packages\\",
+      "outputPath": "F:\\我的项目\\GTK\\GTKSystem.Windows.Forms\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\chj\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "C:\\Users\\chj\\.nuget\\packages": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://www.nuget.org/api/v2/": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
+        "dependencies": {
+          "GtkSharp": {
+            "target": "Package",
+            "version": "[3.24.24.34, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

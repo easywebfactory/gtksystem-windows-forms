@@ -1,0 +1,16 @@
+F:\GTK项目\GTKWinFormsDemo\GTKWinFormsApp\bin\Release\netcoreapp3.1\publish\GTKWinFormsApp.exe
+F:\GTK项目\GTKWinFormsDemo\GTKWinFormsApp\bin\Release\netcoreapp3.1\publish\GTKWinFormsApp.dll
+F:\GTK项目\GTKWinFormsDemo\GTKWinFormsApp\bin\Release\netcoreapp3.1\publish\GTKWinFormsApp.deps.json
+F:\GTK项目\GTKWinFormsDemo\GTKWinFormsApp\bin\Release\netcoreapp3.1\publish\GTKWinFormsApp.runtimeconfig.json
+F:\GTK项目\GTKWinFormsDemo\GTKWinFormsApp\bin\Release\netcoreapp3.1\publish\GTKWinFormsApp.pdb
+F:\GTK项目\GTKWinFormsDemo\GTKWinFormsApp\bin\Release\netcoreapp3.1\publish\AtkSharp.dll
+F:\GTK项目\GTKWinFormsDemo\GTKWinFormsApp\bin\Release\netcoreapp3.1\publish\CairoSharp.dll
+F:\GTK项目\GTKWinFormsDemo\GTKWinFormsApp\bin\Release\netcoreapp3.1\publish\GdkSharp.dll
+F:\GTK项目\GTKWinFormsDemo\GTKWinFormsApp\bin\Release\netcoreapp3.1\publish\GioSharp.dll
+F:\GTK项目\GTKWinFormsDemo\GTKWinFormsApp\bin\Release\netcoreapp3.1\publish\GLibSharp.dll
+F:\GTK项目\GTKWinFormsDemo\GTKWinFormsApp\bin\Release\netcoreapp3.1\publish\GtkSharp.dll
+F:\GTK项目\GTKWinFormsDemo\GTKWinFormsApp\bin\Release\netcoreapp3.1\publish\PangoSharp.dll
+F:\GTK项目\GTKWinFormsDemo\GTKWinFormsApp\bin\Release\netcoreapp3.1\publish\GTKSystem.Windows.Forms.dll
+F:\GTK项目\GTKWinFormsDemo\GTKWinFormsApp\bin\Release\netcoreapp3.1\publish\System.Resources.Extensions.dll
+F:\GTK项目\GTKWinFormsDemo\GTKWinFormsApp\bin\Release\netcoreapp3.1\publish\GTKSystem.Windows.Forms.pdb
+F:\GTK项目\GTKWinFormsDemo\GTKWinFormsApp\bin\Release\netcoreapp3.1\publish\System.Resources.Extensions.pdb
