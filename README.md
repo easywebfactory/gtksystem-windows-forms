@@ -53,7 +53,7 @@ GTKWinFormsApp\obj\Release\netcoreapp3.1\GTKWinFormsApp.designer.runtimeconfig.j
 
 ```
 #### demo效果
-![demo](pic/2023-11-06%20065348.jpg)
+![输入图片说明](pic/2023-11-06%20072903.jpg)
 
 #### 参与贡献
 
