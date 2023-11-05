@@ -21,6 +21,7 @@
 #### 使用说明
 
 以下配置在你的项目工程里操作：
+
 1、新建System.Resources.ResourceManager类
 在项目下新建System.Resources.ResourceManager类，继承GTKSystem.Resources.ResourceManager，用于覆盖原生System.Resources.ResourceManager类。
 GTKSystem.Resources.ResourceManager实现了项目资源文件和图像文件读取。
