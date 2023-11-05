@@ -21,33 +21,40 @@
 #### 使用说明
 
 以下配置在你的项目工程里操作：
-1、新建System.Resources.ResourceManager类
+
+1、新建System.Resources.ResourceManager类<br/>
 在项目下新建System.Resources.ResourceManager类，继承GTKSystem.Resources.ResourceManager，用于覆盖原生System.Resources.ResourceManager类。
 GTKSystem.Resources.ResourceManager实现了项目资源文件和图像文件读取。
 如果项目里没有使用资源图像文件，可以不用新建此文件。
 
-2、新建System.ComponentModel.ComponentResourceManager类
-在项目下新建System.ComponentModel.ComponentResourceManager类，继承GTKSystem.ComponentModel.ComponentResourceManager，用于覆盖原生System.ComponentModel.ComponentResourceManager类。
+2、新建System.ComponentModel.ComponentResourceManager类<br/>
+在项目下新建System.ComponentModel.ComponentResourceManager类，继承GTKSystem.ComponentModel.ComponentResourceManager，用于覆盖原生System.ComponentModel.ComponentResourceManager类。<br/>
 GTKSystem.ComponentModel.ComponentResourceManager实现了项目资源文件和图像文件读取（调用GTKSystem.Resources.ResourceManager）。
 如果项目里没有使用资源图像文件，可以不用新建此文件。
 
-3、GTKWinFormsApp.csproj
+3、GTKWinFormsApp.csproj<br/>
 配置UseWindowsForms为false，或者使用控制台应用程序
+```
 <UseWindowsForms>false</UseWindowsForms>
+```
 
-4、引用GTKSystem.Windows.Forms、System.Resources.Extensions
+4、引用GTKSystem.Windows.Forms、System.Resources.Extensions <br/>
 System.Resources.Extensions是空程序dll，VS加载Form界面时验证需要此dll.
 
 5、GTKWinFormsApp\obj\Debug\netcoreapp3.1\GTKWinFormsApp.designer.runtimeconfig.json
 GTKWinFormsApp\obj\Release\netcoreapp3.1\GTKWinFormsApp.designer.runtimeconfig.json
 将name设置为Microsoft.WindowsDesktop.App，用于VS支持可视化Form表单，重新加载工程或重启VS
-  "runtimeOptions": {
-    "framework": {
+
+```
+   "runtimeOptions": {
+     "framework": {
       "name": "Microsoft.WindowsDesktop.App"
     },
 
+```
 #### demo效果
-![demo](https://gitee.com/easywebfactory/gtksystem-windows-forms/blob/master/pic/2023-11-06%20065348.jpg "demo")
+![demo](pic/2023-11-06%20065348.jpg)
+
 #### 参与贡献
 
 1. https://gitee.com/easywebfactory/
