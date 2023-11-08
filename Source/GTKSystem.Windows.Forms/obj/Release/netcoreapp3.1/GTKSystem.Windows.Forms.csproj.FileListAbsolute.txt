@@ -48,3 +48,15 @@ F:\我的项目\GTK\GTKWindowsForms\Source\GTKSystem.Windows.Forms\obj\Release\n
 F:\我的项目\GTK\GTKWindowsForms\Source\GTKSystem.Windows.Forms\obj\Release\netcoreapp3.1\GTKSystem.Windows.Forms.csproj.CoreCompileInputs.cache
 F:\我的项目\GTK\GTKWindowsForms\Source\GTKSystem.Windows.Forms\obj\Release\netcoreapp3.1\GTKSystem.Windows.Forms.dll
 F:\我的项目\GTK\GTKWindowsForms\Source\GTKSystem.Windows.Forms\obj\Release\netcoreapp3.1\GTKSystem.Windows.Forms.pdb
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Release\netcoreapp3.1\GTKSystem.Windows.Forms.deps.json
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Release\netcoreapp3.1\GTKSystem.Windows.Forms.dll
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Release\netcoreapp3.1\GTKSystem.Windows.Forms.pdb
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\netcoreapp3.1\GTKSystem.Windows.Forms.csprojAssemblyReference.cache
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\netcoreapp3.1\FxResources.System.Resources.Extensions.SR.resources
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\netcoreapp3.1\GTKSystem.Windows.Forms.Properties.Resources.resources
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\netcoreapp3.1\GTKSystem.Windows.Forms.csproj.GenerateResource.cache
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\netcoreapp3.1\GTKSystem.Windows.Forms.AssemblyInfoInputs.cache
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\netcoreapp3.1\GTKSystem.Windows.Forms.AssemblyInfo.cs
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\netcoreapp3.1\GTKSystem.Windows.Forms.csproj.CoreCompileInputs.cache
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\netcoreapp3.1\GTKSystem.Windows.Forms.dll
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\netcoreapp3.1\GTKSystem.Windows.Forms.pdb

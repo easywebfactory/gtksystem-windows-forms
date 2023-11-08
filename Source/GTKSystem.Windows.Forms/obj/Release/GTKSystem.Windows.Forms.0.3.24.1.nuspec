@@ -19,6 +19,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="F:\我的项目\GTK\GTKWindowsForms\Source\GTKSystem.Windows.Forms\bin\Release\netcoreapp3.1\GTKSystem.Windows.Forms.dll" target="lib\netcoreapp3.1\GTKSystem.Windows.Forms.dll" />
+    <file src="F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Release\netcoreapp3.1\GTKSystem.Windows.Forms.dll" target="lib\netcoreapp3.1\GTKSystem.Windows.Forms.dll" />
   </files>
 </package>

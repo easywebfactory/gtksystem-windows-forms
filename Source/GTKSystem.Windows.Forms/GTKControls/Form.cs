@@ -15,13 +15,13 @@ namespace System.Windows.Forms
     [DesignerCategory("Form"),
     DefaultEvent(nameof(Load)),
     InitializationEvent(nameof(Load))]
-    public partial class Form : WidgetControl<Gtk.Dialog>, IWin32Window
+    public partial class Form : WidgetControl<Gtk.Window>, IWin32Window
     {
         private Gtk.Fixed _body = null;
         private ObjectCollection _ObjectCollection;
         private Gtk.Menu contextMenu = new Gtk.Menu();
         public override event EventHandler SizeChanged;
-        public Form() : base("title", new Gtk.Window(WindowType.Toplevel), DialogFlags.Modal)
+        public Form() : base(WindowType.Toplevel)
         {
             Init();
         }
@@ -42,20 +42,13 @@ namespace System.Windows.Forms
             base.Control.SetDefaultSize(100, 100);
 
             base.Control.Realized += Control_Realized;
-            
+
             base.Control.ResizeChecked += Form_ResizeChecked;
             base.Control.ButtonReleaseEvent += Body_ButtonReleaseEvent;
 
             base.Control.Shown += Control_Shown;
             base.Control.DeleteEvent += Control_DeleteEvent;
-            base.Control.Response += Control_Response;
         }
-
-        private void Control_Response(object o, ResponseArgs args)
-        {
-            base.Dispose();
-        }
-
         private void Control_DeleteEvent(object o, DeleteEventArgs args)
         {
             if (FormClosing != null)
@@ -106,8 +99,7 @@ namespace System.Windows.Forms
                 {
                     width = base.Control.Allocation.Width;
                     height = base.Control.Allocation.Height;
-                    Gtk.Box box = base.Control.ContentArea;
-                    ResizeChildren(box);
+                    ResizeChildren(base.Control);
                 }
             }
             if (SizeChanged != null)
@@ -130,13 +122,11 @@ namespace System.Windows.Forms
                         {
                             int width = parent.WidthRequest - control.MarginStart - ((int)control.BorderWidth);
                             int height = parent.HeightRequest - ((int)control.BorderWidth);
-                            //int width = parent.AllocatedWidth - control.MarginStart - ((int)control.BorderWidth);
-                            //int height = parent.AllocatedHeight - ((int)control.BorderWidth);
-                            //if (parent.GetType().Name == "Window")
-                            //{
-                            //    width = parent.AllocatedWidth - 1;
-                            //    height = parent.AllocatedHeight - 1;
-                            //}
+                            if (parent.GetType().Name == "Window")
+                            {
+                                width = parent.AllocatedWidth - 1;
+                                height = parent.AllocatedHeight - 1;
+                            }
                             if (parent.GetType().Name == "Dialog")
                             {
                                 width = parent.AllocatedWidth - 1;
@@ -230,13 +220,13 @@ namespace System.Windows.Forms
                 _body.WidthRequest = this.Width;
                 _body.HeightRequest = this.Height;
                 scrollwindow.Child = _body;
-                base.Control.ContentArea.PackStart(scrollwindow, true, true, 0);
+                base.Control.Add(scrollwindow);
             }
             else
             {
                 Gtk.Layout laybody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
                 laybody.Add(_body);
-                base.Control.ContentArea.PackStart(laybody, true, true, 0);
+                base.Control.Add(laybody);
             }
             base.Control.ShowAll();
         }
@@ -260,15 +250,56 @@ namespace System.Windows.Forms
             {
                 throw new InvalidOperationException("ShowDialogOnDisabled");
             }
-
+            int irun = -9;
             if (owner != null)
             {
-               // ownerWindow = ((Form)owner).Control;
+                Gtk.Window ownerWindow = ((Form)owner).Control;
+                Gtk.Dialog dia = new Dialog(this.Text, ownerWindow, DialogFlags.DestroyWithParent);
+                dia.SetPosition(Gtk.WindowPosition.CenterOnParent);
+                dia.DefaultHeight = this.Height;
+                dia.DefaultWidth = this.Width;
+                dia.Response += Dia_Response;
+                if (this.AutoScroll == true)
+                {
+                    Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
+                    _body.WidthRequest = this.Width;
+                    _body.HeightRequest = this.Height;
+                    scrollwindow.Child = _body;
+                    dia.ContentArea.PackStart(scrollwindow,true,true,1);
+                }
+                else
+                {
+                    Gtk.Layout laybody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
+                    laybody.Add(_body);
+                    dia.ContentArea.PackStart(laybody, true, true, 1);
+                }
+                dia.ShowAll();
+                irun = dia.Run();
             }
-
-            this.Show(null);
-            int irun = base.Control.Run();
-           // int irun = -9;
+            else
+            {
+                Gtk.Dialog dia = new Dialog();
+                dia.SetPosition(Gtk.WindowPosition.Center);
+                dia.DefaultHeight = this.Height;
+                dia.DefaultWidth = this.Width;
+                dia.Response += Dia_Response;
+                if (this.AutoScroll == true)
+                {
+                    Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
+                    _body.WidthRequest = this.Width;
+                    _body.HeightRequest = this.Height;
+                    scrollwindow.Child = _body;
+                    dia.ContentArea.PackStart(scrollwindow, true, true, 1);
+                }
+                else
+                {
+                    Gtk.Layout laybody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
+                    laybody.Add(_body);
+                    dia.ContentArea.PackStart(laybody, true, true, 1);
+                }
+                dia.ShowAll();
+                irun = dia.Run();
+            }
             Gtk.ResponseType resp = Enum.Parse<Gtk.ResponseType>(irun.ToString());
             if (resp == Gtk.ResponseType.Yes)
                 return DialogResult.Yes;
@@ -290,6 +321,19 @@ namespace System.Windows.Forms
                 return DialogResult.None;
             else
                 return DialogResult.None;
+        }
+
+        private void Dia_Response(object o, ResponseArgs args)
+        {
+            base.Dispose();
+            try
+            {
+                ((Gtk.Dialog)o).Dispose();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public event EventHandler Shown;

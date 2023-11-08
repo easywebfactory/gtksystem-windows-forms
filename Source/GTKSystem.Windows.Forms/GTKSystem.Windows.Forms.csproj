@@ -98,4 +98,8 @@
     </Compile>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy $(ProjectDir)bin\Release\netcoreapp3.1\*.*   $(SolutionDir)Libs\*.*" />
+  </Target>
+
 </Project>

@@ -65,7 +65,7 @@ namespace System.Windows.Forms
                         ScaleImage(ref imagePixbuf, _BackgroundImageBytes, PictureBoxSizeMode.AutoSize, BackgroundImageLayout == ImageLayout.None ? ImageLayout.Tile : BackgroundImageLayout);
                         backgroundPixbuf = imagePixbuf.ScaleSimple(imagePixbuf.Width - 8, imagePixbuf.Height - 6, Gdk.InterpType.Tiles);
                     }
-                   // Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(_BackgroundImageBytes);
+                    //Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(_BackgroundImageBytes);
                     DrawBackgroundImage(args.Cr, backgroundPixbuf, rec);
                 }
                 if ((this.BackColor != null && this.BackColor.Name != "0") || backgroundPixbuf != null)
@@ -514,7 +514,8 @@ namespace System.Windows.Forms
 
         public Graphics CreateGraphics()
         {
-            return null;
+            Graphics g = new Graphics(this.Widget, new Cairo.Context(this.Widget.Handle,true), Widget.Allocation);
+            return g;
         }
 
         public DragDropEffects DoDragDrop(object data, DragDropEffects allowedEffects)
@@ -785,22 +786,26 @@ namespace System.Windows.Forms
 
         protected virtual void Dispose(bool disposing)
         {
-            if (_widget != null)
+            try
             {
-                this.backgroundPixbuf = null;
-                this.backgroundImage = null;
-                this._BackgroundImageBytes = null;
-                _widget.Destroy();
+                if (_widget != null)
+                {
+                    this.backgroundPixbuf = null;
+                    this.backgroundImage = null;
+                    this._BackgroundImageBytes = null;
+                    _widget.Destroy();
+                }
+                else
+                {
+                    this.backgroundPixbuf = null;
+                    this.backgroundImage = null;
+                    this._BackgroundImageBytes = null;
+                    Control = default(T);
+                    _widget = null;
+                    Container = null;
+                }
             }
-            else
-            {
-                this.backgroundPixbuf = null;
-                this.backgroundImage = null;
-                this._BackgroundImageBytes = null;
-                Control = default(T);
-                _widget = null;
-                Container = null;
-            }
+            catch { }
         }
 
         public bool UseVisualStyleBackColor { get; set; }

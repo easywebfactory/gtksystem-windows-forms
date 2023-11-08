@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_LastSelectedProfileId>F:\我的项目\GTK\GTKWindowsForms\Source\GTKSystem.Windows.Forms\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
+    <_LastSelectedProfileId>F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="GTKControls\Button.cs">
@@ -20,6 +20,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\DateTimePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\Dialog\ColorDialog.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\Form.cs">
