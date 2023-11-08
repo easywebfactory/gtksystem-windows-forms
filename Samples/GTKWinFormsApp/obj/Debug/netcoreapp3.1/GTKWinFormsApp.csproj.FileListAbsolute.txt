@@ -107,3 +107,4 @@ F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\netcoreapp3.1\GTKWinFormsApp.dll
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\netcoreapp3.1\GTKWinFormsApp.pdb
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\netcoreapp3.1\GTKWinFormsApp.genruntimeconfig.cache
+F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\netcoreapp3.1\GTKWinFormsApp.csprojAssemblyReference.cache
