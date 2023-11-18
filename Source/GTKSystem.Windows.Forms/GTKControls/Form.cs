@@ -33,6 +33,7 @@ namespace System.Windows.Forms
 
         private void Init()
         {
+            this.Control.StyleContext.AddClass("Form");
             _body = new Fixed();
             _body.Valign = Gtk.Align.Fill;
             _body.Halign = Gtk.Align.Fill;
@@ -124,7 +125,7 @@ namespace System.Windows.Forms
                             int height = parent.HeightRequest - ((int)control.BorderWidth);
                             if (parent.GetType().Name == "Window")
                             {
-                                width = parent.AllocatedWidth - 1;
+                                width = parent.AllocatedWidth - 2;
                                 height = parent.AllocatedHeight - 1;
                             }
                             if (parent.GetType().Name == "Dialog")
@@ -132,7 +133,7 @@ namespace System.Windows.Forms
                                 width = parent.AllocatedWidth - 1;
                                 height = parent.AllocatedHeight - 1;
                             }
-                            width = width - control.MarginStart - control.MarginStart - 1;
+                            width = width - control.MarginStart - control.MarginStart - 2;
                             height = width - control.MarginTop - control.MarginTop - 1;
 
                             if (dockStyle == DockStyle.Top.ToString())

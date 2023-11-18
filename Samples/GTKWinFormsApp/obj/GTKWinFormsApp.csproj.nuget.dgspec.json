@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "F:\\我的项目\\GTK\\GTKWinFormsApp\\GTKWinFormsApp.csproj": {}
+    "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj": {}
   },
   "projects": {
-    "F:\\我的项目\\GTK\\GTKWinFormsApp\\GTKWinFormsApp.csproj": {
+    "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\我的项目\\GTK\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
+        "projectUniqueName": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
         "projectName": "GTKWinFormsApp",
-        "projectPath": "F:\\我的项目\\GTK\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
+        "projectPath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
         "packagesPath": "C:\\Users\\chj\\.nuget\\packages\\",
-        "outputPath": "F:\\我的项目\\GTK\\GTKWinFormsApp\\obj\\",
+        "outputPath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Samples\\GTKWinFormsApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -24,7 +24,6 @@
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Users\\chj\\.nuget\\packages": {},
           "https://api.nuget.org/v3/index.json": {},
           "https://www.nuget.org/api/v2/": {}
         },
@@ -64,7 +63,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }

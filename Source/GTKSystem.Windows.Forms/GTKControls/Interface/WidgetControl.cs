@@ -32,6 +32,8 @@ namespace System.Windows.Forms
                     Dock = DockStyle.None;
                     Widget.MarginStart = 0;
                     Widget.MarginTop = 0;
+                    Widget.Drawn += Widget_Drawn;
+                    Widget.StyleContext.AddClass("DefaultThemeStyle");
                 }
             }
         }
@@ -45,6 +47,7 @@ namespace System.Windows.Forms
             Widget.MarginStart = 0;
             Widget.MarginTop = 0;
             Widget.Drawn += Widget_Drawn;
+            Widget.StyleContext.AddClass("DefaultThemeStyle");
         }
 
         private void Widget_Drawn(object o, DrawnArgs args)

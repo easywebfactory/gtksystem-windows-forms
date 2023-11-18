@@ -43,7 +43,7 @@ namespace System.Windows.Forms
             }
             public new int Add(TabPage item)
             {
-                 base.Add(item);
+                base.Add(item);
                 return _owner.Control.AppendPage(item.Control, item.TabLabel);
             }
             public new void RemoveAt(int index)

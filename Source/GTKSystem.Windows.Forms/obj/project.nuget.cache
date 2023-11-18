@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "slaRWwsut896NzXJ6TBYe8StTHIFKYOnZredf2A8J+CPH5jOT20XldQr0pMSITQLohfW3Y0KRxgaXraCmTu0Cw==",
+  "success": true,
+  "projectFilePath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\chj\\.nuget\\packages\\atksharp\\3.24.24.34\\atksharp.3.24.24.34.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\cairosharp\\3.24.24.34\\cairosharp.3.24.24.34.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\gdksharp\\3.24.24.34\\gdksharp.3.24.24.34.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\giosharp\\3.24.24.34\\giosharp.3.24.24.34.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\glibsharp\\3.24.24.34\\glibsharp.3.24.24.34.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\gtksharp\\3.24.24.34\\gtksharp.3.24.24.34.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\pangosharp\\3.24.24.34\\pangosharp.3.24.24.34.nupkg.sha512"
+  ],
+  "logs": []
+}

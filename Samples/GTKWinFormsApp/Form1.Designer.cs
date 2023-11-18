@@ -137,7 +137,7 @@ namespace GTKWinFormsApp
             // textBox1
             // 
             this.textBox1.BackColor = System.Drawing.SystemColors.Window;
-            this.textBox1.Location = new System.Drawing.Point(87, 33);
+            this.textBox1.Location = new System.Drawing.Point(524, 71);
             this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(93, 27);
@@ -264,7 +264,7 @@ namespace GTKWinFormsApp
             // 
             // maskedTextBox2
             // 
-            this.maskedTextBox2.Location = new System.Drawing.Point(208, 71);
+            this.maskedTextBox2.Location = new System.Drawing.Point(101, 71);
             this.maskedTextBox2.Margin = new System.Windows.Forms.Padding(4);
             this.maskedTextBox2.Name = "maskedTextBox2";
             this.maskedTextBox2.PasswordChar = '*';
@@ -302,12 +302,12 @@ namespace GTKWinFormsApp
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(886, 71);
+            this.label2.Location = new System.Drawing.Point(35, 34);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 20);
+            this.label2.Size = new System.Drawing.Size(58, 20);
             this.label2.TabIndex = 3;
-            this.label2.Text = "label2";
+            this.label2.Text = "掩 码：";
             // 
             // radioButton1
             // 
@@ -337,28 +337,30 @@ namespace GTKWinFormsApp
             // button2
             // 
             this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
+            this.button2.Font = new System.Drawing.Font("Microsoft YaHei UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.button2.ForeColor = System.Drawing.Color.Blue;
             this.button2.Location = new System.Drawing.Point(681, 71);
             this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(185, 68);
             this.button2.TabIndex = 0;
-            this.button2.Text = "选择颜色";
+            this.button2.Text = "选择颜色按钮";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 33);
+            this.label1.Location = new System.Drawing.Point(432, 74);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(49, 20);
+            this.label1.Size = new System.Drawing.Size(84, 20);
             this.label1.TabIndex = 1;
-            this.label1.Text = "dddd";
+            this.label1.Text = "选择颜色：";
             // 
             // maskedTextBox1
             // 
-            this.maskedTextBox1.Location = new System.Drawing.Point(208, 31);
+            this.maskedTextBox1.Location = new System.Drawing.Point(101, 31);
             this.maskedTextBox1.Margin = new System.Windows.Forms.Padding(4);
             this.maskedTextBox1.Mask = "0000年90月90日 90时00分";
             this.maskedTextBox1.Name = "maskedTextBox1";

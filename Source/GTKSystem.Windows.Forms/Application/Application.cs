@@ -46,44 +46,60 @@ namespace System.Windows.Forms
 
             Gtk.CssProvider css = new Gtk.CssProvider();
 
-            css.LoadFromData(@"window{ background:#eeeeee;border-width:0px} 
-.NoStyleControl{ border-width:0px;border-style:none;background-color:transparent;border-radius:0px;box-shadow: none;}
-.BorderRadiusStyle{ border-radius:0px;}
-.BorderRadiusStyle button{ border-radius:0px;}
-.BorderRadiusStyle entry{ border-radius:0px;}
+            css.LoadFromData(@"
+.DefaultThemeStyle{border:solid 1px #ddaaaa;border-radius:0px;box-shadow: none;color:#993333;}
+.DefaultThemeStyle.background{background-color:#ffeeee;}
+.DefaultThemeStyle.titlebar{background-color:#996666;}
+.DefaultThemeStyle border{border:solid 1px #ddaaaa;}
+.DefaultThemeStyle button{color:#993333;border-radius:0px;}
+.DefaultThemeStyle entry{border-radius:0px;}
+.DefaultThemeStyle label{color:#993333;}
+.DefaultThemeStyle>button{border:solid 1px #cccccc;}
+.DefaultThemeStyle>entry{border:solid 1px #cccccc;}
+.DefaultThemeStyle header.top{background-color:#ffcccc;} 
+.DefaultThemeStyle header.top tab:hover{background-color:#ffeeee;} 
+.DefaultThemeStyle stack{background-color:#ffeeee;padding:0px;margin:0px;} 
+.DefaultThemeStyle .view button{background-color:#ffcccc;}
+.DefaultThemeStyle:focus{border-color:#000099;}
+.DefaultThemeStyle:active{border-color:#000099;}
+
+.Form{}
+.BorderRadiusStyle{ ;}
 .MessageBox{}
 .MessageBox button{margin:10px;}
 .MessageBox-BarTitle{font-size:20px;padding-bottom:10px;}
-
-.TabControl{border:solid 1px #dddddd;} 
-.DataGridView{border:solid 1px #dddddd;}
-.DataGridView button{border:solid 1px #dddddd;} 
+.TabControl{padding:0px;} 
+.DataGridView{margin:0px;}
+.DataGridView treeview.view{margin:0px;padding:0px;border-bottom:solid 1px #dddddd;border-left-width:0px;border-top-width:0px;;border-right-width:0px;}
+.DataGridView button{} 
 .GridViewCell-Button{ font-size:12px; border:solid 1px #c0c0c0; border-radius:0px; background:linear-gradient(#eeeeee,#e2e2e2);box-shadow:0px 1px 1px 1px #eeeeee;}
 .GridViewCell-Button:hover{ background:linear-gradient(#f6f6f6,#f9f9f9);}
 .GridViewCell-Button:selected{ color:blue}
-.TreeView{border-bottom:solid 1px #dddddd;}
-.TreeView button{border-bottom:solid 1px #dddddd;border-left-width:0px;border-right-width:0px;}
-
-.Button{border:solid 1px #cccccc;padding:0px;} 
-.TextBox{background-color:#ffffff;border:solid 1px #acacac;padding:0px 3px 0px 3px;} 
-.TextBox:focus{border:solid 1px #0070cc;} 
-textview.view{ border:solid 1px #999999;background-color:#999999; } 
-.CheckedListBox {border:solid 1px #cccccc;background-color:#ffffff;} 
-.Panel{border:solid 1px #cccccc;background-color:#eeeeee;} 
-.SplitContainer{border:solid 1px #cccccc;} 
-.GroupBox{} 
-.LinkLabel{border:none;} 
-.NumericUpDown{border-width:1px;padding:0px;min-height:6px;min-width:6px;}
-.NumericUpDown button.up{padding:0px;font-size:6px;min-height:6px;min-width:6px;}
-.NumericUpDown button.down{padding:0px;font-size:6px;min-height:6px;min-width:6px;}
+.TreeView{border-bottom-width:0px;border-left-width:1px;border-top-width:1px;;border-right-width:1px;}
+.TreeView button{border-left-width:0px;border-right-width:0px;}
+.Button{padding:0px;} 
+.TextBox{background-color:#ffffff;padding:0px 3px 0px 3px;} 
+.RichTextBox .view{background-color:#ffffff;border-width:1px;}
+.RichTextBox border.top{border-width:1px;}
+.RichTextBox border.left{border-width:1px;}
+.RichTextBox border.right{border-width:1px;}
+.RichTextBox border.bottom{border-width:1px;}
+.CheckBox {border-width:0px;} 
+.CheckedListBox {background-color:#ffffff;} 
+.RadioButton {border-width:0px;} 
+.Label{border-width:0px;} 
+.LinkLabel{border-width:0px;} 
+.NumericUpDown{padding:0px;min-height:6px;min-width:6px;}
+.NumericUpDown button.up{border-width:0px;padding:0px;font-size:6px;min-height:6px;min-width:6px;}
+.NumericUpDown button.down{border-width:0px;padding:0px;font-size:6px;min-height:6px;min-width:6px;}
 .NumericUpDown entry{border-width:0px;padding:0px 0px 0px 3px;min-height:6px;min-width:6px;} 
 .NumericUpDown entry:focus{border-width:0px;}
-spinbutton.horizontal{border-width:1px;}
-spinbutton:focus{border-width:1px;}
-.progressbar{background:#0055ff;color:#ff5500} 
 .ComboBox{border-width:0px;padding:0px;}
-.ComboBox button{border:solid 1px #cccccc;padding:0px;}
-.ComboBox entry{border:solid 1px #cccccc;padding:0px;}
+.ComboBox button{padding:0px;}
+.ComboBox entry{padding:0px;}
+.Panel{} 
+.SplitContainer.horizontal{border-width:1px;}
+.GroupBox{} 
 .ButtonFontStyle{font-size:14px;color:red;}
 ");
 

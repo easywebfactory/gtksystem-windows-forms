@@ -13,7 +13,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="F:\我的项目\GTK\GTKWinFormsApp\bin\Debug\netcoreapp3.1\GTKWinFormsApp.runtimeconfig.json" target="lib\netcoreapp3.1\GTKWinFormsApp.runtimeconfig.json" />
-    <file src="F:\我的项目\GTK\GTKWinFormsApp\bin\Debug\netcoreapp3.1\GTKWinFormsApp.dll" target="lib\netcoreapp3.1\GTKWinFormsApp.dll" />
+    <file src="F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\netcoreapp3.1\GTKWinFormsApp.runtimeconfig.json" target="lib\netcoreapp3.1\GTKWinFormsApp.runtimeconfig.json" />
+    <file src="F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\netcoreapp3.1\GTKWinFormsApp.dll" target="lib\netcoreapp3.1\GTKWinFormsApp.dll" />
   </files>
 </package>
