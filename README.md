@@ -54,7 +54,8 @@ GTKWinFormsApp\obj\Release\netcoreapp3.1\GTKWinFormsApp.designer.runtimeconfig.j
 ```
 #### demo效果
 ![输入图片说明](pic/2023-11-06%20072903.jpg)
-
+#### 颜色主题
+![输入图片说明](pic/theme.jpg)
 #### 参与贡献
 
 1. https://gitee.com/easywebfactory/
