@@ -43,7 +43,7 @@ System.Resources.Extensions是空程序dll，VS加载Form界面时验证需要�
 
 5、GTKWinFormsApp\obj\Debug\netcoreapp3.1\GTKWinFormsApp.designer.runtimeconfig.json
 GTKWinFormsApp\obj\Release\netcoreapp3.1\GTKWinFormsApp.designer.runtimeconfig.json
-将name设置为Microsoft.WindowsDesktop.App，用于VS支持可视化Form表单，重新加载工程或重启VS
+将name设置为Microsoft.WindowsDesktop.App， **用于VS支持可视化窗体设计器，重新加载工程或重启VS** 
 
 ```
    "runtimeOptions": {
