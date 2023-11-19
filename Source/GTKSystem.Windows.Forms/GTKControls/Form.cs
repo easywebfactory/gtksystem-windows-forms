@@ -230,7 +230,17 @@ namespace System.Windows.Forms
                 base.Control.Add(laybody);
             }
             base.Control.ShowAll();
+            if (this.WindowState == FormWindowState.Maximized)
+            {
+                base.Control.Maximize();
+            }
+            else if (this.WindowState == FormWindowState.Minimized)
+            {
+                base.Control.KeepBelow = true;
+            }
+
         }
+        private Gtk.Dialog dialogWindow;
         public DialogResult ShowDialog()
         {
             return ShowDialog(null);
@@ -255,73 +265,72 @@ namespace System.Windows.Forms
             if (owner != null)
             {
                 Gtk.Window ownerWindow = ((Form)owner).Control;
-                Gtk.Dialog dia = new Dialog(this.Text, ownerWindow, DialogFlags.DestroyWithParent);
-                dia.SetPosition(Gtk.WindowPosition.CenterOnParent);
-                dia.DefaultHeight = this.Height;
-                dia.DefaultWidth = this.Width;
-                dia.Response += Dia_Response;
+                dialogWindow = new Dialog(this.Text, ownerWindow, DialogFlags.DestroyWithParent);
+                dialogWindow.SetPosition(Gtk.WindowPosition.CenterOnParent);
+                dialogWindow.DefaultHeight = this.Height;
+                dialogWindow.DefaultWidth = this.Width;
+                dialogWindow.Response += Dia_Response;
                 if (this.AutoScroll == true)
                 {
                     Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
                     _body.WidthRequest = this.Width;
                     _body.HeightRequest = this.Height;
                     scrollwindow.Child = _body;
-                    dia.ContentArea.PackStart(scrollwindow,true,true,1);
+                    dialogWindow.ContentArea.PackStart(scrollwindow,true,true,1);
                 }
                 else
                 {
                     Gtk.Layout laybody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
                     laybody.Add(_body);
-                    dia.ContentArea.PackStart(laybody, true, true, 1);
+                    dialogWindow.ContentArea.PackStart(laybody, true, true, 1);
                 }
-                dia.ShowAll();
-                irun = dia.Run();
+                dialogWindow.ShowAll();
+                if (this.WindowState == FormWindowState.Maximized)
+                {
+                    dialogWindow.Maximize();
+                }
+                else if (this.WindowState == FormWindowState.Minimized)
+                {
+                    dialogWindow.KeepBelow = true;
+                }
+
+                irun = dialogWindow.Run();
             }
             else
             {
-                Gtk.Dialog dia = new Dialog();
-                dia.SetPosition(Gtk.WindowPosition.Center);
-                dia.DefaultHeight = this.Height;
-                dia.DefaultWidth = this.Width;
-                dia.Response += Dia_Response;
+                dialogWindow = new Dialog();
+                dialogWindow.SetPosition(Gtk.WindowPosition.Center);
+                dialogWindow.DefaultHeight = this.Height;
+                dialogWindow.DefaultWidth = this.Width;
+                dialogWindow.Response += Dia_Response;
                 if (this.AutoScroll == true)
                 {
                     Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
                     _body.WidthRequest = this.Width;
                     _body.HeightRequest = this.Height;
                     scrollwindow.Child = _body;
-                    dia.ContentArea.PackStart(scrollwindow, true, true, 1);
+                    dialogWindow.ContentArea.PackStart(scrollwindow, true, true, 1);
                 }
                 else
                 {
                     Gtk.Layout laybody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
                     laybody.Add(_body);
-                    dia.ContentArea.PackStart(laybody, true, true, 1);
+                    dialogWindow.ContentArea.PackStart(laybody, true, true, 1);
                 }
-                dia.ShowAll();
-                irun = dia.Run();
+                dialogWindow.ShowAll();
+                if (this.WindowState == FormWindowState.Maximized)
+                {
+                    dialogWindow.Maximize();
+                }
+                else if (this.WindowState == FormWindowState.Minimized)
+                {
+                    dialogWindow.KeepBelow = true;
+                }
+
+                irun = dialogWindow.Run();
+
             }
-            Gtk.ResponseType resp = Enum.Parse<Gtk.ResponseType>(irun.ToString());
-            if (resp == Gtk.ResponseType.Yes)
-                return DialogResult.Yes;
-            else if (resp == Gtk.ResponseType.No)
-                return DialogResult.No;
-            else if (resp == Gtk.ResponseType.Ok)
-                return DialogResult.OK;
-            else if (resp == Gtk.ResponseType.Cancel)
-                return DialogResult.Cancel;
-            else if (resp == Gtk.ResponseType.Reject)
-                return DialogResult.Abort;
-            else if (resp == Gtk.ResponseType.Help)
-                return DialogResult.Retry;
-            else if (resp == Gtk.ResponseType.Close)
-                return DialogResult.Ignore;
-            else if (resp == Gtk.ResponseType.None)
-                return DialogResult.None;
-            else if (resp == Gtk.ResponseType.DeleteEvent)
-                return DialogResult.None;
-            else
-                return DialogResult.None;
+            return this.DialogResult;
         }
 
         private void Dia_Response(object o, ResponseArgs args)
@@ -366,7 +375,15 @@ namespace System.Windows.Forms
             get { return base.Control.Resizable == true ? FormBorderStyle.Sizable : FormBorderStyle.None; }
             set { base.Control.Resizable = value == FormBorderStyle.Sizable; }
         }
-
+        public FormWindowState WindowState { get; set; } = FormWindowState.Normal;
+        public DialogResult DialogResult { get; set; }
+        public void Close() {
+            if (dialogWindow != null)
+            {
+                dialogWindow.HideOnDelete();
+            }
+            this.Control.Close(); 
+        }
         public new ObjectCollection Controls { get { return _ObjectCollection; } }
 
         public object ActiveControl { get; set; }
@@ -442,7 +459,7 @@ namespace System.Windows.Forms
             //[Browsable(false)]
             //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
-            // public DialogResult DialogResult { get; set; }
+            public DialogResult DialogResult { get; set; }
 
             [Browsable(false)]
             [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -513,8 +530,6 @@ namespace System.Windows.Forms
 
             public Size MinimumSize { get; set; }
             [DefaultValue(FormWindowState.Normal)]
-
-
             public FormWindowState WindowState { get; set; }
 
 
@@ -700,8 +715,8 @@ namespace System.Windows.Forms
             public void SetDesktopBounds(int x, int y, int width, int height) { }
             public void SetDesktopLocation(int x, int y) { }
             public void Show(IWin32Window owner) { }
-            public DialogResult ShowDialog(IWin32Window owner) { return new DialogResult(); }
-            public DialogResult ShowDialog() { return new DialogResult(); }
+            //public DialogResult ShowDialog(IWin32Window owner) { return new DialogResult(); }
+            //public DialogResult ShowDialog() { return new DialogResult(); }
 
             [Browsable(true)]
             [EditorBrowsable(EditorBrowsableState.Always)]

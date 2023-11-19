@@ -44,3 +44,4 @@ F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\D
 F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Debug\netcoreapp3.1\GTKSystem.Windows.Forms.csproj.CoreCompileInputs.cache
 F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Debug\netcoreapp3.1\GTKSystem.Windows.Forms.dll
 F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Debug\netcoreapp3.1\GTKSystem.Windows.Forms.pdb
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Debug\netcoreapp3.1\GTKSystem.Windows.Forms.csprojAssemblyReference.cache

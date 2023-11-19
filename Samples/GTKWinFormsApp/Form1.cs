@@ -54,6 +54,7 @@ namespace GTKWinFormsApp
             //}
 
             this.textBox1.Text = this.comboBox1.SelectedItem?.ToString() + "/" + this.comboBox1.SelectedIndex;
+
         }
 
         public class TestEntity
@@ -97,7 +98,6 @@ namespace GTKWinFormsApp
             //    Console.WriteLine("DialogResult.Cancel");
             //    label2.Text = "你选择了 取消";
             //}
-
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
