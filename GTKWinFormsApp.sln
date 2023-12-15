@@ -13,6 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Resources.Extensions
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTKWinFormsApp", "Samples\GTKWinFormsApp\GTKWinFormsApp.csproj", "{A963833A-1053-4321-9BCF-3FB7C58F0601}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readme", "readme", "{7674FDFE-A432-492E-AC63-C24377F85870}"
+	ProjectSection(SolutionItems) = preProject
+		README.en.md = README.en.md
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
