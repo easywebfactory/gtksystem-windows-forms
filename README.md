@@ -58,6 +58,10 @@ GTKWinFormsApp\obj\Release\netcoreapp3.1\GTKWinFormsApp.designer.runtimeconfig.j
 ![输入图片说明](pic/mac.png)
 #### 颜色主题
 ![输入图片说明](pic/theme.jpg)
+
+#### 交流
+QQ群：236066073
+
 #### 参与贡献
 
 1. https://gitee.com/easywebfactory/
