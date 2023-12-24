@@ -1,0 +1,10 @@
+F:\我的项目\GTK\GTKWindowsForms\Libs\GTKSystem.Windows.Forms.dll
+F:\我的项目\GTK\GTKWindowsForms\Libs\GTKSystem.Windows.Forms.deps.json
+F:\我的项目\GTK\GTKWindowsForms\Libs\GTKSystem.Windows.Forms.pdb
+F:\我的项目\GTK\GTKWindowsForms\Libs\AtkSharp.dll
+F:\我的项目\GTK\GTKWindowsForms\Libs\CairoSharp.dll
+F:\我的项目\GTK\GTKWindowsForms\Libs\GdkSharp.dll
+F:\我的项目\GTK\GTKWindowsForms\Libs\GioSharp.dll
+F:\我的项目\GTK\GTKWindowsForms\Libs\GLibSharp.dll
+F:\我的项目\GTK\GTKWindowsForms\Libs\GtkSharp.dll
+F:\我的项目\GTK\GTKWindowsForms\Libs\PangoSharp.dll

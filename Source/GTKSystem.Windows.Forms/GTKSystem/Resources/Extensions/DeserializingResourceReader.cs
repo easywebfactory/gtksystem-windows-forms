@@ -168,7 +168,7 @@ namespace GTKSystem.Resources.Extensions
 
 		private bool _assumeBinaryFormatter;
 
-		private BinaryFormatter _formatter;
+		//private BinaryFormatter _formatter;
 
 		public DeserializingResourceReader(string fileName)
 		{
@@ -897,11 +897,12 @@ namespace GTKSystem.Resources.Extensions
 
 		private object ReadBinaryFormattedObject()
 		{
-			if (_formatter == null)
-			{
-				_formatter = new BinaryFormatter();
-			}
-			return _formatter.Deserialize(_store.BaseStream);
+			//if (_formatter == null)
+			//{
+			//	_formatter = new BinaryFormatter();
+			//}
+			//return _formatter.Deserialize(_store.BaseStream);
+			return null;
 		}
 
 		private unsafe object DeserializeObject(int typeIndex)

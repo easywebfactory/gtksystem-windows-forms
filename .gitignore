@@ -6,6 +6,7 @@ ehthumbs_vista.db
 
 # Dump file
 *.stackdump
+.vs
 
 # Folder config file
 [Dd]esktop.ini

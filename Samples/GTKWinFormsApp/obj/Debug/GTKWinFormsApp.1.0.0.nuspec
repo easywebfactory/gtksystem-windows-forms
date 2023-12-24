@@ -4,16 +4,16 @@
     <id>GTKWinFormsApp</id>
     <version>1.0.0</version>
     <authors>GTKWinFormsApp</authors>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Package Description</description>
+    <repository type="git" commit="59000741d0bea29c441a2b2cf5d5cf208d506036" />
     <dependencies>
-      <group targetFramework=".NETCoreApp3.1">
+      <group targetFramework="net8.0">
         <dependency id="GtkSharp" version="3.24.24.34" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\netcoreapp3.1\GTKWinFormsApp.runtimeconfig.json" target="lib\netcoreapp3.1\GTKWinFormsApp.runtimeconfig.json" />
-    <file src="F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\netcoreapp3.1\GTKWinFormsApp.dll" target="lib\netcoreapp3.1\GTKWinFormsApp.dll" />
+    <file src="F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\GTKWinFormsApp.runtimeconfig.json" target="lib\net8.0\GTKWinFormsApp.runtimeconfig.json" />
+    <file src="F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\GTKWinFormsApp.dll" target="lib\net8.0\GTKWinFormsApp.dll" />
   </files>
 </package>

@@ -4,15 +4,13 @@
     <id>System.Resources.Extensions</id>
     <version>1.0.0</version>
     <authors>System.Resources.Extensions</authors>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Package Description</description>
+    <repository type="git" commit="59000741d0bea29c441a2b2cf5d5cf208d506036" />
     <dependencies>
-      <group targetFramework=".NETCoreApp3.1">
-        <dependency id="GtkSharp" version="3.24.24.34" exclude="Build,Analyzers" />
-      </group>
+      <group targetFramework="net8.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="F:\我的项目\GTK\GTKWindowsForms\Source\System.Resources.Extensions\bin\Debug\netcoreapp3.1\System.Resources.Extensions.dll" target="lib\netcoreapp3.1\System.Resources.Extensions.dll" />
+    <file src="F:\我的项目\GTK\gtksystem-windows-forms\Source\System.Resources.Extensions\bin\Debug\net8.0\System.Resources.Extensions.dll" target="lib\net8.0\System.Resources.Extensions.dll" />
   </files>
 </package>

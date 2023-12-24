@@ -1,11 +1,6 @@
-﻿using Gdk;
+﻿
 using Gtk;
-using GTKSystem.Resources;
-using Pango;
 using System.ComponentModel;
-using System.Drawing;
-using System.IO;
-using System.Reflection;
 
 namespace System.Windows.Forms
 {

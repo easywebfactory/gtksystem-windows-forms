@@ -45,24 +45,40 @@ namespace System.Windows.Forms
             App.AddAction(quitAction);
 
             Gtk.CssProvider css = new Gtk.CssProvider();
-
+            //粉红色主题
+//.DefaultThemeStyle{border:solid 1px #ddaaaa;border-radius:0px;box-shadow: none;color:#993333;}
+//.DefaultThemeStyle.background{background-color:#ffeeee;}
+//.DefaultThemeStyle.titlebar{background-color:#996666;}
+//.DefaultThemeStyle border{border:solid 1px #ddaaaa;}
+//.DefaultThemeStyle button{color:#993333;border-radius:0px;}
+//.DefaultThemeStyle entry{border-radius:0px;}
+//.DefaultThemeStyle label{color:#993333;}
+//.DefaultThemeStyle>button{border:solid 1px #cccccc;}
+//.DefaultThemeStyle>entry{border:solid 1px #cccccc;}
+//.DefaultThemeStyle header.top{background-color:#ffcccc;} 
+//.DefaultThemeStyle header.top tab:hover{background-color:#ffeeee;} 
+//.DefaultThemeStyle stack{background-color:#ffeeee;padding:0px;margin:0px;} 
+//.DefaultThemeStyle .view button{background-color:#ffcccc;}
+//.DefaultThemeStyle:focus{border-color:#000099;}
+//.DefaultThemeStyle:active{border-color:#000099;}
             css.LoadFromData(@"
-.DefaultThemeStyle{border:solid 1px #ddaaaa;border-radius:0px;box-shadow: none;color:#993333;}
-.DefaultThemeStyle.background{background-color:#ffeeee;}
-.DefaultThemeStyle.titlebar{background-color:#996666;}
-.DefaultThemeStyle border{border:solid 1px #ddaaaa;}
-.DefaultThemeStyle button{color:#993333;border-radius:0px;}
+.DefaultThemeStyle{border:solid 1px #cccccc;border-radius:0px;box-shadow: none;color:#000000;}
+.DefaultThemeStyle.background{background-color:#F6F5F4;}
+.DefaultThemeStyle.titlebar{background-color:#666655;}
+.DefaultThemeStyle border{border:solid 1px #cccccc;}
+.DefaultThemeStyle button{color:#000000;border-radius:0px;}
 .DefaultThemeStyle entry{border-radius:0px;}
-.DefaultThemeStyle label{color:#993333;}
+.DefaultThemeStyle label{color:#000000;}
 .DefaultThemeStyle>button{border:solid 1px #cccccc;}
 .DefaultThemeStyle>entry{border:solid 1px #cccccc;}
-.DefaultThemeStyle header.top{background-color:#ffcccc;} 
-.DefaultThemeStyle header.top tab:hover{background-color:#ffeeee;} 
-.DefaultThemeStyle stack{background-color:#ffeeee;padding:0px;margin:0px;} 
-.DefaultThemeStyle .view button{background-color:#ffcccc;}
-.DefaultThemeStyle:focus{border-color:#000099;}
-.DefaultThemeStyle:active{border-color:#000099;}
-
+/*
+.DefaultThemeStyle header.top{background-color:#C7C7C7;} 
+.DefaultThemeStyle header.top tab:hover{background-color:#C8C8C8;} 
+.DefaultThemeStyle stack{background-color:#ffffff;padding:0px;margin:0px;} 
+.DefaultThemeStyle .view button{background-color:#C8C8C8;}
+.DefaultThemeStyle:focus{border-color:#eeeeee;}
+.DefaultThemeStyle:active{border-color:#cccccc;}
+*/
 .Form{}
 .BorderRadiusStyle{ ;}
 .MessageBox{}
@@ -75,7 +91,7 @@ namespace System.Windows.Forms
 .GridViewCell-Button{ font-size:12px; border:solid 1px #c0c0c0; border-radius:0px; background:linear-gradient(#eeeeee,#e2e2e2);box-shadow:0px 1px 1px 1px #eeeeee;}
 .GridViewCell-Button:hover{ background:linear-gradient(#f6f6f6,#f9f9f9);}
 .GridViewCell-Button:selected{ color:blue}
-.TreeView{border-bottom-width:0px;border-left-width:1px;border-top-width:1px;;border-right-width:1px;}
+.TreeView{border-bottom-width:0px;border-left-width:0px;border-top-width:1px;;border-right-width:0px;}
 .TreeView button{border-left-width:0px;border-right-width:0px;}
 .Button{padding:0px;} 
 .TextBox{background-color:#ffffff;padding:0px 3px 0px 3px;} 
