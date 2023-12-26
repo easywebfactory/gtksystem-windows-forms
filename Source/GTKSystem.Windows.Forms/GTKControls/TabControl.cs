@@ -2,8 +2,11 @@
 //使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows和linux运行
 //技术支持438865652@qq.com，https://www.cnblogs.com/easywebfactory
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 
 
 namespace System.Windows.Forms
@@ -12,14 +15,16 @@ namespace System.Windows.Forms
     public partial class TabControl : WidgetControl<Gtk.Notebook>
     {
         private TabControl.ControlCollection _controls;
+        private TabControl.TabPageCollection _tabPageControls;
         public TabControl() : base()
         {
             Widget.StyleContext.AddClass("TabControl");
             _controls = new ControlCollection(this);
+            _tabPageControls = new TabPageCollection(this);
         }
 
         public int SelectedIndex { get { return base.Control.CurrentPage; } set { base.Control.CurrentPage = value; } }
-     
+
         public TabPage SelectedTab { get { return _controls[base.Control.CurrentPage]; } set { } }
 
         public TabSizeMode SizeMode { get; set; }
@@ -27,7 +32,7 @@ namespace System.Windows.Forms
         public bool ShowToolTips { get; set; }
 
         public int TabCount { get; }
- 
+        public TabPageCollection TabPages { get { return _tabPageControls; } }
         public new TabControl.ControlCollection Controls => _controls;
         public event EventHandler SelectedIndexChanged
         {
@@ -55,6 +60,171 @@ namespace System.Windows.Forms
             {
                 base.Remove(value);
                 _owner.Control.Remove(((TabPage)value).Widget);
+            }
+        }
+
+
+        public class TabPageCollection : IList, ICollection, IEnumerable
+        {
+            private TabControl _owner;
+            public TabPageCollection(TabControl owner)
+            {
+                _owner = owner;
+            }
+
+            public virtual TabPage this[string key] { get { return _owner.Controls.Find(p => p.Name == key); } }
+            public virtual TabPage this[int index] { get { return _owner.Controls[index]; } set { Add(value); } }
+
+            object IList.this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+            //[Browsable(false)]
+            public int Count { get { return _owner.Controls.Count; } }
+
+            public bool IsReadOnly { get { return false; } }
+
+            bool IList.IsFixedSize => throw new NotImplementedException();
+
+            bool ICollection.IsSynchronized => throw new NotImplementedException();
+
+            object ICollection.SyncRoot => throw new NotImplementedException();
+
+            public void Add(string? key, string? text, string imageKey)
+            {
+                TabPage tp = new TabPage();
+                tp.Name = key;
+                tp.Text = text;
+                _owner.Controls.Add(tp);
+            }
+
+            public void Add(TabPage value)
+            {
+                _owner.Controls.Add(value);
+            }
+            public void Add(string? key, string? text)
+            {
+                this.Add(key, text, null);
+            }
+
+            public void Add(string? text)
+            {
+                this.Add($"tabPage{Count}", text, null);
+            }
+
+            public void Add(string? key, string? text, int imageIndex)
+            {
+                this.Add(key, text, null);
+            }
+
+            int IList.Add(object value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void AddRange(TabPage[] pages)
+            {
+                foreach (TabPage page in pages)
+                    this.Add(page);
+            }
+
+            bool IList.Contains(object value)
+            {
+                return _owner.Controls.Contains(value);
+            }
+
+            void CopyTo(Array array, int index)
+            {
+                throw new NotImplementedException();
+            }
+
+            public int IndexOf(object value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public virtual void Clear()
+            {
+                _owner.Controls.Clear();
+            }
+
+            public bool Contains(TabPage page)
+            {
+                return _owner.Controls.Contains(page);
+            }
+
+            public virtual bool ContainsKey(string? key)
+            {
+                return _owner.Controls.FindIndex(p => p.Name == key) > -1;
+
+            }
+
+            public IEnumerator GetEnumerator()
+            {
+                return _owner.Controls.GetEnumerator();
+            }
+
+            public int IndexOf(TabPage page)
+            {
+                return _owner.Controls.IndexOf(page);
+            }
+
+            public virtual int IndexOfKey(string? key)
+            {
+                return _owner.Controls.FindIndex(p => p.Name == key);
+            }
+
+            public void Insert(int index, string? key, string? text, int imageIndex)
+            {
+                _owner.Controls.Insert(index, new TabPage() { Name = key, Text = text }); ;
+            }
+
+            public void Insert(int index, string? key, string? text)
+            {
+                Insert(index, key, text, -1);
+            }
+
+            public void Insert(int index, TabPage tabPage)
+            {
+                _owner.Controls.Insert(index, tabPage);
+            }
+
+            public void Insert(int index, string? key, string? text, string imageKey)
+            {
+                Insert(index, key, text, -1);
+            }
+
+            public void Insert(int index, string? text)
+            {
+                Insert(index, $"tabPage{Count}", text, -1);
+            }
+
+            public void Insert(int index, object value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Remove(TabPage value)
+            {
+                _owner.Controls.Remove(value);
+            }
+
+            public void RemoveAt(int index)
+            {
+                _owner.Controls.RemoveAt(index);
+            }
+
+            public virtual void RemoveByKey(string? key)
+            {
+                _owner.Controls.RemoveAt(_owner.Controls.FindIndex(p => p.Name == key));
+            }
+
+            void IList.Remove(object value)
+            {
+                throw new NotImplementedException();
+            }
+
+            void ICollection.CopyTo(Array array, int index)
+            {
+                throw new NotImplementedException();
             }
         }
     }

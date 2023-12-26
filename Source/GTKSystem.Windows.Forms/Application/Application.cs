@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
+using System.Reflection;
 using System.Threading;
 
 namespace System.Windows.Forms
@@ -7,8 +8,47 @@ namespace System.Windows.Forms
     public sealed class Application
     {
         static Application() {
-           // Init();
         }
+
+        private static string appDataDirectory { get {
+                string[] assemblyFullName = Assembly.GetExecutingAssembly().FullName.Split(",");
+                string _namespace = assemblyFullName[0];
+                string _version = assemblyFullName[1].Split("=")[1];
+                return $"{_namespace}\\{Assembly.GetExecutingAssembly().GetName().Name}\\{_version}";
+            }
+        }
+
+        public static string CommonAppDataPath {
+            get {
+                string thispath = $"{System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}\\{appDataDirectory}";
+                if(!System.IO.Directory.Exists(thispath))
+                    System.IO.Directory.CreateDirectory(thispath);
+                return thispath;
+            } 
+        }
+        public static string UserAppDataPath
+        {
+            get
+            {
+                string thispath = $"{System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\{appDataDirectory}";
+                if (!System.IO.Directory.Exists(thispath))
+                    System.IO.Directory.CreateDirectory(thispath);
+                return thispath;
+            }
+        }
+        public static string LocalUserAppDataPath
+        {
+            get
+            {
+                string thispath = $"{System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\{appDataDirectory}";
+                if (!System.IO.Directory.Exists(thispath))
+                    System.IO.Directory.CreateDirectory(thispath);
+                return thispath;
+            }
+        }
+        public static string ExecutablePath { get { return Environment.ProcessPath; } }
+        public static string StartupPath { get { return Environment.CurrentDirectory; } }
+
         private static readonly object internalSyncObject = new object();
         public static CultureInfo CurrentCulture
         {

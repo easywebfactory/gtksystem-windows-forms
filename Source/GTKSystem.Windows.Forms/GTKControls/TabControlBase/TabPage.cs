@@ -52,5 +52,9 @@ namespace System.Windows.Forms
         public Gtk.Label TabLabel { get { return _TabLabel; } }
 
         public new ControlCollection Controls => _controls;
+
+        public int ImageIndex { get; set; }
+        public string ImageKey { get; set; }
+        public List<object> ImageList { get; set; }
     }
 }
