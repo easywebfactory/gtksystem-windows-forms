@@ -1,53 +1,54 @@
-﻿using Gtk;
+﻿/*
+ * 基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * author:chenhongjin
+ * date: 2024/1/3
+ */
+using Gtk;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 
-
 namespace System.Windows.Forms
 {
-    public abstract class WidgetControl<T>: ISynchronizeInvoke, IComponent, IDisposable, IControl, ISupportInitialize
+    /// <summary>
+    /// WidgetContainerControl与WidgetControl属性方法基本一样，主要是分区继承的Control，ContainerControl
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class WidgetControl<T> : Control, ISynchronizeInvoke, IComponent, IDisposable, IControl, ISupportInitialize
     {
         private Gtk.Widget _widget;
-        public Gtk.Widget Widget { get { return _widget; } 
+        public override Gtk.Widget Widget
+        {
+            get { return _widget; }
         }
-        public Gtk.Container Container { get; private set; }
+        public new Gtk.Container Container { get; private set; }
         private T _control;
-        public T Control { 
-            get { return _control; } 
-            set {
-                if (value == null)
-                {
-                    _control = default(T);
-                    _widget = null;
-                    Container = null;
-                }
-                else
-                {
-                    _control = value;
-                    _widget = _control as Gtk.Widget;
-                    Container = _control as Gtk.Container;
-                    Dock = DockStyle.None;
-                    Widget.MarginStart = 0;
-                    Widget.MarginTop = 0;
-                    Widget.Drawn += Widget_Drawn;
-                    Widget.StyleContext.AddClass("DefaultThemeStyle");
-                }
-            }
+        public T Control
+        {
+            get { return _control; }
         }
+        private object _gtkControl;
+        public override object GtkControl => _gtkControl;
         public WidgetControl(params object[] args)
         {
             object widget = Activator.CreateInstance(typeof(T), args);
+            _gtkControl = widget;
             _control = (T)widget;
             _widget = widget as Gtk.Widget;
             Container = widget as Gtk.Container;
             Dock = DockStyle.None;
-            Widget.MarginStart = 0;
-            Widget.MarginTop = 0;
-            Widget.Drawn += Widget_Drawn;
-            Widget.StyleContext.AddClass("DefaultThemeStyle");
+            _widget.MarginStart = 0;
+            _widget.MarginTop = 0;
+            _widget.Drawn += Widget_Drawn;
+            _widget.StyleContext.AddClass("DefaultThemeStyle");
+            _widget.Realized += _widget_Realized;
+        }
+
+        private void _widget_Realized(object sender, EventArgs e)
+        {
+            this.Widget.Show();
         }
 
         private void Widget_Drawn(object o, DrawnArgs args)
@@ -56,7 +57,7 @@ namespace System.Windows.Forms
             if (Control is Gtk.Button || Control is Gtk.Image)
             {
                 //由于绘画会覆盖容器内部所有子控件，不合适容器控件使用，只对button和picturebox设置背景
-                if (this.BackColor != null && this.BackColor.Name != "0")
+                if (this.BackColor.Name != "0")
                 {
                     DrawBackgroundColor(args.Cr, Widget, this.BackColor, rec);
                 }
@@ -71,7 +72,7 @@ namespace System.Windows.Forms
                     //Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(_BackgroundImageBytes);
                     DrawBackgroundImage(args.Cr, backgroundPixbuf, rec);
                 }
-                if ((this.BackColor != null && this.BackColor.Name != "0") || backgroundPixbuf != null)
+                if ((this.BackColor.Name != "0") || backgroundPixbuf != null)
                 {
                     if (string.IsNullOrEmpty(this.Text) == false)
                     {
@@ -81,7 +82,7 @@ namespace System.Windows.Forms
             }
 
             if (Paint != null)
-                Paint(o, new PaintEventArgs(new Graphics(this.Widget,args.Cr, Widget.Allocation), new Drawing.Rectangle(rec.X, rec.Y, rec.Width, rec.Height)));
+                Paint(o, new PaintEventArgs(new Graphics(this.Widget, args.Cr, Widget.Allocation), new Drawing.Rectangle(rec.X, rec.Y, rec.Width, rec.Height)));
         }
         Gdk.Pixbuf backgroundPixbuf;
         void DrawBackgroundColor(Cairo.Context ctx, Gtk.Widget control, Drawing.Color backcolor, Gdk.Rectangle rec)
@@ -167,21 +168,21 @@ namespace System.Windows.Forms
                 ctx.Restore();
             }
         }
-        public AccessibleObject AccessibilityObject { get; }
+        public override AccessibleObject AccessibilityObject { get; }
 
-        public string AccessibleDefaultActionDescription { get; set; }
-        public string AccessibleDescription { get; set; }
-        public string AccessibleName { get; set; }
-        public AccessibleRole AccessibleRole { get; set; }
-        public bool AllowDrop { get; set; }
-        public AnchorStyles Anchor { get; set; }
-        public Point AutoScrollOffset { get; set; }
-        public bool AutoSize { get; set; }
-        public Color BackColor { get; set; }
+        public override string AccessibleDefaultActionDescription { get; set; }
+        public override string AccessibleDescription { get; set; }
+        public override string AccessibleName { get; set; }
+        public override AccessibleRole AccessibleRole { get; set; }
+        public override bool AllowDrop { get; set; }
+        public override AnchorStyles Anchor { get; set; }
+        public override Point AutoScrollOffset { get; set; }
+        public override bool AutoSize { get; set; }
+        public override Color BackColor { get; set; }
 
         private byte[] _BackgroundImageBytes;
         private System.Drawing.Image backgroundImage;
-        public virtual System.Drawing.Image BackgroundImage
+        public override System.Drawing.Image BackgroundImage
         {
             get => backgroundImage;
             set
@@ -194,41 +195,41 @@ namespace System.Windows.Forms
                 }
             }
         }
-        public virtual ImageLayout BackgroundImageLayout { get; set; }
-        public BindingContext BindingContext { get; set; }
+        public override ImageLayout BackgroundImageLayout { get; set; }
+        public override BindingContext BindingContext { get; set; }
 
-        public int Bottom { get; }
+        public override int Bottom { get; }
 
-        public Rectangle Bounds { get; set; }
+        public override Rectangle Bounds { get; set; }
 
-        public bool CanFocus { get { return Widget.CanFocus; } }
+        public override bool CanFocus { get { return Widget.CanFocus; } }
 
-        public bool CanSelect { get; }
+        public override bool CanSelect { get; }
 
-        public bool Capture { get; set; }
-        public bool CausesValidation { get; set; }
-        public string CompanyName { get; }
+        public override bool Capture { get; set; }
+        public override bool CausesValidation { get; set; }
+        public override string CompanyName { get; }
 
-        public bool ContainsFocus { get; }
+        public override bool ContainsFocus { get; }
 
-        public ContextMenuStrip ContextMenuStrip { get; set; }
+        public override ContextMenuStrip ContextMenuStrip { get; set; }
 
-        public virtual ControlCollection Controls { get; }
+        public override ControlCollection Controls { get; }
 
-        public bool Created => _Created;
+        public override bool Created => _Created;
         internal bool _Created;
 
-        public Cursor Cursor { get; set; }
+        public override Cursor Cursor { get; set; }
 
-        public ControlBindingsCollection DataBindings { get; }
+        public override ControlBindingsCollection DataBindings { get; }
 
-        public int DeviceDpi { get; }
+        public override int DeviceDpi { get; }
 
-        public Rectangle DisplayRectangle { get; }
+        public override Rectangle DisplayRectangle { get; }
 
-        public bool Disposing { get; }
+        public override bool Disposing { get; }
 
-        public DockStyle Dock
+        public override DockStyle Dock
         {
             get
             {
@@ -237,47 +238,51 @@ namespace System.Windows.Forms
                 else
                     return DockStyle.None;
             }
-            set { 
-                Widget.Data["Dock"] = value.ToString(); 
-                if (value == DockStyle.Fill) { 
-                    Container.ResizeMode = Gtk.ResizeMode.Parent; 
-                } 
+            set
+            {
+                Widget.Data["Dock"] = value.ToString();
+                if (value == DockStyle.Fill)
+                {
+                    Container.ResizeMode = Gtk.ResizeMode.Parent;
+                }
             }
         }
-        public bool Enabled { get { return Widget.Sensitive; } set { Widget.Sensitive = value; } }
+        public override bool Enabled { get { return Widget.Sensitive; } set { Widget.Sensitive = value; } }
 
-        public bool Focused { get { return Widget.IsFocus; } }
+        public override bool Focused { get { return Widget.IsFocus; } }
 
-        public Font Font { get; set; }
+        public override Font Font { get; set; }
 
         private Color foreColor;
-        public Color ForeColor { 
-            get { return foreColor; } 
-            set { 
-                foreColor = value; 
-                Widget.ModifyFg(Gtk.StateType.Normal,new Gdk.Color(value.R,value.G,value.B)); 
+        public override Color ForeColor
+        {
+            get { return foreColor; }
+            set
+            {
+                foreColor = value;
+                Widget.ModifyFg(Gtk.StateType.Normal, new Gdk.Color(value.R, value.G, value.B));
             }
         }
 
-        public bool HasChildren { get; }
+        public override bool HasChildren { get; }
 
-        public int Height { get { return Widget.HeightRequest; } set { Widget.HeightRequest = value; } }
-        public ImeMode ImeMode { get; set; }
+        public override int Height { get { return Widget.HeightRequest; } set { Widget.HeightRequest = value; } }
+        public override ImeMode ImeMode { get; set; }
 
-        public bool InvokeRequired { get; }
+        public override bool InvokeRequired { get; }
 
-        public bool IsAccessible { get; set; }
+        public override bool IsAccessible { get; set; }
 
-        public bool IsDisposed { get; }
+        public override bool IsDisposed { get; }
 
-        public bool IsHandleCreated { get; }
+        public override bool IsHandleCreated { get; }
 
-        public bool IsMirrored { get; }
+        public override bool IsMirrored { get; }
 
-        public LayoutEngine LayoutEngine { get; }
+        public override LayoutEngine LayoutEngine { get; }
 
-        public int Left { get; set; }
-        public virtual Point Location
+        public override int Left { get; set; }
+        public override Point Location
         {
             get
             {
@@ -292,22 +297,23 @@ namespace System.Windows.Forms
                 Widget.Data["InitMarginTop"] = Widget.MarginTop;
             }
         }
-        public Padding Margin { get; set; }
-        public Size MaximumSize { get; set; }
-        public Size MinimumSize { get; set; }
-        public string Name { get { return Widget.Name; } set { Widget.Name = value; } }
-        public Padding Padding { get; set; }
-        public Gtk.Widget Parent { get { return Widget.Parent; } set { Widget.Parent = value; } }
-        public Size PreferredSize { get; }
-        public string ProductName { get; }
-        public string ProductVersion { get; }
-        public bool RecreatingHandle { get; }
-        public Region Region { get; set; }
-        public int Right { get; }
+        //public override Padding Margin { get; set; }
+        //public override Size MaximumSize { get; set; }
+        //public override Size MinimumSize { get; set; }
+        public override string Name { get { return Widget.Name; } set { Widget.Name = value; } }
+        public override Padding Padding { get; set; }
+        public Gtk.Widget WidgetParent { get { return Widget.Parent; } set { Widget.Parent = value; } }
+        public override Control Parent { get; set; }
+        public override Size PreferredSize { get; }
+        public override string ProductName { get; }
+        public override string ProductVersion { get; }
+        public override bool RecreatingHandle { get; }
+        public override Region Region { get; set; }
+        public override int Right { get; }
 
-        public RightToLeft RightToLeft { get; set; }
-        public ISite Site { get; set; }
-        public Size Size
+        public override RightToLeft RightToLeft { get; set; }
+        public override ISite Site { get; set; }
+        public override Size Size
         {
             get
             {
@@ -320,474 +326,473 @@ namespace System.Windows.Forms
                 Widget.Data["InitHeight"] = value.Height;
             }
         }
-        public int TabIndex { get; set; }
-        public bool TabStop { get; set; }
-        public object Tag { get; set; }
-        public virtual string Text { get; set; }
-        public int Top { get; set; }
+        public override int TabIndex { get; set; }
+        public override bool TabStop { get; set; }
+        public override object Tag { get; set; }
+        public override string Text { get; set; }
+        public override int Top { get; set; }
 
-        public Control TopLevelControl { get; }
+        public override Control TopLevelControl { get; }
 
-        public bool UseWaitCursor { get; set; }
-        public bool Visible { get { return Widget.Visible; } set { Widget.Visible = value; } }
-        public int Width { get { return Widget.WidthRequest; } set { Widget.WidthRequest = value; } }
-        public IWindowTarget WindowTarget { get; set; }
-        Control IControl.Parent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public virtual event EventHandler AutoSizeChanged;
-        public virtual event EventHandler BackColorChanged;
-        public virtual event EventHandler BackgroundImageChanged;
-        public virtual event EventHandler BackgroundImageLayoutChanged;
-        public virtual event EventHandler BindingContextChanged;
-        public virtual event EventHandler CausesValidationChanged;
-        public virtual event UICuesEventHandler ChangeUICues;
-        public virtual event EventHandler Click
+        public override bool UseWaitCursor { get; set; }
+        public override bool Visible { get { return Widget.Visible; } set { Widget.Visible = value; } }
+        public override int Width { get { return Widget.WidthRequest; } set { Widget.WidthRequest = value; } }
+        public override IWindowTarget WindowTarget { get; set; }
+        public override event EventHandler AutoSizeChanged;
+        public override event EventHandler BackColorChanged;
+        public override event EventHandler BackgroundImageChanged;
+        public override event EventHandler BackgroundImageLayoutChanged;
+        public override event EventHandler BindingContextChanged;
+        public override event EventHandler CausesValidationChanged;
+        public override event UICuesEventHandler ChangeUICues;
+        public override event EventHandler Click
         {
-            add { Widget.ButtonReleaseEvent += (object o, ButtonReleaseEventArgs args) => { value.Invoke(o, args); }; }
-            remove { Widget.ButtonReleaseEvent -= (object o, ButtonReleaseEventArgs args) => { value.Invoke(o, args); }; }
+            add { Widget.ButtonReleaseEvent += (object o, ButtonReleaseEventArgs args) => { value.Invoke(this, args); }; }
+            remove { Widget.ButtonReleaseEvent -= (object o, ButtonReleaseEventArgs args) => { value.Invoke(this, args); }; }
         }
 
-        public virtual event EventHandler ClientSizeChanged;
-        public virtual event EventHandler ContextMenuStripChanged;
-        public virtual event ControlEventHandler ControlAdded;
-        public virtual event ControlEventHandler ControlRemoved;
-        public virtual event EventHandler CursorChanged;
-        public virtual event EventHandler DockChanged;
-        public virtual event EventHandler DoubleClick;
-        public virtual event EventHandler DpiChangedAfterParent;
-        public virtual event EventHandler DpiChangedBeforeParent;
-        public virtual event DragEventHandler DragDrop;
+        public override event EventHandler ClientSizeChanged;
+        public override event EventHandler ContextMenuStripChanged;
+        public override event ControlEventHandler ControlAdded;
+        public override event ControlEventHandler ControlRemoved;
+        public override event EventHandler CursorChanged;
+        public override event EventHandler DockChanged;
+        public override event EventHandler DoubleClick;
+        public override event EventHandler DpiChangedAfterParent;
+        public override event EventHandler DpiChangedBeforeParent;
+        public override event DragEventHandler DragDrop;
         //{
-        //    add { Widget.DragDrop += (object o, Gtk.DragDropArgs args) => { value.Invoke(o, new DragEventArgs(null, Convert.ToInt32(args.RetVal), args.X, args.Y, DragDropEffects.All, DragDropEffects.Move)); }; }
+        //    add { Widget.DragDrop += (object o, Gtk.DragDropArgs args) => { value.Invoke(this, new DragEventArgs(null, Convert.ToInt32(args.RetVal), args.X, args.Y, DragDropEffects.All, DragDropEffects.Move)); }; }
         //    remove { Widget.DragDrop -= (object o, Gtk.DragDropArgs args) => { }; }
         //}
 
-        public virtual event DragEventHandler DragEnter;
-        public virtual event EventHandler DragLeave;
-        public virtual event DragEventHandler DragOver;
-        public virtual event EventHandler EnabledChanged;
-        public virtual event EventHandler Enter
+        public override event DragEventHandler DragEnter;
+        public override event EventHandler DragLeave;
+        public override event DragEventHandler DragOver;
+        public override event EventHandler EnabledChanged;
+        public override event EventHandler Enter
         {
             add
             {
-                Widget.EnterNotifyEvent += (object o, Gtk.EnterNotifyEventArgs args) => { value.Invoke(o, args); };
-                Widget.FocusInEvent += (object o, FocusInEventArgs args) => { value.Invoke(o, args); };
+                Widget.EnterNotifyEvent += (object o, Gtk.EnterNotifyEventArgs args) => { value.Invoke(this, args); };
+                Widget.FocusInEvent += (object o, FocusInEventArgs args) => { value.Invoke(this, args); };
             }
             remove
             {
-                Widget.EnterNotifyEvent -= (object o, Gtk.EnterNotifyEventArgs args) => { value.Invoke(o, args); };
-                Widget.FocusInEvent -= (object o, FocusInEventArgs args) => { value.Invoke(o, args); };
+                Widget.EnterNotifyEvent -= (object o, Gtk.EnterNotifyEventArgs args) => { value.Invoke(this, args); };
+                Widget.FocusInEvent -= (object o, FocusInEventArgs args) => { value.Invoke(this, args); };
             }
         }
 
-        public virtual event EventHandler FontChanged;
-        public virtual event EventHandler ForeColorChanged;
-        public virtual event GiveFeedbackEventHandler GiveFeedback;
-        public virtual event EventHandler GotFocus
+        public override event EventHandler FontChanged;
+        public override event EventHandler ForeColorChanged;
+        public override event GiveFeedbackEventHandler GiveFeedback;
+        public override event EventHandler GotFocus
         {
-            add { Widget.FocusInEvent += (object o, FocusInEventArgs args) => { value.Invoke(o, new EventArgs()); }; }
-            remove { Widget.FocusInEvent -= (object o, FocusInEventArgs args) => { value.Invoke(o, new EventArgs()); }; }
+            add { Widget.FocusInEvent += (object o, FocusInEventArgs args) => { value.Invoke(this, new EventArgs()); }; }
+            remove { Widget.FocusInEvent -= (object o, FocusInEventArgs args) => { value.Invoke(this, new EventArgs()); }; }
         }
-        public virtual event EventHandler HandleCreated;
-        public virtual event EventHandler HandleDestroyed;
-        public virtual event HelpEventHandler HelpRequested;
-        public virtual event EventHandler ImeModeChanged;
-        public virtual event InvalidateEventHandler Invalidated;
-        public virtual event KeyEventHandler KeyDown
+        public override event EventHandler HandleCreated;
+        public override event EventHandler HandleDestroyed;
+        public override event HelpEventHandler HelpRequested;
+        public override event EventHandler ImeModeChanged;
+        public override event InvalidateEventHandler Invalidated;
+        public override event KeyEventHandler KeyDown
         {
-            add { Widget.KeyPressEvent += (object o, Gtk.KeyPressEventArgs args) => { Enum.TryParse<Keys>(args.Event.Key.ToString(), out Keys result); value.Invoke(o, new KeyEventArgs(result)); }; }
-            remove { Widget.KeyPressEvent -= (object o, Gtk.KeyPressEventArgs args) => { Enum.TryParse<Keys>(args.Event.Key.ToString(), out Keys result); value.Invoke(o, new KeyEventArgs(result)); }; }
+            add { Widget.KeyPressEvent += (object o, Gtk.KeyPressEventArgs args) => { Enum.TryParse<Keys>(args.Event.Key.ToString(), out Keys result); value.Invoke(this, new KeyEventArgs(result)); }; }
+            remove { Widget.KeyPressEvent -= (object o, Gtk.KeyPressEventArgs args) => { Enum.TryParse<Keys>(args.Event.Key.ToString(), out Keys result); value.Invoke(this, new KeyEventArgs(result)); }; }
         }
-        public virtual event KeyPressEventHandler KeyPress
+        public override event KeyPressEventHandler KeyPress
         {
-            add { Widget.KeyReleaseEvent += (object o, Gtk.KeyReleaseEventArgs args) => { Enum.TryParse<Keys>(args.Event.Key.ToString(), out Keys result); value.Invoke(o, new KeyPressEventArgs(args.Event.Key.ToString()[0])); }; }
-            remove { Widget.KeyReleaseEvent -= (object o, Gtk.KeyReleaseEventArgs args) => { Enum.TryParse<Keys>(args.Event.Key.ToString(), out Keys result); value.Invoke(o, new KeyPressEventArgs(args.Event.Key.ToString()[0])); }; }
+            add { Widget.KeyReleaseEvent += (object o, Gtk.KeyReleaseEventArgs args) => { Enum.TryParse<Keys>(args.Event.Key.ToString(), out Keys result); value.Invoke(this, new KeyPressEventArgs(args.Event.Key.ToString()[0])); }; }
+            remove { Widget.KeyReleaseEvent -= (object o, Gtk.KeyReleaseEventArgs args) => { Enum.TryParse<Keys>(args.Event.Key.ToString(), out Keys result); value.Invoke(this, new KeyPressEventArgs(args.Event.Key.ToString()[0])); }; }
         }
-        public virtual event KeyEventHandler KeyUp
+        public override event KeyEventHandler KeyUp
         {
-            add { Widget.KeyReleaseEvent += (object o, Gtk.KeyReleaseEventArgs args) => { Enum.TryParse<Keys>(args.Event.Key.ToString(), out Keys result); value.Invoke(o, new KeyEventArgs(result)); }; }
-            remove { Widget.KeyReleaseEvent -= (object o, Gtk.KeyReleaseEventArgs args) => { Enum.TryParse<Keys>(args.Event.Key.ToString(), out Keys result); value.Invoke(o, new KeyEventArgs(result)); }; }
+            add { Widget.KeyReleaseEvent += (object o, Gtk.KeyReleaseEventArgs args) => { Enum.TryParse<Keys>(args.Event.Key.ToString(), out Keys result); value.Invoke(this, new KeyEventArgs(result)); }; }
+            remove { Widget.KeyReleaseEvent -= (object o, Gtk.KeyReleaseEventArgs args) => { Enum.TryParse<Keys>(args.Event.Key.ToString(), out Keys result); value.Invoke(this, new KeyEventArgs(result)); }; }
         }
-        public virtual event LayoutEventHandler Layout;
-        public virtual event EventHandler Leave
+        public override event LayoutEventHandler Layout;
+        public override event EventHandler Leave
         {
-            add { Widget.LeaveNotifyEvent += (object o, LeaveNotifyEventArgs args) => { value.Invoke(o, args);  }; }
-            remove { Widget.LeaveNotifyEvent -= (object o, LeaveNotifyEventArgs args) => { value.Invoke(o, args); }; }
+            add { Widget.LeaveNotifyEvent += (object o, LeaveNotifyEventArgs args) => { value.Invoke(this, args); }; }
+            remove { Widget.LeaveNotifyEvent -= (object o, LeaveNotifyEventArgs args) => { value.Invoke(this, args); }; }
         }
-        public virtual event EventHandler LocationChanged;
-        public virtual event EventHandler LostFocus
+        public override event EventHandler LocationChanged;
+        public override event EventHandler LostFocus
         {
-            add { Widget.FocusOutEvent += (object o, FocusOutEventArgs args) => { value.Invoke(o, new EventArgs()); }; }
-            remove { Widget.FocusOutEvent -= (object o, FocusOutEventArgs args) => { value.Invoke(o, new EventArgs()); }; }
+            add { Widget.FocusOutEvent += (object o, FocusOutEventArgs args) => { value.Invoke(this, new EventArgs()); }; }
+            remove { Widget.FocusOutEvent -= (object o, FocusOutEventArgs args) => { value.Invoke(this, new EventArgs()); }; }
         }
-        public virtual event EventHandler MarginChanged;
-        public virtual event EventHandler MouseCaptureChanged;
-        public virtual event MouseEventHandler MouseClick
+        public override event EventHandler MarginChanged;
+        public override event EventHandler MouseCaptureChanged;
+        public override event MouseEventHandler MouseClick
         {
-            add { Widget.ButtonReleaseEvent += (object o, ButtonReleaseEventArgs args) => { Enum.TryParse<MouseButtons>(args.Event.Button.ToString(), out MouseButtons result);  value.Invoke(o, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0)); }; }
-            remove { Widget.ButtonReleaseEvent -= (object o, ButtonReleaseEventArgs args) => { Enum.TryParse<MouseButtons>(args.Event.Button.ToString(), out MouseButtons result); value.Invoke(o, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0)); }; }
+            add { Widget.ButtonReleaseEvent += (object o, ButtonReleaseEventArgs args) => { Enum.TryParse<MouseButtons>(args.Event.Button.ToString(), out MouseButtons result); value.Invoke(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0)); }; }
+            remove { Widget.ButtonReleaseEvent -= (object o, ButtonReleaseEventArgs args) => { Enum.TryParse<MouseButtons>(args.Event.Button.ToString(), out MouseButtons result); value.Invoke(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0)); }; }
         }
-        public virtual event MouseEventHandler MouseDoubleClick;
-        public virtual event MouseEventHandler MouseDown
+        public override event MouseEventHandler MouseDoubleClick;
+        public override event MouseEventHandler MouseDown
         {
-            add { Widget.ButtonPressEvent += (object o, ButtonPressEventArgs args) => { Enum.TryParse<MouseButtons>(args.Event.Button.ToString(), out MouseButtons result); value.Invoke(o, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0)); }; }
-            remove { Widget.ButtonPressEvent -= (object o, ButtonPressEventArgs args) => { Enum.TryParse<MouseButtons>(args.Event.Button.ToString(), out MouseButtons result); value.Invoke(o, new MouseEventArgs(result, 1, (int) args.Event.X, (int) args.Event.Y, 0)); }; }
+            add { Widget.ButtonPressEvent += (object o, ButtonPressEventArgs args) => { Enum.TryParse<MouseButtons>(args.Event.Button.ToString(), out MouseButtons result); value.Invoke(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0)); }; }
+            remove { Widget.ButtonPressEvent -= (object o, ButtonPressEventArgs args) => { Enum.TryParse<MouseButtons>(args.Event.Button.ToString(), out MouseButtons result); value.Invoke(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0)); }; }
         }
-        public virtual event EventHandler MouseEnter
+        public override event EventHandler MouseEnter
         {
-            add { Widget.EnterNotifyEvent += (object o, Gtk.EnterNotifyEventArgs args) => { value.Invoke(o, args); }; }
-            remove { Widget.EnterNotifyEvent -= (object o, Gtk.EnterNotifyEventArgs args) => { value.Invoke(o, args); }; }
+            add { Widget.EnterNotifyEvent += (object o, Gtk.EnterNotifyEventArgs args) => { value.Invoke(this, args); }; }
+            remove { Widget.EnterNotifyEvent -= (object o, Gtk.EnterNotifyEventArgs args) => { value.Invoke(this, args); }; }
         }
-        public virtual event EventHandler MouseHover;
-        public virtual event EventHandler MouseLeave;
-        public virtual event MouseEventHandler MouseMove
+        public override event EventHandler MouseHover;
+        public override event EventHandler MouseLeave;
+        public override event MouseEventHandler MouseMove
         {
-            add { Widget.MotionNotifyEvent += (object o, MotionNotifyEventArgs args) => { value.Invoke(o, new MouseEventArgs(MouseButtons.None, 1, (int)args.Event.X, (int)args.Event.Y, 0)); }; }
-            remove { Widget.MotionNotifyEvent -= (object o, MotionNotifyEventArgs args) => { value.Invoke(o, new MouseEventArgs(MouseButtons.None, 1, (int)args.Event.X, (int)args.Event.Y, 0)); }; }
+            add { Widget.MotionNotifyEvent += (object o, MotionNotifyEventArgs args) => { value.Invoke(this, new MouseEventArgs(MouseButtons.None, 1, (int)args.Event.X, (int)args.Event.Y, 0)); }; }
+            remove { Widget.MotionNotifyEvent -= (object o, MotionNotifyEventArgs args) => { value.Invoke(this, new MouseEventArgs(MouseButtons.None, 1, (int)args.Event.X, (int)args.Event.Y, 0)); }; }
         }
-        public virtual event MouseEventHandler MouseUp;
-        public virtual event MouseEventHandler MouseWheel;
-        public virtual event EventHandler Move
+        public override event MouseEventHandler MouseUp;
+        public override event MouseEventHandler MouseWheel;
+        public override event EventHandler Move
         {
-            add { Widget.MotionNotifyEvent += (object o, MotionNotifyEventArgs args) => { value.Invoke(o, args); }; }
-            remove { Widget.MotionNotifyEvent -= (object o, MotionNotifyEventArgs args) => { value.Invoke(o, args); }; }
+            add { Widget.MotionNotifyEvent += (object o, MotionNotifyEventArgs args) => { value.Invoke(this, args); }; }
+            remove { Widget.MotionNotifyEvent -= (object o, MotionNotifyEventArgs args) => { value.Invoke(this, args); }; }
         }
-        public virtual event EventHandler PaddingChanged;
-        public virtual event PaintEventHandler Paint;
-        public virtual event EventHandler ParentChanged;
-        public virtual event PreviewKeyDownEventHandler PreviewKeyDown;
-        public virtual event QueryAccessibilityHelpEventHandler QueryAccessibilityHelp;
-        public virtual event QueryContinueDragEventHandler QueryContinueDrag;
-        public virtual event EventHandler RegionChanged;
-        public virtual event EventHandler Resize;
-        public virtual event EventHandler RightToLeftChanged;
-        public virtual event EventHandler SizeChanged
+        public override event EventHandler PaddingChanged;
+        public override event PaintEventHandler Paint;
+        public override event EventHandler ParentChanged;
+        public override event PreviewKeyDownEventHandler PreviewKeyDown;
+        public override event QueryAccessibilityHelpEventHandler QueryAccessibilityHelp;
+        public override event QueryContinueDragEventHandler QueryContinueDrag;
+        public override event EventHandler RegionChanged;
+        public override event EventHandler Resize;
+        public override event EventHandler RightToLeftChanged;
+        public override event EventHandler SizeChanged
         {
-            add { Widget.SizeAllocated += (object o, SizeAllocatedArgs args) => { value.Invoke(o, args); }; }
-            remove { Widget.SizeAllocated -= (object o, SizeAllocatedArgs args) => { value.Invoke(o, args); }; }
+            add { Widget.SizeAllocated += (object o, SizeAllocatedArgs args) => { value.Invoke(this, args); }; }
+            remove { Widget.SizeAllocated -= (object o, SizeAllocatedArgs args) => { value.Invoke(this, args); }; }
         }
-        public virtual event EventHandler StyleChanged;
-        public virtual event EventHandler SystemColorsChanged;
-        public virtual event EventHandler TabIndexChanged;
-        public virtual event EventHandler TabStopChanged;
-        public virtual event EventHandler TextChanged;
+        public override event EventHandler StyleChanged;
+        public override event EventHandler SystemColorsChanged;
+        public override event EventHandler TabIndexChanged;
+        public override event EventHandler TabStopChanged;
+        public override event EventHandler TextChanged;
 
         CancelEventArgs cancelEventArgs = new CancelEventArgs(false);
-        public virtual event EventHandler Validated
+        public override event EventHandler Validated
         {
-            add { Widget.FocusOutEvent += (object o, FocusOutEventArgs args) => { if (cancelEventArgs.Cancel == false) { value.Invoke(o, new EventArgs()); } }; }
-            remove { Widget.FocusOutEvent -= (object o, FocusOutEventArgs args) => { if (cancelEventArgs.Cancel == false) { value.Invoke(o, new EventArgs()); } }; }
+            add { Widget.FocusOutEvent += (object o, FocusOutEventArgs args) => { if (cancelEventArgs.Cancel == false) { value.Invoke(this, new EventArgs()); } }; }
+            remove { Widget.FocusOutEvent -= (object o, FocusOutEventArgs args) => { if (cancelEventArgs.Cancel == false) { value.Invoke(this, new EventArgs()); } }; }
         }
-        public virtual event CancelEventHandler Validating
+        public override event CancelEventHandler Validating
         {
-            add { Widget.FocusOutEvent += (object o, FocusOutEventArgs args) => { cancelEventArgs.Cancel = false; value.Invoke(o, cancelEventArgs); }; }
-            remove { Widget.FocusOutEvent -= (object o, FocusOutEventArgs args) => { cancelEventArgs.Cancel = false; value.Invoke(o, cancelEventArgs); }; }
+            add { Widget.FocusOutEvent += (object o, FocusOutEventArgs args) => { cancelEventArgs.Cancel = false; value.Invoke(this, cancelEventArgs); }; }
+            remove { Widget.FocusOutEvent -= (object o, FocusOutEventArgs args) => { cancelEventArgs.Cancel = false; value.Invoke(this, cancelEventArgs); }; }
         }
-        public virtual event EventHandler VisibleChanged;
-        public virtual event EventHandler Disposed;
+        public override event EventHandler VisibleChanged;
+        //public event EventHandler Disposed;
         public virtual event EventHandler Load
         {
             add { Widget.Realized += (object sender, EventArgs e) => { value.Invoke(sender, e); }; }
             remove { Widget.Realized -= (object sender, EventArgs e) => { value.Invoke(sender, e); }; }
         }
-        public IAsyncResult BeginInvoke(Delegate method)
+        public override IAsyncResult BeginInvoke(Delegate method)
         {
             return BeginInvoke(method, null);
         }
 
-        public IAsyncResult BeginInvoke(Delegate method, params object[] args)
+        public override IAsyncResult BeginInvoke(Delegate method, params object[] args)
         {
             return new AsyncResult();
         }
 
-        public void BringToFront()
+        public override void BringToFront()
         {
 
         }
 
-        public bool Contains(Control ctl)
+        public override bool Contains(Control ctl)
         {
             return false;
         }
 
-        public void CreateControl()
+        public override void CreateControl()
         {
 
         }
 
-        public Graphics CreateGraphics()
+        public override Graphics CreateGraphics()
         {
-            Graphics g = new Graphics(this.Widget, new Cairo.Context(this.Widget.Handle,true), Widget.Allocation);
+            Graphics g = new Graphics(this.Widget, new Cairo.Context(this.Widget.Handle, true), Widget.Allocation);
             return g;
         }
 
-        public DragDropEffects DoDragDrop(object data, DragDropEffects allowedEffects)
+        public override DragDropEffects DoDragDrop(object data, DragDropEffects allowedEffects)
         {
             return DragDropEffects.None;
         }
 
-        public void DrawToBitmap(Bitmap bitmap, Rectangle targetBounds)
+        public override void DrawToBitmap(Bitmap bitmap, Rectangle targetBounds)
         {
 
         }
 
-        public object EndInvoke(IAsyncResult asyncResult)
+        public override object EndInvoke(IAsyncResult asyncResult)
         {
             return asyncResult.AsyncState;
         }
 
-        public Form FindForm()
+        public override Form FindForm()
         {
             return null;
         }
 
-        public bool Focus()
+        public override bool Focus()
         {
             return false;
         }
 
-        public Control GetChildAtPoint(Point pt)
+        public override Control GetChildAtPoint(Point pt)
         {
             return null;
         }
 
-        public Control GetChildAtPoint(Point pt, GetChildAtPointSkip skipValue)
+        public override Control GetChildAtPoint(Point pt, GetChildAtPointSkip skipValue)
         {
             return null;
         }
 
-        public IContainerControl GetContainerControl()
+        public override IContainerControl GetContainerControl()
         {
             return null;
         }
 
-        public Control GetNextControl(Control ctl, bool forward)
+        public override Control GetNextControl(Control ctl, bool forward)
         {
             return ctl;
         }
 
-        public Size GetPreferredSize(Size proposedSize)
+        public override Size GetPreferredSize(Size proposedSize)
         {
             return proposedSize;
         }
 
-        public void Invalidate()
+        public override void Invalidate()
         {
 
         }
 
-        public void Invalidate(bool invalidateChildren)
+        public override void Invalidate(bool invalidateChildren)
         {
 
         }
 
-        public void Invalidate(Rectangle rc)
+        public override void Invalidate(Rectangle rc)
         {
 
         }
 
-        public void Invalidate(Rectangle rc, bool invalidateChildren)
+        public override void Invalidate(Rectangle rc, bool invalidateChildren)
         {
 
         }
 
-        public void Invalidate(Region region)
+        public override void Invalidate(Region region)
         {
 
         }
 
-        public void Invalidate(Region region, bool invalidateChildren)
+        public override void Invalidate(Region region, bool invalidateChildren)
         {
 
         }
 
-        public object Invoke(Delegate method)
-        {
-            return null;
-        }
-
-        public object Invoke(Delegate method, params object[] args)
+        public override object Invoke(Delegate method)
         {
             return null;
         }
 
-        public int LogicalToDeviceUnits(int value)
+        public override object Invoke(Delegate method, params object[] args)
+        {
+            return null;
+        }
+
+        public override int LogicalToDeviceUnits(int value)
         {
             return value;
         }
 
-        public Size LogicalToDeviceUnits(Size value)
+        public override Size LogicalToDeviceUnits(Size value)
         {
             return value;
         }
 
-        public Point PointToClient(Point p)
+        public override Point PointToClient(Point p)
         {
             return p;
         }
 
-        public Point PointToScreen(Point p)
+        public override Point PointToScreen(Point p)
         {
             return p;
         }
 
-        public PreProcessControlState PreProcessControlMessage(ref Message msg)
+        public override PreProcessControlState PreProcessControlMessage(ref Message msg)
         {
             return PreProcessControlState.MessageNotNeeded;
         }
 
-        public bool PreProcessMessage(ref Message msg)
+        public override bool PreProcessMessage(ref Message msg)
         {
             return false;
         }
 
-        public Rectangle RectangleToClient(Rectangle r)
+        public override Rectangle RectangleToClient(Rectangle r)
         {
             return r;
         }
 
-        public Rectangle RectangleToScreen(Rectangle r)
+        public override Rectangle RectangleToScreen(Rectangle r)
         {
             return r;
         }
 
-        public void Refresh()
+        public override void Refresh()
         {
 
         }
 
-        public void ResetBackColor()
+        public override void ResetBackColor()
         {
 
         }
 
-        public void ResetBindings()
+        public override void ResetBindings()
         {
 
         }
 
-        public void ResetCursor()
+        public override void ResetCursor()
         {
 
         }
 
-        public void ResetFont()
+        public override void ResetFont()
         {
 
         }
 
-        public void ResetForeColor()
+        public override void ResetForeColor()
         {
 
         }
 
-        public void ResetImeMode()
+        public override void ResetImeMode()
         {
 
         }
 
-        public void ResetRightToLeft()
+        public override void ResetRightToLeft()
         {
 
         }
 
-        public void ResetText()
+        public override void ResetText()
         {
 
         }
 
-        public virtual void ResumeLayout()
+        public override void ResumeLayout()
         {
             _Created = true;
         }
 
-        public virtual void ResumeLayout(bool performLayout)
+        public override void ResumeLayout(bool performLayout)
         {
             _Created = performLayout == false;
         }
 
-        public void Scale(float ratio)
+        public override void Scale(float ratio)
         {
 
         }
 
-        public void Scale(float dx, float dy)
+        public override void Scale(float dx, float dy)
         {
 
         }
 
-        public void Scale(SizeF factor)
+        public override void Scale(SizeF factor)
         {
 
         }
 
-        public void ScaleBitmapLogicalToDevice(ref Bitmap logicalBitmap)
+        public override void ScaleBitmapLogicalToDevice(ref Bitmap logicalBitmap)
         {
 
         }
 
-        public void Select()
+        public override void Select()
         {
 
         }
 
-        public bool SelectNextControl(Control ctl, bool forward, bool tabStopOnly, bool nested, bool wrap)
+        public override bool SelectNextControl(Control ctl, bool forward, bool tabStopOnly, bool nested, bool wrap)
         {
             return false;
         }
 
-        public void SendToBack()
+        public override void SendToBack()
         {
 
         }
 
-        public void SetBounds(int x, int y, int width, int height)
+        public override void SetBounds(int x, int y, int width, int height)
         {
 
         }
 
-        public void SetBounds(int x, int y, int width, int height, BoundsSpecified specified)
+        public override void SetBounds(int x, int y, int width, int height, BoundsSpecified specified)
         {
 
         }
 
-        public virtual void SuspendLayout()
+        public override void SuspendLayout()
         {
             _Created = false;
         }
 
-        public virtual void PerformLayout()
+        public override void PerformLayout()
         {
             _Created = true;
         }
 
-        public virtual void PerformLayout(Control affectedControl, string affectedProperty)
+        public override void PerformLayout(Control affectedControl, string affectedProperty)
         {
             _Created = true;
         }
 
-        public void Update()
+        public override void Update()
         {
 
         }
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public virtual void BeginInit()
+        public override void BeginInit()
         {
 
         }
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public virtual void EndInit()
+        public override void EndInit()
         {
 
         }
 
-        public virtual void Dispose()
+        public new void Dispose()
         {
             Dispose(true);
+            base.Dispose();
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             try
             {
@@ -803,15 +808,16 @@ namespace System.Windows.Forms
                     this.backgroundPixbuf = null;
                     this.backgroundImage = null;
                     this._BackgroundImageBytes = null;
-                    Control = default(T);
+                    _control = default(T);
                     _widget = null;
                     Container = null;
                 }
             }
             catch { }
+            base.Dispose(disposing);
         }
 
-        public bool UseVisualStyleBackColor { get; set; }
+        public override bool UseVisualStyleBackColor { get; set; }
 
         protected void ScaleImage(ref Gdk.Pixbuf imagePixbuf, byte[] imagebytes, PictureBoxSizeMode sizeMode, ImageLayout backgroundMode)
         {

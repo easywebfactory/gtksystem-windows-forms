@@ -8,9 +8,9 @@
     ".NETCoreApp,Version=v8.0": {
       "GTKWinFormsApp/1.0.0": {
         "dependencies": {
-          "GtkSharp": "3.24.24.34",
           "GTKSystem.Windows.Forms": "0.3.24.1",
-          "System.Resources.Extensions": "1.0.0.0"
+          "GtkSharp": "3.24.24.34",
+          "System.Resources.Extensions": "1.0.0"
         },
         "runtime": {
           "GTKWinFormsApp.dll": {}
@@ -97,19 +97,16 @@
         }
       },
       "GTKSystem.Windows.Forms/0.3.24.1": {
+        "dependencies": {
+          "GtkSharp": "3.24.24.34"
+        },
         "runtime": {
-          "GTKSystem.Windows.Forms.dll": {
-            "assemblyVersion": "0.3.24.1",
-            "fileVersion": "0.3.24.1"
-          }
+          "GTKSystem.Windows.Forms.dll": {}
         }
       },
-      "System.Resources.Extensions/1.0.0.0": {
+      "System.Resources.Extensions/1.0.0": {
         "runtime": {
-          "System.Resources.Extensions.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "System.Resources.Extensions.dll": {}
         }
       }
     }
@@ -170,12 +167,12 @@
       "hashPath": "pangosharp.3.24.24.34.nupkg.sha512"
     },
     "GTKSystem.Windows.Forms/0.3.24.1": {
-      "type": "reference",
+      "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "System.Resources.Extensions/1.0.0.0": {
-      "type": "reference",
+    "System.Resources.Extensions/1.0.0": {
+      "type": "project",
       "serviceable": false,
       "sha512": ""
     }

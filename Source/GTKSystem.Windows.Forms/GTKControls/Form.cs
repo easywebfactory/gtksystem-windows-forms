@@ -1,12 +1,14 @@
-﻿//基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
-//使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows和linux运行
-//开发联系438865652@qq.com，https://www.cnblogs.com/easywebfactory
+﻿/*
+ * 基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * author:chenhongjin
+ * date: 2024/1/3
+ */
 using Gtk;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Reflection;
 using System.Runtime.InteropServices;
 
 
@@ -15,7 +17,7 @@ namespace System.Windows.Forms
     [DesignerCategory("Form"),
     DefaultEvent(nameof(Load)),
     InitializationEvent(nameof(Load))]
-    public partial class Form : WidgetControl<Gtk.Window>, IWin32Window
+    public partial class Form : WidgetContainerControl<Gtk.Window>, IWin32Window
     {
         private Gtk.Fixed _body = null;
         private ObjectCollection _ObjectCollection;
@@ -37,7 +39,7 @@ namespace System.Windows.Forms
             _body = new Fixed();
             _body.Valign = Gtk.Align.Fill;
             _body.Halign = Gtk.Align.Fill;
-            _ObjectCollection = new ObjectCollection(_body);
+            _ObjectCollection = new ObjectCollection(this, _body);
             base.Control.WindowPosition = Gtk.WindowPosition.Center;
             base.Control.BorderWidth = 1;
             base.Control.SetDefaultSize(100, 100);
@@ -104,7 +106,7 @@ namespace System.Windows.Forms
                 }
             }
             if (SizeChanged != null)
-                SizeChanged(sender, e);
+                SizeChanged(this, e);
         }
 
         private void ResizeChildren(Gtk.Container container)
@@ -189,7 +191,7 @@ namespace System.Windows.Forms
             return true;
         }
 
-        public void Show()
+        public override void Show()
         {
             this.Show(null);
         }
@@ -212,7 +214,7 @@ namespace System.Windows.Forms
 
             if (owner != null && owner is Form)
             {
-                this.Control.Parent = ((Form)owner).Control;
+                this.Parent= ((Form)owner);
             }
 
             if (this.AutoScroll == true)
@@ -351,7 +353,7 @@ namespace System.Windows.Forms
         public event FormClosedEventHandler FormClosed;
         public override event EventHandler Load;
         public override string Text { get { return base.Control.Title; } set { base.Control.Title = value; } }
-        public Size ClientSize
+        public override Size ClientSize
         {
             get
             {
@@ -366,7 +368,7 @@ namespace System.Windows.Forms
                 base.Height = value.Height;
             }
         }
-        public Rectangle ClientRectangle { get; }
+        //public override Rectangle ClientRectangle { get; }
 
         public SizeF AutoScaleDimensions { get; set; }
         public AutoScaleMode AutoScaleMode { get; set; }
@@ -384,9 +386,9 @@ namespace System.Windows.Forms
             }
             this.Control.Close(); 
         }
-        public new ObjectCollection Controls { get { return _ObjectCollection; } }
+        public override ObjectCollection Controls { get { return _ObjectCollection; } }
 
-        public object ActiveControl { get; set; }
+        //public object ActiveControl { get; set; }
 
         public override void SuspendLayout()
         {
@@ -407,21 +409,21 @@ namespace System.Windows.Forms
             return true;
         }
 
-        public bool ActivateControl(Control active)
-        {
-            return false;
-        }
+        //public bool ActivateControl(Control active)
+        //{
+        //    return false;
+        //}
 
-        public bool AutoScroll { get; set; }
+        //public bool AutoScroll { get; set; }
 
         public MenuStrip MainMenuStrip { get; set; }
 
-        public IntPtr Handle => base.Control.OwnedHandle;
+        public override IntPtr Handle => base.Control.OwnedHandle;
 
         public class ObjectCollection : ControlCollection
         {
             Gtk.Container __owner;
-            public ObjectCollection(Gtk.Container owner) : base(owner)
+            public ObjectCollection(Control control, Gtk.Container owner) : base(control, owner)
             {
                 __owner = owner;
             }

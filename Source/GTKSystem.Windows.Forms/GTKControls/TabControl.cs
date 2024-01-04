@@ -1,13 +1,15 @@
-﻿//基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
-//使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows和linux运行
-//技术支持438865652@qq.com，https://www.cnblogs.com/easywebfactory
+﻿/*
+ * 基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * author:chenhongjin
+ * date: 2024/1/3
+ */
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
-
 
 namespace System.Windows.Forms
 {
@@ -36,8 +38,8 @@ namespace System.Windows.Forms
         public new TabControl.ControlCollection Controls => _controls;
         public event EventHandler SelectedIndexChanged
         {
-            add { base.Control.SwitchPage += (object sender, Gtk.SwitchPageArgs e) => { if (base.Control.IsRealized) { value.Invoke(sender, e); } }; }
-            remove { base.Control.SwitchPage -= (object sender, Gtk.SwitchPageArgs e) => { if (base.Control.IsRealized) { value.Invoke(sender, e); } }; }
+            add { base.Control.SwitchPage += (object sender, Gtk.SwitchPageArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
+            remove { base.Control.SwitchPage -= (object sender, Gtk.SwitchPageArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
         }
         public class ControlCollection : List<TabPage>
         {
@@ -48,6 +50,7 @@ namespace System.Windows.Forms
             }
             public new int Add(TabPage item)
             {
+                item.Parent = _owner;
                 base.Add(item);
                 return _owner.Control.AppendPage(item.Control, item.TabLabel);
             }
@@ -93,11 +96,12 @@ namespace System.Windows.Forms
                 TabPage tp = new TabPage();
                 tp.Name = key;
                 tp.Text = text;
-                _owner.Controls.Add(tp);
+                this.Add(tp);
             }
 
             public void Add(TabPage value)
             {
+                value.Parent = _owner;
                 _owner.Controls.Add(value);
             }
             public void Add(string? key, string? text)

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace System.Windows.Forms
 {
-    internal class Control_DotNet : IControl
+    public class Control_DotNet : IControl
     {
         public Gtk.Widget Widget { get; }
         public AccessibleObject AccessibilityObject { get; }

@@ -1,4 +1,11 @@
-﻿using Gtk;
+﻿/*
+ * 基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * author:chenhongjin
+ * date: 2024/1/3
+ */
+using Gtk;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,7 +20,7 @@ namespace System.Windows.Forms
         {
             Widget.StyleContext.AddClass("TabPage");
             Control.BorderWidth = 1;
-            _controls = new ControlCollection(this.Control);
+            _controls = new ControlCollection(this, this.Control);
 
             Widget.Data["Dock"] = DockStyle.Fill;
         }
@@ -21,7 +28,7 @@ namespace System.Windows.Forms
         public TabPage(string text)
         {
             _TabLabel.Text = text;
-            _controls = new ControlCollection(this.Control);
+            _controls = new ControlCollection(this, this.Control);
         }
 
         public override Point Location

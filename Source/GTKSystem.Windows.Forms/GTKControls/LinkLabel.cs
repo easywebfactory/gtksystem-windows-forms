@@ -1,10 +1,15 @@
-﻿//基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
-//使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows和linux运行
-//技术支持438865652@qq.com，https://www.cnblogs.com/easywebfactory
+﻿/*
+ * 基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * author:chenhongjin
+ * date: 2024/1/3
+ */
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 
 namespace System.Windows.Forms
 {
@@ -20,10 +25,9 @@ namespace System.Windows.Forms
 
         private void LinkLabel_ActivateLink(object o, Gtk.ActivateLinkArgs args)
         {
-            Console.WriteLine("LinkLabel_ActivateLink");
             if (LinkClicked != null)
             {
-                LinkClicked(o, new LinkLabelLinkClickedEventArgs(new Link() { Description = base.Control.Label, LinkData = base.Control.Uri }));
+                LinkClicked(this, new LinkLabelLinkClickedEventArgs(new Link() { Description = base.Control.Label, LinkData = base.Control.Uri }));
             }
         }
 
@@ -32,7 +36,7 @@ namespace System.Windows.Forms
             Console.WriteLine("LinkLabel_Click");
             if (Click != null)
             {
-                Click(sender, e);
+                Click(this, e);
             }
         }
         public override event EventHandler Click;
@@ -45,7 +49,7 @@ namespace System.Windows.Forms
 
         public LinkCollection Links { get; }
 
-        public new Color LinkColor
+        public Color LinkColor
         {
             get { return Color.FromArgb(base.Control.LinkColor.Red, base.Control.LinkColor.Green, base.Control.LinkColor.Blue); }
             set
@@ -66,7 +70,7 @@ namespace System.Windows.Forms
 
         public Color ActiveLinkColor { get; set; }
 
-        public new Color VisitedLinkColor { 
+        public Color VisitedLinkColor { 
             get { return Color.FromArgb(base.Control.VisitedLinkColor.Red, base.Control.VisitedLinkColor.Green, base.Control.VisitedLinkColor.Blue); }
             set {
                 
@@ -118,17 +122,25 @@ namespace System.Windows.Forms
 
             public int Add(object value)
             {
-                throw new NotImplementedException();
+                if(value is Label)
+                {
+                    owner.Text = ((Label)value).Text;
+                }
+                else
+                {
+                    owner.Text = value?.ToString();
+                }
+                return 1;
             }
 
             public void Clear()
             {
-                throw new NotImplementedException();
+                owner.Text = "";
             }
 
             public bool Contains(object value)
             {
-                throw new NotImplementedException();
+                return owner.Text.Contains(value.ToString());
             }
 
             public void CopyTo(Array array, int index)

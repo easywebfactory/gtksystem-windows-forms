@@ -1,7 +1,10 @@
-﻿using System;
+﻿
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -16,11 +19,26 @@ namespace GTKWinFormsApp
         public Form1()
         {
             InitializeComponent();
+            DataTable dt = new DataTable();
+            dt.Columns.Add("ID", typeof(string));
+            dt.Columns.Add("CreateDate", typeof(DateTime));
+            dt.Columns.Add("State", typeof(bool));
+            dt.Rows.Add("user1", DateTime.Now, true);
+            dt.Rows.Add("user2", DateTime.Now.AddDays(5), false);
+
+            DataSet dataSet = new DataSet();
+            dataSet.Tables.Add(dt);
+
+
+            listBox1.DataBindings.Add(new Binding("Text", dataSet, "CreateDate"));
 
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Control p= (Control)this;
+            p.Controls.Add(new Button() { Text="dddd", Location=new Point(681, 156) });
+
             DialogResult result = MessageBox.Show("1、加载数据点yes \n2、不加载数据点no", "加载数据提示", MessageBoxButtons.YesNo);
             if (result == DialogResult.No)
             {
@@ -33,18 +51,23 @@ namespace GTKWinFormsApp
             data.Add(new TestEntity() { ID = 1, Title = "test2", Info = " 3234fdf", State = true, CreateDate = createdate, Operate = "编辑", PIC = "face-smile" });
             data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "" });
             data.Add(new TestEntity() { ID = 4, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC = "" });
-
-            //2、datatable数据源
-            //DataTable dt = new DataTable();
-            //dt.Columns.Add("ID", typeof(string));
-            //dt.Columns.Add("CreateDate", typeof(DateTime));
-            //dt.Columns.Add("State", typeof(bool));
-            //dt.Rows.Add("user1", DateTime.Now,true);
-            //dt.Rows.Add("user2", DateTime.Now.AddDays(5),false);
-
             this.dataGridView1.DataSource = data;
+            //2、datatable数据源
+            DataTable dt = new DataTable();
+            dt.Columns.Add("ID", typeof(string));
+            dt.Columns.Add("CreateDate", typeof(DateTime));
+            dt.Columns.Add("State", typeof(bool));
+            dt.Rows.Add("user1", DateTime.Now, true);
+            dt.Rows.Add("user2", DateTime.Now.AddDays(5), false);
 
-             //3、通过dataviewrow添加数据
+            
+            DataSet dataSet = new DataSet();
+            dataSet.Tables.Add(dt);
+
+            listBox1.DataBindings.Add(new Binding("Text", data, "Title"));
+
+
+            //3、通过dataviewrow添加数据
             //for (int i = 0; i < 10; i++)
             //{
             //    var cell = new DataGridViewRow();

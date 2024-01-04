@@ -17,13 +17,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="GTKControls\ListView.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="GtkSharp" Version="3.24.24.34" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="GTKControls\Button.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="GTKControls\Button.cs" />
     <Compile Update="GTKControls\CheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -39,9 +41,7 @@
     <Compile Update="GTKControls\DateTimePicker.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="GTKControls\EventArgs\Control.PrintPaintEventArgs.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="GTKControls\EventArgs\Control.PrintPaintEventArgs.cs" />
     <Compile Update="GTKControls\Form.cs">
       <SubType>Form</SubType>
     </Compile>

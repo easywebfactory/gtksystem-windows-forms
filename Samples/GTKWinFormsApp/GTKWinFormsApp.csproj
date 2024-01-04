@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
-    <UseWindowsForms>false</UseWindowsForms>
+    <UseWindowsForms>False</UseWindowsForms>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
   </PropertyGroup>
 
@@ -12,12 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="GTKSystem.Windows.Forms">
-      <HintPath>..\..\Libs\GTKSystem.Windows.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Resources.Extensions">
-      <HintPath>..\..\Libs\System.Resources.Extensions.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj" />
+    <ProjectReference Include="..\..\Source\System.Resources.Extensions\System.Resources.Extensions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

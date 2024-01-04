@@ -91,6 +91,29 @@
         "runtime": {
           "lib/netstandard2.0/PangoSharp.dll": {}
         }
+      },
+      "GTKSystem.Windows.Forms/0.3.24.1": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "GtkSharp": "3.24.24.34"
+        },
+        "compile": {
+          "bin/placeholder/GTKSystem.Windows.Forms.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/GTKSystem.Windows.Forms.dll": {}
+        }
+      },
+      "System.Resources.Extensions/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/System.Resources.Extensions.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/System.Resources.Extensions.dll": {}
+        }
       }
     }
   },
@@ -179,11 +202,23 @@
         "pangosharp.3.24.24.34.nupkg.sha512",
         "pangosharp.nuspec"
       ]
+    },
+    "GTKSystem.Windows.Forms/0.3.24.1": {
+      "type": "project",
+      "path": "../../Source/GTKSystem.Windows.Forms/GTKSystem.Windows.Forms.csproj",
+      "msbuildProject": "../../Source/GTKSystem.Windows.Forms/GTKSystem.Windows.Forms.csproj"
+    },
+    "System.Resources.Extensions/1.0.0": {
+      "type": "project",
+      "path": "../../Source/System.Resources.Extensions/System.Resources.Extensions.csproj",
+      "msbuildProject": "../../Source/System.Resources.Extensions/System.Resources.Extensions.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "GtkSharp >= 3.24.24.34"
+      "GTKSystem.Windows.Forms >= 0.3.24.1",
+      "GtkSharp >= 3.24.24.34",
+      "System.Resources.Extensions >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -213,13 +248,21 @@
         "net8.0"
       ],
       "sources": {
+        "C:\\Users\\chj\\.nuget\\packages": {},
         "https://api.nuget.org/v3/index.json": {},
         "https://www.nuget.org/api/v2/": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {
+              "projectPath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj"
+            },
+            "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj": {
+              "projectPath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
