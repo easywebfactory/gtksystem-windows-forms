@@ -151,7 +151,7 @@ namespace GTKWinFormsApp
 
         private void checkBox2_CheckStateChanged(object sender, EventArgs e)
         {
-
+   
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)

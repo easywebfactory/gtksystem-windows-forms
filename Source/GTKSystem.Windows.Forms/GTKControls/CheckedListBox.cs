@@ -5,42 +5,74 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+
+using GLib;
+using Gtk;
+using Pango;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-
 
 namespace System.Windows.Forms
 {
 
     [DesignerCategory("Component")]
-    public partial class CheckedListBox : WidgetContainerControl<Gtk.ListBox>
+    public partial class CheckedListBox : WidgetContainerControl<Gtk.HBox>
     {
         ObjectCollection _items;
+        internal Gtk.FlowBox _flow;
         public CheckedListBox() : base()
         {
             Widget.StyleContext.AddClass("CheckedListBox");
             Widget.StyleContext.AddClass("BorderRadiusStyle");
-            _items = new ObjectCollection(this);
-        }
-         
 
-        public bool MultiColumn { get; set; }
+            _flow = new Gtk.FlowBox();
+            _flow.MaxChildrenPerLine = 3u;
+
+            _items = new ObjectCollection(this, _flow);
+            _flow.ChildActivated += Control_ChildActivated;
+            _flow.UnselectedAll += _flow_UnselectedAll;
+            _flow.Halign = Gtk.Align.Start;
+            Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
+            Gtk.Viewport viewport = new Gtk.Viewport();
+            viewport.Add(_flow);
+            scrolledWindow.Add(viewport);
+            this.Control.Add(scrolledWindow);
+        }
+
+        private void _flow_UnselectedAll(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void Control_ChildActivated(object o, Gtk.ChildActivatedArgs args)
+        {
+            int rowIndex = args.Child.Index;
+            object sender = this.Items[rowIndex];
+            if (SelectedIndexChanged != null)
+                SelectedIndexChanged(sender, args);
+            if (SelectedValueChanged != null)
+                SelectedValueChanged(sender, args);
+        }
+
+        public int ColumnWidth { get; set; } = 160;
+        public bool MultiColumn { 
+            get { return _flow.Orientation == Gtk.Orientation.Vertical; }
+            set { _flow.Orientation = value == true ? Gtk.Orientation.Vertical : Gtk.Orientation.Horizontal;   } }
         public bool HorizontalScrollbar { get; set; }
         public bool FormattingEnabled { get; set; }
         public int ItemHeight { get; set; }
         public SelectionMode SelectionMode { get; set; }
-        private bool isClearSelected;
         public void ClearSelected() {
-            isClearSelected = true;
-            base.Control.UnselectAll();
-            foreach (object item in _items)
-            {
-                CheckBox box = (CheckBox)item;
-                if (box.Checked == true)
-                    box.Checked = false;
-            }
-            isClearSelected = false;
+            foreach(Gtk.FlowBoxChild wi in _flow.Children) { 
+                Gtk.Widget box = ((Gtk.HBox)wi.Child).Children[0];
+                if (box is Gtk.CheckButton check)
+                {
+                    check.Active = false;
+                }
+            };
+            _flow.UnselectAll();
         }
         public bool CheckOnClick { get; set; }
 
@@ -77,65 +109,86 @@ namespace System.Windows.Forms
                 return items;
             }
         }
-        public void SendEvent(object sender, EventArgs e)
-        {
-            if (isClearSelected == false)
-            {
-                CheckBox checkbox = (CheckBox)sender;
-                base.Control.SelectRow(base.Control.GetRowAtIndex(Convert.ToInt32(checkbox.Name)));
-
-                if (ItemCheck != null)
-                    ItemCheck(sender, new ItemCheckEventArgs(Convert.ToInt32(checkbox.Name), checkbox.CheckState, checkbox.CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked));
-                if (SelectedIndexChanged != null)
-                    SelectedIndexChanged(checkbox, e);
-                if (SelectedValueChanged != null)
-                    SelectedValueChanged(checkbox, e);
-            }
-        }
 
         public event ItemCheckEventHandler ItemCheck;
         public event EventHandler SelectedIndexChanged;
         public event EventHandler SelectedValueChanged;
 
-        public class ObjectCollection : ControlCollection
+        public class ObjectCollection : ArrayList
         {
             private CheckedListBox __owner;//CheckedListBox
-            public ObjectCollection(CheckedListBox owner) : base(owner,typeof(CheckBox))
+            public ObjectCollection(CheckedListBox owner,Gtk.Container ownerContainer) //: base(owner, ownerContainer)
             {
                 __owner = owner;
             }
-            public override void Add(Type itemType, object item)
+            public override int Add(object value)
             {
-                CheckBox box = new CheckBox();
-                box.Control.Label = item.ToString();
-                box.Control.Name = Count.ToString();
+                return AddCore(value, false, -1);
+            }
+            public int Add(object item, bool isChecked)
+            {
+                return AddCore(item, isChecked, -1);
+            }
 
-                box.Control.Toggled += (object sender, EventArgs e) =>
+            public int Add(object item, CheckState state)
+            {
+                return AddCore(item, state== CheckState.Checked, -1);
+            }
+
+            public int AddCore(object item, bool isChecked, int position)
+            {
+                Gtk.CheckButton box = new Gtk.CheckButton();
+                box.Label = " ";// item.ToString();
+                box.Active = isChecked;
+                box.WidthRequest = 20;
+                box.Halign = Gtk.Align.Start;
+                box.Valign = Gtk.Align.Start;
+                box.Toggled += (object sender, EventArgs e) =>
                 {
-                    __owner.SendEvent(box, e); 
+                    Gtk.CheckButton box = (Gtk.CheckButton)sender;
+                    Gtk.FlowBoxChild item = box.Parent.Parent as Gtk.FlowBoxChild;
+                    if (__owner.ItemCheck != null)
+                        __owner.ItemCheck(item.TooltipText, new ItemCheckEventArgs(item.Index, box.Active == true ? CheckState.Checked : CheckState.Unchecked, box.Active == false ? CheckState.Checked : CheckState.Unchecked));
+                    if (__owner.CheckOnClick == true)
+                        __owner._flow.SelectChild(item);
                 };
-                base.Add(box);
+                Gtk.HBox hBox = new Gtk.HBox();
+                hBox.Valign = Gtk.Align.Start;
+                hBox.Halign = Gtk.Align.Start;
+                hBox.Add(box);
+                hBox.Add(new Gtk.Label(item.ToString()) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start }); ;
+
+                Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
+                boxitem.HeightRequest = __owner.ItemHeight;
+                boxitem.WidthRequest = __owner.ColumnWidth;
+                boxitem.TooltipText = item.ToString();
+                boxitem.Add(hBox);
+                if (position < 0)
+                {
+                    __owner._flow.Add(boxitem);
+                    if (__owner.Control.IsRealized)
+                    {
+                        __owner.Control.ShowAll();
+                    }
+                    return base.Add(item);
+                }
+                else
+                {
+                    __owner._flow.Insert(boxitem, position);
+                    base.Insert(position, item);
+                    if (__owner.Control.IsRealized)
+                    {
+                        __owner.Control.ShowAll();
+                    }
+                    return position;
+                }
             }
 
-            /// <summary>
-            ///  Lets the user add an item to the listbox with the given initial value
-            ///  for the Checked portion of the item.
-            /// </summary>
-            public int Add(CheckBox item, bool isChecked)
+            public override void AddRange(ICollection c)
             {
-                item.Checked = isChecked;
-                return Add(item, isChecked ? CheckState.Checked : CheckState.Unchecked);
-            }
-
-            /// <summary>
-            ///  Lets the user add an item to the listbox with the given initial value
-            ///  for the Checked portion of the item.
-            /// </summary>
-            public int Add(CheckBox item, CheckState state)
-            {
-                item.CheckState = state;
-                int index = base.Add(item);
-                return index;
+                foreach (object o in c)
+                    AddCore(o, false, -1);
+                base.AddRange(c);
             }
         }
 

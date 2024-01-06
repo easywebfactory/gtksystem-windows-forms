@@ -290,11 +290,18 @@ namespace System.Windows.Forms
             }
             set
             {
-                Widget.MarginTop = Math.Max(0, value.Y);
-                Widget.MarginStart = Math.Max(0, value.X);
-
-                Widget.Data["InitMarginStart"] = Widget.MarginStart;
-                Widget.Data["InitMarginTop"] = Widget.MarginTop;
+                if (Widget.Parent is Gtk.FlowBoxChild)
+                {
+                    Widget.Data["InitMarginStart"] = Widget.MarginStart;
+                    Widget.Data["InitMarginTop"] = Widget.MarginTop;
+                }
+                else
+                {
+                    Widget.MarginTop = Math.Max(0, value.Y);
+                    Widget.MarginStart = Math.Max(0, value.X);
+                    Widget.Data["InitMarginStart"] = Widget.MarginStart;
+                    Widget.Data["InitMarginTop"] = Widget.MarginTop;
+                }
             }
         }
         //public override Padding Margin { get; set; }

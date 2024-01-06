@@ -38,10 +38,15 @@ namespace System.Windows.Forms
 
             return base.Add(item);
         }
-
+        public int AddWidget(Gtk.Widget item)
+        {
+            __ownerControl.Add(item);
+            return base.Add(item);
+        }
         public virtual void Add(Type itemType, object item)
         {
             //重载处理
+            base.Add(item);
         }
 
         public virtual void AddRange(object[] items)

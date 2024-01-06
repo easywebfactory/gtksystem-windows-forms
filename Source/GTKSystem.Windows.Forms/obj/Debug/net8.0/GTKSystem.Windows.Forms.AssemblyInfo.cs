@@ -18,7 +18,7 @@ using System.Reflection;
     "icrosoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows\\linux\\macos运行。\r\n技术支持438" +
     "865652@qq.com，https://gitee.com/easywebfactory/gtksystem-windows-forms\r\n\t")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("0.3.24.1")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.3.24.1+3336da74e19f2482d5b3d9071077ef22431e7de6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.3.24.1+7d083cfd1ef553feab239fbf30c633caa1fd8230")]
 [assembly: System.Reflection.AssemblyProductAttribute("GTKSystem.Windows.Forms")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GTKSystem.Windows.Forms")]
 [assembly: System.Reflection.AssemblyVersionAttribute("0.3.24.1")]

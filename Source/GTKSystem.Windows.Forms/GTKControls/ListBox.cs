@@ -5,11 +5,14 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using GLib;
 using Gtk;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Runtime.InteropServices;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace System.Windows.Forms
@@ -18,21 +21,53 @@ namespace System.Windows.Forms
 	[DefaultEvent("SelectedIndexChanged")]
 	[DefaultProperty("Items")]
 	[DefaultBindingProperty("SelectedValue")]
-	public class ListBox : WidgetControl<Gtk.ListBox>
+	public class ListBox : WidgetControl<Gtk.HBox>
     {
         ControlBindingsCollection _collect;
         ObjectCollection _items;
+        internal Gtk.FlowBox _flow;
         public ListBox():base()
 		{
             _collect = new ControlBindingsCollection(this);
             _items = new ObjectCollection(this);
             Widget.StyleContext.AddClass("ListBox");
             base.Control.Realized += Control_Realized;
-            base.Control.SortFunc = new ListBoxSortFunc((row1, row2) => {
-                return !this.Sorted ? 0 : ((Gtk.Label)row1.Child).Text.CompareTo(((Gtk.Label)row2.Child).Text); 
-            });
+            _flow = new Gtk.FlowBox();
+            _flow.MaxChildrenPerLine = 3u;
+            _flow.SortFunc = new FlowBoxSortFunc((fbc1, fbc2) => !this.Sorted ? 0 : fbc1.TooltipText.CompareTo(fbc2.TooltipText));
+
+            _items = new ObjectCollection(this);
+            _flow.ChildActivated += Control_ChildActivated;
+            _flow.Halign = Gtk.Align.Start;
+            Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
+            Gtk.Viewport viewport = new Gtk.Viewport();
+            viewport.Add(_flow);
+            scrolledWindow.Add(viewport);
+            this.Control.Add(scrolledWindow);
         }
 
+        private HashSet<int> selectedIndexes = new HashSet<int>();
+        private void Control_ChildActivated(object o, Gtk.ChildActivatedArgs args)
+        {
+            if (selectedIndexes.Contains(args.Child.Index))
+            {
+                selectedIndexes.Remove(args.Child.Index);
+                if (args.Child.IsSelected)
+                {
+                    _flow.UnselectChild(args.Child);
+                }
+            }
+            else
+            {
+                selectedIndexes.Add(args.Child.Index);
+                int rowIndex = args.Child.Index;
+                object sender = this.Items[rowIndex];
+                if (SelectedIndexChanged != null)
+                    SelectedIndexChanged(sender, args);
+                if (SelectedValueChanged != null)
+                    SelectedValueChanged(sender, args);
+            }
+        }
         private void Control_Realized(object sender, EventArgs e)
         {
             foreach (Binding binding in _collect)
@@ -111,7 +146,6 @@ namespace System.Windows.Forms
         #region listcontrol
 
         [DefaultValue(null)]
-        [RefreshProperties(RefreshProperties.Repaint)]
         [AttributeProvider(typeof(IListSource))]
         public object? DataSource
         {
@@ -126,7 +160,6 @@ namespace System.Windows.Forms
         }
 
         [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
         [DefaultValue(null)]
         public IFormatProvider? FormatInfo
         {
@@ -151,28 +184,46 @@ namespace System.Windows.Forms
         {
             get; set;
         }
-
-        public int SelectedIndex {
-            get { return base.Control.SelectedRow == null ? -1 : base.Control.SelectedRow.Index; }
-            set { base.Control.SelectRow(base.Control.GetRowAtIndex(value)); }
+        public int SelectedIndex
+        {
+            get {
+                int index = -1;
+                _flow.SelectedForeach(new FlowBoxForeachFunc((fb, fbc) => { index = fbc.Index; }));
+                return index; 
+            }
+            set { _flow.SelectChild(_flow.GetChildAtIndex(value)); }
         }
-
+ 
         [DefaultValue(null)]
         [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Bindable(true)]
         public object? SelectedValue
         {
-            get { return base.Control.SelectedRow.Children[0]; }
-            set {
-                int index = 0;
-                foreach(object v in base.Control.AllChildren)
-                {
-                    if (((ListBoxItem)((ListBoxRow)v).Children[0]).ItemValue.Equals(value))
+            get
+            {
+                object text = null;
+                _flow.SelectedForeach(new FlowBoxForeachFunc((fb, fbc) => {
+                    if (Items[fbc.Index] is ListBoxItem item)
                     {
-                        base.Control.SelectRow(base.Control.GetRowAtIndex(index));
+                        text = item.ItemValue;
                     }
-                    index++;
+                    else
+                    {
+                        text = Items[fbc.Index];
+                    }
+                }));
+                return text;
+            }
+            set {
+                int idx = 0;
+                foreach(var item in Items)
+                {
+                    if(item is ListBoxItem item2)
+                        if(item2.ItemValue==value)
+                            _flow.SelectChild(_flow.GetChildAtIndex(idx));
+                    else if(item.Equals(value))
+                            _flow.SelectChild(_flow.GetChildAtIndex(idx));
+
+                    idx++;
                 }
             }
         }
@@ -208,6 +259,8 @@ namespace System.Windows.Forms
         #endregion
         public override ControlBindingsCollection DataBindings { get => _collect; }
 
+        internal bool ShowCheckBox { get; set; }
+        internal bool ShowImage { get; set; }
 
         public const int NoMatches = -1;
 
@@ -235,7 +288,6 @@ namespace System.Windows.Forms
         }
 
         [DefaultValue(DrawMode.Normal)]
-		[RefreshProperties(RefreshProperties.Repaint)]
 		public virtual DrawMode DrawMode
 		{
 			get
@@ -264,22 +316,18 @@ namespace System.Windows.Forms
 
         [DefaultValue(true)]
 		[Localizable(true)]
-		[RefreshProperties(RefreshProperties.Repaint)]
 		public bool IntegralHeight
         {
             get; set;
         }
 
         [Localizable(true)]
-		[RefreshProperties(RefreshProperties.Repaint)]
 		public virtual int ItemHeight
         {
             get; set;
         }
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
 		[Localizable(true)]
-		[MergableProperty(false)]
 		public ObjectCollection Items
         {
             get => _items;
@@ -292,8 +340,6 @@ namespace System.Windows.Forms
         }
 
         [Browsable(false)]
-		[EditorBrowsable(EditorBrowsableState.Advanced)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int PreferredHeight
         {
             get; 
@@ -306,34 +352,46 @@ namespace System.Windows.Forms
             get; set;
         }
 
-  //      [Browsable(false)]
-		//[Bindable(true)]
-		//[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		//public int SelectedIndex
-  //      {
-  //          get; set;
-  //      }
-
         [Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public SelectedIndexCollection SelectedIndices
         {
-            get; 
+            get {
+                SelectedIndexCollection indexs = new SelectedIndexCollection(this);
+                _flow.SelectedForeach(new FlowBoxForeachFunc((fb, fbc) => {
+                    indexs.Add(fbc.Index);
+                }));
+                return indexs;
+            }
         }
 
         [Browsable(false)]
 		[Bindable(true)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public object? SelectedItem
         {
-            get; set;
+            get
+            {
+                object item = null;
+                _flow.SelectedForeach(new FlowBoxForeachFunc((fb, fbc) => {
+                    item = Items[fbc.Index];
+                }));
+                return item;
+            }
+            set {
+                _flow.SelectChild(_flow.GetChildAtIndex(Items.IndexOf(value)));
+            }
         }
 
         [Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public SelectedObjectCollection SelectedItems
         {
-            get; 
+            get
+            {
+                SelectedObjectCollection indexs = new SelectedObjectCollection(this);
+                _flow.SelectedForeach(new FlowBoxForeachFunc((fb, fbc) => {
+                    indexs.Add(Items[fbc.Index]);
+                }));
+                return indexs;
+            }
         }
         public SelectionMode _SelectionMode;
         [DefaultValue(SelectionMode.One)]
@@ -345,18 +403,18 @@ namespace System.Windows.Forms
             set {
                 if (value == SelectionMode.None)
                 {
-                    Control.SelectionMode = Gtk.SelectionMode.None;
+                    _flow.SelectionMode = Gtk.SelectionMode.None;
                 }
                 else if (value == SelectionMode.One)
                 {
-                    Control.SelectionMode = Gtk.SelectionMode.Single;
+                    _flow.SelectionMode = Gtk.SelectionMode.Single;
                 }
-                else if (value == SelectionMode.MultiSimple) { 
-                    Control.SelectionMode = Gtk.SelectionMode.Multiple;
+                else if (value == SelectionMode.MultiSimple) {
+                    _flow.SelectionMode = Gtk.SelectionMode.Multiple;
                 }
                 else if (value == SelectionMode.MultiExtended)
                 {
-                    Control.SelectionMode = Gtk.SelectionMode.Multiple;
+                    _flow.SelectionMode = Gtk.SelectionMode.Multiple;
                 }
             }
         }
@@ -368,16 +426,11 @@ namespace System.Windows.Forms
         }
 
         [Browsable(false)]
-		[EditorBrowsable(EditorBrowsableState.Advanced)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		[Bindable(false)]
 		public override string Text
         {
             get; set;
         }
 
-        [Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int TopIndex
         {
             get; set;
@@ -388,16 +441,12 @@ namespace System.Windows.Forms
         {
             get; set;
         }
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		[Browsable(false)]
+
 		public IntegerCollection CustomTabOffsets
         {
             get; 
         }
 
-        [Browsable(false)]
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new Padding Padding
 		{
 			get;set;
@@ -709,19 +758,17 @@ namespace System.Windows.Forms
         }
 
         [ListBindable(false)]
-        public class ObjectCollection : IList, ICollection, IEnumerable
+        public class ObjectCollection : ArrayList
         {
             private ListBox _owner;
-            private ArrayList _array = new ArrayList();
             public ObjectCollection(ListBox owner)
             {
                 _owner = owner;
             }
-
             public ObjectCollection(ListBox owner, ObjectCollection value)
             {
                 _owner = owner;
-                foreach(object item in value)
+                foreach (object item in value)
                     Add(item);
             }
 
@@ -731,98 +778,50 @@ namespace System.Windows.Forms
                 foreach (object item in value)
                     Add(item);
             }
-
-            public int Count
+            public int AddCore(object item, int position)
             {
-                get
+                Gtk.HBox hBox = new Gtk.HBox();
+                hBox.Valign = Gtk.Align.Start;
+                hBox.Halign = Gtk.Align.Start;
+                if (_owner.ShowCheckBox)
                 {
-                    return _array.Count;
+                    hBox.Add(new Gtk.CheckButton() { WidthRequest = 20 }) ;
                 }
-            }
-            object ICollection.SyncRoot
-            {
-                get
+                if (_owner.ShowImage)
                 {
-                    throw null;
+                    hBox.Add(new Gtk.Image() { WidthRequest = 30 });
                 }
-            }
 
-            bool ICollection.IsSynchronized
-            {
-                get
-                {
-                    throw null;
-                }
-            }
+                hBox.Add(new Gtk.Label(item.ToString()) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start }); ;
 
-            bool IList.IsFixedSize
-            {
-                get
+                Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
+                boxitem.HeightRequest = _owner.ItemHeight;
+                boxitem.WidthRequest = _owner.ColumnWidth;
+                boxitem.TooltipText = item.ToString();
+                boxitem.Add(hBox);
+                if (position < 0)
                 {
-                    throw null;
+                    _owner._flow.Add(boxitem);
+                    if (_owner.Control.IsRealized)
+                    {
+                        _owner.Control.ShowAll();
+                    }
+                    return base.Add(item);
                 }
-            }
-
-            public bool IsReadOnly
-            {
-                get
-                {
-                   return true;
-                }
-            }
-
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-            public virtual object this[int index]
-            {
-                get
-                {
-                   return _array[index];
-                }
-                set
-                {
-                    Add(value);
-                }
-            }
-
-            object? IList.this[int index]
-            {
-                get
-                {
-                    throw null;
-                }
-                set
-                {
-                    throw null;
-                }
-            }
-
-
-            public int Add(object item)
-            {
-                Gtk.ListBoxRow row = new Gtk.ListBoxRow();
-                row.Add((ListBoxItem)item);
-                _owner.Control.Add(row);
-                row.Valign = Align.Start;
-
-                if (_owner.BorderStyle == BorderStyle.FixedSingle)
-                    row.BorderWidth = 1;
-                else if (_owner.BorderStyle == BorderStyle.Fixed3D)
-                    row.BorderWidth = 2;
                 else
-                    row.BorderWidth = 1;
-                
-                if (_owner.Control.IsRealized)
                 {
-                    _owner.Control.ShowAll();
+                    _owner._flow.Insert(boxitem, position);
+                     base.Insert(position,item);
+                    if (_owner.Control.IsRealized)
+                    {
+                        _owner.Control.ShowAll();
+                    }
+                    return position;
                 }
-
-                return _array.Add(item);
             }
-
-            int IList.Add(object? item)
+            public override int Add(object item)
             {
-                throw null;
+                return AddCore(item, -1);
             }
 
             public void AddRange(ObjectCollection value)
@@ -836,415 +835,50 @@ namespace System.Windows.Forms
                 foreach (object item in items)
                     Add(item);
             }
-
-            internal void AddRangeInternal(ICollection items)
+             
+            public override void Clear()
             {
-                throw null;
+                foreach (var wd in _owner._flow.Children)
+                    _owner._flow.Remove(wd);
+                base.Clear();
+            }
+ 
+            public override void Insert(int index, object item)
+            {
+                AddCore(item, -1);
             }
 
-            public virtual void Clear()
+            public override void Remove(object value)
             {
-                foreach (var wd in _owner.Control.Children)
-                    _owner.Control.Remove(wd);
-                _array.Clear();
+                int idx = base.IndexOf(value);
+                if (idx > -1)
+                    RemoveAt(idx);
             }
 
-            internal void ClearInternal()
+            public override void RemoveAt(int index)
             {
-                throw null;
+                _owner._flow.Remove(_owner._flow.GetChildAtIndex(index));
+                base.RemoveAt(index);
             }
 
-            public bool Contains(object value)
-            {
-                return _array.Contains(value);
-            }
-
-            bool IList.Contains(object? value)
-            {
-                throw null;
-            }
-
-            public void CopyTo(object[] destination, int arrayIndex)
-            {
-                _array.CopyTo(destination, arrayIndex);
-            }
-
-            void ICollection.CopyTo(Array destination, int index)
-            {
-                throw null;
-            }
-
-            public IEnumerator GetEnumerator()
-            {
-                return _array.GetEnumerator();
-            }
-
-            public int IndexOf(object value)
-            {
-                return _array.IndexOf(value);
-            }
-
-            int IList.IndexOf(object? value)
-            {
-                throw null;
-            }
-
-            internal int IndexOfIdentifier(object value)
-            {
-                throw null;
-            }
-
-            public void Insert(int index, object item)
-            {
-                _owner.Control.Insert((ListBoxItem)item, index);
-                _array.Insert(index, item);
-            }
-
-            void IList.Insert(int index, object? item)
-            {
-                throw null;
-            }
-
-            public void Remove(object value)
-            {
-                _owner.Control.Remove((ListBoxItem)value);
-                _array.Remove(value);
-            }
-
-            void IList.Remove(object? value)
-            {
-                throw null;
-            }
-
-            public void RemoveAt(int index)
-            {
-                _owner.Control.Remove(_owner.Control.GetRowAtIndex(index));
-                _array.RemoveAt(index);
-            }
-
-            internal void SetItemInternal(int index, object value)
-            {
-                throw null;
-            }
         }
+        
 
-        public class SelectedIndexCollection : IList, ICollection, IEnumerable
+        public class SelectedIndexCollection : List<int>
         {
-            private class SelectedIndexEnumerator : IEnumerator
-            {
-                object IEnumerator.Current
-                {
-                    get
-                    {
-                        throw null;
-                    }
-                }
-
-                public SelectedIndexEnumerator(SelectedIndexCollection items)
-                {
-                    throw null;
-                }
-
-                bool IEnumerator.MoveNext()
-                {
-                    throw null;
-                }
-
-                void IEnumerator.Reset()
-                {
-                    throw null;
-                }
-            }
-
-            [Browsable(false)]
-            public int Count
-            {
-                get
-                {
-                    throw null;
-                }
-            }
-
-            object ICollection.SyncRoot
-            {
-                get
-                {
-                    throw null;
-                }
-            }
-
-            bool ICollection.IsSynchronized
-            {
-                get
-                {
-                    throw null;
-                }
-            }
-
-            bool IList.IsFixedSize
-            {
-                get
-                {
-                    throw null;
-                }
-            }
-
-            public bool IsReadOnly
-            {
-                get
-                {
-                    throw null;
-                }
-            }
-
-            public int this[int index]
-            {
-                get
-                {
-                    throw null;
-                }
-            }
-
-            object? IList.this[int index]
-            {
-                get
-                {
-                    throw null;
-                }
-                set
-                {
-                    throw null;
-                }
-            }
-
             public SelectedIndexCollection(ListBox owner)
             {
-                throw null;
-            }
-
-            public bool Contains(int selectedIndex)
-            {
-                throw null;
-            }
-
-            bool IList.Contains(object? selectedIndex)
-            {
-                throw null;
-            }
-
-            public int IndexOf(int selectedIndex)
-            {
-                throw null;
-            }
-
-            int IList.IndexOf(object? selectedIndex)
-            {
-                throw null;
-            }
-
-            int IList.Add(object? value)
-            {
-                throw null;
-            }
-
-            void IList.Clear()
-            {
-                throw null;
-            }
-
-            void IList.Insert(int index, object? value)
-            {
-                throw null;
-            }
-
-            void IList.Remove(object? value)
-            {
-                throw null;
-            }
-
-            void IList.RemoveAt(int index)
-            {
-                throw null;
-            }
-
-            public void CopyTo(Array destination, int index)
-            {
-                throw null;
-            }
-
-            public void Clear()
-            {
-                throw null;
-            }
-
-            public void Add(int index)
-            {
-                throw null;
-            }
-
-            public void Remove(int index)
-            {
-                throw null;
-            }
-
-            public IEnumerator GetEnumerator()
-            {
-                throw null;
+                
             }
         }
 
-        public class SelectedObjectCollection : IList, ICollection, IEnumerable
+        public class SelectedObjectCollection : List<object>
         {
-            internal static int SelectedObjectMask;
-
-            public int Count
-            {
-                get
-                {
-                    throw null;
-                }
-            }
-
-            object ICollection.SyncRoot
-            {
-                get
-                {
-                    throw null;
-                }
-            }
-
-            bool ICollection.IsSynchronized
-            {
-                get
-                {
-                    throw null;
-                }
-            }
-
-            bool IList.IsFixedSize
-            {
-                get
-                {
-                    throw null;
-                }
-            }
-
-            public bool IsReadOnly
-            {
-                get
-                {
-                    throw null;
-                }
-            }
-
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-            public object? this[int index]
-            {
-                get
-                {
-                    throw null;
-                }
-                set
-                {
-                    throw null;
-                }
-            }
-
             public SelectedObjectCollection(ListBox owner)
             {
-                throw null;
+                
             }
 
-            internal void Dirty()
-            {
-                throw null;
-            }
-
-            internal void EnsureUpToDate()
-            {
-                throw null;
-            }
-
-            public bool Contains(object? selectedObject)
-            {
-                throw null;
-            }
-
-            public int IndexOf(object? selectedObject)
-            {
-                throw null;
-            }
-
-            int IList.Add(object? value)
-            {
-                throw null;
-            }
-
-            void IList.Clear()
-            {
-                throw null;
-            }
-
-            void IList.Insert(int index, object? value)
-            {
-                throw null;
-            }
-
-            void IList.Remove(object? value)
-            {
-                throw null;
-            }
-
-            void IList.RemoveAt(int index)
-            {
-                throw null;
-            }
-
-            internal object GetObjectAt(int index)
-            {
-                throw null;
-            }
-
-            public void CopyTo(Array destination, int index)
-            {
-                throw null;
-            }
-
-            public IEnumerator GetEnumerator()
-            {
-                throw null;
-            }
-
-            internal bool GetSelected(int index)
-            {
-                throw null;
-            }
-
-            internal void PushSelectionIntoNativeListBox(int index)
-            {
-                throw null;
-            }
-
-            internal void SetSelected(int index, bool value)
-            {
-                throw null;
-            }
-
-            public void Clear()
-            {
-                throw null;
-            }
-
-            public void Add(object value)
-            {
-                throw null;
-            }
-
-            public void Remove(object value)
-            {
-                throw null;
-            }
         }
     }
 }
