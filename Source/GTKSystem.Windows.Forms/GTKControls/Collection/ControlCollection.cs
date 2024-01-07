@@ -38,6 +38,10 @@ namespace System.Windows.Forms
 
             return base.Add(item);
         }
+        public int AddControl(object item)
+        {
+            return base.Add(item);
+        }
         public int AddWidget(Gtk.Widget item)
         {
             __ownerControl.Add(item);
@@ -59,11 +63,7 @@ namespace System.Windows.Forms
                     Add(item);
             }
         }
-        //public virtual void AddRange(Gtk.Widget[] items)
-        //{
-        //    foreach (Gtk.Widget item in items)
-        //        __ownerControl.Add(item);
-        //}
+
         public override void Clear()
         {
             foreach (Widget wid in __ownerControl.Children)

@@ -1,7 +1,6 @@
+using Gtk;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.Design.Serialization;
-using System.Drawing;
-using System.Windows.Forms.Layout;
 
 namespace System.Windows.Forms
 {
@@ -13,153 +12,146 @@ namespace System.Windows.Forms
 	[DefaultProperty("ColumnCount")]
 	public class TableLayoutPanel : WidgetContainerControl<Gtk.Grid>, IExtenderProvider
 	{
-		public override LayoutEngine LayoutEngine
-		{
-			get
-			{
-				throw null;
-			}
-		}
+		private TableLayoutControlCollection _controls;
+		private TableLayoutColumnStyleCollection _columnStyles;
+		private TableLayoutRowStyleCollection _rowStyles;
+        public TableLayoutPanel():base()
+        {
+            Widget.StyleContext.AddClass("TableLayoutPanel");
+            _controls=new TableLayoutControlCollection(this);
+			_columnStyles = new TableLayoutColumnStyleCollection();
+			_rowStyles = new TableLayoutRowStyleCollection();
 
-		[Browsable(false)]
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public TableLayoutSettings LayoutSettings
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
+			base.Control.RowHomogeneous = false;
+			base.Control.ColumnHomogeneous= false;
+			base.Control.BorderWidth = 1;
+            base.Control.BaselineRow = 0;
+            base.Control.ColumnSpacing = 0;
+			base.Control.RowSpacing = 0;
+            base.Control.Realized += Control_Realized;
+        }
 
-		[Browsable(false)]
-		[EditorBrowsable(EditorBrowsableState.Never)]
+        public override void PerformLayout()
+        {
+            
+        }
+        private void Control_Realized(object sender, EventArgs e)
+        {
+            int[] colsWidth = GetColumnWidths();
+            int[] rowsHeight = GetRowHeights();
+            int colLeft = 0;
+            int rowTop = 0;
+            for (int col = 0; col< ColumnCount; col++)
+            {
+                rowTop = 0;
+                colLeft += colsWidth[col];
+                for (int row = 0; row < ColumnCount; row++)
+                {
+                    rowTop += rowsHeight[row];
+                    Gtk.Viewport viewport = new Gtk.Viewport();
+                    viewport.BorderWidth = 0;
+                    if (CellBorderStyle == TableLayoutPanelCellBorderStyle.None)
+						viewport.ShadowType = Gtk.ShadowType.None;
+                    else if (CellBorderStyle == TableLayoutPanelCellBorderStyle.Single || CellBorderStyle == TableLayoutPanelCellBorderStyle.Inset)
+                        viewport.ShadowType = Gtk.ShadowType.In;
+                    else if (CellBorderStyle == TableLayoutPanelCellBorderStyle.Outset)
+                        viewport.ShadowType = Gtk.ShadowType.Out;
+                    else if (CellBorderStyle == TableLayoutPanelCellBorderStyle.InsetDouble)
+					{
+						viewport.ShadowType = Gtk.ShadowType.In;
+                        viewport.BorderWidth = 1;
+                    }
+                    else if(CellBorderStyle == TableLayoutPanelCellBorderStyle.OutsetDouble)
+                    {
+                        viewport.ShadowType = Gtk.ShadowType.Out;
+                        viewport.BorderWidth = 1;
+					}
+					else
+					{
+                        viewport.ShadowType = Gtk.ShadowType.In;
+                    }
+
+                    viewport.Margin = 0;
+                    viewport.MarginStart = 0;
+                    viewport.MarginTop = 0;
+                    viewport.WidthRequest = colsWidth[col];
+                    viewport.HeightRequest = rowsHeight[row];
+                    Gtk.Layout layout = new Gtk.Layout(new Adjustment(0, 0, 0, 1, 0, 0), new Adjustment(0, 0, 0, 1, 0, 0));
+                    layout.Vexpand = true;
+                    layout.Hexpand = true;
+                    viewport.Add(layout);
+                    if (_controls.GridControls.ContainsKey($"{col},{row}"))
+                    {
+                        _controls.GridControls[$"{col},{row}"].Widget.MarginStart = 3;
+                        _controls.GridControls[$"{col},{row}"].Widget.MarginTop = 3;
+
+                        layout.Add(_controls.GridControls[$"{col},{row}"].Widget);
+                    }
+
+                    Control.Attach(viewport, colLeft, rowTop, 1, 1);
+                }
+            }
+			Control.ShowAll();
+        }
+
+        [Browsable(false)]
 		[Localizable(true)]
-		public new BorderStyle BorderStyle
+		public BorderStyle BorderStyle
 		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
+			get;
+			set;
 		}
 
  
 		[Localizable(true)]
 		public TableLayoutPanelCellBorderStyle CellBorderStyle
 		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
+            get;
+            set;
+        }
 
 		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public new TableLayoutControlCollection Controls
+		public override TableLayoutControlCollection Controls
 		{
-			get
-			{
-				throw null;
-			}
-		}
+			get => _controls;
+        }
 
 		[DefaultValue(0)]
 		[Localizable(true)]
 		public int ColumnCount
 		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
+			get;
+			set;
+        }
 
 		public TableLayoutPanelGrowStyle GrowStyle
 		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
+            get;
+            set;
+        }
 
 		[DefaultValue(0)]
 		[Localizable(true)]
 		public int RowCount
 		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
+			get;
+			set;
+        }
 
 		[DisplayName("Rows")]
-		[MergableProperty(false)]
 		[Browsable(false)]
 		public TableLayoutRowStyleCollection RowStyles
 		{
-			get
-			{
-				throw null;
-			}
-		}
+			get => _rowStyles;
+        }
 
 
 		[DisplayName("Columns")]
 		[Browsable(false)]
-		[MergableProperty(false)]
 		public TableLayoutColumnStyleCollection ColumnStyles
 		{
-			get
-			{
-				throw null;
-			}
-		}
-
-		public event TableLayoutCellPaintEventHandler? CellPaint
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public TableLayoutPanel()
-		{
-			throw null;
-		}
-
-		[EditorBrowsable(EditorBrowsableState.Advanced)]
-		protected ControlCollection CreateControlsInstance()
-		{
-			throw null;
-		}
+			get => _columnStyles;
+        }
 
 		bool IExtenderProvider.CanExtend(object obj)
 		{
@@ -191,7 +183,6 @@ namespace System.Windows.Forms
 		}
 
 		[DefaultValue(-1)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		[DisplayName("Row")]
 		public int GetRow(Control control)
 		{
@@ -200,11 +191,9 @@ namespace System.Windows.Forms
 
 		public void SetRow(Control control, int row)
 		{
-			throw null;
+			
 		}
 
-
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		[DisplayName("Cell")]
 		public TableLayoutPanelCellPosition GetCellPosition(Control control)
 		{
@@ -213,11 +202,10 @@ namespace System.Windows.Forms
 
 		public void SetCellPosition(Control control, TableLayoutPanelCellPosition position)
 		{
-			throw null;
+			
 		}
 
 		[DefaultValue(-1)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		[DisplayName("Column")]
 		public int GetColumn(Control control)
 		{
@@ -226,8 +214,8 @@ namespace System.Windows.Forms
 
 		public void SetColumn(Control control, int column)
 		{
-			throw null;
-		}
+			
+        }
 
 		public Control? GetControlFromPosition(int column, int row)
 		{
@@ -243,41 +231,90 @@ namespace System.Windows.Forms
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public int[] GetColumnWidths()
 		{
-			throw null;
+			List<int> list = new List<int>();
+			float gridWidth = this.Width;
+			float absoluteWidth = 0;
+			
+			int col= 0;
+            foreach (ColumnStyle style in ColumnStyles)
+			{
+				if(style.SizeType==SizeType.Absolute)
+				{
+					absoluteWidth += style.Width;
+                }
+            }
+			float lastGridWidth = gridWidth - absoluteWidth;
+            foreach (ColumnStyle style in ColumnStyles)
+            {
+                if (style.SizeType == SizeType.Absolute)
+                {
+                    list.Add((int)style.Width);
+                }
+                else if (style.SizeType == SizeType.Percent)
+                {
+                    list.Add((int)(style.Width*0.01* lastGridWidth));
+                }
+                else if (style.SizeType == SizeType.AutoSize)
+                {
+                    int colMaxWidth = 0;
+                    int row = 0;
+                    foreach (RowStyle rowStyle in RowStyles)
+                    {
+                        if (base.Control.GetChildAt(col, row) != null)
+                            colMaxWidth = Math.Max(colMaxWidth, base.Control.GetChildAt(col, row).AllocatedWidth);
+                        row++;
+                    }
+                    list.Add(colMaxWidth);
+                }
+                col++;
+            }
+
+            return list.ToArray();
 		}
 
 		[Browsable(false)]
-		[EditorBrowsable(EditorBrowsableState.Never)]
 		public int[] GetRowHeights()
 		{
-			throw null;
-		}
+            List<int> list = new List<int>();
+            float gridHeight = this.Height;
+            float absoluteHeight = 0;
+            int row = 0;
+            int col = 0;
+            foreach (RowStyle style in RowStyles)
+            {
+                if (style.SizeType == SizeType.Absolute)
+                {
+                    absoluteHeight += style.Height;
+                }
+            }
+            float lastGridHeight = gridHeight - absoluteHeight;
+            foreach (RowStyle style in RowStyles)
+            {
+                if (style.SizeType == SizeType.Absolute)
+                {
+                    list.Add((int)style.Height);
+                }
+                else if (style.SizeType == SizeType.Percent)
+                {
+                    list.Add((int)(style.Height * 0.01 * lastGridHeight));
+                }
+                else if (style.SizeType == SizeType.AutoSize)
+                {
+                    int colMaxHeight = 0;
+                    foreach (ColumnStyle colStyle in ColumnStyles)
+                    {
+						if (base.Control.GetChildAt(col, row)!=null)
+						{
+							colMaxHeight = Math.Max(colMaxHeight, base.Control.GetChildAt(col, row).AllocatedHeight);
+						}
+                        row++;
+                    }
+                    list.Add(colMaxHeight);
+                }
+                col++;
+            }
 
-		[EditorBrowsable(EditorBrowsableState.Advanced)]
-		protected void OnLayout(LayoutEventArgs levent)
-		{
-			throw null;
-		}
-
-		protected virtual void OnCellPaint(TableLayoutCellPaintEventArgs e)
-		{
-			throw null;
-		}
-
-		protected void OnPaintBackground(PaintEventArgs e)
-		{
-			throw null;
-		}
-
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		protected void ScaleCore(float dx, float dy)
-		{
-			throw null;
-		}
-
-		protected void ScaleControl(SizeF factor, BoundsSpecified specified)
-		{
-			throw null;
-		}
+            return list.ToArray();
+        }
 	}
 }

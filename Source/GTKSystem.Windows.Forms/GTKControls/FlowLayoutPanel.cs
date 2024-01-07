@@ -1,8 +1,7 @@
 using Gtk;
-using Pango;
+
 using System.ComponentModel;
-using System.Windows.Forms.Layout;
-using System.Xml.Linq;
+
 
 namespace System.Windows.Forms
 {
@@ -16,6 +15,7 @@ namespace System.Windows.Forms
             Widget.StyleContext.AddClass("FlowLayoutPanel");
             base.Control.Orientation = Gtk.Orientation.Horizontal;
             base.Control.Halign = Align.Start;
+            base.Control.Valign = Align.Start;
             base.Control.MinChildrenPerLine = 1;
             base.Control.MaxChildrenPerLine = 999;
             base.Control.ColumnSpacing = 0;

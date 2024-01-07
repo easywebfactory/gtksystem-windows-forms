@@ -4,29 +4,23 @@ namespace System.Windows.Forms
 	{
 		public float Width
 		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
+            get;
+            set;
+        }
 
 		public ColumnStyle()
 		{
-			throw null;
+			
 		}
-
 		public ColumnStyle(SizeType sizeType)
 		{
-			throw null;
+            this.SizeType = sizeType;
 		}
 
 		public ColumnStyle(SizeType sizeType, float width)
 		{
-			throw null;
-		}
+            this.SizeType = sizeType;
+			this.Width = width;
+        }
 	}
 }

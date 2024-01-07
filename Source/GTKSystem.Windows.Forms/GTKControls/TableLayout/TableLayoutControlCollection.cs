@@ -1,6 +1,6 @@
-using Gtk;
+
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.Design.Serialization;
 using System.Runtime.CompilerServices;
 
 namespace System.Windows.Forms
@@ -11,23 +11,23 @@ namespace System.Windows.Forms
 		public TableLayoutPanel Container
 		{
 			[CompilerGenerated]
-			get
-			{
-				throw null;
-            }
+			get;
+			protected set;
 		}
         public TableLayoutControlCollection(Control owner, Gtk.Container ownerContainer) : base(owner, ownerContainer)
         {
- 
+            Container = owner as TableLayoutPanel;
         }
         public TableLayoutControlCollection(TableLayoutPanel container) : base(container)
         {
-			
-		}
+            Container = container;
+        }
 
-		public virtual void Add(Control control, int column, int row)
+        public Dictionary<string, Control> GridControls = new Dictionary<string, Control>();
+        public virtual void Add(Control control, int column, int row)
 		{
-			throw null;
-		}
-	}
+            GridControls.Add($"{column},{row}", control);
+            base.AddControl(control);
+        }
+    }
 }

@@ -37,10 +37,10 @@ namespace GTKWinFormsApp
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            TreeNode treeNode5 = new TreeNode("Node2");
-            TreeNode treeNode6 = new TreeNode("Node3");
-            TreeNode treeNode7 = new TreeNode("Node0", new TreeNode[] { treeNode5, treeNode6 });
-            TreeNode treeNode8 = new TreeNode("Node1");
+            TreeNode treeNode1 = new TreeNode("Node2");
+            TreeNode treeNode2 = new TreeNode("Node3");
+            TreeNode treeNode3 = new TreeNode("Node0", new TreeNode[] { treeNode1, treeNode2 });
+            TreeNode treeNode4 = new TreeNode("Node1");
             button1 = new Button();
             comboBox1 = new ComboBox();
             textBox1 = new TextBox();
@@ -65,6 +65,11 @@ namespace GTKWinFormsApp
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
             tabPage2 = new TabPage();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            label6 = new Label();
+            label5 = new Label();
+            button6 = new Button();
+            richTextBox1 = new RichTextBox();
             flowLayoutPanel1 = new FlowLayoutPanel();
             button4 = new Button();
             button5 = new Button();
@@ -92,12 +97,12 @@ namespace GTKWinFormsApp
             checkedListBox1 = new CheckedListBox();
             splitContainer1 = new SplitContainer();
             pictureBox2 = new PictureBox();
-            richTextBox1 = new RichTextBox();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox1.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             contextMenuStrip1.SuspendLayout();
@@ -392,6 +397,7 @@ namespace GTKWinFormsApp
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(tableLayoutPanel1);
             tabPage2.Controls.Add(richTextBox1);
             tabPage2.Controls.Add(flowLayoutPanel1);
             tabPage2.Controls.Add(listBox1);
@@ -406,6 +412,59 @@ namespace GTKWinFormsApp
             tabPage2.TabIndex = 1;
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
+            tableLayoutPanel1.ColumnCount = 2;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Controls.Add(label6, 0, 1);
+            tableLayoutPanel1.Controls.Add(label5, 0, 0);
+            tableLayoutPanel1.Controls.Add(button6, 1, 1);
+            tableLayoutPanel1.Location = new System.Drawing.Point(831, 35);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 66.29214F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.7078667F));
+            tableLayoutPanel1.Size = new System.Drawing.Size(291, 181);
+            tableLayoutPanel1.TabIndex = 7;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new System.Drawing.Point(4, 120);
+            label6.Name = "label6";
+            label6.Size = new System.Drawing.Size(129, 60);
+            label6.TabIndex = 0;
+            label6.Text = "\r\nddddddddddddddddddddddddddddddddddddd";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new System.Drawing.Point(4, 1);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(131, 20);
+            label5.TabIndex = 0;
+            label5.Text = "tablelayoutpanel";
+            // 
+            // button6
+            // 
+            button6.Location = new System.Drawing.Point(149, 123);
+            button6.Name = "button6";
+            button6.Size = new System.Drawing.Size(94, 29);
+            button6.TabIndex = 1;
+            button6.Text = "button6";
+            button6.UseVisualStyleBackColor = true;
+            button6.Click += button6_Click;
+            // 
+            // richTextBox1
+            // 
+            richTextBox1.Location = new System.Drawing.Point(636, 154);
+            richTextBox1.Name = "richTextBox1";
+            richTextBox1.Size = new System.Drawing.Size(125, 120);
+            richTextBox1.TabIndex = 6;
+            richTextBox1.Text = "";
             // 
             // flowLayoutPanel1
             // 
@@ -508,15 +567,15 @@ namespace GTKWinFormsApp
             treeView1.Location = new System.Drawing.Point(127, 66);
             treeView1.Margin = new Padding(4);
             treeView1.Name = "treeView1";
-            treeNode5.Name = "Node2";
-            treeNode5.Text = "Node2";
-            treeNode6.Name = "Node3";
-            treeNode6.Text = "Node3";
-            treeNode7.Name = "Node0";
-            treeNode7.Text = "Node0";
-            treeNode8.Name = "Node1";
-            treeNode8.Text = "Node1";
-            treeView1.Nodes.AddRange(new TreeNode[] { treeNode7, treeNode8 });
+            treeNode1.Name = "Node2";
+            treeNode1.Text = "Node2";
+            treeNode2.Name = "Node3";
+            treeNode2.Text = "Node3";
+            treeNode3.Name = "Node0";
+            treeNode3.Text = "Node0";
+            treeNode4.Name = "Node1";
+            treeNode4.Text = "Node1";
+            treeView1.Nodes.AddRange(new TreeNode[] { treeNode3, treeNode4 });
             treeView1.Size = new System.Drawing.Size(154, 113);
             treeView1.TabIndex = 4;
             treeView1.AfterCollapse += treeView1_AfterCollapse;
@@ -687,14 +746,6 @@ namespace GTKWinFormsApp
             pictureBox2.TabStop = false;
             pictureBox2.Paint += pictureBox2_Paint;
             // 
-            // richTextBox1
-            // 
-            richTextBox1.Location = new System.Drawing.Point(926, 110);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new System.Drawing.Size(125, 120);
-            richTextBox1.TabIndex = 6;
-            richTextBox1.Text = "";
-            // 
             // Form1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -715,6 +766,8 @@ namespace GTKWinFormsApp
             tabPage1.ResumeLayout(false);
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -787,6 +840,10 @@ namespace GTKWinFormsApp
         private CheckBox checkBox3;
         private Label label4;
         private RichTextBox richTextBox1;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Label label5;
+        private Button button6;
+        private Label label6;
     }
 }
 

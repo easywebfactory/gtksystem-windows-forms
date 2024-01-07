@@ -36,8 +36,8 @@ namespace GTKWinFormsApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Control p= (Control)this;
-            p.Controls.Add(new Button() { Text="dddd", Location=new Point(681, 156) });
+            Control p = (Control)this;
+            p.Controls.Add(new Button() { Text = "dddd", Location = new Point(681, 156) });
 
             DialogResult result = MessageBox.Show("1、加载数据点yes \n2、不加载数据点no", "加载数据提示", MessageBoxButtons.YesNo);
             if (result == DialogResult.No)
@@ -60,7 +60,7 @@ namespace GTKWinFormsApp
             dt.Rows.Add("user1", DateTime.Now, true);
             dt.Rows.Add("user2", DateTime.Now.AddDays(5), false);
 
-            
+
             DataSet dataSet = new DataSet();
             dataSet.Tables.Add(dt);
 
@@ -151,7 +151,7 @@ namespace GTKWinFormsApp
 
         private void checkBox2_CheckStateChanged(object sender, EventArgs e)
         {
-   
+
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
@@ -228,7 +228,7 @@ namespace GTKWinFormsApp
 
         private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            Console.WriteLine("dataGridView1_CellValidating"+e.FormattedValue);
+            Console.WriteLine("dataGridView1_CellValidating" + e.FormattedValue);
         }
 
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
@@ -308,10 +308,10 @@ namespace GTKWinFormsApp
 
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Console.WriteLine("checkedListBox1_ItemCheck，"+e.NewValue + e.CurrentValue);
+            Console.WriteLine("checkedListBox1_ItemCheck，" + e.NewValue + e.CurrentValue);
             if (e.Index == 2)
             {
-              //  checkedListBox1.ClearSelected(); 
+                //  checkedListBox1.ClearSelected(); 
             }
         }
 
@@ -329,8 +329,13 @@ namespace GTKWinFormsApp
             g.DrawImage(new Bitmap(GTKWinFormsApp.Properties.Resources.timg6), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
             g.FillRectangle(new SolidBrush(Color.AliceBlue), new Rectangle(0, 0, 100, 50));
             g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new Point(10, 10), new Point(50, 30));
-            g.DrawString("这是Paint Graphics示例效果", new Font(new FontFamily(""), 12, FontStyle.Regular),new SolidBrush(Color.Red),0,80);
-            g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2),new Rectangle(0,0, pictureBox2.Width, pictureBox2.Height), 60, 190);
+            g.DrawString("这是Paint Graphics示例效果", new Font(new FontFamily(""), 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 80);
+            g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2), new Rectangle(0, 0, pictureBox2.Width, pictureBox2.Height), 60, 190);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            var b = sender;
         }
     }
 

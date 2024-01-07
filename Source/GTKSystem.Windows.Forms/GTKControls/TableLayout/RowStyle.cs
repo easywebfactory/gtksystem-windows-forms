@@ -4,29 +4,24 @@ namespace System.Windows.Forms
 	{
 		public float Height
 		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
+			get;
+			set;
 		}
 
 		public RowStyle()
 		{
-			throw null;
+			
 		}
 
 		public RowStyle(SizeType sizeType)
 		{
-			throw null;
-		}
+            this.SizeType = sizeType;
+        }
 
 		public RowStyle(SizeType sizeType, float height)
 		{
-			throw null;
-		}
+            this.SizeType = sizeType;
+            this.Height = height;
+        }
 	}
 }

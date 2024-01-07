@@ -1,150 +1,40 @@
 using System.Collections;
-using System.ComponentModel;
-using System.Drawing.Design;
-using System.Windows.Forms.Layout;
 
 namespace System.Windows.Forms
 {
-	public abstract class TableLayoutStyleCollection : IList, ICollection, IEnumerable
+	public abstract class TableLayoutStyleCollection : ArrayList
 	{
 		internal IArrangedElement? Owner
 		{
-			get
-			{
-				throw null;
-			}
+			get;
+			private set;
 		}
 
-		internal virtual string? PropertyName
+		public new TableLayoutStyle this[int index]
 		{
 			get
 			{
-				throw null;
-			}
-		}
-
-		object? IList.this[int index]
-		{
-			get
-			{
-				throw null;
+				return (TableLayoutStyle)base[index];
 			}
 			set
 			{
-				throw null;
+				base[index] = value;
 			}
 		}
-
-		public TableLayoutStyle this[int index]
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		bool IList.IsFixedSize
-		{
-			get
-			{
-				throw null;
-			}
-		}
-
-		bool IList.IsReadOnly
-		{
-			get
-			{
-				throw null;
-			}
-		}
-
-		public int Count
-		{
-			get
-			{
-				throw null;
-			}
-		}
-
-		bool ICollection.IsSynchronized
-		{
-			get
-			{
-				throw null;
-			}
-		}
-
-		object ICollection.SyncRoot
-		{
-			get
-			{
-				throw null;
-			}
-		}
-
 		internal TableLayoutStyleCollection(IArrangedElement? owner)
 		{
-			throw null;
-		}
+			Owner = owner;
 
-		int IList.Add(object? style)
-		{
-			throw null;
-		}
+        }
 
 		public int Add(TableLayoutStyle style)
 		{
-			throw null;
-		}
-
-		void IList.Insert(int index, object? style)
-		{
-			throw null;
-		}
-
-		void IList.Remove(object? style)
-		{
-			throw null;
-		}
-
-		public void Clear()
-		{
-			throw null;
-		}
-
-		public void RemoveAt(int index)
-		{
-			throw null;
-		}
-
-		bool IList.Contains(object? style)
-		{
-			throw null;
-		}
-
-		int IList.IndexOf(object? style)
-		{
-			throw null;
-		}
-
-		void ICollection.CopyTo(Array array, int startIndex)
-		{
-			throw null;
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			throw null;
+			return base.Add(style);
 		}
 
 		internal void EnsureOwnership(IArrangedElement owner)
 		{
-			throw null;
-		}
+            Owner = owner;
+        }
 	}
 }

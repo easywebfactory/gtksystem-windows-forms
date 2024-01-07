@@ -4,59 +4,46 @@ namespace System.Windows.Forms
 {
 	public class TableLayoutRowStyleCollection : TableLayoutStyleCollection
 	{
-		internal override string PropertyName
-		{
-			get
-			{
-				throw null;
-			}
-		}
 
 		public new RowStyle this[int index]
 		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
+			get { return (RowStyle)base[index]; }
+			set { base[index] = value; }
 		}
 
 		internal TableLayoutRowStyleCollection(IArrangedElement Owner):base(Owner)
 		{
-			throw null;
+			
 		}
 
 		internal TableLayoutRowStyleCollection() : base(null)
         {
-			throw null;
+			
 		}
 
 		public int Add(RowStyle rowStyle)
 		{
-			throw null;
+			return base.Add(rowStyle);
 		}
 
 		public void Insert(int index, RowStyle rowStyle)
 		{
-			throw null;
+			base.Insert(index, rowStyle);
 		}
 
 		public void Remove(RowStyle rowStyle)
 		{
-			throw null;
+			 base.Remove(rowStyle);
 		}
 
 		public bool Contains(RowStyle rowStyle)
 		{
-			throw null;
-		}
+            return base.Contains(rowStyle);
+        }
 
 		public int IndexOf(RowStyle rowStyle)
 		{
-			throw null;
+			return base.IndexOf(rowStyle);
 		}
 	}
 }

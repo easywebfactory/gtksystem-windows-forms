@@ -8,48 +8,30 @@ namespace System.Windows.Forms
 		[DefaultValue(SizeType.AutoSize)]
 		public SizeType SizeType
 		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
+            get;
+            set;
+        }
 
 		internal float Size
 		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
+            get;
+            set;
+        }
 
 		internal IArrangedElement? Owner
 		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
+			get;
+			set;
 		}
 
 		internal void SetSize(float size)
 		{
-			throw null;
+			this.Size = size;
 		}
 
 		protected TableLayoutStyle()
 		{
-			throw null;
+			
 		}
 	}
 }

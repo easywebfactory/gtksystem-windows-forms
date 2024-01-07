@@ -12,9 +12,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Runtime.InteropServices;
-using static System.Net.Mime.MediaTypeNames;
-
-
+ 
 namespace System.Windows.Forms
 {
 	[DesignerCategory("Component")]

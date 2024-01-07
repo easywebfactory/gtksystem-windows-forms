@@ -5,6 +5,7 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using GLib;
 using Gtk;
 using System;
 using System.ComponentModel;
@@ -281,15 +282,21 @@ namespace System.Windows.Forms
 
         public override LayoutEngine LayoutEngine { get; }
 
-        public override int Left { get; set; }
+        public override int Left {
+            get;
+            set;
+        }
+
         public override Point Location
         {
             get
             {
-                return new Point(Widget.MarginStart, Widget.MarginTop);
+                return  new Point(Widget.MarginStart, Widget.MarginTop);
             }
             set
             {
+                Left = value.X;
+                Top = value.Y;
                 if (Widget.Parent is Gtk.FlowBoxChild)
                 {
                     Widget.Data["InitMarginStart"] = Widget.MarginStart;
@@ -337,7 +344,11 @@ namespace System.Windows.Forms
         public override bool TabStop { get; set; }
         public override object Tag { get; set; }
         public override string Text { get; set; }
-        public override int Top { get; set; }
+        public override int Top
+        {
+            get;
+            set;
+        }
 
         public override Control TopLevelControl { get; }
 
