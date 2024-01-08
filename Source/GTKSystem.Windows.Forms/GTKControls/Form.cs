@@ -55,9 +55,12 @@ namespace System.Windows.Forms
             base.Control.DeleteEvent += Control_DeleteEvent;
 
 
-           // Cairo.ImageSurface sur = new Cairo.ImageSurface("C:\\Users\\chj\\Pictures\\ChMkJlbKxY6ITxeUABHH9BU_KJ8AALHXwHXLLkAEcgM343.jpg");
-            //Cairo.Context cotext = new Cairo.Context(sur);
-           // base.Control.PropagateDraw(bg, cotext);
+            WindowBackgroundImage.MarginStart = 0;
+            WindowBackgroundImage.MarginTop = 0;
+            WindowBackgroundImage.WidthRequest = this.Width;
+            WindowBackgroundImage.HeightRequest = this.Height;
+            WindowBackgroundImage.Drawn += Bg_Drawn;
+            _body.Add(WindowBackgroundImage);
 
         }
         private void Control_DeleteEvent(object o, DeleteEventArgs args)
@@ -238,19 +241,7 @@ namespace System.Windows.Forms
             else
             {
                 Gtk.Layout laybody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
-
-                WindowBackgroundImage.MarginStart = 0;
-                WindowBackgroundImage.MarginTop = 0;
-                WindowBackgroundImage.Halign = Align.Fill;
-                WindowBackgroundImage.Valign = Align.Fill;
-                WindowBackgroundImage.WidthRequest = this.Width;
-                WindowBackgroundImage.HeightRequest = this.Height;
-                WindowBackgroundImage.Drawn += Bg_Drawn;
-                //bg.File = "C:\\Users\\chj\\Pictures\\ChMkJlbKxY6ITxeUABHH9BU_KJ8AALHXwHXLLkAEcgM343.jpg";
-                laybody.Add(WindowBackgroundImage);
                 laybody.Add(_body);
-
-
                 base.Control.Add(laybody);
             }
 
