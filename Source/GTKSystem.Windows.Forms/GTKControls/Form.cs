@@ -83,6 +83,29 @@ namespace System.Windows.Forms
             if (Load != null)
                 Load(this, e);
         }
+        private Gtk.Image WindowBackgroundImage = new Gtk.Image();
+        private Gdk.Pixbuf backgroundPixbuf;
+        private void Bg_Drawn(object o, DrawnArgs args)
+        {
+            Gdk.Rectangle rec = Widget.Allocation;
+            if (this.BackColor.Name != "0")
+            {
+                DrawBackgroundColor(args.Cr, Widget, this.BackColor, rec);
+            }
+            if (BackgroundImage != null)
+            {
+                byte[] _BackgroundImageBytes = new byte[BackgroundImage.PixbufData.Length];
+                BackgroundImage.PixbufData.CopyTo(_BackgroundImageBytes, 0);
+
+                if (backgroundPixbuf == null)
+                {
+                    Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
+                    ScaleImage(ref imagePixbuf, _BackgroundImageBytes, PictureBoxSizeMode.AutoSize, BackgroundImageLayout == ImageLayout.None ? ImageLayout.Tile : BackgroundImageLayout);
+                    backgroundPixbuf = imagePixbuf.ScaleSimple(imagePixbuf.Width - 8, imagePixbuf.Height - 6, Gdk.InterpType.Tiles);
+                }
+                DrawBackgroundImage(args.Cr, backgroundPixbuf, rec);
+            }
+        }
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate void MenuPositionFuncNative(IntPtr menu, out int x, out int y, out bool push_in, IntPtr user_data);
@@ -255,29 +278,6 @@ namespace System.Windows.Forms
                 base.Control.KeepBelow = true;
             }
 
-        }
-        private Gtk.Image WindowBackgroundImage = new Gtk.Image();
-        private Gdk.Pixbuf backgroundPixbuf;
-        private void Bg_Drawn(object o, DrawnArgs args)
-        {
-            Gdk.Rectangle rec = Widget.Allocation;
-            if (this.BackColor.Name != "0")
-            {
-                DrawBackgroundColor(args.Cr, Widget, this.BackColor, rec);
-            }
-            if (BackgroundImage != null)
-            {
-                byte[] _BackgroundImageBytes = new byte[BackgroundImage.PixbufData.Length];
-                BackgroundImage.PixbufData.CopyTo(_BackgroundImageBytes, 0);
-
-                if (backgroundPixbuf == null)
-                {
-                    Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                    ScaleImage(ref imagePixbuf, _BackgroundImageBytes, PictureBoxSizeMode.AutoSize, BackgroundImageLayout == ImageLayout.None ? ImageLayout.Tile : BackgroundImageLayout);
-                    backgroundPixbuf = imagePixbuf.ScaleSimple(imagePixbuf.Width - 8, imagePixbuf.Height - 6, Gdk.InterpType.Tiles);
-                }
-                DrawBackgroundImage(args.Cr, backgroundPixbuf, rec);
-            }
         }
 
         private Gtk.Dialog dialogWindow;

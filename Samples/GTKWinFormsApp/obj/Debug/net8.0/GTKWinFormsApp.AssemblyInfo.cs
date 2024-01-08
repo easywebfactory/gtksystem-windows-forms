@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GTKWinFormsApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8e5bfd507f363990476de065035af0a85ddb0e0b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+733e784bb96259e5e78e321746bbcff8c859302a")]
 [assembly: System.Reflection.AssemblyProductAttribute("GTKWinFormsApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GTKWinFormsApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
