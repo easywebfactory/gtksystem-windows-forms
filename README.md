@@ -3,6 +3,7 @@
 #### 介绍
 **Visual Studio原生开发，无需学习，一次编译，跨平台运行**.
 这是基于GTK3.24.24框架组件开发的跨平台（windows、linux、macos）C#桌面应用程序表单界面组件，该组件的核心优势是使用C#的原生表单控件和属性方法，C#原生开发即可，无需学习。
+便于开发跨平台winform软件，便于将C#升级为跨平台软件。
 
 作者博客请看 [https://www.cnblogs.com/easywebfactory/p/17803567.html](https://www.cnblogs.com/easywebfactory/p/17803567.html)
 
