@@ -714,7 +714,7 @@ namespace GTKWinFormsApp
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Bottom;
-            splitContainer1.Location = new System.Drawing.Point(0, 175);
+            splitContainer1.Location = new System.Drawing.Point(0, 228);
             splitContainer1.Margin = new Padding(4);
             splitContainer1.Name = "splitContainer1";
             splitContainer1.Orientation = Orientation.Horizontal;
@@ -750,7 +750,9 @@ namespace GTKWinFormsApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1445, 740);
+            BackgroundImage = Properties.Resources.timg;
+            BackgroundImageLayout = ImageLayout.Stretch;
+            ClientSize = new System.Drawing.Size(1445, 793);
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(groupBox1);
             Controls.Add(splitContainer1);

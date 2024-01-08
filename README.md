@@ -59,7 +59,8 @@ GTKWinFormsApp\obj\Release\net8.0\GTKWinFormsApp.designer.runtimeconfig.json
 ![输入图片说明](pic/mac.png)
 #### 颜色主题
 ![输入图片说明](pic/theme.jpg)
-
+#### 窗口背景
+![输入图片说明](pic/backgroundimage.jpg)
 #### 交流
 QQ群：236066073
 

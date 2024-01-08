@@ -5,6 +5,8 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+
+using GLib;
 using Gtk;
 using System;
 using System.ComponentModel;
@@ -42,13 +44,7 @@ namespace System.Windows.Forms
             _widget.MarginStart = 0;
             _widget.MarginTop = 0;
             _widget.Drawn += Widget_Drawn;
-            _widget.StyleContext.AddClass("DefaultThemeStyle");
-            _widget.Realized += _widget_Realized;
-        }
-
-        private void _widget_Realized(object sender, EventArgs e)
-        {
-            this.Widget.Show();
+            _widget.StyleContext.AddClass("DefaultThemeStyle"); 
         }
 
         private void Widget_Drawn(object o, DrawnArgs args)
@@ -84,8 +80,9 @@ namespace System.Windows.Forms
             if (Paint != null)
                 Paint(o, new PaintEventArgs(new Graphics(this.Widget, args.Cr, Widget.Allocation), new Drawing.Rectangle(rec.X, rec.Y, rec.Width, rec.Height)));
         }
-        Gdk.Pixbuf backgroundPixbuf;
-        void DrawBackgroundColor(Cairo.Context ctx, Gtk.Widget control, Drawing.Color backcolor, Gdk.Rectangle rec)
+
+        private Gdk.Pixbuf backgroundPixbuf;
+        internal void DrawBackgroundColor(Cairo.Context ctx, Gtk.Widget control, Drawing.Color backcolor, Gdk.Rectangle rec)
         {
             ctx.Save();
             ctx.SetSourceRGB(backcolor.R / 255f, backcolor.G / 255f, backcolor.B / 255f);
@@ -93,7 +90,7 @@ namespace System.Windows.Forms
             ctx.Fill();
             ctx.Restore();
         }
-        void DrawBackgroundImage(Cairo.Context ctx, Gdk.Pixbuf img, Gdk.Rectangle rec)
+        internal void DrawBackgroundImage(Cairo.Context ctx, Gdk.Pixbuf img, Gdk.Rectangle rec)
         {
             Gdk.Size size = new Gdk.Size(rec.Width - 4, rec.Height - 4);
             ctx.Save();
@@ -124,7 +121,7 @@ namespace System.Windows.Forms
             ctx.Paint();
             ctx.Restore();
         }
-        void DrawBackgroundText(Cairo.Context ctx, Gtk.Widget control, Gdk.Rectangle rec)
+        internal void DrawBackgroundText(Cairo.Context ctx, Gtk.Widget control, Gdk.Rectangle rec)
         {
             if (Control is Gtk.Button button)
                 button.Child.Visible = false;

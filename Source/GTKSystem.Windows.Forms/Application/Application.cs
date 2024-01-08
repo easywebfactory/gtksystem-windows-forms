@@ -102,9 +102,9 @@ namespace System.Windows.Forms
 //.DefaultThemeStyle:focus{border-color:#000099;}
 //.DefaultThemeStyle:active{border-color:#000099;}
             css.LoadFromData(@"
-.DefaultThemeStyle{border:solid 1px #cccccc;border-radius:0px;box-shadow: none;color:#000000;}
-.DefaultThemeStyle.background{background-color:#F6F5F4;}
-.DefaultThemeStyle.titlebar{background-color:#666655;}
+.DefaultThemeStyle{border:solid 1px #cccccc;border-radius:0px;box-shadow: none;color:#000000;background-color:#F6F5F4;}
+.DefaultThemeStyle .background{background-color:#F6F5F4;}
+.DefaultThemeStyle .titlebar{background-color:#666655;}
 .DefaultThemeStyle border{border:solid 1px #cccccc;}
 .DefaultThemeStyle button{color:#000000;border-radius:0px;}
 .DefaultThemeStyle entry{border-radius:0px;}
@@ -119,6 +119,7 @@ namespace System.Windows.Forms
 .DefaultThemeStyle:focus{border-color:#eeeeee;}
 .DefaultThemeStyle:active{border-color:#cccccc;}
 */
+
 .Form{}
 .BorderRadiusStyle{ ;}
 .MessageBox{}
