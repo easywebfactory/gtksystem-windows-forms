@@ -6,11 +6,11 @@ namespace System.Windows.Forms
 {
 	public abstract class BindingManagerBase
 	{
-		protected EventHandler? onCurrentChangedHandler;
+		protected EventHandler onCurrentChangedHandler;
 
-		protected EventHandler? onPositionChangedHandler;
+		protected EventHandler onPositionChangedHandler;
 
-		private protected EventHandler? _onCurrentItemChangedHandler;
+		private protected EventHandler _onCurrentItemChangedHandler;
 
 		public BindingsCollection Bindings
 		{
@@ -20,13 +20,13 @@ namespace System.Windows.Forms
 			}
 		}
 
-		public abstract object? Current { get; }
+		public abstract object Current { get; }
 
 		internal abstract Type BindType { get; }
 
 		public abstract int Position { get; set; }
 
-		internal abstract object? DataSource { get; }
+		internal abstract object DataSource { get; }
 
 		internal abstract bool IsBinding { get; }
 
@@ -126,19 +126,19 @@ namespace System.Windows.Forms
 			throw null;
 		}
 
-		internal abstract PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[]? listAccessors);
+		internal abstract PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors);
 
 		public virtual PropertyDescriptorCollection GetItemProperties()
 		{
 			throw null;
 		}
 
-		protected internal virtual PropertyDescriptorCollection? GetItemProperties(ArrayList dataSources, ArrayList listAccessors)
+		protected internal virtual PropertyDescriptorCollection GetItemProperties(ArrayList dataSources, ArrayList listAccessors)
 		{
 			throw null;
 		}
 
-		protected virtual PropertyDescriptorCollection? GetItemProperties([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type listType, int offset, ArrayList dataSources, ArrayList listAccessors)
+		protected virtual PropertyDescriptorCollection GetItemProperties([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type listType, int offset, ArrayList dataSources, ArrayList listAccessors)
 		{
 			throw null;
 		}
@@ -155,7 +155,7 @@ namespace System.Windows.Forms
 
 		protected abstract void UpdateIsBinding();
 
-		protected internal abstract string GetListName(ArrayList? listAccessors);
+		protected internal abstract string GetListName(ArrayList listAccessors);
 
 		public abstract void SuspendBinding();
 

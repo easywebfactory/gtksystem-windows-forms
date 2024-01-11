@@ -5,7 +5,7 @@
     <version>1.0.0</version>
     <authors>System.Resources.Extensions</authors>
     <description>Package Description</description>
-    <repository type="git" commit="59000741d0bea29c441a2b2cf5d5cf208d506036" />
+    <repository type="git" commit="3db93346097cc33361b7c81e0f12901181e7def2" />
     <dependencies>
       <group targetFramework="net8.0" />
     </dependencies>

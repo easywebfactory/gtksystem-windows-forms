@@ -26,3 +26,6 @@ F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.dll
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.pdb
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.genruntimeconfig.cache
+F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.Form2.resources
+F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\Resources\010.jpg
+F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\Resources\timg2.jpg

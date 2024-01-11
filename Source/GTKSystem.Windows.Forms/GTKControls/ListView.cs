@@ -1,346 +1,323 @@
+using GLib;
+using Gtk;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
+
 using System.Drawing;
+using System.Linq;
 
  
 namespace System.Windows.Forms
 {
 
 	[DefaultEvent("SelectedIndexChanged")]
-	public class ListView : ListBox
+	public class ListView : WidgetControl<Gtk.HBox>
     {
- 
-		[ListBindable(false)]
-		public class CheckedIndexCollection : IList, ICollection, IEnumerable
+		private ListViewItemCollection _items;
+		private ListViewGroupCollection _groups;
+		private ColumnHeaderCollection _columns;
+        internal Gtk.FlowBox _flow;
+        public ListView():base()
+        {
+			_items = new ListViewItemCollection(this);
+			_groups = new ListViewGroupCollection(this);
+			_columns = new ColumnHeaderCollection(this);
+			base.Control.StyleContext.AddClass("ListView");
+
+            base.Control.Realized += Control_Realized;
+            _flow = new Gtk.FlowBox();
+            _flow.StyleContext.AddClass("FlowBox");
+            _flow.MaxChildrenPerLine = 100u;
+            _flow.MinChildrenPerLine = 0u;
+            _flow.ColumnSpacing = 5;
+            _flow.SortFunc = new FlowBoxSortFunc((fbc1, fbc2) => !this.Sorted ? 0 : fbc1.TooltipText.CompareTo(fbc2.TooltipText));
+            _flow.Halign = Gtk.Align.Fill;
+			_flow.Valign = Gtk.Align.Fill;
+            _flow.Orientation = Gtk.Orientation.Vertical;
+            _flow.SelectionMode = Gtk.SelectionMode.Multiple;
+            _flow.ChildActivated += _flow_ChildActivated;
+            _flow.SelectedChildrenChanged += _flow_SelectedChildrenChanged;
+            Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
+            //scrolledWindow.HscrollbarPolicy = PolicyType.Never;
+            Gtk.Viewport viewport = new Gtk.Viewport();
+            viewport.Add(_flow);
+            scrolledWindow.Add(viewport);
+            this.Control.Add(scrolledWindow);
+        }
+
+        private void _flow_SelectedChildrenChanged(object sender, EventArgs e)
+        {
+            _flow.SelectedForeach(new FlowBoxForeachFunc((fb, fbc) => {
+                if (fbc.Data["type"].ToString() == "group")
+                {
+                    _flow.UnselectChild(fbc);
+                }
+            }));
+        }
+
+        private HashSet<int> selectedIndexes = new HashSet<int>();
+        private void _flow_ChildActivated(object o, ChildActivatedArgs args)
+        {
+            if (args.Child.Data["type"].ToString() == "group")
+            {
+                _flow.UnselectChild(args.Child);
+            }
+            else
+            {
+                if (ItemActivate != null)
+                    ItemActivate(this, args);
+
+                if (selectedIndexes.Contains(args.Child.Index))
+                {
+                    if (args.Child.IsSelected)
+                    {
+                        selectedIndexes.Remove(args.Child.Index);
+                        _flow.UnselectChild(args.Child);
+                    }
+                }
+                else
+                {
+                    selectedIndexes.Add(args.Child.Index);
+                    int rowIndex = args.Child.Index;
+                    ListViewItem sender = this.Items[rowIndex];
+                    if (SelectedIndexChanged != null)
+                        SelectedIndexChanged(sender, args);
+
+                    if (ItemSelectionChanged != null)
+                        ItemSelectionChanged(this, new ListViewItemSelectionChangedEventArgs(sender, rowIndex, args.Child.IsSelected));
+                }
+                if (Click != null)
+                    Click(this, args);
+            }
+        }
+
+        private void Control_Realized(object sender, EventArgs e)
+        {
+            if (Groups.Count > 0)
+            {
+                _flow.Orientation = Gtk.Orientation.Horizontal;
+                foreach (Gtk.FlowBoxChild child in _flow.Children)
+                    child.WidthRequest = Width;
+                foreach(ListViewItem item in Items)
+                {
+                    if (item.ItemType == "group")
+                        AddGroup(item.Group, -1);
+                    else
+                        AddItem(item, -1);
+                }
+            }
+            this.Control.ShowAll();
+        }
+
+		public bool Sorted
+        {
+            get; set;
+        }
+        public System.Windows.Forms.ListViewAlignment Alignment { get; set; }
+		public bool AllowColumnReorder { get; set; }
+		//public System.Windows.Forms.BorderStyle BorderStyle { get; set; }
+		//listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3});
+		//    flowLayoutPanel1.SetFlowBreak(listView2, true);
+		public bool GridLines { get; set; } = true;
+		public ImageList GroupImageList { get; set; }
+		public System.Windows.Forms.ColumnHeaderStyle HeaderStyle { get; set; }
+		public bool HideSelection { get; set; }
+		public bool HoverSelection { get; set; }
+		public bool LabelEdit { get; set; }
+		public bool LabelWrap { get; set; }
+		public ImageList LargeImageList { get; set; }
+
+        public virtual bool MultiSelect
+        {
+            get
+            {
+                return _flow.SelectionMode == Gtk.SelectionMode.Multiple;
+            }
+            set
+            {
+                if (value == true)
+                {
+                    _flow.SelectionMode = Gtk.SelectionMode.Multiple;
+                }
+                else
+                {
+                    _flow.SelectionMode = Gtk.SelectionMode.Single;
+                }
+            }
+        }
+
+        public bool OwnerDraw { get; set; }
+		public bool Scrollable { get; set; }
+		public bool ShowGroups { get; set; }
+		public bool ShowItemToolTips { get; set; }
+
+		public ImageList SmallImageList { get; set; }
+		public System.Windows.Forms.SortOrder Sorting { get; set; }
+		public ImageList StateImageList { get; set; }
+
+		public bool UseCompatibleStateImageBehavior { get; set; }
+		public System.Windows.Forms.View View { get; set; }
+
+
+        public void AddItem(ListViewItem item, int position)
+        {
+            Gtk.HBox hBox = new Gtk.HBox();
+            hBox.Valign = Gtk.Align.Start;
+            hBox.Halign = Gtk.Align.Start;
+            if (this.CheckBoxes == true)
+            {
+				Gtk.CheckButton checkbox = new Gtk.CheckButton() { WidthRequest = 20 };
+                checkbox.Active = item.Checked;
+                checkbox.Toggled += (object sender, EventArgs e) => {
+                    Gtk.CheckButton box = sender as Gtk.CheckButton;
+                    Gtk.FlowBoxChild boxitem = box.Parent.Parent as Gtk.FlowBoxChild;
+                    ListViewItem thisitem = Items[boxitem.Index];
+					thisitem.Checked = box.Active;
+                    if (ItemCheck!=null)
+					{
+                        ItemCheck(item, new ItemCheckEventArgs(boxitem.Index, box.Active ? CheckState.Checked : CheckState.Unchecked, box.Active ? CheckState.Unchecked : CheckState.Checked));
+					}
+                    if (ItemChecked != null)
+                    {
+                        ItemChecked(item, new ItemCheckedEventArgs(thisitem));
+                    }
+                };
+                hBox.Add(checkbox);
+			}
+
+			if (this.View == View.SmallIcon)
+            {
+                if (this.SmallImageList != null)
+                {
+                    this.SmallImageList.ImageSize = new Size(16, 16);
+                    if (!string.IsNullOrWhiteSpace(item.ImageKey))
+                    {
+                        Drawing.Image img = this.SmallImageList.Images[item.ImageKey];
+                        hBox.Add(new Gtk.Image(img.Pixbuf)) ;
+                    }
+                    else if (item.ImageIndex > -1)
+                    {
+                        Drawing.Image img = this.SmallImageList.Images[item.ImageIndex];
+                        hBox.Add(new Gtk.Image(img.Pixbuf));
+                    }
+
+                }
+                hBox.Add(new Gtk.Label(item.Text) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start }); 
+            }
+			else
+			{
+                Gtk.VBox vBox = new Gtk.VBox();
+                if (this.LargeImageList != null)
+                {
+                    this.SmallImageList.ImageSize = new Size(100, 100);
+                    if (!string.IsNullOrWhiteSpace(item.ImageKey))
+                    {
+                        Drawing.Image img = this.LargeImageList.Images[item.ImageKey];
+                        int width = img.Pixbuf.Width;
+                        int height = img.Pixbuf.Height;
+
+                        vBox.Add(new Gtk.Image(new Gdk.Pixbuf(img.PixbufData)) { WidthRequest = Math.Min(50, width), HeightRequest = Math.Min(50, height) });
+                    }
+                    else if (item.ImageIndex > -1)
+                    {
+                        Drawing.Image img = this.LargeImageList.Images[item.ImageIndex];
+                        int width = img.Pixbuf.Width;
+                        int height = img.Pixbuf.Height;
+
+                        vBox.Add(new Gtk.Image(img.Pixbuf) { WidthRequest = Math.Min(50, width), HeightRequest = Math.Min(50, height) });
+                    }
+                }
+                vBox.Add(new Gtk.Label(item.Text) { Xalign = 0, Halign = Gtk.Align.Center, Valign = Gtk.Align.Center }); ;
+                hBox.Add(vBox);
+            }
+            
+
+            Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
+            boxitem.TooltipText = item.Text;
+            boxitem.Data.Add("type", "item");
+            boxitem.Add(hBox);
+            if (position < 0)
+            {
+                this._flow.Add(boxitem);
+            }
+            else
+            {
+                this._flow.Insert(boxitem, position);
+            }
+        }
+        public void AddGroup(ListViewGroup group, int position)
+        {
+            if (group == null)
+                return;
+            Gtk.HBox hBox = new Gtk.HBox();
+            hBox.Valign = Gtk.Align.Fill;
+            hBox.Halign = Gtk.Align.Fill;
+            var bb = new Gtk.Label(group.Name) { Xalign = 0, Halign = Gtk.Align.Fill, Valign = Gtk.Align.Fill };
+            bb.MarginTop = 10;
+            bb.StyleContext.AddClass("listviewgroup");
+            hBox.Add(bb);
+
+            Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
+            boxitem.WidthRequest = Width;
+            boxitem.Valign = Gtk.Align.Fill;
+            boxitem.Halign = Gtk.Align.Fill;
+            boxitem.TooltipText = group.Subtitle;
+            boxitem.Data.Add("type", "group");
+           // boxitem.StyleContext.AddClass("listviewgroup");
+            boxitem.Add(hBox);
+
+            if (position < 0)
+            {
+                this._flow.Add(boxitem);
+            }
+            else
+            {
+                this._flow.Insert(boxitem, position);
+            }
+        }
+        public class CheckedIndexCollection : List<int>
 		{
-			[Browsable(false)]
-			public int Count
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			public int this[int index]
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			object? IList.this[int index]
-			{
-				get
-				{
-					throw null;
-				}
-				set
-				{
-					throw null;
-				}
-			}
-
-			object ICollection.SyncRoot
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			bool ICollection.IsSynchronized
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			bool IList.IsFixedSize
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			public bool IsReadOnly
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
+			 
 			public CheckedIndexCollection(ListView owner)
 			{
-				throw null;
+				 
 			}
 
-			public bool Contains(int checkedIndex)
-			{
-				throw null;
-			}
-
-			bool IList.Contains(object? checkedIndex)
-			{
-				throw null;
-			}
-
-			public int IndexOf(int checkedIndex)
-			{
-				throw null;
-			}
-
-			int IList.IndexOf(object? checkedIndex)
-			{
-				throw null;
-			}
-
-			int IList.Add(object? value)
-			{
-				throw null;
-			}
-
-			void IList.Clear()
-			{
-				throw null;
-			}
-
-			void IList.Insert(int index, object? value)
-			{
-				throw null;
-			}
-
-			void IList.Remove(object? value)
-			{
-				throw null;
-			}
-
-			void IList.RemoveAt(int index)
-			{
-				throw null;
-			}
-
-			void ICollection.CopyTo(Array dest, int index)
-			{
-				throw null;
-			}
-
-			public IEnumerator GetEnumerator()
-			{
-				throw null;
-			}
 		}
 
 		[ListBindable(false)]
-		public class CheckedListViewItemCollection : IList, ICollection, IEnumerable
+		public class CheckedListViewItemCollection : List<ListViewItem>
 		{
-			[Browsable(false)]
-			public int Count
+			
+			public virtual ListViewItem this[string key]
 			{
 				get
 				{
-					throw null;
+					return this.Find(w => w.Name == key);
 				}
 			}
-
-			public ListViewItem this[int index]
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			object? IList.this[int index]
-			{
-				get
-				{
-					throw null;
-				}
-				set
-				{
-					throw null;
-				}
-			}
-
-			public virtual ListViewItem? this[string? key]
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			object ICollection.SyncRoot
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			bool ICollection.IsSynchronized
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			bool IList.IsFixedSize
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			public bool IsReadOnly
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
+			 
 			public CheckedListViewItemCollection(ListView owner)
 			{
-				throw null;
+				
 			}
 
-			public bool Contains(ListViewItem? item)
-			{
-				throw null;
-			}
-
-			bool IList.Contains(object? item)
-			{
-				throw null;
-			}
-
-			public virtual bool ContainsKey(string? key)
-			{
-				throw null;
-			}
-
-			public int IndexOf(ListViewItem item)
-			{
-				throw null;
-			}
-
-			public virtual int IndexOfKey(string? key)
-			{
-				throw null;
-			}
-
-			int IList.IndexOf(object? item)
-			{
-				throw null;
-			}
-
-			int IList.Add(object? value)
-			{
-				throw null;
-			}
-
-			void IList.Clear()
-			{
-				throw null;
-			}
-
-			void IList.Insert(int index, object? value)
-			{
-				throw null;
-			}
-
-			void IList.Remove(object? value)
-			{
-				throw null;
-			}
-
-			void IList.RemoveAt(int index)
-			{
-				throw null;
-			}
-
-			public void CopyTo(Array dest, int index)
-			{
-				throw null;
-			}
-
-			public IEnumerator GetEnumerator()
-			{
-				throw null;
-			}
 		}
 
 		[ListBindable(false)]
-		public class ColumnHeaderCollection : IList, ICollection, IEnumerable
-		{
-			public virtual ColumnHeader this[int index]
-			{
-				get
-				{
-					throw null;
-				}
-			}
+		public class ColumnHeaderCollection : List<ColumnHeader>
+        {
+			public ColumnHeaderCollection(ListView owner)
+            {
+                 
+            }
 
-			object? IList.this[int index]
+			public virtual ColumnHeader this[string key]
 			{
 				get
 				{
-					throw null;
-				}
-				set
-				{
-					throw null;
-				}
-			}
-
-			public virtual ColumnHeader? this[string? key]
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			[Browsable(false)]
-			public int Count
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			object ICollection.SyncRoot
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			bool ICollection.IsSynchronized
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			bool IList.IsFixedSize
-			{
-				get
-				{
-					throw null;
+					return base.Find(o => o.Name == key);
 				}
 			}
 
@@ -348,357 +325,275 @@ namespace System.Windows.Forms
 			{
 				get
 				{
-					throw null;
+					return false;
 				}
 			}
 
-			public ColumnHeaderCollection(ListView owner)
+
+			public virtual void RemoveByKey(string key)
 			{
-				throw null;
+				base.Remove(base.Find(o=> o.Name == key));
 			}
 
-			public virtual void RemoveByKey(string? key)
+			public virtual int IndexOfKey(string key)
 			{
-				throw null;
+				return base.FindIndex(o=> o.Name == key);
 			}
 
-			public virtual int IndexOfKey(string? key)
+			public virtual ColumnHeader Add(string text, int width, HorizontalAlignment textAlign)
 			{
-				throw null;
-			}
+                return Add("", text, width, textAlign, "");
+            }
 
-			public virtual ColumnHeader Add(string? text, int width, HorizontalAlignment textAlign)
+			public virtual ColumnHeader Add(string text)
 			{
-				throw null;
-			}
+                return Add("", text, 60, HorizontalAlignment.Left, "");
+            }
 
-			public virtual int Add(ColumnHeader value)
+			public virtual ColumnHeader Add(string text, int width)
 			{
-				throw null;
-			}
+                return Add("", text, width, HorizontalAlignment.Left, "");
+            }
 
-			public virtual ColumnHeader Add(string? text)
+			public virtual ColumnHeader Add(string key, string text)
 			{
-				throw null;
-			}
+                return Add(key, text, 60, HorizontalAlignment.Left, "");
+            }
 
-			public virtual ColumnHeader Add(string? text, int width)
+			public virtual ColumnHeader Add(string key, string text, int width)
 			{
-				throw null;
-			}
+				return Add(key, text, width, HorizontalAlignment.Left, "");
+            }
 
-			public virtual ColumnHeader Add(string? key, string? text)
+			public virtual ColumnHeader Add(string key, string text, int width, HorizontalAlignment textAlign, string imageKey)
 			{
-				throw null;
-			}
+                ColumnHeader header = new ColumnHeader();
+                header.Name = key;
+                header.Text = text;
+                header.Width = width;
+                header.TextAlign = textAlign;
+                header.ImageKey = imageKey;
+                header.ImageIndex = -1;
+                base.Add(header);
+                return header;
+            }
 
-			public virtual ColumnHeader Add(string? key, string? text, int width)
+			public virtual ColumnHeader Add(string key, string text, int width, HorizontalAlignment textAlign, int imageIndex)
 			{
-				throw null;
-			}
-
-			public virtual ColumnHeader Add(string? key, string? text, int width, HorizontalAlignment textAlign, string imageKey)
-			{
-				throw null;
-			}
-
-			public virtual ColumnHeader Add(string? key, string? text, int width, HorizontalAlignment textAlign, int imageIndex)
-			{
-				throw null;
-			}
+                ColumnHeader header = new ColumnHeader();
+                header.Name = key;
+                header.Text = text;
+                header.Width = width;
+                header.TextAlign = textAlign;
+				header.ImageIndex = imageIndex;
+                base.Add(header);
+                return header;
+            }
 
 			public virtual void AddRange(ColumnHeader[] values)
 			{
-				throw null;
+				base.AddRange(values);
 			}
 
-			int IList.Add(object? value)
+			public virtual bool ContainsKey(string key)
 			{
-				throw null;
+				return base.Contains(base.Find(o=>o.Name==key));
 			}
 
-			public virtual void Clear()
-			{
-				throw null;
-			}
 
-			public bool Contains(ColumnHeader? value)
+			public void Insert(int index, string text, int width, HorizontalAlignment textAlign)
 			{
-				throw null;
-			}
+                Insert(index, "", text, width, textAlign, null);
+            }
 
-			bool IList.Contains(object? value)
+			public void Insert(int index, string text)
 			{
-				throw null;
-			}
+                Insert(index, "", text, 0, HorizontalAlignment.Center, null);
+            }
 
-			public virtual bool ContainsKey(string? key)
+			public void Insert(int index, string text, int width)
 			{
-				throw null;
-			}
+                Insert(index, "", text, width, HorizontalAlignment.Center, null);
+            }
 
-			void ICollection.CopyTo(Array dest, int index)
+			public void Insert(int index, string key, string text)
 			{
-				throw null;
-			}
+                Insert(index, key, text, 0, HorizontalAlignment.Center, null);
 
-			public int IndexOf(ColumnHeader? value)
-			{
-				throw null;
-			}
+            }
 
-			int IList.IndexOf(object? value)
+			public void Insert(int index, string key, string text, int width)
 			{
-				throw null;
-			}
+				Insert(index, key, text, width, HorizontalAlignment.Center, null);
+            }
 
-			public void Insert(int index, ColumnHeader value)
+			public void Insert(int index, string key, string text, int width, HorizontalAlignment textAlign, string imageKey)
 			{
-				throw null;
-			}
+                ColumnHeader header = new ColumnHeader();
+                header._index = index;
+                header.DisplayIndex = index;
+                header.Name = key;
+                header.Text = text;
+                header.Width = width;
+                header.TextAlign = textAlign;
+                header.ImageKey = imageKey;
+                base.Insert(index, header);
+            }
 
-			void IList.Insert(int index, object? value)
+			public void Insert(int index, string key, string text, int width, HorizontalAlignment textAlign, int imageIndex)
 			{
-				throw null;
-			}
-
-			public void Insert(int index, string? text, int width, HorizontalAlignment textAlign)
-			{
-				throw null;
-			}
-
-			public void Insert(int index, string? text)
-			{
-				throw null;
-			}
-
-			public void Insert(int index, string? text, int width)
-			{
-				throw null;
-			}
-
-			public void Insert(int index, string? key, string? text)
-			{
-				throw null;
-			}
-
-			public void Insert(int index, string? key, string? text, int width)
-			{
-				throw null;
-			}
-
-			public void Insert(int index, string? key, string? text, int width, HorizontalAlignment textAlign, string imageKey)
-			{
-				throw null;
-			}
-
-			public void Insert(int index, string? key, string? text, int width, HorizontalAlignment textAlign, int imageIndex)
-			{
-				throw null;
-			}
-
-			public virtual void RemoveAt(int index)
-			{
-				throw null;
-			}
-
-			public virtual void Remove(ColumnHeader column)
-			{
-				throw null;
-			}
-
-			void IList.Remove(object? value)
-			{
-				throw null;
-			}
-
-			public IEnumerator GetEnumerator()
-			{
-				throw null;
-			}
+                ColumnHeader header = new ColumnHeader();
+				header._index = index;
+                header.DisplayIndex = index;
+                header.Name = key;
+                header.Text = text;
+                header.Width = width;
+                header.TextAlign = textAlign;
+                header.ImageIndex = imageIndex;
+				base.Insert(index, header);
+            }
 		}
- 
+
 		[ListBindable(false)]
-		public class ListViewItemCollection : IList, ICollection, IEnumerable
+		public class ListViewItemCollection : List<ListViewItem>
 		{
-			internal interface IInnerList
-			{
-				int Count { get; }
-
-				bool OwnerIsVirtualListView { get; }
-
-				bool OwnerIsDesignMode { get; }
-
-				ListViewItem this[int index] { get; set; }
-
-				ListViewItem Add(ListViewItem item);
-
-				void AddRange(ListViewItem[] items);
-
-				void Clear();
-
-				bool Contains(ListViewItem item);
-
-				void CopyTo(Array dest, int index);
-
-				IEnumerator GetEnumerator();
-
-				int IndexOf(ListViewItem item);
-
-				ListViewItem Insert(int index, ListViewItem item);
-
-				void Remove(ListViewItem item);
-
-				void RemoveAt(int index);
-			}
-
-			[Browsable(false)]
-			public int Count
+			ListView _owner;
+			public virtual ListViewItem this[string key]
 			{
 				get
 				{
-					throw null;
+					return base.Find(w => w.Name == key);
 				}
 			}
 
-			object ICollection.SyncRoot
+            public ListViewItemCollection(ListView owner)
 			{
-				get
-				{
-					throw null;
-				}
-			}
+				_owner = owner;
+            }
+            public new void Add(ListViewItem item)
+            {
+                AddCore(item, -1);
+            }
+			public virtual ListViewItem Add(string text)
+			{
+				return Add("", text, -1);
+            }
 
-			bool ICollection.IsSynchronized
+			public virtual ListViewItem Add(string text, int imageIndex)
 			{
-				get
-				{
-					throw null;
-				}
-			}
+                return Add("", text, imageIndex);
+            }
 
-			bool IList.IsFixedSize
+			public virtual ListViewItem Add(string text, string imageKey)
 			{
-				get
-				{
-					throw null;
-				}
-			}
+				return Add("", text, imageKey);
 
-			public bool IsReadOnly
-			{
-				get
-				{
-					throw null;
-				}
-			}
+            }
 
-			public virtual ListViewItem this[int index]
+			public virtual ListViewItem Add(string key, string text, string imageKey)
 			{
-				get
-				{
-					throw null;
-				}
-				set
-				{
-					throw null;
-				}
-			}
+				ListViewItem item = new ListViewItem(text,imageKey);
+                item.Name = key;
+				item.Text = text;
+                AddCore(item, -1);
+                return item;
+            }
 
-			object? IList.this[int index]
+			public virtual ListViewItem Add(string key, string text, int imageIndex)
 			{
-				get
-				{
-					throw null;
-				}
-				set
-				{
-					throw null;
-				}
-			}
+                ListViewItem item = new ListViewItem(text,imageIndex);
+                item.Name = key;
+                AddCore(item, -1);
+                return item;
+            }
 
-			public virtual ListViewItem? this[string key]
+            public void AddCore(ListViewItem item, int position)
 			{
-				get
-				{
-					throw null;
-				}
-			}
+                item.ItemType = "item";
+                if (position < 0)
+                {
+                    item.Index = Count;
+                    base.Add(item);
+                    for (int i = 0; i < Count; i++)
+                        this[i].Index = i;
 
-			public ListViewItemCollection(ListView owner)
-			{
-				throw null;
-			}
+                    
+                    if (_owner.Control.IsRealized)
+                    {
+                        _owner.AddItem(item, position);
+                        _owner.Control.ShowAll();
+                    }
+                }
+                else
+                {
+                    item.Index = position;
+                    base.Insert(position, item);
+                  
+                    if (_owner.Control.IsRealized)
+                    {
+                        _owner.AddItem(item, position);
+                        _owner.Control.ShowAll();
+                    }
+                }
+            }
+            public void AddGroup(ListViewGroup group, int position)
+            {
+                if (_owner.Groups.Count > 0)
+                {
+                    ListViewItem item = new ListViewItem(group);
+                    item.ItemType = "group";
+                    if (position < 0)
+                    {
+                        item.Index = Count;
+                        base.Add(item);
+                        for (int i = 0; i < Count; i++)
+                            this[i].Index = i;
+                        
+                        if (_owner.Control.IsRealized)
+                        {
+                            _owner.AddGroup(group, position);
+                            _owner.Control.ShowAll();
+                        }
+                    }
+                    else
+                    {
+                        item.Index = position;
+                        base.Insert(position, item);
+                       
+                        if (_owner.Control.IsRealized)
+                        {
+                            _owner.AddGroup(group, position);
+                            _owner.Control.ShowAll();
+                        }
+                    }
 
-			internal ListViewItemCollection(IInnerList innerList)
+                }
+            }
+            public void AddRange(ListViewItem[] items)
 			{
-				throw null;
-			}
+              var group =  items.GroupBy(g => g.Group);
+                foreach (var g in group)
+                {
+                    AddGroup(g.Key,-1);
+                    foreach (ListViewItem item in g)
+                    {
+                        AddCore(item,-1);
+                    }
+                }
 
-			public virtual ListViewItem Add(string? text)
-			{
-				throw null;
-			}
-
-			int IList.Add(object? item)
-			{
-				throw null;
-			}
-
-			public virtual ListViewItem Add(string? text, int imageIndex)
-			{
-				throw null;
-			}
-
-			public virtual ListViewItem Add(ListViewItem value)
-			{
-				throw null;
-			}
-
-			public virtual ListViewItem Add(string? text, string? imageKey)
-			{
-				throw null;
-			}
-
-			public virtual ListViewItem Add(string? key, string? text, string? imageKey)
-			{
-				throw null;
-			}
-
-			public virtual ListViewItem Add(string? key, string? text, int imageIndex)
-			{
-				throw null;
-			}
-
-			public void AddRange(ListViewItem[] items)
-			{
-				throw null;
-			}
+                   
+            }
 
 			public void AddRange(ListViewItemCollection items)
 			{
-				throw null;
+				 foreach(ListViewItem item in items)
+                    AddCore(item,-1);
 			}
 
-			public virtual void Clear()
+			public virtual bool ContainsKey(string key)
 			{
-				throw null;
-			}
-
-			public bool Contains(ListViewItem item)
-			{
-				throw null;
-			}
-
-			bool IList.Contains(object? item)
-			{
-				throw null;
-			}
-
-			public virtual bool ContainsKey(string? key)
-			{
-				throw null;
-			}
+				return base.FindIndex(w => w.Name == key) > -1;
+            }
 
 			public void CopyTo(Array dest, int index)
 			{
@@ -707,1309 +602,201 @@ namespace System.Windows.Forms
 
 			public ListViewItem[] Find(string key, bool searchAllSubItems)
 			{
-				throw null;
+				if(searchAllSubItems)
+					return base.FindAll(w => w.Name == key && w.SubItems.ContainsKey(key)).ToArray();
+				else
+                    return base.FindAll(w => w.Name == key).ToArray();
+            }
+
+			public virtual int IndexOfKey(string key)
+			{
+				return base.FindIndex(w => w.Name == key);
 			}
 
-			public IEnumerator GetEnumerator()
+			public ListViewItem Insert(int index, string text)
 			{
-				throw null;
-			}
+                return Insert(index, "", text, -1);
+            }
 
-			public int IndexOf(ListViewItem item)
+			public ListViewItem Insert(int index, string text, int imageIndex)
 			{
-				throw null;
-			}
+                return Insert(index, "", text, imageIndex);
+            }
 
-			int IList.IndexOf(object? item)
+			public ListViewItem Insert(int index, string text, string imageKey)
 			{
-				throw null;
-			}
+				return Insert(index, "", text, imageKey);
+            }
 
-			public virtual int IndexOfKey(string? key)
+			public virtual ListViewItem Insert(int index, string key, string text, string imageKey)
 			{
-				throw null;
-			}
+                ListViewItem item = new ListViewItem(text, imageKey);
+                item.Name = key;
+                base.Insert(index, item);
+                return item;
+            }
 
-			public ListViewItem Insert(int index, ListViewItem item)
+			public virtual ListViewItem Insert(int index, string key, string text, int imageIndex)
 			{
-				throw null;
-			}
-
-			public ListViewItem Insert(int index, string? text)
-			{
-				throw null;
-			}
-
-			public ListViewItem Insert(int index, string? text, int imageIndex)
-			{
-				throw null;
-			}
-
-			void IList.Insert(int index, object? item)
-			{
-				throw null;
-			}
-
-			public ListViewItem Insert(int index, string? text, string? imageKey)
-			{
-				throw null;
-			}
-
-			public virtual ListViewItem Insert(int index, string? key, string? text, string? imageKey)
-			{
-				throw null;
-			}
-
-			public virtual ListViewItem Insert(int index, string? key, string? text, int imageIndex)
-			{
-				throw null;
-			}
-
-			public virtual void Remove(ListViewItem item)
-			{
-				throw null;
-			}
-
-			public virtual void RemoveAt(int index)
-			{
-				throw null;
+                ListViewItem item = new ListViewItem(text, imageIndex);
+                item.Name = key;
+				base.Insert(index, item);
+				return item;
 			}
 
 			public virtual void RemoveByKey(string key)
 			{
-				throw null;
+				base.Remove(base.Find(w => w.Name == key));
 			}
 
-			void IList.Remove(object? item)
-			{
-				throw null;
-			}
-		}
- 
-		[ListBindable(false)]
-		public class SelectedIndexCollection : IList, ICollection, IEnumerable
-		{
-			[Browsable(false)]
-			public int Count
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			public int this[int index]
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			object? IList.this[int index]
-			{
-				get
-				{
-					throw null;
-				}
-				set
-				{
-					throw null;
-				}
-			}
-
-			object ICollection.SyncRoot
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			bool ICollection.IsSynchronized
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			bool IList.IsFixedSize
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			public bool IsReadOnly
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			public SelectedIndexCollection(ListView owner)
-			{
-				throw null;
-			}
-
-			public bool Contains(int selectedIndex)
-			{
-				throw null;
-			}
-
-			bool IList.Contains(object? selectedIndex)
-			{
-				throw null;
-			}
-
-			public int IndexOf(int selectedIndex)
-			{
-				throw null;
-			}
-
-			int IList.IndexOf(object? selectedIndex)
-			{
-				throw null;
-			}
-
-			int IList.Add(object? value)
-			{
-				throw null;
-			}
-
-			void IList.Clear()
-			{
-				throw null;
-			}
-
-			void IList.Insert(int index, object? value)
-			{
-				throw null;
-			}
-
-			void IList.Remove(object? value)
-			{
-				throw null;
-			}
-
-			void IList.RemoveAt(int index)
-			{
-				throw null;
-			}
-
-			public int Add(int itemIndex)
-			{
-				throw null;
-			}
-
-			public void Clear()
-			{
-				throw null;
-			}
-
-			public void CopyTo(Array dest, int index)
-			{
-				throw null;
-			}
-
-			public IEnumerator GetEnumerator()
-			{
-				throw null;
-			}
-
-			public void Remove(int itemIndex)
-			{
-				throw null;
-			}
 		}
 
 		[ListBindable(false)]
-		public class SelectedListViewItemCollection : IList, ICollection, IEnumerable
+		public class SelectedIndexCollection : List<int>
 		{
-			[Browsable(false)]
-			public int Count
-			{
-				get
-				{
-					throw null;
-				}
-			}
+			
+		}
 
-			public ListViewItem this[int index]
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			public virtual ListViewItem? this[string? key]
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			object? IList.this[int index]
-			{
-				get
-				{
-					throw null;
-				}
-				set
-				{
-					throw null;
-				}
-			}
-
-			bool IList.IsFixedSize
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			public bool IsReadOnly
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			object ICollection.SyncRoot
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			bool ICollection.IsSynchronized
-			{
-				get
-				{
-					throw null;
-				}
-			}
-
-			public SelectedListViewItemCollection(ListView owner)
-			{
-				throw null;
-			}
-
-			int IList.Add(object? value)
-			{
-				throw null;
-			}
-
-			void IList.Insert(int index, object? value)
-			{
-				throw null;
-			}
-
-			void IList.Remove(object? value)
-			{
-				throw null;
-			}
-
-			void IList.RemoveAt(int index)
-			{
-				throw null;
-			}
-
-			public void Clear()
-			{
-				throw null;
-			}
-
-			public virtual bool ContainsKey(string? key)
-			{
-				throw null;
-			}
-
-			public bool Contains(ListViewItem? item)
-			{
-				throw null;
-			}
-
-			bool IList.Contains(object? item)
-			{
-				throw null;
-			}
-
-			public void CopyTo(Array dest, int index)
-			{
-				throw null;
-			}
-
-			public IEnumerator GetEnumerator()
-			{
-				throw null;
-			}
-
-			public int IndexOf(ListViewItem? item)
-			{
-				throw null;
-			}
-
-			int IList.IndexOf(object? item)
-			{
-				throw null;
-			}
-
-			public virtual int IndexOfKey(string? key)
-			{
-				throw null;
-			}
+		[ListBindable(false)]
+		public class SelectedListViewItemCollection : List<ListViewItem>
+        {
+		
 		}
 
 
-		public ItemActivation Activation
+		public ItemActivation Activation { get; set; }
+
+        public bool CheckBoxes { get; set; }
+
+        public CheckedIndexCollection CheckedIndices
 		{
 			get
 			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-
-		[Localizable(true)]
-		public ListViewAlignment Alignment
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		[DefaultValue(false)]
-		public bool AllowColumnReorder
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		[DefaultValue(true)]
-		public bool AutoArrange
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public override Color BackColor
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		[Browsable(false)]
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		public override ImageLayout BackgroundImageLayout
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public bool BackgroundImageTiled
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public BorderStyle BorderStyle
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public bool CheckBoxes
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public CheckedIndexCollection CheckedIndices
-		{
-			get
-			{
-				throw null;
-			}
+                CheckedIndexCollection selecteditems = new CheckedIndexCollection(this);
+                foreach (Gtk.FlowBoxChild child in _flow.AllChildren)
+                {
+                    ListViewItem itm = Items[child.Index];
+                    itm.Selected = child.IsSelected;
+                    if (itm.Checked)
+                    {
+                        selecteditems.Add(child.Index);
+                    }
+                }
+                return selecteditems;
+            }
 		}
 
 		public CheckedListViewItemCollection CheckedItems
 		{
 			get
 			{
-				throw null;
-			}
+                CheckedListViewItemCollection selecteditems = new CheckedListViewItemCollection(this);
+                foreach (Gtk.FlowBoxChild child in _flow.AllChildren)
+                {
+					ListViewItem itm = Items[child.Index];
+					itm.Selected = child.IsSelected;
+                    if (itm.Checked)
+                    {
+                        selecteditems.Add(itm);
+                    }
+                }
+                return selecteditems;
+            }
 		}
 		public ColumnHeaderCollection Columns
 		{
 			get
 			{
-				throw null;
+				return _columns;
 			}
 		}
 
-		public ListViewItem? FocusedItem
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
+		public bool FullRowSelect { get; set; }
 
-		public override Color ForeColor
+        public ListViewGroupCollection Groups
 		{
 			get
 			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public bool FullRowSelect
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public bool GridLines
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public ImageList? GroupImageList
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public ListViewGroupCollection Groups
-		{
-			get
-			{
-				throw null;
-			}
-		}
-
-		public ColumnHeaderStyle HeaderStyle
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public bool HideSelection
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public bool HotTracking
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public bool HoverSelection
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public ListViewInsertionMark InsertionMark
-		{
-			get
-			{
-				throw null;
-			}
+                return _groups;
+            }
 		}
 
 		public ListViewItemCollection Items
 		{
 			get
 			{
-				throw null;
-			}
+                return _items;
+            }
 		}
 
-		public bool LabelEdit
+		public IComparer ListViewItemSorter
 		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public bool LabelWrap
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public ImageList? LargeImageList
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public IComparer? ListViewItemSorter
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public bool MultiSelect
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public bool OwnerDraw
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-		public virtual bool RightToLeftLayout
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public bool Scrollable
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
+			get;
+			set;
 		}
 
 		public SelectedIndexCollection SelectedIndices
 		{
 			get
 			{
-				throw null;
-			}
+                SelectedIndexCollection selecteditems = new SelectedIndexCollection();
+                foreach (Gtk.FlowBoxChild child in _flow.AllChildren)
+                {
+                    Items[child.Index].Selected = child.IsSelected;
+                    if (child.IsSelected)
+                    {
+                        selecteditems.Add(child.Index);
+                    }
+                }
+                return selecteditems;
+            }
 		}
 
 		public SelectedListViewItemCollection SelectedItems
 		{
 			get
 			{
-				throw null;
-			}
-		}
-
-		public bool ShowGroups
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public ImageList? SmallImageList
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public bool ShowItemToolTips
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public SortOrder Sorting
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public ImageList? StateImageList
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-
-		public override string Text
-		{
-			get
-			{
-				throw null;
-			}
-			[param: AllowNull]
-			set
-			{
-				throw null;
-			}
-		}
-
-		public Size TileSize
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public ListViewItem? TopItem
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public bool UseCompatibleStateImageBehavior
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public View View
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public int VirtualListSize
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		public bool VirtualMode
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		[Browsable(false)]
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public new Padding Padding
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-		[Browsable(false)]
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		public new event EventHandler? BackgroundImageLayoutChanged
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-						public event EventHandler? RightToLeftLayoutChanged
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		[Browsable(false)]
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		public new event EventHandler? TextChanged
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-						public event LabelEditEventHandler? AfterLabelEdit
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-						public event LabelEditEventHandler? BeforeLabelEdit
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-						public event CacheVirtualItemsEventHandler? CacheVirtualItems
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-						public event ColumnClickEventHandler? ColumnClick
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-						public event EventHandler<ListViewGroupEventArgs>? GroupTaskLinkClick
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-						public event ColumnReorderedEventHandler? ColumnReordered
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-						public event ColumnWidthChangedEventHandler? ColumnWidthChanged
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public event ColumnWidthChangingEventHandler? ColumnWidthChanging
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public event DrawListViewColumnHeaderEventHandler? DrawColumnHeader
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public event DrawListViewItemEventHandler? DrawItem
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public event DrawListViewSubItemEventHandler? DrawSubItem
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public event EventHandler? ItemActivate
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-		public event ItemCheckEventHandler? ItemCheck
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public event ItemCheckedEventHandler? ItemChecked
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public event ItemDragEventHandler? ItemDrag
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public event ListViewItemMouseHoverEventHandler? ItemMouseHover
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public event ListViewItemSelectionChangedEventHandler? ItemSelectionChanged
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public event EventHandler<ListViewGroupEventArgs>? GroupCollapsedStateChanged
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public new event EventHandler? PaddingChanged
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-
-		public new event PaintEventHandler? Paint
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public event RetrieveVirtualItemEventHandler? RetrieveVirtualItem
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public event SearchForVirtualItemEventHandler? SearchForVirtualItem
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public event EventHandler? SelectedIndexChanged
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public event ListViewVirtualItemsSelectionRangeChangedEventHandler? VirtualItemsSelectionRangeChanged
-		{
-			add
-			{
-				throw null;
-			}
-			remove
-			{
-				throw null;
-			}
-		}
-
-		public ListView()
-		{
-			throw null;
-		}
-
-		public void ArrangeIcons(ListViewAlignment value)
-		{
-			throw null;
-		}
-
-		public void ArrangeIcons()
-		{
-			throw null;
-		}
-
-		public void AutoResizeColumns(ColumnHeaderAutoResizeStyle headerAutoResize)
-		{
-			throw null;
-		}
-
-		public void AutoResizeColumn(int columnIndex, ColumnHeaderAutoResizeStyle headerAutoResize)
-		{
-			throw null;
-		}
-
-		public void BeginUpdate()
-		{
-			throw null;
+				SelectedListViewItemCollection selecteditems = new SelectedListViewItemCollection();
+                foreach (Gtk.FlowBoxChild child in _flow.AllChildren)
+                {
+                    ListViewItem itm = Items[child.Index];
+                    itm.Selected = child.IsSelected;
+                    if (child.IsSelected)
+                    {
+                        selecteditems.Add(itm);
+                    }
+                }
+				return selecteditems;
+            }
 		}
 
 		public void Clear()
 		{
-			throw null;
+            foreach (Gtk.FlowBoxChild child in _flow.Children)
+                _flow.Remove(child);
+
+            Items.Clear();
 		}
 
-		public void EndUpdate()
+
+		public ListViewItem FindItemWithText(string text)
 		{
-			throw null;
-		}
+            return Items.Find(w => w.Text == text);
+        }
 
-		public void EnsureVisible(int index)
+		public ListViewItem FindItemWithText(string text, bool includeSubItemsInSearch, int startIndex)
 		{
-			throw null;
-		}
+            int idx = Items.FindIndex(startIndex, w => w.Text == text);
+            return idx == -1 ? null : Items[idx];
+        }
 
-		public ListViewItem? FindItemWithText(string text)
+		public ListViewItem FindItemWithText(string text, bool includeSubItemsInSearch, int startIndex, bool isPrefixSearch)
 		{
-			throw null;
-		}
+            int idx = Items.FindIndex(startIndex, w => w.Text == text);
+            return idx == -1 ? null : Items[idx];
+        }
 
-		public ListViewItem? FindItemWithText(string text, bool includeSubItemsInSearch, int startIndex)
-		{
-			throw null;
-		}
-
-		public ListViewItem? FindItemWithText(string text, bool includeSubItemsInSearch, int startIndex, bool isPrefixSearch)
-		{
-			throw null;
-		}
-
-		public ListViewItem? FindNearestItem(SearchDirectionHint dir, Point point)
-		{
-			throw null;
-		}
-
-		public ListViewItem? FindNearestItem(SearchDirectionHint searchDirection, int x, int y)
-		{
-			throw null;
-		}
-
-		public ListViewItem? GetItemAt(int x, int y)
+		public ListViewItem GetItemAt(int x, int y)
 		{
 			throw null;
 		}
@@ -2019,37 +806,17 @@ namespace System.Windows.Forms
 			throw null;
 		}
 
-		public Rectangle GetItemRect(int index, ItemBoundsPortion portion)
-		{
-			throw null;
-		}
-
-		public ListViewHitTestInfo HitTest(Point point)
-		{
-			throw null;
-		}
-
-		public ListViewHitTestInfo HitTest(int x, int y)
-		{
-			throw null;
-		}
-
-
-		[EditorBrowsable(EditorBrowsableState.Advanced)]
-		public void RedrawItems(int startIndex, int endIndex, bool invalidateOnly)
-		{
-			throw null;
-		}
-
 		public void Sort()
 		{
-			throw null;
+			 
 		}
 
-		public override string ToString()
-		{
-			throw null;
-		}
-
-	}
+		public event ColumnClickEventHandler ColumnClick;
+		public event ItemCheckEventHandler ItemCheck;
+        public event ItemCheckedEventHandler ItemChecked;
+        public event ListViewItemSelectionChangedEventHandler ItemSelectionChanged;
+		public event EventHandler SelectedIndexChanged;
+		public override event EventHandler Click;
+		public event EventHandler ItemActivate;
+    }
 }

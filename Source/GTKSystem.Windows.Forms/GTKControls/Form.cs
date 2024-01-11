@@ -61,8 +61,8 @@ namespace System.Windows.Forms
             WindowBackgroundImage.HeightRequest = this.Height;
             WindowBackgroundImage.Drawn += Bg_Drawn;
             _body.Add(WindowBackgroundImage);
-
         }
+
         private void Control_DeleteEvent(object o, DeleteEventArgs args)
         {
             if (FormClosing != null)

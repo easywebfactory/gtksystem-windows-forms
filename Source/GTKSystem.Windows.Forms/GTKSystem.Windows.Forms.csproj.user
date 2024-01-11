@@ -20,6 +20,9 @@
     <Compile Update="GTKControls\ComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\ListViewBase\ColumnHeader.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\DataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -63,6 +66,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\ListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ListViewBase\ImageList.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\MaskedTextBox.cs">
@@ -120,6 +129,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\TreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\UserControl.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>

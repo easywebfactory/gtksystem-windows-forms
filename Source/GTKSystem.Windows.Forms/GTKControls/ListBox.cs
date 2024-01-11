@@ -19,7 +19,7 @@ namespace System.Windows.Forms
 	[DefaultEvent("SelectedIndexChanged")]
 	[DefaultProperty("Items")]
 	[DefaultBindingProperty("SelectedValue")]
-	public class ListBox : WidgetControl<Gtk.HBox>
+	public partial class ListBox : WidgetControl<Gtk.HBox>
     {
         ControlBindingsCollection _collect;
         ObjectCollection _items;
@@ -31,7 +31,7 @@ namespace System.Windows.Forms
             Widget.StyleContext.AddClass("ListBox");
             base.Control.Realized += Control_Realized;
             _flow = new Gtk.FlowBox();
-            _flow.MaxChildrenPerLine = 3u;
+           // _flow.MaxChildrenPerLine = 9u;
             _flow.SortFunc = new FlowBoxSortFunc((fbc1, fbc2) => !this.Sorted ? 0 : fbc1.TooltipText.CompareTo(fbc2.TooltipText));
 
             _items = new ObjectCollection(this);
@@ -49,9 +49,9 @@ namespace System.Windows.Forms
         {
             if (selectedIndexes.Contains(args.Child.Index))
             {
-                selectedIndexes.Remove(args.Child.Index);
                 if (args.Child.IsSelected)
                 {
+                    selectedIndexes.Remove(args.Child.Index);
                     _flow.UnselectChild(args.Child);
                 }
             }
@@ -76,6 +76,12 @@ namespace System.Windows.Forms
             {
                 BindDataSource(DataSource, DisplayMember, ValueMember, SelectedIndex, FormattingEnabled, DataSourceUpdateMode.OnPropertyChanged, string.Empty, FormatString);
             }
+            foreach (object item in _items)
+            {
+                AddItem(item, -1);
+            }
+
+            this.Control.ShowAll();
         }
         internal void BindDataSource(object datasource,string displaymember,string valuemember,int selectindex, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode, object nullValue, string formatString)
         {
@@ -145,7 +151,7 @@ namespace System.Windows.Forms
 
         [DefaultValue(null)]
         [AttributeProvider(typeof(IListSource))]
-        public object? DataSource
+        public object DataSource
         {
             get;
             set;
@@ -159,7 +165,7 @@ namespace System.Windows.Forms
 
         [Browsable(false)]
         [DefaultValue(null)]
-        public IFormatProvider? FormatInfo
+        public IFormatProvider FormatInfo
         {
             get; set;
         }
@@ -194,7 +200,7 @@ namespace System.Windows.Forms
  
         [DefaultValue(null)]
         [Browsable(false)]
-        public object? SelectedValue
+        public object SelectedValue
         {
             get
             {
@@ -226,25 +232,25 @@ namespace System.Windows.Forms
             }
         }
 
-        public event EventHandler? DataSourceChanged;
+        public event EventHandler DataSourceChanged;
 
-        public event EventHandler? DisplayMemberChanged;
+        public event EventHandler DisplayMemberChanged;
 
-        public event ListControlConvertEventHandler? Format;
+        public event ListControlConvertEventHandler Format;
 
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public event EventHandler? FormatInfoChanged;
+        public event EventHandler FormatInfoChanged;
 
-        public event EventHandler? FormatStringChanged;
+        public event EventHandler FormatStringChanged;
 
-        public event EventHandler? FormattingEnabledChanged;
+        public event EventHandler FormattingEnabledChanged;
 
-        public event EventHandler? ValueMemberChanged;
+        public event EventHandler ValueMemberChanged;
 
-        public event EventHandler? SelectedValueChanged;
+        public event EventHandler SelectedValueChanged;
 
-        public string? GetItemText(object? item)
+        public string GetItemText(object item)
         {
             if(item is ListBoxItem)
             {
@@ -364,7 +370,7 @@ namespace System.Windows.Forms
 
         [Browsable(false)]
 		[Bindable(true)]
-		public object? SelectedItem
+		public object SelectedItem
         {
             get
             {
@@ -452,31 +458,31 @@ namespace System.Windows.Forms
 
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		public new event EventHandler? BackgroundImageChanged;
+		public new event EventHandler BackgroundImageChanged;
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		public new event EventHandler? BackgroundImageLayoutChanged;
+		public new event EventHandler BackgroundImageLayoutChanged;
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
-		public new event EventHandler? TextChanged;
+		public new event EventHandler TextChanged;
 		[Browsable(true)]
 		[EditorBrowsable(EditorBrowsableState.Always)]
-		public new event EventHandler? Click;
+		public new event EventHandler Click;
 		[Browsable(true)]
 		[EditorBrowsable(EditorBrowsableState.Always)]
-		public new event MouseEventHandler? MouseClick;
+		public new event MouseEventHandler MouseClick;
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		public new event EventHandler? PaddingChanged;
+		public new event EventHandler PaddingChanged;
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		public new event PaintEventHandler? Paint;
+		public new event PaintEventHandler Paint;
 
-		//public event DrawItemEventHandler? DrawItem;
+		//public event DrawItemEventHandler DrawItem;
 
-		public event MeasureItemEventHandler? MeasureItem;
+		public event MeasureItemEventHandler MeasureItem;
 
-		public event EventHandler? SelectedIndexChanged;
+		public event EventHandler SelectedIndexChanged;
 
 		public void BeginUpdate()
 		{
@@ -555,7 +561,30 @@ namespace System.Windows.Forms
 		{
 			throw null;
 		}
+        public void AddItem(object item, int position)
+        {
+            Gtk.HBox hBox = new Gtk.HBox();
+            hBox.Valign = Gtk.Align.Fill;
+            hBox.Halign = Gtk.Align.Fill;
+            hBox.Add(new Gtk.Label(item.ToString()) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start }); ;
 
+            Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
+            boxitem.HeightRequest = this.ItemHeight;
+            boxitem.WidthRequest = this.ColumnWidth;
+            boxitem.WidthRequest = Width;
+            boxitem.Valign = Gtk.Align.Fill;
+            boxitem.Halign = Gtk.Align.Fill;
+            boxitem.TooltipText = item.ToString();
+            boxitem.Add(hBox);
+            if (position < 0)
+            {
+                this._flow.Add(boxitem);
+            }
+            else
+            {
+                this._flow.Insert(boxitem, position);
+            }
+        }
         public class ListBoxItem: Gtk.Label
         {
             public ListBoxItem() { 
@@ -652,7 +681,7 @@ namespace System.Windows.Forms
                 }
             }
 
-            object? IList.this[int index]
+            object IList.this[int index]
             {
                 get
                 {
@@ -674,7 +703,7 @@ namespace System.Windows.Forms
                 throw null;
             }
 
-            bool IList.Contains(object? item)
+            bool IList.Contains(object item)
             {
                 throw null;
             }
@@ -689,7 +718,7 @@ namespace System.Windows.Forms
                 throw null;
             }
 
-            int IList.IndexOf(object? item)
+            int IList.IndexOf(object item)
             {
                 throw null;
             }
@@ -699,7 +728,7 @@ namespace System.Windows.Forms
                 throw null;
             }
 
-            int IList.Add(object? item)
+            int IList.Add(object item)
             {
                 throw null;
             }
@@ -719,12 +748,12 @@ namespace System.Windows.Forms
                 throw null;
             }
 
-            void IList.Insert(int index, object? value)
+            void IList.Insert(int index, object value)
             {
                 throw null;
             }
 
-            void IList.Remove(object? value)
+            void IList.Remove(object value)
             {
                 throw null;
             }
@@ -778,44 +807,27 @@ namespace System.Windows.Forms
             }
             public int AddCore(object item, int position)
             {
-                Gtk.HBox hBox = new Gtk.HBox();
-                hBox.Valign = Gtk.Align.Start;
-                hBox.Halign = Gtk.Align.Start;
-                if (_owner.ShowCheckBox)
-                {
-                    hBox.Add(new Gtk.CheckButton() { WidthRequest = 20 }) ;
-                }
-                if (_owner.ShowImage)
-                {
-                    hBox.Add(new Gtk.Image() { WidthRequest = 30 });
-                }
-
-                hBox.Add(new Gtk.Label(item.ToString()) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start }); ;
-
-                Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
-                boxitem.HeightRequest = _owner.ItemHeight;
-                boxitem.WidthRequest = _owner.ColumnWidth;
-                boxitem.TooltipText = item.ToString();
-                boxitem.Add(hBox);
                 if (position < 0)
                 {
-                    _owner._flow.Add(boxitem);
+                    int idx = base.Add(item);
                     if (_owner.Control.IsRealized)
                     {
+                        _owner.AddItem(item, position);
                         _owner.Control.ShowAll();
                     }
-                    return base.Add(item);
+                    return idx;
                 }
                 else
                 {
-                    _owner._flow.Insert(boxitem, position);
-                     base.Insert(position,item);
+                    base.Insert(position, item);
                     if (_owner.Control.IsRealized)
                     {
+                        _owner.AddItem(item, position);
                         _owner.Control.ShowAll();
                     }
                     return position;
                 }
+
             }
             public override int Add(object item)
             {

@@ -91,7 +91,7 @@ namespace System.Windows.Forms
 
             object ICollection.SyncRoot => throw new NotImplementedException();
 
-            public void Add(string? key, string? text, string imageKey)
+            public void Add(string key, string text, string imageKey)
             {
                 TabPage tp = new TabPage();
                 tp.Name = key;
@@ -104,17 +104,17 @@ namespace System.Windows.Forms
                 value.Parent = _owner;
                 _owner.Controls.Add(value);
             }
-            public void Add(string? key, string? text)
+            public void Add(string key, string text)
             {
                 this.Add(key, text, null);
             }
 
-            public void Add(string? text)
+            public void Add(string text)
             {
                 this.Add($"tabPage{Count}", text, null);
             }
 
-            public void Add(string? key, string? text, int imageIndex)
+            public void Add(string key, string text, int imageIndex)
             {
                 this.Add(key, text, null);
             }
@@ -155,7 +155,7 @@ namespace System.Windows.Forms
                 return _owner.Controls.Contains(page);
             }
 
-            public virtual bool ContainsKey(string? key)
+            public virtual bool ContainsKey(string key)
             {
                 return _owner.Controls.FindIndex(p => p.Name == key) > -1;
 
@@ -171,17 +171,17 @@ namespace System.Windows.Forms
                 return _owner.Controls.IndexOf(page);
             }
 
-            public virtual int IndexOfKey(string? key)
+            public virtual int IndexOfKey(string key)
             {
                 return _owner.Controls.FindIndex(p => p.Name == key);
             }
 
-            public void Insert(int index, string? key, string? text, int imageIndex)
+            public void Insert(int index, string key, string text, int imageIndex)
             {
                 _owner.Controls.Insert(index, new TabPage() { Name = key, Text = text }); ;
             }
 
-            public void Insert(int index, string? key, string? text)
+            public void Insert(int index, string key, string text)
             {
                 Insert(index, key, text, -1);
             }
@@ -191,12 +191,12 @@ namespace System.Windows.Forms
                 _owner.Controls.Insert(index, tabPage);
             }
 
-            public void Insert(int index, string? key, string? text, string imageKey)
+            public void Insert(int index, string key, string text, string imageKey)
             {
                 Insert(index, key, text, -1);
             }
 
-            public void Insert(int index, string? text)
+            public void Insert(int index, string text)
             {
                 Insert(index, $"tabPage{Count}", text, -1);
             }
@@ -216,7 +216,7 @@ namespace System.Windows.Forms
                 _owner.Controls.RemoveAt(index);
             }
 
-            public virtual void RemoveByKey(string? key)
+            public virtual void RemoveByKey(string key)
             {
                 _owner.Controls.RemoveAt(_owner.Controls.FindIndex(p => p.Name == key));
             }

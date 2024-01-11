@@ -683,7 +683,7 @@ namespace GTKSystem.Resources.Extensions
 			_requiresDeserializingResourceReader = true;
 		}
 
-		public void AddBinaryFormattedResource(string name, byte[] value, string? typeName = null)
+		public void AddBinaryFormattedResource(string name, byte[] value, string typeName = null)
 		{
 			if (name == null)
 			{

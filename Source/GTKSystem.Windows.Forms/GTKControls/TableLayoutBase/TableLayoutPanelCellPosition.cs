@@ -39,7 +39,7 @@ namespace System.Windows.Forms
 			throw null;
 		}
 
-		public override readonly bool Equals(object? other)
+		public override readonly bool Equals(object other)
 		{
 			throw null;
 		}

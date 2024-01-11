@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="GTKControls\ListView.cs" />
+    <Compile Remove="GTKControls\ListViewBase\SerializationInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>

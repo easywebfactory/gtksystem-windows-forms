@@ -5,7 +5,7 @@ namespace System.Windows.Forms
 {
 	public class BindingCompleteEventArgs : CancelEventArgs
 	{
-		public Binding? Binding
+		public Binding Binding
 		{
 			[CompilerGenerated]
 			get
@@ -41,7 +41,7 @@ namespace System.Windows.Forms
 			}
 		}
 
-		public Exception? Exception
+		public Exception Exception
 		{
 			[CompilerGenerated]
 			get
@@ -50,22 +50,22 @@ namespace System.Windows.Forms
 			}
 		}
 
-		public BindingCompleteEventArgs(Binding? binding, BindingCompleteState state, BindingCompleteContext context, string? errorText, Exception? exception, bool cancel)
+		public BindingCompleteEventArgs(Binding binding, BindingCompleteState state, BindingCompleteContext context, string errorText, Exception exception, bool cancel)
 		{
 			throw null;
 		}
 
-		public BindingCompleteEventArgs(Binding? binding, BindingCompleteState state, BindingCompleteContext context, string? errorText, Exception? exception)
+		public BindingCompleteEventArgs(Binding binding, BindingCompleteState state, BindingCompleteContext context, string errorText, Exception exception)
 		{
 			throw null;
 		}
 
-		public BindingCompleteEventArgs(Binding? binding, BindingCompleteState state, BindingCompleteContext context, string? errorText)
+		public BindingCompleteEventArgs(Binding binding, BindingCompleteState state, BindingCompleteContext context, string errorText)
 		{
 			throw null;
 		}
 
-		public BindingCompleteEventArgs(Binding? binding, BindingCompleteState state, BindingCompleteContext context)
+		public BindingCompleteEventArgs(Binding binding, BindingCompleteState state, BindingCompleteContext context)
 		{
 			throw null;
 		}

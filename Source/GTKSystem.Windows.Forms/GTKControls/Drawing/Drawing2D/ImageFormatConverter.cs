@@ -9,7 +9,7 @@ namespace System.Drawing
 {
 	public class ImageFormatConverter : TypeConverter
 	{
-		public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
+		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
 		{
 			if (!(sourceType == typeof(string)))
 			{
@@ -18,7 +18,7 @@ namespace System.Drawing
 			return true;
 		}
 
-		public override bool CanConvertTo(ITypeDescriptorContext? context, [NotNullWhen(true)] Type? destinationType)
+		public override bool CanConvertTo(ITypeDescriptorContext context, [NotNullWhen(true)] Type destinationType)
 		{
 			if (destinationType == typeof(string) || destinationType == typeof(InstanceDescriptor))
 			{
@@ -27,7 +27,7 @@ namespace System.Drawing
 			return base.CanConvertTo(context, destinationType);
 		}
 
-		public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
+		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
 			string text = value as string;
 			if (text == null)
@@ -89,7 +89,7 @@ namespace System.Drawing
 			throw new FormatException("ImageFormat err");
 		}
 
-		public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
+		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
 		{
 			ImageFormat imageFormat = value as ImageFormat;
 			if (imageFormat != null)
@@ -152,7 +152,7 @@ namespace System.Drawing
 			return base.ConvertTo(context, culture, value, destinationType);
 		}
 
-		public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext? context)
+		public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
 		{
 			return new StandardValuesCollection(new ImageFormat[12]
 			{
@@ -171,7 +171,7 @@ namespace System.Drawing
 			});
 		}
 
-		public override bool GetStandardValuesSupported(ITypeDescriptorContext? context)
+		public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
 		{
 			return true;
 		}

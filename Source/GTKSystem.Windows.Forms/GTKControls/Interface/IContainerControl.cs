@@ -12,7 +12,7 @@ namespace System.Windows.Forms
         /// <summary>
         ///  Indicates the control that is currently active on the container control.
         /// </summary>
-        Control? ActiveControl { get; set; }
+        Control ActiveControl { get; set; }
 
         /// <summary>
         ///  Activates the specified control.

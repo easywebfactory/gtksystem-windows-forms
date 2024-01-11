@@ -10,7 +10,7 @@ namespace System.Windows.Forms
 		[DefaultValue(null)]
 		[RefreshProperties(RefreshProperties.Repaint)]
 		[AttributeProvider(typeof(IListSource))]
-		public object? DataSource
+		public object DataSource
 		{
 			get;set;
 		}
@@ -24,7 +24,7 @@ namespace System.Windows.Forms
         [Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		[DefaultValue(null)]
-		public IFormatProvider? FormatInfo
+		public IFormatProvider FormatInfo
         {
             get; set;
         }
@@ -54,30 +54,30 @@ namespace System.Windows.Forms
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		[Bindable(true)]
-		public object? SelectedValue
+		public object SelectedValue
         {
             get; set;
         }
 
-		public event EventHandler? DataSourceChanged;
+		public event EventHandler DataSourceChanged;
 
-		public event EventHandler? DisplayMemberChanged;
+		public event EventHandler DisplayMemberChanged;
 
-		public event ListControlConvertEventHandler? Format;
+		public event ListControlConvertEventHandler Format;
 
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
-		public event EventHandler? FormatInfoChanged;
+		public event EventHandler FormatInfoChanged;
 
-		public event EventHandler? FormatStringChanged;
+		public event EventHandler FormatStringChanged;
 
-		public event EventHandler? FormattingEnabledChanged;
+		public event EventHandler FormattingEnabledChanged;
 
-		public event EventHandler? ValueMemberChanged;
+		public event EventHandler ValueMemberChanged;
 
-		public event EventHandler? SelectedValueChanged;
+		public event EventHandler SelectedValueChanged;
 
-		public string? GetItemText(object? item)
+		public string GetItemText(object item)
 		{
 			throw null;
 		}

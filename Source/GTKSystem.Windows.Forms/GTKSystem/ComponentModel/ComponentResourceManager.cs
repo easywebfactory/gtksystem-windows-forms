@@ -37,6 +37,11 @@ namespace GTKSystem.ComponentModel
             GTKSystem.Resources.ResourceManager temp = new GTKSystem.Resources.ResourceManager(formtype.FullName, formtype.Assembly);
             return temp.GetObject(name);
         }
+        public virtual string GetString(string name)
+        {
+            GTKSystem.Resources.ResourceManager temp = new GTKSystem.Resources.ResourceManager(formtype.FullName, formtype.Assembly);
+            return temp.GetString(name);
+        }
     }
 
 }

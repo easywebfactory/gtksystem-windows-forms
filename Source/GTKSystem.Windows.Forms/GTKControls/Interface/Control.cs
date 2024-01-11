@@ -3,10 +3,30 @@ using System.Drawing;
 
 namespace System.Windows.Forms
 {
+    [DesignerCategory("Component")]
     public partial class Control: Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize//,IEnumerable<Gtk.Widget>
     {
-        public virtual Gtk.Widget Widget { get; }
-        public virtual object GtkControl { get; }
+        public virtual T CreateControl<T>(params object[] args)
+        {
+            object widget = Activator.CreateInstance(typeof(T), args);
+            GtkControl = widget;
+            _widget = widget as Gtk.Widget;
+            Container = widget as Gtk.Container;
+            Dock = DockStyle.None;
+            _widget.MarginStart = 0;
+            _widget.MarginTop = 0;
+            _widget.StyleContext.AddClass("DefaultThemeStyle");
+            return (T)widget;
+        }
+        private Gtk.Widget _widget;
+        public virtual Gtk.Widget Widget
+        {
+            get { return _widget; }
+        }
+        public new Gtk.Container Container { get; private set; }
+
+        //public virtual Gtk.Widget Widget { get; }
+        public virtual object GtkControl { get; private set; }
         public virtual AccessibleObject AccessibilityObject { get; }
 
         public virtual string AccessibleDefaultActionDescription { get; set; }

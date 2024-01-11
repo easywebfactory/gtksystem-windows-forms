@@ -18,7 +18,7 @@ namespace System.Windows.Forms
             set;
         }
 
-		internal IArrangedElement? Owner
+		internal IArrangedElement Owner
 		{
 			get;
 			set;

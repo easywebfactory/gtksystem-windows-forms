@@ -1,5 +1,11 @@
+/*
+ * 基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * author:chenhongjin
+ * date: 2024/1/3
+ */
 using Gtk;
-
 using System.ComponentModel;
 
 
@@ -7,7 +13,8 @@ namespace System.Windows.Forms
 {
 	[ProvideProperty("FlowBreak", typeof(Control))]
 	[DefaultProperty("FlowDirection")]
-	public class FlowLayoutPanel : WidgetContainerControl<Gtk.FlowBox>, IExtenderProvider
+    [DesignerCategory("Component")]
+    public partial class FlowLayoutPanel : WidgetContainerControl<Gtk.FlowBox>, IExtenderProvider
     {
         private ObjectCollection _controls;
         public FlowLayoutPanel() : base()
@@ -32,8 +39,6 @@ namespace System.Windows.Forms
         }
 
         private FlowDirection _FlowDirection;
-        [DefaultValue(FlowDirection.LeftToRight)]
-		[Localizable(true)]
 		public FlowDirection FlowDirection
 		{
             get { return _FlowDirection; }
@@ -42,6 +47,18 @@ namespace System.Windows.Forms
                 if (value == FlowDirection.LeftToRight || value == FlowDirection.RightToLeft) { base.Control.Orientation = Gtk.Orientation.Horizontal; }
                 else if (value == FlowDirection.TopDown || value == FlowDirection.BottomUp) { base.Control.Orientation = Gtk.Orientation.Vertical; }
             }
+        }
+
+        public bool WrapContents { get; set; }
+
+        public bool GetFlowBreak(Control control)
+        {
+            return false;
+        }
+
+        public void SetFlowBreak(Control control, bool value)
+        {
+
         }
         public override ControlCollection Controls => _controls;
         public bool CanExtend(object extendee)

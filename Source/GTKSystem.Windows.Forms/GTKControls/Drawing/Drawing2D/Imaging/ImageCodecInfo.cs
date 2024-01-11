@@ -57,7 +57,7 @@ namespace System.Drawing.Imaging
 
 		/// <summary>Gets or sets a string that contains the name of the codec.</summary>
 		/// <returns>A string that contains the name of the codec.</returns>
-		public string? CodecName
+		public string CodecName
 		{
 			get
 			{
@@ -71,7 +71,7 @@ namespace System.Drawing.Imaging
 
 		/// <summary>Gets or sets string that contains the path name of the DLL that holds the codec. If the codec is not in a DLL, this pointer is <see langword="null" />.</summary>
 		/// <returns>A string that contains the path name of the DLL that holds the codec.</returns>
-		public string? DllName
+		public string DllName
 		{
 			get
 			{
@@ -85,7 +85,7 @@ namespace System.Drawing.Imaging
 
 		/// <summary>Gets or sets a string that describes the codec's file format.</summary>
 		/// <returns>A string that describes the codec's file format.</returns>
-		public string? FormatDescription
+		public string FormatDescription
 		{
 			get
 			{
@@ -99,7 +99,7 @@ namespace System.Drawing.Imaging
 
 		/// <summary>Gets or sets string that contains the file name extension(s) used in the codec. The extensions are separated by semicolons.</summary>
 		/// <returns>A string that contains the file name extension(s) used in the codec.</returns>
-		public string? FilenameExtension
+		public string FilenameExtension
 		{
 			get
 			{
@@ -113,7 +113,7 @@ namespace System.Drawing.Imaging
 
 		/// <summary>Gets or sets a string that contains the codec's Multipurpose Internet Mail Extensions (MIME) type.</summary>
 		/// <returns>A string that contains the codec's Multipurpose Internet Mail Extensions (MIME) type.</returns>
-		public string? MimeType
+		public string MimeType
 		{
 			get
 			{
@@ -156,7 +156,7 @@ namespace System.Drawing.Imaging
 		/// <summary>Gets or sets a two dimensional array of bytes that represents the signature of the codec.</summary>
 		/// <returns>A two dimensional array of bytes that represents the signature of the codec.</returns>
 		[CLSCompliant(false)]
-		public byte[][]? SignaturePatterns
+		public byte[][] SignaturePatterns
 		{
 			get
 			{
@@ -171,7 +171,7 @@ namespace System.Drawing.Imaging
 		/// <summary>Gets or sets a two dimensional array of bytes that can be used as a filter.</summary>
 		/// <returns>A two dimensional array of bytes that can be used as a filter.</returns>
 		[CLSCompliant(false)]
-		public byte[][]? SignatureMasks
+		public byte[][] SignatureMasks
 		{
 			get
 			{

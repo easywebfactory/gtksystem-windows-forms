@@ -41,7 +41,7 @@ namespace System.Drawing.Imaging
 		/// <param name="o">The object to test.</param>
 		/// <returns>
 		///   <see langword="true" /> if <paramref name="o" /> is a <see cref="T:System.Drawing.Imaging.FrameDimension" /> equivalent to this <see cref="T:System.Drawing.Imaging.FrameDimension" /> object; otherwise, <see langword="false" />.</returns>
-		public override bool Equals([NotNullWhen(true)] object? o)
+		public override bool Equals([NotNullWhen(true)] object o)
 		{
 			FrameDimension frameDimension = o as FrameDimension;
 			if (frameDimension == null)

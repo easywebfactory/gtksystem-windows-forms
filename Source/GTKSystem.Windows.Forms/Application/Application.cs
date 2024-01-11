@@ -158,6 +158,8 @@ namespace System.Windows.Forms
 .SplitContainer.horizontal{border-width:1px;}
 .GroupBox{} 
 .ButtonFontStyle{font-size:14px;color:red;}
+.ListView{background-color:#ffffff;}
+.listviewgroup{border-bottom:solid 1px #eeeeee;background-color:#fefefe;}
 ");
 
             Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, 800);

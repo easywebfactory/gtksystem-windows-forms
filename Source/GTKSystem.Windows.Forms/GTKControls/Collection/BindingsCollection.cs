@@ -97,9 +97,9 @@ namespace System.Windows.Forms
         {
             return _array.GetEnumerator();
         }
-        public event CollectionChangeEventHandler? CollectionChanging;
+        public event CollectionChangeEventHandler CollectionChanging;
 
-		public event CollectionChangeEventHandler? CollectionChanged;
+		public event CollectionChangeEventHandler CollectionChanged;
 
 	}
 }

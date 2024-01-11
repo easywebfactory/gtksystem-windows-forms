@@ -1,4 +1,5 @@
 ﻿//using GLib;
+using Cairo;
 using Gdk;
 using System.ComponentModel;
 using System.Drawing.Imaging;
@@ -6,6 +7,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace System.Drawing
 {
@@ -107,9 +109,9 @@ namespace System.Drawing
         /// <param name="g">The <see cref="T:System.Drawing.Graphics" /> object that specifies the resolution for the new <see cref="T:System.Drawing.Bitmap" />.</param>
         /// <exception cref="T:System.ArgumentNullException">
         ///   <paramref name="g" /> is <see langword="null" />.</exception>
-        public Bitmap(int width, int height, Graphics g)
+        public Bitmap(int width, int height, Graphics g) : this(width, height, PixelFormat.Format32bppArgb)
         {
- 
+
         }
 
         /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Bitmap" /> class with the specified size, pixel format, and pixel data.</summary>
@@ -119,7 +121,7 @@ namespace System.Drawing
         /// <param name="format">The pixel format for the new <see cref="T:System.Drawing.Bitmap" />. This must specify a value that begins with <c>Format</c>.</param>
         /// <param name="scan0">Pointer to an array of bytes that contains the pixel data.</param>
         /// <exception cref="T:System.ArgumentException">A <see cref="T:System.Drawing.Imaging.PixelFormat" /> value is specified whose name does not start with Format. For example, specifying <see cref="F:System.Drawing.Imaging.PixelFormat.Gdi" /> will cause an <see cref="T:System.ArgumentException" />, but <see cref="F:System.Drawing.Imaging.PixelFormat.Format48bppRgb" /> will not.</exception>
-        public Bitmap(int width, int height, int stride, PixelFormat format, IntPtr scan0)
+        public Bitmap(int width, int height, int stride, PixelFormat format, IntPtr scan0) : this(width, height, PixelFormat.Format32bppArgb)
         {
 
         }
@@ -131,7 +133,9 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentException">A <see cref="T:System.Drawing.Imaging.PixelFormat" /> value is specified whose name does not start with Format. For example, specifying <see cref="F:System.Drawing.Imaging.PixelFormat.Gdi" /> will cause an <see cref="T:System.ArgumentException" />, but <see cref="F:System.Drawing.Imaging.PixelFormat.Format48bppRgb" /> will not.</exception>
         public Bitmap(int width, int height, PixelFormat format)
         {
-
+            this.Width = width;
+            this.Height= height;
+            this.PixelFormat = format;
         }
 
         /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Bitmap" /> class from the specified existing image.</summary>

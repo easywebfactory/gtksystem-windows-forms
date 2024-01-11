@@ -19,7 +19,10 @@ namespace System.Windows.Forms
             base.Control.HasFrame = false;
             base.Control.MaxWidthChars = 1;
             base.Control.WidthChars = 0;
-
+            base.Control.SupportMultidevice = true;
+            base.Control.TruncateMultiline = true;
+            base.Control.Valign = Gtk.Align.Start;
+            base.Control.Halign = Gtk.Align.Start;
         }
         public override string Text { get { return base.Control.Text; } set { base.Control.Text = value; } }
         public virtual char PasswordChar { get => base.Control.InvisibleChar; set { base.Control.InvisibleChar = value; } }
@@ -28,6 +31,6 @@ namespace System.Windows.Forms
             add { base.Control.Changed += (object sender, EventArgs e) => { value.Invoke(this, e); }; }
             remove { base.Control.Changed -= (object sender, EventArgs e) => { value.Invoke(this, e); }; }
         }
-
+        public bool Multiline { get; set; }
     }
 }

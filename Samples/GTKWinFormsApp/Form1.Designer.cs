@@ -52,6 +52,7 @@ namespace GTKWinFormsApp
             Operate = new DataGridViewButtonColumn();
             PIC = new DataGridViewImageColumn();
             groupBox1 = new GroupBox();
+            button7 = new Button();
             checkBox2 = new CheckBox();
             maskedTextBox2 = new MaskedTextBox();
             radioButton3 = new RadioButton();
@@ -227,6 +228,7 @@ namespace GTKWinFormsApp
             // groupBox1
             // 
             groupBox1.AutoSize = true;
+            groupBox1.Controls.Add(button7);
             groupBox1.Controls.Add(checkBox2);
             groupBox1.Controls.Add(maskedTextBox2);
             groupBox1.Controls.Add(radioButton3);
@@ -248,6 +250,16 @@ namespace GTKWinFormsApp
             groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
             groupBox1.Text = "groupBox1";
+            // 
+            // button7
+            // 
+            button7.Location = new System.Drawing.Point(827, 21);
+            button7.Name = "button7";
+            button7.Size = new System.Drawing.Size(154, 29);
+            button7.TabIndex = 14;
+            button7.Text = "listview演示";
+            button7.UseVisualStyleBackColor = true;
+            button7.Click += button7_Click;
             // 
             // checkBox2
             // 
@@ -846,6 +858,7 @@ namespace GTKWinFormsApp
         private Label label5;
         private Button button6;
         private Label label6;
+        private Button button7;
     }
 }
 

@@ -21,6 +21,7 @@ namespace System.Drawing
             PixbufData = pixbuf;
         }
         public byte[] PixbufData { get; set; }
+        public Gdk.Pixbuf Pixbuf { get; set; }
         public string FileName { get; set; }
         #endregion
 
@@ -38,7 +39,7 @@ namespace System.Drawing
 		/// <returns>The <see cref="T:System.Object" /> that provides additional data about the image.</returns>
 		[Localizable(false)]
 		[DefaultValue(null)]
-		public object? Tag
+		public object Tag
 		{
 			get
 			{
@@ -73,11 +74,8 @@ namespace System.Drawing
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int Width
 		{
-			get
-			{
-				int width = 10;
-                return width;
-			}
+			get;
+			internal set;
 		}
 
 		/// <summary>Gets the height, in pixels, of this <see cref="T:System.Drawing.Image" />.</summary>
@@ -86,17 +84,14 @@ namespace System.Drawing
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int Height
-		{
-			get
-			{
-				int height = 10;
-                return height;
-			}
-		}
+        {
+            get;
+            internal set;
+        }
 
-		/// <summary>Gets the horizontal resolution, in pixels per inch, of this <see cref="T:System.Drawing.Image" />.</summary>
-		/// <returns>The horizontal resolution, in pixels per inch, of this <see cref="T:System.Drawing.Image" />.</returns>
-		public float HorizontalResolution
+        /// <summary>Gets the horizontal resolution, in pixels per inch, of this <see cref="T:System.Drawing.Image" />.</summary>
+        /// <returns>The horizontal resolution, in pixels per inch, of this <see cref="T:System.Drawing.Image" />.</returns>
+        public float HorizontalResolution
 		{
 			get
 			{
@@ -132,21 +127,16 @@ namespace System.Drawing
 		/// <returns>The <see cref="T:System.Drawing.Imaging.ImageFormat" /> that represents the file format of this <see cref="T:System.Drawing.Image" />.</returns>
 		public ImageFormat RawFormat
 		{
-			get
-			{
-				Guid format = default(Guid);
-				return new ImageFormat(format);
-			}
-		}
+            get;
+            internal set;
+        }
 
 		/// <summary>Gets the pixel format for this <see cref="T:System.Drawing.Image" />.</summary>
 		/// <returns>A <see cref="T:System.Drawing.Imaging.PixelFormat" /> that represents the pixel format for this <see cref="T:System.Drawing.Image" />.</returns>
 		public PixelFormat PixelFormat
 		{
-			get
-			{
-				return PixelFormat.Undefined;
-			}
+			get;
+			internal set;
 		}
 
 		/// <summary>Gets IDs of the property items stored in this <see cref="T:System.Drawing.Image" />.</summary>
@@ -154,58 +144,36 @@ namespace System.Drawing
 		[Browsable(false)]
 		public int[] PropertyIdList
 		{
-			get
-			{
-
-					return Array.Empty<int>();
-
-			}
-		}
+            get;
+            internal set;
+        }
 
 		/// <summary>Gets all the property items (pieces of metadata) stored in this <see cref="T:System.Drawing.Image" />.</summary>
 		/// <returns>An array of <see cref="T:System.Drawing.Imaging.PropertyItem" /> objects, one for each property item stored in the image.</returns>
 		[Browsable(false)]
 		public PropertyItem[] PropertyItems
 		{
-			get
-			{
-
-					return Array.Empty<PropertyItem>();
-
-			}
-		}
+            get;
+            internal set;
+        }
 
 		/// <summary>Gets or sets the color palette used for this <see cref="T:System.Drawing.Image" />.</summary>
 		/// <returns>A <see cref="T:System.Drawing.Imaging.ColorPalette" /> that represents the color palette used for this <see cref="T:System.Drawing.Image" />.</returns>
 		[Browsable(false)]
 		public ColorPalette Palette
 		{
-			get
-			{
-
-				ColorPalette colorPalette = new ColorPalette(10000);
-
-					return colorPalette;
-
-			}
-			set
-			{
-
-			}
-		}
+            get;
+            internal set;
+        }
 
 		/// <summary>Gets an array of GUIDs that represent the dimensions of frames within this <see cref="T:System.Drawing.Image" />.</summary>
 		/// <returns>An array of GUIDs that specify the dimensions of frames within this <see cref="T:System.Drawing.Image" /> from most significant to least significant.</returns>
 		[Browsable(false)]
 		public Guid[] FrameDimensionsList
 		{
-			get
-			{
-				
-					return Array.Empty<Guid>();
-
-			}
-		}
+            get;
+            internal set;
+        }
 
 		private protected Image()
 		{
@@ -280,8 +248,8 @@ namespace System.Drawing
 				throw new FileNotFoundException(filename);
 			}
 			filename = System.IO.Path.GetFullPath(filename);
-
-			return null;
+		    byte[] filebytes =File.ReadAllBytes(filename);
+			return new Bitmap(filebytes);
 		}
 
 		/// <summary>Creates an <see cref="T:System.Drawing.Image" /> from the specified data stream.</summary>
@@ -318,13 +286,16 @@ namespace System.Drawing
 		/// <exception cref="T:System.ArgumentException">The stream does not have a valid image format.</exception>
 		public static Image FromStream(Stream stream, bool useEmbeddedColorManagement, bool validateImageData)
 		{
-
+			if (stream != null)
+			{ 
+				return new Bitmap(stream);
+			}
 			return null;
 		}
 
 		private IntPtr InitializeFromStream(Stream stream)
 		{
-
+			
 			return IntPtr.Zero;
 		}
 
@@ -406,10 +377,12 @@ namespace System.Drawing
 		/// <exception cref="T:System.Runtime.InteropServices.ExternalException">The image was saved with the wrong image format.
 		/// -or-
 		/// The image was saved to the same file it was created from.</exception>
-		public void Save(string filename, ImageCodecInfo encoder, EncoderParameters? encoderParams)
+		public void Save(string filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
 		{
-
-		}
+			Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(PixbufData);
+			pixbuf.Save(filename, "image");
+            
+        }
 
 		private void Save(MemoryStream stream)
 		{
@@ -442,14 +415,18 @@ namespace System.Drawing
 		/// <exception cref="T:System.ArgumentNullException">
 		///   <paramref name="stream" /> is <see langword="null" />.</exception>
 		/// <exception cref="T:System.Runtime.InteropServices.ExternalException">The image was saved with the wrong image format.</exception>
-		public  void Save(Stream stream, ImageCodecInfo encoder, EncoderParameters? encoderParams)
+		public  void Save(Stream stream, ImageCodecInfo encoder, EncoderParameters encoderParams)
 		{
-
-		}
+            if (PixbufData != null)
+            {
+                foreach (byte b in PixbufData)
+                    stream.WriteByte(b);
+            }
+        }
 
 		/// <summary>Adds a frame to the file or stream specified in a previous call to the <see cref="Overload:System.Drawing.Image.Save" /> method. Use this method to save selected frames from a multiple-frame image to another multiple-frame image.</summary>
 		/// <param name="encoderParams">An <see cref="T:System.Drawing.Imaging.EncoderParameters" /> that holds parameters required by the image encoder that is used by the save-add operation.</param>
-		public void SaveAdd(EncoderParameters? encoderParams)
+		public void SaveAdd(EncoderParameters encoderParams)
 		{
 			
 		}
@@ -459,7 +436,7 @@ namespace System.Drawing
 		/// <param name="encoderParams">An <see cref="T:System.Drawing.Imaging.EncoderParameters" /> that holds parameters required by the image encoder that is used by the save-add operation.</param>
 		/// <exception cref="T:System.ArgumentNullException">
 		///   <paramref name="image" /> is <see langword="null" />.</exception>
-		public void SaveAdd(Image image, EncoderParameters? encoderParams)
+		public void SaveAdd(Image image, EncoderParameters encoderParams)
 		{
 			
 		}
@@ -484,7 +461,7 @@ namespace System.Drawing
 		/// Note You must create a delegate and pass a reference to the delegate as the <paramref name="callback" /> parameter, but the delegate is not used.</param>
 		/// <param name="callbackData">Must be <see cref="F:System.IntPtr.Zero" />.</param>
 		/// <returns>An <see cref="T:System.Drawing.Image" /> that represents the thumbnail.</returns>
-		public Image GetThumbnailImage(int thumbWidth, int thumbHeight, GetThumbnailImageAbort? callback, IntPtr callbackData)
+		public Image GetThumbnailImage(int thumbWidth, int thumbHeight, GetThumbnailImageAbort callback, IntPtr callbackData)
 		{
 			return null;
 		}
@@ -507,7 +484,7 @@ namespace System.Drawing
 		/// <param name="propid">The ID of the property item to get.</param>
 		/// <returns>The <see cref="T:System.Drawing.Imaging.PropertyItem" /> this method gets.</returns>
 		/// <exception cref="T:System.ArgumentException">The image format of this image does not support property items.</exception>
-		public  PropertyItem? GetPropertyItem(int propid)
+		public  PropertyItem GetPropertyItem(int propid)
 		{
 
 				return null;
@@ -552,7 +529,7 @@ namespace System.Drawing
 		/// <summary>Returns information about the parameters supported by the specified image encoder.</summary>
 		/// <param name="encoder">A GUID that specifies the image encoder.</param>
 		/// <returns>An <see cref="T:System.Drawing.Imaging.EncoderParameters" /> that contains an array of <see cref="T:System.Drawing.Imaging.EncoderParameter" /> objects. Each <see cref="T:System.Drawing.Imaging.EncoderParameter" /> contains information about one of the parameters supported by the specified image encoder.</returns>
-		public EncoderParameters? GetEncoderParameterList(Guid encoder)
+		public EncoderParameters GetEncoderParameterList(Guid encoder)
 		{
 
 				return null;
@@ -636,12 +613,12 @@ namespace System.Drawing
 
     public class GtkImageConverter : TypeConverter
 	{
-        public override bool CanConvertFrom(ITypeDescriptorContext? context, Type? sourceType)
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
             return true;
         }
 
-        public override bool CanConvertTo(ITypeDescriptorContext? context, [NotNullWhen(true)] Type? destinationType)
+        public override bool CanConvertTo(ITypeDescriptorContext context, [NotNullWhen(true)] Type destinationType)
         {
             if (!(destinationType == typeof(byte[])))
             {
@@ -650,23 +627,23 @@ namespace System.Drawing
             return true;
         }
 
-        public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
 			
             return base.ConvertFrom(context, culture, value);
         }
 
-        public override object ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
 			return value;
         }
 
-        public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext? context, object? value, Attribute[]? attributes)
+        public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
         {
             return TypeDescriptor.GetProperties(typeof(Image), attributes);
         }
 
-        public override bool GetPropertiesSupported(ITypeDescriptorContext? context)
+        public override bool GetPropertiesSupported(ITypeDescriptorContext context)
         {
             return true;
         }

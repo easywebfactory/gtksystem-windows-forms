@@ -2,9 +2,9 @@ namespace System.Windows.Forms
 {
 	public readonly struct BindingMemberInfo : IEquatable<BindingMemberInfo>
 	{
-		private readonly string? _dataList;
+		private readonly string _dataList;
 
-		private readonly string? _dataField;
+		private readonly string _dataField;
 
 		public string BindingPath
 		{
@@ -30,12 +30,12 @@ namespace System.Windows.Forms
 			}
 		}
 
-		public BindingMemberInfo(string? dataMember)
+		public BindingMemberInfo(string dataMember)
 		{
 			throw null;
 		}
 
-		public override bool Equals(object? otherObject)
+		public override bool Equals(object otherObject)
 		{
 			throw null;
 		}

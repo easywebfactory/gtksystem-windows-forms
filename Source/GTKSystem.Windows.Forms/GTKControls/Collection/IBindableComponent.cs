@@ -6,6 +6,6 @@ namespace System.Windows.Forms
 	{
 		ControlBindingsCollection DataBindings { get; }
 
-		BindingContext? BindingContext { get; set; }
+		BindingContext BindingContext { get; set; }
 	}
 }

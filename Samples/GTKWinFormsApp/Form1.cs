@@ -335,7 +335,14 @@ namespace GTKWinFormsApp
 
         private void button6_Click(object sender, EventArgs e)
         {
-            var b = sender;
+            
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            Form2 form = new Form2();
+            form.Show(this);
+
         }
     }
 

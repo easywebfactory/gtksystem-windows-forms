@@ -4,7 +4,7 @@ namespace System.Windows.Forms
 {
 	public abstract class TableLayoutStyleCollection : ArrayList
 	{
-		internal IArrangedElement? Owner
+		internal IArrangedElement Owner
 		{
 			get;
 			private set;
@@ -21,7 +21,7 @@ namespace System.Windows.Forms
 				base[index] = value;
 			}
 		}
-		internal TableLayoutStyleCollection(IArrangedElement? owner)
+		internal TableLayoutStyleCollection(IArrangedElement owner)
 		{
 			Owner = owner;
 
