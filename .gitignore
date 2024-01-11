@@ -23,3 +23,31 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+
+/Source/GTKSystem.Windows.Forms/bin/Debug/net8.0/*.dll
+/Source/GTKSystem.Windows.Forms/bin/Debug/net8.0/*.pdb
+/Source/GTKSystem.Windows.Forms/obj/Debug/net8.0/ref/*.dll
+/Source/GTKSystem.Windows.Forms/obj/Debug/net8.0/refint/*.dll
+/Source/GTKSystem.Windows.Forms/obj/Debug/net8.0/*.dll
+/Source/GTKSystem.Windows.Forms/obj/Debug/net8.0/*.pdb
+
+/Source/System.Resources.Extensions/bin/Debug/net8.0/*.dll
+/Source/System.Resources.Extensions/bin/Debug/net8.0/*.pdb
+/Source/System.Resources.Extensions/obj/Debug/net8.0/ref/*.dll
+/Source/System.Resources.Extensions/obj/Debug/net8.0/refint/*.dll
+/Source/System.Resources.Extensions/obj/Debug/net8.0/*.dll
+/Source/System.Resources.Extensions/obj/Debug/net8.0/*.pdb
+
+/Samples/GTKWinFormsApp/bin/Debug/net8.0/*.pdb
+/Samples/GTKWinFormsApp/bin/Debug/net8.0/*.dll
+/Samples/GTKWinFormsApp/obj/Debug/net8.0/*.pdb
+/Samples/GTKWinFormsApp/obj/Debug/net8.0/*.dll
+
+/Samples/GTKWinFormsApp/bin/Debug/net8.0/*.exe
+
+/Samples/GTKWinFormsApp/obj/Debug/net8.0/TempPE/*.dll
+/Samples/GTKWinFormsApp/obj/Debug/net8.0/*.cache
+/Samples/GTKWinFormsApp/obj/Debug/net8.0/GTKWinFormsApp.csproj.CoreCompileInputs.cache
+/Samples/GTKWinFormsApp/obj/Debug/net8.0/GTKWinFormsApp.csproj.AssemblyReference.cache
+/Samples/GTKWinFormsApp/obj/Debug/net8.0/GTKWinFormsApp.AssemblyInfoInputs.cache
