@@ -13,7 +13,7 @@ namespace System.Windows.Forms
 
         internal string _name;
 
-        internal int _width;
+        internal int _width = 120;
 
         [Localizable(true)]
         public int DisplayIndex { get; set; }
@@ -46,39 +46,23 @@ namespace System.Windows.Forms
         public ListView ListView
         {
             [CompilerGenerated]
-            get
-            {
-                throw null;
-            }
+            get;
         }
 
         [Browsable(false)]
 
         public string Name
         {
-            get
-            {
-                throw null;
-            }
-            set
-            {
-                throw null;
-            }
+            get;
+            set;
         }
 
         [Localizable(true)]
 
         public string Text
         {
-            get
-            {
-                throw null;
-            }
-            [param: AllowNull]
-            set
-            {
-                throw null;
-            }
+            get;
+            set;
         }
 
 
@@ -86,14 +70,8 @@ namespace System.Windows.Forms
         [DefaultValue(HorizontalAlignment.Left)]
         public HorizontalAlignment TextAlign
         {
-            get
-            {
-                throw null;
-            }
-            set
-            {
-                throw null;
-            }
+            get;
+            set;
         }
 
 
@@ -104,31 +82,17 @@ namespace System.Windows.Forms
 
         public object Tag
         {
-            [CompilerGenerated]
-            get
-            {
-                throw null;
-            }
-            [CompilerGenerated]
-            set
-            {
-                throw null;
-            }
+            get;
+            set;
         }
 
         [Localizable(true)]
         [DefaultValue(60)]
         public int Width
         {
-            get
-            {
-                throw null;
-            }
-            set
-            {
-                throw null;
-            }
-        }
+            get;
+            set;
+        } = 100;
 
         public ColumnHeader()
         {

@@ -158,8 +158,11 @@ namespace System.Windows.Forms
 .SplitContainer.horizontal{border-width:1px;}
 .GroupBox{} 
 .ButtonFontStyle{font-size:14px;color:red;}
-.ListView{background-color:#ffffff;}
-.listviewgroup{border-bottom:solid 1px #eeeeee;background-color:#fefefe;}
+.ListView{background-color:#ffffff; padding:0px;}
+.listviewgroup1{background-color:#fefefe; background-image:url('Resources/System/line.png'); background-position:50% 50%;padding:0px;}
+.listviewgroup{background-color:#fefefe; background-image:linear-gradient(#ffffff 12px,#ccccce 3px,#ffffff 14px);}
+.listviewtitle{background-color:#fefefe; padding-left:5px;padding-right:5px; }
+.listviewsubtitle{padding-left:5px;padding-right:5px;color:#666666; font-size:12px; }
 ");
 
             Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, 800);

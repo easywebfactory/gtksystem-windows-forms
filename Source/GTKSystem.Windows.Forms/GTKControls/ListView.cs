@@ -1,4 +1,4 @@
-using GLib;
+
 using Gtk;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,107 +6,108 @@ using System.ComponentModel;
 
 using System.Drawing;
 using System.Linq;
+using System.Reflection.PortableExecutable;
+using System.Text.RegularExpressions;
+using System.Threading;
 
- 
+
 namespace System.Windows.Forms
 {
 
 	[DefaultEvent("SelectedIndexChanged")]
-	public class ListView : WidgetControl<Gtk.HBox>
+	public class ListView : WidgetControl<Gtk.Box>
     {
 		private ListViewItemCollection _items;
 		private ListViewGroupCollection _groups;
 		private ColumnHeaderCollection _columns;
-        internal Gtk.FlowBox _flow;
-        public ListView():base()
+        internal Gtk.VBox flowBoxContainer = null;
+        internal Gtk.StackSwitcher header = new Gtk.StackSwitcher();
+        public ListView():base(Gtk.Orientation.Vertical,0)
         {
 			_items = new ListViewItemCollection(this);
 			_groups = new ListViewGroupCollection(this);
 			_columns = new ColumnHeaderCollection(this);
 			base.Control.StyleContext.AddClass("ListView");
-
+            this.Control.PackStart(header, false, true, 0);
             base.Control.Realized += Control_Realized;
-            _flow = new Gtk.FlowBox();
-            _flow.StyleContext.AddClass("FlowBox");
-            _flow.MaxChildrenPerLine = 100u;
-            _flow.MinChildrenPerLine = 0u;
-            _flow.ColumnSpacing = 5;
-            _flow.SortFunc = new FlowBoxSortFunc((fbc1, fbc2) => !this.Sorted ? 0 : fbc1.TooltipText.CompareTo(fbc2.TooltipText));
-            _flow.Halign = Gtk.Align.Fill;
-			_flow.Valign = Gtk.Align.Fill;
-            _flow.Orientation = Gtk.Orientation.Vertical;
-            _flow.SelectionMode = Gtk.SelectionMode.Multiple;
-            _flow.ChildActivated += _flow_ChildActivated;
-            _flow.SelectedChildrenChanged += _flow_SelectedChildrenChanged;
+            header.Halign = Gtk.Align.Fill;
+            header.Valign = Gtk.Align.Fill;
+            header.HeightRequest = 20;
+            header.NoShowAll = true;
+            header.Visible = false;
+            header.Hide();
+           
+
+            flowBoxContainer = new Gtk.VBox();
             Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
             //scrolledWindow.HscrollbarPolicy = PolicyType.Never;
-            Gtk.Viewport viewport = new Gtk.Viewport();
-            viewport.Add(_flow);
-            scrolledWindow.Add(viewport);
-            this.Control.Add(scrolledWindow);
+            scrolledWindow.Add(flowBoxContainer);
+            this.Control.PackStart(scrolledWindow, true, true, 1);
         }
-
-        private void _flow_SelectedChildrenChanged(object sender, EventArgs e)
-        {
-            _flow.SelectedForeach(new FlowBoxForeachFunc((fb, fbc) => {
-                if (fbc.Data["type"].ToString() == "group")
-                {
-                    _flow.UnselectChild(fbc);
-                }
-            }));
-        }
-
+ 
         private HashSet<int> selectedIndexes = new HashSet<int>();
-        private void _flow_ChildActivated(object o, ChildActivatedArgs args)
+        private void _flow_ChildActivated(object o, Gtk.ChildActivatedArgs args)
         {
-            if (args.Child.Data["type"].ToString() == "group")
+
+            if (ItemActivate != null)
+                ItemActivate(this, args);
+
+            ListViewItem item = this.Items.FindAll(m => m.Group.Name == args.Child.Parent.Name)[args.Child.Index];
+            if (selectedIndexes.Contains(item.Index))
             {
-                _flow.UnselectChild(args.Child);
+                if (args.Child.IsSelected)
+                {
+                    selectedIndexes.Remove(item.Index);
+                    if (args.Child.Parent is Gtk.FlowBox flow)
+                        flow.UnselectChild(args.Child);
+                }
             }
             else
             {
-                if (ItemActivate != null)
-                    ItemActivate(this, args);
+                item.Selected = true;
+                selectedIndexes.Add(item.Index);
+                if (SelectedIndexChanged != null)
+                    SelectedIndexChanged(this, args);
 
-                if (selectedIndexes.Contains(args.Child.Index))
-                {
-                    if (args.Child.IsSelected)
-                    {
-                        selectedIndexes.Remove(args.Child.Index);
-                        _flow.UnselectChild(args.Child);
-                    }
-                }
-                else
-                {
-                    selectedIndexes.Add(args.Child.Index);
-                    int rowIndex = args.Child.Index;
-                    ListViewItem sender = this.Items[rowIndex];
-                    if (SelectedIndexChanged != null)
-                        SelectedIndexChanged(sender, args);
-
-                    if (ItemSelectionChanged != null)
-                        ItemSelectionChanged(this, new ListViewItemSelectionChangedEventArgs(sender, rowIndex, args.Child.IsSelected));
-                }
-                if (Click != null)
-                    Click(this, args);
+                if (ItemSelectionChanged != null)
+                    ItemSelectionChanged(this, new ListViewItemSelectionChangedEventArgs(item, item.Index, args.Child.IsSelected));
             }
+            if (Click != null)
+                Click(this, args);
+
         }
 
         private void Control_Realized(object sender, EventArgs e)
         {
-            if (Groups.Count > 0)
+            if (this.View == View.Details)
             {
-                _flow.Orientation = Gtk.Orientation.Horizontal;
-                foreach (Gtk.FlowBoxChild child in _flow.Children)
-                    child.WidthRequest = Width;
-                foreach(ListViewItem item in Items)
+                header.NoShowAll = false;
+                header.Visible = true;
+                header.ShowAll();
+                foreach (ColumnHeader col in Columns)
                 {
-                    if (item.ItemType == "group")
-                        AddGroup(item.Group, -1);
-                    else
-                        AddItem(item, -1);
+                    header.Add(new Gtk.Button(col.Text ?? "") { WidthRequest = col.Width, Halign = Gtk.Align.Fill, Valign = Gtk.Align.Fill });
                 }
             }
+
+            if (this.Sorting == SortOrder.Ascending)
+                Items.Sort(new Comparison<ListViewItem>((x, y) => x.Text.CompareTo(y.Text)));
+            else if (this.Sorting == SortOrder.Descending)
+                Items.Sort(new Comparison<ListViewItem>((x, y) => y.Text.CompareTo(x.Text)));
+
+            var group = Items.GroupBy(g => new { g.Group.Header,g.Group.Name }).OrderBy(o => o.Key.Name);
+            foreach (var g in group)
+            {
+                if (g.Count() > 0)
+                {
+                    AddGroup(g.First().Group, -1);
+                    foreach (ListViewItem item in g)
+                    {
+                        AddItem(item, -1);
+                    }
+                }
+            }
+
             this.Control.ShowAll();
         }
 
@@ -127,22 +128,28 @@ namespace System.Windows.Forms
 		public bool LabelEdit { get; set; }
 		public bool LabelWrap { get; set; }
 		public ImageList LargeImageList { get; set; }
-
+        private bool _MultiSelect;
         public virtual bool MultiSelect
         {
             get
             {
-                return _flow.SelectionMode == Gtk.SelectionMode.Multiple;
+                return _MultiSelect;
             }
             set
             {
-                if (value == true)
+                foreach (var flow in flowBoxContainer.AllChildren)
                 {
-                    _flow.SelectionMode = Gtk.SelectionMode.Multiple;
-                }
-                else
-                {
-                    _flow.SelectionMode = Gtk.SelectionMode.Single;
+                    if (flow is Gtk.FlowBox _flow)
+                    {
+                        if (value == true)
+                        {
+                            _flow.SelectionMode = Gtk.SelectionMode.Multiple;
+                        }
+                        else
+                        {
+                            _flow.SelectionMode = Gtk.SelectionMode.Single;
+                        }
+                    }
                 }
             }
         }
@@ -159,42 +166,160 @@ namespace System.Windows.Forms
 		public bool UseCompatibleStateImageBehavior { get; set; }
 		public System.Windows.Forms.View View { get; set; }
 
-
         public void AddItem(ListViewItem item, int position)
         {
-            Gtk.HBox hBox = new Gtk.HBox();
-            hBox.Valign = Gtk.Align.Start;
-            hBox.Halign = Gtk.Align.Start;
+            Gtk.Box hBox = new Gtk.Box(Gtk.Orientation.Horizontal,0);
+            hBox.Valign = Gtk.Align.Fill;
+            hBox.Halign = Gtk.Align.Fill;
+            hBox.Spacing = 0;
+            hBox.BorderWidth = 0;
+            hBox.Homogeneous = false;
+           // hBox.StyleContext.AddClass("listviewgrid");
+            Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
+            boxitem.TooltipText = item.Text;
+            boxitem.Halign = Gtk.Align.Fill;
+            boxitem.Valign = Gtk.Align.Fill;
+            boxitem.HeightRequest = 28;
+            boxitem.BorderWidth = 0;
+            boxitem.Margin = 0;
+            boxitem.Add(hBox);
+
+            if (Groups.Contains(item.Group?.Name) == false)
+            {
+                Groups.Add(item.Group);
+            }
+            Gtk.FlowBox flowBox = Groups[item.Group.Name].FlowBox;
+            flowBox.Halign = Gtk.Align.Fill;
+            flowBox.Valign = Gtk.Align.Fill;
+            flowBox.Name = item.Group.Name;
+            flowBox.ColumnSpacing = 0;
+            flowBox.Add(boxitem);
+
+
             if (this.CheckBoxes == true)
             {
-				Gtk.CheckButton checkbox = new Gtk.CheckButton() { WidthRequest = 20 };
-                checkbox.Active = item.Checked;
-                checkbox.Toggled += (object sender, EventArgs e) => {
-                    Gtk.CheckButton box = sender as Gtk.CheckButton;
-                    Gtk.FlowBoxChild boxitem = box.Parent.Parent as Gtk.FlowBoxChild;
-                    ListViewItem thisitem = Items[boxitem.Index];
-					thisitem.Checked = box.Active;
-                    if (ItemCheck!=null)
-					{
-                        ItemCheck(item, new ItemCheckEventArgs(boxitem.Index, box.Active ? CheckState.Checked : CheckState.Unchecked, box.Active ? CheckState.Unchecked : CheckState.Checked));
-					}
-                    if (ItemChecked != null)
+                if (this.View == View.SmallIcon || this.View == View.LargeIcon)
+                {
+                    Gtk.CheckButton checkbox = new Gtk.CheckButton() { Halign = Gtk.Align.Start, WidthRequest = 20 };
+                    checkbox.Active = item.Checked;
+                    checkbox.Toggled += (object sender, EventArgs e) =>
                     {
-                        ItemChecked(item, new ItemCheckedEventArgs(thisitem));
-                    }
-                };
-                hBox.Add(checkbox);
-			}
+                        Gtk.CheckButton box = sender as Gtk.CheckButton;
+                        Gtk.FlowBoxChild boxitem = box.Parent.Parent as Gtk.FlowBoxChild;
+                        ListViewItem thisitem = this.Items.FindAll(m => m.Group.Name == boxitem.Parent.Name)[boxitem.Index];
+                        thisitem.Checked = box.Active;
+                        if (ItemCheck != null)
+                        {
+                            ItemCheck(item, new ItemCheckEventArgs(boxitem.Index, box.Active ? CheckState.Checked : CheckState.Unchecked, box.Active ? CheckState.Unchecked : CheckState.Checked));
+                        }
+                        if (ItemChecked != null)
+                        {
+                            ItemChecked(item, new ItemCheckedEventArgs(thisitem));
+                        }
+                    };
+                    hBox.Add(checkbox);
+                }
+            }
 
-			if (this.View == View.SmallIcon)
+            if (this.View == View.Details)
             {
+                header.Visible = true;
+                flowBox.MinChildrenPerLine = 1;
+                flowBox.MaxChildrenPerLine = 1;
+                Gtk.Box fistcell = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
+                fistcell.Homogeneous = false;
+
+                fistcell.Halign = Gtk.Align.Fill;
+                fistcell.Valign = Gtk.Align.Fill;
+                fistcell.Spacing = 0;
+                fistcell.BorderWidth = 0;
+                fistcell.WidthRequest = Columns.Count > 0 ? Columns[0].Width-2 : 998;
+                fistcell.Margin = 0;
+
+                if (this.CheckBoxes == true)
+                {
+                    Gtk.CheckButton checkbox = new Gtk.CheckButton() { Halign = Gtk.Align.Start };
+
+                    checkbox.Halign = Gtk.Align.Start;
+                    checkbox.Valign = Gtk.Align.Fill;
+                    checkbox.Active = item.Checked;
+                    checkbox.Toggled += (object sender, EventArgs e) =>
+                    {
+                        Gtk.CheckButton box = sender as Gtk.CheckButton;
+                        Gtk.FlowBoxChild boxitem = box.Parent.Parent as Gtk.FlowBoxChild;
+                        ListViewItem thisitem = this.Items.FindAll(m => m.Group.Name == boxitem.Parent.Name)[boxitem.Index];
+                        thisitem.Checked = box.Active;
+                        if (ItemCheck != null)
+                        {
+                            ItemCheck(item, new ItemCheckEventArgs(boxitem.Index, box.Active ? CheckState.Checked : CheckState.Unchecked, box.Active ? CheckState.Unchecked : CheckState.Checked));
+                        }
+                        if (ItemChecked != null)
+                        {
+                            ItemChecked(item, new ItemCheckedEventArgs(thisitem));
+                        }
+                    };
+                    fistcell.Add(checkbox);
+                }
                 if (this.SmallImageList != null)
                 {
                     this.SmallImageList.ImageSize = new Size(16, 16);
                     if (!string.IsNullOrWhiteSpace(item.ImageKey))
                     {
                         Drawing.Image img = this.SmallImageList.Images[item.ImageKey];
-                        hBox.Add(new Gtk.Image(img.Pixbuf)) ;
+
+                        fistcell.Add(new Gtk.Image(img.Pixbuf) { Halign=Gtk.Align.Start,Valign=Gtk.Align.Fill });
+                    }
+                    else if (item.ImageIndex > -1)
+                    {
+                        Drawing.Image img = this.SmallImageList.Images[item.ImageIndex];
+
+                        fistcell.Add(new Gtk.Image(img.Pixbuf) { Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill, WidthRequest = 20 }) ;
+                    }
+
+                }
+
+                fistcell.Add(new Gtk.Label(item.Text) { MaxWidthChars= fistcell.WidthRequest/12, Halign = Gtk.Align.Fill, Valign = Gtk.Align.Fill, Ellipsize = Pango.EllipsizeMode.End });
+
+                Gtk.Layout layout = new Gtk.Layout(new Adjustment(IntPtr.Zero), new Adjustment(IntPtr.Zero));
+                layout.Halign = Gtk.Align.Start;
+                layout.Valign = Gtk.Align.Fill;
+                layout.Expand= true;
+                layout.WidthRequest = fistcell.WidthRequest;
+                layout.Add(fistcell);
+                hBox.Add(layout);
+
+                int index = 0;
+                foreach(ColumnHeader col in Columns)
+                {
+                    if (index > 0 && item.SubItems != null && item.SubItems.Count > index)
+                    {
+                        Gtk.Label sublabel = new Gtk.Label(item.SubItems[index].Text) { MarginStart=2, WidthRequest = col.Width, MaxWidthChars = col.Width / 12, Halign = Gtk.Align.Fill, Valign = Gtk.Align.Fill, Ellipsize = Pango.EllipsizeMode.End };
+                        Gtk.Layout sublayout = new Gtk.Layout(new Adjustment(IntPtr.Zero), new Adjustment(IntPtr.Zero));
+                        sublayout.Halign = Gtk.Align.Start;
+                        sublayout.Valign = Gtk.Align.Fill;
+                        sublayout.Expand = true;
+                        sublayout.WidthRequest = col.Width - 2;
+                       // sublayout.HeightRequest = 30;
+                        sublayout.Add(sublabel);
+                        hBox.Add(sublayout);
+                    }
+                    index++;
+                }
+            }
+            else if (this.View == View.SmallIcon)
+            {
+                header.Visible = false;
+
+                flowBox.Orientation = Gtk.Orientation.Horizontal;
+                flowBox.MinChildrenPerLine = 1;
+                flowBox.MaxChildrenPerLine = 999;
+                if (this.SmallImageList != null)
+                {
+                    this.SmallImageList.ImageSize = new Size(16, 16);
+                    if (!string.IsNullOrWhiteSpace(item.ImageKey))
+                    {
+                        Drawing.Image img = this.SmallImageList.Images[item.ImageKey];
+                        hBox.Add(new Gtk.Image(img.Pixbuf));
                     }
                     else if (item.ImageIndex > -1)
                     {
@@ -203,11 +328,14 @@ namespace System.Windows.Forms
                     }
 
                 }
-                hBox.Add(new Gtk.Label(item.Text) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start }); 
+                hBox.Add(new Gtk.Label(item.Text) { MaxWidthChars = Columns.Count > 0 ? Columns[0].Width/12 : 100/2, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End });
             }
-			else
-			{
-                Gtk.VBox vBox = new Gtk.VBox();
+            else if (this.View == View.LargeIcon)
+            {
+                flowBox.MinChildrenPerLine = 1;
+                flowBox.MaxChildrenPerLine = 999;
+       
+                Gtk.Box vBox = new Gtk.Box(Gtk.Orientation.Vertical, 0);
                 if (this.LargeImageList != null)
                 {
                     this.SmallImageList.ImageSize = new Size(100, 100);
@@ -228,54 +356,74 @@ namespace System.Windows.Forms
                         vBox.Add(new Gtk.Image(img.Pixbuf) { WidthRequest = Math.Min(50, width), HeightRequest = Math.Min(50, height) });
                     }
                 }
-                vBox.Add(new Gtk.Label(item.Text) { Xalign = 0, Halign = Gtk.Align.Center, Valign = Gtk.Align.Center }); ;
+                vBox.Add(new Gtk.Label(item.Text) { MaxWidthChars = Columns.Count > 0 ? Columns[0].Width / 12 : 100 / 2, Halign = Gtk.Align.Center, Valign = Gtk.Align.Center, Ellipsize = Pango.EllipsizeMode.End }); ;
                 hBox.Add(vBox);
-            }
-            
-
-            Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
-            boxitem.TooltipText = item.Text;
-            boxitem.Data.Add("type", "item");
-            boxitem.Add(hBox);
-            if (position < 0)
-            {
-                this._flow.Add(boxitem);
             }
             else
             {
-                this._flow.Insert(boxitem, position);
+                header.Visible = false;
+                Gtk.Label label = new Gtk.Label(item.Text) { Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill }; ;
+
+                hBox.Add(label);
             }
         }
+
         public void AddGroup(ListViewGroup group, int position)
         {
             if (group == null)
                 return;
-            Gtk.HBox hBox = new Gtk.HBox();
-            hBox.Valign = Gtk.Align.Fill;
+            Gtk.VBox hBox = new Gtk.VBox();
+            hBox.Valign = Gtk.Align.Start;
             hBox.Halign = Gtk.Align.Fill;
-            var bb = new Gtk.Label(group.Name) { Xalign = 0, Halign = Gtk.Align.Fill, Valign = Gtk.Align.Fill };
-            bb.MarginTop = 10;
-            bb.StyleContext.AddClass("listviewgroup");
-            hBox.Add(bb);
+            Gtk.Viewport groupbox = new Gtk.Viewport();
+            groupbox.StyleContext.AddClass("listviewgroup");
+            var title = new Gtk.Label(group.Header) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
+            title.MarginStart = 3;
+            title.StyleContext.AddClass("listviewtitle");
+            groupbox.Add(title);
+            hBox.Add(groupbox);
+            if (!string.IsNullOrWhiteSpace(group.Subtitle))
+            {
+                var subtitle = new Gtk.Label(group.Subtitle) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
+                subtitle.MarginStart = 3;
+                subtitle.StyleContext.AddClass("listviewsubtitle");
+                hBox.Add(subtitle);
+            }
 
-            Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
-            boxitem.WidthRequest = Width;
-            boxitem.Valign = Gtk.Align.Fill;
-            boxitem.Halign = Gtk.Align.Fill;
-            boxitem.TooltipText = group.Subtitle;
-            boxitem.Data.Add("type", "group");
-           // boxitem.StyleContext.AddClass("listviewgroup");
-            boxitem.Add(hBox);
-
+            Gtk.FlowBox _flow = group.FlowBox;
+            _flow.StyleContext.AddClass("FlowBox");
+            _flow.MaxChildrenPerLine = 100u;
+            _flow.MinChildrenPerLine = 0u;
+            _flow.ColumnSpacing = 12;
+            if (this.Sorted)
+            {
+                _flow.SortFunc = new Gtk.FlowBoxSortFunc((fbc1, fbc2) =>
+                {
+                    if(this.Sorting==SortOrder.Descending)
+                        return fbc2.TooltipText.CompareTo(fbc1.TooltipText);
+                    else if(this.Sorting == SortOrder.Ascending)
+                        return fbc1.TooltipText.CompareTo(fbc2.TooltipText);
+                    else
+                        return 0;
+                });
+            }
+            _flow.Halign = Gtk.Align.Fill;
+            _flow.Valign = Gtk.Align.Fill;
+            _flow.Orientation = Gtk.Orientation.Horizontal;
+            _flow.SelectionMode = Gtk.SelectionMode.Single;
+            _flow.ChildActivated += _flow_ChildActivated;
+            hBox.Add(_flow);
+            
             if (position < 0)
             {
-                this._flow.Add(boxitem);
+                flowBoxContainer.PackStart(hBox,true,true,0);
             }
             else
             {
-                this._flow.Insert(boxitem, position);
+                flowBoxContainer.PackStart(hBox, true, true,Convert.ToUInt32(position));
             }
         }
+ 
         public class CheckedIndexCollection : List<int>
 		{
 			 
@@ -455,7 +603,7 @@ namespace System.Windows.Forms
 		}
 
 		[ListBindable(false)]
-		public class ListViewItemCollection : List<ListViewItem>
+		public class ListViewItemCollection : List<ListViewItem>, IList
 		{
 			ListView _owner;
 			public virtual ListViewItem this[string key]
@@ -470,6 +618,7 @@ namespace System.Windows.Forms
 			{
 				_owner = owner;
             }
+
             public new void Add(ListViewItem item)
             {
                 AddCore(item, -1);
@@ -509,79 +658,20 @@ namespace System.Windows.Forms
 
             public void AddCore(ListViewItem item, int position)
 			{
-                item.ItemType = "item";
-                if (position < 0)
+                item.Index = Count;
+                base.Add(item);
+                if (_owner.Control.IsRealized)
                 {
-                    item.Index = Count;
-                    base.Add(item);
-                    for (int i = 0; i < Count; i++)
-                        this[i].Index = i;
-
-                    
-                    if (_owner.Control.IsRealized)
-                    {
-                        _owner.AddItem(item, position);
-                        _owner.Control.ShowAll();
-                    }
-                }
-                else
-                {
-                    item.Index = position;
-                    base.Insert(position, item);
-                  
-                    if (_owner.Control.IsRealized)
-                    {
-                        _owner.AddItem(item, position);
-                        _owner.Control.ShowAll();
-                    }
-                }
-            }
-            public void AddGroup(ListViewGroup group, int position)
-            {
-                if (_owner.Groups.Count > 0)
-                {
-                    ListViewItem item = new ListViewItem(group);
-                    item.ItemType = "group";
-                    if (position < 0)
-                    {
-                        item.Index = Count;
-                        base.Add(item);
-                        for (int i = 0; i < Count; i++)
-                            this[i].Index = i;
-                        
-                        if (_owner.Control.IsRealized)
-                        {
-                            _owner.AddGroup(group, position);
-                            _owner.Control.ShowAll();
-                        }
-                    }
-                    else
-                    {
-                        item.Index = position;
-                        base.Insert(position, item);
-                       
-                        if (_owner.Control.IsRealized)
-                        {
-                            _owner.AddGroup(group, position);
-                            _owner.Control.ShowAll();
-                        }
-                    }
-
+                    _owner.AddItem(item, position);
+                    _owner.Control.ShowAll();
                 }
             }
             public void AddRange(ListViewItem[] items)
-			{
-              var group =  items.GroupBy(g => g.Group);
-                foreach (var g in group)
+            {
+                foreach (ListViewItem item in items)
                 {
-                    AddGroup(g.Key,-1);
-                    foreach (ListViewItem item in g)
-                    {
-                        AddCore(item,-1);
-                    }
-                }
-
-                   
+                    AddCore(item, -1);
+                }   
             }
 
 			public void AddRange(ListViewItemCollection items)
@@ -673,14 +763,9 @@ namespace System.Windows.Forms
 			get
 			{
                 CheckedIndexCollection selecteditems = new CheckedIndexCollection(this);
-                foreach (Gtk.FlowBoxChild child in _flow.AllChildren)
+                foreach (ListViewItem item in CheckedItems)
                 {
-                    ListViewItem itm = Items[child.Index];
-                    itm.Selected = child.IsSelected;
-                    if (itm.Checked)
-                    {
-                        selecteditems.Add(child.Index);
-                    }
+                    selecteditems.Add(item.Index);
                 }
                 return selecteditems;
             }
@@ -691,15 +776,25 @@ namespace System.Windows.Forms
 			get
 			{
                 CheckedListViewItemCollection selecteditems = new CheckedListViewItemCollection(this);
-                foreach (Gtk.FlowBoxChild child in _flow.AllChildren)
+
+                foreach (Gtk.VBox vbox in flowBoxContainer.AllChildren)
                 {
-					ListViewItem itm = Items[child.Index];
-					itm.Selected = child.IsSelected;
-                    if (itm.Checked)
+                    foreach (var flow in vbox.AllChildren)
                     {
-                        selecteditems.Add(itm);
+                        if (flow is Gtk.FlowBox _flow)
+                        {
+                            foreach (Gtk.FlowBoxChild child in _flow.AllChildren)
+                            {
+                                ListViewItem item = this.Items.FindAll(m => m.Group.Name == child.Parent.Name)[child.Index];
+                                if (item.Checked)
+                                {
+                                    selecteditems.Add(item);
+                                }
+                            }
+                        }
                     }
                 }
+
                 return selecteditems;
             }
 		}
@@ -740,14 +835,11 @@ namespace System.Windows.Forms
 			get
 			{
                 SelectedIndexCollection selecteditems = new SelectedIndexCollection();
-                foreach (Gtk.FlowBoxChild child in _flow.AllChildren)
+                foreach(ListViewItem item in SelectedItems)
                 {
-                    Items[child.Index].Selected = child.IsSelected;
-                    if (child.IsSelected)
-                    {
-                        selecteditems.Add(child.Index);
-                    }
+                    selecteditems.Add(item.Index);
                 }
+               
                 return selecteditems;
             }
 		}
@@ -757,23 +849,44 @@ namespace System.Windows.Forms
 			get
 			{
 				SelectedListViewItemCollection selecteditems = new SelectedListViewItemCollection();
-                foreach (Gtk.FlowBoxChild child in _flow.AllChildren)
+                foreach (Gtk.VBox vbox in flowBoxContainer.AllChildren)
                 {
-                    ListViewItem itm = Items[child.Index];
-                    itm.Selected = child.IsSelected;
-                    if (child.IsSelected)
+                    foreach (var flow in vbox.AllChildren)
                     {
-                        selecteditems.Add(itm);
+                        if (flow is Gtk.FlowBox _flow)
+                        {
+                            foreach (Gtk.FlowBoxChild child in _flow.AllChildren)
+                            {
+                                ListViewItem item = this.Items.FindAll(m => m.Group.Name == child.Parent.Name)[child.Index];
+                                item.Selected = child.IsSelected;
+                                if (child.IsSelected)
+                                {
+                                    selecteditems.Add(item);
+                                }
+                            }
+                        }
                     }
                 }
+
 				return selecteditems;
             }
 		}
 
 		public void Clear()
 		{
-            foreach (Gtk.FlowBoxChild child in _flow.Children)
-                _flow.Remove(child);
+            foreach (Gtk.VBox vbox in flowBoxContainer.AllChildren)
+            {
+                foreach (var flow in vbox.AllChildren)
+                {
+                    if (flow is Gtk.FlowBox _flow)
+                    {
+                        foreach (Gtk.FlowBoxChild child in _flow.Children)
+                            _flow.Remove(child);
+                    }
+                }
+                flowBoxContainer.Remove(vbox);
+            }
+
 
             Items.Clear();
 		}

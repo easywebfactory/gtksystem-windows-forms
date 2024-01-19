@@ -362,14 +362,14 @@ namespace System.Windows.Forms
             set;
         }
 
-		
-		
-		
+
+
+
 		public string Text
 		{
-            get;
-            set;
-        }
+			get;
+			set;
+		} = string.Empty;
 
 		
 		
@@ -389,7 +389,7 @@ namespace System.Windows.Forms
 
 		public ListViewItem()
 		{
-			_subitems = new ListViewSubItemCollection(this);
+            InitListViewItem("", -1, "", Color.Black, Color.Black, null, null);
         }
 
 		protected ListViewItem(SerializationInfo info, StreamingContext context)
@@ -512,6 +512,7 @@ namespace System.Windows.Forms
         internal void InitListViewItem(string text, int imageIndex, string imageKey, Color foreColor, Color backColor, Font font, ListViewGroup group)
         {
             _subitems = new ListViewSubItemCollection(this);
+			SubItems = _subitems;
             this.Text = text;
 			this.ImageIndex = imageIndex;
             this.ImageKey = imageKey;
@@ -519,7 +520,10 @@ namespace System.Windows.Forms
             this.BackColor = backColor;
             this.Font = font;
             this.Group = group;
-
+			if (group == null)
+			{
+				this.Group = ListViewGroup.GetDefaultListViewGroup();
+			}
         }
         internal void InitListViewItem(string[] items, int imageIndex, string imageKey, Color foreColor, Color backColor, Font font, ListViewGroup group)
         {
@@ -528,6 +532,7 @@ namespace System.Windows.Forms
                 _subitems.Add(item);
 
         }
+		//internal string RelateFlowBoxChildKey { get; set; }
         public void BeginEdit()
 		{
 			 

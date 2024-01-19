@@ -1,36 +1,51 @@
 
+using Gtk;
+using System.Reflection.PortableExecutable;
 using System.Runtime.Serialization;
 
 namespace System.Windows.Forms
 {
 	public sealed class ListViewGroup : ISerializable
 	{
-		ListView.ListViewItemCollection _items;
-        public ListViewGroup()
+        public static readonly string defaultListViewGroupKey = "00000defaultListViewGroup";
+        ListView.ListViewItemCollection _items;
+
+        public static ListViewGroup GetDefaultListViewGroup() {
+            ListViewGroup defaultGroup = new ListViewGroup("defaultListViewGroup", HorizontalAlignment.Left);
+            defaultGroup.Header = "default";
+            defaultGroup.Name = ListViewGroup.defaultListViewGroupKey;
+            defaultGroup.Subtitle = "";
+            return defaultGroup;
+        }
+        public ListViewGroup() : this("", "")
         {
-			_items = new ListView.ListViewItemCollection(ListView);
         }
 
         public ListViewGroup(string key, string headerText)
         {
             _items = new ListView.ListViewItemCollection(ListView);
-            this.Name = key;
-			this.Header=headerText;
+            this.Name = string.IsNullOrWhiteSpace(key) ? headerText : key;
+            this.Header = headerText;
+            this.FlowBox = new Gtk.FlowBox();
+            this.FlowBox.Orientation = Gtk.Orientation.Horizontal;
+            this.FlowBox.Name = this.Name;
         }
 
-        public ListViewGroup(string header)
+        public ListViewGroup(string header) : this(header, header)
         {
-            _items = new ListView.ListViewItemCollection(ListView);
-            this.Header = header;
+
         }
 
-        public ListViewGroup(string header, HorizontalAlignment headerAlignment)
+        public ListViewGroup(string header, HorizontalAlignment headerAlignment) : this(header, header)
         {
-            _items = new ListView.ListViewItemCollection(ListView);
-            this.Header = header;
 			this.HeaderAlignment = headerAlignment;
-        }
 
+        }
+        internal Gtk.FlowBox FlowBox
+        {
+            get;
+            set;
+        } = new Gtk.FlowBox() { Orientation = Gtk.Orientation.Horizontal };
         public string Header
 		{
             get;

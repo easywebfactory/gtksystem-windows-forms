@@ -34,13 +34,23 @@ namespace GTKWinFormsApp
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             ListViewGroup listViewGroup3 = new ListViewGroup("ListViewGroup1", HorizontalAlignment.Left);
             ListViewGroup listViewGroup4 = new ListViewGroup("ListViewGroup2", HorizontalAlignment.Left);
-            ListViewItem listViewItem4 = new ListViewItem("test1", 1);
-            ListViewItem listViewItem5 = new ListViewItem(new string[] { "test2", "sssss", "ffffffff" }, 0);
+
+            ListViewItem listViewItem4 = new ListViewItem("test1ddddddddddddddddddddddddddddddddddddddddddddddddddddd", 1);
+            ListViewItem listViewItem5 = new ListViewItem(new string[] { "特别说明：本框架不支持ImageList使用窗口设计器（资源数据反序列化加解密没解决", "sssss特别说明：本框架不支持ImageList使用窗口设计器（资源数据反序列化加解密没解决", "ffffffff特别说明：本框架不支持ImageList使用窗口设计器（资源数据反序列化加解密没解决" }, 0);
             ListViewItem listViewItem6 = new ListViewItem("ttt3", 1);
+            ListViewItem listViewItem7 = new ListViewItem("ttt31", 1);
+            ListViewItem listViewItem8 = new ListViewItem("ttt32", 1);
+            ListViewItem listViewItem9 = new ListViewItem("ttt33", 1);
+            ListViewItem listViewItem10 = new ListViewItem("ttt34", 1);
             imageList1 = new ImageList(components);
             listView1 = new ListView();
             columnHeader1 = new ColumnHeader();
+            columnHeader1.Width = 200;
+            columnHeader1.Text= "组1";
             columnHeader2 = new ColumnHeader();
+            columnHeader2.Text = "组2";
+            columnHeader3 = new ColumnHeader();
+            columnHeader3.Text = "组3";
             listBox1 = new ListBox();
             richTextBox1 = new RichTextBox();
             label1 = new Label();
@@ -57,7 +67,7 @@ namespace GTKWinFormsApp
             // listView1
             // 
             listView1.CheckBoxes = true;
-            listView1.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2 });
+            listView1.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3 });
             listView1.FullRowSelect = true;
             listView1.GridLines = true;
             listViewGroup3.Footer = "ggg1";
@@ -74,7 +84,17 @@ namespace GTKWinFormsApp
             listViewItem5.StateImageIndex = 0;
             listViewItem6.Group = listViewGroup3;
             listViewItem6.StateImageIndex = 0;
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem4, listViewItem5, listViewItem6 });
+
+            listViewItem7.Group = listViewGroup3;
+            listViewItem7.StateImageIndex = 0;
+            listViewItem8.Group = listViewGroup3;
+            listViewItem8.StateImageIndex = 0;
+            listViewItem9.Group = listViewGroup3;
+            listViewItem9.StateImageIndex = 0;
+            listViewItem10.Group = listViewGroup3;
+            listViewItem10.StateImageIndex = 0;
+
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8, listViewItem9, listViewItem10 });
             listView1.LargeImageList = imageList1;
             listView1.Location = new System.Drawing.Point(62, 16);
             listView1.Name = "listView1";
@@ -88,6 +108,7 @@ namespace GTKWinFormsApp
             listView1.ItemSelectionChanged += listView1_ItemSelectionChanged;
             listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
             listView1.Click += listView1_Click;
+            listView1.View = View.Details;
             // 
             // listBox1
             // 
@@ -138,6 +159,7 @@ namespace GTKWinFormsApp
         private System.Windows.Forms.ListBox listBox1;
         private ColumnHeader columnHeader1;
         private ColumnHeader columnHeader2;
+        private ColumnHeader columnHeader3;
         private RichTextBox richTextBox1;
         private Label label1;
     }

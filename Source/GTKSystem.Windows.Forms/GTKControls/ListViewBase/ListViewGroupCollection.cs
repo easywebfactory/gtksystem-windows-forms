@@ -57,5 +57,10 @@ namespace System.Windows.Forms
 		{
 			Add(group);
 		}
-	}
+		public bool Contains(string name)
+		{
+            return base.FindIndex(w => w.Name == name) > -1;
+        }
+
+    }
 }

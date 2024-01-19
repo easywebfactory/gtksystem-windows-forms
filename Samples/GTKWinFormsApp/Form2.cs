@@ -52,4 +52,4 @@ namespace GTKWinFormsApp
             MessageBox.Show($"Click:{sender.GetType()}");
         }
     }
-}
+} 
