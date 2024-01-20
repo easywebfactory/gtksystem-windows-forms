@@ -96,9 +96,9 @@ namespace GTKWinFormsApp
 
             listView1.Items.AddRange(new ListViewItem[] { listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8, listViewItem9, listViewItem10 });
             listView1.LargeImageList = imageList1;
-            listView1.Location = new System.Drawing.Point(62, 16);
+            listView1.Location = new System.Drawing.Point(80, 16);
             listView1.Name = "listView1";
-            listView1.Size = new System.Drawing.Size(359, 163);
+            listView1.Size = new System.Drawing.Size(400, 163);
             listView1.SmallImageList = imageList1;
             listView1.TabIndex = 13;
             listView1.UseCompatibleStateImageBehavior = false;
@@ -108,13 +108,13 @@ namespace GTKWinFormsApp
             listView1.ItemSelectionChanged += listView1_ItemSelectionChanged;
             listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
             listView1.Click += listView1_Click;
-            listView1.View = View.Details;
+            listView1.View = View.SmallIcon;
             // 
             // listBox1
             // 
             listBox1.FormattingEnabled = true;
             listBox1.Items.AddRange(new object[] { "sdfdfdf", "ssss", "fffff", "ddddddddd", "ddddddd" });
-            listBox1.Location = new System.Drawing.Point(522, 31);
+            listBox1.Location = new System.Drawing.Point(580, 31);
             listBox1.Name = "listBox1";
             listBox1.Size = new System.Drawing.Size(150, 104);
             listBox1.TabIndex = 3;

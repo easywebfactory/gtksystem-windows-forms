@@ -28,6 +28,7 @@ namespace System.Windows.Forms
 			_groups = new ListViewGroupCollection(this);
 			_columns = new ColumnHeaderCollection(this);
 			base.Control.StyleContext.AddClass("ListView");
+            header.StyleContext.AddClass("ListViewHeader");
             this.Control.PackStart(header, false, true, 0);
             base.Control.Realized += Control_Realized;
             header.Halign = Gtk.Align.Fill;

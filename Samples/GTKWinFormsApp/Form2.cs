@@ -26,7 +26,9 @@ namespace GTKWinFormsApp
 
         private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            MessageBox.Show($"ItemChecked:{e.Item.Text},{e.Item.Checked}");
+            richTextBox1.Text = "";
+            foreach (ListViewItem m in listView1.CheckedItems)
+                richTextBox1.Text += $"{m.Text},Selected:{m.Selected},Checked:{m.Checked}；\n";
         }
 
         private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -37,9 +39,8 @@ namespace GTKWinFormsApp
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             richTextBox1.Text = "";
-            MessageBox.Show($"SelectedIndexChanged:{listView1.SelectedItems[0].Text},Selected{listView1.SelectedItems[0].Selected},Checked:{listView1.SelectedItems[0].Checked}");
-            foreach (ListViewItem m in listView1.Items)
-                richTextBox1.Text += $"{m.Text},{m.Selected},{m.Checked}；";
+            foreach (ListViewItem m in listView1.SelectedItems)
+                richTextBox1.Text += $"{m.Text},Selected:{m.Selected},Checked:{m.Checked}；\n";
         }
 
         private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -49,7 +50,7 @@ namespace GTKWinFormsApp
 
         private void listView1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show($"Click:{sender.GetType()}");
+             
         }
     }
 } 

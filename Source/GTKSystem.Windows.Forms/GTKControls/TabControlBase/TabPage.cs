@@ -15,11 +15,12 @@ namespace System.Windows.Forms
 {
     public class TabPage : WidgetControl<Gtk.Layout>
     {
+        internal Gtk.Label _tabLabel = new Gtk.Label();
         private ControlCollection _controls;
         public TabPage() : base(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero))
         {
             Widget.StyleContext.AddClass("TabPage");
-            Control.BorderWidth = 1;
+            Control.BorderWidth = 0;
             _controls = new ControlCollection(this, this.Control);
 
             Widget.Data["Dock"] = DockStyle.Fill;
@@ -27,7 +28,7 @@ namespace System.Windows.Forms
 
         public TabPage(string text)
         {
-            _TabLabel.Text = text;
+            _tabLabel.Text = text;
             _controls = new ControlCollection(this, this.Control);
         }
 
@@ -53,10 +54,8 @@ namespace System.Windows.Forms
             }
             set { Widget.Data["Dock"] = DockStyle.Fill; }
         }
-        public override string Text { get { return _TabLabel.Text; } set { _TabLabel.Text = value; } }
-
-        private Gtk.Label _TabLabel = new Gtk.Label();
-        public Gtk.Label TabLabel { get { return _TabLabel; } }
+        public override string Text { get { return _tabLabel.Text; } set { _tabLabel.Text = value; } }
+        public Gtk.Label TabLabel { get { return _tabLabel; } }
 
         public new ControlCollection Controls => _controls;
 

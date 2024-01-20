@@ -165,7 +165,7 @@ namespace GTKWinFormsApp
             dataGridView1.Margin = new Padding(4);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new System.Drawing.Size(1429, 306);
+            dataGridView1.Size = new System.Drawing.Size(1327, 306);
             dataGridView1.TabIndex = 2;
             dataGridView1.MultiSelectChanged += dataGridView1_MultiSelectChanged;
             dataGridView1.CellClick += dataGridView1_CellClick;
@@ -246,7 +246,7 @@ namespace GTKWinFormsApp
             groupBox1.Margin = new Padding(4);
             groupBox1.Name = "groupBox1";
             groupBox1.Padding = new Padding(4);
-            groupBox1.Size = new System.Drawing.Size(1445, 167);
+            groupBox1.Size = new System.Drawing.Size(1343, 167);
             groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
             groupBox1.Text = "groupBox1";
@@ -387,12 +387,15 @@ namespace GTKWinFormsApp
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Dock = DockStyle.Fill;
+            tabControl1.ItemSize = new System.Drawing.Size(181, 25);
             tabControl1.Location = new System.Drawing.Point(0, 0);
             tabControl1.Margin = new Padding(4);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new System.Drawing.Size(1445, 347);
+            tabControl1.Size = new System.Drawing.Size(1343, 347);
+            tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.TabIndex = 4;
+            tabControl1.DrawItem += tabControl1_DrawItem;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
             // 
             // tabPage1
@@ -402,9 +405,9 @@ namespace GTKWinFormsApp
             tabPage1.Margin = new Padding(4);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(4);
-            tabPage1.Size = new System.Drawing.Size(1437, 314);
+            tabPage1.Size = new System.Drawing.Size(1335, 314);
             tabPage1.TabIndex = 0;
-            tabPage1.Text = "tabPage1";
+            tabPage1.Text = "数据表格";
             tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
@@ -420,9 +423,9 @@ namespace GTKWinFormsApp
             tabPage2.Margin = new Padding(4);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(4);
-            tabPage2.Size = new System.Drawing.Size(1437, 314);
+            tabPage2.Size = new System.Drawing.Size(1335, 314);
             tabPage2.TabIndex = 1;
-            tabPage2.Text = "tabPage2";
+            tabPage2.Text = "容器类表格";
             tabPage2.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel1
@@ -641,7 +644,7 @@ namespace GTKWinFormsApp
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new Padding(8, 2, 0, 2);
-            menuStrip1.Size = new System.Drawing.Size(1445, 29);
+            menuStrip1.Size = new System.Drawing.Size(1343, 29);
             menuStrip1.TabIndex = 7;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -744,7 +747,7 @@ namespace GTKWinFormsApp
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(tabControl1);
-            splitContainer1.Size = new System.Drawing.Size(1445, 565);
+            splitContainer1.Size = new System.Drawing.Size(1343, 565);
             splitContainer1.SplitterDistance = 213;
             splitContainer1.SplitterWidth = 5;
             splitContainer1.TabIndex = 14;
@@ -764,7 +767,7 @@ namespace GTKWinFormsApp
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.timg;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new System.Drawing.Size(1445, 793);
+            ClientSize = new System.Drawing.Size(1343, 793);
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(groupBox1);
             Controls.Add(splitContainer1);

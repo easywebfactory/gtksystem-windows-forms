@@ -335,7 +335,7 @@ namespace GTKWinFormsApp
 
         private void button6_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -343,6 +343,15 @@ namespace GTKWinFormsApp
             Form2 form = new Form2();
             form.Show(this);
 
+        }
+
+        private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            var rect = tabControl1.GetTabRect(e.Index);
+            //e.Graphics.FillRectangle(new SolidBrush(Color.Gray), new Rectangle(rect.X, rect.Y, rect.Width, rect.Height));
+            e.Graphics.FillRectangle(new SolidBrush(Color.DarkBlue), e.Bounds);
+
+            e.Graphics.DrawString($"tab组{e.Index}", new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.Red), new PointF(10, 20));
         }
     }
 

@@ -5,10 +5,13 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using GLib;
+using Gtk;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 
 namespace System.Windows.Forms
@@ -23,6 +26,19 @@ namespace System.Windows.Forms
             Widget.StyleContext.AddClass("TabControl");
             _controls = new ControlCollection(this);
             _tabPageControls = new TabPageCollection(this);
+            base.Control.Realized += Control_Realized;
+        }
+
+        private void Control_Realized(object sender, EventArgs e)
+        {
+             if(SizeMode == TabSizeMode.Fixed)
+            {
+                foreach(TabPage page in _tabPageControls)
+                {
+                    page._tabLabel.WidthRequest = this.ItemSize.Width;
+                    page._tabLabel.HeightRequest = this.ItemSize.Height;
+                }
+            }
         }
 
         public int SelectedIndex { get { return base.Control.CurrentPage; } set { base.Control.CurrentPage = value; } }
@@ -30,17 +46,32 @@ namespace System.Windows.Forms
         public TabPage SelectedTab { get { return _controls[base.Control.CurrentPage]; } set { } }
 
         public TabSizeMode SizeMode { get; set; }
-
+        public TabDrawMode DrawMode { get; set; }
         public bool ShowToolTips { get; set; }
-
-        public int TabCount { get; }
+        public Size ItemSize { get; set; }
+        public int TabCount { get => base.Control.NPages; }
         public TabPageCollection TabPages { get { return _tabPageControls; } }
+        public Rectangle GetTabRect(int index)
+        {
+            if (index < 0 || (index >= TabCount))
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), index, "SR.InvalidArgument");
+            }
+            TabPage page = TabPages[index];
+            Gtk.Label tab = page.TabLabel;
+            Gdk.Rectangle rect = tab.Allocation;
+            return new Rectangle(0, 0, rect.Width, rect.Height);
+        }
+
         public new TabControl.ControlCollection Controls => _controls;
         public event EventHandler SelectedIndexChanged
         {
             add { base.Control.SwitchPage += (object sender, Gtk.SwitchPageArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
             remove { base.Control.SwitchPage -= (object sender, Gtk.SwitchPageArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
         }
+
+        public event DrawItemEventHandler DrawItem;
+
         public class ControlCollection : List<TabPage>
         {
             TabControl _owner;
@@ -51,7 +82,20 @@ namespace System.Windows.Forms
             public new int Add(TabPage item)
             {
                 item.Parent = _owner;
+                item.TabLabel.Name = base.Count.ToString();
                 base.Add(item);
+                item.TabLabel.Drawn += (object sender, DrawnArgs args) =>
+                {
+                    if (_owner.DrawMode == TabDrawMode.OwnerDrawFixed && _owner.DrawItem != null)
+                    {
+                        Gtk.Label tab = (Gtk.Label)sender;
+                        tab.GetAllocatedSize(out Gdk.Rectangle allocation, out int baseline);
+                        args.Cr.ResetClip();
+                        int width = allocation.Width + 24;
+                        int height = allocation.Height + 2;
+                        _owner.DrawItem(this, new DrawItemEventArgs(new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height)), _owner.Font, new Rectangle(-12, -2, width, height), Convert.ToInt32(tab.Name), DrawItemState.Default));
+                    }
+                };
                 return _owner.Control.AppendPage(item.Control, item.TabLabel);
             }
             public new void RemoveAt(int index)

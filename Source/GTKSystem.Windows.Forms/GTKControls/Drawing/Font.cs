@@ -313,7 +313,7 @@ namespace System.Drawing
         //   T:System.ArgumentNullException:
         //     family is null
         public Font(FontFamily family, float emSize, FontStyle style, GraphicsUnit unit, byte gdiCharSet, bool gdiVerticalFont) {
-            this.Name = family.Name;
+            this.Name = family?.Name;
             this.FontFamily = family;
             this.Size = emSize;
             this.Style = style;
