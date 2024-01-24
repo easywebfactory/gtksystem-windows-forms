@@ -10,6 +10,7 @@ using Gtk;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Reflection;
 
 namespace System.Windows.Forms
 {
@@ -44,19 +45,35 @@ namespace System.Windows.Forms
             _widget.MarginTop = 0;
             _widget.Drawn += Widget_Drawn;
             _widget.StyleContext.AddClass("DefaultThemeStyle");
-
         }
 
         private void Widget_Drawn(object o, DrawnArgs args)
         {
+            string backcolorname = $"backcolor{o.GetHashCode()}";
+            string fontcolorname = $"fontcolor{o.GetHashCode()}";
+            string css = "";
+            if (this.BackColor.Name != "Control" && this.BackColor.Name != "0")
+            {
+                string color = $"#{Convert.ToString(this.BackColor.R, 16).PadLeft(2, '0')}{Convert.ToString(this.BackColor.G, 16).PadLeft(2, '0')}{Convert.ToString(this.BackColor.B, 16).PadLeft(2, '0')}";
+                css += $" .{backcolorname}{{background:{color};background-color:{color};}}";
+            }
+            if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
+            {
+                string color = $"#{Convert.ToString(this.ForeColor.R, 16).PadLeft(2, '0')}{Convert.ToString(this.ForeColor.G, 16).PadLeft(2, '0')}{Convert.ToString(this.ForeColor.B, 16).PadLeft(2, '0')}";
+                css += $" .{fontcolorname}{{color:{color};}}";
+            }
+            CssProvider provider = new CssProvider();
+            if (provider.LoadFromData(css))
+            {
+                _widget.StyleContext.AddProvider(provider, 900);
+                _widget.StyleContext.AddClass(backcolorname);
+                _widget.StyleContext.AddClass(fontcolorname);
+            }
+
             Gdk.Rectangle rec = Widget.Allocation;
             if (Control is Gtk.Button || Control is Gtk.Image)
             {
                 //由于绘画会覆盖容器内部所有子控件，不合适容器控件使用，只对button和picturebox设置背景
-                if (this.BackColor.Name != "0")
-                {
-                    DrawBackgroundColor(args.Cr, Widget, this.BackColor, rec);
-                }
                 if (_BackgroundImageBytes != null)
                 {
                     if (backgroundPixbuf == null)
@@ -65,15 +82,7 @@ namespace System.Windows.Forms
                         ScaleImage(ref imagePixbuf, _BackgroundImageBytes, PictureBoxSizeMode.AutoSize, BackgroundImageLayout == ImageLayout.None ? ImageLayout.Tile : BackgroundImageLayout);
                         backgroundPixbuf = imagePixbuf.ScaleSimple(imagePixbuf.Width - 8, imagePixbuf.Height - 6, Gdk.InterpType.Tiles);
                     }
-                    //Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(_BackgroundImageBytes);
                     DrawBackgroundImage(args.Cr, backgroundPixbuf, rec);
-                }
-                if ((this.BackColor.Name != "0") || backgroundPixbuf != null)
-                {
-                    if (string.IsNullOrEmpty(this.Text) == false)
-                    {
-                        DrawBackgroundText(args.Cr, Widget, rec);
-                    }
                 }
             }
 
@@ -152,7 +161,7 @@ namespace System.Windows.Forms
                 if (x < 0) x = 0;
                 if (y < 0) y = 0;
                 ctx.Translate(x, y);
-                if (this.ForeColor != null && this.ForeColor.Name != "0")
+                if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
                     ctx.SetSourceRGBA(this.ForeColor.R / 255f, this.ForeColor.G / 255f, this.ForeColor.B / 255f, 1);
 
                 Pango.Context pangocontext = control.PangoContext;
@@ -245,16 +254,7 @@ namespace System.Windows.Forms
 
         public override Font Font { get; set; }
 
-        private Color foreColor;
-        public override Color ForeColor
-        {
-            get { return foreColor; }
-            set
-            {
-                foreColor = value;
-                Widget.ModifyFg(Gtk.StateType.Normal, new Gdk.Color(value.R, value.G, value.B));
-            }
-        }
+        public override Color ForeColor { get; set; }
 
         public override bool HasChildren { get; }
 

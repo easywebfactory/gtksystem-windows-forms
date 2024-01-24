@@ -88,7 +88,7 @@ namespace System.Windows.Forms
         private void Bg_Drawn(object o, DrawnArgs args)
         {
             Gdk.Rectangle rec = Widget.Allocation;
-            if (this.BackColor.Name != "0")
+            if (this.BackColor.Name != "Control" && this.BackColor.Name != "0")
             {
                 DrawBackgroundColor(args.Cr, Widget, this.BackColor, rec);
             }

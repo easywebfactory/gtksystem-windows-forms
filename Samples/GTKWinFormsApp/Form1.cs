@@ -315,11 +315,6 @@ namespace GTKWinFormsApp
             }
         }
 
-        private void button1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void pictureBox2_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
@@ -352,6 +347,11 @@ namespace GTKWinFormsApp
             e.Graphics.FillRectangle(new SolidBrush(Color.DarkBlue), e.Bounds);
 
             e.Graphics.DrawString($"tab组{e.Index}", new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.Red), new PointF(10, 20));
+        }
+
+        private void button1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 

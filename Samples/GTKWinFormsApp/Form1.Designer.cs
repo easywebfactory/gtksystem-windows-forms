@@ -253,13 +253,15 @@ namespace GTKWinFormsApp
             // 
             // button7
             // 
+            button7.BackColor = System.Drawing.Color.LightCoral;
             button7.Location = new System.Drawing.Point(827, 21);
             button7.Name = "button7";
             button7.Size = new System.Drawing.Size(154, 29);
             button7.TabIndex = 14;
             button7.Text = "listview演示";
-            button7.UseVisualStyleBackColor = true;
+            button7.UseVisualStyleBackColor = false;
             button7.Click += button7_Click;
+  
             // 
             // checkBox2
             // 
@@ -579,6 +581,7 @@ namespace GTKWinFormsApp
             // 
             // treeView1
             // 
+            treeView1.BackColor = System.Drawing.Color.Tomato;
             treeView1.Location = new System.Drawing.Point(127, 66);
             treeView1.Margin = new Padding(4);
             treeView1.Name = "treeView1";
