@@ -126,6 +126,7 @@ namespace GTKWinFormsApp
             richTextBox1.Size = new System.Drawing.Size(549, 120);
             richTextBox1.TabIndex = 14;
             richTextBox1.Text = "";
+            richTextBox1.BackColor = System.Drawing.Color.Yellow;
             // 
             // label1
             // 

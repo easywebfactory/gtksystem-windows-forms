@@ -145,7 +145,7 @@ namespace GTKWinFormsApp
             // 
             // textBox1
             // 
-            textBox1.BackColor = System.Drawing.SystemColors.Window;
+            textBox1.BackColor = System.Drawing.SystemColors.MenuHighlight;
             textBox1.Location = new System.Drawing.Point(524, 71);
             textBox1.Margin = new Padding(4);
             textBox1.Name = "textBox1";
@@ -261,7 +261,6 @@ namespace GTKWinFormsApp
             button7.Text = "listview演示";
             button7.UseVisualStyleBackColor = false;
             button7.Click += button7_Click;
-  
             // 
             // checkBox2
             // 
@@ -439,7 +438,7 @@ namespace GTKWinFormsApp
             tableLayoutPanel1.Controls.Add(label6, 0, 1);
             tableLayoutPanel1.Controls.Add(label5, 0, 0);
             tableLayoutPanel1.Controls.Add(button6, 1, 1);
-            tableLayoutPanel1.Location = new System.Drawing.Point(831, 35);
+            tableLayoutPanel1.Location = new System.Drawing.Point(823, 26);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 66.29214F));
@@ -489,7 +488,7 @@ namespace GTKWinFormsApp
             flowLayoutPanel1.Controls.Add(button5);
             flowLayoutPanel1.Controls.Add(checkBox3);
             flowLayoutPanel1.Controls.Add(label4);
-            flowLayoutPanel1.Location = new System.Drawing.Point(153, 23);
+            flowLayoutPanel1.Location = new System.Drawing.Point(198, 55);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new System.Drawing.Size(392, 183);
             flowLayoutPanel1.TabIndex = 5;

@@ -347,6 +347,7 @@ namespace GTKWinFormsApp
             e.Graphics.FillRectangle(new SolidBrush(Color.DarkBlue), e.Bounds);
 
             e.Graphics.DrawString($"tab组{e.Index}", new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.Red), new PointF(10, 20));
+            e.Graphics.DrawImage(Image.FromFile("F:\\我的项目\\GTK\\Forms_ico\\BindingNavigator.Delete.ico"),new Point(e.Bounds.Width-36, 0));
         }
 
         private void button1_Paint(object sender, PaintEventArgs e)

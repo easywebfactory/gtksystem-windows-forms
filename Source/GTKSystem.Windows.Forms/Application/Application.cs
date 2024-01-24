@@ -143,7 +143,7 @@ namespace System.Windows.Forms
 
 .Button{padding:0px;} 
 .TextBox{background-color:#ffffff;padding:0px 3px 0px 3px;} 
-.RichTextBox .view{background-color:#ffffff;border-width:1px;}
+.RichTextBox {border-width:1px;}
 .RichTextBox border.top{border-width:1px;}
 .RichTextBox border.left{border-width:1px;}
 .RichTextBox border.right{border-width:1px;}
@@ -163,7 +163,8 @@ namespace System.Windows.Forms
 .ComboBox entry{padding:0px;}
 .Panel{background-color:#F6F5F4;} 
 .SplitContainer.horizontal{border-width:1px;}
-.GroupBox{} 
+.GroupBox{background-color:#F6F5F4;} 
+.MenuStrip{background-color:#F6F5F4;}
 .ListBox{border-width:1px;background-color:#ffffff; padding:0px;}
 .ListView{background-color:#ffffff; padding:0px;}
 .ListViewHeader button{padding:0px;border-right:solid 1px #cccccc;border-top-width:0px;border-left-width:0px;border-bottom-width:0px;}

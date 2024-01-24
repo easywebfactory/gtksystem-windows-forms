@@ -56,6 +56,8 @@ namespace System.Windows.Forms
             {
                 string color = $"#{Convert.ToString(this.BackColor.R, 16).PadLeft(2, '0')}{Convert.ToString(this.BackColor.G, 16).PadLeft(2, '0')}{Convert.ToString(this.BackColor.B, 16).PadLeft(2, '0')}";
                 css += $" .{backcolorname}{{background:{color};background-color:{color};}}";
+                if (o is Gtk.TextView)
+                    css += $" .{backcolorname} text{{background:{color};background-color:{color};}}";
             }
             if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
             {
