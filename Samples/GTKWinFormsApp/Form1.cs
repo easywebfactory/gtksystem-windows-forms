@@ -323,8 +323,29 @@ namespace GTKWinFormsApp
             //g.DrawImage(new Bitmap(GTKWinFormsApp.Properties.Resources.timg6), new Point(0, 0));
             g.DrawImage(new Bitmap(GTKWinFormsApp.Properties.Resources.timg6), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
             g.FillRectangle(new SolidBrush(Color.AliceBlue), new Rectangle(0, 0, 100, 50));
-            g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new Point(10, 10), new Point(50, 30));
-            g.DrawString("这是Paint Graphics示例效果", new Font(new FontFamily(""), 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 80);
+           // g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new Point(10, 10), new Point(50, 30));
+            List<PointF> Rps = new List<PointF>();
+            List<PointF> rps = new List<PointF>();
+            float R = 50;
+            double rad = Math.PI / 180;
+            float r = (float)(R * Math.Sin(18*R) / Math.Cos(36 * R));
+            float x = pictureBox2.Width/2;
+            float y = pictureBox2.Height/2;
+            for (int k = 0; k < 5; k++)
+            {
+                Rps.Add(new PointF(x - (R * (float)Math.Cos((90 + k * 72) * rad)), y - (R * (float)Math.Sin((90 + k * 72) * rad))));
+                rps.Add(new PointF(x - (r * (float)Math.Cos((90 + k * 72 + 36) * rad)), y - (r * (float)Math.Sin((90 + k * 72 + 36) * rad))));
+            }
+            for (int i = 0; i < 5; i++)
+            {
+                //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), Rps[i], rps[i]);
+                //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), rps[i], new PointF(x, y));
+                //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new PointF(x, y), Rps[i]);
+
+                g.DrawLines(new Pen(new SolidBrush(Color.Red), 2), [Rps[i], rps[i],new PointF(x,y), Rps[i]]);
+            }
+
+            g.DrawString("这是Paint Graphics示例效果", new Font(new FontFamily(""), 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 60);
             g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2), new Rectangle(0, 0, pictureBox2.Width, pictureBox2.Height), 60, 190);
         }
 
@@ -346,8 +367,8 @@ namespace GTKWinFormsApp
             //e.Graphics.FillRectangle(new SolidBrush(Color.Gray), new Rectangle(rect.X, rect.Y, rect.Width, rect.Height));
             e.Graphics.FillRectangle(new SolidBrush(Color.DarkBlue), e.Bounds);
 
-            e.Graphics.DrawString($"tab组{e.Index}", new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.Red), new PointF(10, 20));
-            e.Graphics.DrawImage(Image.FromFile("F:\\我的项目\\GTK\\Forms_ico\\BindingNavigator.Delete.ico"),new Point(e.Bounds.Width-36, 0));
+            e.Graphics.DrawString($"tab组{e.Index}", new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.Red), new PointF(0, 0));
+            e.Graphics.DrawImage(Image.FromFile("F:\\我的项目\\GTK\\Forms_ico\\BindingNavigator.Delete.ico"),new Point(e.Bounds.Width-16, 0));
         }
 
         private void button1_Paint(object sender, PaintEventArgs e)

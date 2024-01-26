@@ -388,6 +388,7 @@ namespace GTKWinFormsApp
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Dock = DockStyle.Fill;
+            tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabControl1.ItemSize = new System.Drawing.Size(181, 25);
             tabControl1.Location = new System.Drawing.Point(0, 0);
             tabControl1.Margin = new Padding(4);

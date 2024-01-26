@@ -93,7 +93,9 @@ namespace System.Windows.Forms
                         args.Cr.ResetClip();
                         int width = allocation.Width + 24;
                         int height = allocation.Height + 2;
-                        _owner.DrawItem(this, new DrawItemEventArgs(new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height)), _owner.Font, new Rectangle(-12, -2, width, height), Convert.ToInt32(tab.Name), DrawItemState.Default));
+                       // _owner.DrawItem(this, new DrawItemEventArgs(new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height)), _owner.Font, new Rectangle(-12, -2, width, height), Convert.ToInt32(tab.Name), DrawItemState.Default));
+                        _owner.DrawItem(this, new DrawItemEventArgs(new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height)) { diff_left=-12, diff_top=-2 }, _owner.Font, new Rectangle(0, 0, width, height), Convert.ToInt32(tab.Name), DrawItemState.Default));
+
                     }
                 };
                 return _owner.Control.AppendPage(item.Control, item.TabLabel);

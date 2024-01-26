@@ -11,7 +11,13 @@ namespace System.Drawing
 		private Cairo.Context context;
 		private Gdk.Rectangle rectangle;
 		private Gtk.Widget widget;
-		internal Graphics(Gtk.Widget widget, Cairo.Context context, Gdk.Rectangle rectangle)
+        #region 用于输入与输出的数值调整差值
+        internal double diff_left { get; set; }
+        internal double diff_top { get; set; }
+        //internal int diff_right { get; set; }
+        //internal int diff_bottom { get; set; }
+        #endregion
+        internal Graphics(Gtk.Widget widget, Cairo.Context context, Gdk.Rectangle rectangle)
 		{
 			this.widget = widget;
 			this.context = context;
@@ -172,11 +178,11 @@ namespace System.Drawing
 
 		public RectangleF VisibleClipBounds
 		{
-			get
-			{
-				throw null;
-			}
-		}
+            get
+            {
+                return new RectangleF(this.rectangle.X, this.rectangle.Y, this.rectangle.Width, this.rectangle.Height);
+            }
+        }
 
 		public void AddMetafileComment(byte[] data)
 		{
@@ -196,13 +202,16 @@ namespace System.Drawing
 		{
 			throw null;
 		}
-
+		internal void ContextTranslateWithDifference(double x,double y)
+		{
+            this.context.Translate(diff_left + x, diff_top + y);
+        }
 		public void Clear(Color color)
 		{
-			this.context.Save();
+            this.context.Save();
 			this.context.SetSourceRGB(color.R / 255f, color.G / 255f, color.B / 255f);
-			this.context.Translate(0, 0);
-			this.context.Rectangle(this.rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+            this.ContextTranslateWithDifference(0, 0);
+            this.context.Rectangle(this.rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
 			this.context.Fill();
 			this.context.Paint();
 			this.context.Restore();
@@ -246,7 +255,8 @@ namespace System.Drawing
 		public void DrawArc(Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
 		{
 			this.context.Save();
-			this.context.LineWidth = pen.Width;
+            this.ContextTranslateWithDifference(0, 0);
+            this.context.LineWidth = pen.Width;
 			this.context.LineJoin = Cairo.LineJoin.Round;
 			this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
 			this.context.Arc(x + width / 2, y + height / 2, Math.Min(width / 2, height / 2), 3, 300);
@@ -350,12 +360,12 @@ namespace System.Drawing
 
 		public void DrawImage(Image image, Point point)
 		{
-			DrawImage(image, new PointF[] { new PointF(point.X, point.Y) }, new RectangleF(0, 0, 0, 0), GraphicsUnit.Pixel, null, null, 0);
+			DrawImage(image, [new PointF(point.X, point.Y)], new RectangleF(0, 0, 0, 0), GraphicsUnit.Pixel, null, null, 0);
 		}
 
 		public void DrawImage(Image image, PointF point)
 		{
-			DrawImage(image, new PointF[] { point }, new RectangleF(0, 0, 0, 0), GraphicsUnit.Pixel, null, null, 0);
+			DrawImage(image, [point], new RectangleF(0, 0, 0, 0), GraphicsUnit.Pixel, null, null, 0);
 		}
 
 		public void DrawImage(Image image, PointF[] destPoints)
@@ -382,7 +392,7 @@ namespace System.Drawing
 		{
 			Gdk.Pixbuf img = new Gdk.Pixbuf(image.PixbufData);
 			this.context.Save();
-			this.context.Translate(destPoints[0].X, destPoints[0].Y);
+            this.ContextTranslateWithDifference(destPoints[0].X, destPoints[0].Y);
 			Gdk.CairoHelper.SetSourcePixbuf(this.context, img, srcRect.X, srcRect.Y);
 
 			using (var p = this.context.GetSource())
@@ -589,11 +599,9 @@ namespace System.Drawing
 			if (points.Length > 0)
 			{
 				this.context.Save();
-				this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
+                this.ContextTranslateWithDifference(0, 0);
+                this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
 				this.context.LineWidth = pen.Width;
-				//this.context.LineJoin = Cairo.LineJoin.Bevel;
-				//this.context.LineCap = Cairo.LineCap.Butt;
-				//this.context.Translate(0, 0);
 				foreach (PointF p in points)
 				{
 					this.context.LineTo(p.X, p.Y);
@@ -632,7 +640,8 @@ namespace System.Drawing
 		public void DrawPie(Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
 		{
 			this.context.Save();
-			this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
+            this.ContextTranslateWithDifference(0, 0);
+            this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
 			this.context.Arc(x + width / 2, y + height / 2, Math.Min(width / 2, height / 2), startAngle, sweepAngle);
 			this.context.Fill();
 			this.context.Restore();
@@ -649,7 +658,8 @@ namespace System.Drawing
 		public void DrawRectangle(Pen pen, Rectangle rect)
 		{
 			this.context.Save();
-			this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
+            this.ContextTranslateWithDifference(0, 0);
+            this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
 			this.context.Rectangle(rect.X, rect.Y, rect.Width, rect.Height);
 			this.context.Stroke();
 			this.context.Restore();
@@ -698,7 +708,8 @@ namespace System.Drawing
 			if (string.IsNullOrEmpty(s) == false)
 			{
 				this.context.Save();
-				float textSize = 15f;
+                
+                float textSize = 15f;
 				if (font != null)
 				{
 					textSize = font.Size;
@@ -707,8 +718,8 @@ namespace System.Drawing
 					if (font.Unit == GraphicsUnit.Inch)
 						textSize = font.Size * 96;
 				}
-				this.context.Translate(layoutRectangle.X, layoutRectangle.Y);
-				if (brush is SolidBrush sbrush)
+                this.ContextTranslateWithDifference(layoutRectangle.X, layoutRectangle.Y+ textSize);
+                if (brush is SolidBrush sbrush)
 				{
 					if (sbrush.Color.Name != "0")
 						this.context.SetSourceRGBA(sbrush.Color.R / 255f, sbrush.Color.G / 255f, sbrush.Color.B / 255f, 1);
@@ -959,7 +970,8 @@ namespace System.Drawing
 			if (brush is SolidBrush sbrush)
 			{
 				this.context.Save();
-				this.context.SetSourceRGB(sbrush.Color.R / 255f, sbrush.Color.G / 255f, sbrush.Color.B / 255f);
+                this.ContextTranslateWithDifference(0, 0);
+                this.context.SetSourceRGB(sbrush.Color.R / 255f, sbrush.Color.G / 255f, sbrush.Color.B / 255f);
 				this.context.Arc(rect.X + rect.Width / 2, rect.Y + rect.Height / 2, Math.Min(rect.Width / 2, rect.Height / 2), startAngle, sweepAngle);
 				this.context.Fill();
 				this.context.Restore();
@@ -1012,6 +1024,7 @@ namespace System.Drawing
 			if (brush is SolidBrush sbrush)
 			{
 				this.context.Save();
+				this.ContextTranslateWithDifference(0, 0);
 				this.context.SetSourceRGB(sbrush.Color.R / 255f, sbrush.Color.G / 255f, sbrush.Color.B / 255f);
 				this.context.Rectangle(x, y, width, height);
 				this.context.Fill();
