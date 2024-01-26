@@ -66,6 +66,11 @@ namespace System.Windows.Forms
             {
                 string color = $"#{Convert.ToString(this.ForeColor.R, 16).PadLeft(2, '0')}{Convert.ToString(this.ForeColor.G, 16).PadLeft(2, '0')}{Convert.ToString(this.ForeColor.B, 16).PadLeft(2, '0')}";
                 css += $" .{fontcolorname}{{color:{color};}}";
+                if (o is Gtk.TextView)
+                {
+                    css += $" .{fontcolorname} text{{color:{color};}}";
+                    css += $" .{fontcolorname} .view{{color:{color};}}";
+                }
             }
             CssProvider provider = new CssProvider();
             if (provider.LoadFromData(css))

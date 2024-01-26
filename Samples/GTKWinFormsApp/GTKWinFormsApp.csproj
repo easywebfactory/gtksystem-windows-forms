@@ -38,6 +38,9 @@
     <None Update="Resources\010.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\BindingNavigator.Delete.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\timg2.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
