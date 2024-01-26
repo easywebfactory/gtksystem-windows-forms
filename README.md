@@ -23,9 +23,13 @@
 #### VisualStudio插件安装
 
 关闭visual studio，直接双击GTKWinformVSIXProject.vsix文件安装
+
 插件会安装两个功能，都是在右键菜单和工具菜单上添加：
+
 1、新建项的Form窗体模板
+
 2、菜单增加设置/修复窗体设计器
+
 ![输入图片说明](pic/vs_vsix.jpeg)
 
 #### 使用说明
