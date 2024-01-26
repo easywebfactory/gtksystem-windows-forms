@@ -19,11 +19,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readme", "readme", "{7674FD
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VisualStudio插件", "VisualStudio插件", "{5E81CE7E-8265-48D3-8C55-7C64DBB419D9}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\test\WinFormsApp1\GTKWinformVSIXProject\bin\VisualStudio开发插件.zip = ..\..\..\test\WinFormsApp1\GTKWinformVSIXProject\bin\VisualStudio开发插件.zip
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
