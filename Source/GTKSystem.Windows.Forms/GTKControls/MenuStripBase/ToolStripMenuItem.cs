@@ -9,25 +9,24 @@ namespace System.Windows.Forms
     {
         public ToolStripMenuItem():base()
         {
-            base.Shown += ToolStripMenuItem_Shown;
+            DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
         }
 
-        private void ToolStripMenuItem_Shown(object sender, EventArgs e)
-        {
-            if (Checked == true)
+        public override CheckState CheckState { 
+            get => base.CheckState;
+            set
             {
-                AlwaysShowImage =CheckState == CheckState.Checked || CheckState == CheckState.Indeterminate;
-                if (CheckState == CheckState.Indeterminate)
+                base.CheckState = value;
+                if (value == CheckState.Indeterminate)
                 {
-                    Image = Gtk.Image.NewFromIconName("pan-end-symbolic", Gtk.IconSize.Menu);
+                    IcoImage = Gtk.Image.NewFromIconName("pan-end-symbolic", Gtk.IconSize.Menu);
                 }
                 else
                 {
-                    Image = Gtk.Image.NewFromIconName("object-select-symbolic", Gtk.IconSize.Menu);
+                    IcoImage = Gtk.Image.NewFromIconName("object-select-symbolic", Gtk.IconSize.Menu);
                 }
             }
         }
 
-        
     }
 }

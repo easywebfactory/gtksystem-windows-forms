@@ -21,6 +21,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Forms_ico\ToolStrip\BlankToolstrip.ico" />
+    <None Remove="Resources\icons\16x16\status\image-missing.png" />
+    <None Remove="Resources\System\DateTimePicker.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Forms_ico\ToolStrip\BlankToolstrip.ico" />
+    <EmbeddedResource Include="Resources\System\DateTimePicker.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="GtkSharp" Version="3.24.24.34" />
   </ItemGroup>
 
@@ -96,6 +107,14 @@
     <Compile Update="GTKControls\TreeView.cs">
       <SubType>Component</SubType>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="obj\Debug\net8.0\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\icons\16x16\status\image-missing.png" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

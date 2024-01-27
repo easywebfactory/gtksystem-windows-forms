@@ -21,7 +21,7 @@ namespace System.Windows.Forms.GtkRender
                 else
                 {
                     this.Text = value.Text;
-                    if (value.Background != null)
+                    if (value.Background.Name != "0" && value.Background.Name != "")
                     {
                         this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = Math.Min(0.6, value.Background.A), Blue = value.Background.B, Green = value.Background.G, Red = value.Background.R };
                     }

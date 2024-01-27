@@ -6,6 +6,7 @@
 
 using Cairo;
 using Pango;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
@@ -18,6 +19,7 @@ namespace System.Windows.Forms
     [Serializable] // This type is participating in resx serialization scenarios.
     public sealed class ImageListStreamer : ISerializable, IDisposable
     {
+        public ISite Site { get; set; }
         // compressed magic header.  If we see this, the image stream is compressed.
         // (unicode for MSFT).
         private static readonly byte[] HEADER_MAGIC = new byte[] { 0x4D, 0x53, 0x46, 0X74 };
@@ -29,7 +31,9 @@ namespace System.Windows.Forms
         {
             _imageList = il;
         }
-
+        public static ImageListStreamer newImageListStreamer() {
+            return new ImageListStreamer(new SerializationInfo(typeof(ImageList),new FormatterConverter()),new StreamingContext(StreamingContextStates.All));
+        }
         private ImageListStreamer(SerializationInfo info, StreamingContext context)
         {
             SerializationInfoEnumerator sie = info.GetEnumerator();

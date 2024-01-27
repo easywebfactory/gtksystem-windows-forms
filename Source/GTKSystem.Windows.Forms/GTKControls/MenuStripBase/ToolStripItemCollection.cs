@@ -9,7 +9,7 @@ namespace System.Windows.Forms
 {
     public class ToolStripItemCollection : IList<ToolStripItem>, ICollection, IEnumerable
     {
-        private Gtk.MenuItem owner;
+        private ToolStripItem owner;
         private ToolStrip toolStrip;
         private Gtk.Menu menu;
         private bool isToolStrip;
@@ -26,12 +26,11 @@ namespace System.Windows.Forms
             isContextMenu = true;
             this.menu.ShowAll();
         }
-        public ToolStripItemCollection(Gtk.MenuItem owner)
+        public ToolStripItemCollection(ToolStripItem owner)
         {
             this.owner = owner;
-            isToolStrip = false;
+            isContextMenu = false;
         }
-
         internal ToolStripItemCollection(ToolStripItem owner, bool itemsCollection)
             : this(owner, itemsCollection, isReadOnly: false)
         {
@@ -40,8 +39,8 @@ namespace System.Windows.Forms
         internal ToolStripItemCollection(ToolStripItem owner, bool itemsCollection, bool isReadOnly)
         {
             this.owner = owner;
-
             isToolStrip = false;
+
         }
         public ToolStripItemCollection(ToolStripItem owner, ToolStripItem[] value)
         {
@@ -115,7 +114,7 @@ namespace System.Windows.Forms
 
         public ToolStripItem this[int index]
         {
-            get { ArrayList all = menu.AllChildren as ArrayList; return all[index] as ToolStripItem; }
+            get { return menu.Children[index] as ToolStripItem; ArrayList all = menu.AllChildren as ArrayList; return all[index] as ToolStripItem; }
             set { menu.Insert(value, index); }
         }
 

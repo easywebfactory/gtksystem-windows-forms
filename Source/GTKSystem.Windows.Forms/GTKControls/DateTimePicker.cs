@@ -5,6 +5,7 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using Atk;
 using System.ComponentModel;
 using System.Drawing;
 
@@ -22,11 +23,10 @@ namespace System.Windows.Forms
             //base.Control.PrimaryIconStock = "gtk-index";
 
             base.Control.SecondaryIconActivatable = true;
-            //base.Control.SecondaryIconStock= "gtk-index";
-            //base.Control.SecondaryIconName = "DateTimePicker.ico";
-
-            //base.Control.SecondaryIconPixbuf = new Gdk.Pixbuf(WindowsFormsApp1.Properties.Resources.DateTimePicker);
-            base.Control.SecondaryIconName = "x-office-calendar";
+            base.Control.SecondaryIconStock= "gtk-index";
+           // base.Control.SecondaryIconName = "x-office-calendar";
+            System.IO.Stream sm = this.GetType().Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.DateTimePicker.ico");
+            base.Control.SecondaryIconPixbuf = new Gdk.Pixbuf(sm);
             base.Control.IconRelease += DateTimePicker_IconRelease;
         }
 

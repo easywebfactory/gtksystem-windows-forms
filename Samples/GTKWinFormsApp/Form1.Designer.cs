@@ -664,7 +664,7 @@ namespace GTKWinFormsApp
             // 
             test1ToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 三级菜单1ToolStripMenuItem });
             test1ToolStripMenuItem.Name = "test1ToolStripMenuItem";
-            test1ToolStripMenuItem.Size = new System.Drawing.Size(161, 26);
+            test1ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             test1ToolStripMenuItem.Text = "二级菜单1";
             // 
             // 三级菜单1ToolStripMenuItem
@@ -678,7 +678,7 @@ namespace GTKWinFormsApp
             test2ToolStripMenuItem.Checked = true;
             test2ToolStripMenuItem.CheckState = CheckState.Checked;
             test2ToolStripMenuItem.Name = "test2ToolStripMenuItem";
-            test2ToolStripMenuItem.Size = new System.Drawing.Size(161, 26);
+            test2ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             test2ToolStripMenuItem.Text = "二级菜单2";
             test2ToolStripMenuItem.CheckedChanged += test2ToolStripMenuItem_CheckedChanged;
             test2ToolStripMenuItem.CheckStateChanged += test2ToolStripMenuItem_CheckStateChanged;
@@ -687,14 +687,15 @@ namespace GTKWinFormsApp
             // toolStripMenuItem4
             // 
             toolStripMenuItem4.DropDownItems.AddRange(new ToolStripItem[] { 二级菜单1ToolStripMenuItem });
+            toolStripMenuItem4.Image = Properties.Resources.timg;
             toolStripMenuItem4.Name = "toolStripMenuItem4";
-            toolStripMenuItem4.Size = new System.Drawing.Size(92, 25);
+            toolStripMenuItem4.Size = new System.Drawing.Size(112, 25);
             toolStripMenuItem4.Text = "一级菜单2";
             // 
             // 二级菜单1ToolStripMenuItem
             // 
             二级菜单1ToolStripMenuItem.Name = "二级菜单1ToolStripMenuItem";
-            二级菜单1ToolStripMenuItem.Size = new System.Drawing.Size(161, 26);
+            二级菜单1ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             二级菜单1ToolStripMenuItem.Text = "二级菜单1";
             // 
             // dateTimePicker1

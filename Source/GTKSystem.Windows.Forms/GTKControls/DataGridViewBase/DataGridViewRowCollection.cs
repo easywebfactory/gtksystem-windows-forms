@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms.GtkRender;
+using GLib;
 using Gtk;
 
 namespace System.Windows.Forms
@@ -24,7 +25,7 @@ namespace System.Windows.Forms
             foreach (DataGridViewRow row in dataGridViewRows)
                 AddGtkStore(row.Cells.ConvertAll(c =>
                 {
-                    if (row.DefaultCellStyle != null && row.DefaultCellStyle.BackColor != null)
+                    if (row.DefaultCellStyle != null && row.DefaultCellStyle.BackColor.Name != "0" && row.DefaultCellStyle.BackColor.Name != "")
                         return new CellValue() { Text = Convert.ToString(c.Value), Background = row.DefaultCellStyle.BackColor };
                     else
                         return new CellValue() { Text = Convert.ToString(c.Value) };
