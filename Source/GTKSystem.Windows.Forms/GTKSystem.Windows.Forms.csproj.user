@@ -20,6 +20,12 @@
     <Compile Update="GTKControls\ComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\Interface\WidgetControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\ListViewBase\ColumnHeader.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -56,9 +62,6 @@
     <Compile Update="GTKControls\Interface\WidgetContainerControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="GTKControls\Interface\WidgetControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Update="GTKControls\Label.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -66,9 +69,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\ListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\ListView.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\ListViewBase\ImageList.cs">
@@ -83,13 +83,46 @@
     <Compile Update="GTKControls\MenuStripBase\ContextMenuStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="GTKControls\MenuStripBase\ToolStrip.cs">
+    <Compile Update="GTKControls\ToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\MenuStripBase\ToolStripDropDown.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripDropDownButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripDropDownItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\MenuStripBase\ToolStripDropDownMenu.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripSeparator.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripSplitButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MenuStripBase\WidgetToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\MonthCalendar.cs">

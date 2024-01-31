@@ -49,6 +49,7 @@
     <Compile Update="GTKControls\DataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\Interface\WidgetControl.cs" />
     <Compile Update="GTKControls\DateTimePicker.cs">
       <SubType>Component</SubType>
     </Compile>

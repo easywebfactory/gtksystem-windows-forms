@@ -6,7 +6,7 @@ using System.Reflection;
 namespace System.Windows.Forms
 {
     public delegate void ToolStripItemClickedEventHandler(object sender, ToolStripItemClickedEventArgs e);
-    public abstract class ToolStripDropDownItem : ToolStripItem
+    public abstract class ToolStripDropDownItem : WidgetToolStrip<Gtk.MenuItem>
     {
         protected ToolStripDropDownItem() : this("", null, null, "") { }
 

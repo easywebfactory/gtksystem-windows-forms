@@ -5,7 +5,7 @@ using System.ComponentModel;
 namespace System.Windows.Forms
 {
 
-    public class ToolStripButton : ToolStripItem
+    public class ToolStripButton : WidgetToolStrip<Gtk.MenuItem>
     {
 
         public ToolStripButton() : this("", null, null, "")

@@ -37,10 +37,10 @@ namespace GTKWinFormsApp
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            TreeNode treeNode1 = new TreeNode("Node2");
-            TreeNode treeNode2 = new TreeNode("Node3");
-            TreeNode treeNode3 = new TreeNode("Node0", new TreeNode[] { treeNode1, treeNode2 });
-            TreeNode treeNode4 = new TreeNode("Node1");
+            TreeNode treeNode5 = new TreeNode("Node2");
+            TreeNode treeNode6 = new TreeNode("Node3");
+            TreeNode treeNode7 = new TreeNode("Node0", new TreeNode[] { treeNode5, treeNode6 });
+            TreeNode treeNode8 = new TreeNode("Node1");
             button1 = new Button();
             comboBox1 = new ComboBox();
             textBox1 = new TextBox();
@@ -388,7 +388,6 @@ namespace GTKWinFormsApp
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Dock = DockStyle.Fill;
-            tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabControl1.ItemSize = new System.Drawing.Size(181, 25);
             tabControl1.Location = new System.Drawing.Point(0, 0);
             tabControl1.Margin = new Padding(4);
@@ -585,15 +584,15 @@ namespace GTKWinFormsApp
             treeView1.Location = new System.Drawing.Point(127, 66);
             treeView1.Margin = new Padding(4);
             treeView1.Name = "treeView1";
-            treeNode1.Name = "Node2";
-            treeNode1.Text = "Node2";
-            treeNode2.Name = "Node3";
-            treeNode2.Text = "Node3";
-            treeNode3.Name = "Node0";
-            treeNode3.Text = "Node0";
-            treeNode4.Name = "Node1";
-            treeNode4.Text = "Node1";
-            treeView1.Nodes.AddRange(new TreeNode[] { treeNode3, treeNode4 });
+            treeNode5.Name = "Node2";
+            treeNode5.Text = "Node2";
+            treeNode6.Name = "Node3";
+            treeNode6.Text = "Node3";
+            treeNode7.Name = "Node0";
+            treeNode7.Text = "Node0";
+            treeNode8.Name = "Node1";
+            treeNode8.Text = "Node1";
+            treeView1.Nodes.AddRange(new TreeNode[] { treeNode7, treeNode8 });
             treeView1.Size = new System.Drawing.Size(154, 113);
             treeView1.TabIndex = 4;
             treeView1.AfterCollapse += treeView1_AfterCollapse;
@@ -664,7 +663,7 @@ namespace GTKWinFormsApp
             // 
             test1ToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 三级菜单1ToolStripMenuItem });
             test1ToolStripMenuItem.Name = "test1ToolStripMenuItem";
-            test1ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            test1ToolStripMenuItem.Size = new System.Drawing.Size(161, 26);
             test1ToolStripMenuItem.Text = "二级菜单1";
             // 
             // 三级菜单1ToolStripMenuItem
@@ -678,7 +677,7 @@ namespace GTKWinFormsApp
             test2ToolStripMenuItem.Checked = true;
             test2ToolStripMenuItem.CheckState = CheckState.Checked;
             test2ToolStripMenuItem.Name = "test2ToolStripMenuItem";
-            test2ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            test2ToolStripMenuItem.Size = new System.Drawing.Size(161, 26);
             test2ToolStripMenuItem.Text = "二级菜单2";
             test2ToolStripMenuItem.CheckedChanged += test2ToolStripMenuItem_CheckedChanged;
             test2ToolStripMenuItem.CheckStateChanged += test2ToolStripMenuItem_CheckStateChanged;
@@ -695,7 +694,7 @@ namespace GTKWinFormsApp
             // 二级菜单1ToolStripMenuItem
             // 
             二级菜单1ToolStripMenuItem.Name = "二级菜单1ToolStripMenuItem";
-            二级菜单1ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            二级菜单1ToolStripMenuItem.Size = new System.Drawing.Size(161, 26);
             二级菜单1ToolStripMenuItem.Text = "二级菜单1";
             // 
             // dateTimePicker1

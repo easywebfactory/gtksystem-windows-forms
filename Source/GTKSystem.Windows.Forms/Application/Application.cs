@@ -165,12 +165,16 @@ namespace System.Windows.Forms
 .SplitContainer.horizontal{border-width:1px;}
 .GroupBox{background-color:#F6F5F4;} 
 .MenuStrip{background-color:#F6F5F4;}
+.ToolStrip{border-width:0px;} 
+.ToolStrip viewport{border-width:0px;} 
+
 .ListBox{border-width:1px;background-color:#ffffff; padding:0px;}
 .ListView{background-color:#ffffff; padding:0px;}
 .ListViewHeader button{padding:0px;border-right:solid 1px #cccccc;border-top-width:0px;border-left-width:0px;border-bottom-width:0px;}
 .listviewgroup{background-color:#fefefe; background-image:linear-gradient(#ffffff 12px,#ccccce 3px,#ffffff 14px);}
 .listviewtitle{background-color:#fefefe; padding-left:5px;padding-right:5px; }
 .listviewsubtitle{padding-left:5px;padding-right:5px;color:#666666; font-size:12px; }
+
 ");
 
             Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, 800);

@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace System.Windows.Forms
 {
-    public class ToolStripMenuItem : ToolStripItem
+    public class ToolStripMenuItem : WidgetToolStrip<Gtk.MenuItem>
     {
         public ToolStripMenuItem():base()
         {
@@ -19,11 +19,11 @@ namespace System.Windows.Forms
                 base.CheckState = value;
                 if (value == CheckState.Indeterminate)
                 {
-                    IcoImage = Gtk.Image.NewFromIconName("pan-end-symbolic", Gtk.IconSize.Menu);
+                   // IcoImage = Gtk.Image.NewFromIconName("pan-end-symbolic", Gtk.IconSize.Menu);
                 }
                 else
                 {
-                    IcoImage = Gtk.Image.NewFromIconName("object-select-symbolic", Gtk.IconSize.Menu);
+                   // IcoImage = Gtk.Image.NewFromIconName("object-select-symbolic", Gtk.IconSize.Menu);
                 }
             }
         }

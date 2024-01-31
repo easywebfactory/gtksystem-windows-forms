@@ -12,6 +12,11 @@ namespace System.Windows.Forms
         public ToolStripItemCollection toolStripItemCollection;
         public ToolStrip()
         {
+            this.Control.StyleContext.AddClass("ToolStrip");
+            this.Control.Hexpand = false;
+            this.Control.Vexpand = false;
+            this.Control.Valign = Gtk.Align.Start;
+            this.Control.Halign = Gtk.Align.Start;
             toolStripItemCollection = new ToolStripItemCollection(this);
             base.Control.ActivateCurrent += ToolStripItem_Activated;
         }

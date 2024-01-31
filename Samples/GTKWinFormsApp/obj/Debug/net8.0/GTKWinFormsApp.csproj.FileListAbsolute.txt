@@ -30,3 +30,4 @@ F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\Resources\010.jpg
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\Resources\timg2.jpg
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\Resources\BindingNavigator.Delete.ico
+F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.Form3.resources

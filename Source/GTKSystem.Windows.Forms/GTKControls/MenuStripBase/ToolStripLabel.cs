@@ -11,7 +11,7 @@ namespace System.Windows.Forms
     /// <summary>
     ///  A non selectable ToolStrip item
     /// </summary>
-    public class ToolStripLabel : ToolStripItem
+    public class ToolStripLabel : WidgetToolStrip<Gtk.MenuItem>
     {
       
     }
