@@ -24,6 +24,7 @@ namespace System.Windows.Forms
         protected ToolStripItem(string text, Image image, EventHandler onClick) : this(text, image, onClick, "")
         {
         }
+      
         protected ToolStripItem(string text, Image image, EventHandler onClick, string name) : this()
         {
             this.Name = name;
@@ -34,7 +35,7 @@ namespace System.Windows.Forms
             if (onClick != null)
                 Click += onClick;
         }
-
+        public virtual void CreateControl(object widget, string stripType, string text, System.Drawing.Image image, EventHandler onClick, string name, params object[] args) { }
         public virtual ToolStripItemCollection Items
         {
             get
@@ -117,7 +118,7 @@ namespace System.Windows.Forms
         //public override Size MaximumSize { get; set; }
         //public override Size MinimumSize { get; set; }
         public virtual Padding Padding { get; set; }
-        public virtual Control Parent { get; set; }
+        public virtual ToolStripItem Parent { get; set; }
         public virtual System.Drawing.Region Region { get; set; }
         public virtual int Right { get; }
 

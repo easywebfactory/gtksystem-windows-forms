@@ -20,7 +20,16 @@ namespace System.Windows.Forms
             toolStripItemCollection = new ToolStripItemCollection(this);
             base.Control.ActivateCurrent += ToolStripItem_Activated;
         }
-
+        public ToolStrip(string owner)
+        {
+            this.Control.StyleContext.AddClass("ToolStrip");
+            this.Control.Hexpand = false;
+            this.Control.Vexpand = false;
+            this.Control.Valign = Gtk.Align.Start;
+            this.Control.Halign = Gtk.Align.Start;
+            toolStripItemCollection = new ToolStripItemCollection(this, owner);
+            base.Control.ActivateCurrent += ToolStripItem_Activated;
+        }
         private void ToolStripItem_Activated(object sender, ActivateCurrentArgs e)
         {
             if (Click != null)

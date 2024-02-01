@@ -131,6 +131,10 @@ namespace System.Windows.Forms
 .MessageBox button{margin:10px;border-radius:0px;}
 .MessageBox-BarTitle{font-size:20px;padding-bottom:10px;}
 .TabControl{padding:0px;} 
+/*
+.TabControl header.top{background-color:#ffcccc;} 
+.TabControl header.top tab:hover{background-color:#ffeeee;} 
+*/
 .DataGridView{margin:0px;}
 .DataGridView treeview.view{margin:0px;padding:0px;border-bottom:solid 1px #dddddd;border-left-width:0px;border-top-width:0px;;border-right-width:0px;}
 .DataGridView button{} 
@@ -165,8 +169,14 @@ namespace System.Windows.Forms
 .SplitContainer.horizontal{border-width:1px;}
 .GroupBox{background-color:#F6F5F4;} 
 .MenuStrip{background-color:#F6F5F4;}
-.ToolStrip{border-width:0px;} 
+.MenuStrip check{}
+
+.ToolStrip{border-width:0px;padding:0px;} 
 .ToolStrip viewport{border-width:0px;} 
+.ToolStrip check.left{} 
+.ToolStrip check{} 
+.ToolStripMenuItemNoChecked check{color:transparent;opacity:0;} 
+.ToolStripMenuItemChecked check{color:#333333;opacity:1;} 
 
 .ListBox{border-width:1px;background-color:#ffffff; padding:0px;}
 .ListView{background-color:#ffffff; padding:0px;}

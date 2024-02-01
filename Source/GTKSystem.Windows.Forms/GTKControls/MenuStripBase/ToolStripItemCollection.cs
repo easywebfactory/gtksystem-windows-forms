@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Collections;
+using System.Xml.Linq;
 using GLib;
 
 namespace System.Windows.Forms
@@ -13,6 +14,7 @@ namespace System.Windows.Forms
         private ToolStrip toolStrip;
         private Gtk.Menu menu;
         private bool isToolStrip;
+        private bool isMenuStrip;
         private bool isContextMenu;
 
         public ToolStripItemCollection(ToolStrip owner) 
@@ -20,16 +22,20 @@ namespace System.Windows.Forms
             this.toolStrip = owner;
             isToolStrip = true;
         }
-        public ToolStripItemCollection(Gtk.Menu owner)
+        public ToolStripItemCollection(ToolStrip toolStrip, string owner)
         {
-             this.menu = owner;
+            this.toolStrip = toolStrip;
+            isMenuStrip = owner == "MenuStrip";
+        }
+        public ToolStripItemCollection(ToolStripDropDown owner)
+        {
+             this.menu = owner.Control;
             isContextMenu = true;
             this.menu.ShowAll();
         }
         public ToolStripItemCollection(ToolStripItem owner)
         {
             this.owner = owner;
-            isContextMenu = false;
         }
         internal ToolStripItemCollection(ToolStripItem owner, bool itemsCollection)
             : this(owner, itemsCollection, isReadOnly: false)
@@ -73,16 +79,33 @@ namespace System.Windows.Forms
 
         public int AddMemu(ToolStripItem value)
         {
+            value.Parent = owner;
             if (isToolStrip == true)
             {
                 toolStrip.Control.Add(value.Widget);
             }
+            else if(isMenuStrip == true)
+            {
+                value.CreateControl(value.Widget, "", "", null, null, "");
+                toolStrip.Control.Add(value.Widget);
+            }
             else if (isContextMenu == true)
             {
+                if (value.MenuItem == null)
+                {
+                    Gtk.CheckMenuItem widget = new Gtk.CheckMenuItem();
+                    value.CreateControl(widget, "", "", null, null, "");
+                }
                 menu.Add(value.Widget);
             }
             else
             {
+                if (value.MenuItem == null)
+                {
+                    Gtk.CheckMenuItem widget = new Gtk.CheckMenuItem();
+                    value.CreateControl(widget, "", "", null, null, "");
+                }
+
                 if (owner.MenuItem.Submenu == null)
                 {
                     this.menu = new Gtk.Menu();

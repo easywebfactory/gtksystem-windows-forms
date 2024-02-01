@@ -13,7 +13,7 @@ namespace System.Windows.Forms
 
     public class ToolStripTextBox : WidgetToolStrip<Gtk.MenuItem>
     {
-        public ToolStripTextBox() : base("ToolStripTextBox")
+        public ToolStripTextBox() : base("ToolStripTextBox", null)
         {
             
         }

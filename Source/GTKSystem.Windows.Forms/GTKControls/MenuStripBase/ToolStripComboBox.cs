@@ -7,6 +7,7 @@
  */
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 
@@ -16,10 +17,9 @@ namespace System.Windows.Forms
     public class ToolStripComboBox : WidgetToolStrip<Gtk.MenuItem>
     {
         private ObjectCollection __itemsData;
-        public ToolStripComboBox() : base()
+        public ToolStripComboBox() : base("ToolStripComboBox",null)
         {
             __itemsData = new ObjectCollection(this.comboBox);
-            this.Text = "[不支持ComboBox]";
         }
         public override Size Size { get => base.Size; set { this.comboBox.WidthRequest = value.Width; this.comboBox.HeightRequest = value.Height; base.Size = value; } }
 
@@ -41,93 +41,28 @@ namespace System.Windows.Forms
         }
 
         [ListBindable(false)]
-        public class ObjectCollection : Gtk.TreeStore, IList
+        public class ObjectCollection : ArrayList
         {
-            Gtk.ComboBox __owner;
-            public ObjectCollection(Gtk.ComboBox owner) : base(typeof(string))
+            Gtk.ComboBoxText __owner;
+            public ObjectCollection(Gtk.ComboBoxText owner)
             {
                 __owner = owner;
-                __owner.Model = this;
-                var textCell = new Gtk.CellRendererText();
-                __owner.PackStart(textCell, true);
-                __owner.AddAttribute(textCell, "text", 0);
             }
-
-            public object this[int index]
+            public override int Add(object value)
             {
-                get
-                {
-
-                    if (base.GetIter(out Gtk.TreeIter iter, new Gtk.TreePath(new int[] { index })))
-                        return base.GetValue(iter, 0);
-                    else
-                        return null;
-                }
-                set
-                {
-                    if (base.GetIter(out Gtk.TreeIter iter, new Gtk.TreePath(new int[] { index })))
-                        base.SetValue(iter, 0, Convert.ToString(value));
-                    else
-                    {
-                        throw new Exception("索引值超出范围");
-                    }
-                }
+                __owner.AppendText(value?.ToString());
+                return base.Add(value);
             }
-
-            public bool IsFixedSize => throw new NotImplementedException();
-
-            public bool IsReadOnly => throw new NotImplementedException();
-
-            public int Count => throw new NotImplementedException();
-
-            public bool IsSynchronized => throw new NotImplementedException();
-
-            public object SyncRoot => throw new NotImplementedException();
-
-            public int Add(object item)
+            public override void Clear()
             {
-                this.AppendValues(Convert.ToString(item));
-                return 1;
+                __owner.Clear();
+                base.Clear();
             }
-            public void AddRange(object[] items)
+            public override void AddRange(ICollection c)
             {
-                foreach (object item in items)
-                    this.AppendValues(Convert.ToString(item));
-            }
-
-            public bool Contains(object value)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void CopyTo(Array array, int index)
-            {
-                throw new NotImplementedException();
-            }
-
-            public IEnumerator GetEnumerator()
-            {
-                throw new NotImplementedException();
-            }
-
-            public int IndexOf(object value)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Insert(int index, object value)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Remove(object value)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void RemoveAt(int index)
-            {
-                throw new NotImplementedException();
+                foreach (var item in c)
+                    __owner.AppendText(item.ToString());
+                base.AddRange(c);
             }
         }
     }

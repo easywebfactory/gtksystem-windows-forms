@@ -20,14 +20,14 @@ namespace System.Windows.Forms
             DropDownItems.AddRange(dropDownItems);
         }
        
-        protected ToolStripDropDownItem(string text, Image image, EventHandler onClick, string name) : base(text, image, onClick, name)
+        protected ToolStripDropDownItem(string text, Image image, EventHandler onClick, string name) : base("ToolStripDropDownItem", text, image, onClick, name)
         {
             DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText;
         }
 
-        public override string Text { get => base.Text; set => base.Text = value+ " ▼"; }
-        
-      
+        public override string Text { get => base.Text; set => base.Text = value; } //+ " ▼"
+
+
         [Browsable(false)]
         public bool HasDropDown { get; }
        

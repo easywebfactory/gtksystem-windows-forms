@@ -10,7 +10,7 @@ namespace System.Windows.Forms
         public ToolStripItemCollection toolStripItemCollection;
         public ToolStripDropDown():base()
         {
-            toolStripItemCollection = new ToolStripItemCollection(base.Control);
+            toolStripItemCollection = new ToolStripItemCollection(this);
         }
 
         public ToolStripItemCollection Items

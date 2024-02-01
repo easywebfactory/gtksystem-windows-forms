@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gtk;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -7,7 +8,7 @@ namespace System.Windows.Forms
 {
     public class ToolStripMenuItem : WidgetToolStrip<Gtk.MenuItem>
     {
-        public ToolStripMenuItem():base()
+        public ToolStripMenuItem():base("ToolStripMenuItem")
         {
             DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
         }
@@ -17,16 +18,34 @@ namespace System.Windows.Forms
             set
             {
                 base.CheckState = value;
-                if (value == CheckState.Indeterminate)
+                if (this.Widget is Gtk.CheckMenuItem checkMenuItem)
                 {
-                   // IcoImage = Gtk.Image.NewFromIconName("pan-end-symbolic", Gtk.IconSize.Menu);
-                }
-                else
-                {
-                   // IcoImage = Gtk.Image.NewFromIconName("object-select-symbolic", Gtk.IconSize.Menu);
+                    if (value == CheckState.Indeterminate)
+                    {
+                        checkMenuItem.DrawAsRadio = true;
+                    }
+                    else if (value == CheckState.Checked)
+                    {
+                        checkMenuItem.DrawAsRadio = false;
+                    }
                 }
             }
         }
-
+        public override bool Checked {
+            get
+            {
+                if (this.Widget is Gtk.CheckMenuItem checkMenuItem)
+                {
+                   return checkMenuItem.Active;
+                }
+                return base.Checked; 
+            }
+            set { 
+                base.Checked = value;
+                if (this.Widget is Gtk.CheckMenuItem checkMenuItem)
+                {
+                    checkMenuItem.Active = value;
+                }
+            } }
     }
 }

@@ -33,6 +33,8 @@
             toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             ddddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ssssToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            bb菜单ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            bb菜单2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ssssToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             toolStrip2 = new System.Windows.Forms.ToolStrip();
             toolStripButton1 = new System.Windows.Forms.ToolStripButton();
@@ -46,6 +48,7 @@
             toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
+            toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             button1 = new System.Windows.Forms.Button();
             menuStrip1.SuspendLayout();
             toolStrip2.SuspendLayout();
@@ -65,31 +68,46 @@
             // 
             toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { ddddToolStripMenuItem, ssssToolStripMenuItem });
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new System.Drawing.Size(172, 24);
-            toolStripMenuItem1.Text = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new System.Drawing.Size(62, 24);
+            toolStripMenuItem1.Text = "菜单1";
             // 
             // ddddToolStripMenuItem
             // 
+            ddddToolStripMenuItem.Checked = true;
+            ddddToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             ddddToolStripMenuItem.Name = "ddddToolStripMenuItem";
             ddddToolStripMenuItem.Size = new System.Drawing.Size(132, 26);
-            ddddToolStripMenuItem.Text = "dddd";
+            ddddToolStripMenuItem.Text = "a菜单";
             // 
             // ssssToolStripMenuItem
             // 
+            ssssToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { bb菜单ToolStripMenuItem, bb菜单2ToolStripMenuItem });
             ssssToolStripMenuItem.Name = "ssssToolStripMenuItem";
             ssssToolStripMenuItem.Size = new System.Drawing.Size(132, 26);
-            ssssToolStripMenuItem.Text = "ssss";
+            ssssToolStripMenuItem.Text = "b菜单";
+            // 
+            // bb菜单ToolStripMenuItem
+            // 
+            bb菜单ToolStripMenuItem.Name = "bb菜单ToolStripMenuItem";
+            bb菜单ToolStripMenuItem.Size = new System.Drawing.Size(151, 26);
+            bb菜单ToolStripMenuItem.Text = "bb菜单";
+            // 
+            // bb菜单2ToolStripMenuItem
+            // 
+            bb菜单2ToolStripMenuItem.Name = "bb菜单2ToolStripMenuItem";
+            bb菜单2ToolStripMenuItem.Size = new System.Drawing.Size(151, 26);
+            bb菜单2ToolStripMenuItem.Text = "bb菜单2";
             // 
             // ssssToolStripMenuItem1
             // 
             ssssToolStripMenuItem1.Name = "ssssToolStripMenuItem1";
-            ssssToolStripMenuItem1.Size = new System.Drawing.Size(51, 24);
-            ssssToolStripMenuItem1.Text = "ssss";
+            ssssToolStripMenuItem1.Size = new System.Drawing.Size(62, 24);
+            ssssToolStripMenuItem1.Text = "菜单2";
             // 
             // toolStrip2
             // 
             toolStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
-            toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripButton1, toolStripLabel1, toolStripSeparator1, toolStripDropDownButton1, toolStripSplitButton1, toolStripSeparator2, toolStripComboBox1, toolStripTextBox1 });
+            toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripButton1, toolStripLabel1, toolStripSeparator1, toolStripDropDownButton1, toolStripSplitButton1, toolStripSeparator2, toolStripComboBox1, toolStripTextBox1, toolStripProgressBar1 });
             toolStrip2.Location = new System.Drawing.Point(0, 28);
             toolStrip2.Name = "toolStrip2";
             toolStrip2.Size = new System.Drawing.Size(800, 28);
@@ -122,22 +140,22 @@
             toolStripDropDownButton1.Image = (System.Drawing.Image)resources.GetObject("toolStripDropDownButton1.Image");
             toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            toolStripDropDownButton1.Size = new System.Drawing.Size(180, 25);
-            toolStripDropDownButton1.Text = "DropDownButton1";
+            toolStripDropDownButton1.Size = new System.Drawing.Size(112, 25);
+            toolStripDropDownButton1.Text = "下拉列表1";
             // 
             // memnuToolStripMenuItem
             // 
             memnuToolStripMenuItem.Checked = true;
             memnuToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             memnuToolStripMenuItem.Name = "memnuToolStripMenuItem";
-            memnuToolStripMenuItem.Size = new System.Drawing.Size(156, 26);
-            memnuToolStripMenuItem.Text = "2memnu";
+            memnuToolStripMenuItem.Size = new System.Drawing.Size(116, 26);
+            memnuToolStripMenuItem.Text = "项1";
             // 
             // fffffffToolStripMenuItem
             // 
             fffffffToolStripMenuItem.Name = "fffffffToolStripMenuItem";
-            fffffffToolStripMenuItem.Size = new System.Drawing.Size(156, 26);
-            fffffffToolStripMenuItem.Text = "fffffff";
+            fffffffToolStripMenuItem.Size = new System.Drawing.Size(116, 26);
+            fffffffToolStripMenuItem.Text = "项2";
             // 
             // toolStripSplitButton1
             // 
@@ -161,7 +179,7 @@
             // 
             // toolStripComboBox1
             // 
-            toolStripComboBox1.Items.AddRange(new object[] { "sss", "ff", "ffdd" });
+            toolStripComboBox1.Items.AddRange(new object[] { "1testitem", "2testitem", "3testitem" });
             toolStripComboBox1.Name = "toolStripComboBox1";
             toolStripComboBox1.Size = new System.Drawing.Size(121, 28);
             // 
@@ -170,13 +188,19 @@
             toolStripTextBox1.Name = "toolStripTextBox1";
             toolStripTextBox1.Size = new System.Drawing.Size(100, 28);
             // 
+            // toolStripProgressBar1
+            // 
+            toolStripProgressBar1.Name = "toolStripProgressBar1";
+            toolStripProgressBar1.Size = new System.Drawing.Size(90, 25);
+            toolStripProgressBar1.Value = 35;
+            // 
             // button1
             // 
             button1.Location = new System.Drawing.Point(522, 158);
             button1.Name = "button1";
             button1.Size = new System.Drawing.Size(94, 29);
             button1.TabIndex = 3;
-            button1.Text = "button1";
+            button1.Text = "打开主窗口";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
@@ -218,5 +242,8 @@
         private System.Windows.Forms.ToolStripMenuItem fffffffToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ssssToolStripMenuItem1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ToolStripMenuItem bb菜单ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bb菜单2ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
     }
 }

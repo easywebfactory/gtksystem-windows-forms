@@ -83,6 +83,12 @@
     <Compile Update="GTKControls\MenuStripBase\ContextMenuStrip.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\ProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\ToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>

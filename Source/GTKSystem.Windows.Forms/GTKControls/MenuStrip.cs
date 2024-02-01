@@ -13,10 +13,9 @@ namespace System.Windows.Forms
     [DesignerCategory("Component")]
     public partial class MenuStrip : ToolStrip
     {
-        public MenuStrip() : base()
+        public MenuStrip() : base("MenuStrip")
         {
             Widget.StyleContext.AddClass("MenuStrip");
-            base.Control.PackDirection = Gtk.PackDirection.Ltr;
             this.Dock = DockStyle.Top;
         }
 
