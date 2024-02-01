@@ -9,5 +9,6 @@ namespace System.Windows.Forms
         {
             return (active != null && ActiveControl != null && ActiveControl.Equals(active));
         }
+        public virtual StatusStrip StatusStrip { get; set; }
     }
 }

@@ -12,8 +12,10 @@ namespace System.Windows.Forms
     {
         private ToolStripItem owner;
         private ToolStrip toolStrip;
+        private StatusStrip statusStrip;
         private Gtk.Menu menu;
         private bool isToolStrip;
+        private bool isStatusStrip;
         private bool isMenuStrip;
         private bool isContextMenu;
 
@@ -27,11 +29,16 @@ namespace System.Windows.Forms
             this.toolStrip = toolStrip;
             isMenuStrip = owner == "MenuStrip";
         }
+        public ToolStripItemCollection(StatusStrip owner)
+        {
+            this.statusStrip = owner;
+            isStatusStrip = true;
+        }
         public ToolStripItemCollection(ToolStripDropDown owner)
         {
              this.menu = owner.Control;
             isContextMenu = true;
-            this.menu.ShowAll();
+           // this.menu.ShowAll();
         }
         public ToolStripItemCollection(ToolStripItem owner)
         {
@@ -84,6 +91,10 @@ namespace System.Windows.Forms
             {
                 toolStrip.Control.Add(value.Widget);
             }
+            else if (isStatusStrip == true)
+            {
+                statusStrip.Control.Add(value.Widget);
+            }
             else if(isMenuStrip == true)
             {
                 value.CreateControl(value.Widget, "", "", null, null, "");
@@ -93,9 +104,10 @@ namespace System.Windows.Forms
             {
                 if (value.MenuItem == null)
                 {
-                    Gtk.CheckMenuItem widget = new Gtk.CheckMenuItem();
+                    Gtk.MenuItem widget = new Gtk.MenuItem();
                     value.CreateControl(widget, "", "", null, null, "");
                 }
+                value.Widget.Visible = true;
                 menu.Add(value.Widget);
             }
             else

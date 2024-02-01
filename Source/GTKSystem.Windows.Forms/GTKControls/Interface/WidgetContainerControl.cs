@@ -218,7 +218,7 @@ namespace System.Windows.Forms
         public override bool ContainsFocus { get; }
 
         public override ContextMenuStrip ContextMenuStrip { get; set; }
-
+        public override StatusStrip StatusStrip { get; set; }
         public override ControlCollection Controls { get; }
 
         public override bool Created => _Created;

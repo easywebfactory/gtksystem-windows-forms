@@ -19,6 +19,7 @@ namespace System.Windows.Forms
             this.Control.Halign = Gtk.Align.Start;
             toolStripItemCollection = new ToolStripItemCollection(this);
             base.Control.ActivateCurrent += ToolStripItem_Activated;
+            Dock = DockStyle.Top;
         }
         public ToolStrip(string owner)
         {

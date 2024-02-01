@@ -4,8 +4,8 @@
 
 using System.ComponentModel;
 using System.Drawing;
-
-
+using System.Xml.Linq;
+ 
 namespace System.Windows.Forms
 {
     /// <summary>
@@ -13,7 +13,28 @@ namespace System.Windows.Forms
     /// </summary>
     public class ToolStripLabel : WidgetToolStrip<Gtk.MenuItem>
     {
-      
+        public ToolStripLabel() : this("", null, null, "")
+        {
+
+        }
+
+        public ToolStripLabel(string text) : this(text, null, null, "")
+        {
+
+        }
+
+        public ToolStripLabel(string text, Image image) : this(text, image, null, "")
+        {
+        }
+
+        public ToolStripLabel(string text, Image image, EventHandler onClick) : this(text, image, onClick, "")
+        {
+
+        }
+
+        public ToolStripLabel(string text, Image image, EventHandler onClick, string name) : base(null, text, image, onClick, name)
+        {
+        }
     }
 
 }

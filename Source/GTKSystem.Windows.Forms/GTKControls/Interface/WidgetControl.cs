@@ -310,6 +310,10 @@ namespace System.Windows.Forms
                     Widget.Data["InitMarginStart"] = Widget.MarginStart;
                     Widget.Data["InitMarginTop"] = Widget.MarginTop;
                 }
+                if (Widget is Gtk.MenuBar bar)
+                {
+                    Widget.Data["InitMarginTop"] = Widget.MarginTop-16;
+                }
             }
         }
         //public override Padding Margin { get; set; }

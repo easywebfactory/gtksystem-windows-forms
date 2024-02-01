@@ -8,7 +8,9 @@ namespace System.Windows.Forms
     public delegate void ToolStripItemClickedEventHandler(object sender, ToolStripItemClickedEventArgs e);
     public abstract class ToolStripDropDownItem : WidgetToolStrip<Gtk.MenuItem>
     {
-        protected ToolStripDropDownItem() : this("", null, null, "") { }
+        protected ToolStripDropDownItem() : this("", null, null, "") {
+            
+        }
 
         protected ToolStripDropDownItem(string text, Image image, EventHandler onClick) : this(text, image, onClick, "")
         {

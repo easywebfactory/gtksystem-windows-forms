@@ -3,10 +3,6 @@ using System.Drawing;
 
 namespace System.Windows.Forms
 {
-    //
-    // 摘要:
-    //     Provides basic functionality for the System.Windows.Forms.ContextMenuStrip control.
-    [Designer("System.Windows.Forms.Design.ToolStripDropDownDesigner, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     public class ToolStripDropDownMenu : ToolStripDropDown
     {
 

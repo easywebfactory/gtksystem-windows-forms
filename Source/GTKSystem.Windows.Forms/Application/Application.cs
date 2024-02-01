@@ -177,6 +177,7 @@ namespace System.Windows.Forms
 .ToolStrip check{} 
 .ToolStripMenuItemNoChecked check{color:transparent;opacity:0;} 
 .ToolStripMenuItemChecked check{color:#333333;opacity:1;} 
+.StatusStrip{border-top:solid 1px #cccccc;}
 
 .ListBox{border-width:1px;background-color:#ffffff; padding:0px;}
 .ListView{background-color:#ffffff; padding:0px;}

@@ -80,13 +80,19 @@
     <Compile Update="GTKControls\MenuStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="GTKControls\MenuStripBase\ContextMenuStrip.cs">
+    <Compile Update="GTKControls\ContextMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripStatusLabel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\ProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\MenuStripBase\ToolStripProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\StatusStrip.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\ToolStrip.cs">

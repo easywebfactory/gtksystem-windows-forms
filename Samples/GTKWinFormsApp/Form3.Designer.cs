@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form3));
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,8 +51,22 @@
             toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
             toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             button1 = new System.Windows.Forms.Button();
+            contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
+            ddddToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            ffffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            statusStrip1 = new System.Windows.Forms.StatusStrip();
+            toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            toolStripProgressBar2 = new System.Windows.Forms.ToolStripProgressBar();
+            toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
+            toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSplitButton2 = new System.Windows.Forms.ToolStripSplitButton();
+            toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             toolStrip2.SuspendLayout();
+            contextMenuStrip1.SuspendLayout();
+            statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
@@ -204,11 +219,97 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { ddddToolStripMenuItem1, ffffToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new System.Drawing.Size(119, 52);
+            // 
+            // ddddToolStripMenuItem1
+            // 
+            ddddToolStripMenuItem1.Name = "ddddToolStripMenuItem1";
+            ddddToolStripMenuItem1.Size = new System.Drawing.Size(118, 24);
+            ddddToolStripMenuItem1.Text = "dddd";
+            // 
+            // ffffToolStripMenuItem
+            // 
+            ffffToolStripMenuItem.Name = "ffffToolStripMenuItem";
+            ffffToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
+            ffffToolStripMenuItem.Text = "ffff";
+            // 
+            // statusStrip1
+            // 
+            statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripStatusLabel1, toolStripProgressBar2, toolStripDropDownButton2, toolStripSplitButton2 });
+            statusStrip1.Location = new System.Drawing.Point(0, 424);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Size = new System.Drawing.Size(800, 26);
+            statusStrip1.TabIndex = 4;
+            statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            toolStripStatusLabel1.Size = new System.Drawing.Size(167, 20);
+            toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            // 
+            // toolStripProgressBar2
+            // 
+            toolStripProgressBar2.Name = "toolStripProgressBar2";
+            toolStripProgressBar2.Size = new System.Drawing.Size(100, 18);
+            // 
+            // toolStripDropDownButton2
+            // 
+            toolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            toolStripDropDownButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuItem4, toolStripMenuItem3 });
+            toolStripDropDownButton2.Image = (System.Drawing.Image)resources.GetObject("toolStripDropDownButton2.Image");
+            toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripDropDownButton2.Name = "toolStripDropDownButton2";
+            toolStripDropDownButton2.Size = new System.Drawing.Size(34, 24);
+            toolStripDropDownButton2.Text = "toolStripDropDownButton2";
+            // 
+            // toolStripMenuItem4
+            // 
+            toolStripMenuItem4.Name = "toolStripMenuItem4";
+            toolStripMenuItem4.Size = new System.Drawing.Size(173, 26);
+            toolStripMenuItem4.Text = "222222222";
+            // 
+            // toolStripMenuItem3
+            // 
+            toolStripMenuItem3.Name = "toolStripMenuItem3";
+            toolStripMenuItem3.Size = new System.Drawing.Size(173, 26);
+            toolStripMenuItem3.Text = "111111";
+            // 
+            // toolStripSplitButton2
+            // 
+            toolStripSplitButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            toolStripSplitButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuItem6, toolStripMenuItem5 });
+            toolStripSplitButton2.Image = (System.Drawing.Image)resources.GetObject("toolStripSplitButton2.Image");
+            toolStripSplitButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripSplitButton2.Name = "toolStripSplitButton2";
+            toolStripSplitButton2.Size = new System.Drawing.Size(39, 24);
+            toolStripSplitButton2.Text = "toolStripSplitButton2";
+            // 
+            // toolStripMenuItem6
+            // 
+            toolStripMenuItem6.Name = "toolStripMenuItem6";
+            toolStripMenuItem6.Size = new System.Drawing.Size(137, 26);
+            toolStripMenuItem6.Text = "22222";
+            // 
+            // toolStripMenuItem5
+            // 
+            toolStripMenuItem5.Name = "toolStripMenuItem5";
+            toolStripMenuItem5.Size = new System.Drawing.Size(137, 26);
+            toolStripMenuItem5.Text = "11111";
+            // 
             // Form3
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(800, 450);
+            ContextMenuStrip = contextMenuStrip1;
+            Controls.Add(statusStrip1);
             Controls.Add(button1);
             Controls.Add(toolStrip2);
             Controls.Add(menuStrip1);
@@ -219,6 +320,9 @@
             menuStrip1.PerformLayout();
             toolStrip2.ResumeLayout(false);
             toolStrip2.PerformLayout();
+            contextMenuStrip1.ResumeLayout(false);
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -245,5 +349,17 @@
         private System.Windows.Forms.ToolStripMenuItem bb菜单ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bb菜单2ToolStripMenuItem;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem ddddToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem ffffToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar2;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
+        private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton2;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
     }
 }

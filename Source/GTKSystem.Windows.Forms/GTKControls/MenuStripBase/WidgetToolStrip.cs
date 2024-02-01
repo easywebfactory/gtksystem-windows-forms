@@ -6,6 +6,7 @@
  * date: 2024/1/3
  */
 
+using GLib;
 using Gtk;
 using System;
 using System.Collections.Generic;
@@ -82,12 +83,13 @@ namespace System.Windows.Forms
             else
             {
                 _menuItem = widget as Gtk.MenuItem;
+                
                 _menuItem.Activated += _menuItem_Activated;
                 _menuItem.Realized += ToolStripItem_Realized;
                 _menuItem.Valign = Gtk.Align.Center;
-                _menuItem.Halign = Gtk.Align.Start;
-                _menuItem.Vexpand = false;
-                _menuItem.Hexpand = false;
+                _menuItem.Halign = Gtk.Align.Fill;
+                _menuItem.Vexpand = true;
+                _menuItem.Hexpand = true;
 
                 itemBox.Valign = Gtk.Align.Start;
                 itemBox.Halign = Gtk.Align.Start;
@@ -97,6 +99,10 @@ namespace System.Windows.Forms
                     button.ImagePosition = PositionType.Right;
                     button.Relief = ReliefStyle.None;
                     button.AlwaysShowImage = true;
+                    button.Halign = Gtk.Align.Start;
+                    button.Valign = Gtk.Align.Center;
+                    button.Hexpand = false;
+                    button.Vexpand = false;
                     itemBox.PackStart(icoViewport, false, false, 0);
                     itemBox.PackStart(button, false, false, 1);
                     _menuItem.Add(itemBox);
@@ -175,9 +181,12 @@ namespace System.Windows.Forms
             }
             else if (DisplayStyle == ToolStripItemDisplayStyle.Image)
             {
-                label.Text = string.Empty;
+                //label.Text = string.Empty;
                 label.Visible = false;
                 label.NoShowAll = true;
+                button.Label = string.Empty;
+               // button.Visible = false;
+               // button.NoShowAll = true;
 
                 if (Image != null && Image.PixbufData != null)
                 {

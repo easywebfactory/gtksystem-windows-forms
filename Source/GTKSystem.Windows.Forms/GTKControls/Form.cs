@@ -139,6 +139,11 @@ namespace System.Windows.Forms
                     WindowBackgroundImage.WidthRequest = width;
                     WindowBackgroundImage.HeightRequest = height;
                     ResizeChildren(base.Control);
+                    if(this.StatusStrip != null)
+                    {
+                        ResizeMenuBar(this.StatusStrip.Control);
+
+                    }
                 }
             }
             if (SizeChanged != null)
@@ -181,7 +186,6 @@ namespace System.Windows.Forms
                             else if (dockStyle == DockStyle.Bottom.ToString())
                             {
                                 control.WidthRequest = width;
-
                                 if ((int)control.Data["InitMarginTop"] + heightIncrement > 0)
                                     control.MarginTop = (int)control.Data["InitMarginTop"] + heightIncrement;
                             }
@@ -206,12 +210,73 @@ namespace System.Windows.Forms
                     {
 
                     }
+                    if (o is Gtk.MenuBar bar)
+                    {
+                        var b = bar;
+                    }
                     else
                     {
                         ResizeChildren(control);
                     }
                 }
+
             }
+        }
+        private void ResizeMenuBar(Gtk.MenuBar bar)
+        {
+
+            object dock = bar.Data["Dock"];
+            if (dock != null)
+            {
+                string dockStyle = dock.ToString();
+                int widthIncrement = base.Control.AllocatedWidth - base.Control.DefaultWidth;
+                int heightIncrement = base.Control.AllocatedHeight - base.Control.DefaultHeight;
+                Gtk.Window parent = this.Control;
+                
+                    int width = parent.WidthRequest - bar.MarginStart - ((int)bar.BorderWidth);
+                    int height = parent.HeightRequest - ((int)bar.BorderWidth);
+                    if (parent.GetType().Name == "Window")
+                    {
+                        width = parent.AllocatedWidth - 2;
+                        height = parent.AllocatedHeight - 1;
+                    }
+                    if (parent.GetType().Name == "Dialog")
+                    {
+                        width = parent.AllocatedWidth - 1;
+                        height = parent.AllocatedHeight - 1;
+                    }
+                    width = width - bar.MarginStart - bar.MarginStart - 2;
+                    height = width - bar.MarginTop - bar.MarginTop - 1;
+
+                    if (dockStyle == DockStyle.Top.ToString())
+                    {
+                        bar.WidthRequest = width;
+                    }
+                    else if (dockStyle == DockStyle.Bottom.ToString())
+                    {
+                        bar.WidthRequest = width;
+
+                        if ((int)bar.Data["InitMarginTop"] + heightIncrement > 0)
+                            bar.MarginTop = (int)bar.Data["InitMarginTop"] + heightIncrement;
+                    }
+                    else if (dockStyle == DockStyle.Left.ToString())
+                    {
+                        bar.HeightRequest = height;
+                    }
+                    else if (dockStyle == DockStyle.Right.ToString())
+                    {
+                        bar.HeightRequest = height;
+                        if ((int)bar.Data["InitMarginStart"] + widthIncrement > 0)
+                            bar.MarginStart = (int)bar.Data["InitMarginStart"] + widthIncrement;
+                    }
+                    else if (dockStyle == DockStyle.Fill.ToString())
+                    {
+                        bar.HeightRequest = height;
+                        bar.WidthRequest = width;
+                    }
+                }
+            
+
         }
         private bool GetParentWidget(Gtk.Widget container, out Gtk.Widget parent)
         {
