@@ -9,6 +9,7 @@ using Gtk;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Xml.Linq;
 
 
 namespace System.Windows.Forms
@@ -19,16 +20,24 @@ namespace System.Windows.Forms
         private Gtk.Layout contaner;
         private ControlCollection _controls;
 
-        public UserControl() : base()
+        public UserControl() : base(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero))
         {
             base.Control.MarginStart = 0;
             base.Control.MarginTop = 0;
             base.Control.BorderWidth = 0;
+            base.Control.Halign = Align.Start;
+            base.Control.Valign = Align.Start;
+            base.Control.Expand = false;
+            base.Control.Hexpand = false;
+            base.Control.Vexpand = false;
             contaner = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
             contaner.MarginStart = 0;
             contaner.MarginTop = 0;
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
+            contaner.Expand = true;
+            contaner.Hexpand = true;
+            contaner.Vexpand = true;
             _controls = new ControlCollection(this, contaner);
 
             base.Control.Add(contaner);
