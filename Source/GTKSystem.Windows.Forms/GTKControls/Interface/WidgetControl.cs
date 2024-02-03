@@ -84,8 +84,8 @@ namespace System.Windows.Forms
                         style.Append("font-style:italic;");
                     else if (sty == "underline")
                         style.Append("text-decoration:underline;");
-                    //else if (sty == "strikeout")
-                    //    style.Append("text-decoration:line-through;");
+                    else if (sty == "strikeout")
+                        style.Append("text-decoration:line-through;");
                 }
             }
 

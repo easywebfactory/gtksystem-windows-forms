@@ -309,10 +309,10 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Underline | System.Drawing.FontStyle.Strikeout);
+            label1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Underline | System.Drawing.FontStyle.Strikeout);
             label1.Location = new System.Drawing.Point(361, 249);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(53, 20);
+            label1.Size = new System.Drawing.Size(44, 18);
             label1.TabIndex = 5;
             label1.Text = "label1";
             // 
@@ -320,7 +320,7 @@
             // 
             linkLabel1.AutoSize = true;
             linkLabel1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Strikeout);
-            linkLabel1.Location = new System.Drawing.Point(362, 284);
+            linkLabel1.Location = new System.Drawing.Point(361, 284);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new System.Drawing.Size(82, 20);
             linkLabel1.TabIndex = 6;
