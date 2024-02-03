@@ -46,40 +46,6 @@ namespace System.Windows.Forms
             _widget.MarginTop = 0;
             _widget.Drawn += Widget_Drawn;
             _widget.StyleContext.AddClass("DefaultThemeStyle");
-
-            Cairo.FontOptions fontOptions = new Cairo.FontOptions();
-            fontOptions.Antialias = Cairo.Antialias.Gray;
-            fontOptions.HintMetrics = Cairo.HintMetrics.On;
-            fontOptions.HintStyle = Cairo.HintStyle.Default;
-            fontOptions.SubpixelOrder = Cairo.SubpixelOrder.Rgb;
-
-            _widget.FontOptions = fontOptions;
-
-            // Control.Size = (int)(size * Pango.Scale.PangoScale);
-
-            Pango.FontDescription fontDescription = Pango.FontDescription.FromString("Sans");
-            fontDescription.Size = (int)(15 * Pango.Scale.PangoScale);
-            Pango.Context context = new Pango.Context();
-
-          
-            _widget.StyleContext.SetProperty("font-size", new GLib.Value(20));
-
-            if (_widget.FontMap != null)
-            {
-                _widget.FontMap.LoadFontset(context, fontDescription, Pango.Language.Default);
-
-            }
-
-
-            //_widget.FontMap.Families
-            // Pango.Context con =  _widget.FontMap.CreateContext();
-            // _widget.FontMap.LoadFont(con, fontDescription);
-
-
-            //Pango.Context context = new Pango.Context();
-            //context.FontDescription = new Pango.FontDescription();
-            //context.FontDescription.FamilyStatic = "";
-
         }
 
         private void Widget_Drawn(object o, DrawnArgs args)
@@ -116,8 +82,8 @@ namespace System.Windows.Forms
                         style.Append("font-weight:bold;");
                     else if (sty == "italic")
                         style.Append("font-style:italic;");
-                    //else if (sty == "underline")
-                    //    style.Append("text-decoration:underline;");
+                    else if (sty == "underline")
+                        style.Append("text-decoration:underline;");
                     //else if (sty == "strikeout")
                     //    style.Append("text-decoration:line-through;");
                 }

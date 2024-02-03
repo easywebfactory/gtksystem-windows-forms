@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v8.0": {
       "GTKWinFormsApp/1.0.0": {
         "dependencies": {
-          "GTKSystem.Windows.Forms": "0.3.24.1",
+          "GTKSystem.Windows.Forms": "1.0.0.1",
           "GtkSharp": "3.24.24.34",
           "System.Resources.Extensions": "1.0.0"
         },
@@ -96,7 +96,7 @@
           }
         }
       },
-      "GTKSystem.Windows.Forms/0.3.24.1": {
+      "GTKSystem.Windows.Forms/1.0.0.1": {
         "dependencies": {
           "GtkSharp": "3.24.24.34"
         },
@@ -166,7 +166,7 @@
       "path": "pangosharp/3.24.24.34",
       "hashPath": "pangosharp.3.24.24.34.nupkg.sha512"
     },
-    "GTKSystem.Windows.Forms/0.3.24.1": {
+    "GTKSystem.Windows.Forms/1.0.0.1": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

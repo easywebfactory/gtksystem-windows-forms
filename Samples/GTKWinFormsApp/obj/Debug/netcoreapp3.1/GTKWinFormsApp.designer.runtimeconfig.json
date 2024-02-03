@@ -1,8 +1,8 @@
-{
+﻿{
   "runtimeOptions": {
     "tfm": "netcoreapp3.1",
     "framework": {
-      "name": "Microsoft.WindowsDesktop.App",
+      "name":"Microsoft.WindowsDesktop.App",
       "version": "3.1.0"
     },
     "additionalProbingPaths": [

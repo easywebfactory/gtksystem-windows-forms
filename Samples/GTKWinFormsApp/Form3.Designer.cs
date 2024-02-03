@@ -63,6 +63,8 @@
             toolStripSplitButton2 = new System.Windows.Forms.ToolStripSplitButton();
             toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
+            label1 = new System.Windows.Forms.Label();
+            linkLabel1 = new System.Windows.Forms.LinkLabel();
             menuStrip1.SuspendLayout();
             toolStrip2.SuspendLayout();
             contextMenuStrip1.SuspendLayout();
@@ -304,12 +306,35 @@
             toolStripMenuItem5.Size = new System.Drawing.Size(137, 26);
             toolStripMenuItem5.Text = "11111";
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Underline | System.Drawing.FontStyle.Strikeout);
+            label1.Location = new System.Drawing.Point(361, 249);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(53, 20);
+            label1.TabIndex = 5;
+            label1.Text = "label1";
+            // 
+            // linkLabel1
+            // 
+            linkLabel1.AutoSize = true;
+            linkLabel1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Strikeout);
+            linkLabel1.Location = new System.Drawing.Point(362, 284);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new System.Drawing.Size(82, 20);
+            linkLabel1.TabIndex = 6;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "linkLabel1";
+            // 
             // Form3
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(800, 450);
             ContextMenuStrip = contextMenuStrip1;
+            Controls.Add(linkLabel1);
+            Controls.Add(label1);
             Controls.Add(statusStrip1);
             Controls.Add(button1);
             Controls.Add(toolStrip2);
@@ -362,5 +387,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }
