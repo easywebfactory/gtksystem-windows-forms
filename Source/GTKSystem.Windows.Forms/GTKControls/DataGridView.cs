@@ -6,6 +6,7 @@
  * date: 2024/1/3
  */
 using Gtk;
+using Pango;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms.GtkRender;
+using static System.Windows.Forms.ListBox;
 
 namespace System.Windows.Forms
 {
@@ -28,6 +30,7 @@ namespace System.Windows.Forms
         private Gtk.TreeStore _store;
         internal Gtk.TreeStore Store { get { return _store; } }
         internal Gtk.TreeView TreeView { get { return _treeView; } }
+        ControlBindingsCollection _collect;
         public DataGridView():base(Gtk.Orientation.Vertical,0)
         {
             Widget.StyleContext.AddClass("DataGridView");
@@ -39,8 +42,8 @@ namespace System.Windows.Forms
 
             _columns = new DataGridViewColumnCollection(this);
             _rows = new DataGridViewRowCollection(this);
-
-             Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow();
+            _collect = new ControlBindingsCollection(this);
+            Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow();
              scroll.Child = _treeView;
              this.Control.PackStart(scroll, true, true, 1);
 
@@ -198,7 +201,82 @@ namespace System.Windows.Forms
             get { return new DataGridViewRow(); }
             set { }
         }
+        internal void BindDataSource(object datasource, string propertyName, string dataMember, int selectindex, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode, object nullValue, string formatString)
+        {
+            IListSource source = datasource as IListSource;
+            if (string.IsNullOrWhiteSpace(propertyName))
+                return;
+            if (string.IsNullOrWhiteSpace(dataMember))
+                return;
+            if (source == null)
+            {
+                IEnumerable iesource = datasource as IEnumerable;
+                foreach (var row in iesource)
+                {
+                    object[] cells = new object[Columns.Count];
+                    int i = 0;
+                    foreach (var col in propertyName.Split(','))
+                    {
+                        string[] mb = dataMember.Split(',');
+                        string value = row.GetType().GetProperty(mb[i].Trim()).GetValue(row).ToString();
+                        if (formattingEnabled && string.IsNullOrWhiteSpace(formatString) == false)
+                            cells[Columns[mb[i].Trim()].Index] = string.Format(formatString, value);
+                        else
+                            cells[Columns[mb[i].Trim()].Index] = value;
+                        i++;
+                    }
+                    _rows.Add(cells);
+                }
+            }
+            else
+            {
+                if (source.ContainsListCollection)
+                {
+                    DataSet ds = datasource as DataSet;
+                    foreach (DataTable dtb in ds.Tables)
+                    {
+                        foreach (DataRow row in dtb.Rows)
+                        {
+                            object[] cells = new object[Columns.Count];
+                            int i = 0;
+                            foreach (var col in propertyName.Split(','))
+                            {
+                                string[] mb = dataMember.Split(',');
+                                string value = row.GetType().GetProperty(mb[i].Trim()).GetValue(row).ToString();
+                                if (formattingEnabled && string.IsNullOrWhiteSpace(formatString) == false)
+                                    cells[Columns[mb[i].Trim()].Index] = string.Format(formatString, value);
+                                else
+                                    cells[Columns[mb[i].Trim()].Index] = value;
+                                i++;
+                            }
+                            _rows.Add(cells);
+                        }
+                    }
+                }
+                else
+                {
+                    IList list = source.GetList();
+                    foreach (object row in list)
+                    {
+                        object[] cells = new object[Columns.Count];
+                        int i = 0;
+                        foreach (var col in propertyName.Split(','))
+                        {
+                            string[] mb = dataMember.Split(',');
+                            string value = row.GetType().GetProperty(mb[i].Trim()).GetValue(row).ToString();
+                            if (formattingEnabled && string.IsNullOrWhiteSpace(formatString) == false)
+                                cells[Columns[mb[i].Trim()].Index] = string.Format(formatString, value);
+                            else
+                                cells[Columns[mb[i].Trim()].Index] = value;
+                            i++;
+                        }
+                        _rows.Add(cells);
+                    }
+                }
+            }
+        }
 
+        public override ControlBindingsCollection DataBindings { get => _collect; }
         private object _DataSource;
         public object DataSource
         {

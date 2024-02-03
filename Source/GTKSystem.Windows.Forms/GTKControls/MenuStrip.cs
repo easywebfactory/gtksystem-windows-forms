@@ -5,6 +5,7 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using Gtk;
 using System.ComponentModel;
 using System.Drawing;
 
@@ -15,6 +16,7 @@ namespace System.Windows.Forms
     {
         public MenuStrip() : base("MenuStrip")
         {
+            Widget.StyleContext.RemoveClass("ToolStrip");
             Widget.StyleContext.AddClass("MenuStrip");
             this.Dock = DockStyle.Top;
         }

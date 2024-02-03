@@ -211,9 +211,10 @@
             // 
             // button1
             // 
-            button1.Location = new System.Drawing.Point(522, 158);
+            button1.Font = new System.Drawing.Font("华文彩云", 15F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline | System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, 1, true);
+            button1.Location = new System.Drawing.Point(341, 158);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(94, 29);
+            button1.Size = new System.Drawing.Size(275, 52);
             button1.TabIndex = 3;
             button1.Text = "打开主窗口";
             button1.UseVisualStyleBackColor = true;

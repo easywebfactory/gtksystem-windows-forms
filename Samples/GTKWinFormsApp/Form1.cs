@@ -47,9 +47,9 @@ namespace GTKWinFormsApp
             //1、数据集列表数据源
             List<TestEntity> data = new List<TestEntity>();
             var createdate = DateTime.Now;
-            data.Add(new TestEntity() { ID = 0, Title = "test1", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC = "face-smile-big-symbolic.symbolic" });
-            data.Add(new TestEntity() { ID = 1, Title = "test2", Info = " 3234fdf", State = true, CreateDate = createdate, Operate = "编辑", PIC = "face-smile" });
-            data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "" });
+            data.Add(new TestEntity() { ID = 0, Title = "test1", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC = "face-smile-big" });
+            data.Add(new TestEntity() { ID = 1, Title = "test2", Info = " 3234fdf", State = true, CreateDate = createdate, Operate = "编辑", PIC = "Resources\\timg2.jpg" });
+            data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "Resources\\BindingNavigator.Delete.ico" });
             data.Add(new TestEntity() { ID = 4, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC = "" });
             this.dataGridView1.DataSource = data;
             //2、datatable数据源
@@ -75,8 +75,6 @@ namespace GTKWinFormsApp
             //    cell.DefaultCellStyle = new DataGridViewCellStyle() { BackColor = Color.Red };
             //    this.dataGridView1.Rows.Add(cell);
             //}
-
-            this.textBox1.Text = this.comboBox1.SelectedItem?.ToString() + "/" + this.comboBox1.SelectedIndex;
 
         }
 
@@ -107,6 +105,7 @@ namespace GTKWinFormsApp
             if (result == DialogResult.OK)
             {
                 textBox1.Text = "#" + cd.Color.Name;
+                textBox1.BackColor = ColorTranslator.FromHtml(textBox1.Text);
             }
 
             //DialogResult result = MessageBox.Show(this, " 弹窗测试 ", "信息提示", MessageBoxButtons.OKCancel);
@@ -357,7 +356,7 @@ namespace GTKWinFormsApp
         private void button7_Click(object sender, EventArgs e)
         {
             Form2 form = new Form2();
-            form.Show(this);
+            form.ShowDialog(this);
 
         }
 

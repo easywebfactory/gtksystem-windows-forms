@@ -17,6 +17,7 @@ namespace System.Windows.Forms
             this.Control.Vexpand = false;
             this.Control.Valign = Gtk.Align.Start;
             this.Control.Halign = Gtk.Align.Start;
+            this.Control.HeightRequest = 20;
             toolStripItemCollection = new ToolStripItemCollection(this);
             base.Control.ActivateCurrent += ToolStripItem_Activated;
             Dock = DockStyle.Top;
@@ -50,7 +51,7 @@ namespace System.Windows.Forms
                 DropDownItemClicked(this, new ToolStripItemClickedEventArgs(new ToolStripItem()));
             }
         }
-
+        public override Size Size { get => base.Size; set => base.Size = new Size(value.Width, 30); }
         public ToolStripItemCollection Items
         {
             get

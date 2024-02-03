@@ -16,14 +16,17 @@ using System.Runtime.InteropServices;
 
 namespace System.Windows.Forms
 {
-    [DesignerCategory("Form"),
-    DefaultEvent(nameof(Load)),
-    InitializationEvent(nameof(Load))]
+    [DesignerCategory("Form")]
+    //DefaultEvent(nameof(Load)),
+    //InitializationEvent(nameof(Load))]
     public partial class Form : WidgetContainerControl<Gtk.Window>, IWin32Window
     {
-        private Gtk.Fixed _body = null;
+        private Gtk.Fixed _body = new Fixed();
+        private Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
+        private Gtk.Layout windowbody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
+        
         private ObjectCollection _ObjectCollection;
-        private Gtk.Menu contextMenu = new Gtk.Menu();
+
         public override event EventHandler SizeChanged;
         public Form() : base(WindowType.Toplevel)
         {
@@ -38,29 +41,49 @@ namespace System.Windows.Forms
         private void Init()
         {
             this.Control.StyleContext.AddClass("Form");
-            _body = new Fixed();
+            scrollwindow.Valign = Gtk.Align.Fill;
+            scrollwindow.Halign = Gtk.Align.Fill;
+            scrollwindow.Expand = true;
+            scrollwindow.Hexpand = true;
+            scrollwindow.Vexpand = true;
+            scrollwindow.HscrollbarPolicy = PolicyType.Automatic;
+            scrollwindow.VscrollbarPolicy = PolicyType.Automatic;
+
             _body.Valign = Gtk.Align.Fill;
             _body.Halign = Gtk.Align.Fill;
+            _body.Expand = true;
+            _body.Hexpand = true;
+            _body.Vexpand = true;
+            scrollwindow.Child = _body;
+            windowbody.Valign = Gtk.Align.Fill;
+            windowbody.Halign = Gtk.Align.Fill;
+            windowbody.Expand = true;
+            windowbody.Hexpand = true;
+            windowbody.Vexpand = true;
+           
+
             _ObjectCollection = new ObjectCollection(this, _body);
             base.Control.WindowPosition = Gtk.WindowPosition.Center;
             base.Control.BorderWidth = 1;
             base.Control.SetDefaultSize(100, 100);
-
             base.Control.Realized += Control_Realized;
-
             base.Control.ResizeChecked += Form_ResizeChecked;
             base.Control.ButtonReleaseEvent += Body_ButtonReleaseEvent;
 
             base.Control.Shown += Control_Shown;
             base.Control.DeleteEvent += Control_DeleteEvent;
-
-
+ 
             WindowBackgroundImage.MarginStart = 0;
             WindowBackgroundImage.MarginTop = 0;
-            WindowBackgroundImage.WidthRequest = this.Width;
-            WindowBackgroundImage.HeightRequest = this.Height;
+            WindowBackgroundImage.Valign = Gtk.Align.Fill;
+            WindowBackgroundImage.Halign = Gtk.Align.Fill;
+            WindowBackgroundImage.Expand = true;
+            WindowBackgroundImage.Hexpand = true;
+            WindowBackgroundImage.Vexpand = true;
             WindowBackgroundImage.Drawn += Bg_Drawn;
-            _body.Add(WindowBackgroundImage);
+            windowbody.Add(WindowBackgroundImage);
+            windowbody.Add(scrollwindow);
+
         }
 
         private void Control_DeleteEvent(object o, DeleteEventArgs args)
@@ -87,7 +110,7 @@ namespace System.Windows.Forms
         private Gdk.Pixbuf backgroundPixbuf;
         private void Bg_Drawn(object o, DrawnArgs args)
         {
-            Gdk.Rectangle rec = Widget.Allocation;
+            Gdk.Rectangle rec = ((Gtk.Image)o).Allocation;
             if (this.BackColor.Name != "Control" && this.BackColor.Name != "0")
             {
                 DrawBackgroundColor(args.Cr, Widget, this.BackColor, rec);
@@ -130,15 +153,19 @@ namespace System.Windows.Forms
         int height = 0;
         private void Form_ResizeChecked(object sender, EventArgs e)
         {
-            if (base.Control.IsRealized)
+            var window= (Gtk.Window)sender;
+            if (window.IsRealized && windowbody.IsRealized)
             {
-                if (base.Control.Allocation.Width != width || base.Control.Allocation.Height != height)
+                if (window.Allocation.Width != width || window.Allocation.Height != height)
                 {
-                    width = base.Control.Allocation.Width;
-                    height = base.Control.Allocation.Height;
+                    width = window.Allocation.Width;
+                    height = window.Allocation.Height;
                     WindowBackgroundImage.WidthRequest = width;
                     WindowBackgroundImage.HeightRequest = height;
-                    ResizeChildren(base.Control);
+                    scrollwindow.WidthRequest = width;
+                    scrollwindow.HeightRequest = height;
+
+                    ResizeChildren(_body);
                 }
             }
             if (SizeChanged != null)
@@ -201,13 +228,14 @@ namespace System.Windows.Forms
                             }
                         }
                     }
+
                     if (o is Gtk.ScrolledWindow)
                     {
 
                     }
-                    if (o is Gtk.MenuBar bar)
+                    else if (o is Gtk.MenuBar bar)
                     {
-                        var b = bar;
+                        
                     }
                     else
                     {
@@ -256,22 +284,21 @@ namespace System.Windows.Forms
             {
                 this.Parent= ((Form)owner);
             }
-
-            if (this.AutoScroll == true)
+            windowbody.WidthRequest = this.Width;
+            windowbody.HeightRequest = this.Height;
+            WindowBackgroundImage.WidthRequest = this.Width;
+            WindowBackgroundImage.HeightRequest = this.Height;
+            if(AutoScroll==true)
             {
-                Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
-                _body.WidthRequest = this.Width;
-                _body.HeightRequest = this.Height;
-                scrollwindow.Child = _body;
-                base.Control.Add(scrollwindow);
+                scrollwindow.HscrollbarPolicy = PolicyType.Always;
+                scrollwindow.VscrollbarPolicy = PolicyType.Always;
             }
             else
             {
-                Gtk.Layout laybody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
-                laybody.Add(_body);
-                base.Control.Add(laybody);
+                scrollwindow.HscrollbarPolicy = PolicyType.Never;
+                scrollwindow.VscrollbarPolicy = PolicyType.Never;
             }
-
+            this.Control.Add(windowbody);
             base.Control.ShowAll();
             if (this.WindowState == FormWindowState.Maximized)
             {
@@ -281,7 +308,6 @@ namespace System.Windows.Forms
             {
                 base.Control.KeepBelow = true;
             }
-
         }
 
         private Gtk.Dialog dialogWindow;
@@ -305,78 +331,60 @@ namespace System.Windows.Forms
             {
                 throw new InvalidOperationException("ShowDialogOnDisabled");
             }
+
+            windowbody.WidthRequest = this.Width;
+            windowbody.HeightRequest = this.Height;
+            WindowBackgroundImage.WidthRequest = this.Width;
+            WindowBackgroundImage.HeightRequest = this.Height;
+
             int irun = -9;
             if (owner != null)
             {
                 Gtk.Window ownerWindow = ((Form)owner).Control;
                 dialogWindow = new Dialog(this.Text, ownerWindow, DialogFlags.DestroyWithParent);
                 dialogWindow.SetPosition(Gtk.WindowPosition.CenterOnParent);
-                dialogWindow.DefaultHeight = this.Height;
-                dialogWindow.DefaultWidth = this.Width;
-                dialogWindow.Response += Dia_Response;
-                if (this.AutoScroll == true)
-                {
-                    Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
-                    _body.WidthRequest = this.Width;
-                    _body.HeightRequest = this.Height;
-                    scrollwindow.Child = _body;
-                    dialogWindow.ContentArea.PackStart(scrollwindow,true,true,1);
-                }
-                else
-                {
-                    Gtk.Layout laybody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
-                    laybody.Add(_body);
-                    dialogWindow.ContentArea.PackStart(laybody, true, true, 1);
-                }
-                dialogWindow.ShowAll();
-                if (this.WindowState == FormWindowState.Maximized)
-                {
-                    dialogWindow.Maximize();
-                }
-                else if (this.WindowState == FormWindowState.Minimized)
-                {
-                    dialogWindow.KeepBelow = true;
-                }
-
-                irun = dialogWindow.Run();
+ 
             }
             else
             {
                 dialogWindow = new Dialog();
                 dialogWindow.SetPosition(Gtk.WindowPosition.Center);
-                dialogWindow.DefaultHeight = this.Height;
-                dialogWindow.DefaultWidth = this.Width;
-                dialogWindow.Response += Dia_Response;
-                if (this.AutoScroll == true)
-                {
-                    Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
-                    _body.WidthRequest = this.Width;
-                    _body.HeightRequest = this.Height;
-                    scrollwindow.Child = _body;
-                    dialogWindow.ContentArea.PackStart(scrollwindow, true, true, 1);
-                }
-                else
-                {
-                    Gtk.Layout laybody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
-                    laybody.Add(_body);
-                    dialogWindow.ContentArea.PackStart(laybody, true, true, 1);
-                }
-                dialogWindow.ShowAll();
-                if (this.WindowState == FormWindowState.Maximized)
-                {
-                    dialogWindow.Maximize();
-                }
-                else if (this.WindowState == FormWindowState.Minimized)
-                {
-                    dialogWindow.KeepBelow = true;
-                }
-
-                irun = dialogWindow.Run();
-
             }
+            dialogWindow.StyleContext.AddClass("Form");
+            dialogWindow.DefaultHeight = this.Height;
+            dialogWindow.DefaultWidth = this.Width;
+            dialogWindow.Response += Dia_Response;
+            dialogWindow.ResizeChecked += Form_ResizeChecked;
+
+            if (AutoScroll == true)
+            {
+                scrollwindow.HscrollbarPolicy = PolicyType.Always;
+                scrollwindow.VscrollbarPolicy = PolicyType.Always;
+            }
+            else
+            {
+                scrollwindow.HscrollbarPolicy = PolicyType.Never;
+                scrollwindow.VscrollbarPolicy = PolicyType.Never;
+            }
+
+            dialogWindow.ContentArea.BorderWidth = 0;
+            dialogWindow.ContentArea.Spacing = 0;
+            dialogWindow.ContentArea.PackStart(windowbody, false, true, 0);
+            dialogWindow.ShowAll();
+            if (this.WindowState == FormWindowState.Maximized)
+            {
+                dialogWindow.Maximize();
+            }
+            else if (this.WindowState == FormWindowState.Minimized)
+            {
+                dialogWindow.KeepBelow = true;
+            }
+
+            irun = dialogWindow.Run();
+
             return this.DialogResult;
         }
-
+ 
         private void Dia_Response(object o, ResponseArgs args)
         {
             base.Dispose();

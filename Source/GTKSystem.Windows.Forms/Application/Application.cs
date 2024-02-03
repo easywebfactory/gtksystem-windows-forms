@@ -78,8 +78,9 @@ namespace System.Windows.Forms
         public static void Init()
         {
             Gtk.Application.Init();
-            App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
-            App.Register(GLib.Cancellable.Current);
+            App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.IsLauncher);
+            //App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
+            //App.Register(GLib.Cancellable.Current);
             var quitAction = new GLib.SimpleAction("quit", null);
             quitAction.Activated += QuitActivated;
             App.AddAction(quitAction);
@@ -138,8 +139,8 @@ namespace System.Windows.Forms
 .DataGridView{margin:0px;}
 .DataGridView treeview.view{margin:0px;padding:0px;border-bottom:solid 1px #dddddd;border-left-width:0px;border-top-width:0px;;border-right-width:0px;}
 .DataGridView button{} 
-.GridViewCell-Button{ font-size:12px; border:solid 1px #c0c0c0; border-radius:0px; background:linear-gradient(#eeeeee,#e2e2e2);box-shadow:0px 1px 1px 1px #eeeeee;}
-.GridViewCell-Button:hover{ background:linear-gradient(#f6f6f6,#f9f9f9);}
+.GridViewCell-Button{ font-size:12px; border:solid 1px #aaaaaa; border-radius:0px; background:linear-gradient(#e9e9e9,#e0e0e0);}
+.GridViewCell-Button:hover{  border:solid 1px #aaaaaa;background:linear-gradient(#eeeeee,#efefef);}
 .GridViewCell-Button:selected{ color:blue}
 .TreeView{border-bottom-width:0px;border-left-width:0px;border-top-width:1px;;border-right-width:0px;}
 .TreeView button{border-left-width:0px;border-right-width:0px;}
@@ -168,16 +169,16 @@ namespace System.Windows.Forms
 .Panel{background-color:#F6F5F4;} 
 .SplitContainer.horizontal{border-width:1px;}
 .GroupBox{background-color:#F6F5F4;} 
-.MenuStrip{background-color:#F6F5F4;}
-.MenuStrip check{}
 
-.ToolStrip{border-width:0px;padding:0px;} 
+.ToolStrip{padding:0px;background:linear-gradient(#fefefd,#efefef);border-width:0px;} 
 .ToolStrip viewport{border-width:0px;} 
-.ToolStrip check.left{} 
-.ToolStrip check{} 
 .ToolStripMenuItemNoChecked check{color:transparent;opacity:0;} 
-.ToolStripMenuItemChecked check{color:#333333;opacity:1;} 
-.StatusStrip{border-top:solid 1px #cccccc;}
+
+.StatusStrip{padding:0px;border-top:solid 1px #cccccc;background-image:linear-gradient(#eeeeee,#ececec);border-top:solid 1px #cccccc;}
+.StatusStrip viewport{border-width:0px;} 
+
+.MenuStrip{padding:0px;background-color:#F6F5F4;background-image:none;border-width:0px;}
+.MenuStrip viewport{border-width:0px;} 
 
 .ListBox{border-width:1px;background-color:#ffffff; padding:0px;}
 .ListView{background-color:#ffffff; padding:0px;}

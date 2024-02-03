@@ -154,21 +154,11 @@ namespace System.Windows.Forms
         public override void Renderer()
         {
             var renderer = new CellRendererButtonValue();
-            // renderer.Pixbuf = new Gdk.Pixbuf(Assembly.GetExecutingAssembly(), "CodePrintImg/button.png");
-           // renderer.IconName = "document-edit-symbolic.symbolic";
-           // renderer.IconName = "zoom-original";
-           
-           // renderer.EditingStarted += Renderer_EditingStarted;
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
             if (this.SortMode != DataGridViewColumnSortMode.NotSortable)
                 base.SortColumnId = this.DisplayIndex;
-        }
-
-        private void Renderer_EditingStarted(object o, EditingStartedArgs args)
-        {
-            Console.WriteLine("CellRendererToggle Renderer_EditingStarted");
         }
     }
     public class DataGridViewImageColumn : DataGridViewColumn

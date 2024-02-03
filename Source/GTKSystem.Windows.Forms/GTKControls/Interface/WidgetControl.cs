@@ -5,12 +5,13 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
-using GLib;
+
 using Gtk;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
+using System.Text;
 
 namespace System.Windows.Forms
 {
@@ -45,39 +46,96 @@ namespace System.Windows.Forms
             _widget.MarginTop = 0;
             _widget.Drawn += Widget_Drawn;
             _widget.StyleContext.AddClass("DefaultThemeStyle");
+
+            Cairo.FontOptions fontOptions = new Cairo.FontOptions();
+            fontOptions.Antialias = Cairo.Antialias.Gray;
+            fontOptions.HintMetrics = Cairo.HintMetrics.On;
+            fontOptions.HintStyle = Cairo.HintStyle.Default;
+            fontOptions.SubpixelOrder = Cairo.SubpixelOrder.Rgb;
+
+            _widget.FontOptions = fontOptions;
+
+            // Control.Size = (int)(size * Pango.Scale.PangoScale);
+
+            Pango.FontDescription fontDescription = Pango.FontDescription.FromString("Sans");
+            fontDescription.Size = (int)(15 * Pango.Scale.PangoScale);
+            Pango.Context context = new Pango.Context();
+
+          
+            _widget.StyleContext.SetProperty("font-size", new GLib.Value(20));
+
+            if (_widget.FontMap != null)
+            {
+                _widget.FontMap.LoadFontset(context, fontDescription, Pango.Language.Default);
+
+            }
+
+
+            //_widget.FontMap.Families
+            // Pango.Context con =  _widget.FontMap.CreateContext();
+            // _widget.FontMap.LoadFont(con, fontDescription);
+
+
+            //Pango.Context context = new Pango.Context();
+            //context.FontDescription = new Pango.FontDescription();
+            //context.FontDescription.FamilyStatic = "";
+
         }
 
         private void Widget_Drawn(object o, DrawnArgs args)
         {
-            string backcolorname = $"backcolor{o.GetHashCode()}";
-            string fontcolorname = $"fontcolor{o.GetHashCode()}";
-            string css = "";
+            string stylename = $"s{o.GetHashCode()}{_widget.Handle}";
+            StringBuilder style = new StringBuilder();
             if (this.BackColor.Name != "Control" && this.BackColor.Name != "0")
             {
                 string color = $"#{Convert.ToString(this.BackColor.R, 16).PadLeft(2, '0')}{Convert.ToString(this.BackColor.G, 16).PadLeft(2, '0')}{Convert.ToString(this.BackColor.B, 16).PadLeft(2, '0')}";
-                css += $" .{backcolorname}{{background:{color};background-color:{color};}}";
-                if (o is Gtk.TextView)
-                {
-                    css += $" .{backcolorname} text{{background:{color};background-color:{color};}}";
-                    css += $" .{backcolorname} .view{{background:{color};background-color:{color};}}";
-                }
+                style.AppendFormat("background:{0};background-color:{1};", color, color);
             }
             if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
             {
                 string color = $"#{Convert.ToString(this.ForeColor.R, 16).PadLeft(2, '0')}{Convert.ToString(this.ForeColor.G, 16).PadLeft(2, '0')}{Convert.ToString(this.ForeColor.B, 16).PadLeft(2, '0')}";
-                css += $" .{fontcolorname}{{color:{color};}}";
-                if (o is Gtk.TextView)
+                style.AppendFormat("color:{0};", color);
+            }
+
+            if (this.Font != null)
+            {
+                float textSize = this.Font.Size;
+                if (this.Font.Unit == GraphicsUnit.Point)
+                    textSize = this.Font.Size * 1 / 72 * 96;
+                if (this.Font.Unit == GraphicsUnit.Inch)
+                    textSize = this.Font.Size * 96;
+
+                style.AppendFormat("font-size:{0}px;", textSize);
+                if(string.IsNullOrWhiteSpace(Font.FontFamily.Name)==false)
+                    style.AppendFormat("font-family:\"{0}\";", Font.FontFamily.Name);
+
+                string[] fontstyle = Font.Style.ToString().ToLower().Split([ ',',' ']);
+                foreach(string sty in fontstyle)
                 {
-                    css += $" .{fontcolorname} text{{color:{color};}}";
-                    css += $" .{fontcolorname} .view{{color:{color};}}";
+                    if(sty=="bold")
+                        style.Append("font-weight:bold;");
+                    else if (sty == "italic")
+                        style.Append("font-style:italic;");
+                    //else if (sty == "underline")
+                    //    style.Append("text-decoration:underline;");
+                    //else if (sty == "strikeout")
+                    //    style.Append("text-decoration:line-through;");
                 }
             }
+
+            StringBuilder css = new StringBuilder();
+            css.AppendLine($".{stylename}{{{style.ToString()}}}");
+            if (o is Gtk.TextView)
+            {
+                css.AppendLine($".{stylename} text{{{style.ToString()}}}");
+                css.AppendLine($".{stylename} .view{{{style.ToString()}}}");
+            }
+
             CssProvider provider = new CssProvider();
-            if (provider.LoadFromData(css))
+            if (provider.LoadFromData(css.ToString()))
             {
                 _widget.StyleContext.AddProvider(provider, 900);
-                _widget.StyleContext.AddClass(backcolorname);
-                _widget.StyleContext.AddClass(fontcolorname);
+                _widget.StyleContext.AddClass(stylename);
             }
 
             Gdk.Rectangle rec = Widget.Allocation;

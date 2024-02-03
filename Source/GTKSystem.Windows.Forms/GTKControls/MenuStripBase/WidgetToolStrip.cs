@@ -88,11 +88,17 @@ namespace System.Windows.Forms
                 _menuItem.Realized += ToolStripItem_Realized;
                 _menuItem.Valign = Gtk.Align.Center;
                 _menuItem.Halign = Gtk.Align.Fill;
-                _menuItem.Vexpand = true;
-                _menuItem.Hexpand = true;
+                _menuItem.Vexpand = false;
+                _menuItem.Hexpand = false;
 
                 itemBox.Valign = Gtk.Align.Start;
                 itemBox.Halign = Gtk.Align.Start;
+
+                icoViewport.Vexpand = false;
+                icoViewport.Hexpand = false;
+                icoViewport.Valign = Gtk.Align.Center;
+                icoViewport.Halign = Gtk.Align.Center;
+
                 if (stripType == "ToolStripDropDownItem")
                 {
                     button.Image = Gtk.Image.NewFromIconName("pan-down", IconSize.Button);

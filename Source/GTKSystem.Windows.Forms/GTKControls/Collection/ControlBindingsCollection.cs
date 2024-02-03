@@ -8,12 +8,18 @@ namespace System.Windows.Forms
 	[DefaultEvent("CollectionChanged")]
 	public class ControlBindingsCollection : BindingsCollection
     {
-        private ListBox _owner;
-		public ControlBindingsCollection(ListBox owner):base(owner) {
+        private Control _owner;
+        private ListBox _listBox;
+        private DataGridView _dataGridView;
+        public ControlBindingsCollection(ListBox owner):base(owner) {
 			_owner = owner;
-
+			_listBox = owner;
         }
-       
+        public ControlBindingsCollection(DataGridView owner) : base(owner)
+        {
+            _owner = owner;
+			_dataGridView = owner;
+        }
         public IBindableComponent BindableComponent
 		{
 			get
@@ -54,7 +60,11 @@ namespace System.Windows.Forms
         public new void Add(Binding binding)
         {
 			base.Add(binding);
-			_owner.BindDataSource(binding.DataSource, binding.DataMember, binding.DataMember, _owner.SelectedIndex, binding.FormattingEnabled, binding.DataSourceUpdateMode, binding.NullValue, binding.FormatString);
+            if (_listBox != null)
+                _listBox.BindDataSource(binding.DataSource, binding.DataMember, binding.DataMember, _listBox.SelectedIndex, binding.FormattingEnabled, binding.DataSourceUpdateMode, binding.NullValue, binding.FormatString);
+            if (_dataGridView != null)
+                _dataGridView.BindDataSource(binding.DataSource, binding.DataMember, binding.DataMember, _listBox.SelectedIndex, binding.FormattingEnabled, binding.DataSourceUpdateMode, binding.NullValue, binding.FormatString);
+
         }
         public Binding Add(string propertyName, object dataSource, string dataMember)
 		{

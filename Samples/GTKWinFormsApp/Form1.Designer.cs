@@ -770,7 +770,8 @@ namespace GTKWinFormsApp
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.timg;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new System.Drawing.Size(1343, 793);
+           // ClientSize = new System.Drawing.Size(1343, 793);
+            ClientSize = new System.Drawing.Size(1360, 700);
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(groupBox1);
             Controls.Add(splitContainer1);
@@ -779,6 +780,8 @@ namespace GTKWinFormsApp
             Margin = new Padding(4);
             Name = "Form1";
             Text = "C# winform gtk效果";
+            AutoSize = false;
+            AutoScroll = false;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();

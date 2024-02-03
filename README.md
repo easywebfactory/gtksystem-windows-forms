@@ -7,6 +7,8 @@
 
 作者博客请看 [https://www.cnblogs.com/easywebfactory/p/17803567.html](https://www.cnblogs.com/easywebfactory/p/17803567.html)
 
+目前功能持续更新中，将优先完善常用功能。
+
 #### 软件架构
 
 使用GTK3.24.24作为GDI，重写C#的System.Windows.Forms组件，在应用时，兼容原生C#程序组件。
@@ -74,6 +76,8 @@ GTKWinFormsApp\obj\Release\net8.0\GTKWinFormsApp.designer.runtimeconfig.json
 ![输入图片说明](pic/theme.jpg)
 #### 窗口背景
 ![输入图片说明](pic/backgroundimage.jpg)
+#### 工具栏菜单
+![输入图片说明](pic/toolstrip.jpeg)
 #### 交流
 QQ群：236066073
 
