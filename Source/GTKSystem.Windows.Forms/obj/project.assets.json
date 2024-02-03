@@ -192,7 +192,7 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
-    "version": "0.3.24.1",
+    "version": "1.0.0.1",
     "restore": {
       "projectUniqueName": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
       "projectName": "GTKSystem.Windows.Forms",

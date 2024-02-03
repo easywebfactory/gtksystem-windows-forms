@@ -92,7 +92,7 @@
           "lib/netstandard2.0/PangoSharp.dll": {}
         }
       },
-      "GTKSystem.Windows.Forms/0.3.24.1": {
+      "GTKSystem.Windows.Forms/1.0.0.1": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
@@ -203,7 +203,7 @@
         "pangosharp.nuspec"
       ]
     },
-    "GTKSystem.Windows.Forms/0.3.24.1": {
+    "GTKSystem.Windows.Forms/1.0.0.1": {
       "type": "project",
       "path": "../../Source/GTKSystem.Windows.Forms/GTKSystem.Windows.Forms.csproj",
       "msbuildProject": "../../Source/GTKSystem.Windows.Forms/GTKSystem.Windows.Forms.csproj"
@@ -216,7 +216,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "GTKSystem.Windows.Forms >= 0.3.24.1",
+      "GTKSystem.Windows.Forms >= 1.0.0.1",
       "GtkSharp >= 3.24.24.34",
       "System.Resources.Extensions >= 1.0.0"
     ]

@@ -17,11 +17,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyDescriptionAttribute("基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。\r\n使用本组件GTKSystem.Windows.Forms代替M" +
     "icrosoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows\\linux\\macos运行。\r\n技术支持438" +
     "865652@qq.com，https://gitee.com/easywebfactory/gtksystem-windows-forms\r\n\t")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("0.3.24.1")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.3.24.1+67db5bf46d32090a71e16a3339179ea8b8ba6a15")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0.1")]
 [assembly: System.Reflection.AssemblyProductAttribute("GTKSystem.Windows.Forms")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GTKSystem.Windows.Forms")]
-[assembly: System.Reflection.AssemblyVersionAttribute("0.3.24.1")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.1")]
 
 // 由 MSBuild WriteCodeFragment 类生成。
 
