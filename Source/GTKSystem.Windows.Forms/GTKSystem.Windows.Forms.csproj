@@ -10,7 +10,7 @@
 	  <PackageProjectUrl>https://gitee.com/easywebfactory/gtksystem-windows-forms</PackageProjectUrl>
 	  <PackageReleaseNotes>一次编译，跨windows\linux\macos平台运行</PackageReleaseNotes>
 	  <Title>GTK跨平台winform组件，一次编译，跨windows和linux平台运行</Title>
-	  <Description>基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+	  <Description>基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows\linux\macos运行。
 技术支持438865652@qq.com，https://gitee.com/easywebfactory/gtksystem-windows-forms
 	</Description>
@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GtkSharp" Version="3.24.24.34" />
+    <PackageReference Include="GtkSharp" Version="3.24.24.95" />
   </ItemGroup>
 
   <ItemGroup>

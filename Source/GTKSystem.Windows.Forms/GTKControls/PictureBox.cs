@@ -1,6 +1,6 @@
 ﻿/*
- * 基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
- * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台跨平台windows、linux、macos运行
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
  * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
  * date: 2024/1/3
@@ -27,24 +27,24 @@ namespace System.Windows.Forms
 
         private void Control_Realized(object sender, EventArgs e)
         {
-
+            Gdk.Rectangle rec = Widget.Allocation;
             if (BackgroundImage != null && BackgroundImage.PixbufData != null)
             {
                 Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                base.ScaleImage(ref imagePixbuf, BackgroundImage.PixbufData, PictureBoxSizeMode.AutoSize, BackgroundImageLayout == ImageLayout.None ? ImageLayout.Tile : BackgroundImageLayout);
+                base.ScaleImage(rec.Width, rec.Height, ref imagePixbuf, BackgroundImage.PixbufData, PictureBoxSizeMode.AutoSize, BackgroundImageLayout == ImageLayout.None ? ImageLayout.Tile : BackgroundImageLayout);
                 base.Control.Pixbuf = imagePixbuf;
             }
 
             if (_image != null && _image.PixbufData != null)
             {
                 Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                base.ScaleImage(ref imagePixbuf, _image.PixbufData, SizeMode, ImageLayout.None);
+                base.ScaleImage(rec.Width, rec.Height, ref imagePixbuf, _image.PixbufData, SizeMode, ImageLayout.None);
                 base.Control.Pixbuf = imagePixbuf;
             }
             else if (InitialImage != null && InitialImage.PixbufData != null)
             {
                 Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                base.ScaleImage(ref imagePixbuf, InitialImage.PixbufData, SizeMode, ImageLayout.None);
+                base.ScaleImage(rec.Width, rec.Height, ref imagePixbuf, InitialImage.PixbufData, SizeMode, ImageLayout.None);
                 base.Control.Pixbuf = imagePixbuf;
             }
         }
@@ -62,8 +62,9 @@ namespace System.Windows.Forms
                 _image = value;
                 if (base.Control.IsRealized && _image != null && _image.PixbufData != null)
                 {
+                    Gdk.Rectangle rec = Widget.Allocation;
                     Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                    base.ScaleImage(ref imagePixbuf, _image.PixbufData, SizeMode, ImageLayout.None);
+                    base.ScaleImage(rec.Width, rec.Height, ref imagePixbuf, _image.PixbufData, SizeMode, ImageLayout.None);
                     base.Control.Pixbuf = imagePixbuf;
                 }
             }
@@ -104,10 +105,11 @@ namespace System.Windows.Forms
                         else
                             memoryStream.Write(buffer);
                     }
+                    Gdk.Rectangle rec = Widget.Allocation;
                     byte[] bytedata = memoryStream.GetBuffer();
                     _image =new Bitmap(bytedata);
                     Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                    base.ScaleImage(ref imagePixbuf, bytedata, SizeMode, ImageLayout.None);
+                    base.ScaleImage(rec.Width, rec.Height, ref imagePixbuf, bytedata, SizeMode, ImageLayout.None);
                     base.Control.Pixbuf = imagePixbuf;
                 }
             }

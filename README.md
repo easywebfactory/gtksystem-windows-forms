@@ -2,7 +2,7 @@
 
 #### 介绍
 **Visual Studio原生开发，无需学习，一次编译，跨平台运行**.
-这是基于GTK3.24.24框架组件开发的跨平台（windows、linux、macos）C#桌面应用程序表单界面组件，该组件的核心优势是使用C#的原生表单控件和属性方法，C#原生开发即可，无需学习。
+这是基于GTK框架组件开发的跨平台（windows、linux、macos）C#桌面应用程序表单界面组件，该组件的核心优势是使用C#的原生表单控件和属性方法，C#原生开发即可，无需学习。
 便于开发跨平台winform软件，便于将C#升级为跨平台软件。
 
 作者博客请看 [https://www.cnblogs.com/easywebfactory/p/17803567.html](https://www.cnblogs.com/easywebfactory/p/17803567.html)
@@ -11,13 +11,13 @@
 
 #### 软件架构
 
-使用GTK3.24.24作为GDI，重写C#的System.Windows.Forms组件，在应用时，兼容原生C#程序组件。
+使用GTK3.24.24.95作为表单UI重写C#的System.Windows.Forms组件，在应用时，兼容原生C#程序组件。
 
 #### 安装教程
 
 这是.net8.0版本的项目工程，如你有需要net8.0以下版本，可以选择分支“netcore3.1版”下载。
 1.  把项目工程改为“控制台应用程序”或者配置UseWindowsForms为false
-2.  NulGet安装GtkSharp(3.24.24.34)
+2.  NulGet安装GtkSharp(3.24.24.95)
 3.  引用Libs目录下的GTKSystem.Windows.Forms.dll和System.Resources.Extensions.dll
 4.  编译发布测试运行
 5.  linux和macos上执行命令：dotnet GTKWinFormsApp.dll

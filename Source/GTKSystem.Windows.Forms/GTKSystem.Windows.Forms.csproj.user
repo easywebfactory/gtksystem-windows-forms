@@ -173,6 +173,9 @@
     <Compile Update="GTKControls\TextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\TrackBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\TreeView.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -108,7 +108,7 @@ namespace System.Windows.Forms
 .DefaultThemeStyle>button{border:solid 1px #cccccc;}
 .DefaultThemeStyle button{border-radius:0px;}
 .DefaultThemeStyle border{border:solid 1px #cccccc;}
-.DefaultThemeStyle entry{border-radius:0px;background-color:#ffffff;}
+.DefaultThemeStyle entry{border-radius:0px;background-color:#ffffff;caret-color:#333333;}
 
 /*
 .DefaultThemeStyle{border:solid 1px #cccccc;border-radius:0px;box-shadow: none;color:#000000;}
@@ -147,7 +147,7 @@ namespace System.Windows.Forms
 .TreeView:selected{ color:blue}
 
 .Button{padding:0px;} 
-.TextBox{background-color:#ffffff;padding:0px 3px 0px 3px;} 
+.TextBox{padding:0px 3px 0px 3px;} 
 .RichTextBox {border-width:1px;}
 .RichTextBox border.top{border-width:1px;}
 .RichTextBox border.left{border-width:1px;}

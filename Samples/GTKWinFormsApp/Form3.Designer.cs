@@ -65,10 +65,12 @@
             toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             label1 = new System.Windows.Forms.Label();
             linkLabel1 = new System.Windows.Forms.LinkLabel();
+            trackBar1 = new System.Windows.Forms.TrackBar();
             menuStrip1.SuspendLayout();
             toolStrip2.SuspendLayout();
             contextMenuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             SuspendLayout();
             // 
             // menuStrip1
@@ -213,13 +215,13 @@
             // 
             // button1
             // 
-            button1.Font = new System.Drawing.Font("华文彩云", 15F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline | System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, 1, true);
-            button1.Location = new System.Drawing.Point(341, 158);
+            button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, 0);
+            button1.Location = new System.Drawing.Point(437, 128);
             button1.Name = "button1";
             button1.Size = new System.Drawing.Size(275, 52);
             button1.TabIndex = 3;
             button1.Text = "打开主窗口";
-            button1.UseVisualStyleBackColor = true;
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
             // contextMenuStrip1
@@ -253,9 +255,10 @@
             // 
             // toolStripStatusLabel1
             // 
+            toolStripStatusLabel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            toolStripStatusLabel1.Size = new System.Drawing.Size(167, 20);
-            toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            toolStripStatusLabel1.Size = new System.Drawing.Size(69, 20);
+            toolStripStatusLabel1.Text = "状态文本";
             // 
             // toolStripProgressBar2
             // 
@@ -286,13 +289,12 @@
             // 
             // toolStripSplitButton2
             // 
-            toolStripSplitButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             toolStripSplitButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuItem6, toolStripMenuItem5 });
             toolStripSplitButton2.Image = (System.Drawing.Image)resources.GetObject("toolStripSplitButton2.Image");
             toolStripSplitButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             toolStripSplitButton2.Name = "toolStripSplitButton2";
-            toolStripSplitButton2.Size = new System.Drawing.Size(39, 24);
-            toolStripSplitButton2.Text = "toolStripSplitButton2";
+            toolStripSplitButton2.Size = new System.Drawing.Size(108, 24);
+            toolStripSplitButton2.Text = "下拉菜单";
             // 
             // toolStripMenuItem6
             // 
@@ -309,10 +311,10 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Underline | System.Drawing.FontStyle.Strikeout);
-            label1.Location = new System.Drawing.Point(361, 249);
+            label1.Font = new System.Drawing.Font("Tahoma", 15F, System.Drawing.FontStyle.Underline | System.Drawing.FontStyle.Strikeout);
+            label1.Location = new System.Drawing.Point(181, 247);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(44, 18);
+            label1.Size = new System.Drawing.Size(79, 30);
             label1.TabIndex = 5;
             label1.Text = "label1";
             // 
@@ -320,19 +322,36 @@
             // 
             linkLabel1.AutoSize = true;
             linkLabel1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Strikeout);
-            linkLabel1.Location = new System.Drawing.Point(361, 284);
+            linkLabel1.Location = new System.Drawing.Point(437, 247);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new System.Drawing.Size(82, 20);
             linkLabel1.TabIndex = 6;
             linkLabel1.TabStop = true;
             linkLabel1.Text = "linkLabel1";
             // 
+            // trackBar1
+            // 
+            trackBar1.BackColor = System.Drawing.SystemColors.ControlLight;
+            trackBar1.LargeChange = 6;
+            trackBar1.Location = new System.Drawing.Point(300, 102);
+            trackBar1.Maximum = 100;
+            trackBar1.Name = "trackBar1";
+            trackBar1.Orientation = System.Windows.Forms.Orientation.Vertical;
+            trackBar1.Size = new System.Drawing.Size(56, 291);
+            trackBar1.TabIndex = 7;
+            trackBar1.TickFrequency = 2;
+            trackBar1.TickStyle = System.Windows.Forms.TickStyle.Both;
+            trackBar1.Value = 10;
+            trackBar1.Scroll += trackBar1_Scroll;
+            // 
             // Form3
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            BackColor = System.Drawing.SystemColors.ActiveCaption;
             ClientSize = new System.Drawing.Size(800, 450);
             ContextMenuStrip = contextMenuStrip1;
+            Controls.Add(trackBar1);
             Controls.Add(linkLabel1);
             Controls.Add(label1);
             Controls.Add(statusStrip1);
@@ -349,6 +368,7 @@
             contextMenuStrip1.ResumeLayout(false);
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -389,5 +409,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.TrackBar trackBar1;
     }
 }

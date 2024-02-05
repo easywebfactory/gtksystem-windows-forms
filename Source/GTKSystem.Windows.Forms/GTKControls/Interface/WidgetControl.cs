@@ -1,16 +1,20 @@
 ﻿/*
- * 基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
- * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台跨平台windows、linux、macos运行
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
  * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
  * date: 2024/1/3
  */
 
+using GLib;
 using Gtk;
 using System;
 using System.ComponentModel;
+using System.ComponentModel.Design.Serialization;
 using System.Drawing;
 using System.Reflection;
+using System.Reflection.Emit;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace System.Windows.Forms
@@ -21,6 +25,7 @@ namespace System.Windows.Forms
     /// <typeparam name="T"></typeparam>
     public class WidgetControl<T> : Control, ISynchronizeInvoke, IComponent, IDisposable, IControl, ISupportInitialize
     {
+        public override string unique_key { get; protected set; }
         private Gtk.Widget _widget;
         public override Gtk.Widget Widget
         {
@@ -36,6 +41,7 @@ namespace System.Windows.Forms
         public override object GtkControl => _gtkControl;
         public WidgetControl(params object[] args)
         {
+            unique_key=Guid.NewGuid().ToString();
             object widget = Activator.CreateInstance(typeof(T), args);
             _gtkControl = widget;
             _control = (T)widget;
@@ -45,65 +51,16 @@ namespace System.Windows.Forms
             _widget.MarginStart = 0;
             _widget.MarginTop = 0;
             _widget.Drawn += Widget_Drawn;
+            _widget.Realized += _widget_Realized;
             _widget.StyleContext.AddClass("DefaultThemeStyle");
+ 
         }
-
+        private void _widget_Realized(object sender, EventArgs e)
+        {
+            UpdateStyle();
+        }
         private void Widget_Drawn(object o, DrawnArgs args)
         {
-            string stylename = $"s{o.GetHashCode()}{_widget.Handle}";
-            StringBuilder style = new StringBuilder();
-            if (this.BackColor.Name != "Control" && this.BackColor.Name != "0")
-            {
-                string color = $"#{Convert.ToString(this.BackColor.R, 16).PadLeft(2, '0')}{Convert.ToString(this.BackColor.G, 16).PadLeft(2, '0')}{Convert.ToString(this.BackColor.B, 16).PadLeft(2, '0')}";
-                style.AppendFormat("background:{0};background-color:{1};", color, color);
-            }
-            if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
-            {
-                string color = $"#{Convert.ToString(this.ForeColor.R, 16).PadLeft(2, '0')}{Convert.ToString(this.ForeColor.G, 16).PadLeft(2, '0')}{Convert.ToString(this.ForeColor.B, 16).PadLeft(2, '0')}";
-                style.AppendFormat("color:{0};", color);
-            }
-
-            if (this.Font != null)
-            {
-                float textSize = this.Font.Size;
-                if (this.Font.Unit == GraphicsUnit.Point)
-                    textSize = this.Font.Size * 1 / 72 * 96;
-                if (this.Font.Unit == GraphicsUnit.Inch)
-                    textSize = this.Font.Size * 96;
-
-                style.AppendFormat("font-size:{0}px;", textSize);
-                if(string.IsNullOrWhiteSpace(Font.FontFamily.Name)==false)
-                    style.AppendFormat("font-family:\"{0}\";", Font.FontFamily.Name);
-
-                string[] fontstyle = Font.Style.ToString().ToLower().Split([ ',',' ']);
-                foreach(string sty in fontstyle)
-                {
-                    if(sty=="bold")
-                        style.Append("font-weight:bold;");
-                    else if (sty == "italic")
-                        style.Append("font-style:italic;");
-                    else if (sty == "underline")
-                        style.Append("text-decoration:underline;");
-                    else if (sty == "strikeout")
-                        style.Append("text-decoration:line-through;");
-                }
-            }
-
-            StringBuilder css = new StringBuilder();
-            css.AppendLine($".{stylename}{{{style.ToString()}}}");
-            if (o is Gtk.TextView)
-            {
-                css.AppendLine($".{stylename} text{{{style.ToString()}}}");
-                css.AppendLine($".{stylename} .view{{{style.ToString()}}}");
-            }
-
-            CssProvider provider = new CssProvider();
-            if (provider.LoadFromData(css.ToString()))
-            {
-                _widget.StyleContext.AddProvider(provider, 900);
-                _widget.StyleContext.AddClass(stylename);
-            }
-
             Gdk.Rectangle rec = Widget.Allocation;
             if (Control is Gtk.Button || Control is Gtk.Image)
             {
@@ -113,18 +70,23 @@ namespace System.Windows.Forms
                     if (backgroundPixbuf == null)
                     {
                         Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                        ScaleImage(ref imagePixbuf, _BackgroundImageBytes, PictureBoxSizeMode.AutoSize, BackgroundImageLayout == ImageLayout.None ? ImageLayout.Tile : BackgroundImageLayout);
+                        ScaleImage(rec.Width, rec.Height, ref imagePixbuf, _BackgroundImageBytes, PictureBoxSizeMode.AutoSize, BackgroundImageLayout == ImageLayout.None ? ImageLayout.Tile : BackgroundImageLayout);
                         backgroundPixbuf = imagePixbuf.ScaleSimple(imagePixbuf.Width - 8, imagePixbuf.Height - 6, Gdk.InterpType.Tiles);
                     }
                     DrawBackgroundImage(args.Cr, backgroundPixbuf, rec);
+                    if (Control is Gtk.Button button)
+                    {
+                        button.Child.Visible = false;
+                        DrawBackgroundText(args.Cr, rec);
+                    }
                 }
             }
-
             if (Paint != null)
-                Paint(o, new PaintEventArgs(new Graphics(this.Widget, args.Cr, Widget.Allocation), new Drawing.Rectangle(rec.X, rec.Y, rec.Width, rec.Height)));
+                Paint(o, new PaintEventArgs(new Graphics(this._widget, args.Cr, rec), new Drawing.Rectangle(rec.X, rec.Y, rec.Width, rec.Height)));
         }
+
         private Gdk.Pixbuf backgroundPixbuf;
-        internal void DrawBackgroundColor(Cairo.Context ctx, Gtk.Widget control, Drawing.Color backcolor, Gdk.Rectangle rec)
+        internal void DrawBackgroundColor(Cairo.Context ctx, Drawing.Color backcolor, Gdk.Rectangle rec)
         {
             ctx.Save();
             ctx.SetSourceRGB(backcolor.R / 255f, backcolor.G / 255f, backcolor.B / 255f);
@@ -134,20 +96,10 @@ namespace System.Windows.Forms
         }
         internal void DrawBackgroundImage(Cairo.Context ctx, Gdk.Pixbuf img, Gdk.Rectangle rec)
         {
-            Gdk.Size size = new Gdk.Size(rec.Width - 4, rec.Height - 4);
+            Gdk.Size size = new Gdk.Size(rec.Width, rec.Height);
             ctx.Save();
-            ctx.Translate(2, 2);
-            //ctx.Scale(size.Width / (double)img.Width, size.Height / (double)img.Height);
-            if (size.Width > img.Width)
-            {
-                ctx.Scale(size.Width / (double)img.Width, size.Width / (double)img.Width);
-            }
-            else if (size.Height > img.Height)
-            {
-                ctx.Scale(size.Height / (double)img.Height, size.Height / (double)img.Height);
-            }
+            ctx.Translate(4, 4);
             Gdk.CairoHelper.SetSourcePixbuf(ctx, img, 0, 0);
-
             using (var p = ctx.GetSource())
             {
                 if (p is Cairo.SurfacePattern pattern)
@@ -163,10 +115,8 @@ namespace System.Windows.Forms
             ctx.Paint();
             ctx.Restore();
         }
-        internal void DrawBackgroundText(Cairo.Context ctx, Gtk.Widget control, Gdk.Rectangle rec)
+        internal void DrawBackgroundText(Cairo.Context ctx, Gdk.Rectangle rec)
         {
-            if (Control is Gtk.Button button)
-                button.Child.Visible = false;
             string text = this.Text;
             if (string.IsNullOrEmpty(text) == false)
             {
@@ -194,17 +144,87 @@ namespace System.Windows.Forms
                 var y = (int)((rec.Height + textSize) * 0.5f - 3);
                 if (x < 0) x = 0;
                 if (y < 0) y = 0;
+
                 ctx.Translate(x, y);
                 if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
                     ctx.SetSourceRGBA(this.ForeColor.R / 255f, this.ForeColor.G / 255f, this.ForeColor.B / 255f, 1);
 
-                Pango.Context pangocontext = control.PangoContext;
-                string family = pangocontext.FontDescription.Family;
-                ctx.SelectFontFace(family, Cairo.FontSlant.Normal, Cairo.FontWeight.Normal);
+                string family = this.Font.FontFamily.Name;
+                ctx.SelectFontFace(family, this.Font.Italic ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, this.Font.Bold ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
                 ctx.SetFontSize(textSize);
                 ctx.ShowText(text);
                 ctx.Stroke();
                 ctx.Restore();
+            }
+        }
+        internal void UpdateStyle()
+        {
+            string stylename = $"s{unique_key}";
+            StringBuilder style = new StringBuilder();
+            if (this.BackColor.Name != "Control" && this.BackColor.Name != "0")
+            {
+                string color = $"#{Convert.ToString(this.BackColor.R, 16).PadLeft(2, '0')}{Convert.ToString(this.BackColor.G, 16).PadLeft(2, '0')}{Convert.ToString(this.BackColor.B, 16).PadLeft(2, '0')}";
+                style.AppendFormat("background-color:{0};background:{0};", color);
+            }
+            if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
+            {
+                string color = $"#{Convert.ToString(this.ForeColor.R, 16).PadLeft(2, '0')}{Convert.ToString(this.ForeColor.G, 16).PadLeft(2, '0')}{Convert.ToString(this.ForeColor.B, 16).PadLeft(2, '0')}";
+                style.AppendFormat("color:{0};", color);
+            }
+
+            if (this.Font != null)
+            {
+                Pango.AttrList attributes = new Pango.AttrList();
+                float textSize = this.Font.Size;
+                if (this.Font.Unit == GraphicsUnit.Point)
+                    textSize = this.Font.Size * 1 / 72 * 96;
+                if (this.Font.Unit == GraphicsUnit.Inch)
+                    textSize = this.Font.Size * 96;
+
+                style.AppendFormat("font-size:{0}px;", textSize);
+                if (string.IsNullOrWhiteSpace(Font.FontFamily.Name) == false)
+                    style.AppendFormat("font-family:\"{0}\";", Font.FontFamily.Name);
+
+                string[] fontstyle = Font.Style.ToString().ToLower().Split([',', ' ']);
+                foreach (string sty in fontstyle)
+                {
+                    if (sty == "bold")
+                    {
+                        style.Append("font-weight:bold;");
+                        attributes.Insert(new Pango.AttrWeight(Pango.Weight.Bold));
+                    }
+                    else if (sty == "italic")
+                    {
+                        style.Append("font-style:italic;");
+                        attributes.Insert(new Pango.AttrStyle(Pango.Style.Italic));
+                    }
+                    else if (sty == "underline")
+                    {
+                        style.Append("text-decoration:underline;");
+                        attributes.Insert(new Pango.AttrUnderline(Pango.Underline.Low));
+                    }
+                    else if (sty == "strikeout")
+                    {
+                        style.Append("text-decoration:line-through;");
+                        attributes.Insert(new Pango.AttrStrikethrough(true));
+                    }
+                }
+                _widget.SetProperty("attributes", new GLib.Value(attributes));
+            }
+
+            StringBuilder css = new StringBuilder();
+            css.AppendLine($".{stylename}{{{style.ToString()}}}");
+            if (_widget is Gtk.TextView)
+            {
+                css.AppendLine($".{stylename} text{{{style.ToString()}}}");
+                css.AppendLine($".{stylename} .view{{{style.ToString()}}}");
+            }
+            CssProvider provider = new CssProvider();
+            if (provider.LoadFromData(css.ToString()))
+            {
+                _widget.StyleContext.AddProvider(provider, 900);
+                _widget.StyleContext.RemoveClass(stylename);
+                _widget.StyleContext.AddClass(stylename);
             }
         }
         public override AccessibleObject AccessibilityObject { get; }
@@ -217,8 +237,10 @@ namespace System.Windows.Forms
         public override AnchorStyles Anchor { get; set; }
         public override Point AutoScrollOffset { get; set; }
         public override bool AutoSize { get; set; }
-        public override Color BackColor { get; set; }
+        private Color _BackColor;
+        public override Color BackColor { get=>_BackColor; set { _BackColor = value;UpdateStyle(); } }
 
+        private string imageFileName;
         private byte[] _BackgroundImageBytes;
         private System.Drawing.Image backgroundImage;
         public override System.Drawing.Image BackgroundImage
@@ -285,10 +307,10 @@ namespace System.Windows.Forms
         public override bool Enabled { get { return Widget.Sensitive; } set { Widget.Sensitive = value; } }
 
         public override bool Focused { get { return Widget.IsFocus; } }
-
-        public override Font Font { get; set; }
-
-        public override Color ForeColor { get; set; }
+        private Font _Font;
+        public override Font Font { get => _Font; set { _Font = value; UpdateStyle(); } }
+        private Color _ForeColor;
+        public override Color ForeColor { get => _ForeColor; set { _ForeColor = value; UpdateStyle(); } }
 
         public override bool HasChildren { get; }
 
@@ -865,35 +887,29 @@ namespace System.Windows.Forms
         }
 
         public override bool UseVisualStyleBackColor { get; set; }
-
-        protected void ScaleImage(ref Gdk.Pixbuf imagePixbuf, byte[] imagebytes, PictureBoxSizeMode sizeMode, ImageLayout backgroundMode)
+        protected void ScaleImage(int width, int height, ref Gdk.Pixbuf imagePixbuf, byte[] imagebytes, PictureBoxSizeMode sizeMode, ImageLayout backgroundMode)
         {
             if (imagebytes != null)
             {
                 Gdk.Pixbuf pix = new Gdk.Pixbuf(imagebytes);
-                int width = this.Size.Width > 0 ? this.Size.Width : pix.Width;
-                int height = this.Size.Height > 0 ? this.Size.Height : pix.Height;
-
                 if (width > 0 && height > 0)
                 {
-                    //Gdk.Pixbuf showpix = new Gdk.Pixbuf(new Cairo.ImageSurface(Cairo.Format.Argb32, width, height), 0, 0, width, height);
-                    int newwidth = Math.Min(pix.Width, width);
-                    int newheight = Math.Min(pix.Height, height);
-                    Gdk.Pixbuf showpix = new Gdk.Pixbuf(new Cairo.ImageSurface(Cairo.Format.Argb32, newwidth, newheight), 0, 0, newwidth, newheight);
+                    Gdk.Pixbuf showpix = new Gdk.Pixbuf(new Cairo.ImageSurface(Cairo.Format.ARGB32, width, height), 0, 0, width, height);
                     if (sizeMode == PictureBoxSizeMode.Normal && backgroundMode == ImageLayout.None)
                     {
                         pix.CopyArea(0, 0, Math.Min(pix.Width, showpix.Width), Math.Min(pix.Height, showpix.Height), showpix, 0, 0);
                     }
                     else if (sizeMode == PictureBoxSizeMode.StretchImage || backgroundMode == ImageLayout.Stretch)
-                    {
+                    { //缩放取全图铺满
                         Gdk.Pixbuf newpix = pix.ScaleSimple(width, height, Gdk.InterpType.Tiles);
                         newpix.CopyArea(0, 0, newpix.Width, newpix.Height, showpix, 0, 0);
                     }
                     else if (sizeMode == PictureBoxSizeMode.CenterImage || backgroundMode == ImageLayout.Center)
                     {
+                        //取原图中间
                         int offsetx = (pix.Width - showpix.Width) / 2;
                         int offsety = (pix.Height - showpix.Height) / 2;
-                        pix.CopyArea(offsetx > 0 ? offsetx : 0, offsety > 0 ? offsety : 0, Math.Min(pix.Width, showpix.Width), Math.Min(pix.Height, showpix.Height), showpix, offsetx < 0 ? offsetx : 0, offsety < 0 ? offsety : 0);
+                        pix.CopyArea(offsetx > 0 ? offsetx : 0, offsety > 0 ? offsety : 0, Math.Min(pix.Width, showpix.Width), Math.Min(pix.Height, showpix.Height), showpix, offsetx < 0 ? -offsetx : 0, offsety < 0 ? -offsety : 0);
                     }
                     else if (sizeMode == PictureBoxSizeMode.Zoom || backgroundMode == ImageLayout.Zoom)
                     {
@@ -916,15 +932,15 @@ namespace System.Windows.Forms
 
                     if (backgroundMode == ImageLayout.Tile)
                     {
-                        //平铺背景图
-                        if (showpix.Width < width || showpix.Height < height)
+                        //平铺背景图，原图铺满
+                        if (pix.Width < width || pix.Height < height)
                         {
-                            Gdk.Pixbuf backgroundpix = new Gdk.Pixbuf(new Cairo.ImageSurface(Cairo.Format.Argb32, width, height), 0, 0, width, height);
-                            for (int y = 0; y < height; y += showpix.Height)
+                            Gdk.Pixbuf backgroundpix = new Gdk.Pixbuf(new Cairo.ImageSurface(Cairo.Format.ARGB32, width, height), 0, 0, width, height);
+                            for (int y = 0; y < height; y += pix.Height)
                             {
-                                for (int x = 0; x < width; x += showpix.Width)
+                                for (int x = 0; x < width; x += pix.Width)
                                 {
-                                    showpix.CopyArea(0, 0, width - x > showpix.Width ? showpix.Width : width - x, height - y > showpix.Height ? showpix.Height : height - y, backgroundpix, x, y);
+                                    pix.CopyArea(0, 0, width - x > pix.Width ? pix.Width : width - x, height - y > pix.Height ? pix.Height : height - y, backgroundpix, x, y);
                                 }
                             }
                             imagePixbuf = backgroundpix;

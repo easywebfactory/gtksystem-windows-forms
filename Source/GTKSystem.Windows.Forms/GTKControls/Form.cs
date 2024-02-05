@@ -1,12 +1,11 @@
 ﻿/*
- * 基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
- * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台跨平台windows、linux、macos运行
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
  * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
  * date: 2024/1/3
  */
-using Atk;
-using GLib;
+
 using Gtk;
 using System;
 using System.ComponentModel;
@@ -83,7 +82,7 @@ namespace System.Windows.Forms
             WindowBackgroundImage.Drawn += Bg_Drawn;
             windowbody.Add(WindowBackgroundImage);
             windowbody.Add(scrollwindow);
-
+            base.Control.Resizable = false;
         }
 
         private void Control_DeleteEvent(object o, DeleteEventArgs args)
@@ -113,19 +112,17 @@ namespace System.Windows.Forms
             Gdk.Rectangle rec = ((Gtk.Image)o).Allocation;
             if (this.BackColor.Name != "Control" && this.BackColor.Name != "0")
             {
-                DrawBackgroundColor(args.Cr, Widget, this.BackColor, rec);
+                DrawBackgroundColor(args.Cr, this.BackColor, rec);
             }
             if (BackgroundImage != null)
             {
-                byte[] _BackgroundImageBytes = new byte[BackgroundImage.PixbufData.Length];
-                BackgroundImage.PixbufData.CopyTo(_BackgroundImageBytes, 0);
-
                 if (backgroundPixbuf == null)
                 {
                     Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                    ScaleImage(ref imagePixbuf, _BackgroundImageBytes, PictureBoxSizeMode.AutoSize, BackgroundImageLayout == ImageLayout.None ? ImageLayout.Tile : BackgroundImageLayout);
-                    backgroundPixbuf = imagePixbuf.ScaleSimple(imagePixbuf.Width - 8, imagePixbuf.Height - 6, Gdk.InterpType.Tiles);
+                    ScaleImage(rec.Width, rec.Height, ref imagePixbuf, BackgroundImage.PixbufData, PictureBoxSizeMode.AutoSize, BackgroundImageLayout == ImageLayout.None ? ImageLayout.Tile : BackgroundImageLayout);
+                    backgroundPixbuf = imagePixbuf.ScaleSimple(imagePixbuf.Width, imagePixbuf.Height, Gdk.InterpType.Tiles);
                 }
+                args.Cr.Scale(rec.Width * 1.00001 / backgroundPixbuf.Width, rec.Height * 1.00001 / backgroundPixbuf.Height);
                 DrawBackgroundImage(args.Cr, backgroundPixbuf, rec);
             }
         }
@@ -164,7 +161,8 @@ namespace System.Windows.Forms
                     WindowBackgroundImage.HeightRequest = height;
                     scrollwindow.WidthRequest = width;
                     scrollwindow.HeightRequest = height;
-
+                    _body.WidthRequest = width;
+                    _body.HeightRequest = height;
                     ResizeChildren(_body);
                 }
             }
@@ -284,6 +282,7 @@ namespace System.Windows.Forms
             {
                 this.Parent= ((Form)owner);
             }
+
             windowbody.WidthRequest = this.Width;
             windowbody.HeightRequest = this.Height;
             WindowBackgroundImage.WidthRequest = this.Width;
@@ -299,6 +298,7 @@ namespace System.Windows.Forms
                 scrollwindow.VscrollbarPolicy = PolicyType.Never;
             }
             this.Control.Add(windowbody);
+            base.Control.Resizable = this.FormBorderStyle == FormBorderStyle.Sizable || this.FormBorderStyle == FormBorderStyle.SizableToolWindow;
             base.Control.ShowAll();
             if (this.WindowState == FormWindowState.Maximized)
             {
@@ -369,7 +369,9 @@ namespace System.Windows.Forms
 
             dialogWindow.ContentArea.BorderWidth = 0;
             dialogWindow.ContentArea.Spacing = 0;
-            dialogWindow.ContentArea.PackStart(windowbody, false, true, 0);
+            dialogWindow.ContentArea.PackStart(windowbody, true, true, 0);
+            dialogWindow.Resizable = this.FormBorderStyle == FormBorderStyle.Sizable|| this.FormBorderStyle == FormBorderStyle.SizableToolWindow;
+
             dialogWindow.ShowAll();
             if (this.WindowState == FormWindowState.Maximized)
             {
@@ -379,7 +381,6 @@ namespace System.Windows.Forms
             {
                 dialogWindow.KeepBelow = true;
             }
-
             irun = dialogWindow.Run();
 
             return this.DialogResult;

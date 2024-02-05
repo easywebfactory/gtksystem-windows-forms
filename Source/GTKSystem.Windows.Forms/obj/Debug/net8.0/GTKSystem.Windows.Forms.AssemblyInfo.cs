@@ -14,11 +14,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("chenhongjin")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("438865652@qq.com，chenhongjin")]
-[assembly: System.Reflection.AssemblyDescriptionAttribute("基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。\r\n使用本组件GTKSystem.Windows.Forms代替M" +
-    "icrosoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows\\linux\\macos运行。\r\n技术支持438" +
-    "865652@qq.com，https://gitee.com/easywebfactory/gtksystem-windows-forms\r\n\t")]
+[assembly: System.Reflection.AssemblyDescriptionAttribute("基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。\r\n使用本组件GTKSystem.Windows.Forms代替Microsoft.Win" +
+    "dowsDesktop.App.WindowsForms，一次编译，跨平台windows\\linux\\macos运行。\r\n技术支持438865652@qq.co" +
+    "m，https://gitee.com/easywebfactory/gtksystem-windows-forms\r\n\t")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.1")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0.1+450040b96affe8c3e6c214b9e9d8574f14bce690")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0.1+a54395ebe8c4d765f37d80a1e18bef863c0e60d0")]
 [assembly: System.Reflection.AssemblyProductAttribute("GTKSystem.Windows.Forms")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GTKSystem.Windows.Forms")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.1")]

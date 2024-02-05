@@ -37,10 +37,10 @@ namespace GTKWinFormsApp
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            TreeNode treeNode5 = new TreeNode("Node2");
-            TreeNode treeNode6 = new TreeNode("Node3");
-            TreeNode treeNode7 = new TreeNode("Node0", new TreeNode[] { treeNode5, treeNode6 });
-            TreeNode treeNode8 = new TreeNode("Node1");
+            TreeNode treeNode1 = new TreeNode("Node2");
+            TreeNode treeNode2 = new TreeNode("Node3");
+            TreeNode treeNode3 = new TreeNode("Node0", new TreeNode[] { treeNode1, treeNode2 });
+            TreeNode treeNode4 = new TreeNode("Node1");
             button1 = new Button();
             comboBox1 = new ComboBox();
             textBox1 = new TextBox();
@@ -165,7 +165,7 @@ namespace GTKWinFormsApp
             dataGridView1.Margin = new Padding(4);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new System.Drawing.Size(1327, 306);
+            dataGridView1.Size = new System.Drawing.Size(1323, 278);
             dataGridView1.TabIndex = 2;
             dataGridView1.MultiSelectChanged += dataGridView1_MultiSelectChanged;
             dataGridView1.CellClick += dataGridView1_CellClick;
@@ -246,7 +246,7 @@ namespace GTKWinFormsApp
             groupBox1.Margin = new Padding(4);
             groupBox1.Name = "groupBox1";
             groupBox1.Padding = new Padding(4);
-            groupBox1.Size = new System.Drawing.Size(1343, 167);
+            groupBox1.Size = new System.Drawing.Size(1339, 167);
             groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
             groupBox1.Text = "groupBox1";
@@ -352,7 +352,8 @@ namespace GTKWinFormsApp
             // button2
             // 
             button2.BackgroundImage = (System.Drawing.Image)resources.GetObject("button2.BackgroundImage");
-            button2.Font = new System.Drawing.Font("Microsoft YaHei UI", 11F);
+            button2.BackgroundImageLayout = ImageLayout.Stretch;
+            button2.Font = new System.Drawing.Font("Microsoft YaHei UI", 15F);
             button2.ForeColor = System.Drawing.Color.Blue;
             button2.Location = new System.Drawing.Point(681, 71);
             button2.Margin = new Padding(4);
@@ -393,8 +394,7 @@ namespace GTKWinFormsApp
             tabControl1.Margin = new Padding(4);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new System.Drawing.Size(1343, 347);
-            tabControl1.SizeMode = TabSizeMode.Fixed;
+            tabControl1.Size = new System.Drawing.Size(1339, 319);
             tabControl1.TabIndex = 4;
             tabControl1.DrawItem += tabControl1_DrawItem;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
@@ -406,7 +406,7 @@ namespace GTKWinFormsApp
             tabPage1.Margin = new Padding(4);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(4);
-            tabPage1.Size = new System.Drawing.Size(1335, 314);
+            tabPage1.Size = new System.Drawing.Size(1331, 286);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "数据表格";
             tabPage1.UseVisualStyleBackColor = true;
@@ -424,7 +424,7 @@ namespace GTKWinFormsApp
             tabPage2.Margin = new Padding(4);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(4);
-            tabPage2.Size = new System.Drawing.Size(1335, 314);
+            tabPage2.Size = new System.Drawing.Size(1352, 286);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "容器类表格";
             tabPage2.UseVisualStyleBackColor = true;
@@ -584,15 +584,15 @@ namespace GTKWinFormsApp
             treeView1.Location = new System.Drawing.Point(127, 66);
             treeView1.Margin = new Padding(4);
             treeView1.Name = "treeView1";
-            treeNode5.Name = "Node2";
-            treeNode5.Text = "Node2";
-            treeNode6.Name = "Node3";
-            treeNode6.Text = "Node3";
-            treeNode7.Name = "Node0";
-            treeNode7.Text = "Node0";
-            treeNode8.Name = "Node1";
-            treeNode8.Text = "Node1";
-            treeView1.Nodes.AddRange(new TreeNode[] { treeNode7, treeNode8 });
+            treeNode1.Name = "Node2";
+            treeNode1.Text = "Node2";
+            treeNode2.Name = "Node3";
+            treeNode2.Text = "Node3";
+            treeNode3.Name = "Node0";
+            treeNode3.Text = "Node0";
+            treeNode4.Name = "Node1";
+            treeNode4.Text = "Node1";
+            treeView1.Nodes.AddRange(new TreeNode[] { treeNode3, treeNode4 });
             treeView1.Size = new System.Drawing.Size(154, 113);
             treeView1.TabIndex = 4;
             treeView1.AfterCollapse += treeView1_AfterCollapse;
@@ -646,7 +646,7 @@ namespace GTKWinFormsApp
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new Padding(8, 2, 0, 2);
-            menuStrip1.Size = new System.Drawing.Size(1343, 29);
+            menuStrip1.Size = new System.Drawing.Size(1339, 29);
             menuStrip1.TabIndex = 7;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -732,7 +732,7 @@ namespace GTKWinFormsApp
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Bottom;
-            splitContainer1.Location = new System.Drawing.Point(0, 228);
+            splitContainer1.Location = new System.Drawing.Point(0, 196);
             splitContainer1.Margin = new Padding(4);
             splitContainer1.Name = "splitContainer1";
             splitContainer1.Orientation = Orientation.Horizontal;
@@ -750,8 +750,8 @@ namespace GTKWinFormsApp
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(tabControl1);
-            splitContainer1.Size = new System.Drawing.Size(1343, 565);
-            splitContainer1.SplitterDistance = 213;
+            splitContainer1.Size = new System.Drawing.Size(1339, 565);
+            splitContainer1.SplitterDistance = 241;
             splitContainer1.SplitterWidth = 5;
             splitContainer1.TabIndex = 14;
             // 
@@ -768,10 +768,10 @@ namespace GTKWinFormsApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoScroll = true;
             BackgroundImage = Properties.Resources.timg;
             BackgroundImageLayout = ImageLayout.Stretch;
-           // ClientSize = new System.Drawing.Size(1343, 793);
-            ClientSize = new System.Drawing.Size(1360, 700);
+            ClientSize = new System.Drawing.Size(1360, 743);
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(groupBox1);
             Controls.Add(splitContainer1);
@@ -780,8 +780,6 @@ namespace GTKWinFormsApp
             Margin = new Padding(4);
             Name = "Form1";
             Text = "C# winform gtk效果";
-            AutoSize = false;
-            AutoScroll = false;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();

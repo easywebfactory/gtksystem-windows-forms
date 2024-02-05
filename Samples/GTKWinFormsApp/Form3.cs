@@ -19,8 +19,13 @@ namespace GTKWinFormsApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Form1 f=new Form1();
+            Form1 f = new Form1();
             f.ShowDialog();
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            label1.Text=trackBar1.Value.ToString();
         }
     }
 }

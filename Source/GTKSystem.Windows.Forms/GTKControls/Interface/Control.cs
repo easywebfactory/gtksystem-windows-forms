@@ -27,6 +27,7 @@ namespace System.Windows.Forms
 
         //public virtual Gtk.Widget Widget { get; }
         public virtual object GtkControl { get; private set; }
+        public virtual string unique_key { get; protected set; }
         public virtual AccessibleObject AccessibilityObject { get; }
 
         public virtual string AccessibleDefaultActionDescription { get; set; }

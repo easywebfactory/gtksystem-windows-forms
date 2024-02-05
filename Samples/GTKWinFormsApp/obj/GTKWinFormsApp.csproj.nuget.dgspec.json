@@ -55,7 +55,7 @@
           "dependencies": {
             "GtkSharp": {
               "target": "Package",
-              "version": "[3.24.24.34, )"
+              "version": "[3.24.24.95, )"
             }
           },
           "imports": [
@@ -122,7 +122,7 @@
           "dependencies": {
             "GtkSharp": {
               "target": "Package",
-              "version": "[3.24.24.34, )"
+              "version": "[3.24.24.95, )"
             }
           },
           "imports": [

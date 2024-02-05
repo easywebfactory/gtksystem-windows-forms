@@ -10,6 +10,7 @@ namespace System.Windows.Forms
     /// </summary>
     public class ToolStripItem : Component, IDropTarget, ISupportOleDropSource, IArrangedElement, IComponent, IDisposable, IKeyboardToolTip
     {
+        public virtual string unique_key { get; protected set; }
         public virtual Gtk.Widget Widget { get; set; }
         public virtual Gtk.MenuItem MenuItem { get; set; }
         public virtual bool Checked { get; set; }
@@ -102,7 +103,7 @@ namespace System.Windows.Forms
         public virtual Font Font { get; set; }
 
         public virtual Color ForeColor { get; set; }
-
+        public virtual Color BackColor { get; set; }
         public virtual bool HasChildren { get; }
 
         public virtual int Height { get; set; }

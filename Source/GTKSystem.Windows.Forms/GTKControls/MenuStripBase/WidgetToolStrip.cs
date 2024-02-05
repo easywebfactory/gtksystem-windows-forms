@@ -1,6 +1,6 @@
 ﻿/*
- * 基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
- * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台跨平台windows、linux、macos运行
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
  * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
  * date: 2024/1/3
@@ -20,6 +20,7 @@ namespace System.Windows.Forms
 {
     public class WidgetToolStrip<T> : ToolStripItem, IDropTarget, ISupportOleDropSource, IArrangedElement, IComponent, IDisposable, IKeyboardToolTip
     {
+        public override string unique_key { get; protected set; }
         private Gtk.Widget _widget;
         public override Gtk.Widget Widget
         {
@@ -43,7 +44,8 @@ namespace System.Windows.Forms
         internal Gtk.Button button = new Gtk.Button();
         internal Gtk.Entry entry = new Gtk.Entry();
         internal Gtk.ComboBoxText comboBox = new Gtk.ComboBoxText();
-        internal Gtk.ProgressBar progressBar = new Gtk.ProgressBar();
+       // internal Gtk.ProgressBar progressBar = new Gtk.ProgressBar();
+        internal Gtk.LevelBar progressBar = new Gtk.LevelBar();
         public string StripType { get; set; }
         public WidgetToolStrip() : this(null, "", null, null, "",null)
         {
@@ -130,6 +132,8 @@ namespace System.Windows.Forms
                 }
                 else if (stripType == "ToolStripProgressBar")
                 {
+                    progressBar.Halign = Gtk.Align.Fill;
+                    progressBar.Valign = Gtk.Align.Fill;
                     progressBar.Visible = true;
                     _menuItem.Add(progressBar);
                 }
@@ -171,6 +175,7 @@ namespace System.Windows.Forms
 
         private void ToolStripItem_Realized(object sender, EventArgs e)
         {
+            UpdateStyle();
             if (this.Widget is Gtk.CheckMenuItem checkMenuItem)
             {
                 if (this.CheckState == CheckState.Unchecked)
@@ -210,8 +215,77 @@ namespace System.Windows.Forms
             }
             _widget.ShowAll();
         }
+        internal void UpdateStyle()
+        {
+            string stylename = $"s{unique_key}";
+            StringBuilder style = new StringBuilder();
+            if (this.BackColor.Name != "Control" && this.BackColor.Name != "0")
+            {
+                string color = $"#{Convert.ToString(this.BackColor.R, 16).PadLeft(2, '0')}{Convert.ToString(this.BackColor.G, 16).PadLeft(2, '0')}{Convert.ToString(this.BackColor.B, 16).PadLeft(2, '0')}";
+                style.AppendFormat("background-color:{0};background:{0};", color);
+            }
+            if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
+            {
+                string color = $"#{Convert.ToString(this.ForeColor.R, 16).PadLeft(2, '0')}{Convert.ToString(this.ForeColor.G, 16).PadLeft(2, '0')}{Convert.ToString(this.ForeColor.B, 16).PadLeft(2, '0')}";
+                style.AppendFormat("color:{0};", color);
+            }
 
-       // public override string Text { get { return this.button.Label; } set { this.button.Label = value; } }
+            if (this.Font != null)
+            {
+                Pango.AttrList attributes = new Pango.AttrList();
+                float textSize = this.Font.Size;
+                if (this.Font.Unit == GraphicsUnit.Point)
+                    textSize = this.Font.Size * 1 / 72 * 96;
+                if (this.Font.Unit == GraphicsUnit.Inch)
+                    textSize = this.Font.Size * 96;
+
+                style.AppendFormat("font-size:{0}px;", textSize);
+                if (string.IsNullOrWhiteSpace(Font.FontFamily.Name) == false)
+                    style.AppendFormat("font-family:\"{0}\";", Font.FontFamily.Name);
+
+                string[] fontstyle = Font.Style.ToString().ToLower().Split([',', ' ']);
+                foreach (string sty in fontstyle)
+                {
+                    if (sty == "bold")
+                    {
+                        style.Append("font-weight:bold;");
+                        attributes.Insert(new Pango.AttrWeight(Pango.Weight.Bold));
+                    }
+                    else if (sty == "italic")
+                    {
+                        style.Append("font-style:italic;");
+                        attributes.Insert(new Pango.AttrStyle(Pango.Style.Italic));
+                    }
+                    else if (sty == "underline")
+                    {
+                        style.Append("text-decoration:underline;");
+                        attributes.Insert(new Pango.AttrUnderline(Pango.Underline.Low));
+                    }
+                    else if (sty == "strikeout")
+                    {
+                        style.Append("text-decoration:line-through;");
+                        attributes.Insert(new Pango.AttrStrikethrough(true));
+                    }
+                }
+                _widget.SetProperty("attributes", new GLib.Value(attributes));
+            }
+
+            StringBuilder css = new StringBuilder();
+            css.AppendLine($".{stylename}{{{style.ToString()}}}");
+            if (_widget is Gtk.TextView)
+            {
+                css.AppendLine($".{stylename} text{{{style.ToString()}}}");
+                css.AppendLine($".{stylename} .view{{{style.ToString()}}}");
+            }
+            CssProvider provider = new CssProvider();
+            if (provider.LoadFromData(css.ToString()))
+            {
+                _widget.StyleContext.AddProvider(provider, 900);
+                _widget.StyleContext.RemoveClass(stylename);
+                _widget.StyleContext.AddClass(stylename);
+            }
+        }
+        // public override string Text { get { return this.button.Label; } set { this.button.Label = value; } }
         public override string Text { 
             get {
                 if (this.StripType == "ToolStripTextBox")
@@ -271,10 +345,12 @@ namespace System.Windows.Forms
 
         //  public override bool Focused { get { return this.IsFocus; } }
 
-        public override Font Font { get; set; }
-
-        public override Color ForeColor { get; set; }
-
+        private Font _Font;
+        public override Font Font { get => _Font; set { _Font = value; UpdateStyle(); } }
+        private Color _ForeColor;
+        public override Color ForeColor { get => _ForeColor; set { _ForeColor = value; UpdateStyle(); } }
+        private Color _BackColor;
+        public override Color BackColor { get => _BackColor; set { _BackColor = value; UpdateStyle(); } }
         public override bool HasChildren { get; }
 
         public override int Height { get { return _widget.HeightRequest; } set { _widget.HeightRequest = value; } }
