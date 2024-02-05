@@ -116,12 +116,12 @@ namespace System.Windows.Forms
 
         public object Clone()
         {
-            string data = System.Text.Json.JsonSerializer.Serialize(this,System.Text.Json.Serialization.Metadata.JsonTypeInfo.CreateJsonTypeInfo<ColumnHeader>(System.Text.Json.JsonSerializerOptions.Default));
+            string data = System.Text.Json.JsonSerializer.Serialize(this,typeof(ColumnHeader));
             return System.Text.Json.JsonSerializer.Deserialize<ColumnHeader>(data);
         }
         protected override void Dispose(bool disposing)
         {
-           // ImageList = null;
+         
         }
     }
 }

@@ -1,0 +1,12 @@
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\publish\GTKSystem.Windows.Forms.dll
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\publish\GTKSystem.Windows.Forms.deps.json
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\publish\GTKSystem.Windows.Forms.pdb
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\publish\AtkSharp.dll
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\publish\CairoSharp.dll
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\publish\GdkSharp.dll
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\publish\GioSharp.dll
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\publish\GLibSharp.dll
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\publish\GtkSharp.dll
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\publish\PangoSharp.dll
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\publish\System.Resources.Extensions.dll
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\publish\System.Resources.Extensions.pdb

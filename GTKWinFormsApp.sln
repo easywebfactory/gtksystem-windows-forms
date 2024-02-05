@@ -19,6 +19,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readme", "readme", "{7674FD
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{56631C54-2CE5-44E4-A931-4788557760B4}"
+	ProjectSection(SolutionItems) = preProject
+		licenses\LICENSE.txt = licenses\LICENSE.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "licenses", "licenses", "{FA74C15D-95F5-4B11-A721-308659F09D90}"
+	ProjectSection(SolutionItems) = preProject
+		Source\licenses\LICENSE.txt = Source\licenses\LICENSE.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

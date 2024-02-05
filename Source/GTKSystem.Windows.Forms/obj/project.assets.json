@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {
+    "net6.0": {
       "AtkSharp/3.24.24.95": {
         "type": "package",
         "dependencies": {
@@ -90,6 +90,16 @@
         },
         "runtime": {
           "lib/net6.0/PangoSharp.dll": {}
+        }
+      },
+      "System.Resources.Extensions/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/System.Resources.Extensions.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/System.Resources.Extensions.dll": {}
         }
       }
     }
@@ -186,11 +196,17 @@
         "pangosharp.3.24.24.95.nupkg.sha512",
         "pangosharp.nuspec"
       ]
+    },
+    "System.Resources.Extensions/1.0.0": {
+      "type": "project",
+      "path": "../System.Resources.Extensions/System.Resources.Extensions.csproj",
+      "msbuildProject": "../System.Resources.Extensions/System.Resources.Extensions.csproj"
     }
   },
   "projectFileDependencyGroups": {
-    "net8.0": [
-      "GtkSharp >= 3.24.24.95"
+    "net6.0": [
+      "GtkSharp >= 3.24.24.95",
+      "System.Resources.Extensions >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -217,7 +233,7 @@
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net8.0"
+        "net6.0"
       ],
       "sources": {
         "C:\\Users\\chj\\.nuget\\packages": {},
@@ -225,9 +241,13 @@
         "https://www.nuget.org/api/v2/": {}
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
-          "projectReferences": {}
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {
+            "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj": {
+              "projectPath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -237,8 +257,8 @@
       }
     },
     "frameworks": {
-      "net8.0": {
-        "targetAlias": "net8.0",
+      "net6.0": {
+        "targetAlias": "net6.0",
         "dependencies": {
           "GtkSharp": {
             "target": "Package",
@@ -256,12 +276,26 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[6.0.25, 6.0.25]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[6.0.25, 6.0.25]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[6.0.25, 6.0.25]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

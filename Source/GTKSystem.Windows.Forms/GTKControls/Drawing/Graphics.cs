@@ -360,12 +360,12 @@ namespace System.Drawing
 
 		public void DrawImage(Image image, Point point)
 		{
-			DrawImage(image, [new PointF(point.X, point.Y)], new RectangleF(0, 0, 0, 0), GraphicsUnit.Pixel, null, null, 0);
+			DrawImage(image, new PointF[] { new PointF(point.X, point.Y) }, new RectangleF(0, 0, 0, 0), GraphicsUnit.Pixel, null, null, 0);
 		}
 
 		public void DrawImage(Image image, PointF point)
 		{
-			DrawImage(image, [point], new RectangleF(0, 0, 0, 0), GraphicsUnit.Pixel, null, null, 0);
+			DrawImage(image, new PointF[] { point }, new RectangleF(0, 0, 0, 0), GraphicsUnit.Pixel, null, null, 0);
 		}
 
 		public void DrawImage(Image image, PointF[] destPoints)

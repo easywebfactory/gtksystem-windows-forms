@@ -243,7 +243,7 @@ namespace System.Windows.Forms
                 if (string.IsNullOrWhiteSpace(Font.FontFamily.Name) == false)
                     style.AppendFormat("font-family:\"{0}\";", Font.FontFamily.Name);
 
-                string[] fontstyle = Font.Style.ToString().ToLower().Split([',', ' ']);
+                string[] fontstyle = Font.Style.ToString().ToLower().Split(new char[] { ',', ' '});
                 foreach (string sty in fontstyle)
                 {
                     if (sty == "bold")

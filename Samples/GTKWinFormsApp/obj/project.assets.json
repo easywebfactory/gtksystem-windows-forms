@@ -94,9 +94,10 @@
       },
       "GTKSystem.Windows.Forms/1.0.0.1": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
+        "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "GtkSharp": "3.24.24.95"
+          "GtkSharp": "3.24.24.95",
+          "System.Resources.Extensions": "1.0.0"
         },
         "compile": {
           "bin/placeholder/GTKSystem.Windows.Forms.dll": {}
@@ -107,7 +108,7 @@
       },
       "System.Resources.Extensions/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
+        "framework": ".NETCoreApp,Version=v6.0",
         "compile": {
           "bin/placeholder/System.Resources.Extensions.dll": {}
         },

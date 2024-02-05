@@ -98,7 +98,8 @@
       },
       "GTKSystem.Windows.Forms/1.0.0.1": {
         "dependencies": {
-          "GtkSharp": "3.24.24.95"
+          "GtkSharp": "3.24.24.95",
+          "System.Resources.Extensions": "1.0.0"
         },
         "runtime": {
           "GTKSystem.Windows.Forms.dll": {}

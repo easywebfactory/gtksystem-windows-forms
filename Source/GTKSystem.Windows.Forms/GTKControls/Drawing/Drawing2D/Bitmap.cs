@@ -1,13 +1,8 @@
-﻿//using GLib;
-using Cairo;
-using Gdk;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace System.Drawing
 {
