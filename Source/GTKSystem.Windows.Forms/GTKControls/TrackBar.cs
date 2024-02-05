@@ -14,13 +14,14 @@ using static System.Formats.Asn1.AsnWriter;
 
 namespace System.Windows.Forms
 {
-
-	public class TrackBar : WidgetControl<Gtk.Viewport>
+    [DesignerCategory("Component")]
+    public class TrackBar : WidgetControl<Gtk.Viewport>
 	{
 		Gtk.Adjustment adjustment = new Gtk.Adjustment(10, 0, 100, 1, 1, 0);
         Gtk.Scale scale;
 		public TrackBar():base()
 		{
+            base.Control.StyleContext.AddClass("TrackBar");
             base.Control.Realized += Control_Realized;
         }
 

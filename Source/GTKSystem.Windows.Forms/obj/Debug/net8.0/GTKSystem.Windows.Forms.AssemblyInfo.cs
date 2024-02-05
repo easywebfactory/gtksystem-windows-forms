@@ -18,7 +18,7 @@ using System.Reflection;
     "dowsDesktop.App.WindowsForms，一次编译，跨平台windows\\linux\\macos运行。\r\n技术支持438865652@qq.co" +
     "m，https://gitee.com/easywebfactory/gtksystem-windows-forms\r\n\t")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.1")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0.1+a54395ebe8c4d765f37d80a1e18bef863c0e60d0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0.1+aa5d2a79492ce54031ef6807c4088fd38ea75e3e")]
 [assembly: System.Reflection.AssemblyProductAttribute("GTKSystem.Windows.Forms")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GTKSystem.Windows.Forms")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.1")]
