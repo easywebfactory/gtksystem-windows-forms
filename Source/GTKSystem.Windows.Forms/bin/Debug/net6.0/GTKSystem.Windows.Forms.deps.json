@@ -6,10 +6,10 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "GTKSystem.Windows.Forms/1.0.0.1": {
+      "GTKSystem.Windows.Forms/1.3.24.2": {
         "dependencies": {
           "GtkSharp": "3.24.24.95",
-          "System.Resources.Extensions": "1.0.0"
+          "System.Resources.Extensions": "8.0.0"
         },
         "runtime": {
           "GTKSystem.Windows.Forms.dll": {}
@@ -95,15 +95,18 @@
           }
         }
       },
-      "System.Resources.Extensions/1.0.0": {
+      "System.Resources.Extensions/8.0.0": {
         "runtime": {
-          "System.Resources.Extensions.dll": {}
+          "lib/net6.0/System.Resources.Extensions.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
         }
       }
     }
   },
   "libraries": {
-    "GTKSystem.Windows.Forms/1.0.0.1": {
+    "GTKSystem.Windows.Forms/1.3.24.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -157,10 +160,12 @@
       "path": "pangosharp/3.24.24.95",
       "hashPath": "pangosharp.3.24.24.95.nupkg.sha512"
     },
-    "System.Resources.Extensions/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
+    "System.Resources.Extensions/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-psnQ6GRQOvt+evda5C4nD5EuV49mz2Tv0DD2JDVDEbE/TKoMukxSkGJcsBJ0pajpPuFRr67syFYlkJ4Wj6A5Zw==",
+      "path": "system.resources.extensions/8.0.0",
+      "hashPath": "system.resources.extensions.8.0.0.nupkg.sha512"
     }
   }
 }

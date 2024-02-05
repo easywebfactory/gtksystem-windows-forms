@@ -203,36 +203,39 @@ namespace System.Windows.Forms
         }
         internal void BindDataSource(object datasource, string propertyName, string dataMember, int selectindex, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode, object nullValue, string formatString)
         {
-            IListSource source = datasource as IListSource;
+            if (datasource == null)
+                return;
             if (string.IsNullOrWhiteSpace(propertyName))
                 return;
             if (string.IsNullOrWhiteSpace(dataMember))
                 return;
+            IListSource source = datasource as IListSource;
             if (source == null)
             {
-                IEnumerable iesource = datasource as IEnumerable;
-                foreach (var row in iesource)
+                if (datasource is IEnumerable iesource)
                 {
-                    object[] cells = new object[Columns.Count];
-                    int i = 0;
-                    foreach (var col in propertyName.Split(','))
+                    foreach (var row in iesource)
                     {
-                        string[] mb = dataMember.Split(',');
-                        string value = row.GetType().GetProperty(mb[i].Trim()).GetValue(row).ToString();
-                        if (formattingEnabled && string.IsNullOrWhiteSpace(formatString) == false)
-                            cells[Columns[mb[i].Trim()].Index] = string.Format(formatString, value);
-                        else
-                            cells[Columns[mb[i].Trim()].Index] = value;
-                        i++;
+                        object[] cells = new object[Columns.Count];
+                        int i = 0;
+                        foreach (var col in propertyName.Split(','))
+                        {
+                            string[] mb = dataMember.Split(',');
+                            string value = row.GetType().GetProperty(mb[i].Trim()).GetValue(row).ToString();
+                            if (formattingEnabled && string.IsNullOrWhiteSpace(formatString) == false)
+                                cells[Columns[mb[i].Trim()].Index] = string.Format(formatString, value);
+                            else
+                                cells[Columns[mb[i].Trim()].Index] = value;
+                            i++;
+                        }
+                        _rows.Add(cells);
                     }
-                    _rows.Add(cells);
                 }
             }
             else
             {
-                if (source.ContainsListCollection)
+                if (datasource is DataSet ds)
                 {
-                    DataSet ds = datasource as DataSet;
                     foreach (DataTable dtb in ds.Tables)
                     {
                         foreach (DataRow row in dtb.Rows)
@@ -253,9 +256,8 @@ namespace System.Windows.Forms
                         }
                     }
                 }
-                else
+                else if (source is IList list)
                 {
-                    IList list = source.GetList();
                     foreach (object row in list)
                     {
                         object[] cells = new object[Columns.Count];

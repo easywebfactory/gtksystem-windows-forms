@@ -13,7 +13,6 @@ F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\GTKSystem.Windows.Forms.dll
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\System.Resources.Extensions.dll
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\GTKSystem.Windows.Forms.pdb
-F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\System.Resources.Extensions.pdb
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.csproj.AssemblyReference.cache
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.Form1.resources
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.Properties.Resources.resources

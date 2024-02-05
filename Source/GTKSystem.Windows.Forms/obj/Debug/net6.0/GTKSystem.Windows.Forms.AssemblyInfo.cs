@@ -20,11 +20,11 @@ using System.Reflection;
 https://github.com/easywebfactory/gtksystem-windows-forms；
 https://gitee.com/easywebfactory/gtksystem-windows-forms；
 	")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.1")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0.1+9889efd2383c8b27bc1fa78c909af9ad8f1ff9bc")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.3.24.2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.3.24.2+fa71ab94fb8310709550eed9071cae7c8bac6761")]
 [assembly: System.Reflection.AssemblyProductAttribute("GTKSystem.Windows.Forms")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GTKSystem.Windows.Forms")]
-[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.1")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.3.24.2")]
 [assembly: System.Reflection.AssemblyMetadataAttribute("RepositoryUrl", "https://github.com/easywebfactory/gtksystem-windows-forms")]
 
 // 由 MSBuild WriteCodeFragment 类生成。

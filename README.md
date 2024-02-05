@@ -14,15 +14,16 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 使用GTK3.24.24.95作为表单UI重写C#的System.Windows.Forms组件，在应用时，兼容原生C#程序组件。
 
 #### 安装教程
-1.  把项目工程改为“控制台应用程序”或者配置UseWindowsForms为false，框架.net6或以上版本
+1.  把项目工程改为配置UseWindowsForms为false或“控制台应用程序”，框架.net6或以上版本
 2.  NulGet安装GtkSharp(3.24.24.95)
-3.  引用Libs目录下的GTKSystem.Windows.Forms.dll和System.Resources.Extensions.dll
-4.  编译发布测试运行
+3.  引用GTKSystem.Windows.Forms.dll，自建一个空类，命名为System.Resources.Extensions.dll，引用。
+4.  检查form表单是否有使用图像资源，如使用需新建System.Resources.ResourceManager和System.ComponentModel.ComponentResourceManager，具体请看下面内容。
+4.  按默认配置编译发布测试运行
 5.  linux和macos上执行命令：dotnet doemo_app.dll
 
 #### VisualStudio插件安装
 
-关闭visual studio，直接双击GTKWinformVSIXProject.vsix文件安装
+下载本插件工具，关闭visual studio，直接双击GTKWinformVSIXProject.vsix文件安装
 
 插件会安装两个功能，都是在右键菜单和工具菜单上添加：
 
@@ -67,13 +68,13 @@ GTKWinFormsApp\obj\Release\net6.0\GTKWinFormsApp.designer.runtimeconfig.json
 
 ```
 #### demo效果
-![输入图片说明](pic/run.jpg)
+![输入图片说明](https://gitee.com/easywebfactory/gtksystem-windows-forms/blob/net8%E7%89%88/pic/run.jpg)
 #### mac运行效果
-![输入图片说明](pic/mac.png)
+![输入图片说明](https://gitee.com/easywebfactory/gtksystem-windows-forms/blob/net8%E7%89%88/pic/mac.png)
 #### 窗口背景
-![输入图片说明](pic/backgroundimage.jpg)
+![输入图片说明](https://gitee.com/easywebfactory/gtksystem-windows-forms/blob/net8%E7%89%88/pic/backgroundimage.jpg)
 #### 工具栏菜单
-![输入图片说明](pic/toolstrip.jpeg)
+![输入图片说明](https://gitee.com/easywebfactory/gtksystem-windows-forms/blob/net8%E7%89%88/pic/toolstrip.jpeg)
 #### 交流
 QQ群：236066073
 

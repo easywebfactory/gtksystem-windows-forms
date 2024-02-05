@@ -63,7 +63,7 @@ namespace System.Windows.Forms
             if (_listBox != null)
                 _listBox.BindDataSource(binding.DataSource, binding.DataMember, binding.DataMember, _listBox.SelectedIndex, binding.FormattingEnabled, binding.DataSourceUpdateMode, binding.NullValue, binding.FormatString);
             if (_dataGridView != null)
-                _dataGridView.BindDataSource(binding.DataSource, binding.DataMember, binding.DataMember, _listBox.SelectedIndex, binding.FormattingEnabled, binding.DataSourceUpdateMode, binding.NullValue, binding.FormatString);
+                _dataGridView.BindDataSource(binding.DataSource, binding.DataMember, binding.DataMember, -1, binding.FormattingEnabled, binding.DataSourceUpdateMode, binding.NullValue, binding.FormatString);
 
         }
         public Binding Add(string propertyName, object dataSource, string dataMember)

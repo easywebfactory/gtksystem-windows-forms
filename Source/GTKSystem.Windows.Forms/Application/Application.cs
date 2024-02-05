@@ -5,9 +5,16 @@ using System.Threading;
 
 namespace System.Windows.Forms
 {
+    public sealed class ApplicationConfiguration
+    {
+        public static void Initialize()
+        {
+        }
+    }
     public sealed class Application
     {
         static Application() {
+            Init();
         }
 
         private static string appDataDirectory { get {
@@ -203,11 +210,12 @@ namespace System.Windows.Forms
 
         }
         public static void SetCompatibleTextRenderingDefault(bool defaultValue) {
-            Init();
+            
         }
 
         public static void Run(Form mainForm)
         {
+            
             mainForm.Control.Destroyed += Control_Destroyed;
             mainForm.Show();
             Gtk.Application.Run();

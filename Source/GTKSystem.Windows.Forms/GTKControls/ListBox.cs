@@ -85,34 +85,35 @@ namespace System.Windows.Forms
         }
         internal void BindDataSource(object datasource,string displaymember,string valuemember,int selectindex, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode, object nullValue, string formatString)
         {
-            IListSource source = datasource as IListSource;
+            if (datasource == null)
+                return;
             if (string.IsNullOrWhiteSpace(valuemember))
                 valuemember = displaymember;
-
+            IListSource source = datasource as IListSource;
             if (source == null)
             {
-                IEnumerable iesource = datasource as IEnumerable;
-
-                foreach (var row in iesource)
+                if (datasource is IEnumerable iesource)
                 {
-                    string display = row.GetType().GetProperty(displaymember).GetValue(row).ToString();
-                    string value = row.GetType().GetProperty(valuemember).GetValue(row).ToString();
-                    ListBoxItem item = new ListBoxItem();
-                    if (formattingEnabled && string.IsNullOrWhiteSpace(formatString) == false)
-                        item.DisplayText = string.Format(formatString,display);
-                    else
-                        item.DisplayText = display;
+                    foreach (var row in iesource)
+                    {
+                        string display = row.GetType().GetProperty(displaymember).GetValue(row).ToString();
+                        string value = row.GetType().GetProperty(valuemember).GetValue(row).ToString();
+                        ListBoxItem item = new ListBoxItem();
+                        if (formattingEnabled && string.IsNullOrWhiteSpace(formatString) == false)
+                            item.DisplayText = string.Format(formatString, display);
+                        else
+                            item.DisplayText = display;
 
-                    item.ItemValue = value;
-                    item.CheckValue = value;
-                    _items.Add(item);
+                        item.ItemValue = value;
+                        item.CheckValue = value;
+                        _items.Add(item);
+                    }
                 }
             }
             else
             {
-                if (source.ContainsListCollection)
+                if (datasource is DataSet ds)
                 {
-                    DataSet ds = datasource as DataSet;
                     foreach (DataTable dtb in ds.Tables)
                     {
                         foreach (DataRow row in dtb.Rows)
@@ -128,9 +129,8 @@ namespace System.Windows.Forms
                         }
                     }
                 }
-                else
+                else if (source is IList list)
                 {
-                    IList list = source.GetList();
                     foreach (object row in list)
                     {
                         string display = row.GetType().GetProperty(displaymember).GetValue(row).ToString();

@@ -9,9 +9,6 @@ F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\D
 F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\GTKSystem.Windows.Forms.deps.json
 F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\GTKSystem.Windows.Forms.dll
 F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\GTKSystem.Windows.Forms.pdb
-F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\System.Resources.Extensions.dll
-F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Debug\net6.0\System.Resources.Extensions.pdb
-F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Debug\net6.0\GTKSystem.Windows.Forms.csproj.CopyComplete
 F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Debug\net6.0\GTKSystem.Windows.Forms.dll
 F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Debug\net6.0\refint\GTKSystem.Windows.Forms.dll
 F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Debug\net6.0\GTKSystem.Windows.Forms.pdb

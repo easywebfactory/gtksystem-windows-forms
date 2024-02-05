@@ -92,28 +92,34 @@
           "lib/net6.0/PangoSharp.dll": {}
         }
       },
-      "GTKSystem.Windows.Forms/1.0.0.1": {
+      "System.Resources.Extensions/8.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/System.Resources.Extensions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/System.Resources.Extensions.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net6.0/_._": {}
+        }
+      },
+      "GTKSystem.Windows.Forms/1.3.24.2": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
           "GtkSharp": "3.24.24.95",
-          "System.Resources.Extensions": "1.0.0"
+          "System.Resources.Extensions": "8.0.0"
         },
         "compile": {
           "bin/placeholder/GTKSystem.Windows.Forms.dll": {}
         },
         "runtime": {
           "bin/placeholder/GTKSystem.Windows.Forms.dll": {}
-        }
-      },
-      "System.Resources.Extensions/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
-        "compile": {
-          "bin/placeholder/System.Resources.Extensions.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/System.Resources.Extensions.dll": {}
         }
       }
     }
@@ -211,22 +217,45 @@
         "pangosharp.nuspec"
       ]
     },
-    "GTKSystem.Windows.Forms/1.0.0.1": {
+    "System.Resources.Extensions/8.0.0": {
+      "sha512": "psnQ6GRQOvt+evda5C4nD5EuV49mz2Tv0DD2JDVDEbE/TKoMukxSkGJcsBJ0pajpPuFRr67syFYlkJ4Wj6A5Zw==",
+      "type": "package",
+      "path": "system.resources.extensions/8.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/System.Resources.Extensions.targets",
+        "buildTransitive/net462/System.Resources.Extensions.targets",
+        "buildTransitive/net6.0/_._",
+        "buildTransitive/netcoreapp2.0/System.Resources.Extensions.targets",
+        "lib/net462/System.Resources.Extensions.dll",
+        "lib/net462/System.Resources.Extensions.xml",
+        "lib/net6.0/System.Resources.Extensions.dll",
+        "lib/net6.0/System.Resources.Extensions.xml",
+        "lib/net7.0/System.Resources.Extensions.dll",
+        "lib/net7.0/System.Resources.Extensions.xml",
+        "lib/net8.0/System.Resources.Extensions.dll",
+        "lib/net8.0/System.Resources.Extensions.xml",
+        "lib/netstandard2.0/System.Resources.Extensions.dll",
+        "lib/netstandard2.0/System.Resources.Extensions.xml",
+        "system.resources.extensions.8.0.0.nupkg.sha512",
+        "system.resources.extensions.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
+    },
+    "GTKSystem.Windows.Forms/1.3.24.2": {
       "type": "project",
       "path": "../../Source/GTKSystem.Windows.Forms/GTKSystem.Windows.Forms.csproj",
       "msbuildProject": "../../Source/GTKSystem.Windows.Forms/GTKSystem.Windows.Forms.csproj"
-    },
-    "System.Resources.Extensions/1.0.0": {
-      "type": "project",
-      "path": "../../Source/System.Resources.Extensions/System.Resources.Extensions.csproj",
-      "msbuildProject": "../../Source/System.Resources.Extensions/System.Resources.Extensions.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "GTKSystem.Windows.Forms >= 1.0.0.1",
-      "GtkSharp >= 3.24.24.95",
-      "System.Resources.Extensions >= 1.0.0"
+      "GTKSystem.Windows.Forms >= 1.3.24.2",
+      "GtkSharp >= 3.24.24.95"
     ]
   },
   "packageFolders": {
@@ -266,9 +295,6 @@
           "projectReferences": {
             "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {
               "projectPath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj"
-            },
-            "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj": {
-              "projectPath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj"
             }
           }
         }

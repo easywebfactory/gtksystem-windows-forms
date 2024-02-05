@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "QpKrrp6yFeVbqZw5FwzamEEw+kC+nefjzqIbhnUmRWGFqa3xCGIkxo1OzNuD7DZsSvmrIZcZ+MFEXsbHQ8Y6+A==",
+  "dgSpecHash": "OOlaEcRhM4fuKF0j5AcH/vzd1sA+guvTbxwzYBXEhnvVagQSdcssS75YiEKt1KhgqxbEh5nmCpNH7HLoQMlK4g==",
   "success": true,
   "projectFilePath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
   "expectedPackageFiles": [
@@ -10,7 +10,8 @@
     "C:\\Users\\chj\\.nuget\\packages\\giosharp\\3.24.24.95\\giosharp.3.24.24.95.nupkg.sha512",
     "C:\\Users\\chj\\.nuget\\packages\\glibsharp\\3.24.24.95\\glibsharp.3.24.24.95.nupkg.sha512",
     "C:\\Users\\chj\\.nuget\\packages\\gtksharp\\3.24.24.95\\gtksharp.3.24.24.95.nupkg.sha512",
-    "C:\\Users\\chj\\.nuget\\packages\\pangosharp\\3.24.24.95\\pangosharp.3.24.24.95.nupkg.sha512"
+    "C:\\Users\\chj\\.nuget\\packages\\pangosharp\\3.24.24.95\\pangosharp.3.24.24.95.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\system.resources.extensions\\8.0.0\\system.resources.extensions.8.0.0.nupkg.sha512"
   ],
   "logs": []
 }

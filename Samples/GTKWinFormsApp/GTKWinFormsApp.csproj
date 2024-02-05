@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj" />
-    <ProjectReference Include="..\..\Source\System.Resources.Extensions\System.Resources.Extensions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
