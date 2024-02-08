@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>GTKSystem.Windows.Forms</id>
-    <version>1.3.24.3</version>
+    <version>1.0.0.2</version>
     <title>GTK跨平台winform界面组件，一次编译，可运行于windows、linux、macos平台</title>
     <authors>chenhongjin</authors>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>

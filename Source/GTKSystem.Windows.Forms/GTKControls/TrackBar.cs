@@ -37,7 +37,7 @@ namespace System.Windows.Forms
             adjustment.Upper = Maximum;
             adjustment.Value = Value;
             adjustment.ValueChanged += Control_ValueChanged;
-            this.Control.Add(scale);
+            this.Control.Child = scale;
         }
 
         private void Control_ValueChanged(object sender, EventArgs e)

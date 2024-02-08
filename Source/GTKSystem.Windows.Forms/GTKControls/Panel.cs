@@ -33,7 +33,7 @@ namespace System.Windows.Forms
             contaner.Valign = Align.Fill;
             _controls = new ControlCollection(this, contaner);
 
-            base.Control.Add(contaner);
+            base.Control.Child = contaner;
         }
 
         public BorderStyle BorderStyle { get { return base.Control.ShadowType == Gtk.ShadowType.None ? BorderStyle.None : BorderStyle.FixedSingle; } set { base.Control.BorderWidth = 1; base.Control.ShadowType = Gtk.ShadowType.In; } }

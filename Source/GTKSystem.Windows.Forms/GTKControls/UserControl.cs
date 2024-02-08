@@ -40,7 +40,7 @@ namespace System.Windows.Forms
             contaner.Vexpand = true;
             _controls = new ControlCollection(this, contaner);
 
-            base.Control.Add(contaner);
+            base.Control.Child = contaner;
         }
         public System.Drawing.SizeF AutoScaleDimensions { get; set; }
         public System.Windows.Forms.AutoScaleMode AutoScaleMode { get; set; }

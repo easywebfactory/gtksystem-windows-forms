@@ -87,7 +87,7 @@ namespace System.Windows.Forms
                     Gtk.Layout layout = new Gtk.Layout(new Adjustment(0, 0, 0, 1, 0, 0), new Adjustment(0, 0, 0, 1, 0, 0));
                     layout.Vexpand = true;
                     layout.Hexpand = true;
-                    viewport.Add(layout);
+					viewport.Child = layout;
                     if (_controls.GridControls.ContainsKey($"{col},{row}"))
                     {
                         _controls.GridControls[$"{col},{row}"].Widget.MarginStart = 3;

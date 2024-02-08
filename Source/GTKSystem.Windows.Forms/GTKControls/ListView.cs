@@ -24,7 +24,7 @@ namespace System.Windows.Forms
 		private ListViewItemCollection _items;
 		private ListViewGroupCollection _groups;
 		private ColumnHeaderCollection _columns;
-        internal Gtk.VBox flowBoxContainer = null;
+        internal Gtk.Box flowBoxContainer = null;
         internal Gtk.StackSwitcher header = new Gtk.StackSwitcher();
         public ListView():base(Gtk.Orientation.Vertical,0)
         {
@@ -43,7 +43,7 @@ namespace System.Windows.Forms
             header.Hide();
            
 
-            flowBoxContainer = new Gtk.VBox();
+            flowBoxContainer = new Gtk.Box(Gtk.Orientation.Vertical, 0);
             Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
             //scrolledWindow.HscrollbarPolicy = PolicyType.Never;
             scrolledWindow.Add(flowBoxContainer);
@@ -377,7 +377,7 @@ namespace System.Windows.Forms
         {
             if (group == null)
                 return;
-            Gtk.VBox hBox = new Gtk.VBox();
+            Gtk.Box hBox = new Gtk.Box(Gtk.Orientation.Vertical, 0);
             hBox.Valign = Gtk.Align.Start;
             hBox.Halign = Gtk.Align.Fill;
             Gtk.Viewport groupbox = new Gtk.Viewport();
@@ -385,7 +385,7 @@ namespace System.Windows.Forms
             var title = new Gtk.Label(group.Header) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
             title.MarginStart = 3;
             title.StyleContext.AddClass("listviewtitle");
-            groupbox.Add(title);
+            groupbox.Child = title;
             hBox.Add(groupbox);
             if (!string.IsNullOrWhiteSpace(group.Subtitle))
             {
@@ -782,7 +782,7 @@ namespace System.Windows.Forms
 			{
                 CheckedListViewItemCollection selecteditems = new CheckedListViewItemCollection(this);
 
-                foreach (Gtk.VBox vbox in flowBoxContainer.AllChildren)
+                foreach (Gtk.Box vbox in flowBoxContainer.AllChildren)
                 {
                     foreach (var flow in vbox.AllChildren)
                     {
@@ -854,7 +854,7 @@ namespace System.Windows.Forms
 			get
 			{
 				SelectedListViewItemCollection selecteditems = new SelectedListViewItemCollection();
-                foreach (Gtk.VBox vbox in flowBoxContainer.AllChildren)
+                foreach (Gtk.Box vbox in flowBoxContainer.AllChildren)
                 {
                     foreach (var flow in vbox.AllChildren)
                     {
@@ -879,7 +879,7 @@ namespace System.Windows.Forms
 
 		public void Clear()
 		{
-            foreach (Gtk.VBox vbox in flowBoxContainer.AllChildren)
+            foreach (Gtk.Box vbox in flowBoxContainer.AllChildren)
             {
                 foreach (var flow in vbox.AllChildren)
                 {
