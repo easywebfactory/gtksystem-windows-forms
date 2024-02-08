@@ -6,7 +6,6 @@
  * date: 2024/1/3
  */
 using Gtk;
-using Pango;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +16,6 @@ using System.Drawing;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms.GtkRender;
-using static System.Windows.Forms.ListBox;
 
 namespace System.Windows.Forms
 {
