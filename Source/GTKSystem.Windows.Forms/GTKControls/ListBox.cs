@@ -19,12 +19,12 @@ namespace System.Windows.Forms
 	[DefaultEvent("SelectedIndexChanged")]
 	[DefaultProperty("Items")]
 	[DefaultBindingProperty("SelectedValue")]
-	public partial class ListBox : WidgetControl<Gtk.HBox>
+	public partial class ListBox : WidgetControl<Gtk.Box>
     {
         ControlBindingsCollection _collect;
         ObjectCollection _items;
         internal Gtk.FlowBox _flow;
-        public ListBox():base()
+        public ListBox():base(Gtk.Orientation.Horizontal, 0)
 		{
             _collect = new ControlBindingsCollection(this);
             _items = new ObjectCollection(this);
@@ -38,9 +38,11 @@ namespace System.Windows.Forms
             _flow.ChildActivated += Control_ChildActivated;
             _flow.Halign = Gtk.Align.Start;
             Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
-            Gtk.Viewport viewport = new Gtk.Viewport();
-            viewport.Add(_flow);
-            scrolledWindow.Add(viewport);
+            scrolledWindow.Halign = Gtk.Align.Fill;
+            scrolledWindow.Valign = Gtk.Align.Fill;
+            scrolledWindow.Hexpand = true;
+            scrolledWindow.Vexpand = true;
+            scrolledWindow.Add(_flow);
             this.Control.Add(scrolledWindow);
         }
 
@@ -564,9 +566,9 @@ namespace System.Windows.Forms
 		}
         public void AddItem(object item, int position)
         {
-            Gtk.HBox hBox = new Gtk.HBox();
-            hBox.Valign = Gtk.Align.Fill;
-            hBox.Halign = Gtk.Align.Fill;
+            Gtk.Box hBox = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
+            //hBox.Valign = Gtk.Align.Fill;
+            //hBox.Halign = Gtk.Align.Fill;
             hBox.Add(new Gtk.Label(item.ToString()) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start }); ;
 
             Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();

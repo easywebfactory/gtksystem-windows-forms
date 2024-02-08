@@ -15,11 +15,12 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 
 #### 安装教程
 1.  把项目工程改为配置UseWindowsForms为false或“控制台应用程序”，框架.net6或以上版本
-2.  NulGet安装GtkSharp(3.24.24.95)
-3.  引用GTKSystem.Windows.Forms.dll，自建一个空类，命名为System.Resources.Extensions.dll，引用。
+2.  NulGet安装GtkSharp(3.24.24.95)、GTKSystem.Windows.Forms
+3.  引用GTKSystem.Windows.Forms.dll
 4.  检查form表单是否有使用图像资源，如使用需新建System.Resources.ResourceManager和System.ComponentModel.ComponentResourceManager，具体请看下面内容。
 4.  按默认配置编译发布测试运行
 5.  linux和macos上执行命令：dotnet doemo_app.dll
+（注：如果出现打开visual studio的Form窗体设计器出现“设计器”相关异常，可自建一个空类，命名为System.Resources.Extensions.dll，引用）。
 
 #### VisualStudio插件安装
 

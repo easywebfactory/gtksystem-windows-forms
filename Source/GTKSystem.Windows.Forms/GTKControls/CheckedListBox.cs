@@ -17,11 +17,11 @@ namespace System.Windows.Forms
 {
 
     [DesignerCategory("Component")]
-    public partial class CheckedListBox : WidgetContainerControl<Gtk.HBox>
+    public partial class CheckedListBox : WidgetContainerControl<Gtk.Box>
     {
         ObjectCollection _items;
         internal Gtk.FlowBox _flow;
-        public CheckedListBox() : base()
+        public CheckedListBox() : base(Gtk.Orientation.Horizontal, 0)
         {
             Widget.StyleContext.AddClass("CheckedListBox");
             Widget.StyleContext.AddClass("BorderRadiusStyle");
@@ -34,9 +34,11 @@ namespace System.Windows.Forms
             _flow.UnselectedAll += _flow_UnselectedAll;
             _flow.Halign = Gtk.Align.Start;
             Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
-            Gtk.Viewport viewport = new Gtk.Viewport();
-            viewport.Add(_flow);
-            scrolledWindow.Add(viewport);
+            scrolledWindow.Halign = Gtk.Align.Fill;
+            scrolledWindow.Valign = Gtk.Align.Fill;
+            scrolledWindow.Hexpand = true;
+            scrolledWindow.Vexpand = true;
+            scrolledWindow.Add(_flow);
             this.Control.Add(scrolledWindow);
         }
 
@@ -66,7 +68,7 @@ namespace System.Windows.Forms
         public SelectionMode SelectionMode { get; set; }
         public void ClearSelected() {
             foreach(Gtk.FlowBoxChild wi in _flow.Children) { 
-                Gtk.Widget box = ((Gtk.HBox)wi.Child).Children[0];
+                Gtk.Widget box = ((Gtk.Box)wi.Child).Children[0];
                 if (box is Gtk.CheckButton check)
                 {
                     check.Active = false;
@@ -152,7 +154,7 @@ namespace System.Windows.Forms
                     if (__owner.CheckOnClick == true)
                         __owner._flow.SelectChild(item);
                 };
-                Gtk.HBox hBox = new Gtk.HBox();
+                Gtk.Box hBox = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
                 hBox.Valign = Gtk.Align.Start;
                 hBox.Halign = Gtk.Align.Start;
                 hBox.Add(box);

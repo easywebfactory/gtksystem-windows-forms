@@ -37,7 +37,7 @@ namespace System.Windows.Forms
         private Gtk.MenuItem _menuItem;
         public override Gtk.MenuItem MenuItem { get => _menuItem; set{ _menuItem = value; base.MenuItem = value; } }
 
-        internal Gtk.HBox itemBox = new Gtk.HBox();
+        internal Gtk.Box itemBox = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
         internal Gtk.Image checkedico = Gtk.Image.NewFromIconName("object-select-symbolic", Gtk.IconSize.Menu);
         internal Gtk.Viewport icoViewport = new Gtk.Viewport() { BorderWidth = 0 };
         internal Gtk.Label label = new Gtk.Label();

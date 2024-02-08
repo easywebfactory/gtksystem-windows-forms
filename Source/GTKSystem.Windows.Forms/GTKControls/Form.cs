@@ -20,9 +20,9 @@ namespace System.Windows.Forms
     //InitializationEvent(nameof(Load))]
     public partial class Form : WidgetContainerControl<Gtk.Window>, IWin32Window
     {
-        private static Gtk.Fixed _body = new Gtk.Fixed();
-        private static Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
-        private static Gtk.Layout windowbody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
+        private Gtk.Fixed _body = new Gtk.Fixed();
+        private Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
+        private Gtk.Layout windowbody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
         
         private ObjectCollection _ObjectCollection;
 
@@ -105,7 +105,7 @@ namespace System.Windows.Forms
             if (Load != null)
                 Load(this, e);
         }
-        private static Gtk.Image WindowBackgroundImage = new Gtk.Image();
+        private Gtk.Image WindowBackgroundImage = new Gtk.Image();
         private Gdk.Pixbuf backgroundPixbuf;
         private void Bg_Drawn(object o, DrawnArgs args)
         {
