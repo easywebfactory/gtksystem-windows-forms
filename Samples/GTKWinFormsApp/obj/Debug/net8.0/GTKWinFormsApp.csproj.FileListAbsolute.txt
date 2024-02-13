@@ -1,4 +1,7 @@
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\GTKWinFormsApp.exe
+F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\Resources\010.jpg
+F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\Resources\BindingNavigator.Delete.ico
+F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\Resources\timg2.jpg
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\GTKWinFormsApp.deps.json
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\GTKWinFormsApp.runtimeconfig.json
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\GTKWinFormsApp.dll
@@ -10,11 +13,13 @@ F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\GLibSharp.dll
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\GtkSharp.dll
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\PangoSharp.dll
-F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\GTKSystem.Windows.Forms.dll
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\System.Resources.Extensions.dll
+F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\GTKSystem.Windows.Forms.dll
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\GTKSystem.Windows.Forms.pdb
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.csproj.AssemblyReference.cache
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.Form1.resources
+F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.Form2.resources
+F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.Form3.resources
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.Properties.Resources.resources
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.csproj.GenerateResource.cache
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.GeneratedMSBuildEditorConfig.editorconfig
@@ -25,8 +30,3 @@ F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.dll
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.pdb
 F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.genruntimeconfig.cache
-F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.Form2.resources
-F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\Resources\010.jpg
-F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\Resources\timg2.jpg
-F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0\Resources\BindingNavigator.Delete.ico
-F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.Form3.resources

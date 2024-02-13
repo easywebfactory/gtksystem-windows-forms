@@ -20,7 +20,7 @@ using System.Windows.Forms.GtkRender;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class DataGridView : WidgetContainerControl<Gtk.Box>
+    public partial class DataGridView : WidgetContainerControl<Gtk.Viewport>
     {
         private Gtk.TreeView _treeView;
         private DataGridViewColumnCollection _columns;
@@ -29,7 +29,7 @@ namespace System.Windows.Forms
         internal Gtk.TreeStore Store { get { return _store; } }
         internal Gtk.TreeView TreeView { get { return _treeView; } }
         ControlBindingsCollection _collect;
-        public DataGridView():base(Gtk.Orientation.Vertical,0)
+        public DataGridView():base()
         {
             Widget.StyleContext.AddClass("DataGridView");
             Widget.StyleContext.AddClass("BorderRadiusStyle");
@@ -43,8 +43,7 @@ namespace System.Windows.Forms
             _collect = new ControlBindingsCollection(this);
             Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow();
              scroll.Child = _treeView;
-             this.Control.PackStart(scroll, true, true, 1);
-
+            this.Control.Child =scroll;
             _treeView.Selection.Mode = Gtk.SelectionMode.Multiple;
             _treeView.HeadersClickable = true;
             _treeView.HeadersVisible = true;

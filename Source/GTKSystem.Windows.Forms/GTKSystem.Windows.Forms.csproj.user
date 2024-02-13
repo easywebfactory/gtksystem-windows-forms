@@ -95,6 +95,9 @@
     <Compile Update="GTKControls\StatusStrip.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\TabControlBase\TabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\ToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -162,9 +165,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\TabControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\TabControlBase\TabPage.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\TableLayoutPanel.cs">

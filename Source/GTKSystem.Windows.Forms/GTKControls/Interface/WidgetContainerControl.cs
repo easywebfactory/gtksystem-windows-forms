@@ -11,7 +11,9 @@ using Gtk;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Reflection;
 using System.Text;
+using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
@@ -48,8 +50,10 @@ namespace System.Windows.Forms
             _widget.MarginTop = 0;
             _widget.Drawn += Widget_Drawn;
             _widget.Realized += _widget_Realized;
-            _widget.StyleContext.AddClass("DefaultThemeStyle"); 
+            _widget.StyleContext.AddClass("DefaultThemeStyle");
+
         }
+
         private void _widget_Realized(object sender, EventArgs e)
         {
             UpdateStyle();
@@ -296,10 +300,6 @@ namespace System.Windows.Forms
             set
             {
                 Widget.Data["Dock"] = value.ToString();
-                if (value == DockStyle.Fill)
-                {
-                    Container.ResizeMode = Gtk.ResizeMode.Parent;
-                }
             }
         }
         public override bool Enabled { get { return Widget.Sensitive; } set { Widget.Sensitive = value; } }
@@ -332,24 +332,12 @@ namespace System.Windows.Forms
         {
             get
             {
-                return new Point(Widget.MarginStart, Widget.MarginTop);
+                return new Point(Left, Top);
             }
             set
             {
                 Left = value.X;
                 Top = value.Y;
-                if (Widget.Parent is Gtk.FlowBoxChild)
-                {
-                    Widget.Data["InitMarginStart"] = Widget.MarginStart;
-                    Widget.Data["InitMarginTop"] = Widget.MarginTop;
-                }
-                else
-                {
-                    Widget.MarginTop = Math.Max(0, value.Y);
-                    Widget.MarginStart = Math.Max(0, value.X);
-                    Widget.Data["InitMarginStart"] = Widget.MarginStart;
-                    Widget.Data["InitMarginTop"] = Widget.MarginTop;
-                }
             }
         }
         //public override Padding Margin { get; set; }
@@ -376,11 +364,13 @@ namespace System.Windows.Forms
             }
             set
             {
+                DefaultSize = new Size(value.Width,value.Height);
                 Widget.SetSizeRequest(value.Width, value.Height);
                 Widget.Data["InitWidth"] = value.Width;
                 Widget.Data["InitHeight"] = value.Height;
             }
         }
+        private Size DefaultSize { get; set; }
         public override int TabIndex { get; set; }
         public override bool TabStop { get; set; }
         public override object Tag { get; set; }

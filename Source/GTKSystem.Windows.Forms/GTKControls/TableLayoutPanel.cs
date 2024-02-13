@@ -8,15 +8,16 @@
 using Gtk;
 using System.Collections.Generic;
 using System.ComponentModel;
+using static System.Windows.Forms.TableLayoutControlCollection;
 
 namespace System.Windows.Forms
 {
-	[ProvideProperty("ColumnSpan", typeof(Control))]
-	[ProvideProperty("RowSpan", typeof(Control))]
-	[ProvideProperty("Row", typeof(Control))]
-	[ProvideProperty("Column", typeof(Control))]
-	[ProvideProperty("CellPosition", typeof(Control))]
-	[DefaultProperty("ColumnCount")]
+	//[ProvideProperty("ColumnSpan", typeof(Control))]
+	//[ProvideProperty("RowSpan", typeof(Control))]
+	//[ProvideProperty("Row", typeof(Control))]
+	//[ProvideProperty("Column", typeof(Control))]
+	//[ProvideProperty("CellPosition", typeof(Control))]
+	//[DefaultProperty("ColumnCount")]
     [DesignerCategory("Component")]
     public partial class TableLayoutPanel : WidgetContainerControl<Gtk.Grid>, IExtenderProvider
 	{
@@ -36,75 +37,15 @@ namespace System.Windows.Forms
             base.Control.BaselineRow = 0;
             base.Control.ColumnSpacing = 0;
 			base.Control.RowSpacing = 0;
-            base.Control.Realized += Control_Realized;
         }
 
         public override void PerformLayout()
         {
             
         }
-        private void Control_Realized(object sender, EventArgs e)
-        {
-            int[] colsWidth = GetColumnWidths();
-            int[] rowsHeight = GetRowHeights();
-            int colLeft = 0;
-            int rowTop = 0;
-            for (int col = 0; col< ColumnCount; col++)
-            {
-                rowTop = 0;
-                colLeft += colsWidth[col];
-                for (int row = 0; row < ColumnCount; row++)
-                {
-                    rowTop += rowsHeight[row];
-                    Gtk.Viewport viewport = new Gtk.Viewport();
-                    viewport.BorderWidth = 0;
-                    if (CellBorderStyle == TableLayoutPanelCellBorderStyle.None)
-						viewport.ShadowType = Gtk.ShadowType.None;
-                    else if (CellBorderStyle == TableLayoutPanelCellBorderStyle.Single || CellBorderStyle == TableLayoutPanelCellBorderStyle.Inset)
-                        viewport.ShadowType = Gtk.ShadowType.In;
-                    else if (CellBorderStyle == TableLayoutPanelCellBorderStyle.Outset)
-                        viewport.ShadowType = Gtk.ShadowType.Out;
-                    else if (CellBorderStyle == TableLayoutPanelCellBorderStyle.InsetDouble)
-					{
-						viewport.ShadowType = Gtk.ShadowType.In;
-                        viewport.BorderWidth = 1;
-                    }
-                    else if(CellBorderStyle == TableLayoutPanelCellBorderStyle.OutsetDouble)
-                    {
-                        viewport.ShadowType = Gtk.ShadowType.Out;
-                        viewport.BorderWidth = 1;
-					}
-					else
-					{
-                        viewport.ShadowType = Gtk.ShadowType.In;
-                    }
-
-                    viewport.Margin = 0;
-                    viewport.MarginStart = 0;
-                    viewport.MarginTop = 0;
-                    viewport.WidthRequest = colsWidth[col];
-                    viewport.HeightRequest = rowsHeight[row];
-                    Gtk.Layout layout = new Gtk.Layout(new Adjustment(0, 0, 0, 1, 0, 0), new Adjustment(0, 0, 0, 1, 0, 0));
-                    layout.Vexpand = true;
-                    layout.Hexpand = true;
-					viewport.Child = layout;
-                    if (_controls.GridControls.ContainsKey($"{col},{row}"))
-                    {
-                        _controls.GridControls[$"{col},{row}"].Widget.MarginStart = 3;
-                        _controls.GridControls[$"{col},{row}"].Widget.MarginTop = 3;
-
-                        layout.Add(_controls.GridControls[$"{col},{row}"].Widget);
-                    }
-
-                    Control.Attach(viewport, colLeft, rowTop, 1, 1);
-                }
-            }
-			Control.ShowAll();
-        }
 
         [Browsable(false)]
-		[Localizable(true)]
-		public BorderStyle BorderStyle
+		public override BorderStyle BorderStyle
 		{
 			get;
 			set;
@@ -227,15 +168,20 @@ namespace System.Windows.Forms
 
 		public Control GetControlFromPosition(int column, int row)
 		{
-			throw null;
+			return _controls.GetCellControl(column, row) as Control;
 		}
 
-		public TableLayoutPanelCellPosition GetPositionFromControl(Control control)
-		{
-			throw null;
-		}
+        public TableLayoutPanelCellPosition GetPositionFromControl(Control control)
+        {
+            foreach (TableLayoutControllCell item in _controls)
+            {
+                if (item.Control.Equals(control))
+                    return item.TableLayoutPanelCellPosition;
+            }
+            return default(TableLayoutPanelCellPosition);
+        }
 
-		[Browsable(false)]
+        [Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public int[] GetColumnWidths()
 		{

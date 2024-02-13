@@ -45,9 +45,8 @@ namespace System.Windows.Forms
             scrollwindow.Expand = true;
             scrollwindow.Hexpand = true;
             scrollwindow.Vexpand = true;
-            scrollwindow.HscrollbarPolicy = PolicyType.Automatic;
-            scrollwindow.VscrollbarPolicy = PolicyType.Automatic;
-
+            scrollwindow.HscrollbarPolicy = PolicyType.Always;
+            scrollwindow.VscrollbarPolicy = PolicyType.Always;
             _body.Valign = Gtk.Align.Fill;
             _body.Halign = Gtk.Align.Fill;
             _body.Expand = true;
@@ -80,8 +79,9 @@ namespace System.Windows.Forms
             WindowBackgroundImage.Hexpand = true;
             WindowBackgroundImage.Vexpand = true;
             WindowBackgroundImage.Drawn += Bg_Drawn;
-            windowbody.Add(WindowBackgroundImage);
-            windowbody.Add(scrollwindow);
+
+            windowbody.Put(WindowBackgroundImage,0,0);
+            windowbody.Put(scrollwindow,0,0);
             base.Control.Resizable = false;
         }
 
@@ -102,6 +102,7 @@ namespace System.Windows.Forms
 
         private void Control_Realized(object sender, EventArgs e)
         {
+            
             if (Load != null)
                 Load(this, e);
         }
@@ -146,115 +147,112 @@ namespace System.Windows.Forms
                     PresentMenu(base.ContextMenuStrip.Control, args.Event.Button, args.Event.Time);
             }
         }
-        int width = 0;
-        int height = 0;
+
         private void Form_ResizeChecked(object sender, EventArgs e)
         {
-            var window= (Gtk.Window)sender;
+            var window = (Gtk.Window)sender;
             if (window.IsRealized && windowbody.IsRealized)
             {
-                if (window.Allocation.Width != width || window.Allocation.Height != height)
-                {
-                    width = window.Allocation.Width;
-                    height = window.Allocation.Height;
-                    WindowBackgroundImage.WidthRequest = width;
-                    WindowBackgroundImage.HeightRequest = height;
-                    scrollwindow.WidthRequest = width;
-                    scrollwindow.HeightRequest = height;
-                    _body.WidthRequest = width;
-                    _body.HeightRequest = height;
-                    ResizeChildren(_body);
-                }
+                WindowBackgroundImage.WidthRequest = window.AllocatedWidth;
+                WindowBackgroundImage.HeightRequest = window.AllocatedHeight;
+                scrollwindow.WidthRequest = window.AllocatedWidth;
+                scrollwindow.HeightRequest = window.AllocatedHeight;
+                _body.WidthRequest = window.AllocatedWidth;
+                _body.HeightRequest = window.AllocatedHeight;
+                ResizeControls(window, _body, false, null);
             }
             if (SizeChanged != null)
                 SizeChanged(this, e);
         }
 
-        private void ResizeChildren(Gtk.Container container)
+        private void ResizeControls(Gtk.Window window, Gtk.Container parent, bool isPaned, Gtk.Paned gtkPaned)
         {
-            foreach (var o in container.AllChildren)
+            foreach (Gtk.Widget control in parent.AllChildren)
             {
-                if (o is Gtk.Container control)
+                if(control is Gtk.ScrolledWindow)
+                {
+
+                }
+                else if (control != null)
                 {
                     object dock = control.Data["Dock"];
                     if (dock != null)
                     {
                         string dockStyle = dock.ToString();
-                        int widthIncrement = base.Control.AllocatedWidth - base.Control.DefaultWidth;
-                        int heightIncrement = base.Control.AllocatedHeight - base.Control.DefaultHeight;
-                        if (GetParentWidget(container, out Gtk.Widget parent))
+                        int widthIncrement = window.AllocatedWidth - window.DefaultSize.Width - 2;
+                        int heightIncrement = window.AllocatedHeight - window.DefaultSize.Height - 2;
+                        if (gtkPaned != null)
                         {
-                            int width = parent.WidthRequest - control.MarginStart - ((int)control.BorderWidth);
-                            int height = parent.HeightRequest - ((int)control.BorderWidth);
-                            if (parent.GetType().Name == "Window")
-                            {
-                                width = parent.AllocatedWidth - 2;
-                                height = parent.AllocatedHeight - 1;
-                            }
-                            if (parent.GetType().Name == "Dialog")
-                            {
-                                width = parent.AllocatedWidth - 1;
-                                height = parent.AllocatedHeight - 1;
-                            }
-                            width = width - control.MarginStart - control.MarginStart - 2;
-                            height = width - control.MarginTop - control.MarginTop - 1;
-
-                            if (dockStyle == DockStyle.Top.ToString())
-                            {
-                                control.WidthRequest = width;
-                            }
-                            else if (dockStyle == DockStyle.Bottom.ToString())
-                            {
-                                control.WidthRequest = width;
-                                if ((int)control.Data["InitMarginTop"] + heightIncrement > 0)
-                                    control.MarginTop = (int)control.Data["InitMarginTop"] + heightIncrement;
-                            }
-                            else if (dockStyle == DockStyle.Left.ToString())
-                            {
-                                control.HeightRequest = height;
-                            }
-                            else if (dockStyle == DockStyle.Right.ToString())
-                            {
-                                control.HeightRequest = height;
-                                if ((int)control.Data["InitMarginStart"] + widthIncrement > 0)
-                                    control.MarginStart = (int)control.Data["InitMarginStart"] + widthIncrement;
-                            }
-                            else if (dockStyle == DockStyle.Fill.ToString())
-                            {
-                                control.HeightRequest = height;
-                                control.WidthRequest = width;
-                            }
+                            if (gtkPaned.Orientation == Gtk.Orientation.Vertical)
+                                heightIncrement = gtkPaned.Child1.AllocatedHeight - gtkPaned.Child1.HeightRequest;
+                            else
+                                widthIncrement = gtkPaned.Child1.AllocatedWidth - gtkPaned.Child1.WidthRequest;
                         }
-                    }
-
-                    if (o is Gtk.ScrolledWindow)
-                    {
-
-                    }
-                    else if (o is Gtk.MenuBar bar)
-                    {
-                        
+                        int width = parent.WidthRequest > 0 ? parent.WidthRequest : parent.AllocatedWidth - 3;
+                        int height = parent.HeightRequest > 0 ? parent.HeightRequest : parent.AllocatedHeight - 3;
+ 
+                        if (dockStyle == DockStyle.Top.ToString())
+                        {
+                            control.Valign = Gtk.Align.Start;
+                            control.Hexpand = true;
+                            control.WidthRequest = width;
+                        }
+                        else if (dockStyle == DockStyle.Bottom.ToString())
+                        {
+                            control.Valign = Gtk.Align.End;
+                            control.Halign = Gtk.Align.Fill;
+                            control.Hexpand = true;
+                            control.MarginTop = heightIncrement;
+                            control.WidthRequest = width;
+                        }
+                        else if (dockStyle == DockStyle.Left.ToString())
+                        {
+                            control.Halign = Gtk.Align.Start;
+                            control.Vexpand = true;
+                            control.HeightRequest = height;
+                        }
+                        else if (dockStyle == DockStyle.Right.ToString())
+                        {
+                            control.Halign = Gtk.Align.End;
+                            control.Vexpand = true;
+                            control.HeightRequest = height;
+                            control.MarginStart = widthIncrement;
+                        }
+                        else if (dockStyle == DockStyle.Fill.ToString())
+                        {
+                            control.Hexpand = true;
+                            control.Vexpand = true;
+                            control.HeightRequest = height;
+                            control.WidthRequest = width;
+                        }
+                        if (control is Gtk.TreeView)
+                        {
+                        }
+                        else if (control is Gtk.Paned paned)
+                        {
+                            ResizeControls(window, paned, true, paned);
+                        }
+                        else if (control is Gtk.Container container)
+                        {
+                            ResizeControls(window, container, isPaned, gtkPaned);
+                        }
                     }
                     else
                     {
-                        ResizeChildren(control);
+                        if (control is Gtk.TreeView)
+                        {
+                        }
+                        else if (control is Gtk.Paned paned)
+                        {
+                            ResizeControls(window, paned, true, paned);
+                        }
+                        else if (control is Gtk.Container container)
+                        {
+                            ResizeControls(window, container, isPaned, gtkPaned);
+                        }
                     }
                 }
-
             }
-        }
-        private bool GetParentWidget(Gtk.Widget container, out Gtk.Widget parent)
-        {
-            parent = container;
-            while (parent.Parent != null)
-            {
-                parent = parent.Parent;
-                if (parent.WidthRequest > -1)
-                {
-                    return true;
-                }
-            }
-            return true;
         }
 
         public override void Show()
@@ -280,14 +278,20 @@ namespace System.Windows.Forms
 
             if (owner != null && owner is Form)
             {
-                this.Parent= ((Form)owner);
+                this.Parent = ((Form)owner);
             }
+
+
+            scrollwindow.WidthRequest = this.Width;
+            scrollwindow.HeightRequest = this.Height;
+            _body.WidthRequest = this.Width;
+            _body.HeightRequest = this.Height;
 
             windowbody.WidthRequest = this.Width;
             windowbody.HeightRequest = this.Height;
             WindowBackgroundImage.WidthRequest = this.Width;
             WindowBackgroundImage.HeightRequest = this.Height;
-            if(AutoScroll==true)
+            if (AutoScroll == true)
             {
                 scrollwindow.HscrollbarPolicy = PolicyType.Always;
                 scrollwindow.VscrollbarPolicy = PolicyType.Always;
@@ -299,6 +303,7 @@ namespace System.Windows.Forms
             }
             this.Control.Add(windowbody);
             base.Control.Resizable = this.FormBorderStyle == FormBorderStyle.Sizable || this.FormBorderStyle == FormBorderStyle.SizableToolWindow;
+            base.Control.Resizable = true;
             base.Control.ShowAll();
             if (this.WindowState == FormWindowState.Maximized)
             {
@@ -370,7 +375,7 @@ namespace System.Windows.Forms
             dialogWindow.ContentArea.BorderWidth = 0;
             dialogWindow.ContentArea.Spacing = 0;
             dialogWindow.ContentArea.PackStart(windowbody, true, true, 0);
-            dialogWindow.Resizable = this.FormBorderStyle == FormBorderStyle.Sizable|| this.FormBorderStyle == FormBorderStyle.SizableToolWindow;
+            dialogWindow.Resizable = this.FormBorderStyle == FormBorderStyle.Sizable || this.FormBorderStyle == FormBorderStyle.SizableToolWindow;
 
             dialogWindow.ShowAll();
             if (this.WindowState == FormWindowState.Maximized)
@@ -413,8 +418,6 @@ namespace System.Windows.Forms
             set
             {
                 base.Control.SetDefaultSize(value.Width, value.Height);
-                base.Control.Data["InitWidth"] = value.Width;
-                base.Control.Data["InitHeight"] = value.Height;
                 base.Width = value.Width;
                 base.Height = value.Height;
             }

@@ -19,7 +19,8 @@ namespace System.Windows.Forms
         public PictureBox() : base()
         {
             Widget.StyleContext.AddClass("PictureBox");
-            base.Control.SetAlignment(0.5f, 0.5f);
+            base.Control.Halign = Gtk.Align.Center;
+            base.Control.Valign = Gtk.Align.Center;
             base.Control.Xalign = 0.5f;
             base.Control.Yalign = 0.5f;
             base.Control.Realized += Control_Realized;
@@ -73,7 +74,7 @@ namespace System.Windows.Forms
         public System.Drawing.Image ErrorImage { get; set; }
 
         [DefaultValue(BorderStyle.None)]
-        public BorderStyle BorderStyle { get; set; }
+        public override BorderStyle BorderStyle { get; set; }
 
         public void CancelAsync() { }
         public new void Load(string url) {

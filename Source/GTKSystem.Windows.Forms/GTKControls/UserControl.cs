@@ -44,7 +44,7 @@ namespace System.Windows.Forms
         }
         public System.Drawing.SizeF AutoScaleDimensions { get; set; }
         public System.Windows.Forms.AutoScaleMode AutoScaleMode { get; set; }
-        public BorderStyle BorderStyle { get { return base.Control.ShadowType == Gtk.ShadowType.None ? BorderStyle.None : BorderStyle.FixedSingle; } set { base.Control.BorderWidth = 1; base.Control.ShadowType = Gtk.ShadowType.In; } }
+        public override BorderStyle BorderStyle { get { return base.Control.ShadowType == Gtk.ShadowType.None ? BorderStyle.None : BorderStyle.FixedSingle; } set { base.Control.BorderWidth = 1; base.Control.ShadowType = Gtk.ShadowType.In; } }
         public override ControlCollection Controls => _controls;
     }
 }

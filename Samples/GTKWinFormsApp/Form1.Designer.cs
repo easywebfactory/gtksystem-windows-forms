@@ -165,7 +165,7 @@ namespace GTKWinFormsApp
             dataGridView1.Margin = new Padding(4);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new System.Drawing.Size(1323, 278);
+            dataGridView1.Size = new System.Drawing.Size(1323, 269);
             dataGridView1.TabIndex = 2;
             dataGridView1.MultiSelectChanged += dataGridView1_MultiSelectChanged;
             dataGridView1.CellClick += dataGridView1_CellClick;
@@ -394,7 +394,7 @@ namespace GTKWinFormsApp
             tabControl1.Margin = new Padding(4);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new System.Drawing.Size(1339, 319);
+            tabControl1.Size = new System.Drawing.Size(1339, 310);
             tabControl1.TabIndex = 4;
             tabControl1.DrawItem += tabControl1_DrawItem;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
@@ -406,7 +406,7 @@ namespace GTKWinFormsApp
             tabPage1.Margin = new Padding(4);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(4);
-            tabPage1.Size = new System.Drawing.Size(1331, 286);
+            tabPage1.Size = new System.Drawing.Size(1331, 277);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "数据表格";
             tabPage1.UseVisualStyleBackColor = true;
@@ -424,7 +424,7 @@ namespace GTKWinFormsApp
             tabPage2.Margin = new Padding(4);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(4);
-            tabPage2.Size = new System.Drawing.Size(1352, 286);
+            tabPage2.Size = new System.Drawing.Size(1076, 532);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "容器类表格";
             tabPage2.UseVisualStyleBackColor = true;
@@ -718,13 +718,15 @@ namespace GTKWinFormsApp
             // checkedListBox1
             // 
             checkedListBox1.CheckOnClick = true;
-            checkedListBox1.ColumnWidth = 200;
+            checkedListBox1.ColumnWidth = 100;
+            checkedListBox1.Dock = DockStyle.Right;
             checkedListBox1.FormattingEnabled = true;
             checkedListBox1.Items.AddRange(new object[] { "3232", "dfdf", "ssss", "ssssssd", "ffffff", "gggggggg", "gf333", "sssddd" });
-            checkedListBox1.Location = new System.Drawing.Point(514, 29);
+            checkedListBox1.Location = new System.Drawing.Point(1206, 0);
             checkedListBox1.Margin = new Padding(4);
+            checkedListBox1.MultiColumn = true;
             checkedListBox1.Name = "checkedListBox1";
-            checkedListBox1.Size = new System.Drawing.Size(212, 70);
+            checkedListBox1.Size = new System.Drawing.Size(133, 250);
             checkedListBox1.TabIndex = 13;
             checkedListBox1.ItemCheck += checkedListBox1_ItemCheck;
             checkedListBox1.SelectedValueChanged += checkedListBox1_SelectedValueChanged;
@@ -751,7 +753,7 @@ namespace GTKWinFormsApp
             // 
             splitContainer1.Panel2.Controls.Add(tabControl1);
             splitContainer1.Size = new System.Drawing.Size(1339, 565);
-            splitContainer1.SplitterDistance = 241;
+            splitContainer1.SplitterDistance = 250;
             splitContainer1.SplitterWidth = 5;
             splitContainer1.TabIndex = 14;
             // 

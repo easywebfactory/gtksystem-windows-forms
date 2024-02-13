@@ -17,7 +17,7 @@ using System.Linq;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class TabControl : WidgetControl<Gtk.Notebook>
+    public partial class TabControl : WidgetContainerControl<Gtk.Notebook>
     {
         private TabControl.ControlCollection _controls;
         private TabControl.TabPageCollection _tabPageControls;

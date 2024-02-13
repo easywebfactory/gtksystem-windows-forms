@@ -13,7 +13,7 @@ using System.Text;
 
 namespace System.Windows.Forms
 {
-    public class TabPage : WidgetControl<Gtk.Layout>
+    public class TabPage : WidgetContainerControl<Gtk.Layout>
     {
         internal Gtk.Label _tabLabel = new Gtk.Label();
         private ControlCollection _controls;

@@ -17,35 +17,31 @@ namespace System.Windows.Forms
 {
 
     [DesignerCategory("Component")]
-    public partial class CheckedListBox : WidgetContainerControl<Gtk.Box>
+    public partial class CheckedListBox : WidgetContainerControl<Gtk.Viewport>
     {
         ObjectCollection _items;
         internal Gtk.FlowBox _flow;
-        public CheckedListBox() : base(Gtk.Orientation.Horizontal, 0)
+        public CheckedListBox() : base()
         {
+            this.BackColor = Drawing.Color.White;
             Widget.StyleContext.AddClass("CheckedListBox");
             Widget.StyleContext.AddClass("BorderRadiusStyle");
 
             _flow = new Gtk.FlowBox();
-            _flow.MaxChildrenPerLine = 3u;
-
+            // _flow.MaxChildrenPerLine = 3u;
+            _flow.Halign = Gtk.Align.Start;
+            _flow.Valign = Gtk.Align.Start;
+            _flow.Hexpand = true;
+            _flow.Vexpand = true;
             _items = new ObjectCollection(this, _flow);
             _flow.ChildActivated += Control_ChildActivated;
-            _flow.UnselectedAll += _flow_UnselectedAll;
-            _flow.Halign = Gtk.Align.Start;
             Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
             scrolledWindow.Halign = Gtk.Align.Fill;
             scrolledWindow.Valign = Gtk.Align.Fill;
             scrolledWindow.Hexpand = true;
             scrolledWindow.Vexpand = true;
-            scrolledWindow.Add(_flow);
-            this.Control.Add(scrolledWindow);
-        }
-
-        private void _flow_UnselectedAll(object sender, EventArgs e)
-        {
-
-
+            scrolledWindow.Child = _flow;
+            this.Control.Child = scrolledWindow;
         }
 
         private void Control_ChildActivated(object o, Gtk.ChildActivatedArgs args)
@@ -77,6 +73,7 @@ namespace System.Windows.Forms
             _flow.UnselectAll();
         }
         public bool CheckOnClick { get; set; }
+        public override Drawing.Color BackColor { get => base.BackColor; set => base.BackColor = value; }
 
         public ObjectCollection Items { 
             get {
@@ -155,14 +152,18 @@ namespace System.Windows.Forms
                         __owner._flow.SelectChild(item);
                 };
                 Gtk.Box hBox = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
-                hBox.Valign = Gtk.Align.Start;
-                hBox.Halign = Gtk.Align.Start;
                 hBox.Add(box);
                 hBox.Add(new Gtk.Label(item.ToString()) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start }); ;
 
                 Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
                 boxitem.HeightRequest = __owner.ItemHeight;
-                boxitem.WidthRequest = __owner.ColumnWidth;
+                if (__owner.MultiColumn)
+                {
+                    boxitem.WidthRequest = __owner.ColumnWidth;
+                    __owner._flow.MaxChildrenPerLine = Convert.ToUInt32(__owner.Width/ __owner.ColumnWidth);
+                }
+                boxitem.Valign = Gtk.Align.Fill;
+                boxitem.Halign = Gtk.Align.Fill;
                 boxitem.TooltipText = item.ToString();
                 boxitem.Add(hBox);
                 if (position < 0)

@@ -9,64 +9,57 @@ namespace System.Windows.Forms
 		public int Row
 		{
 			[CompilerGenerated]
-			readonly get
-			{
-				throw null;
-			}
+			readonly get;
 			[CompilerGenerated]
-			set
-			{
-				throw null;
-			}
+			set;
 		}
 
 		public int Column
 		{
 			[CompilerGenerated]
-			readonly get
-			{
-				throw null;
-			}
+			readonly get;
 			[CompilerGenerated]
-			set
-			{
-				throw null;
-			}
+			set;
 		}
 
 		public TableLayoutPanelCellPosition(int column, int row)
 		{
-			throw null;
+			this.Column = column;
+			this.Row = row;
 		}
 
 		public override readonly bool Equals(object other)
 		{
-			throw null;
+			if(other is TableLayoutPanelCellPosition cell)
+			{
+                return Equals(cell);
+            }
+			return false;
 		}
 
 		public readonly bool Equals(TableLayoutPanelCellPosition other)
 		{
-			throw null;
-		}
+             return this.Column == other.Column && this.Row == other.Row;
+        }
 
 		public static bool operator ==(TableLayoutPanelCellPosition p1, TableLayoutPanelCellPosition p2)
 		{
-			throw null;
+			return p1.Equals(p2);
 		}
 
 		public static bool operator !=(TableLayoutPanelCellPosition p1, TableLayoutPanelCellPosition p2)
 		{
-			throw null;
-		}
+            return p1.Equals(p2) == false;
+        }
 
 		public override readonly string ToString()
 		{
-			throw null;
+			return $"[{this.Column},{this.Row}]";
 		}
 
 		public override readonly int GetHashCode()
 		{
-			throw null;
+			return this.Column.GetHashCode() & this.Row.GetHashCode();
 		}
 	}
 }

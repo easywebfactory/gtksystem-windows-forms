@@ -143,6 +143,7 @@ namespace System.Windows.Forms
         public virtual IWindowTarget WindowTarget { get; set; }
 
         public virtual bool UseVisualStyleBackColor { get; set; }
+        public virtual BorderStyle BorderStyle { get; set; }
 
         public virtual event EventHandler AutoSizeChanged;
         public virtual event EventHandler BackColorChanged;

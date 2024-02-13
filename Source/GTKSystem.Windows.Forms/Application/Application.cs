@@ -175,8 +175,11 @@ namespace System.Windows.Forms
 .ComboBox entry{padding:0px;}
 .Panel{background-color:#F6F5F4;} 
 .SplitContainer.horizontal{border-width:1px;}
-.GroupBox{background-color:#F6F5F4;} 
 
+.SplitContainer>viewport{}
+
+.GroupBox{background-color:#F6F5F4;} 
+.TableLayoutPanel viewport{border:solid 1px #eeeeee;}
 .ToolStrip{padding:0px;background:linear-gradient(#fefefd,#efefef);border-width:0px;} 
 .ToolStrip viewport{border-width:0px;} 
 .ToolStripMenuItemNoChecked check{color:transparent;opacity:0;} 

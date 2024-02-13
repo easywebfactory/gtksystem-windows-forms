@@ -17,6 +17,7 @@ namespace System.Windows.Forms
             Widget.StyleContext.AddClass("RichTextBox");
             Widget.StyleContext.AddClass("BorderRadiusStyle");
             base.Control.BorderWidth = 1;
+            base.Control.WrapMode = Gtk.WrapMode.Char;
         }
 
         public override string Text { get => base.Control.Buffer.Text; set => base.Control.Buffer.Text = value; }

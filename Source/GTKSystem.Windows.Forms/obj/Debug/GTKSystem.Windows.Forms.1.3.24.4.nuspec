@@ -17,7 +17,7 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
 https://gitee.com/easywebfactory/gtksystem-windows-forms；</description>
     <releaseNotes>C#界面跨平台开发组件gtksystem-windows-forms</releaseNotes>
     <copyright>438865652@qq.com，chenhongjin</copyright>
-    <repository type="git" url="https://github.com/easywebfactory/gtksystem-windows-forms" commit="67fd1b04f79e3f184e09ffe4bc5ea3aa9e8592af" />
+    <repository type="git" url="https://github.com/easywebfactory/gtksystem-windows-forms" commit="c479ba12fafb0878d60f64e9fa619538f8cffdd3" />
     <dependencies>
       <group targetFramework="net6.0">
         <dependency id="GtkSharp" version="3.24.24.95" exclude="Build,Analyzers" />

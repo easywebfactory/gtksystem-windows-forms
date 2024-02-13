@@ -5,8 +5,10 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+
 using System;
 using System.ComponentModel;
+
 
 namespace System.Windows.Forms
 {
@@ -18,5 +20,8 @@ namespace System.Windows.Forms
         {
             Owner = owner;
         }
+
+        public override DockStyle Dock { get; set; }
+
     }
 }

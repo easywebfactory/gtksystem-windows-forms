@@ -5,6 +5,7 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+
 using Gtk;
 using System;
 using System.ComponentModel;
@@ -12,28 +13,49 @@ using System.ComponentModel;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class SplitContainer : WidgetControl<Gtk.Paned>
+    public partial class SplitContainer : WidgetContainerControl<Gtk.Paned>
     {
         public SplitContainer() : base(Gtk.Orientation.Vertical)
         {
             Widget.StyleContext.AddClass("SplitContainer");
             base.Control.BorderWidth = 1;
-            base.Control.Margin = 0;
-            base.Control.MarginStart = 0;
-            base.Control.MarginTop = 0;
             base.Control.WideHandle = true;
             base.Control.PositionSet = false;
 
             _panel1 = new SplitterPanel(this);
             _panel2 = new SplitterPanel(this);
+            _panel1.Control.Hexpand = true;
+            _panel1.Control.Vexpand = true;
+            _panel1.Control.Halign = Gtk.Align.Fill;
+            _panel1.Control.Valign = Gtk.Align.Fill;
+            _panel2.Control.Hexpand = true;
+            _panel2.Control.Vexpand = true;
+            _panel2.Control.Halign = Gtk.Align.Fill;
+            _panel2.Control.Valign = Gtk.Align.Fill;
+
+            base.Control.Orientation = Gtk.Orientation.Horizontal;
             base.Control.Add1(_panel1.Control);
             base.Control.Add2(_panel2.Control);
-        
+
+            base.Control.Realized += Control_Realized;
         }
+
+        private void Control_Realized(object sender, EventArgs e)
+        {
+            if (base.Control.Orientation == Gtk.Orientation.Horizontal)
+            {
+                _panel1.Width = this.SplitterDistance;
+            }
+            else
+            {
+                _panel1.Height = this.SplitterDistance;
+            }
+        }
+
         private SplitterPanel _panel1;
         private SplitterPanel _panel2;
 
-        public BorderStyle BorderStyle { get { return base.Control.BorderWidth == 1 ? BorderStyle.FixedSingle : BorderStyle.None; } set { base.Control.BorderWidth = 1; } }
+        public override BorderStyle BorderStyle { get { return base.Control.BorderWidth == 1 ? BorderStyle.FixedSingle : BorderStyle.None; } set { base.Control.BorderWidth = 1; } }
         public SplitterPanel Panel1
         {
             get
@@ -58,7 +80,7 @@ namespace System.Windows.Forms
             }
         }
 
-        public int SplitterDistance { get { return _panel1.Height; } set { _panel1.Height = value; } }
+        public int SplitterDistance { get; set; }
         private int _SplitterWidth;
         public int SplitterWidth { get { return _SplitterWidth; } set { _SplitterWidth = value; base.Control.WideHandle = value > 2; } }
         public int SplitterIncrement { get; set; }

@@ -5,18 +5,20 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using GLib;
 using Gtk;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Text;
+using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
     public partial class Panel : WidgetContainerControl<Gtk.Viewport>
     {
-        private Gtk.Layout contaner;
+        private Gtk.Layout contaner = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
         private ControlCollection _controls;
 
         public Panel() : base()
@@ -26,17 +28,16 @@ namespace System.Windows.Forms
             base.Control.MarginTop = 0;
             base.Control.ShadowType = Gtk.ShadowType.In;
             base.Control.BorderWidth = 1;
-            contaner = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
+
             contaner.MarginStart = 0;
             contaner.MarginTop = 0;
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
             _controls = new ControlCollection(this, contaner);
-
             base.Control.Child = contaner;
         }
-
-        public BorderStyle BorderStyle { get { return base.Control.ShadowType == Gtk.ShadowType.None ? BorderStyle.None : BorderStyle.FixedSingle; } set { base.Control.BorderWidth = 1; base.Control.ShadowType = Gtk.ShadowType.In; } }
+ 
+        public override BorderStyle BorderStyle { get { return base.Control.ShadowType == Gtk.ShadowType.None ? BorderStyle.None : BorderStyle.FixedSingle; } set { base.Control.BorderWidth = 1; base.Control.ShadowType = Gtk.ShadowType.In; } }
         public override ControlCollection Controls => _controls;
     }
 }

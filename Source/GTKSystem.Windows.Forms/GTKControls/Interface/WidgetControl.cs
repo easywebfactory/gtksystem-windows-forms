@@ -240,7 +240,6 @@ namespace System.Windows.Forms
         private Color _BackColor;
         public override Color BackColor { get=>_BackColor; set { _BackColor = value;UpdateStyle(); } }
 
-        private string imageFileName;
         private byte[] _BackgroundImageBytes;
         private System.Drawing.Image backgroundImage;
         public override System.Drawing.Image BackgroundImage
@@ -251,8 +250,9 @@ namespace System.Windows.Forms
                 backgroundImage = value;
                 if (value != null)
                 {
-                    _BackgroundImageBytes = new byte[value.PixbufData.Length];
-                    value.PixbufData.CopyTo(_BackgroundImageBytes, 0);
+                    //_BackgroundImageBytes = new byte[value.PixbufData.Length];
+                    //value.PixbufData.CopyTo(_BackgroundImageBytes, 0);
+                    _BackgroundImageBytes = value.PixbufData;
                 }
             }
         }
@@ -338,28 +338,12 @@ namespace System.Windows.Forms
         {
             get
             {
-                return  new Point(Widget.MarginStart, Widget.MarginTop);
+                return new Point(Left, Top);
             }
             set
             {
                 Left = value.X;
                 Top = value.Y;
-                if (Widget.Parent is Gtk.FlowBoxChild)
-                {
-                    Widget.Data["InitMarginStart"] = Widget.MarginStart;
-                    Widget.Data["InitMarginTop"] = Widget.MarginTop;
-                }
-                else
-                {
-                    Widget.MarginTop = Math.Max(0, value.Y);
-                    Widget.MarginStart = Math.Max(0, value.X);
-                    Widget.Data["InitMarginStart"] = Widget.MarginStart;
-                    Widget.Data["InitMarginTop"] = Widget.MarginTop;
-                }
-                if (Widget is Gtk.MenuBar bar)
-                {
-                    Widget.Data["InitMarginTop"] = Widget.MarginTop-16;
-                }
             }
         }
         //public override Padding Margin { get; set; }
@@ -387,8 +371,6 @@ namespace System.Windows.Forms
             set
             {
                 Widget.SetSizeRequest(value.Width, value.Height);
-                Widget.Data["InitWidth"] = value.Width;
-                Widget.Data["InitHeight"] = value.Height;
             }
         }
         public override int TabIndex { get; set; }

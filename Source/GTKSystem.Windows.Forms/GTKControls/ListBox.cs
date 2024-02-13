@@ -19,31 +19,35 @@ namespace System.Windows.Forms
 	[DefaultEvent("SelectedIndexChanged")]
 	[DefaultProperty("Items")]
 	[DefaultBindingProperty("SelectedValue")]
-	public partial class ListBox : WidgetControl<Gtk.Box>
+	public partial class ListBox : WidgetControl<Gtk.Viewport>
     {
         ControlBindingsCollection _collect;
         ObjectCollection _items;
         internal Gtk.FlowBox _flow;
-        public ListBox():base(Gtk.Orientation.Horizontal, 0)
+        public ListBox():base()
 		{
             _collect = new ControlBindingsCollection(this);
             _items = new ObjectCollection(this);
             Widget.StyleContext.AddClass("ListBox");
             base.Control.Realized += Control_Realized;
             _flow = new Gtk.FlowBox();
-           // _flow.MaxChildrenPerLine = 9u;
+            // _flow.MaxChildrenPerLine = 9u;
+            _flow.Halign = Gtk.Align.Fill;
+            _flow.Valign = Gtk.Align.Fill;
+            _flow.Hexpand = true;
+            _flow.Vexpand = true;
             _flow.SortFunc = new FlowBoxSortFunc((fbc1, fbc2) => !this.Sorted ? 0 : fbc1.TooltipText.CompareTo(fbc2.TooltipText));
 
             _items = new ObjectCollection(this);
             _flow.ChildActivated += Control_ChildActivated;
-            _flow.Halign = Gtk.Align.Start;
+
             Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
             scrolledWindow.Halign = Gtk.Align.Fill;
             scrolledWindow.Valign = Gtk.Align.Fill;
             scrolledWindow.Hexpand = true;
             scrolledWindow.Vexpand = true;
-            scrolledWindow.Add(_flow);
-            this.Control.Add(scrolledWindow);
+            scrolledWindow.Child = _flow;
+            this.Control.Child = scrolledWindow;
         }
 
         private HashSet<int> selectedIndexes = new HashSet<int>();
@@ -275,7 +279,7 @@ namespace System.Windows.Forms
 
         [DefaultValue(BorderStyle.Fixed3D)]
 		[DispId(-504)]
-		public BorderStyle BorderStyle
+		public override BorderStyle BorderStyle
         {
             get; set;
         }
@@ -567,16 +571,13 @@ namespace System.Windows.Forms
         public void AddItem(object item, int position)
         {
             Gtk.Box hBox = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
-            //hBox.Valign = Gtk.Align.Fill;
-            //hBox.Halign = Gtk.Align.Fill;
             hBox.Add(new Gtk.Label(item.ToString()) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start }); ;
 
             Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
             boxitem.HeightRequest = this.ItemHeight;
-            boxitem.WidthRequest = this.ColumnWidth;
-            boxitem.WidthRequest = Width;
             boxitem.Valign = Gtk.Align.Fill;
             boxitem.Halign = Gtk.Align.Fill;
+            boxitem.Hexpand = true;
             boxitem.TooltipText = item.ToString();
             boxitem.Add(hBox);
             if (position < 0)

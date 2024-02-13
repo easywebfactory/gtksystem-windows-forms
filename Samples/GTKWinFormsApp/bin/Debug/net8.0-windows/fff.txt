@@ -1,0 +1,238 @@
+﻿___[MOD] F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\bin\Debug\net8.0-windows\GTKWinFormsApp.dll
+   |      M A N I F E S T
+   |___[NSP] GTKWinFormsApp
+   |   |___[NSP] GTKWinFormsApp.Properties
+   |   |   |___[CLS] GTKWinFormsApp.Properties.Resources
+   |   |   |   |     .class private auto ansi beforefieldinit 
+   |   |   |   |     .custom instance void [System.Runtime]System.CodeDom.Compiler.GeneratedCodeAttribute::.ctor(string, ...
+   |   |   |   |     .custom instance void [System.Runtime]System.Diagnostics.DebuggerNonUserCodeAttribute::.ctor() = ( 01 00 00 00 )  ...
+   |   |   |   |     .custom instance void [System.Runtime]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor() = ( 01 00 00 00 )  ...
+   |   |   |   |___[STF] resourceCulture : private static class [System.Runtime]System.Globalization.CultureInfo
+   |   |   |   |___[STF] resourceMan : private static class [System.Runtime]System.Resources.ResourceManager
+   |   |   |   |___[MET] .ctor : void()
+   |   |   |   |___[STM] get_Culture : class [System.Runtime]System.Globalization.CultureInfo()
+   |   |   |   |___[STM] get_ResourceManager : class [System.Runtime]System.Resources.ResourceManager()
+   |   |   |   |___[STM] get_timg : class [System.Drawing.Common]System.Drawing.Bitmap()
+   |   |   |   |___[STM] get_timg6 : uint8[]()
+   |   |   |   |___[STM] set_Culture : void(class [System.Runtime]System.Globalization.CultureInfo)
+   |   |   |   |___[PTY] Culture : class [System.Runtime]System.Globalization.CultureInfo()
+   |   |   |   |___[PTY] ResourceManager : class [System.Runtime]System.Resources.ResourceManager()
+   |   |   |   |___[PTY] timg : class [System.Drawing.Common]System.Drawing.Bitmap()
+   |   |   |   |___[PTY] timg6 : uint8[]()
+   |   |   |
+   |   |
+   |   |___[CLS] GTKWinFormsApp.Form1
+   |   |   |     .class public auto ansi beforefieldinit 
+   |   |   |      extends [System.Windows.Forms]System.Windows.Forms.Form 
+   |   |   |___[CLS] TestEntity
+   |   |   |   |     .class nested public auto ansi beforefieldinit 
+   |   |   |   |___[FLD] <CreateDate>k__BackingField : private valuetype [System.Runtime]System.DateTime
+   |   |   |   |___[FLD] <ID>k__BackingField : private int32
+   |   |   |   |___[FLD] <Info>k__BackingField : private string
+   |   |   |   |___[FLD] <Operate>k__BackingField : private string
+   |   |   |   |___[FLD] <PIC>k__BackingField : private string
+   |   |   |   |___[FLD] <State>k__BackingField : private bool
+   |   |   |   |___[FLD] <Title>k__BackingField : private string
+   |   |   |   |___[MET] .ctor : void()
+   |   |   |   |___[MET] get_CreateDate : valuetype [System.Runtime]System.DateTime()
+   |   |   |   |___[MET] get_ID : int32()
+   |   |   |   |___[MET] get_Info : string()
+   |   |   |   |___[MET] get_Operate : string()
+   |   |   |   |___[MET] get_PIC : string()
+   |   |   |   |___[MET] get_State : bool()
+   |   |   |   |___[MET] get_Title : string()
+   |   |   |   |___[MET] set_CreateDate : void(valuetype [System.Runtime]System.DateTime)
+   |   |   |   |___[MET] set_ID : void(int32)
+   |   |   |   |___[MET] set_Info : void(string)
+   |   |   |   |___[MET] set_Operate : void(string)
+   |   |   |   |___[MET] set_PIC : void(string)
+   |   |   |   |___[MET] set_State : void(bool)
+   |   |   |   |___[MET] set_Title : void(string)
+   |   |   |   |___[PTY] CreateDate : instance valuetype [System.Runtime]System.DateTime()
+   |   |   |   |___[PTY] ID : instance int32()
+   |   |   |   |___[PTY] Info : instance string()
+   |   |   |   |___[PTY] Operate : instance string()
+   |   |   |   |___[PTY] PIC : instance string()
+   |   |   |   |___[PTY] State : instance bool()
+   |   |   |   |___[PTY] Title : instance string()
+   |   |   |
+   |   |   |___[FLD] CreateDate : private class [System.Windows.Forms]System.Windows.Forms.DataGridViewTextBoxColumn
+   |   |   |___[FLD] ID : private class [System.Windows.Forms]System.Windows.Forms.DataGridViewTextBoxColumn
+   |   |   |___[FLD] Operate : private class [System.Windows.Forms]System.Windows.Forms.DataGridViewButtonColumn
+   |   |   |___[FLD] PIC : private class [System.Windows.Forms]System.Windows.Forms.DataGridViewImageColumn
+   |   |   |___[FLD] State : private class [System.Windows.Forms]System.Windows.Forms.DataGridViewCheckBoxColumn
+   |   |   |___[FLD] Title : private class [System.Windows.Forms]System.Windows.Forms.DataGridViewTextBoxColumn
+   |   |   |___[FLD] button1 : private class [System.Windows.Forms]System.Windows.Forms.Button
+   |   |   |___[FLD] button2 : private class [System.Windows.Forms]System.Windows.Forms.Button
+   |   |   |___[FLD] button3 : private class [System.Windows.Forms]System.Windows.Forms.Button
+   |   |   |___[FLD] button4 : private class [System.Windows.Forms]System.Windows.Forms.Button
+   |   |   |___[FLD] button5 : private class [System.Windows.Forms]System.Windows.Forms.Button
+   |   |   |___[FLD] button6 : private class [System.Windows.Forms]System.Windows.Forms.Button
+   |   |   |___[FLD] button7 : private class [System.Windows.Forms]System.Windows.Forms.Button
+   |   |   |___[FLD] checkBox1 : private class [System.Windows.Forms]System.Windows.Forms.CheckBox
+   |   |   |___[FLD] checkBox2 : private class [System.Windows.Forms]System.Windows.Forms.CheckBox
+   |   |   |___[FLD] checkBox3 : private class [System.Windows.Forms]System.Windows.Forms.CheckBox
+   |   |   |___[FLD] checkedListBox1 : private class [System.Windows.Forms]System.Windows.Forms.CheckedListBox
+   |   |   |___[FLD] comboBox1 : private class [System.Windows.Forms]System.Windows.Forms.ComboBox
+   |   |   |___[FLD] components : private class [System.ComponentModel.Primitives]System.ComponentModel.IContainer
+   |   |   |___[FLD] contextMenuStrip1 : private class [System.Windows.Forms]System.Windows.Forms.ContextMenuStrip
+   |   |   |___[FLD] dataGridView1 : private class [System.Windows.Forms]System.Windows.Forms.DataGridView
+   |   |   |___[FLD] dateTimePicker1 : private class [System.Windows.Forms]System.Windows.Forms.DateTimePicker
+   |   |   |___[FLD] flowLayoutPanel1 : private class [System.Windows.Forms]System.Windows.Forms.FlowLayoutPanel
+   |   |   |___[FLD] groupBox1 : private class [System.Windows.Forms]System.Windows.Forms.GroupBox
+   |   |   |___[FLD] label1 : private class [System.Windows.Forms]System.Windows.Forms.Label
+   |   |   |___[FLD] label2 : private class [System.Windows.Forms]System.Windows.Forms.Label
+   |   |   |___[FLD] label3 : private class [System.Windows.Forms]System.Windows.Forms.Label
+   |   |   |___[FLD] label4 : private class [System.Windows.Forms]System.Windows.Forms.Label
+   |   |   |___[FLD] label5 : private class [System.Windows.Forms]System.Windows.Forms.Label
+   |   |   |___[FLD] label6 : private class [System.Windows.Forms]System.Windows.Forms.Label
+   |   |   |___[FLD] linkLabel1 : private class [System.Windows.Forms]System.Windows.Forms.LinkLabel
+   |   |   |___[FLD] listBox1 : private class [System.Windows.Forms]System.Windows.Forms.ListBox
+   |   |   |___[FLD] maskedTextBox1 : private class [System.Windows.Forms]System.Windows.Forms.MaskedTextBox
+   |   |   |___[FLD] maskedTextBox2 : private class [System.Windows.Forms]System.Windows.Forms.MaskedTextBox
+   |   |   |___[FLD] menuStrip1 : private class [System.Windows.Forms]System.Windows.Forms.MenuStrip
+   |   |   |___[FLD] numericUpDown1 : private class [System.Windows.Forms]System.Windows.Forms.NumericUpDown
+   |   |   |___[FLD] pictureBox1 : private class [System.Windows.Forms]System.Windows.Forms.PictureBox
+   |   |   |___[FLD] pictureBox2 : private class [System.Windows.Forms]System.Windows.Forms.PictureBox
+   |   |   |___[FLD] radioButton1 : private class [System.Windows.Forms]System.Windows.Forms.RadioButton
+   |   |   |___[FLD] radioButton2 : private class [System.Windows.Forms]System.Windows.Forms.RadioButton
+   |   |   |___[FLD] radioButton3 : private class [System.Windows.Forms]System.Windows.Forms.RadioButton
+   |   |   |___[FLD] richTextBox1 : private class [System.Windows.Forms]System.Windows.Forms.RichTextBox
+   |   |   |___[FLD] splitContainer1 : private class [System.Windows.Forms]System.Windows.Forms.SplitContainer
+   |   |   |___[FLD] tabControl1 : private class [System.Windows.Forms]System.Windows.Forms.TabControl
+   |   |   |___[FLD] tabPage1 : private class [System.Windows.Forms]System.Windows.Forms.TabPage
+   |   |   |___[FLD] tabPage2 : private class [System.Windows.Forms]System.Windows.Forms.TabPage
+   |   |   |___[FLD] tableLayoutPanel1 : private class [System.Windows.Forms]System.Windows.Forms.TableLayoutPanel
+   |   |   |___[FLD] test1ToolStripMenuItem : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] test2ToolStripMenuItem : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] textBox1 : private class [System.Windows.Forms]System.Windows.Forms.TextBox
+   |   |   |___[FLD] toolStripMenuItem1 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] toolStripMenuItem2 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] toolStripMenuItem3 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] toolStripMenuItem4 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] treeView1 : private class [System.Windows.Forms]System.Windows.Forms.TreeView
+   |   |   |___[FLD] 三级菜单1ToolStripMenuItem : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] 二级菜单1ToolStripMenuItem : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] 菜单三ToolStripMenuItem : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[MET] .ctor : void()
+   |   |   |___[MET] Dispose : void(bool)
+   |   |   |___[MET] InitializeComponent : void()
+   |   |   |___[MET] button1_Click : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] button1_Paint : void(object,class [System.Windows.Forms]System.Windows.Forms.PaintEventArgs)
+   |   |   |___[MET] button2_Click : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] button6_Click : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] button7_Click : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] checkBox2_CheckStateChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] checkBox2_CheckedChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] checkedListBox1_ItemCheck : void(object,class [System.Windows.Forms]System.Windows.Forms.ItemCheckEventArgs)
+   |   |   |___[MET] checkedListBox1_SelectedValueChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] comboBox1_SelectedIndexChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] comboBox1_SelectedValueChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] dataGridView1_CellClick : void(object,class [System.Windows.Forms]System.Windows.Forms.DataGridViewCellEventArgs)
+   |   |   |___[MET] dataGridView1_CellEnter : void(object,class [System.Windows.Forms]System.Windows.Forms.DataGridViewCellEventArgs)
+   |   |   |___[MET] dataGridView1_CellLeave : void(object,class [System.Windows.Forms]System.Windows.Forms.DataGridViewCellEventArgs)
+   |   |   |___[MET] dataGridView1_CellValidated : void(object,class [System.Windows.Forms]System.Windows.Forms.DataGridViewCellEventArgs)
+   |   |   |___[MET] dataGridView1_CellValidating : void(object,class [System.Windows.Forms]System.Windows.Forms.DataGridViewCellValidatingEventArgs)
+   |   |   |___[MET] dataGridView1_CellValueChanged : void(object,class [System.Windows.Forms]System.Windows.Forms.DataGridViewCellEventArgs)
+   |   |   |___[MET] dataGridView1_MultiSelectChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] dataGridView1_RowEnter : void(object,class [System.Windows.Forms]System.Windows.Forms.DataGridViewCellEventArgs)
+   |   |   |___[MET] dataGridView1_RowLeave : void(object,class [System.Windows.Forms]System.Windows.Forms.DataGridViewCellEventArgs)
+   |   |   |___[MET] dataGridView1_SelectionChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] dateTimePicker1_ValueChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] maskedTextBox2_Validated : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] numericUpDown1_ValueChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] pictureBox2_Paint : void(object,class [System.Windows.Forms]System.Windows.Forms.PaintEventArgs)
+   |   |   |___[MET] radioButton1_CheckedChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] radioButton2_CheckedChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] radioButton3_CheckedChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] richTextBox1_TextChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] tabControl1_DrawItem : void(object,class [System.Windows.Forms]System.Windows.Forms.DrawItemEventArgs)
+   |   |   |___[MET] tabControl1_SelectedIndexChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] test2ToolStripMenuItem_CheckStateChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] test2ToolStripMenuItem_CheckedChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] test2ToolStripMenuItem_DropDownItemClicked : void(object,class [System.Windows.Forms]System.Windows.Forms.ToolStripItemClickedEventArgs)
+   |   |   |___[MET] textBox1_Enter : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] textBox1_TextChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] textBox1_Validating : void(object,class [System.ComponentModel]System.ComponentModel.CancelEventArgs)
+   |   |   |___[MET] toolStripMenuItem1_Click : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] toolStripMenuItem3_Click : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] toolStripMenuItem3_DropDownItemClicked : void(object,class [System.Windows.Forms]System.Windows.Forms.ToolStripItemClickedEventArgs)
+   |   |   |___[MET] treeView1_AfterCollapse : void(object,class [System.Windows.Forms]System.Windows.Forms.TreeViewEventArgs)
+   |   |   |___[MET] treeView1_AfterExpand : void(object,class [System.Windows.Forms]System.Windows.Forms.TreeViewEventArgs)
+   |   |   |___[MET] treeView1_AfterSelect : void(object,class [System.Windows.Forms]System.Windows.Forms.TreeViewEventArgs)
+   |   |   |___[MET] treeView1_BeforeSelect : void(object,class [System.Windows.Forms]System.Windows.Forms.TreeViewCancelEventArgs)
+   |   |
+   |   |___[CLS] GTKWinFormsApp.Form2
+   |   |   |     .class public auto ansi beforefieldinit 
+   |   |   |      extends [System.Windows.Forms]System.Windows.Forms.Form 
+   |   |   |___[FLD] columnHeader1 : private class [System.Windows.Forms]System.Windows.Forms.ColumnHeader
+   |   |   |___[FLD] columnHeader2 : private class [System.Windows.Forms]System.Windows.Forms.ColumnHeader
+   |   |   |___[FLD] columnHeader3 : private class [System.Windows.Forms]System.Windows.Forms.ColumnHeader
+   |   |   |___[FLD] components : private class [System.ComponentModel.Primitives]System.ComponentModel.IContainer
+   |   |   |___[FLD] imageList1 : private class [System.Windows.Forms]System.Windows.Forms.ImageList
+   |   |   |___[FLD] label1 : private class [System.Windows.Forms]System.Windows.Forms.Label
+   |   |   |___[FLD] listBox1 : private class [System.Windows.Forms]System.Windows.Forms.ListBox
+   |   |   |___[FLD] listView1 : private class [System.Windows.Forms]System.Windows.Forms.ListView
+   |   |   |___[FLD] richTextBox1 : private class [System.Windows.Forms]System.Windows.Forms.RichTextBox
+   |   |   |___[MET] .ctor : void()
+   |   |   |___[MET] Dispose : void(bool)
+   |   |   |___[MET] InitializeComponent : void()
+   |   |   |___[MET] listView1_Click : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] listView1_ColumnClick : void(object,class [System.Windows.Forms]System.Windows.Forms.ColumnClickEventArgs)
+   |   |   |___[MET] listView1_ItemCheck : void(object,class [System.Windows.Forms]System.Windows.Forms.ItemCheckEventArgs)
+   |   |   |___[MET] listView1_ItemChecked : void(object,class [System.Windows.Forms]System.Windows.Forms.ItemCheckedEventArgs)
+   |   |   |___[MET] listView1_ItemSelectionChanged : void(object,class [System.Windows.Forms]System.Windows.Forms.ListViewItemSelectionChangedEventArgs)
+   |   |   |___[MET] listView1_SelectedIndexChanged : void(object,class [System.Runtime]System.EventArgs)
+   |   |
+   |   |___[CLS] GTKWinFormsApp.Form3
+   |   |   |     .class public auto ansi beforefieldinit 
+   |   |   |      extends [System.Windows.Forms]System.Windows.Forms.Form 
+   |   |   |___[FLD] bb菜单2ToolStripMenuItem : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] bb菜单ToolStripMenuItem : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] button1 : private class [System.Windows.Forms]System.Windows.Forms.Button
+   |   |   |___[FLD] components : private class [System.ComponentModel.Primitives]System.ComponentModel.IContainer
+   |   |   |___[FLD] contextMenuStrip1 : private class [System.Windows.Forms]System.Windows.Forms.ContextMenuStrip
+   |   |   |___[FLD] ddddToolStripMenuItem : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] ddddToolStripMenuItem1 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] ffffToolStripMenuItem : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] fffffffToolStripMenuItem : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] label1 : private class [System.Windows.Forms]System.Windows.Forms.Label
+   |   |   |___[FLD] linkLabel1 : private class [System.Windows.Forms]System.Windows.Forms.LinkLabel
+   |   |   |___[FLD] memnuToolStripMenuItem : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] menuStrip1 : private class [System.Windows.Forms]System.Windows.Forms.MenuStrip
+   |   |   |___[FLD] menuToolStripMenuItem : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] ssssToolStripMenuItem : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] ssssToolStripMenuItem1 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] statusStrip1 : private class [System.Windows.Forms]System.Windows.Forms.StatusStrip
+   |   |   |___[FLD] toolStrip2 : private class [System.Windows.Forms]System.Windows.Forms.ToolStrip
+   |   |   |___[FLD] toolStripButton1 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripButton
+   |   |   |___[FLD] toolStripComboBox1 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripComboBox
+   |   |   |___[FLD] toolStripDropDownButton1 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripDropDownButton
+   |   |   |___[FLD] toolStripDropDownButton2 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripDropDownButton
+   |   |   |___[FLD] toolStripLabel1 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripLabel
+   |   |   |___[FLD] toolStripMenuItem1 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] toolStripMenuItem3 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] toolStripMenuItem4 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] toolStripMenuItem5 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] toolStripMenuItem6 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripMenuItem
+   |   |   |___[FLD] toolStripProgressBar1 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripProgressBar
+   |   |   |___[FLD] toolStripProgressBar2 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripProgressBar
+   |   |   |___[FLD] toolStripSeparator1 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripSeparator
+   |   |   |___[FLD] toolStripSeparator2 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripSeparator
+   |   |   |___[FLD] toolStripSplitButton1 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripSplitButton
+   |   |   |___[FLD] toolStripSplitButton2 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripSplitButton
+   |   |   |___[FLD] toolStripStatusLabel1 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripStatusLabel
+   |   |   |___[FLD] toolStripTextBox1 : private class [System.Windows.Forms]System.Windows.Forms.ToolStripTextBox
+   |   |   |___[FLD] trackBar1 : private class [System.Windows.Forms]System.Windows.Forms.TrackBar
+   |   |   |___[MET] .ctor : void()
+   |   |   |___[MET] Dispose : void(bool)
+   |   |   |___[MET] InitializeComponent : void()
+   |   |   |___[MET] button1_Click : void(object,class [System.Runtime]System.EventArgs)
+   |   |   |___[MET] trackBar1_Scroll : void(object,class [System.Runtime]System.EventArgs)
+   |   |
+   |   |___[CLS] GTKWinFormsApp.Program
+   |   |   |     .class private abstract auto ansi sealed beforefieldinit 
+   |   |   |___[STM] Main : void()
+   |   |
+   |
+
