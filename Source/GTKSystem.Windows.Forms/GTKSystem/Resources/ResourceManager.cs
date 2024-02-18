@@ -9,6 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Resources;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Windows.Forms;
@@ -245,6 +246,9 @@ namespace GTKSystem.Resources
                     SerializationInfo info = new SerializationInfo(typeof(ImageListStreamer), new FormatterConverter());
                     return new ImageListStreamer(new ImageList()) { ResourceInfo = GetResourceInfo };
                 }
+            }
+            else if (name.EndsWith(".Icon")) {
+                return new System.Drawing.Icon(name.Substring(0,name.Length-1));
             }
             else
             {

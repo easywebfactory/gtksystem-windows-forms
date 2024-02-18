@@ -37,11 +37,14 @@ https://gitee.com/easywebfactory/gtksystem-windows-forms；
     <None Remove="Resources\Forms_ico\ToolStrip\BlankToolstrip.ico" />
     <None Remove="Resources\icons\16x16\status\image-missing.png" />
     <None Remove="Resources\System\DateTimePicker.ico" />
+    <None Remove="Resources\System\view-more.ico" />
+    <None Remove="Resources\System\view-more.png" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\Forms_ico\ToolStrip\BlankToolstrip.ico" />
     <EmbeddedResource Include="Resources\System\DateTimePicker.ico" />
+    <EmbeddedResource Include="Resources\System\view-more.png" />
   </ItemGroup>
 
   <ItemGroup>

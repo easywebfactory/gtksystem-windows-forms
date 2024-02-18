@@ -10,14 +10,15 @@ using Gtk;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 
 namespace System.Windows.Forms
 {
     [DesignerCategory("Form")]
-    //DefaultEvent(nameof(Load)),
-    //InitializationEvent(nameof(Load))]
+    [DefaultEvent(nameof(Load)),
+    InitializationEvent(nameof(Load))]
     public partial class Form : WidgetContainerControl<Gtk.Window>, IWin32Window
     {
         private Gtk.Fixed _body = new Gtk.Fixed();
@@ -103,7 +104,41 @@ namespace System.Windows.Forms
 
         private void Control_Realized(object sender, EventArgs e)
         {
-            
+            if(this.MaximizeBox==false && this.MinimizeBox == false)
+            {
+                this.Control.TypeHint = Gdk.WindowTypeHint.Dialog;
+            }
+            else if (this.MaximizeBox == false && this.MinimizeBox == true)
+            {
+                this.Control.TypeHint = Gdk.WindowTypeHint.Normal;
+                this.Control.Resizable = false;
+            }
+            else if (this.MaximizeBox == true && this.MinimizeBox == false)
+            {
+                this.Control.TypeHint = Gdk.WindowTypeHint.Normal;
+                this.Control.Resizable = true;
+                this.Control.SkipTaskbarHint = true;
+            }
+            if (this.ShowIcon)
+            {
+                if (this.Icon != null)
+                {
+                    if (this.Icon.Pixbuf != null)
+                        this.Control.Icon = this.Icon.Pixbuf;
+                    else if (this.Icon.PixbufData != null)
+                        this.Control.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
+                    else if (this.Icon.FileName != null && System.IO.File.Exists(this.Icon.FileName))
+                        this.Control.SetIconFromFile(this.Icon.FileName);
+                }
+            }
+            else
+            {
+                this.Control.TypeHint = Gdk.WindowTypeHint.Normal;
+                System.IO.Stream sm = typeof(System.Windows.Forms.Form).Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.view-more.png");
+                this.Control.Icon = new Gdk.Pixbuf(sm);
+            }
+            this.Control.SkipTaskbarHint = this.ShowInTaskbar;
+ 
             if (Load != null)
                 Load(this, e);
         }
@@ -455,6 +490,9 @@ namespace System.Windows.Forms
         public bool MaximizeBox { get; set; }
         public bool MinimizeBox { get; set; }
         public double Opacity { get { return base.Control.Opacity; } set { base.Control.Opacity = value; } }
+        public bool ShowIcon { get; set; } = true;
+        public bool ShowInTaskbar { get; set; } = true;
+        public System.Drawing.Icon Icon { get; set; }
         public override void SuspendLayout()
         {
             _Created = false;

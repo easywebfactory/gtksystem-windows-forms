@@ -358,8 +358,12 @@
             Controls.Add(button1);
             Controls.Add(toolStrip2);
             Controls.Add(menuStrip1);
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
+            MinimizeBox = false;
             Name = "Form3";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             Text = "Form3";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
