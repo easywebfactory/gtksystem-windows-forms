@@ -20,7 +20,8 @@ namespace System.Windows.Forms
             Dock = DockStyle.Bottom;
 
         }
-        public override Size Size { get => base.Size; set => base.Size = new Size(value.Width, 20); }
+        public override Point Location { get => base.Location; set => base.Location = new Point(value.X,value.Y-10); }
+        public override Size Size { get => base.Size; set => base.Size = new Size(value.Width, value.Height+10); }
         [DefaultValue(false)]
         public bool ShowItemToolTips { get; set; }
 
