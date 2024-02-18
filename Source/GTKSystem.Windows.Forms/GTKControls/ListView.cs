@@ -182,8 +182,8 @@ namespace System.Windows.Forms
            // hBox.StyleContext.AddClass("listviewgrid");
             Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
             boxitem.TooltipText = item.Text;
-            boxitem.Halign = Gtk.Align.Fill;
-            boxitem.Valign = Gtk.Align.Fill;
+            boxitem.Halign = Gtk.Align.Start;
+            boxitem.Valign = Gtk.Align.Start;
             boxitem.HeightRequest = 28;
             boxitem.BorderWidth = 0;
             boxitem.Margin = 0;
@@ -381,22 +381,22 @@ namespace System.Windows.Forms
             hBox.Valign = Gtk.Align.Start;
             hBox.Halign = Gtk.Align.Fill;
             Gtk.Viewport groupbox = new Gtk.Viewport();
-            groupbox.StyleContext.AddClass("listviewgroup");
+            groupbox.StyleContext.AddClass("Group");
             var title = new Gtk.Label(group.Header) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
             title.MarginStart = 3;
-            title.StyleContext.AddClass("listviewtitle");
+            title.StyleContext.AddClass("Title");
             groupbox.Child = title;
             hBox.Add(groupbox);
             if (!string.IsNullOrWhiteSpace(group.Subtitle))
             {
                 var subtitle = new Gtk.Label(group.Subtitle) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
                 subtitle.MarginStart = 3;
-                subtitle.StyleContext.AddClass("listviewsubtitle");
+                subtitle.StyleContext.AddClass("SubTitle");
                 hBox.Add(subtitle);
             }
 
             Gtk.FlowBox _flow = group.FlowBox;
-            _flow.StyleContext.AddClass("FlowBox");
+           // _flow.StyleContext.AddClass("FlowBox");
             _flow.MaxChildrenPerLine = 100u;
             _flow.MinChildrenPerLine = 0u;
             _flow.ColumnSpacing = 12;

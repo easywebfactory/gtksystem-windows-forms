@@ -31,11 +31,9 @@ namespace System.Windows.Forms
             Widget.StyleContext.AddClass("ListBox");
             base.Control.Realized += Control_Realized;
             _flow = new Gtk.FlowBox();
-            // _flow.MaxChildrenPerLine = 9u;
+            _flow.MaxChildrenPerLine = 1u;
             _flow.Halign = Gtk.Align.Fill;
-            _flow.Valign = Gtk.Align.Fill;
-            _flow.Hexpand = true;
-            _flow.Vexpand = true;
+            _flow.Valign = Gtk.Align.Start;
             _flow.SortFunc = new FlowBoxSortFunc((fbc1, fbc2) => !this.Sorted ? 0 : fbc1.TooltipText.CompareTo(fbc2.TooltipText));
 
             _items = new ObjectCollection(this);
@@ -575,7 +573,7 @@ namespace System.Windows.Forms
 
             Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
             boxitem.HeightRequest = this.ItemHeight;
-            boxitem.Valign = Gtk.Align.Fill;
+            boxitem.Valign = Gtk.Align.Start;
             boxitem.Halign = Gtk.Align.Fill;
             boxitem.Hexpand = true;
             boxitem.TooltipText = item.ToString();

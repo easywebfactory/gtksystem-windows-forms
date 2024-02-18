@@ -27,11 +27,11 @@ namespace GTKWinFormsApp
             dt.Rows.Add("user2", DateTime.Now.AddDays(5), false);
 
             DataSet dataSet = new DataSet();
-            dataSet.Tables.Add(dt);
+            // dataSet.Tables.Add(dt);
 
 
-            listBox1.DataBindings.Add(new Binding("Text", dataSet, "CreateDate"));
-
+            // listBox1.DataBindings.Add(new Binding("Text", dt, "CreateDate"));
+            listBox1.Items.Add("test item");
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -51,6 +51,10 @@ namespace GTKWinFormsApp
             data.Add(new TestEntity() { ID = 1, Title = "test2", Info = " 3234fdf", State = true, CreateDate = createdate, Operate = "编辑", PIC = "Resources\\timg2.jpg" });
             data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "Resources\\BindingNavigator.Delete.ico" });
             data.Add(new TestEntity() { ID = 4, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC = "" });
+
+            data.Add(new TestEntity() { ID = 5, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "Resources\\BindingNavigator.Delete.ico" });
+            data.Add(new TestEntity() { ID = 6, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC = "" });
+
             this.dataGridView1.DataSource = data;
             //2、datatable数据源
             DataTable dt = new DataTable();
@@ -64,14 +68,14 @@ namespace GTKWinFormsApp
             DataSet dataSet = new DataSet();
             dataSet.Tables.Add(dt);
 
-            listBox1.DataBindings.Add(new Binding("Text", data, "Title"));
+            listBox1.DataBindings.Add(new Binding("Text", dt, "ID"));
 
 
             //3、通过dataviewrow添加数据
             //for (int i = 0; i < 10; i++)
             //{
             //    var cell = new DataGridViewRow();
-            //    cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString() }, new DataGridViewCheckBoxCell() { Value=true }, new DataGridViewTextBoxCell() { Value = "title" + i.ToString() }, new DataGridViewTextBoxCell() { Value = DateTime.Now } }.ToArray());
+            //    cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString() }, new DataGridViewCheckBoxCell() { Value = true }, new DataGridViewTextBoxCell() { Value = "title" + i.ToString() }, new DataGridViewTextBoxCell() { Value = DateTime.Now } }.ToArray());
             //    cell.DefaultCellStyle = new DataGridViewCellStyle() { BackColor = Color.Red };
             //    this.dataGridView1.Rows.Add(cell);
             //}
@@ -344,7 +348,7 @@ namespace GTKWinFormsApp
                 g.DrawLines(new Pen(new SolidBrush(Color.Red), 2), [Rps[i], rps[i],new PointF(x,y), Rps[i]]);
             }
 
-            g.DrawString("这是Paint Graphics示例效果", new Font(new FontFamily(""), 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 60);
+            g.DrawString("这是Paint Graphics示例效果", new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 60);
             g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2), new Rectangle(0, 0, pictureBox2.Width, pictureBox2.Height), 60, 190);
         }
 
@@ -365,8 +369,8 @@ namespace GTKWinFormsApp
             var rect = tabControl1.GetTabRect(e.Index);
             //e.Graphics.FillRectangle(new SolidBrush(Color.Gray), new Rectangle(rect.X, rect.Y, rect.Width, rect.Height));
             e.Graphics.FillRectangle(new SolidBrush(Color.DarkBlue), e.Bounds);
-
-            e.Graphics.DrawString($"tab组{e.Index}", new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.Red), new PointF(0, 0));
+            var font = new Font(FontFamily.GenericSansSerif, 12);
+            e.Graphics.DrawString($"tab组{e.Index}", font, new SolidBrush(Color.Red), new PointF(0, 0));
             e.Graphics.DrawImage(Image.FromFile("Resources\\BindingNavigator.Delete.ico"),new Point(e.Bounds.Width-16, 0));
         }
 

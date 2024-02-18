@@ -163,7 +163,7 @@ namespace System.Windows.Forms
 .CheckBox {border-width:0px;} 
 .CheckedListBox {background-color:#ffffff;} 
 .RadioButton {border-width:0px;} 
-.Label{border-width:0px;} 
+.Label{border-width:0px;background-color:#F6F5F4;} 
 .LinkLabel{border-width:0px;} 
 .NumericUpDown{padding:0px;min-height:6px;min-width:6px;}
 .NumericUpDown button.up{border-width:0px;padding:0px;font-size:6px;min-height:6px;min-width:6px;}
@@ -180,7 +180,8 @@ namespace System.Windows.Forms
 
 .GroupBox{background-color:#F6F5F4;} 
 .TableLayoutPanel viewport{border:solid 1px #eeeeee;}
-.ToolStrip{padding:0px;background:linear-gradient(#fefefd,#efefef);border-width:0px;} 
+.FlowLayoutPanel{}
+.ToolStrip{padding:0px;background:linear-gradient(#fefefd,#efefef);border-width:0px;background-color:#F6F5F4;} 
 .ToolStrip viewport{border-width:0px;} 
 .ToolStripMenuItemNoChecked check{color:transparent;opacity:0;} 
 
@@ -193,9 +194,9 @@ namespace System.Windows.Forms
 .ListBox{border-width:1px;background-color:#ffffff; padding:0px;}
 .ListView{background-color:#ffffff; padding:0px;}
 .ListViewHeader button{padding:0px;border-right:solid 1px #cccccc;border-top-width:0px;border-left-width:0px;border-bottom-width:0px;}
-.listviewgroup{background-color:#fefefe; background-image:linear-gradient(#ffffff 12px,#ccccce 3px,#ffffff 14px);}
-.listviewtitle{background-color:#fefefe; padding-left:5px;padding-right:5px; }
-.listviewsubtitle{padding-left:5px;padding-right:5px;color:#666666; font-size:12px; }
+.ListView .Group{background-color:#fefefe; background-image:linear-gradient(#ffffff 12px,#ccccce 3px,#ffffff 14px);}
+.ListView .Title{background-color:#fefefe; padding-left:5px;padding-right:5px; }
+.ListView .SubTitle{padding-left:5px;padding-right:5px;color:#666666; font-size:14px; }
 
 ");
 

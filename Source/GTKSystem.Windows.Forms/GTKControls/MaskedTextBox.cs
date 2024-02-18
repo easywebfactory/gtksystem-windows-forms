@@ -15,7 +15,6 @@ namespace System.Windows.Forms
         public MaskedTextBox():base()
         {
             Widget.StyleContext.AddClass("MaskedTextBox");
-            Widget.StyleContext.AddClass("BorderRadiusStyle");
             base.Control.Backspace += Control_Backspace;
             base.Control.TextInserted += Control_TextInserted;
             base.Control.Shown += Control_Shown;

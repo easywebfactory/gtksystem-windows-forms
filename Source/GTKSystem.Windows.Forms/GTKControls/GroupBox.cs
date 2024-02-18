@@ -18,7 +18,6 @@ namespace System.Windows.Forms
         public GroupBox() : base()
         {
             Widget.StyleContext.AddClass("GroupBox");
-            Widget.StyleContext.AddClass("BorderRadiusStyle");
             base.Control.LabelXalign = 0.03f;
 
             _controls = new ControlCollection(this, contaner);

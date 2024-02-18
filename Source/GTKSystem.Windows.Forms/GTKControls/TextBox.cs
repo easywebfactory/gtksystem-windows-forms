@@ -15,7 +15,6 @@ namespace System.Windows.Forms
         public TextBox() : base()
         {
             Control.StyleContext.AddClass("TextBox");
-            Widget.StyleContext.AddClass("BorderRadiusStyle");
             base.Control.HasFrame = false;
             base.Control.MaxWidthChars = 1;
             base.Control.WidthChars = 0;

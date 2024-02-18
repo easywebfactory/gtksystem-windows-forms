@@ -20,7 +20,7 @@ namespace System.Windows.Forms
         private Gtk.Layout contaner;
         private ControlCollection _controls;
 
-        public UserControl() : base(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero))
+        public UserControl() : base()
         {
             base.Control.MarginStart = 0;
             base.Control.MarginTop = 0;

@@ -16,7 +16,6 @@ namespace System.Windows.Forms
         public NumericUpDown() : base(0, 100, 1)
         {
             Widget.StyleContext.AddClass("NumericUpDown");
-            Widget.StyleContext.AddClass("BorderRadiusStyle");
             base.Control.Value = 0;
             base.Control.Orientation = Gtk.Orientation.Horizontal;
         }

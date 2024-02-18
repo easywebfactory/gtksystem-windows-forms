@@ -17,7 +17,7 @@ namespace System.Windows.Forms
         public DateTimePicker() : base()
         {
             Widget.StyleContext.AddClass("DateTimePicker");
-            Widget.StyleContext.AddClass("BorderRadiusStyle");
+
             base.Mask = "____年__月__日";
             //base.Control.PrimaryIconActivatable = true;
             //base.Control.PrimaryIconStock = "gtk-index";

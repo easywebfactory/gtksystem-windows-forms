@@ -9,6 +9,7 @@
 using Gtk;
 using System;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace System.Windows.Forms
 {
@@ -20,20 +21,22 @@ namespace System.Windows.Forms
             Widget.StyleContext.AddClass("SplitContainer");
             base.Control.BorderWidth = 1;
             base.Control.WideHandle = true;
-            base.Control.PositionSet = false;
+            //base.Control.PositionSet = false;
+
+            base.Control.Orientation = Gtk.Orientation.Horizontal;
 
             _panel1 = new SplitterPanel(this);
             _panel2 = new SplitterPanel(this);
-            _panel1.Control.Hexpand = true;
-            _panel1.Control.Vexpand = true;
-            _panel1.Control.Halign = Gtk.Align.Fill;
-            _panel1.Control.Valign = Gtk.Align.Fill;
-            _panel2.Control.Hexpand = true;
-            _panel2.Control.Vexpand = true;
-            _panel2.Control.Halign = Gtk.Align.Fill;
-            _panel2.Control.Valign = Gtk.Align.Fill;
+            //_panel1.Control.Hexpand = true;
+            //_panel1.Control.Vexpand = true;
+            //_panel1.Control.Halign = Gtk.Align.Fill;
+            //_panel1.Control.Valign = Gtk.Align.Fill;
+            //_panel2.Control.Hexpand = true;
+            //_panel2.Control.Vexpand = true;
+            //_panel2.Control.Halign = Gtk.Align.Fill;
+            //_panel2.Control.Valign = Gtk.Align.Fill;
 
-            base.Control.Orientation = Gtk.Orientation.Horizontal;
+
             base.Control.Add1(_panel1.Control);
             base.Control.Add2(_panel2.Control);
 
@@ -65,7 +68,6 @@ namespace System.Windows.Forms
             set
             {
                 _panel1 = value;
-                base.Control.Add1(_panel1.Control);
             }
         }
         public SplitterPanel Panel2 {
@@ -76,7 +78,6 @@ namespace System.Windows.Forms
             set
             {
                 _panel2 = value;
-                base.Control.Add1(_panel2.Control);
             }
         }
 
@@ -90,6 +91,5 @@ namespace System.Windows.Forms
                 base.Control.Orientation = value == Orientation.Horizontal ? Gtk.Orientation.Vertical : Gtk.Orientation.Horizontal;
             }
         }
-
     }
 }

@@ -28,7 +28,7 @@ namespace System.Windows.Forms
 
         private void Control_Realized(object sender, EventArgs e)
         {
-            Gdk.Rectangle rec = Widget.Allocation;
+            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, Width, Height);
             if (BackgroundImage != null && BackgroundImage.PixbufData != null)
             {
                 Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);

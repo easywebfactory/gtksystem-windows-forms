@@ -17,7 +17,6 @@ namespace System.Windows.Forms
         public Button() : base(new Gtk.Label())
         {
             Widget.StyleContext.AddClass("Button");
-            Widget.StyleContext.AddClass("BorderRadiusStyle");
         }
 
         public override string Text { get => base.Control.Label; set => base.Control.Label = value; }

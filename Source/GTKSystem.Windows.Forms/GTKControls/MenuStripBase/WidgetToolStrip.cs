@@ -6,13 +6,11 @@
  * date: 2024/1/3
  */
 
-using GLib;
 using Gtk;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 
 
@@ -166,7 +164,7 @@ namespace System.Windows.Forms
                 base.Image = value;
                 if (value != null && value.PixbufData != null)
                 {
-                    Gtk.Image ico1 = new Gtk.Image(new Gdk.Pixbuf(Image.PixbufData).ScaleSimple(20, 20, Gdk.InterpType.Tiles));
+                    Gtk.Image ico1 = new Gtk.Image(new Gdk.Pixbuf(value.PixbufData).ScaleSimple(20, 20, Gdk.InterpType.Tiles));
                     icoViewport.Child = ico1;
                 }
             } 
@@ -217,6 +215,10 @@ namespace System.Windows.Forms
         }
         internal void UpdateStyle()
         {
+            SetStyle(_widget);
+        }
+        protected virtual void SetStyle(Gtk.Widget widget)
+        {
             string stylename = $"s{unique_key}";
             StringBuilder style = new StringBuilder();
             if (this.BackColor.Name != "Control" && this.BackColor.Name != "0")
@@ -243,7 +245,7 @@ namespace System.Windows.Forms
                 if (string.IsNullOrWhiteSpace(Font.FontFamily.Name) == false)
                     style.AppendFormat("font-family:\"{0}\";", Font.FontFamily.Name);
 
-                string[] fontstyle = Font.Style.ToString().ToLower().Split(new char[] { ',', ' '});
+                string[] fontstyle = Font.Style.ToString().ToLower().Split(new char[] { ',', ' ' });
                 foreach (string sty in fontstyle)
                 {
                     if (sty == "bold")
@@ -267,12 +269,12 @@ namespace System.Windows.Forms
                         attributes.Insert(new Pango.AttrStrikethrough(true));
                     }
                 }
-                _widget.SetProperty("attributes", new GLib.Value(attributes));
+                widget.SetProperty("attributes", new GLib.Value(attributes));
             }
 
             StringBuilder css = new StringBuilder();
             css.AppendLine($".{stylename}{{{style.ToString()}}}");
-            if (_widget is Gtk.TextView)
+            if (widget is Gtk.TextView)
             {
                 css.AppendLine($".{stylename} text{{{style.ToString()}}}");
                 css.AppendLine($".{stylename} .view{{{style.ToString()}}}");
@@ -280,9 +282,9 @@ namespace System.Windows.Forms
             CssProvider provider = new CssProvider();
             if (provider.LoadFromData(css.ToString()))
             {
-                _widget.StyleContext.AddProvider(provider, 900);
-                _widget.StyleContext.RemoveClass(stylename);
-                _widget.StyleContext.AddClass(stylename);
+                widget.StyleContext.AddProvider(provider, 900);
+                widget.StyleContext.RemoveClass(stylename);
+                widget.StyleContext.AddClass(stylename);
             }
         }
         // public override string Text { get { return this.button.Label; } set { this.button.Label = value; } }

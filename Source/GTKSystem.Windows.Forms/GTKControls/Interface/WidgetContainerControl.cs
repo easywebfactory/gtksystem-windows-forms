@@ -11,9 +11,7 @@ using Gtk;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Reflection;
 using System.Text;
-using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
@@ -148,7 +146,14 @@ namespace System.Windows.Forms
                 if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
                     ctx.SetSourceRGBA(this.ForeColor.R / 255f, this.ForeColor.G / 255f, this.ForeColor.B / 255f, 1);
 
-                string family = this.Font.FontFamily.Name;
+                Pango.Context pangocontext = _widget.PangoContext;
+                string family = pangocontext.FontDescription.Family;
+                if (string.IsNullOrWhiteSpace(this.Font.FontFamily.Name) == false)
+                {
+                    var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == this.Font.FontFamily.Name);
+                    if (pangoFamily != null)
+                        family = pangoFamily.Name;
+                }
                 ctx.SelectFontFace(family, this.Font.Italic ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, this.Font.Bold ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
                 ctx.SetFontSize(textSize);
                 ctx.ShowText(text);
@@ -157,6 +162,10 @@ namespace System.Windows.Forms
             }
         }
         internal void UpdateStyle()
+        {
+            SetStyle(_widget);
+        }
+        protected virtual void SetStyle(Gtk.Widget widget)
         {
             string stylename = $"s{unique_key}";
             StringBuilder style = new StringBuilder();
@@ -208,12 +217,16 @@ namespace System.Windows.Forms
                         attributes.Insert(new Pango.AttrStrikethrough(true));
                     }
                 }
-                _widget.SetProperty("attributes", new GLib.Value(attributes));
+                if(widget is Gtk.Label gtklabel)
+                {
+                    gtklabel.Attributes = attributes;
+                }
+                //widget.SetProperty("attributes", new GLib.Value(attributes));
             }
 
             StringBuilder css = new StringBuilder();
             css.AppendLine($".{stylename}{{{style.ToString()}}}");
-            if (_widget is Gtk.TextView)
+            if (widget is Gtk.TextView)
             {
                 css.AppendLine($".{stylename} text{{{style.ToString()}}}");
                 css.AppendLine($".{stylename} .view{{{style.ToString()}}}");
@@ -221,9 +234,9 @@ namespace System.Windows.Forms
             CssProvider provider = new CssProvider();
             if (provider.LoadFromData(css.ToString()))
             {
-                _widget.StyleContext.AddProvider(provider, 900);
-                _widget.StyleContext.RemoveClass(stylename);
-                _widget.StyleContext.AddClass(stylename);
+                widget.StyleContext.AddProvider(provider, 900);
+                widget.StyleContext.RemoveClass(stylename);
+                widget.StyleContext.AddClass(stylename);
             }
         }
         public override AccessibleObject AccessibilityObject { get; }

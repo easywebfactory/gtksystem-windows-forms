@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
+using System.Linq;
 
 namespace System.Drawing
 {
@@ -727,7 +728,11 @@ namespace System.Drawing
 				Pango.Context pangocontext = this.widget.PangoContext;
 				string family = pangocontext.FontDescription.Family;
 				if (string.IsNullOrWhiteSpace(font.Name) == false)
-					family = font.Name;
+				{
+                    var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
+                    if (pangoFamily != null)
+						family = pangoFamily.Name;
+				}
 				this.context.SelectFontFace(family, Cairo.FontSlant.Normal, Cairo.FontWeight.Normal);
 				this.context.SetFontSize(textSize);
 				this.context.ShowText(s);

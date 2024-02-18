@@ -26,7 +26,7 @@ namespace System.Windows.Forms
             base.Control.MinChildrenPerLine = 1;
             base.Control.MaxChildrenPerLine = 999;
             base.Control.ColumnSpacing = 0;
-            base.Control.BorderWidth = 1;
+            base.Control.BorderWidth = 0;
 
             base.Control.ChildActivated += Control_ChildActivated;
             _controls = new ObjectCollection(this);
@@ -74,11 +74,8 @@ namespace System.Windows.Forms
             public override int Add(object item)
             {
                 Gtk.FlowBoxChild box = new FlowBoxChild();
-                box.HeightRequest = 20;
                 box.Valign = Align.Start;
                 box.Halign = Align.Start;
-                box.MarginStart = 0;
-                
                 Control control = (Control)item;
                 Gtk.Widget widg = control.Widget;
                 widg.Valign = Align.Start;

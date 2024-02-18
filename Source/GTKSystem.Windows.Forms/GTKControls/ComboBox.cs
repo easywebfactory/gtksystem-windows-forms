@@ -20,13 +20,11 @@ namespace System.Windows.Forms
         public ComboBox():base()
         {
             Widget.StyleContext.AddClass("ComboBox");
-            Widget.StyleContext.AddClass("BorderRadiusStyle");
             __itemsData = new ObjectCollection(this);
         }
         public ComboBox(Gtk.ITreeModel model):base(model)
         {
             Widget.StyleContext.AddClass("ComboBox");
-            Widget.StyleContext.AddClass("BorderRadiusStyle");
             __itemsData = new ObjectCollection(this);
         }
         

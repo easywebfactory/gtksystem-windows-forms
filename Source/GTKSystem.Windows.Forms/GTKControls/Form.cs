@@ -23,7 +23,7 @@ namespace System.Windows.Forms
         private Gtk.Fixed _body = new Gtk.Fixed();
         private Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
         private Gtk.Layout windowbody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
-        
+
         private ObjectCollection _ObjectCollection;
 
         public override event EventHandler SizeChanged;
@@ -58,7 +58,7 @@ namespace System.Windows.Forms
             windowbody.Expand = true;
             windowbody.Hexpand = true;
             windowbody.Vexpand = true;
-           
+
 
             _ObjectCollection = new ObjectCollection(this, _body);
             base.Control.WindowPosition = Gtk.WindowPosition.Center;
@@ -70,7 +70,7 @@ namespace System.Windows.Forms
 
             base.Control.Shown += Control_Shown;
             base.Control.DeleteEvent += Control_DeleteEvent;
- 
+
             WindowBackgroundImage.MarginStart = 0;
             WindowBackgroundImage.MarginTop = 0;
             WindowBackgroundImage.Valign = Gtk.Align.Fill;
@@ -80,11 +80,12 @@ namespace System.Windows.Forms
             WindowBackgroundImage.Vexpand = true;
             WindowBackgroundImage.Drawn += Bg_Drawn;
 
-            windowbody.Put(WindowBackgroundImage,0,0);
-            windowbody.Put(scrollwindow,0,0);
+            windowbody.Put(WindowBackgroundImage, 0, 0);
+            windowbody.Put(scrollwindow, 0, 0);
             base.Control.Resizable = false;
+            this.Site = new FormSite(this);
         }
-
+        public override ISite Site { get; set; }
         private void Control_DeleteEvent(object o, DeleteEventArgs args)
         {
             if (FormClosing != null)
@@ -179,8 +180,8 @@ namespace System.Windows.Forms
                     if (dock != null)
                     {
                         string dockStyle = dock.ToString();
-                        int widthIncrement = window.AllocatedWidth - window.DefaultSize.Width - 2;
-                        int heightIncrement = window.AllocatedHeight - window.DefaultSize.Height - 2;
+                        int widthIncrement = window.AllocatedWidth - window.DefaultSize.Width;
+                        int heightIncrement = window.AllocatedHeight - window.DefaultSize.Height;
                         if (gtkPaned != null)
                         {
                             if (gtkPaned.Orientation == Gtk.Orientation.Vertical)
@@ -188,8 +189,8 @@ namespace System.Windows.Forms
                             else
                                 widthIncrement = gtkPaned.Child1.AllocatedWidth - gtkPaned.Child1.WidthRequest;
                         }
-                        int width = parent.WidthRequest > 0 ? parent.WidthRequest : parent.AllocatedWidth - 3;
-                        int height = parent.HeightRequest > 0 ? parent.HeightRequest : parent.AllocatedHeight - 3;
+                        int width = (parent.WidthRequest > 0 ? parent.WidthRequest : parent.AllocatedWidth) - 3;
+                        int height = (parent.HeightRequest > 0 ? parent.HeightRequest : parent.AllocatedHeight) - 3;
  
                         if (dockStyle == DockStyle.Top.ToString())
                         {
@@ -451,7 +452,9 @@ namespace System.Windows.Forms
 
         public override ObjectCollection Controls { get { return _ObjectCollection; } }
 
-
+        public bool MaximizeBox { get; set; }
+        public bool MinimizeBox { get; set; }
+        public double Opacity { get { return base.Control.Opacity; } set { base.Control.Opacity = value; } }
         public override void SuspendLayout()
         {
             _Created = false;
@@ -494,6 +497,26 @@ namespace System.Windows.Forms
 
     public class BindingContext : ContextBoundObject
     {
+    }
+    public class FormSite : ISite
+    {
+        private Form form;
+        public FormSite(Form form)
+        {
+            this.form = form;
+        }
+        public IComponent Component => this.form;
+
+        public IContainer Container => throw new NotImplementedException();
+
+        public bool DesignMode => false;
+
+        public string Name { get => form.Text; set { } }
+
+        public object GetService(Type serviceType)
+        {
+            return Activator.CreateInstance(serviceType);
+        }
     }
 }
 

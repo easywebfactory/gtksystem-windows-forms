@@ -15,7 +15,6 @@ namespace System.Windows.Forms
     {
         public CheckBox() {
             Widget.StyleContext.AddClass("CheckBox");
-            Widget.StyleContext.AddClass("BorderRadiusStyle");
         }
 
         public override string Text { get { return base.Control.Label; } set { base.Control.Label = value; } }

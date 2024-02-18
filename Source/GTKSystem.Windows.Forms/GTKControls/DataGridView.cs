@@ -32,8 +32,6 @@ namespace System.Windows.Forms
         public DataGridView():base()
         {
             Widget.StyleContext.AddClass("DataGridView");
-            Widget.StyleContext.AddClass("BorderRadiusStyle");
-
             _treeView = new Gtk.TreeView();
             _treeView.Valign = Gtk.Align.Fill;
             _treeView.Halign = Gtk.Align.Fill;
@@ -56,10 +54,13 @@ namespace System.Windows.Forms
 
         private void _treeView_Realized(object sender, EventArgs e)
         {
-            _store = new Gtk.TreeStore(Array.ConvertAll(_treeView.Columns, o => typeof(CellValue)));
-            _treeView.Model = _store;
-            updateListStore();
-            _columns.Invalidate();
+            if (_treeView.Columns.Length > 0)
+            {
+                _store = new Gtk.TreeStore(Array.ConvertAll(_treeView.Columns, o => typeof(CellValue)));
+                _treeView.Model = _store;
+                updateListStore();
+                _columns.Invalidate();
+            }
         }
 
         private void DataGridView_RowActivated(object o, Gtk.RowActivatedArgs args)
@@ -288,11 +289,14 @@ namespace System.Windows.Forms
                     updateListStore();
                 }
             }
-           
         }
         private void updateListStore()
         {
-            _store.Clear();
+            if (_store != null)
+            {
+                _store.Clear();
+            }
+
             if (_DataSource == null)
             {
             }
@@ -305,6 +309,7 @@ namespace System.Windows.Forms
                 loadListSource();
             }
         }
+
         private void loadDataTableSource()
         {
             DataTable dt = (DataTable)_DataSource;
@@ -317,6 +322,13 @@ namespace System.Windows.Forms
                     else
                         Columns.Add(new DataGridViewColumn() { Name = col.ColumnName, HeaderText = col.ColumnName, ValueType = col.DataType });
                 }
+                if (_store != null)
+                {
+                    _store.Clear();
+                }
+                _store = new Gtk.TreeStore(Array.ConvertAll(_treeView.Columns, o => typeof(CellValue)));
+                _treeView.Model = _store;
+                _columns.Invalidate();
             }
             int ncolumns = Columns.Count;
             if (ncolumns > 0)
@@ -346,6 +358,7 @@ namespace System.Windows.Forms
                 }
             }
         }
+
         private void loadListSource()
         {
             Type _type = _DataSource.GetType();
@@ -362,7 +375,15 @@ namespace System.Windows.Forms
                         else
                             Columns.Add(new DataGridViewColumn() { Name = pro.Name, HeaderText = pro.Name, ValueType = pro.PropertyType });
                     }
+                    if (_store != null)
+                    {
+                        _store.Clear();
+                    }
+                    _store = new Gtk.TreeStore(Array.ConvertAll(_treeView.Columns, o => typeof(CellValue)));
+                    _treeView.Model = _store;
+                    _columns.Invalidate();
                 }
+
                 int ncolumns = Columns.Count;
                 if (ncolumns > 0)
                 {
@@ -442,10 +463,6 @@ namespace System.Windows.Forms
         {
             base.Add(column);
             _treeview.AppendColumn(column);
-            if (_treeview.IsRealized && __owner.Visible)
-            {
-                Invalidate();
-            }
         }
         public new void AddRange(IEnumerable<DataGridViewColumn> columns)
         {
@@ -454,10 +471,6 @@ namespace System.Windows.Forms
                 _treeview.AppendColumn(column);
             }
             base.AddRange(columns);
-            if(_treeview.IsRealized && __owner.Visible)
-            {
-                Invalidate();
-            }
         }
         public new void Clear()
         {

@@ -16,7 +16,6 @@ namespace System.Windows.Forms
         public MonthCalendar():base()
         {
             Widget.StyleContext.AddClass("MonthCalendar");
-            Widget.StyleContext.AddClass("BorderRadiusStyle");
             base.Control.DaySelected += MonthCalendar_DaySelected;
         }
 

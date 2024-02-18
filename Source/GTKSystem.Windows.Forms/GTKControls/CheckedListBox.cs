@@ -25,16 +25,18 @@ namespace System.Windows.Forms
         {
             this.BackColor = Drawing.Color.White;
             Widget.StyleContext.AddClass("CheckedListBox");
-            Widget.StyleContext.AddClass("BorderRadiusStyle");
 
             _flow = new Gtk.FlowBox();
-            // _flow.MaxChildrenPerLine = 3u;
+            _flow.Orientation = Gtk.Orientation.Horizontal;
+            //_flow.MaxChildrenPerLine = 3u;
+            //_flow.MinChildrenPerLine = 2u;
             _flow.Halign = Gtk.Align.Start;
             _flow.Valign = Gtk.Align.Start;
-            _flow.Hexpand = true;
-            _flow.Vexpand = true;
-            _items = new ObjectCollection(this, _flow);
+            //_flow.Hexpand = true;
+            //_flow.Vexpand = true;
+            _items = new ObjectCollection(_flow);
             _flow.ChildActivated += Control_ChildActivated;
+            _flow.Realized += _flow_Realized;
             Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
             scrolledWindow.Halign = Gtk.Align.Fill;
             scrolledWindow.Valign = Gtk.Align.Fill;
@@ -42,6 +44,14 @@ namespace System.Windows.Forms
             scrolledWindow.Vexpand = true;
             scrolledWindow.Child = _flow;
             this.Control.Child = scrolledWindow;
+        }
+
+        private void _flow_Realized(object sender, EventArgs e)
+        {
+            foreach(var item in _items)
+            {
+                AddItem(item, false, -1);
+            }
         }
 
         private void Control_ChildActivated(object o, Gtk.ChildActivatedArgs args)
@@ -55,9 +65,13 @@ namespace System.Windows.Forms
         }
 
         public int ColumnWidth { get; set; } = 160;
-        public bool MultiColumn { 
+        public bool MultiColumn { get; set; }
+        public bool MultiColumn1
+        {
             get { return _flow.Orientation == Gtk.Orientation.Vertical; }
-            set { _flow.Orientation = value == true ? Gtk.Orientation.Vertical : Gtk.Orientation.Horizontal;   } }
+            set { _flow.Orientation = value == true ? Gtk.Orientation.Vertical : Gtk.Orientation.Horizontal; }
+        }
+
         public bool HorizontalScrollbar { get; set; }
         public bool FormattingEnabled { get; set; }
         public int ItemHeight { get; set; }
@@ -112,13 +126,61 @@ namespace System.Windows.Forms
         public event ItemCheckEventHandler ItemCheck;
         public event EventHandler SelectedIndexChanged;
         public event EventHandler SelectedValueChanged;
+        internal void AddItem(object item, bool isChecked, int position)
+        {
+            Gtk.CheckButton box = new Gtk.CheckButton();
+            box.Label = " ";// item.ToString();
+            box.Active = isChecked;
+            box.WidthRequest = 20;
+            box.Halign = Gtk.Align.Start;
+            box.Valign = Gtk.Align.Start;
+            box.Toggled += (object sender, EventArgs e) =>
+            {
+                Gtk.CheckButton box = (Gtk.CheckButton)sender;
+                Gtk.FlowBoxChild item = box.Parent.Parent as Gtk.FlowBoxChild;
+                if (this.ItemCheck != null)
+                    this.ItemCheck(item.TooltipText, new ItemCheckEventArgs(item.Index, box.Active == true ? CheckState.Checked : CheckState.Unchecked, box.Active == false ? CheckState.Checked : CheckState.Unchecked));
+                if (this.CheckOnClick == true)
+                    this._flow.SelectChild(item);
+            };
+            Gtk.Box hBox = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
+            hBox.Add(box);
+            hBox.Add(new Gtk.Label(item.ToString()) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, WidthRequest = this.ColumnWidth, Ellipsize=EllipsizeMode.End }); ;
 
+            Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
+            boxitem.HeightRequest = this.ItemHeight;
+            if (this.MultiColumn)
+            {
+                boxitem.WidthRequest = this.ColumnWidth;
+                this._flow.MinChildrenPerLine = Convert.ToUInt32(this.Width / this.ColumnWidth);
+                this._flow.MaxChildrenPerLine = Convert.ToUInt32(this.Width / this.ColumnWidth);
+            }
+            boxitem.Valign = Gtk.Align.Fill;
+            boxitem.Halign = Gtk.Align.Fill;
+            boxitem.TooltipText = item.ToString();
+            boxitem.Add(hBox);
+            if (position < 0)
+            {
+                this._flow.Add(boxitem);
+                if (this.Control.IsRealized)
+                {
+                    this.Control.ShowAll();
+                }
+            }
+            else
+            {
+                this._flow.Insert(boxitem, position);
+                if (this.Control.IsRealized)
+                {
+                    this.Control.ShowAll();
+                }
+            }
+        }
         public class ObjectCollection : ArrayList
         {
-            private CheckedListBox __owner;//CheckedListBox
-            public ObjectCollection(CheckedListBox owner,Gtk.Container ownerContainer) //: base(owner, ownerContainer)
+            public ObjectCollection(Gtk.Container ownerContainer)
             {
-                __owner = owner;
+
             }
             public override int Add(object value)
             {
@@ -136,53 +198,13 @@ namespace System.Windows.Forms
 
             public int AddCore(object item, bool isChecked, int position)
             {
-                Gtk.CheckButton box = new Gtk.CheckButton();
-                box.Label = " ";// item.ToString();
-                box.Active = isChecked;
-                box.WidthRequest = 20;
-                box.Halign = Gtk.Align.Start;
-                box.Valign = Gtk.Align.Start;
-                box.Toggled += (object sender, EventArgs e) =>
-                {
-                    Gtk.CheckButton box = (Gtk.CheckButton)sender;
-                    Gtk.FlowBoxChild item = box.Parent.Parent as Gtk.FlowBoxChild;
-                    if (__owner.ItemCheck != null)
-                        __owner.ItemCheck(item.TooltipText, new ItemCheckEventArgs(item.Index, box.Active == true ? CheckState.Checked : CheckState.Unchecked, box.Active == false ? CheckState.Checked : CheckState.Unchecked));
-                    if (__owner.CheckOnClick == true)
-                        __owner._flow.SelectChild(item);
-                };
-                Gtk.Box hBox = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
-                hBox.Add(box);
-                hBox.Add(new Gtk.Label(item.ToString()) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start }); ;
-
-                Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
-                boxitem.HeightRequest = __owner.ItemHeight;
-                if (__owner.MultiColumn)
-                {
-                    boxitem.WidthRequest = __owner.ColumnWidth;
-                    __owner._flow.MaxChildrenPerLine = Convert.ToUInt32(__owner.Width/ __owner.ColumnWidth);
-                }
-                boxitem.Valign = Gtk.Align.Fill;
-                boxitem.Halign = Gtk.Align.Fill;
-                boxitem.TooltipText = item.ToString();
-                boxitem.Add(hBox);
                 if (position < 0)
                 {
-                    __owner._flow.Add(boxitem);
-                    if (__owner.Control.IsRealized)
-                    {
-                        __owner.Control.ShowAll();
-                    }
                     return base.Add(item);
                 }
                 else
                 {
-                    __owner._flow.Insert(boxitem, position);
                     base.Insert(position, item);
-                    if (__owner.Control.IsRealized)
-                    {
-                        __owner.Control.ShowAll();
-                    }
                     return position;
                 }
             }

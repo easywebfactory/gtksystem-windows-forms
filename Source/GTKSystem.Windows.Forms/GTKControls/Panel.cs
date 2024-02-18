@@ -18,7 +18,7 @@ namespace System.Windows.Forms
     [DesignerCategory("Component")]
     public partial class Panel : WidgetContainerControl<Gtk.Viewport>
     {
-        private Gtk.Layout contaner = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
+        private Gtk.Layout contaner = new Gtk.Layout(new Gtk.Adjustment(1,1,1000,1,1,10), new Gtk.Adjustment(1, 1, 1000, 1, 1, 10));
         private ControlCollection _controls;
 
         public Panel() : base()
@@ -27,7 +27,7 @@ namespace System.Windows.Forms
             base.Control.MarginStart = 0;
             base.Control.MarginTop = 0;
             base.Control.ShadowType = Gtk.ShadowType.In;
-            base.Control.BorderWidth = 1;
+            base.Control.BorderWidth = 0;
 
             contaner.MarginStart = 0;
             contaner.MarginTop = 0;

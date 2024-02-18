@@ -5,38 +5,50 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using Gtk;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class RichTextBox : WidgetControl<Gtk.TextView>
+    public partial class RichTextBox : WidgetControl<Gtk.Viewport>
     {
-        public RichTextBox()
+        private Gtk.TextView textView = new Gtk.TextView();
+        public RichTextBox():base()
         {
             Widget.StyleContext.AddClass("RichTextBox");
-            Widget.StyleContext.AddClass("BorderRadiusStyle");
-            base.Control.BorderWidth = 1;
-            base.Control.WrapMode = Gtk.WrapMode.Char;
+            textView.BorderWidth = 1;
+            textView.WrapMode = Gtk.WrapMode.Char;
+            textView.Halign = Gtk.Align.Fill;
+            textView.Valign = Gtk.Align.Fill;
+            textView.Expand = true;
+            Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
+            scrolledWindow.Child = textView;
+            this.Control.Child = scrolledWindow;
         }
-
-        public override string Text { get => base.Control.Buffer.Text; set => base.Control.Buffer.Text = value; }
+        protected override void SetStyle(Widget widget)
+        {
+            base.SetStyle(textView);
+        }
+        public override string Text { get => textView.Buffer.Text; set => textView.Buffer.Text = value; }
 
         public override event EventHandler TextChanged
         {
-            add { base.Control.Buffer.Changed += (object o, EventArgs args) => { value.Invoke(this, args); }; }
-            remove { base.Control.Buffer.Changed -= (object o, EventArgs args) => { value.Invoke(this, args); }; }
+            add { textView.Buffer.Changed += (object o, EventArgs args) => { value.Invoke(this, args); }; }
+            remove { textView.Buffer.Changed -= (object o, EventArgs args) => { value.Invoke(this, args); }; }
         }
 
         public void AppendText(string text)
         {
-            var enditer = base.Control.Buffer.EndIter;
-            base.Control.Buffer.Insert(ref enditer, text);
+            var enditer = textView.Buffer.EndIter;
+            textView.Buffer.Insert(ref enditer, text);
         }
 
         public string[] Lines
         {
-            get { return base.Control.Buffer.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); }
+            get { return textView.Buffer.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); }
         }
+        public override Color BackColor { get => base.BackColor; set => base.BackColor = value; }
     }
 }

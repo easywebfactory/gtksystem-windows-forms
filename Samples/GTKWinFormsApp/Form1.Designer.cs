@@ -37,10 +37,10 @@ namespace GTKWinFormsApp
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            TreeNode treeNode1 = new TreeNode("Node2");
-            TreeNode treeNode2 = new TreeNode("Node3");
-            TreeNode treeNode3 = new TreeNode("Node0", new TreeNode[] { treeNode1, treeNode2 });
-            TreeNode treeNode4 = new TreeNode("Node1");
+            TreeNode treeNode5 = new TreeNode("Node2");
+            TreeNode treeNode6 = new TreeNode("Node3");
+            TreeNode treeNode7 = new TreeNode("Node0", new TreeNode[] { treeNode5, treeNode6 });
+            TreeNode treeNode8 = new TreeNode("Node1");
             button1 = new Button();
             comboBox1 = new ComboBox();
             textBox1 = new TextBox();
@@ -424,7 +424,7 @@ namespace GTKWinFormsApp
             tabPage2.Margin = new Padding(4);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(4);
-            tabPage2.Size = new System.Drawing.Size(1076, 532);
+            tabPage2.Size = new System.Drawing.Size(1331, 277);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "容器类表格";
             tabPage2.UseVisualStyleBackColor = true;
@@ -584,15 +584,15 @@ namespace GTKWinFormsApp
             treeView1.Location = new System.Drawing.Point(127, 66);
             treeView1.Margin = new Padding(4);
             treeView1.Name = "treeView1";
-            treeNode1.Name = "Node2";
-            treeNode1.Text = "Node2";
-            treeNode2.Name = "Node3";
-            treeNode2.Text = "Node3";
-            treeNode3.Name = "Node0";
-            treeNode3.Text = "Node0";
-            treeNode4.Name = "Node1";
-            treeNode4.Text = "Node1";
-            treeView1.Nodes.AddRange(new TreeNode[] { treeNode3, treeNode4 });
+            treeNode5.Name = "Node2";
+            treeNode5.Text = "Node2";
+            treeNode6.Name = "Node3";
+            treeNode6.Text = "Node3";
+            treeNode7.Name = "Node0";
+            treeNode7.Text = "Node0";
+            treeNode8.Name = "Node1";
+            treeNode8.Text = "Node1";
+            treeView1.Nodes.AddRange(new TreeNode[] { treeNode7, treeNode8 });
             treeView1.Size = new System.Drawing.Size(154, 113);
             treeView1.TabIndex = 4;
             treeView1.AfterCollapse += treeView1_AfterCollapse;
@@ -719,14 +719,13 @@ namespace GTKWinFormsApp
             // 
             checkedListBox1.CheckOnClick = true;
             checkedListBox1.ColumnWidth = 100;
-            checkedListBox1.Dock = DockStyle.Right;
             checkedListBox1.FormattingEnabled = true;
-            checkedListBox1.Items.AddRange(new object[] { "3232", "dfdf", "ssss", "ssssssd", "ffffff", "gggggggg", "gf333", "sssddd" });
-            checkedListBox1.Location = new System.Drawing.Point(1206, 0);
+            checkedListBox1.Items.AddRange(new object[] { "3232", "dfdf", "ssss", "ssssssdddddddddddddd", "ffffff", "gggggggg", "gf333", "sssddd" });
+            checkedListBox1.Location = new System.Drawing.Point(492, 29);
             checkedListBox1.Margin = new Padding(4);
             checkedListBox1.MultiColumn = true;
             checkedListBox1.Name = "checkedListBox1";
-            checkedListBox1.Size = new System.Drawing.Size(133, 250);
+            checkedListBox1.Size = new System.Drawing.Size(241, 92);
             checkedListBox1.TabIndex = 13;
             checkedListBox1.ItemCheck += checkedListBox1_ItemCheck;
             checkedListBox1.SelectedValueChanged += checkedListBox1_SelectedValueChanged;
@@ -780,7 +779,10 @@ namespace GTKWinFormsApp
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Margin = new Padding(4);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "Form1";
+            this.Opacity = 0.5D;
             Text = "C# winform gtk效果";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox1.ResumeLayout(false);
