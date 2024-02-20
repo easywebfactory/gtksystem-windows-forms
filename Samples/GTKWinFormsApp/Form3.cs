@@ -15,7 +15,6 @@ namespace GTKWinFormsApp
         public Form3()
         {
             InitializeComponent();
-            //this.Control.Titlebar =new Gtk.Fixed() { HeightRequest=1 };
         }
 
         private void button1_Click(object sender, EventArgs e)

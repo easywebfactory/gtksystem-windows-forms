@@ -110,32 +110,38 @@ namespace System.Windows.Forms
             }
             else if (this.MaximizeBox == false && this.MinimizeBox == true)
             {
-                this.Control.TypeHint = Gdk.WindowTypeHint.Normal;
                 this.Control.Resizable = false;
             }
             else if (this.MaximizeBox == true && this.MinimizeBox == false)
             {
-                this.Control.TypeHint = Gdk.WindowTypeHint.Normal;
                 this.Control.Resizable = true;
                 this.Control.SkipTaskbarHint = true;
             }
-            if (this.ShowIcon)
+            try
             {
-                if (this.Icon != null)
+                if (this.ShowIcon)
                 {
-                    if (this.Icon.Pixbuf != null)
-                        this.Control.Icon = this.Icon.Pixbuf;
-                    else if (this.Icon.PixbufData != null)
-                        this.Control.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
-                    else if (this.Icon.FileName != null && System.IO.File.Exists(this.Icon.FileName))
-                        this.Control.SetIconFromFile(this.Icon.FileName);
+                    if (this.Icon != null)
+                    {
+                        if (this.Icon.Pixbuf != null)
+                            this.Control.Icon = this.Icon.Pixbuf;
+                        else if (this.Icon.PixbufData != null)
+                            this.Control.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
+                        else if (this.Icon.FileName != null && System.IO.File.Exists(this.Icon.FileName))
+                            this.Control.SetIconFromFile(this.Icon.FileName);
+                        else if (this.Icon.FileName != null && System.IO.File.Exists("Resources\\" + this.Icon.FileName))
+                            this.Control.SetIconFromFile("Resources\\" + this.Icon.FileName);
+                    }
+                }
+                else
+                {
+                    System.IO.Stream sm = typeof(System.Windows.Forms.Form).Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.view-more.png");
+                    this.Control.Icon = new Gdk.Pixbuf(sm);
                 }
             }
-            else
+            catch
             {
-                this.Control.TypeHint = Gdk.WindowTypeHint.Normal;
-                System.IO.Stream sm = typeof(System.Windows.Forms.Form).Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.view-more.png");
-                this.Control.Icon = new Gdk.Pixbuf(sm);
+
             }
             this.Control.SkipTaskbarHint = this.ShowInTaskbar;
  
@@ -465,7 +471,25 @@ namespace System.Windows.Forms
         public FormBorderStyle FormBorderStyle
         {
             get { return base.Control.Resizable == true ? FormBorderStyle.Sizable : FormBorderStyle.None; }
-            set { base.Control.Resizable = value == FormBorderStyle.Sizable; }
+            set { 
+                base.Control.Resizable = value == FormBorderStyle.Sizable; 
+                if (value == FormBorderStyle.None)
+                {            
+                    this.Control.Titlebar =new Gtk.Fixed() { HeightRequest = 0 }; 
+                }
+                else if (value == FormBorderStyle.FixedToolWindow)
+                {
+                    this.Control.TypeHint = Gdk.WindowTypeHint.Dialog;
+                }
+                else if (value == FormBorderStyle.SizableToolWindow)
+                {
+                    this.Control.TypeHint = Gdk.WindowTypeHint.Dialog;
+                }
+                else
+                {
+                    this.Control.TypeHint = Gdk.WindowTypeHint.Normal;
+                }
+            }
         }
         public FormWindowState WindowState { get; set; } = FormWindowState.Normal;
         public DialogResult DialogResult { get; set; }

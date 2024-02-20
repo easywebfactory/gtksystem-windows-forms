@@ -362,8 +362,7 @@
             MainMenuStrip = menuStrip1;
             MinimizeBox = false;
             Name = "Form3";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
+            ShowInTaskbar = false;
             Text = "Form3";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();

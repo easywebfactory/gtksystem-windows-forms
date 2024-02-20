@@ -1,3 +1,4 @@
+using Gtk;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
@@ -44,6 +45,19 @@ namespace System.Windows.Forms
             set
             {
                 progressBar.Value = value;
+            }
+        }
+
+        public override Size Size
+        {
+            get
+            {
+                return base.Size;
+            }
+            set
+            {
+                base.Size = value;
+                progressBar.SetSizeRequest(value.Width, value.Height);
             }
         }
         public void Increment(int value)

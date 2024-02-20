@@ -1,8 +1,8 @@
-{
+﻿{
   "runtimeOptions": {
     "tfm": "net8.0",
     "framework": {
-      "name": "Microsoft.NETCore.App",
+      "name":"Microsoft.WindowsDesktop.App",
       "version": "8.0.0"
     },
     "additionalProbingPaths": [
