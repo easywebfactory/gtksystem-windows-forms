@@ -166,8 +166,9 @@ namespace System.Windows.Forms
             }
         }
 
-        public void CellValueChanagedHandler(int column, int row)
+        internal void CellValueChanagedHandler(int column, int row, CellValue val)
         {
+            _rows[row].Cells[column].Value = val?.Text;
             if (CellValueChanged != null)
             {
                 CellValueChanged(this, new DataGridViewCellEventArgs(column, row));
@@ -461,6 +462,7 @@ namespace System.Windows.Forms
         }
         public new void Add(DataGridViewColumn column)
         {
+            column.DataGridView = __owner;
             base.Add(column);
             _treeview.AppendColumn(column);
         }
@@ -468,6 +470,7 @@ namespace System.Windows.Forms
         {
             foreach (DataGridViewColumn column in columns)
             {
+                column.DataGridView = __owner;
                 _treeview.AppendColumn(column);
             }
             base.AddRange(columns);

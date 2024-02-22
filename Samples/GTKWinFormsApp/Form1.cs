@@ -212,6 +212,10 @@ namespace GTKWinFormsApp
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             Console.WriteLine("dataGridView1_CellValueChanged");
+            foreach(DataGridViewRow row in dataGridView1.Rows)
+            {
+                Console.WriteLine(row.Cells[1].Value);
+            }
         }
 
         private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)

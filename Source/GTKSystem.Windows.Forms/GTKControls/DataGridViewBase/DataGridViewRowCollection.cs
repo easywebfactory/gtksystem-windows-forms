@@ -23,6 +23,8 @@ namespace System.Windows.Forms
         private void AddGtkStore(params DataGridViewRow[] dataGridViewRows)
         {
             foreach (DataGridViewRow row in dataGridViewRows)
+            {
+                row.DataGridView = dataGridView;
                 AddGtkStore(row.Cells.ConvertAll(c =>
                 {
                     if (row.DefaultCellStyle != null && row.DefaultCellStyle.BackColor.Name != "0" && row.DefaultCellStyle.BackColor.Name != "")
@@ -30,13 +32,6 @@ namespace System.Windows.Forms
                     else
                         return new CellValue() { Text = Convert.ToString(c.Value) };
                 }).ToArray());
-        }
-        private void AddGtkStore()
-        {
-            Gtk.TreeIter iter = dataGridView.Store.AppendNode();
-            for (int i = 0; i < dataGridView.Store.NColumns; i++)
-            {
-                dataGridView.Store.SetValue(iter, i, new CellValue() { Text = "" });
             }
         }
         private void InsertGtkStore(int rowIndex, params CellValue[] values)
@@ -50,7 +45,7 @@ namespace System.Windows.Forms
             {
                 InsertGtkStore(idx, row.Cells.ConvertAll(c =>
                 {
-                    if (row.DefaultCellStyle != null && row.DefaultCellStyle.BackColor != null)
+                    if (row.DefaultCellStyle != null && row.DefaultCellStyle.BackColor.Name != "0")
                         return new CellValue() { Text = Convert.ToString(c.Value), Background = row.DefaultCellStyle.BackColor };
                     else
                         return new CellValue() { Text = Convert.ToString(c.Value) };
@@ -87,8 +82,9 @@ namespace System.Windows.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual int Add()
         {
-            AddGtkStore();
-            items.Add(new DataGridViewRow() { Index = items.Count });
+            DataGridViewRow row = new DataGridViewRow() { Index = items.Count };
+            AddGtkStore(row);
+            items.Add(row);
             return 1;
         }
         public virtual int Add(DataGridViewRow dataGridViewRow)
@@ -115,8 +111,9 @@ namespace System.Windows.Forms
         {
             for (int i = 0; i < count; i++)
             {
-                AddGtkStore();
-                items.Add(new DataGridViewRow() { Index = items.Count });
+                DataGridViewRow row = new DataGridViewRow() { Index = items.Count };
+                AddGtkStore(row);
+                items.Add(row);
             }
 
             return count;

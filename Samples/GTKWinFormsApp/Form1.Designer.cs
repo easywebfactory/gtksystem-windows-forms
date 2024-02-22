@@ -45,12 +45,6 @@ namespace GTKWinFormsApp
             comboBox1 = new ComboBox();
             textBox1 = new TextBox();
             dataGridView1 = new DataGridView();
-            ID = new DataGridViewTextBoxColumn();
-            State = new DataGridViewCheckBoxColumn();
-            Title = new DataGridViewTextBoxColumn();
-            CreateDate = new DataGridViewTextBoxColumn();
-            Operate = new DataGridViewButtonColumn();
-            PIC = new DataGridViewImageColumn();
             groupBox1 = new GroupBox();
             button7 = new Button();
             checkBox2 = new CheckBox();
@@ -98,6 +92,12 @@ namespace GTKWinFormsApp
             checkedListBox1 = new CheckedListBox();
             splitContainer1 = new SplitContainer();
             pictureBox2 = new PictureBox();
+            ID = new DataGridViewTextBoxColumn();
+            State = new DataGridViewCheckBoxColumn();
+            Title = new DataGridViewTextBoxColumn();
+            CreateDate = new DataGridViewComboBoxColumn();
+            Operate = new DataGridViewButtonColumn();
+            PIC = new DataGridViewImageColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox1.SuspendLayout();
             tabControl1.SuspendLayout();
@@ -177,53 +177,6 @@ namespace GTKWinFormsApp
             dataGridView1.RowEnter += dataGridView1_RowEnter;
             dataGridView1.RowLeave += dataGridView1_RowLeave;
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
-            // 
-            // ID
-            // 
-            ID.HeaderText = "ID";
-            ID.MinimumWidth = 6;
-            ID.Name = "ID";
-            ID.SortMode = DataGridViewColumnSortMode.NotSortable;
-            ID.Width = 125;
-            // 
-            // State
-            // 
-            State.HeaderText = "State";
-            State.MinimumWidth = 6;
-            State.Name = "State";
-            State.Width = 125;
-            // 
-            // Title
-            // 
-            Title.HeaderText = "Title";
-            Title.MinimumWidth = 6;
-            Title.Name = "Title";
-            Title.Resizable = DataGridViewTriState.True;
-            Title.Width = 125;
-            // 
-            // CreateDate
-            // 
-            CreateDate.HeaderText = "CreateDate";
-            CreateDate.MinimumWidth = 6;
-            CreateDate.Name = "CreateDate";
-            CreateDate.ReadOnly = true;
-            CreateDate.Width = 125;
-            // 
-            // Operate
-            // 
-            Operate.HeaderText = "Operate";
-            Operate.MinimumWidth = 6;
-            Operate.Name = "Operate";
-            Operate.ReadOnly = true;
-            Operate.Width = 125;
-            // 
-            // PIC
-            // 
-            PIC.HeaderText = "PIC";
-            PIC.MinimumWidth = 6;
-            PIC.Name = "PIC";
-            PIC.ReadOnly = true;
-            PIC.Width = 125;
             // 
             // groupBox1
             // 
@@ -765,6 +718,57 @@ namespace GTKWinFormsApp
             pictureBox2.TabStop = false;
             pictureBox2.Paint += pictureBox2_Paint;
             // 
+            // ID
+            // 
+            ID.HeaderText = "ID";
+            ID.MinimumWidth = 6;
+            ID.Name = "ID";
+            ID.ReadOnly = true;
+            ID.SortMode = DataGridViewColumnSortMode.NotSortable;
+            ID.Width = 125;
+            // 
+            // State
+            // 
+            State.HeaderText = "State";
+            State.MinimumWidth = 6;
+            State.Name = "State";
+            State.Resizable = DataGridViewTriState.False;
+            State.Width = 125;
+            // 
+            // Title
+            // 
+            Title.HeaderText = "Title";
+            Title.MinimumWidth = 6;
+            Title.Name = "Title";
+            Title.Resizable = DataGridViewTriState.True;
+            Title.Width = 125;
+            // 
+            // CreateDate
+            // 
+            CreateDate.HeaderText = "CreateDate";
+            CreateDate.Items.AddRange(new object[] { "2012-09-12 12:32:33", "2012-09-13 12:32:33", "2012-09-14 12:32:33" });
+            CreateDate.MinimumWidth = 6;
+            CreateDate.Name = "CreateDate";
+            CreateDate.Resizable = DataGridViewTriState.True;
+            CreateDate.SortMode = DataGridViewColumnSortMode.Automatic;
+            CreateDate.Width = 125;
+            // 
+            // Operate
+            // 
+            Operate.HeaderText = "Operate";
+            Operate.MinimumWidth = 6;
+            Operate.Name = "Operate";
+            Operate.ReadOnly = true;
+            Operate.Width = 125;
+            // 
+            // PIC
+            // 
+            PIC.HeaderText = "PIC";
+            PIC.MinimumWidth = 6;
+            PIC.Name = "PIC";
+            PIC.ReadOnly = true;
+            PIC.Width = 125;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -782,7 +786,7 @@ namespace GTKWinFormsApp
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "Form1";
-            this.Opacity = 0.5D;
+            Opacity = 0.5D;
             Text = "C# winform gtk效果";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox1.ResumeLayout(false);
@@ -851,12 +855,6 @@ namespace GTKWinFormsApp
         private ToolStripMenuItem 三级菜单1ToolStripMenuItem;
         private ToolStripMenuItem 二级菜单1ToolStripMenuItem;
         private SplitContainer splitContainer1;
-        private DataGridViewTextBoxColumn ID;
-        private DataGridViewCheckBoxColumn State;
-        private DataGridViewTextBoxColumn Title;
-        private DataGridViewTextBoxColumn CreateDate;
-        private DataGridViewButtonColumn Operate;
-        private DataGridViewImageColumn PIC;
         private PictureBox pictureBox2;
         private ListBox listBox1;
         private FlowLayoutPanel flowLayoutPanel1;
@@ -870,6 +868,12 @@ namespace GTKWinFormsApp
         private Button button6;
         private Label label6;
         private Button button7;
+        private DataGridViewTextBoxColumn ID;
+        private DataGridViewCheckBoxColumn State;
+        private DataGridViewTextBoxColumn Title;
+        private DataGridViewComboBoxColumn CreateDate;
+        private DataGridViewButtonColumn Operate;
+        private DataGridViewImageColumn PIC;
     }
 }
 

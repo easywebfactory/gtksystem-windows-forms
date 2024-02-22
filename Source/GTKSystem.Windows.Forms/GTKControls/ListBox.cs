@@ -794,12 +794,12 @@ namespace System.Windows.Forms
             {
                 _owner = owner;
             }
-            public ObjectCollection(ListBox owner, ObjectCollection value)
-            {
-                _owner = owner;
-                foreach (object item in value)
-                    Add(item);
-            }
+            //public ObjectCollection(ListBox owner, ObjectCollection value)
+            //{
+            //    _owner = owner;
+            //    foreach (object item in value)
+            //        Add(item);
+            //}
 
             public ObjectCollection(ListBox owner, object[] value)
             {
@@ -836,11 +836,11 @@ namespace System.Windows.Forms
                 return AddCore(item, -1);
             }
 
-            public void AddRange(ObjectCollection value)
-            {
-                foreach (object item in value)
-                    Add(item);
-            }
+            //public void AddRange(ObjectCollection value)
+            //{
+            //    foreach (object item in value)
+            //        Add(item);
+            //}
 
             public void AddRange(object[] items)
             {

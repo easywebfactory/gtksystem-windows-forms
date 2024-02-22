@@ -1,0 +1,15 @@
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Release\net8.0\win-x64\GTKSystem.Windows.Forms.deps.json
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Release\net8.0\win-x64\GTKSystem.Windows.Forms.dll
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\bin\Release\net8.0\win-x64\GTKSystem.Windows.Forms.pdb
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\net8.0\win-x64\GTKSystem.Windows.Forms.csproj.AssemblyReference.cache
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\net8.0\win-x64\FxResources.System.Resources.Extensions.SR.resources
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\net8.0\win-x64\GTKSystem.Windows.Forms.Properties.Resources.resources
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\net8.0\win-x64\GTKSystem.Windows.Forms.csproj.GenerateResource.cache
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\net8.0\win-x64\GTKSystem.Windows.Forms.GeneratedMSBuildEditorConfig.editorconfig
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\net8.0\win-x64\GTKSystem.Windows.Forms.AssemblyInfoInputs.cache
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\net8.0\win-x64\GTKSystem.Windows.Forms.AssemblyInfo.cs
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\net8.0\win-x64\GTKSystem.Windows.Forms.csproj.CoreCompileInputs.cache
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\net8.0\win-x64\GTKSystem.Windows.Forms.dll
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\net8.0\win-x64\refint\GTKSystem.Windows.Forms.dll
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\net8.0\win-x64\GTKSystem.Windows.Forms.pdb
+F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Release\net8.0\win-x64\ref\GTKSystem.Windows.Forms.dll

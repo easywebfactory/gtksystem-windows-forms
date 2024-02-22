@@ -69,14 +69,16 @@ GTKWinFormsApp\obj\Release\net6.0\GTKWinFormsApp.designer.runtimeconfig.json
     },
 
 ```
+
 #### demo效果
 ![输入图片说明](/pic/run.jpg)
-#### mac运行效果
-![输入图片说明](/pic/mac.png)
-#### 窗口背景
-![输入图片说明](/pic/backgroundimage.jpg)
+
 #### 工具栏菜单
 ![输入图片说明](/pic/toolstrip.jpeg)
+
+#### 窗口背景
+![输入图片说明](/pic/backgroundimage.jpg)
+
 #### 交流
 QQ群：236066073
 
@@ -85,4 +87,6 @@ QQ群：236066073
 1. https://gitee.com/easywebfactory
 2. https://github.com/easywebfactory
 
-
+#### 更新日志
+ ## 2024/2/23
+ 1. 实现和修正DataGridView单元控件数据编辑、取数功能
