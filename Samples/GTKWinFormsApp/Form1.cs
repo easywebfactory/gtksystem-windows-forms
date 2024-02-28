@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -327,8 +328,12 @@ namespace GTKWinFormsApp
             var g = e.Graphics;
             g.Clear(Color.White);
 
-            //g.DrawImage(new Bitmap(GTKWinFormsApp.Properties.Resources.timg6), new Point(0, 0));
-           // g.DrawImage(new Bitmap(GTKWinFormsApp.Properties.Resources.timg6), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
+            
+            using (MemoryStream mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6))
+            {
+                //g.DrawImage(new Bitmap(mem), new Point(0, 0));
+                g.DrawImage(new Bitmap(mem), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
+            }
             g.FillRectangle(new SolidBrush(Color.AliceBlue), new Rectangle(0, 0, 100, 50));
            // g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new Point(10, 10), new Point(50, 30));
             List<PointF> Rps = new List<PointF>();
@@ -354,6 +359,10 @@ namespace GTKWinFormsApp
 
             g.DrawString("这是Paint Graphics示例效果", new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 60);
             g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2), new Rectangle(0, 0, pictureBox2.Width, pictureBox2.Height), 60, 190);
+
+            g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), [new PointF(50,60), new PointF(100,80), new PointF(75, 100)]);
+            g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), [new PointF(75, 100), new PointF(100, 120), new PointF(120, 100)]);
+
         }
 
         private void button6_Click(object sender, EventArgs e)

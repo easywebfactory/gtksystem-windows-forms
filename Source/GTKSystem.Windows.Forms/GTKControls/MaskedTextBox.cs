@@ -19,7 +19,7 @@ namespace System.Windows.Forms
             base.Control.TextInserted += Control_TextInserted;
             base.Control.Shown += Control_Shown;
         }
-        public override string Text { get { return base.Control.Text; } set { base.Control.Text = value; } }
+        public override string Text { get { return base.Control.Text; } set { base.Control.Text = value??""; } }
         private void Control_Shown(object sender, EventArgs e)
         {
             if (_PasswordChar != '\0')
@@ -55,7 +55,8 @@ namespace System.Windows.Forms
                 {
                     if(new_text.Length > 1 || base.Control.Text.Length != correctText.Length + 1)
                     {
-                        base.Control.Text = correctText;
+                        if (correctText != null)
+                            base.Control.Text = correctText;
                     }
                     else if (correctText.Length > position && new_text.Length == 1)
                     {

@@ -23,7 +23,7 @@ namespace System.Windows.Forms
             base.Control.Valign = Gtk.Align.Start;
             base.Control.Halign = Gtk.Align.Start;
         }
-        public override string Text { get { return base.Control.Text; } set { base.Control.Text = value; } }
+        public override string Text { get { return base.Control.Text; } set { base.Control.Text = value ?? ""; } }
         public virtual char PasswordChar { get => base.Control.InvisibleChar; set { base.Control.InvisibleChar = value; } }
         public override event EventHandler TextChanged
         {

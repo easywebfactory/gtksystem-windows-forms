@@ -162,11 +162,6 @@ namespace System.Windows.Forms
             get => base.Image;
             set {
                 base.Image = value;
-                if (value != null && value.PixbufData != null)
-                {
-                    Gtk.Image ico1 = new Gtk.Image(new Gdk.Pixbuf(value.PixbufData).ScaleSimple(20, 20, Gdk.InterpType.Tiles));
-                    icoViewport.Child = ico1;
-                }
             } 
         }
 
@@ -180,37 +175,35 @@ namespace System.Windows.Forms
                     _widget.StyleContext.AddClass("ToolStripMenuItemNoChecked");
                 if (this.Checked)
                 {
-                    //checkMenuItem.Toggle();
                     checkMenuItem.Active = true;
                 }
             }
-
-            if (DisplayStyle == ToolStripItemDisplayStyle.Text)
+            try
             {
-            }
-            else if (DisplayStyle == ToolStripItemDisplayStyle.Image)
-            {
-                //label.Text = string.Empty;
-                label.Visible = false;
-                label.NoShowAll = true;
-                button.Label = string.Empty;
-               // button.Visible = false;
-               // button.NoShowAll = true;
-
-                if (Image != null && Image.PixbufData != null)
+                if (DisplayStyle == ToolStripItemDisplayStyle.Text)
                 {
-                    Gtk.Image ico1 = new Gtk.Image(new Gdk.Pixbuf(Image.PixbufData).ScaleSimple(20, 20, Gdk.InterpType.Tiles));
-                    icoViewport.Child = ico1;
+                }
+                else if (DisplayStyle == ToolStripItemDisplayStyle.Image)
+                {
+                    label.Visible = false;
+                    label.NoShowAll = true;
+                    button.Label = string.Empty;
+                    if (Image != null && Image.PixbufData != null)
+                    {
+                        Gtk.Image ico1 = new Gtk.Image(new Gdk.Pixbuf(Image.PixbufData).ScaleSimple(20, 20, Gdk.InterpType.Tiles));
+                        icoViewport.Child = ico1;
+                    }
+                }
+                else
+                {
+                    if (Image != null && Image.PixbufData != null)
+                    {
+                        Gtk.Image ico1 = new Gtk.Image(new Gdk.Pixbuf(Image.PixbufData).ScaleSimple(20, 20, Gdk.InterpType.Tiles));
+                        icoViewport.Child = ico1;
+                    }
                 }
             }
-            else
-            {
-                if (Image != null && Image.PixbufData != null)
-                {
-                    Gtk.Image ico1 = new Gtk.Image(new Gdk.Pixbuf(Image.PixbufData).ScaleSimple(20, 20, Gdk.InterpType.Tiles));
-                    icoViewport.Child = ico1;
-                }
-            }
+            catch { }
             _widget.ShowAll();
         }
         internal void UpdateStyle()

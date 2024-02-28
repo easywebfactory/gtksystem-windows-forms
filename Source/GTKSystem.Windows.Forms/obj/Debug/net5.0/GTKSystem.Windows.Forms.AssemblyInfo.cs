@@ -21,7 +21,7 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
 https://gitee.com/easywebfactory/gtksystem-windows-forms；
 	")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.3.24.7")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.3.24.7+b45756e09299f6e3725aae620fd4fd1c9345e708")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.3.24.7")]
 [assembly: System.Reflection.AssemblyProductAttribute("GTKSystem.Windows.Forms")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GTKSystem.Windows.Forms")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.3.24.7")]

@@ -12,7 +12,7 @@ namespace System.Drawing
     {
         private static readonly Color s_defaultTransparentColor = Color.LightGray;
 
-        public Bitmap(byte[] pixbuf):base(pixbuf)
+        internal Bitmap(byte[] pixbuf):base(pixbuf)
         {
             
         }

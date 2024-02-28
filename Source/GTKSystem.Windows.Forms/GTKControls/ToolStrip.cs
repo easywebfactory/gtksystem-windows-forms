@@ -17,7 +17,7 @@ namespace System.Windows.Forms
     public class ToolStrip : WidgetControl<Gtk.MenuBar>
     {
         public ToolStripItemCollection toolStripItemCollection;
-        public ToolStrip()
+        public ToolStrip() : base()
         {
             this.Control.StyleContext.AddClass("ToolStrip");
             this.Control.Hexpand = false;
@@ -29,7 +29,7 @@ namespace System.Windows.Forms
             base.Control.ActivateCurrent += ToolStripItem_Activated;
             Dock = DockStyle.Top;
         }
-        public ToolStrip(string owner)
+        public ToolStrip(string owner) : base()
         {
             this.Control.StyleContext.AddClass("ToolStrip");
             this.Control.Hexpand = false;

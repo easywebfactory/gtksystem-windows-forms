@@ -15,8 +15,8 @@ namespace System.Drawing
 	[Serializable]
 	public abstract class Image : MarshalByRefObject, IDisposable, ICloneable, ISerializable
 	{
-		#region 只取图像byte[]数据 
-        public Image(byte[] pixbuf)
+        #region 只取图像byte[]数据 
+        internal Image(byte[] pixbuf)
 		{
             PixbufData = pixbuf;
         }
