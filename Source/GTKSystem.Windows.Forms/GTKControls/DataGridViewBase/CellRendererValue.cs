@@ -1,4 +1,5 @@
-﻿using Gdk;
+﻿using Cairo;
+using Gdk;
 using GLib;
 using Gtk;
 using System;
@@ -103,7 +104,6 @@ namespace System.Windows.Forms.GtkRender
             }
         }
     }
-
     public class CellRendererButtonValue : CellRendererText
     {
         public CellRendererButtonValue()
@@ -134,8 +134,9 @@ namespace System.Windows.Forms.GtkRender
 
         protected override void OnRender(Cairo.Context cr, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
         {
-            widget.StyleContext.AddClass("GridViewCell-Button");
             widget.StyleContext.Save();
+            if (widget.StyleContext.HasClass("GridViewCell-Button") == false)
+                widget.StyleContext.AddClass("GridViewCell-Button");
             int height = cell_area.Height;
             int y = cell_area.Y;
             if (height > 36)
@@ -143,25 +144,12 @@ namespace System.Windows.Forms.GtkRender
                 y = y + (cell_area.Height - 36) / 2;
                 height = 36;
             }
-            widget.StyleContext.RenderHandle(cr, cell_area.X+3, y, cell_area.Width-6, height);
+            widget.StyleContext.RenderHandle(cr, cell_area.X + 3, y, cell_area.Width - 6, height);
             widget.StyleContext.Restore();
             widget.WidgetEvent += Widget_WidgetEvent;
-
-            if (string.IsNullOrEmpty(this.Text))
-                this.Text = "button";
-            float textleng = 0;
-            foreach (char w in this.Text)
-            {
-                if (char.IsLower(w) && char.IsLetter(w))
-                    textleng += 0.5f;
-                else if (char.IsDigit(w))
-                    textleng += 0.5f;
-                else
-                    textleng += 1f;
-            }
-            int space = (int)Math.Max(16f, cell_area.Width - textleng * 12 - 10);
-
-            base.OnRender(cr, widget, new Gdk.Rectangle(background_area.X, background_area.Y, background_area.Width, background_area.Height), new Gdk.Rectangle(cell_area.X + space/2, cell_area.Y, cell_area.Width- space, cell_area.Height), flags);
+            var textExt = cr.TextExtents(this.Text);
+            int space = (int)(Math.Max(6f, cell_area.Width - textExt.Width) / 2 - 6);
+            base.OnRender(cr, widget, new Gdk.Rectangle(background_area.X, background_area.Y, background_area.Width, background_area.Height), new Gdk.Rectangle(cell_area.X + space, cell_area.Y, cell_area.Width - space, cell_area.Height), flags);
         }
         private bool eventStarting = false;
         private void Widget_WidgetEvent(object o, WidgetEventArgs args)

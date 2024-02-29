@@ -6,6 +6,7 @@
  * date: 2024/1/3
  */
 
+using GLib;
 using Gtk;
 using System;
 using System.ComponentModel;
@@ -57,7 +58,7 @@ namespace System.Windows.Forms
         private void Widget_Drawn(object o, DrawnArgs args)
         {
             Gdk.Rectangle rec = Widget.Allocation;
-            if (Control is Gtk.Button || Control is Gtk.Image)
+            if (this.Control is Gtk.Button || this.Control is Gtk.Image)
             {
                 //由于绘画会覆盖容器内部所有子控件，不合适容器控件使用，只对button和picturebox设置背景
                 if (_BackgroundImageBytes != null)
@@ -71,7 +72,7 @@ namespace System.Windows.Forms
                             backgroundPixbuf = imagePixbuf.ScaleSimple(imagePixbuf.Width - 8, imagePixbuf.Height - 6, Gdk.InterpType.Tiles);
                         }
                         DrawBackgroundImage(args.Cr, backgroundPixbuf, rec);
-                        if (Control is Gtk.Button button)
+                        if (this.Control is Gtk.Button button)
                         {
                             button.Child.Visible = false;
                             DrawBackgroundText(args.Cr, rec);
@@ -123,17 +124,7 @@ namespace System.Windows.Forms
             if (string.IsNullOrEmpty(text) == false)
             {
                 ctx.Save();
-                float textleng = 0;
-                foreach (char w in text)
-                {
-                    if (char.IsLower(w) && char.IsLetter(w))
-                        textleng += 0.5f;
-                    else if (char.IsDigit(w))
-                        textleng += 0.5f;
-                    else
-                        textleng += 1f;
-                }
-                float textSize = 15f;
+                float textSize = 14f;
                 if (this.Font != null)
                 {
                     textSize = this.Font.Size;
@@ -142,15 +133,6 @@ namespace System.Windows.Forms
                     if (this.Font.Unit == GraphicsUnit.Inch)
                         textSize = this.Font.Size * 96;
                 }
-                var x = (int)((rec.Width - textleng * textSize) * 0.5f - 3);
-                var y = (int)((rec.Height + textSize) * 0.5f - 3);
-                if (x < 0) x = 0;
-                if (y < 0) y = 0;
-
-                ctx.Translate(x, y);
-                if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
-                    ctx.SetSourceRGBA(this.ForeColor.R / 255f, this.ForeColor.G / 255f, this.ForeColor.B / 255f, 1);
-
                 Pango.Context pangocontext = _widget.PangoContext;
                 string family = pangocontext.FontDescription.Family;
                 if (string.IsNullOrWhiteSpace(this.Font.FontFamily.Name) == false)
@@ -161,6 +143,12 @@ namespace System.Windows.Forms
                 }
                 ctx.SelectFontFace(family, this.Font.Italic ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, this.Font.Bold ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
                 ctx.SetFontSize(textSize);
+                var textExt = ctx.TextExtents(text);
+                var x = (int)((rec.Width - textExt.Width)* 0.5);
+                var y = (int)((rec.Height + textExt.Height) * 0.5f);
+                ctx.Translate(x, y);
+                if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
+                    ctx.SetSourceRGBA(this.ForeColor.R / 255f, this.ForeColor.G / 255f, this.ForeColor.B / 255f, 1);
                 ctx.ShowText(text);
                 ctx.Stroke();
                 ctx.Restore();

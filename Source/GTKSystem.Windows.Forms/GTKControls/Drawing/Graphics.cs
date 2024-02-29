@@ -800,7 +800,7 @@ namespace System.Drawing
 			{
 				this.context.Save();
                 
-                float textSize = 15f;
+                float textSize = 14f;
 				if (font != null)
 				{
 					textSize = font.Size;
@@ -809,7 +809,7 @@ namespace System.Drawing
 					if (font.Unit == GraphicsUnit.Inch)
 						textSize = font.Size * 96;
 				}
-                this.ContextTranslateWithDifference(layoutRectangle.X, layoutRectangle.Y+ textSize);
+                this.ContextTranslateWithDifference(layoutRectangle.X, layoutRectangle.Y + textSize);
                 if (brush is SolidBrush sbrush)
 				{
 					if (sbrush.Color.Name != "0")

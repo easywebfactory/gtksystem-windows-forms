@@ -14,7 +14,7 @@ namespace System.Windows.Forms
     [DesignerCategory("Component")]
     public partial class Button : WidgetControl<Gtk.Button>
     {
-        public Button() : base(new Gtk.Label())
+        public Button() : base()
         {
             Widget.StyleContext.AddClass("Button");
         }
