@@ -1,19 +1,11 @@
-﻿using GLib;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Resources;
-using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Windows.Forms;
-using System.Windows.Forms.Properties;
 using System.Xml;
 
 namespace GTKSystem.Resources

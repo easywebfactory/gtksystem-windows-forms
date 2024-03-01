@@ -1,8 +1,0 @@
-F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Debug\net5.0\GTKSystem.Windows.Forms.csproj.AssemblyReference.cache
-F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Debug\net5.0\FxResources.System.Resources.Extensions.SR.resources
-F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Debug\net5.0\GTKSystem.Windows.Forms.Properties.Resources.resources
-F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Debug\net5.0\GTKSystem.Windows.Forms.csproj.GenerateResource.cache
-F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Debug\net5.0\GTKSystem.Windows.Forms.GeneratedMSBuildEditorConfig.editorconfig
-F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Debug\net5.0\GTKSystem.Windows.Forms.AssemblyInfoInputs.cache
-F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Debug\net5.0\GTKSystem.Windows.Forms.AssemblyInfo.cs
-F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\obj\Debug\net5.0\GTKSystem.Windows.Forms.csproj.CoreCompileInputs.cache

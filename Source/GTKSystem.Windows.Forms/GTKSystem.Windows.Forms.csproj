@@ -128,10 +128,6 @@ https://gitee.com/easywebfactory/gtksystem-windows-forms；
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="obj\Debug\net8.0\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\..\README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
@@ -144,6 +140,10 @@ https://gitee.com/easywebfactory/gtksystem-windows-forms；
 
   <ItemGroup>
     <Resource Include="Resources\icons\16x16\status\image-missing.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="obj\Debug\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
