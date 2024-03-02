@@ -4,9 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Reflection;
 using System.Resources;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Windows.Forms.Design;
+using System.Xml.Serialization;
 
 namespace GTKSystem.Resources.Extensions
 {
@@ -848,13 +853,16 @@ namespace GTKSystem.Resources.Extensions
 				{
 					_store.BaseStream.Position = _typeNamePositions[typeIndex];
 					string typeName = _store.ReadString();
-					_typeTable[typeIndex] = Type.GetType(typeName.Split(',')[0], throwOnError: true);
+					if(typeName== "System.Resources.Extensions.UnknownType")
+                        _typeTable[typeIndex] = typeof(System.Windows.Forms.ImageListStreamer);
+					else
+						_typeTable[typeIndex] = Type.GetType(typeName.Split(',')[0], throwOnError: true);
 				}
 				catch (FileNotFoundException)
 				{
 					throw new NotSupportedException(SR.NotSupported_ResourceObjectSerialization);
-				}
-				finally
+                }
+                finally
 				{
 					_store.BaseStream.Position = position;
 				}
@@ -900,7 +908,8 @@ namespace GTKSystem.Resources.Extensions
 			if (_formatter == null)
 			{
 				_formatter = new BinaryFormatter();
-			}
+                _formatter.Binder = new ImageListSerializationBinder();
+            }
 			return _formatter.Deserialize(_store.BaseStream);
 			//return null;
 		}
@@ -923,7 +932,20 @@ namespace GTKSystem.Resources.Extensions
 							throw new BadImageFormatException(SR.Format(SR.BadImageFormat_ResourceDataLengthInvalid, num2));
 						}
 						long position = _store.BaseStream.Position;
-						obj = ReadBinaryFormattedObject();
+						if (type.Name == "System.Windows.Forms.ImageListStreamer")
+						{
+							var bytedata = _store.ReadBytes(num2);
+							using MemoryStream mem = new MemoryStream(bytedata);
+
+							BinaryFormatter formatter = new BinaryFormatter();
+							formatter.AssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple;
+							formatter.Binder = new ImageListSerializationBinder();
+							obj = formatter.Deserialize(mem);
+						}
+						else
+						{
+							obj = ReadBinaryFormattedObject();
+						}
 						if (type == typeof(UnknownType))
 						{
 							type = obj.GetType();
@@ -1000,5 +1022,13 @@ namespace GTKSystem.Resources.Extensions
 			}
 			return obj;
 		}
-	}
+        internal class ImageListSerializationBinder : SerializationBinder
+        {
+            public override Type BindToType(string assemblyName, string typeName)
+            {
+                return Type.GetType(typeName);
+            }
+        }
+    }
+
 }

@@ -94,7 +94,7 @@ namespace System.Windows.Forms
 
         public virtual void Add(Control control, int column, int row)
 		{
-            base.AddControl(new TableLayoutControllCell(control, new TableLayoutPanelCellPosition(column, row)));
+            base.Add(new TableLayoutControllCell(control, new TableLayoutPanelCellPosition(column, row)));
         }
 
         public class TableLayoutControllCell

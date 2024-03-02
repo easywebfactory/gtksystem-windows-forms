@@ -166,27 +166,29 @@ namespace System.Windows.Forms
             StringBuilder style = new StringBuilder();
             if (this.BackColor.Name != "Control" && this.BackColor.Name != "0")
             {
-                string color = $"#{Convert.ToString(this.BackColor.R, 16).PadLeft(2, '0')}{Convert.ToString(this.BackColor.G, 16).PadLeft(2, '0')}{Convert.ToString(this.BackColor.B, 16).PadLeft(2, '0')}";
+                string color = $"rgba({this.BackColor.R},{this.BackColor.G},{this.BackColor.B},{this.BackColor.A})";
                 style.AppendFormat("background-color:{0};background:{0};", color);
             }
             if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
             {
-                string color = $"#{Convert.ToString(this.ForeColor.R, 16).PadLeft(2, '0')}{Convert.ToString(this.ForeColor.G, 16).PadLeft(2, '0')}{Convert.ToString(this.ForeColor.B, 16).PadLeft(2, '0')}";
+                string color = $"rgba({this.ForeColor.R},{this.ForeColor.G},{this.ForeColor.B},{this.ForeColor.A})";
                 style.AppendFormat("color:{0};", color);
             }
-
             if (this.Font != null)
             {
                 Pango.AttrList attributes = new Pango.AttrList();
                 float textSize = this.Font.Size;
                 if (this.Font.Unit == GraphicsUnit.Point)
-                    textSize = this.Font.Size * 1 / 72 * 96;
-                if (this.Font.Unit == GraphicsUnit.Inch)
+                    textSize = this.Font.Size / 72 * 96;
+                else if (this.Font.Unit == GraphicsUnit.Inch)
                     textSize = this.Font.Size * 96;
 
-                style.AppendFormat("font-size:{0}px;", textSize);
+                style.AppendFormat("font-size:{0}px;", (int)textSize);
                 if (string.IsNullOrWhiteSpace(Font.FontFamily.Name) == false)
+                {
                     style.AppendFormat("font-family:\"{0}\";", Font.FontFamily.Name);
+                    attributes.Insert(new Pango.AttrFontDesc(new Pango.FontDescription() { Family = Font.FontFamily.Name, Size = (int)(textSize * Pango.Scale.PangoScale * 0.7) }));
+                }
 
                 string[] fontstyle = Font.Style.ToString().ToLower().Split(new char[] { ',', ' ' });
                 foreach (string sty in fontstyle)
@@ -212,11 +214,10 @@ namespace System.Windows.Forms
                         attributes.Insert(new Pango.AttrStrikethrough(true));
                     }
                 }
-                if(widget is Gtk.Label gtklabel)
+                if (widget is Gtk.Label gtklabel)
                 {
                     gtklabel.Attributes = attributes;
                 }
-                //widget.SetProperty("attributes", new GLib.Value(attributes));
             }
 
             StringBuilder css = new StringBuilder();

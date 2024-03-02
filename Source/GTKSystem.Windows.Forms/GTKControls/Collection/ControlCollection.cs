@@ -76,25 +76,13 @@ namespace System.Windows.Forms
         }
         public override int Add(object item)
         {
-            Control widget = (Control)item;
-            widget.Parent = __owner;
-            //__ownerControl.Add(widget.Widget);
-            //if (fixedContainer != null)
-            //    fixedContainer.Put(widget.Widget, widget.Left, widget.Top);
-            //else if (layoutContainer != null)
-            //    layoutContainer.Put(widget.Widget, widget.Left, widget.Top);
-            //else
-            //    __ownerControl.Add(widget.Widget);
+            if (item is Control control)
+                control.Parent = __owner;
             return base.Add(item);
         }
-
-        public int AddControl(object item)
+        public int AddWidget(Gtk.Widget item, Control control)
         {
-            return base.Add(item);
-        }
-        public int AddWidget(Gtk.Widget item)
-        {
-           // __ownerControl.Add(item);
+            control.Parent = __owner;
             return base.Add(item);
         }
         public virtual void Add(Type itemType, object item)

@@ -20,6 +20,27 @@
     <Compile Update="GTKControls\ComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\ImageList\ImageList.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ImageList\ImageList.ImageCollection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ImageList\ImageList.ImageCollection.ImageInfo.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ImageList\ImageList.Indexer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ImageList\ImageList.NativeImageList.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ImageList\ImageList.Original.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ImageList\ImageList.OriginalOptions.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\Interface\WidgetControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -69,9 +90,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\ListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\ListViewBase\ImageList.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\MaskedTextBox.cs">

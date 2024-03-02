@@ -1,18 +1,14 @@
-using System.Buffers;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing.Imaging;
 using System.Globalization;
-//using System.Drawing.Internal;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
 namespace System.Drawing
 {
-	/// <summary>An abstract base class that provides functionality for the <see cref="T:System.Drawing.Bitmap" /> and <see cref="T:System.Drawing.Imaging.Metafile" /> descended classes.</summary>
-	[Serializable]
+    [Serializable]
 	public abstract class Image : MarshalByRefObject, IDisposable, ICloneable, ISerializable
 	{
         #region 只取图像byte[]数据 
@@ -21,7 +17,9 @@ namespace System.Drawing
             PixbufData = pixbuf;
         }
         public byte[] PixbufData { get; set; }
-        public Gdk.Pixbuf Pixbuf { get; set; }
+		[NonSerialized()]
+		private Gdk.Pixbuf pixbuf;
+        public Gdk.Pixbuf Pixbuf { get => pixbuf; set => pixbuf = value; }
         public string FileName { get; set; }
         #endregion
 

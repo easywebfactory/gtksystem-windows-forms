@@ -83,8 +83,12 @@ namespace System.Windows.Forms
 
             windowbody.Put(WindowBackgroundImage, 0, 0);
             windowbody.Put(scrollwindow, 0, 0);
-            base.Control.Resizable = false;
-            this.Site = new FormSite(this);
+            this.Load += Form_Load;
+        }
+
+        private void Form_Load(object sender, EventArgs e)
+        {
+            
         }
         public override ISite Site { get; set; }
         private void Control_DeleteEvent(object o, DeleteEventArgs args)

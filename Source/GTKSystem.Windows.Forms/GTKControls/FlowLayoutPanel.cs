@@ -81,7 +81,7 @@ namespace System.Windows.Forms
                 widg.Valign = Align.Start;
                 widg.Halign = Align.Start;
                 box.Add(widg);
-                return base.AddWidget(box);
+                return base.AddWidget(box, control);
             }
         }
     }

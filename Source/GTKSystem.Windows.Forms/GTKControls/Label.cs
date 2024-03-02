@@ -15,9 +15,64 @@ namespace System.Windows.Forms
     {
         public Label() : base() {
             Widget.StyleContext.AddClass("Label");
+            this.Control.Xalign = 0.08f;
+            this.Control.Yalign = 0.08f;
         }
 
         public override string Text { get => base.Control.Text; set => base.Control.Text = value; }
+        public override RightToLeft RightToLeft { get { return this.Control.Direction == Gtk.TextDirection.Rtl ? RightToLeft.Yes : RightToLeft.No; } set { this.Control.Direction = value == RightToLeft.Yes ?  Gtk.TextDirection.Rtl : Gtk.TextDirection.Ltr; } }
+        public System.Drawing.ContentAlignment TextAlign { 
+            get { return textAlign; } 
+            set { 
+                textAlign = value;
+                if (value == System.Drawing.ContentAlignment.TopLeft)
+                {
+                    this.Control.Xalign = 0.08f;
+                    this.Control.Yalign = 0.08f;
+                }
+                else if (value == System.Drawing.ContentAlignment.TopCenter)
+                {
+                    this.Control.Xalign = 0.5f; 
+                    this.Control.Yalign = 0.08f;
+                }
+                else if (value == System.Drawing.ContentAlignment.TopRight)
+                {
+                    this.Control.Xalign = 0.92f;
+                    this.Control.Yalign = 0.08f;
+                }
+                else if (value == System.Drawing.ContentAlignment.MiddleLeft)
+                {
+                    this.Control.Xalign = 0.08f;
+                    this.Control.Yalign = 0.5f;
+                }
+                else if (value == System.Drawing.ContentAlignment.MiddleCenter)
+                {
+                    this.Control.Xalign = 0.5f;
+                    this.Control.Yalign = 0.5f;
+                }
+                else if (value == System.Drawing.ContentAlignment.MiddleRight)
+                {
+                    this.Control.Xalign = 0.92f;
+                    this.Control.Yalign = 0.5f;
+                }
+                else if (value == System.Drawing.ContentAlignment.BottomLeft)
+                {
+                    this.Control.Xalign = 0.08f;
+                    this.Control.Yalign = 0.08f;
+                }
+                else if (value == System.Drawing.ContentAlignment.MiddleCenter)
+                {
+                    this.Control.Xalign = 0.5f;
+                    this.Control.Yalign = 0.08f;
+                }
+                else if (value == System.Drawing.ContentAlignment.MiddleRight)
+                {
+                    this.Control.Xalign = 0.92f;
+                    this.Control.Yalign = 0.08f;
+                }
 
+            }
+        }
+        private System.Drawing.ContentAlignment textAlign;
     }
 }

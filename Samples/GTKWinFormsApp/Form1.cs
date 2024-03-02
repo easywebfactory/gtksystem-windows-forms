@@ -213,7 +213,7 @@ namespace GTKWinFormsApp
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             Console.WriteLine("dataGridView1_CellValueChanged");
-            foreach(DataGridViewRow row in dataGridView1.Rows)
+            foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 Console.WriteLine(row.Cells[1].Value);
             }
@@ -328,21 +328,21 @@ namespace GTKWinFormsApp
             var g = e.Graphics;
             g.Clear(Color.White);
 
-            
+
             using (MemoryStream mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6))
             {
                 //g.DrawImage(new Bitmap(mem), new Point(0, 0));
                 g.DrawImage(new Bitmap(mem), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
             }
             g.FillRectangle(new SolidBrush(Color.AliceBlue), new Rectangle(0, 0, 100, 50));
-           // g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new Point(10, 10), new Point(50, 30));
+            // g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new Point(10, 10), new Point(50, 30));
             List<PointF> Rps = new List<PointF>();
             List<PointF> rps = new List<PointF>();
             float R = 50;
             double rad = Math.PI / 180;
-            float r = (float)(R * Math.Sin(18*R) / Math.Cos(36 * R));
-            float x = pictureBox2.Width/2;
-            float y = pictureBox2.Height/2;
+            float r = (float)(R * Math.Sin(18 * R) / Math.Cos(36 * R));
+            float x = pictureBox2.Width / 2;
+            float y = pictureBox2.Height / 2;
             for (int k = 0; k < 5; k++)
             {
                 Rps.Add(new PointF(x - (R * (float)Math.Cos((90 + k * 72) * rad)), y - (R * (float)Math.Sin((90 + k * 72) * rad))));
@@ -354,14 +354,14 @@ namespace GTKWinFormsApp
                 //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), rps[i], new PointF(x, y));
                 //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new PointF(x, y), Rps[i]);
 
-                g.DrawLines(new Pen(new SolidBrush(Color.Red), 2), [Rps[i], rps[i],new PointF(x,y), Rps[i]]);
+                g.DrawLines(new Pen(new SolidBrush(Color.Red), 2), new PointF[] { Rps[i], rps[i], new PointF(x, y), Rps[i] });
             }
 
             g.DrawString("这是Paint Graphics示例效果", new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 60);
             g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2), new Rectangle(0, 0, pictureBox2.Width, pictureBox2.Height), 60, 190);
 
-            g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), [new PointF(50,60), new PointF(100,80), new PointF(75, 100)]);
-            g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), [new PointF(75, 100), new PointF(100, 120), new PointF(120, 100)]);
+            g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(50, 60), new PointF(100, 80), new PointF(75, 100)});
+            g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(75, 100), new PointF(100, 120), new PointF(120, 100)});
 
         }
 

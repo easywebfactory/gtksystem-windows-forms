@@ -311,6 +311,7 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.BackColor = System.Drawing.Color.IndianRed;
             label1.Font = new System.Drawing.Font("Tahoma", 15F, System.Drawing.FontStyle.Underline | System.Drawing.FontStyle.Strikeout);
             label1.Location = new System.Drawing.Point(181, 247);
             label1.Name = "label1";

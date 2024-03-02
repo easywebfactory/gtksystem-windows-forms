@@ -6,7 +6,7 @@
       "version": "8.0.0"
     },
     "configProperties": {
-      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false
+      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": true
     }
   }
 }
