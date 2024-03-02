@@ -7,8 +7,8 @@ ehthumbs_vista.db
 # Dump file
 *.stackdump
 .vs
-/Source/GTKSystem.Windows.Forms/obj/
 /Source/GTKSystem.Windows.Forms/bin/
+/Source/GTKSystem.Windows.Forms/obj/
 
 # Folder config file
 [Dd]esktop.ini
@@ -60,5 +60,3 @@ $RECYCLE.BIN/
 /Samples/GTKWinFormsApp/obj/Debug/net8.0/GTKWinFormsApp.csproj.AssemblyReference.cache
 /Samples/GTKWinFormsApp/obj/Debug/net8.0/GTKWinFormsApp.AssemblyInfoInputs.cache
 
-
-/Source/GTKSystem.Windows.Forms/obj/Debug/net6.0/GTKSystem.Windows.Forms.AssemblyInfoInputs.cache
