@@ -15,11 +15,10 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 
 #### 安装教程
 1.  把项目工程改为配置UseWindowsForms为false或“控制台应用程序”，框架.net6或以上版本
-2.  NulGet安装GtkSharp(3.24.24.95)、GTKSystem.Windows.Forms
-3.  引用GTKSystem.Windows.Forms.dll
-4.  检查form表单是否有使用图像资源，如使用需新建System.Resources.ResourceManager和System.ComponentModel.ComponentResourceManager，具体请看下面内容。
+2.  NulGet安装GtkSharp(3.24.24.95)、GTKSystem.Windows.Forms，或引用GTKSystem.Windows.Forms.dll
+3.  检查form表单是否有使用图像资源，如使用需新建System.Resources.ResourceManager和System.ComponentModel.ComponentResourceManager，具体请看下面内容。
 4.  按默认配置编译发布测试运行
-5.  linux和macos上执行命令：dotnet doemo_app.dll
+5.  linux和macos上执行命令：dotnet demo_app.dll
 
  （注：如果出现打开visual studio的Form窗体设计器出现“设计器”相关异常，可自建一个空类，命名为System.Resources.Extensions.dll，引用）。
 
@@ -50,13 +49,14 @@ GTKSystem.ComponentModel.ComponentResourceManager实现了项目资源文件和�
 如果项目里没有使用资源图像文件，可以不用新建此文件。
 
 3、GTKWinFormsApp.csproj<br/>
-配置UseWindowsForms为false，或者使用控制台应用程序
+配置UseWindowsForms为false，目标OS设置为“(空)”，或者使用控制台应用程序
 ```
 <UseWindowsForms>false</UseWindowsForms>
 ```
 
 4、引用GTKSystem.Windows.Forms、System.Resources.Extensions <br/>
-System.Resources.Extensions是空程序dll，VS加载Form界面时验证需要此dll.
+GTKSystem.Windows.Forms是必须引用<br/>
+System.Resources.Extensions是空程序dll，不是必须引用，只有VS在窗体设计器出现相关异常提示时使用
 
 5、GTKWinFormsApp\obj\Debug\net6.0\GTKWinFormsApp.designer.runtimeconfig.json
 GTKWinFormsApp\obj\Release\net6.0\GTKWinFormsApp.designer.runtimeconfig.json

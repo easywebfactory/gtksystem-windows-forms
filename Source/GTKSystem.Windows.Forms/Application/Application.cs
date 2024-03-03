@@ -2,15 +2,10 @@
 using System.Globalization;
 using System.Reflection;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace System.Windows.Forms
 {
-    public sealed class ApplicationConfiguration
-    {
-        public static void Initialize()
-        {
-        }
-    }
     public sealed class Application
     {
         static Application() {
@@ -81,35 +76,37 @@ namespace System.Windows.Forms
             }
         }
 
-        public static Gtk.Application App;
-        public static void Init()
+        public static Gtk.Application App { get; private set; }
+        public static Gtk.Application Init()
         {
-            Gtk.Application.Init();
-            App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.IsLauncher);
-            //App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
-            //App.Register(GLib.Cancellable.Current);
-            var quitAction = new GLib.SimpleAction("quit", null);
-            quitAction.Activated += QuitActivated;
-            App.AddAction(quitAction);
+            if (App == null)
+            {
+                Gtk.Application.Init();
+                App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.IsLauncher);
+                //App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
+                //App.Register(GLib.Cancellable.Current);
+                var quitAction = new GLib.SimpleAction("quit", null);
+                quitAction.Activated += QuitActivated;
+                App.AddAction(quitAction);
 
-            Gtk.CssProvider css = new Gtk.CssProvider();
-            //粉红色主题
-//.DefaultThemeStyle{border:solid 1px #ddaaaa;border-radius:0px;box-shadow: none;color:#993333;}
-//.DefaultThemeStyle.background{background-color:#ffeeee;}
-//.DefaultThemeStyle.titlebar{background-color:#996666;}
-//.DefaultThemeStyle border{border:solid 1px #ddaaaa;}
-//.DefaultThemeStyle button{color:#993333;border-radius:0px;}
-//.DefaultThemeStyle entry{border-radius:0px;}
-//.DefaultThemeStyle label{color:#993333;}
-//.DefaultThemeStyle>button{border:solid 1px #cccccc;}
-//.DefaultThemeStyle>entry{border:solid 1px #cccccc;}
-//.DefaultThemeStyle header.top{background-color:#ffcccc;} 
-//.DefaultThemeStyle header.top tab:hover{background-color:#ffeeee;} 
-//.DefaultThemeStyle stack{background-color:#ffeeee;padding:0px;margin:0px;} 
-//.DefaultThemeStyle .view button{background-color:#ffcccc;}
-//.DefaultThemeStyle:focus{border-color:#000099;}
-//.DefaultThemeStyle:active{border-color:#000099;}
-            css.LoadFromData(@"
+                Gtk.CssProvider css = new Gtk.CssProvider();
+                //粉红色主题
+                //.DefaultThemeStyle{border:solid 1px #ddaaaa;border-radius:0px;box-shadow: none;color:#993333;}
+                //.DefaultThemeStyle.background{background-color:#ffeeee;}
+                //.DefaultThemeStyle.titlebar{background-color:#996666;}
+                //.DefaultThemeStyle border{border:solid 1px #ddaaaa;}
+                //.DefaultThemeStyle button{color:#993333;border-radius:0px;}
+                //.DefaultThemeStyle entry{border-radius:0px;}
+                //.DefaultThemeStyle label{color:#993333;}
+                //.DefaultThemeStyle>button{border:solid 1px #cccccc;}
+                //.DefaultThemeStyle>entry{border:solid 1px #cccccc;}
+                //.DefaultThemeStyle header.top{background-color:#ffcccc;} 
+                //.DefaultThemeStyle header.top tab:hover{background-color:#ffeeee;} 
+                //.DefaultThemeStyle stack{background-color:#ffeeee;padding:0px;margin:0px;} 
+                //.DefaultThemeStyle .view button{background-color:#ffcccc;}
+                //.DefaultThemeStyle:focus{border-color:#000099;}
+                //.DefaultThemeStyle:active{border-color:#000099;}
+                css.LoadFromData(@"
 .DefaultThemeStyle{border-radius:0px;border:solid 1px #cccccc;box-shadow: none;color:#000000;}
 .DefaultThemeStyle>entry{border:solid 1px #cccccc;}
 .DefaultThemeStyle>button{border:solid 1px #cccccc;}
@@ -200,15 +197,16 @@ namespace System.Windows.Forms
 
 ");
 
-            Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, 800);
-
+                Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, 800);
+            }
+            return App;
         }
         private static void QuitActivated(object sender, EventArgs e)
         {
             Gtk.Application.Quit();
         }
         public static bool SetHighDpiMode(HighDpiMode highDpiMode) {
-             return false;
+             return true;
          }
         public static void EnableVisualStyles() {
 
@@ -219,7 +217,6 @@ namespace System.Windows.Forms
 
         public static void Run(Form mainForm)
         {
-            
             mainForm.Control.Destroyed += Control_Destroyed;
             mainForm.Show();
             Gtk.Application.Run();
@@ -263,5 +260,13 @@ namespace System.Windows.Forms
                 Gtk.Application.Quit();
         }
     }
-
+}
+public sealed class ApplicationConfiguration
+{
+    public static void Initialize()
+    {
+        global::System.Windows.Forms.Application.EnableVisualStyles();
+        global::System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+        global::System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.SystemAware);
+    }
 }

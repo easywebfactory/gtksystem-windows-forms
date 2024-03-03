@@ -21,6 +21,7 @@ namespace System.Windows.Forms
     InitializationEvent(nameof(Load))]
     public partial class Form : WidgetContainerControl<Gtk.Window>, IWin32Window
     {
+        private Gtk.Application app = Application.Init();
         private Gtk.Fixed _body = new Gtk.Fixed();
         private Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
         private Gtk.Layout windowbody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
@@ -83,12 +84,6 @@ namespace System.Windows.Forms
 
             windowbody.Put(WindowBackgroundImage, 0, 0);
             windowbody.Put(scrollwindow, 0, 0);
-            this.Load += Form_Load;
-        }
-
-        private void Form_Load(object sender, EventArgs e)
-        {
-            
         }
         public override ISite Site { get; set; }
         private void Control_DeleteEvent(object o, DeleteEventArgs args)
@@ -563,26 +558,6 @@ namespace System.Windows.Forms
 
     public class BindingContext : ContextBoundObject
     {
-    }
-    public class FormSite : ISite
-    {
-        private Form form;
-        public FormSite(Form form)
-        {
-            this.form = form;
-        }
-        public IComponent Component => this.form;
-
-        public IContainer Container => throw new NotImplementedException();
-
-        public bool DesignMode => false;
-
-        public string Name { get => form.Text; set { } }
-
-        public object GetService(Type serviceType)
-        {
-            return Activator.CreateInstance(serviceType);
-        }
     }
 }
 
