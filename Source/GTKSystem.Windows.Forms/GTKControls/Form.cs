@@ -344,8 +344,7 @@ namespace System.Windows.Forms
             }
             this.Control.Add(windowbody);
             base.Control.Resizable = this.FormBorderStyle == FormBorderStyle.Sizable || this.FormBorderStyle == FormBorderStyle.SizableToolWindow;
-            base.Control.Resizable = true;
-            base.Control.ShowAll();
+            
             if (this.WindowState == FormWindowState.Maximized)
             {
                 base.Control.Maximize();
@@ -354,6 +353,7 @@ namespace System.Windows.Forms
             {
                 base.Control.KeepBelow = true;
             }
+            base.Control.ShowAll();
         }
 
         private Gtk.Dialog dialogWindow;
@@ -467,11 +467,13 @@ namespace System.Windows.Forms
 
         public SizeF AutoScaleDimensions { get; set; }
         public AutoScaleMode AutoScaleMode { get; set; }
+        public FormBorderStyle formBorderStyle = FormBorderStyle.Sizable;
         public FormBorderStyle FormBorderStyle
         {
-            get { return base.Control.Resizable == true ? FormBorderStyle.Sizable : FormBorderStyle.None; }
-            set { 
-                base.Control.Resizable = value == FormBorderStyle.Sizable; 
+            get { return formBorderStyle; }
+            set {
+                formBorderStyle = value;
+                base.Control.Resizable = value == FormBorderStyle.Sizable || value == FormBorderStyle.SizableToolWindow; 
                 if (value == FormBorderStyle.None)
                 {            
                     this.Control.Titlebar =new Gtk.Fixed() { HeightRequest = 0 }; 
@@ -510,8 +512,8 @@ namespace System.Windows.Forms
 
         public override ObjectCollection Controls { get { return _ObjectCollection; } }
 
-        public bool MaximizeBox { get; set; }
-        public bool MinimizeBox { get; set; }
+        public bool MaximizeBox { get; set; } = true;
+        public bool MinimizeBox { get; set; } = true;
         public double Opacity { get { return base.Control.Opacity; } set { base.Control.Opacity = value; } }
         public bool ShowIcon { get; set; } = true;
         public bool ShowInTaskbar { get; set; } = true;
