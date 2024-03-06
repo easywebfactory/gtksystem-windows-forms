@@ -60,3 +60,5 @@ $RECYCLE.BIN/
 /Samples/GTKWinFormsApp/obj/Debug/net8.0/GTKWinFormsApp.csproj.AssemblyReference.cache
 /Samples/GTKWinFormsApp/obj/Debug/net8.0/GTKWinFormsApp.AssemblyInfoInputs.cache
 
+/Samples/GTKWinFormsApp/obj/Debug/net8.0/GTKWinFormsApp.AssemblyInfo.cs
+/Samples/GTKWinFormsApp/obj/Debug/net8.0/GTKWinFormsApp.Form1.resources
