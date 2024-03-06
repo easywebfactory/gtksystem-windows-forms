@@ -200,81 +200,19 @@ namespace System.Windows.Forms
             get { return new DataGridViewRow(); }
             set { }
         }
-        internal void BindDataSource(object datasource, string propertyName, string dataMember, int selectindex, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode, object nullValue, string formatString)
+        internal void BindDataSource(string propertyName, object datasource, string dataMember, int selectindex, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode, object nullValue, string formatString)
         {
-            if (datasource == null)
+            if (datasource == null || string.IsNullOrWhiteSpace(propertyName) || string.IsNullOrWhiteSpace(dataMember))
                 return;
-            if (string.IsNullOrWhiteSpace(propertyName))
-                return;
-            if (string.IsNullOrWhiteSpace(dataMember))
-                return;
-            IListSource source = datasource as IListSource;
-            if (source == null)
-            {
-                if (datasource is IEnumerable iesource)
-                {
-                    foreach (var row in iesource)
-                    {
-                        object[] cells = new object[Columns.Count];
-                        int i = 0;
-                        foreach (var col in propertyName.Split(','))
-                        {
-                            string[] mb = dataMember.Split(',');
-                            string value = row.GetType().GetProperty(mb[i].Trim()).GetValue(row).ToString();
-                            if (formattingEnabled && string.IsNullOrWhiteSpace(formatString) == false)
-                                cells[Columns[mb[i].Trim()].Index] = string.Format(formatString, value);
-                            else
-                                cells[Columns[mb[i].Trim()].Index] = value;
-                            i++;
-                        }
-                        _rows.Add(cells);
-                    }
-                }
-            }
-            else
-            {
-                if (datasource is DataSet ds)
-                {
-                    foreach (DataTable dtb in ds.Tables)
-                    {
-                        foreach (DataRow row in dtb.Rows)
-                        {
-                            object[] cells = new object[Columns.Count];
-                            int i = 0;
-                            foreach (var col in propertyName.Split(','))
-                            {
-                                string[] mb = dataMember.Split(',');
-                                string value = row.GetType().GetProperty(mb[i].Trim()).GetValue(row).ToString();
-                                if (formattingEnabled && string.IsNullOrWhiteSpace(formatString) == false)
-                                    cells[Columns[mb[i].Trim()].Index] = string.Format(formatString, value);
-                                else
-                                    cells[Columns[mb[i].Trim()].Index] = value;
-                                i++;
-                            }
-                            _rows.Add(cells);
-                        }
-                    }
-                }
-                else if (source is IList list)
-                {
-                    foreach (object row in list)
-                    {
-                        object[] cells = new object[Columns.Count];
-                        int i = 0;
-                        foreach (var col in propertyName.Split(','))
-                        {
-                            string[] mb = dataMember.Split(',');
-                            string value = row.GetType().GetProperty(mb[i].Trim()).GetValue(row).ToString();
-                            if (formattingEnabled && string.IsNullOrWhiteSpace(formatString) == false)
-                                cells[Columns[mb[i].Trim()].Index] = string.Format(formatString, value);
-                            else
-                                cells[Columns[mb[i].Trim()].Index] = value;
-                            i++;
-                        }
-                        _rows.Add(cells);
-                    }
-                }
-            }
+
+            this.TreeView.SelectionNotifyEvent += (object o, SelectionNotifyEventArgs args) => {
+                datasource.GetType().GetProperty(propertyName).SetValue(datasource, dataMember);
+            };
+
+            this.TreeView.RowActivated += (object o, RowActivatedArgs args)
+             => {
+                 datasource.GetType().GetProperty(propertyName).SetValue(datasource, dataMember);
+             };
         }
 
         public override ControlBindingsCollection DataBindings { get => _collect; }

@@ -1,7 +1,7 @@
+using System.Collections;
 using System.ComponentModel;
+using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Windows.Forms.GtkRender;
-using System.Xml;
 
 namespace System.Windows.Forms
 {
@@ -36,14 +36,12 @@ namespace System.Windows.Forms
             internal set;
         }
 
-		public bool IsBinding
-		{
-			[CompilerGenerated]
-			get;
-            internal set;
-        }
+        internal bool IsBindable =>
+            BindableComponent is not null
+            && !string.IsNullOrEmpty(PropertyName)
+            && DataSource is not null;
 
-		public BindingManagerBase BindingManagerBase
+        public BindingManagerBase BindingManagerBase
 		{
 			get;
 			internal set;
@@ -131,20 +129,104 @@ namespace System.Windows.Forms
             PropertyName = propertyName;
             DataSource = dataSource;
             DataMember = dataMember;
-			FormattingEnabled = formattingEnabled;
+            BindingMemberInfo = new BindingMemberInfo(dataMember);
+            FormattingEnabled = formattingEnabled;
 			DataSourceUpdateMode = dataSourceUpdateMode;
 			NullValue = nullValue;
 			FormatString = formatString;
 			FormatInfo = formatInfo;
+            OnPropertyChanged(PropertyName);
         }
-		public void ReadValue()
+		//更新数据源
+        public void WriteValue()
 		{
-			
+			object _dataSource = DataSource ?? this.DataSourceNullValue;
+            if (this.Control != null && _dataSource != null)
+            {
+                WriteValueCore(_dataSource);
+            }
+        }
+        private void WriteValueCore(object data)
+        {
+            Type type = this.Control.GetType();
+            object val = type.GetProperty(PropertyName).GetValue(this.Control) ?? this.NullValue;
+            if (val != null)
+            {
+                PropertyInfo propertyInfo = data.GetType().GetProperty(DataMember);
+                object corVal = Convert.ChangeType(val, propertyInfo.PropertyType);
+                if (Parse != null)
+                {
+                    Parse(this, new ConvertEventArgs(corVal, propertyInfo.PropertyType));
+                }
+                propertyInfo.SetValue(data, corVal);
+            }
+        }
+        //更新客户端
+        public void ReadValue()
+        {
+            object _dataSource = DataSource ?? this.DataSourceNullValue;
+			if (this.Control != null && _dataSource != null)
+			{
+                if (_dataSource is IEnumerable list)
+                {
+                    foreach (object data in list)
+                    {
+                        ReadValueCore(data);
+                    }
+                }
+                else
+                {
+                    ReadValueCore(_dataSource);
+                }
+            }
+        }
+		private void ReadValueCore(object data)
+		{
+            object val = data.GetType().GetProperty(DataMember).GetValue(data) ?? this.NullValue;
+            if (FormattingEnabled)
+            {
+                if (!string.IsNullOrEmpty(FormatString))
+                {
+                    Type oriType = val.GetType();
+                    val = string.Format(FormatString, val);
+                    if (Format != null)
+                        Format(this, new ConvertEventArgs(val, oriType));
+                }
+            }
+            if (val != null)
+            {
+                Type type = this.Control.GetType();
+                PropertyInfo propertyInfo = type.GetProperty(PropertyName);
+                if (val.GetType().Equals(propertyInfo.PropertyType))
+                {
+                    propertyInfo.SetValue(data, val);
+                }
+                else
+                {
+                    object corVal = Convert.ChangeType(val, propertyInfo.PropertyType);
+                    if (Parse != null)
+                    {
+                        Parse(this, new ConvertEventArgs(corVal, propertyInfo.PropertyType));
+                    }
+                    propertyInfo.SetValue(this.Control, corVal);
+                }
+            }
+        }
+		public event PropertyChangedEventHandler PropertyChanged;
+		private void OnPropertyChanged(string propertyName)
+		{
+			if(DataSource is INotifyPropertyChanged notifyChanged)
+			{
+                notifyChanged.PropertyChanged += NotifyChanged_PropertyChanged;
+            }
 		}
 
-		public void WriteValue()
-		{
-			
-		}
-	}
+        private void NotifyChanged_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(e.PropertyName));
+            }
+        }
+    }
 }

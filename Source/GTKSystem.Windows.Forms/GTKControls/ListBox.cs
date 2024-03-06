@@ -11,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
  
 namespace System.Windows.Forms
@@ -23,7 +24,8 @@ namespace System.Windows.Forms
     {
         ControlBindingsCollection _collect;
         ObjectCollection _items;
-        internal Gtk.FlowBox _flow;
+        private Gtk.FlowBox _flow;
+        internal Gtk.FlowBox FlowBox { get { return _flow; } }
         public ListBox():base()
 		{
             _collect = new ControlBindingsCollection(this);
@@ -36,7 +38,6 @@ namespace System.Windows.Forms
             _flow.Valign = Gtk.Align.Start;
             _flow.SortFunc = new FlowBoxSortFunc((fbc1, fbc2) => !this.Sorted ? 0 : fbc1.TooltipText.CompareTo(fbc2.TooltipText));
 
-            _items = new ObjectCollection(this);
             _flow.ChildActivated += Control_ChildActivated;
 
             Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
@@ -74,11 +75,11 @@ namespace System.Windows.Forms
         {
             foreach (Binding binding in _collect)
             {
-                BindDataSource(binding.DataSource, binding.DataMember, binding.DataMember, SelectedIndex, binding.FormattingEnabled, binding.DataSourceUpdateMode, binding.NullValue, binding.FormatString);
+                BindDataSource(DisplayMember, binding.DataSource, binding.DataMember, SelectedIndex, binding.FormattingEnabled, binding.DataSourceUpdateMode, binding.NullValue, binding.FormatString);
             }
             if (DataSource != null)
             {
-                BindDataSource(DataSource, DisplayMember, ValueMember, SelectedIndex, FormattingEnabled, DataSourceUpdateMode.OnPropertyChanged, string.Empty, FormatString);
+                BindDataSource(DisplayMember, DataSource, ValueMember, SelectedIndex, FormattingEnabled, DataSourceUpdateMode.OnPropertyChanged, string.Empty, FormatString);
             }
             foreach (object item in _items)
             {
@@ -87,71 +88,16 @@ namespace System.Windows.Forms
 
             this.Control.ShowAll();
         }
-        internal void BindDataSource(object datasource,string displaymember,string valuemember,int selectindex, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode, object nullValue, string formatString)
+        internal void BindDataSource(string propertyName, object datasource, string dataMember,int selectindex, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode, object nullValue, string formatString)
         {
-            if (datasource == null)
+            if (datasource == null || string.IsNullOrWhiteSpace(propertyName) || string.IsNullOrWhiteSpace(dataMember))
                 return;
-            if (string.IsNullOrWhiteSpace(valuemember))
-                valuemember = displaymember;
-            IListSource source = datasource as IListSource;
-            if (source == null)
-            {
-                if (datasource is IEnumerable iesource)
-                {
-                    foreach (var row in iesource)
-                    {
-                        string display = row.GetType().GetProperty(displaymember).GetValue(row).ToString();
-                        string value = row.GetType().GetProperty(valuemember).GetValue(row).ToString();
-                        ListBoxItem item = new ListBoxItem();
-                        if (formattingEnabled && string.IsNullOrWhiteSpace(formatString) == false)
-                            item.DisplayText = string.Format(formatString, display);
-                        else
-                            item.DisplayText = display;
 
-                        item.ItemValue = value;
-                        item.CheckValue = value;
-                        _items.Add(item);
-                    }
-                }
-            }
-            else
-            {
-                if (datasource is DataSet ds)
-                {
-                    foreach (DataTable dtb in ds.Tables)
-                    {
-                        foreach (DataRow row in dtb.Rows)
-                        {
-                            ListBoxItem item = new ListBoxItem();
-                            if (formattingEnabled && string.IsNullOrWhiteSpace(formatString) == false)
-                                item.DisplayText = string.Format(formatString, row[displaymember]);
-                            else
-                                item.DisplayText = row[displaymember];
-                            item.ItemValue = row[valuemember];
-                            item.CheckValue = row[valuemember];
-                            _items.Add(item);
-                        }
-                    }
-                }
-                else if (source is IList list)
-                {
-                    foreach (object row in list)
-                    {
-                        string display = row.GetType().GetProperty(displaymember).GetValue(row).ToString();
-                        string value = row.GetType().GetProperty(valuemember).GetValue(row).ToString();
-                        ListBoxItem item = new ListBoxItem();
-                        if (formattingEnabled && string.IsNullOrWhiteSpace(formatString) == false)
-                            item.DisplayText = string.Format(formatString, display);
-                        else
-                            item.DisplayText = display;
-                        item.ItemValue = value;
-                        item.CheckValue = value;
-                        _items.Add(item);
-                    }
-                }
-            }
+            this._flow.SelectionNotifyEvent += (object o, SelectionNotifyEventArgs args) => {
+                datasource.GetType().GetProperty(propertyName).SetValue(datasource, dataMember);
+            };
         }
-       
+
         #region listcontrol
 
         [DefaultValue(null)]
@@ -237,6 +183,23 @@ namespace System.Windows.Forms
             }
         }
 
+        [Browsable(false)]
+        [Bindable(true)]
+        public object SelectedItem
+        {
+            get
+            {
+                object item = null;
+                _flow.SelectedForeach(new FlowBoxForeachFunc((fb, fbc) => {
+                    item = Items[fbc.Index];
+                }));
+                return item;
+            }
+            set
+            {
+                _flow.SelectChild(_flow.GetChildAtIndex(Items.IndexOf(value)));
+            }
+        }
         public event EventHandler DataSourceChanged;
 
         public event EventHandler DisplayMemberChanged;
@@ -267,7 +230,6 @@ namespace System.Windows.Forms
 
         #endregion
         public override ControlBindingsCollection DataBindings { get => _collect; }
-
         internal bool ShowCheckBox { get; set; }
         internal bool ShowImage { get; set; }
 
@@ -370,23 +332,6 @@ namespace System.Windows.Forms
                     indexs.Add(fbc.Index);
                 }));
                 return indexs;
-            }
-        }
-
-        [Browsable(false)]
-		[Bindable(true)]
-		public object SelectedItem
-        {
-            get
-            {
-                object item = null;
-                _flow.SelectedForeach(new FlowBoxForeachFunc((fb, fbc) => {
-                    item = Items[fbc.Index];
-                }));
-                return item;
-            }
-            set {
-                _flow.SelectChild(_flow.GetChildAtIndex(Items.IndexOf(value)));
             }
         }
 

@@ -8,6 +8,7 @@ using System.Data.Common;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 //using System.Windows.Forms;
@@ -29,14 +30,14 @@ namespace GTKWinFormsApp
 
             DataSet dataSet = new DataSet();
             // dataSet.Tables.Add(dt);
-
-
-            // listBox1.DataBindings.Add(new Binding("Text", dt, "CreateDate"));
-            listBox1.Items.Add("test item");
+            b.ID = 1;
+            b.Title = "test1";
+            listBox1.DataBindings.Add(new Binding("SelectedItem", b, "Title"));
         }
-
+        TestEntity b = new TestEntity();
         private void button1_Click(object sender, EventArgs e)
         {
+            b.Title = "test2";
             Control p = (Control)this;
             p.Controls.Add(new Button() { Text = "dddd", Location = new Point(681, 156) });
 
@@ -62,16 +63,13 @@ namespace GTKWinFormsApp
             dt.Columns.Add("ID", typeof(string));
             dt.Columns.Add("CreateDate", typeof(DateTime));
             dt.Columns.Add("State", typeof(bool));
-            dt.Rows.Add("user1", DateTime.Now, true);
-            dt.Rows.Add("user2", DateTime.Now.AddDays(5), false);
+            dt.Rows.Add("test1", DateTime.Now, true);
+            dt.Rows.Add("test2", DateTime.Now.AddDays(5), false);
 
 
             DataSet dataSet = new DataSet();
             dataSet.Tables.Add(dt);
-
-            listBox1.DataBindings.Add(new Binding("Text", dt, "ID"));
-
-
+ 
             //3、通过dataviewrow添加数据
             //for (int i = 0; i < 10; i++)
             //{
@@ -83,15 +81,23 @@ namespace GTKWinFormsApp
 
         }
 
-        public class TestEntity
+        public class TestEntity:INotifyPropertyChanged
         {
             public int ID { get; set; }
-            public string Title { get; set; }
+            public string title;
+            public string Title { get { return title; } set { title = value; OnPropertyChangedEventHandler(); } }
             public string Info { get; set; }
             public bool State { get; set; }
             public DateTime CreateDate { get; set; }
             public string Operate { get; set; }
             public string PIC { get; set; }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            protected void OnPropertyChangedEventHandler([CallerMemberName] string propertyName = null)
+            {
+                if(PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)

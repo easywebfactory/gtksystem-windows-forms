@@ -6,6 +6,7 @@
  * date: 2024/1/3
  */
 
+using GLib;
 using Gtk;
 using System;
 using System.ComponentModel;
@@ -103,18 +104,13 @@ namespace System.Windows.Forms
 
         private void Control_Realized(object sender, EventArgs e)
         {
-            if(this.MaximizeBox==false && this.MinimizeBox == false)
+            if (this.MaximizeBox == false && this.MinimizeBox == false)
             {
                 this.Control.TypeHint = Gdk.WindowTypeHint.Dialog;
             }
             else if (this.MaximizeBox == false && this.MinimizeBox == true)
             {
                 this.Control.Resizable = false;
-            }
-            else if (this.MaximizeBox == true && this.MinimizeBox == false)
-            {
-                this.Control.Resizable = true;
-                this.Control.SkipTaskbarHint = true;
             }
             try
             {
@@ -142,8 +138,7 @@ namespace System.Windows.Forms
             {
 
             }
-            this.Control.SkipTaskbarHint = this.ShowInTaskbar;
- 
+
             if (Load != null)
                 Load(this, e);
         }
@@ -516,7 +511,7 @@ namespace System.Windows.Forms
         public bool MinimizeBox { get; set; } = true;
         public double Opacity { get { return base.Control.Opacity; } set { base.Control.Opacity = value; } }
         public bool ShowIcon { get; set; } = true;
-        public bool ShowInTaskbar { get; set; } = true;
+        public bool ShowInTaskbar { get { return this.Control.SkipTaskbarHint == false; } set { this.Control.SkipTaskbarHint = value == false; } }
         public System.Drawing.Icon Icon { get; set; }
         public override void SuspendLayout()
         {

@@ -489,7 +489,7 @@ namespace GTKWinFormsApp
             listBox1.DisplayMember = "Title";
             listBox1.FormattingEnabled = true;
             listBox1.HorizontalScrollbar = true;
-            listBox1.Items.AddRange(new object[] { "listbox" });
+            listBox1.Items.AddRange(new object[] { "test1", "test2" });
             listBox1.Location = new System.Drawing.Point(636, 26);
             listBox1.MultiColumn = true;
             listBox1.Name = "listBox1";
