@@ -41,6 +41,11 @@ namespace GTKWinFormsApp
             Control p = (Control)this;
             p.Controls.Add(new Button() { Text = "dddd", Location = new Point(681, 156) });
 
+            treeView1.Nodes.Add(new TreeNode("test1"));
+            TreeNode node = new TreeNode("test3");
+            node.Nodes.Add(new TreeNode("test31"));
+            treeView1.Nodes.Add(node);
+
             DialogResult result = MessageBox.Show("1、加载数据点yes \n2、不加载数据点no", "加载数据提示", MessageBoxButtons.YesNo);
             if (result == DialogResult.No)
             {

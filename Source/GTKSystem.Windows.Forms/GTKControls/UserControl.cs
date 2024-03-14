@@ -9,12 +9,14 @@ using Gtk;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Xml.Linq;
 
 
 namespace System.Windows.Forms
 {
-    [DesignerCategory("Component")]
+    [DesignerCategory("UserControl")]
+    [DefaultEvent(nameof(Load))]
     public partial class UserControl : WidgetContainerControl<Gtk.Viewport>
     {
         private Gtk.Layout contaner;

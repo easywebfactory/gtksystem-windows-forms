@@ -13,7 +13,7 @@ namespace System.Windows.Forms
     {
         private int index = 0;
         internal int Index { get { return index; } set { index = value; } }
-
+        internal Gtk.TreeIter TreeIter = Gtk.TreeIter.Zero;
         private TreeNode parent;
         internal TreeView treeView;
         internal TreeView TreeView { get { return treeView; } }

@@ -3,6 +3,8 @@ using System.Drawing;
 
 namespace System.Windows.Forms
 {
+    [ToolboxItem($"System.Windows.Forms.Design.AutoSizeToolboxItem,{AssemblyRef.SystemDesign}")]
+    [ToolboxItemFilter("System.Windows.Forms")]
     [DesignerCategory("Component")]
     public partial class Control: Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize//,IEnumerable<Gtk.Widget>
     {

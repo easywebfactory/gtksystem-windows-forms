@@ -19,7 +19,7 @@ namespace System.Windows.Forms
         internal Gtk.TreeStore Store { get { return _store; } }
         private Gtk.TreeViewColumn textcolumn;
         private Gtk.TreeViewColumn checkboxcolumn;
-        public TreeView()
+        public TreeView() : base()
         {
             Widget.StyleContext.AddClass("TreeView");
             base.Control.BorderWidth = 0;
@@ -44,21 +44,11 @@ namespace System.Windows.Forms
             base.Control.Model = _store;
             base.Control.Realized += Control_Realized;
         }
-
         private void Control_Realized(object sender, EventArgs e)
         {
             base.Control.AppendColumn(textcolumn);
             if (CheckBoxes == true)
                 base.Control.AppendColumn(checkboxcolumn);
-
-            //Console.Write("TreeView_Shown"+ root.Nodes.Count);
-            foreach (TreeNode child in root.Nodes)
-            {
-                child.Index = ++index;
-                TreeIter ti = Store.InsertWithValues(child.Index, child.Text, false);
-                loadNodeChildrenValue(child, ti);
-            }
-            base.Control.ExpandAll();
         }
 
         private void CellName_Toggled(object o, ToggledArgs args)
@@ -71,15 +61,15 @@ namespace System.Windows.Forms
             model.SetValue(iter, 1, val == false);
           
         }
-
-        int index = 0;
-        private void loadNodeChildrenValue(TreeNode node, TreeIter parent)
+        internal void LoadNodeValue(TreeNode node, TreeIter parent)
         {
+            TreeIter iter = parent.Equals(TreeIter.Zero) ? Store.AppendValues(node.Text, false) : Store.AppendValues(parent, node.Text, false);
+            TreePath path = Store.GetPath(iter);
+            node.Index = path.Indices[0];
+            node.TreeIter = iter;
             foreach (TreeNode child in node.Nodes)
             {
-                child.Index = ++index;
-                TreeIter ti = Store.InsertWithValues(parent, child.Index, child.Text, false);
-                loadNodeChildrenValue(child, ti);
+                LoadNodeValue(child, iter);
             }
         }
         public TreeNodeCollection Nodes

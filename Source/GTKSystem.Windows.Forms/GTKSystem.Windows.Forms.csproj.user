@@ -198,7 +198,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\UserControl.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
   </ItemGroup>
 </Project>
