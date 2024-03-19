@@ -28,7 +28,7 @@ namespace System.Windows.Forms
         public Size AutoScrollMargin { get; set; }
         [DefaultValue(false)]
         [Localizable(true)]
-        public virtual bool AutoScroll { get; set; }
+        public virtual bool AutoScroll { get; set; } = false;
         //[Browsable(false)]
         //[EditorBrowsable(EditorBrowsableState.Always)]
         //public VScrollProperties VerticalScroll { get; }

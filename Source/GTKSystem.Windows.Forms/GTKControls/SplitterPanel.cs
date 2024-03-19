@@ -8,6 +8,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Drawing;
 
 
 namespace System.Windows.Forms
@@ -21,7 +22,8 @@ namespace System.Windows.Forms
             Owner = owner;
         }
 
-        public override DockStyle Dock { get; set; }
+        public override DockStyle Dock { get; set; } = DockStyle.Fill;
+        public override Size Size { get; set; }
 
     }
 }

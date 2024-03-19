@@ -38,8 +38,6 @@ namespace GTKWinFormsApp
         private void button1_Click(object sender, EventArgs e)
         {
             b.Title = "test2";
-            Control p = (Control)this;
-            p.Controls.Add(new Button() { Text = "dddd", Location = new Point(681, 156) });
 
             treeView1.Nodes.Add(new TreeNode("test1"));
             TreeNode node = new TreeNode("test3");

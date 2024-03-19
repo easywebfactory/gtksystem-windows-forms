@@ -79,8 +79,9 @@ GTKWinFormsApp\obj\Release\net6.0\GTKWinFormsApp.designer.runtimeconfig.json
 #### 窗口背景
 ![输入图片说明](/pic/backgroundimage.jpg)
 
-#### 交流
+#### 交流/合作/商务/赞助
 QQ群：236066073
+邮箱：438865652@qq.com
 
 #### 参与贡献
 
@@ -88,6 +89,8 @@ QQ群：236066073
 2. https://github.com/easywebfactory
 
 #### 更新日志
+ ## 2024/3/19
+ 1. panel内容溢出显示滚动条，窗口缩放程序优化
  ## 2024/3/14
  1. 修正TreeView数据程序加载
  ## 2024/3/6

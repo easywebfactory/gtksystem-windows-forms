@@ -18,7 +18,8 @@ namespace System.Windows.Forms
     [DesignerCategory("Component")]
     public partial class Panel : WidgetContainerControl<Gtk.Viewport>
     {
-        private Gtk.Layout contaner = new Gtk.Layout(new Gtk.Adjustment(1,1,1000,1,1,10), new Gtk.Adjustment(1, 1, 1000, 1, 1, 10));
+        private Gtk.Fixed contaner = new Gtk.Fixed();
+        private Gtk.ScrolledWindow scrolledwindow = new Gtk.ScrolledWindow();
         private ControlCollection _controls;
 
         public Panel() : base()
@@ -28,16 +29,32 @@ namespace System.Windows.Forms
             base.Control.MarginTop = 0;
             base.Control.ShadowType = Gtk.ShadowType.In;
             base.Control.BorderWidth = 0;
+            _controls = new ControlCollection(this, contaner);
 
             contaner.MarginStart = 0;
             contaner.MarginTop = 0;
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
-            _controls = new ControlCollection(this, contaner);
-            base.Control.Child = contaner;
+
+            scrolledwindow.Halign = Align.Fill;
+            scrolledwindow.Valign = Align.Fill;
+            scrolledwindow.VscrollbarPolicy = PolicyType.Never;
+            scrolledwindow.HscrollbarPolicy = PolicyType.Never;
+            scrolledwindow.Child = contaner;
+            base.Control.Child = scrolledwindow;
         }
- 
         public override BorderStyle BorderStyle { get { return base.Control.ShadowType == Gtk.ShadowType.None ? BorderStyle.None : BorderStyle.FixedSingle; } set { base.Control.BorderWidth = 1; base.Control.ShadowType = Gtk.ShadowType.In; } }
         public override ControlCollection Controls => _controls;
+        public override bool AutoScroll { 
+            get => base.AutoScroll; 
+            set { 
+                base.AutoScroll = value;
+                if (value == true)
+                {
+                    scrolledwindow.VscrollbarPolicy = PolicyType.Automatic;
+                    scrolledwindow.HscrollbarPolicy = PolicyType.Automatic;
+                }
+            } 
+        }
     }
 }

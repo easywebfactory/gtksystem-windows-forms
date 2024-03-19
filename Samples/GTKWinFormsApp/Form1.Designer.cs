@@ -37,14 +37,20 @@ namespace GTKWinFormsApp
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            TreeNode treeNode5 = new TreeNode("Node2");
-            TreeNode treeNode6 = new TreeNode("Node3");
-            TreeNode treeNode7 = new TreeNode("Node0", new TreeNode[] { treeNode5, treeNode6 });
-            TreeNode treeNode8 = new TreeNode("Node1");
+            TreeNode treeNode1 = new TreeNode("Node2");
+            TreeNode treeNode2 = new TreeNode("Node3");
+            TreeNode treeNode3 = new TreeNode("Node0", new TreeNode[] { treeNode1, treeNode2 });
+            TreeNode treeNode4 = new TreeNode("Node1");
             button1 = new Button();
             comboBox1 = new ComboBox();
             textBox1 = new TextBox();
             dataGridView1 = new DataGridView();
+            ID = new DataGridViewTextBoxColumn();
+            State = new DataGridViewCheckBoxColumn();
+            Title = new DataGridViewTextBoxColumn();
+            CreateDate = new DataGridViewComboBoxColumn();
+            Operate = new DataGridViewButtonColumn();
+            PIC = new DataGridViewImageColumn();
             groupBox1 = new GroupBox();
             button7 = new Button();
             checkBox2 = new CheckBox();
@@ -92,12 +98,6 @@ namespace GTKWinFormsApp
             checkedListBox1 = new CheckedListBox();
             splitContainer1 = new SplitContainer();
             pictureBox2 = new PictureBox();
-            ID = new DataGridViewTextBoxColumn();
-            State = new DataGridViewCheckBoxColumn();
-            Title = new DataGridViewTextBoxColumn();
-            CreateDate = new DataGridViewComboBoxColumn();
-            Operate = new DataGridViewButtonColumn();
-            PIC = new DataGridViewImageColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox1.SuspendLayout();
             tabControl1.SuspendLayout();
@@ -177,6 +177,57 @@ namespace GTKWinFormsApp
             dataGridView1.RowEnter += dataGridView1_RowEnter;
             dataGridView1.RowLeave += dataGridView1_RowLeave;
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
+            // 
+            // ID
+            // 
+            ID.HeaderText = "ID";
+            ID.MinimumWidth = 6;
+            ID.Name = "ID";
+            ID.ReadOnly = true;
+            ID.SortMode = DataGridViewColumnSortMode.NotSortable;
+            ID.Width = 125;
+            // 
+            // State
+            // 
+            State.HeaderText = "State";
+            State.MinimumWidth = 6;
+            State.Name = "State";
+            State.Resizable = DataGridViewTriState.False;
+            State.Width = 125;
+            // 
+            // Title
+            // 
+            Title.HeaderText = "Title";
+            Title.MinimumWidth = 6;
+            Title.Name = "Title";
+            Title.Resizable = DataGridViewTriState.True;
+            Title.Width = 125;
+            // 
+            // CreateDate
+            // 
+            CreateDate.HeaderText = "CreateDate";
+            CreateDate.Items.AddRange(new object[] { "2012-09-12 12:32:33", "2012-09-13 12:32:33", "2012-09-14 12:32:33" });
+            CreateDate.MinimumWidth = 6;
+            CreateDate.Name = "CreateDate";
+            CreateDate.Resizable = DataGridViewTriState.True;
+            CreateDate.SortMode = DataGridViewColumnSortMode.Automatic;
+            CreateDate.Width = 125;
+            // 
+            // Operate
+            // 
+            Operate.HeaderText = "Operate";
+            Operate.MinimumWidth = 6;
+            Operate.Name = "Operate";
+            Operate.ReadOnly = true;
+            Operate.Width = 125;
+            // 
+            // PIC
+            // 
+            PIC.HeaderText = "PIC";
+            PIC.MinimumWidth = 6;
+            PIC.Name = "PIC";
+            PIC.ReadOnly = true;
+            PIC.Width = 125;
             // 
             // groupBox1
             // 
@@ -537,15 +588,15 @@ namespace GTKWinFormsApp
             treeView1.Location = new System.Drawing.Point(127, 66);
             treeView1.Margin = new Padding(4);
             treeView1.Name = "treeView1";
-            treeNode5.Name = "Node2";
-            treeNode5.Text = "Node2";
-            treeNode6.Name = "Node3";
-            treeNode6.Text = "Node3";
-            treeNode7.Name = "Node0";
-            treeNode7.Text = "Node0";
-            treeNode8.Name = "Node1";
-            treeNode8.Text = "Node1";
-            treeView1.Nodes.AddRange(new TreeNode[] { treeNode7, treeNode8 });
+            treeNode1.Name = "Node2";
+            treeNode1.Text = "Node2";
+            treeNode2.Name = "Node3";
+            treeNode2.Text = "Node3";
+            treeNode3.Name = "Node0";
+            treeNode3.Text = "Node0";
+            treeNode4.Name = "Node1";
+            treeNode4.Text = "Node1";
+            treeView1.Nodes.AddRange(new TreeNode[] { treeNode3, treeNode4 });
             treeView1.Size = new System.Drawing.Size(154, 113);
             treeView1.TabIndex = 4;
             treeView1.AfterCollapse += treeView1_AfterCollapse;
@@ -693,6 +744,7 @@ namespace GTKWinFormsApp
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.AutoScroll = true;
             splitContainer1.Panel1.Controls.Add(pictureBox2);
             splitContainer1.Panel1.Controls.Add(treeView1);
             splitContainer1.Panel1.Controls.Add(checkedListBox1);
@@ -703,6 +755,7 @@ namespace GTKWinFormsApp
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.AutoScroll = true;
             splitContainer1.Panel2.Controls.Add(tabControl1);
             splitContainer1.Size = new System.Drawing.Size(1339, 565);
             splitContainer1.SplitterDistance = 250;
@@ -717,57 +770,6 @@ namespace GTKWinFormsApp
             pictureBox2.TabIndex = 14;
             pictureBox2.TabStop = false;
             pictureBox2.Paint += pictureBox2_Paint;
-            // 
-            // ID
-            // 
-            ID.HeaderText = "ID";
-            ID.MinimumWidth = 6;
-            ID.Name = "ID";
-            ID.ReadOnly = true;
-            ID.SortMode = DataGridViewColumnSortMode.NotSortable;
-            ID.Width = 125;
-            // 
-            // State
-            // 
-            State.HeaderText = "State";
-            State.MinimumWidth = 6;
-            State.Name = "State";
-            State.Resizable = DataGridViewTriState.False;
-            State.Width = 125;
-            // 
-            // Title
-            // 
-            Title.HeaderText = "Title";
-            Title.MinimumWidth = 6;
-            Title.Name = "Title";
-            Title.Resizable = DataGridViewTriState.True;
-            Title.Width = 125;
-            // 
-            // CreateDate
-            // 
-            CreateDate.HeaderText = "CreateDate";
-            CreateDate.Items.AddRange(new object[] { "2012-09-12 12:32:33", "2012-09-13 12:32:33", "2012-09-14 12:32:33" });
-            CreateDate.MinimumWidth = 6;
-            CreateDate.Name = "CreateDate";
-            CreateDate.Resizable = DataGridViewTriState.True;
-            CreateDate.SortMode = DataGridViewColumnSortMode.Automatic;
-            CreateDate.Width = 125;
-            // 
-            // Operate
-            // 
-            Operate.HeaderText = "Operate";
-            Operate.MinimumWidth = 6;
-            Operate.Name = "Operate";
-            Operate.ReadOnly = true;
-            Operate.Width = 125;
-            // 
-            // PIC
-            // 
-            PIC.HeaderText = "PIC";
-            PIC.MinimumWidth = 6;
-            PIC.Name = "PIC";
-            PIC.ReadOnly = true;
-            PIC.Width = 125;
             // 
             // Form1
             // 

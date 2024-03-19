@@ -11,6 +11,7 @@ using Gtk;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -203,13 +204,9 @@ namespace System.Windows.Forms
 
         private void ResizeControls(Gtk.Window window, Gtk.Container parent, bool isPaned, Gtk.Paned gtkPaned)
         {
-            foreach (Gtk.Widget control in parent.AllChildren)
+            foreach (Gtk.Widget control in parent.Children)
             {
-                if(control is Gtk.ScrolledWindow)
-                {
-
-                }
-                else if (control != null)
+                if (control != null)
                 {
                     object dock = control.Data["Dock"];
                     if (dock != null)
@@ -224,14 +221,15 @@ namespace System.Windows.Forms
                             else
                                 widthIncrement = gtkPaned.Child1.AllocatedWidth - gtkPaned.Child1.WidthRequest;
                         }
-                        int width = (parent.WidthRequest > 0 ? parent.WidthRequest : parent.AllocatedWidth) - 3;
-                        int height = (parent.HeightRequest > 0 ? parent.HeightRequest : parent.AllocatedHeight) - 3;
- 
+                        Gtk.Widget sizeParent = getSizeParent(control);
+                        int width = sizeParent.WidthRequest;
+                        int height = sizeParent.HeightRequest;
                         if (dockStyle == DockStyle.Top.ToString())
                         {
                             control.Valign = Gtk.Align.Start;
                             control.Hexpand = true;
-                            control.WidthRequest = width;
+                            if (control.WidthRequest > -1 && width > -1)
+                                control.WidthRequest = width;
                         }
                         else if (dockStyle == DockStyle.Bottom.ToString())
                         {
@@ -239,27 +237,32 @@ namespace System.Windows.Forms
                             control.Halign = Gtk.Align.Fill;
                             control.Hexpand = true;
                             control.MarginTop = heightIncrement;
-                            control.WidthRequest = width;
+                            if (control.WidthRequest > -1 && width > -1)
+                                control.WidthRequest = width;
                         }
                         else if (dockStyle == DockStyle.Left.ToString())
                         {
                             control.Halign = Gtk.Align.Start;
                             control.Vexpand = true;
-                            control.HeightRequest = height;
+                            if (control.HeightRequest > -1 && height > -1)
+                                control.HeightRequest = height;
                         }
                         else if (dockStyle == DockStyle.Right.ToString())
                         {
                             control.Halign = Gtk.Align.End;
                             control.Vexpand = true;
-                            control.HeightRequest = height;
+                            if (control.HeightRequest > -1 && height > -1)
+                                control.HeightRequest = height;
                             control.MarginStart = widthIncrement;
                         }
                         else if (dockStyle == DockStyle.Fill.ToString())
                         {
                             control.Hexpand = true;
                             control.Vexpand = true;
-                            control.HeightRequest = height;
-                            control.WidthRequest = width;
+                            if (control.HeightRequest > -1 && height > -1)
+                                control.HeightRequest = height;
+                            if (control.WidthRequest > -1 && width > -1)
+                                control.WidthRequest = width;
                         }
                         if (control is Gtk.TreeView)
                         {
@@ -290,7 +293,17 @@ namespace System.Windows.Forms
                 }
             }
         }
-
+        private Gtk.Widget getSizeParent(Gtk.Widget control)
+        {
+            while (control.Parent != null)
+            {
+                if (control.Parent.WidthRequest > -1)
+                    return control.Parent;
+                else
+                    return getSizeParent(control.Parent);
+            }
+            return control.Parent;
+        }
         public override void Show()
         {
             this.Show(null);

@@ -66,11 +66,15 @@
             label1 = new System.Windows.Forms.Label();
             linkLabel1 = new System.Windows.Forms.LinkLabel();
             trackBar1 = new System.Windows.Forms.TrackBar();
+            panel1 = new System.Windows.Forms.Panel();
+            button2 = new System.Windows.Forms.Button();
+            button3 = new System.Windows.Forms.Button();
             menuStrip1.SuspendLayout();
             toolStrip2.SuspendLayout();
             contextMenuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
@@ -345,6 +349,34 @@
             trackBar1.Value = 10;
             trackBar1.Scroll += trackBar1_Scroll;
             // 
+            // panel1
+            // 
+            panel1.AutoScroll = true;
+            panel1.Controls.Add(button3);
+            panel1.Controls.Add(button2);
+            panel1.Location = new System.Drawing.Point(547, 225);
+            panel1.Name = "panel1";
+            panel1.Size = new System.Drawing.Size(216, 144);
+            panel1.TabIndex = 8;
+            // 
+            // button2
+            // 
+            button2.Location = new System.Drawing.Point(43, 18);
+            button2.Name = "button2";
+            button2.Size = new System.Drawing.Size(94, 29);
+            button2.TabIndex = 0;
+            button2.Text = "button2";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            button3.Location = new System.Drawing.Point(94, 126);
+            button3.Name = "button3";
+            button3.Size = new System.Drawing.Size(94, 29);
+            button3.TabIndex = 1;
+            button3.Text = "button3";
+            button3.UseVisualStyleBackColor = true;
+            // 
             // Form3
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -352,6 +384,7 @@
             BackColor = System.Drawing.SystemColors.ActiveCaption;
             ClientSize = new System.Drawing.Size(800, 450);
             ContextMenuStrip = contextMenuStrip1;
+            Controls.Add(panel1);
             Controls.Add(trackBar1);
             Controls.Add(linkLabel1);
             Controls.Add(label1);
@@ -373,6 +406,7 @@
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
+            panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -414,5 +448,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
     }
 }

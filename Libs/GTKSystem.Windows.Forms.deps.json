@@ -6,9 +6,11 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "GTKSystem.Windows.Forms/1.3.24.10": {
+      "GTKSystem.Windows.Forms/1.3.24.11": {
         "dependencies": {
           "GtkSharp": "3.24.24.95",
+          "Microsoft.NET.ILLink.Analyzers": "7.0.100-1.23211.1",
+          "Microsoft.NET.ILLink.Tasks": "7.0.100-1.23211.1",
           "System.Resources.Extensions": "8.0.0"
         },
         "runtime": {
@@ -83,6 +85,8 @@
           }
         }
       },
+      "Microsoft.NET.ILLink.Analyzers/7.0.100-1.23211.1": {},
+      "Microsoft.NET.ILLink.Tasks/7.0.100-1.23211.1": {},
       "PangoSharp/3.24.24.95": {
         "dependencies": {
           "CairoSharp": "3.24.24.95",
@@ -106,7 +110,7 @@
     }
   },
   "libraries": {
-    "GTKSystem.Windows.Forms/1.3.24.10": {
+    "GTKSystem.Windows.Forms/1.3.24.11": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -152,6 +156,20 @@
       "sha512": "sha512-RRUY45hAa5gsMcadvVjcLUzMjVtmuHSYTcIwM6j8LNgKhzFFHk69qM1D5ULfGxaWmVjicqNWiFtOtk8WsvPqaQ==",
       "path": "gtksharp/3.24.24.95",
       "hashPath": "gtksharp.3.24.24.95.nupkg.sha512"
+    },
+    "Microsoft.NET.ILLink.Analyzers/7.0.100-1.23211.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0GvbEgDGcUQA9KuWcQU1WwYHXt1tBzNr1Nls/M57rM7NA/AndFwCaCEoJpJkmxRY7xLlPDBnmGp8h5+FNqUngg==",
+      "path": "microsoft.net.illink.analyzers/7.0.100-1.23211.1",
+      "hashPath": "microsoft.net.illink.analyzers.7.0.100-1.23211.1.nupkg.sha512"
+    },
+    "Microsoft.NET.ILLink.Tasks/7.0.100-1.23211.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tvG8XZYLjT0o3WicCyKBZysVWo1jC9HdCFmNRmddx3WbAz0UCsd0qKZqpiEo99VLA8Re+FzWK51OcRldQPbt2Q==",
+      "path": "microsoft.net.illink.tasks/7.0.100-1.23211.1",
+      "hashPath": "microsoft.net.illink.tasks.7.0.100-1.23211.1.nupkg.sha512"
     },
     "PangoSharp/3.24.24.95": {
       "type": "package",

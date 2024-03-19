@@ -53,42 +53,60 @@ namespace System.Windows.Forms
         {
             foreach (object item in this)
             {
-                if (item is Control control)
-                {
-                    if (fixedContainer != null)
-                        fixedContainer.Put(control.Widget, control.Left, control.Top);
-                    else if (layoutContainer != null)
-                        layoutContainer.Put(control.Widget, control.Left, control.Top);
-                    else
-                        __ownerControl.Add(control.Widget);
-                }
-                else if (item is Gtk.Widget widget)
-                {
-                    if (fixedContainer != null)
-                        fixedContainer.Put(widget, widget.Allocation.X, widget.Allocation.Y);
-                    else if (layoutContainer != null)
-                        layoutContainer.Put(widget, widget.Allocation.X, widget.Allocation.Y);
-                    else
-                        __ownerControl.Add(widget);
-                }
+                AddToWidget(item);
             }
             __ownerControl.ShowAll();
+        }
+        private void AddToWidget(object item)
+        {
+            if (item is Control control)
+            {
+                if (fixedContainer != null)
+                    fixedContainer.Put(control.Widget, control.Left, control.Top);
+                else if (layoutContainer != null)
+                    layoutContainer.Put(control.Widget, control.Left, control.Top);
+                else
+                    __ownerControl.Add(control.Widget);
+            }
+            else if (item is Gtk.Widget widget)
+            {
+                if (fixedContainer != null)
+                    fixedContainer.Put(widget, widget.Allocation.X, widget.Allocation.Y);
+                else if (layoutContainer != null)
+                    layoutContainer.Put(widget, widget.Allocation.X, widget.Allocation.Y);
+                else
+                    __ownerControl.Add(widget);
+            }
         }
         public override int Add(object item)
         {
             if (item is Control control)
                 control.Parent = __owner;
+            if(__ownerControl.IsRealized)
+            {
+                AddToWidget(item);
+                __ownerControl.ShowAll();
+            }
             return base.Add(item);
         }
         public int AddWidget(Gtk.Widget item, Control control)
         {
             control.Parent = __owner;
+            if (__ownerControl.IsRealized)
+            {
+                AddToWidget(item);
+                __ownerControl.ShowAll();
+            }
             return base.Add(item);
         }
         public virtual void Add(Type itemType, object item)
         {
             //重载处理
             base.Add(item);
+            if (__ownerControl.IsRealized)
+            {
+                __ownerControl.ShowAll();
+            }
         }
 
         public virtual void AddRange(object[] items)
