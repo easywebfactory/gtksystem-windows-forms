@@ -14,7 +14,4 @@
 	  <Folder Include="Properties\" />
 	  <Folder Include="System\Resources\Extensions\" />
 	</ItemGroup>
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-	  <Exec Command="copy $(ProjectDir)bin\Debug\net6.0\*.*   $(SolutionDir)Libs\*.*" />
-	</Target>
 </Project>

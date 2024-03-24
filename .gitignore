@@ -11,6 +11,9 @@ ehthumbs_vista.db
 /Source/GTKSystem.Windows.Forms/obj/
 /Samples/GTKWinFormsApp/bin/
 /Samples/GTKWinFormsApp/obj/
+/Samples/GTKSystemWinFormsApp11/bin/
+/Samples/GTKSystemWinFormsApp11/obj/
+
 # Folder config file
 [Dd]esktop.ini
 
@@ -37,4 +40,3 @@ $RECYCLE.BIN/
 /Source/GTKSystem.Windows.Forms/obj/Debug/ref/*.*
 /Source/GTKSystem.Windows.Forms/obj/Debug/net6.0/ref/*.*
 /Source/GTKSystem.Windows.Forms/obj/Debug/net6.0/refint/*.*
-/GTKSystemWinFormsApp11/GTKSystemWinFormsApp11.csproj
