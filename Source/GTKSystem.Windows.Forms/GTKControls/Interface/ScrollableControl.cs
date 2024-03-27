@@ -4,6 +4,7 @@ using System.Drawing;
 
 namespace System.Windows.Forms
 {
+    [Designer("System.Windows.Forms.Design.ScrollableControlDesigner, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     public class ScrollableControl : Control, IArrangedElement, IComponent, IDisposable
     {
 

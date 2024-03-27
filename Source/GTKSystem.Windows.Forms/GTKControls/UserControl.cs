@@ -15,6 +15,8 @@ using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
+    [Designer("System.Windows.Forms.Design.UserControlDocumentDesigner, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(IRootDesigner))]
+    [Designer("System.Windows.Forms.Design.ControlDesigner, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     [DesignerCategory("UserControl")]
     [DefaultEvent(nameof(Load))]
     public partial class UserControl : WidgetContainerControl<Gtk.Viewport>
@@ -32,9 +34,11 @@ namespace System.Windows.Forms
             base.Control.Expand = false;
             base.Control.Hexpand = false;
             base.Control.Vexpand = false;
+            base.Control.StyleContext.AddClass("UserControl");
             contaner = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
             contaner.MarginStart = 0;
             contaner.MarginTop = 0;
+            contaner.BorderWidth = 0;
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
             contaner.Expand = true;

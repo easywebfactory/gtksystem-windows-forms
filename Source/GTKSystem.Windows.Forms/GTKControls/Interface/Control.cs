@@ -1,13 +1,18 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Design;
+using System.ComponentModel.Design.Serialization;
 using System.Drawing;
 
 namespace System.Windows.Forms
 {
-    [ToolboxItem($"System.Windows.Forms.Design.AutoSizeToolboxItem,{AssemblyRef.SystemDesign}")]
+    [DefaultEvent("Click")]
+    [DefaultProperty("Text")]
+    [Designer("System.Windows.Forms.Design.ControlDesigner, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
+    [DesignerSerializer("System.Windows.Forms.Design.ControlCodeDomSerializer, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", "System.ComponentModel.Design.Serialization.CodeDomSerializer, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     [ToolboxItemFilter("System.Windows.Forms")]
-    [DesignerCategory("Component")]
-    public partial class Control: Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize//,IEnumerable<Gtk.Widget>
+    public partial class Control: Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize
     {
+        private Gtk.Application app = Application.Init();
         public virtual T CreateControl<T>(params object[] args)
         {
             object widget = Activator.CreateInstance(typeof(T), args);

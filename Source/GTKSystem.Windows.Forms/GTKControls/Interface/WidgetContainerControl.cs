@@ -50,7 +50,6 @@ namespace System.Windows.Forms
             _widget.Drawn += Widget_Drawn;
             _widget.Realized += _widget_Realized;
             _widget.StyleContext.AddClass("DefaultThemeStyle");
-
         }
 
         private void _widget_Realized(object sender, EventArgs e)
@@ -389,7 +388,7 @@ namespace System.Windows.Forms
         public override Control TopLevelControl { get; }
 
         public override bool UseWaitCursor { get; set; }
-        public override bool Visible { get { return Widget.Visible; } set { Widget.Visible = value; } }
+        public override bool Visible { get { return Widget.Visible; } set { Widget.Visible = value; Widget.NoShowAll = value == false; } }
         public override int Width { get { return Widget.WidthRequest; } set { Widget.WidthRequest = value; } }
         public override IWindowTarget WindowTarget { get; set; }
         public override event EventHandler AutoSizeChanged;

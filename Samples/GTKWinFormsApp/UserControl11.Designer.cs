@@ -1,4 +1,7 @@
-﻿namespace GTKSystemWinFormsApp11
+﻿using System.Collections;
+using System.Windows.Forms;
+
+namespace GTKSystemWinFormsApp11
 {
     partial class UserControl11
     {
@@ -33,11 +36,11 @@
             // 
             // button1
             // 
-            button1.Location = new System.Drawing.Point(132, 44);
+            button1.Location = new System.Drawing.Point(0, 20);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(94, 29);
+            button1.Size = new System.Drawing.Size(153, 34);
             button1.TabIndex = 0;
-            button1.Text = "button1";
+            button1.Text = "这是自定义控件";
             button1.UseVisualStyleBackColor = true;
             // 
             // UserControl11
@@ -46,7 +49,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(button1);
             Name = "UserControl11";
-            Size = new System.Drawing.Size(393, 208);
+            Size = new System.Drawing.Size(157, 71);
             ResumeLayout(false);
         }
 

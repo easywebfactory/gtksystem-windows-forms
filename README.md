@@ -49,9 +49,13 @@ GTKSystem.ComponentModel.ComponentResourceManager实现了项目资源文件和�
 如果项目里没有使用资源图像文件，可以不用新建此文件。
 
 3、GTKWinFormsApp.csproj<br/>
-配置UseWindowsForms为false，目标OS设置为“(空)”，或者使用控制台应用程序
+配置UseWindowsForms为false，目标OS设置为“(空)”，或者使用控制台应用程序(在控制台框架下会显示控制台窗口，不建议这种方式)
 ```
-<UseWindowsForms>false</UseWindowsForms>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <UseWindowsForms>false</UseWindowsForms>
 ```
 
 4、引用GTKSystem.Windows.Forms、System.Resources.Extensions <br/>
@@ -89,6 +93,9 @@ QQ群：236066073
 2. https://github.com/easywebfactory
 
 #### 更新日志
+ ## 2024/3/27
+ 1. 改正usercontrol在窗体设计器上打开出现异常的问题（还无法显示控件）
+ 2. 实现graphics上的椭圆绘画
  ## 2024/3/19
  1. panel内容溢出显示滚动条，窗口缩放程序优化
  ## 2024/3/14

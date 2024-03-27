@@ -172,8 +172,8 @@ namespace System.Windows.Forms
 .ComboBox entry{padding:0px;}
 .Panel{background-color:#F6F5F4;} 
 .SplitContainer.horizontal{border-width:1px;}
-
 .SplitContainer>viewport{}
+.UserControl{border-width:0px;}
 
 .GroupBox{background-color:#F6F5F4;} 
 .TableLayoutPanel viewport{border:solid 1px #eeeeee;}
@@ -258,6 +258,15 @@ namespace System.Windows.Forms
         {
             lock (internalSyncObject)
                 Gtk.Application.Quit();
+        }
+    }
+
+    public static class InitAppliction
+    {
+       private static Gtk.Application app = Application.Init();
+        static InitAppliction()
+        {
+
         }
     }
 }

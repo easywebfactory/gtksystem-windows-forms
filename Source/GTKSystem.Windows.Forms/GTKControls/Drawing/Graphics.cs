@@ -4,6 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 
+
 namespace System.Drawing
 {
 	public sealed class Graphics : MarshalByRefObject, IDeviceContext, IDisposable
@@ -268,8 +269,7 @@ namespace System.Drawing
                 this.ContextTranslateWithDifference(offset, offset);
                 this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
                 this.context.LineWidth = pen.Width;
-                if (isClosePath)
-                    this.context.NewPath();
+                this.context.NewPath();
                 this.context.CurveTo(points[0].X, points[0].Y, points[1].X, points[1].Y, points[2].X, points[2].Y);
                 if (isClosePath)
                     this.context.ClosePath();
@@ -340,22 +340,52 @@ namespace System.Drawing
         }
 
 		public void DrawEllipse(Pen pen, Rectangle rect)
-		{
-		}
+        {
+            DrawEllipseCore(pen, rect.X, rect.Y, rect.Width, rect.Height, false, FillMode.Winding);
+        }
 
 		public void DrawEllipse(Pen pen, RectangleF rect)
 		{
-		}
+            DrawEllipseCore(pen, rect.X, rect.Y, rect.Width, rect.Height, false, FillMode.Winding);
+        }
 
 		public void DrawEllipse(Pen pen, int x, int y, int width, int height)
 		{
-		}
+            DrawEllipseCore(pen, x, y, width, height, false, FillMode.Winding);
+        }
 
 		public void DrawEllipse(Pen pen, float x, float y, float width, float height)
 		{
-		}
+			DrawEllipseCore(pen, x, y, width, height, false, FillMode.Winding);
+        }
+        public void DrawEllipseCore(Pen pen, float x, float y, float width, float height, bool isfill, FillMode fillmode)
+        {
+            this.context.Save();
+            this.ContextTranslateWithDifference(x, y);
+            this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
+            this.context.LineWidth = pen.Width;
+            this.context.LineJoin = Cairo.LineJoin.Round;
+            this.context.NewPath();
+            for (double t = 0; t < 2 * Math.PI; t += 0.05)
+            {
+                double x2_1 = width * Math.Cos(t);
+                double y2_1 = height * Math.Sin(t);
+                this.context.LineTo(x2_1, y2_1);
+            }
 
-		public void DrawIcon(Icon icon, Rectangle targetRect)
+            this.context.ClosePath();
+			if (isfill)
+			{
+				this.context.FillRule = fillmode == FillMode.Winding ? Cairo.FillRule.Winding : Cairo.FillRule.EvenOdd;
+				this.context.Fill();
+			}
+			else
+				this.context.Stroke();
+
+			this.context.Restore();
+
+        }
+        public void DrawIcon(Icon icon, Rectangle targetRect)
 		{
             DrawImage(new Bitmap(icon.PixbufData), targetRect);
         }
@@ -1028,20 +1058,24 @@ namespace System.Drawing
         }
 
 		public void FillEllipse(Brush brush, Rectangle rect)
-		{
-		}
+        {
+            DrawEllipseCore(new Pen(brush, 0), rect.X, rect.Y, rect.Width, rect.Height, true, FillMode.Winding);
+        }
 
 		public void FillEllipse(Brush brush, RectangleF rect)
-		{
-		}
+        {
+            DrawEllipseCore(new Pen(brush, 0), rect.X, rect.Y, rect.Width, rect.Height, true, FillMode.Winding);
+        }
 
 		public void FillEllipse(Brush brush, int x, int y, int width, int height)
 		{
-		}
+            DrawEllipseCore(new Pen(brush, 0), x, y, width, height, true, FillMode.Winding);
+        }
 
 		public void FillEllipse(Brush brush, float x, float y, float width, float height)
 		{
-		}
+            DrawEllipseCore(new Pen(brush, 0), x, y, width, height, true, FillMode.Winding);
+        }
 
 		public void FillPath(Brush brush, GraphicsPath path)
 		{

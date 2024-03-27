@@ -1,4 +1,7 @@
-﻿namespace GTKWinFormsApp
+﻿using GTKSystemWinFormsApp11;
+using System.Windows.Forms;
+
+namespace GTKWinFormsApp
 {
     partial class Form3
     {
@@ -30,45 +33,46 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form3));
-            menuStrip1 = new System.Windows.Forms.MenuStrip();
-            toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            ddddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            ssssToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            bb菜单ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            bb菜单2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            ssssToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            toolStrip2 = new System.Windows.Forms.ToolStrip();
-            toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
-            memnuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            fffffffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
-            menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
-            toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
-            toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
-            button1 = new System.Windows.Forms.Button();
-            contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
-            ddddToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            ffffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            statusStrip1 = new System.Windows.Forms.StatusStrip();
-            toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            toolStripProgressBar2 = new System.Windows.Forms.ToolStripProgressBar();
-            toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
-            toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripSplitButton2 = new System.Windows.Forms.ToolStripSplitButton();
-            toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
-            label1 = new System.Windows.Forms.Label();
-            linkLabel1 = new System.Windows.Forms.LinkLabel();
-            trackBar1 = new System.Windows.Forms.TrackBar();
-            panel1 = new System.Windows.Forms.Panel();
-            button2 = new System.Windows.Forms.Button();
-            button3 = new System.Windows.Forms.Button();
+            menuStrip1 = new MenuStrip();
+            toolStripMenuItem1 = new ToolStripMenuItem();
+            ddddToolStripMenuItem = new ToolStripMenuItem();
+            ssssToolStripMenuItem = new ToolStripMenuItem();
+            bb菜单ToolStripMenuItem = new ToolStripMenuItem();
+            bb菜单2ToolStripMenuItem = new ToolStripMenuItem();
+            ssssToolStripMenuItem1 = new ToolStripMenuItem();
+            toolStrip2 = new ToolStrip();
+            toolStripButton1 = new ToolStripButton();
+            toolStripLabel1 = new ToolStripLabel();
+            toolStripSeparator1 = new ToolStripSeparator();
+            toolStripDropDownButton1 = new ToolStripDropDownButton();
+            memnuToolStripMenuItem = new ToolStripMenuItem();
+            fffffffToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSplitButton1 = new ToolStripSplitButton();
+            menuToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
+            toolStripComboBox1 = new ToolStripComboBox();
+            toolStripTextBox1 = new ToolStripTextBox();
+            toolStripProgressBar1 = new ToolStripProgressBar();
+            button1 = new Button();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            ddddToolStripMenuItem1 = new ToolStripMenuItem();
+            ffffToolStripMenuItem = new ToolStripMenuItem();
+            statusStrip1 = new StatusStrip();
+            toolStripStatusLabel1 = new ToolStripStatusLabel();
+            toolStripProgressBar2 = new ToolStripProgressBar();
+            toolStripDropDownButton2 = new ToolStripDropDownButton();
+            toolStripMenuItem4 = new ToolStripMenuItem();
+            toolStripMenuItem3 = new ToolStripMenuItem();
+            toolStripSplitButton2 = new ToolStripSplitButton();
+            toolStripMenuItem6 = new ToolStripMenuItem();
+            toolStripMenuItem5 = new ToolStripMenuItem();
+            label1 = new Label();
+            linkLabel1 = new LinkLabel();
+            trackBar1 = new TrackBar();
+            panel1 = new Panel();
+            button3 = new Button();
+            button2 = new Button();
+            panel2 = new UserControl11();
             menuStrip1.SuspendLayout();
             toolStrip2.SuspendLayout();
             contextMenuStrip1.SuspendLayout();
@@ -80,7 +84,7 @@
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuItem1, ssssToolStripMenuItem1 });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, ssssToolStripMenuItem1 });
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new System.Drawing.Size(800, 28);
@@ -89,7 +93,7 @@
             // 
             // toolStripMenuItem1
             // 
-            toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { ddddToolStripMenuItem, ssssToolStripMenuItem });
+            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { ddddToolStripMenuItem, ssssToolStripMenuItem });
             toolStripMenuItem1.Name = "toolStripMenuItem1";
             toolStripMenuItem1.Size = new System.Drawing.Size(62, 24);
             toolStripMenuItem1.Text = "菜单1";
@@ -97,14 +101,14 @@
             // ddddToolStripMenuItem
             // 
             ddddToolStripMenuItem.Checked = true;
-            ddddToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            ddddToolStripMenuItem.CheckState = CheckState.Checked;
             ddddToolStripMenuItem.Name = "ddddToolStripMenuItem";
             ddddToolStripMenuItem.Size = new System.Drawing.Size(132, 26);
             ddddToolStripMenuItem.Text = "a菜单";
             // 
             // ssssToolStripMenuItem
             // 
-            ssssToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { bb菜单ToolStripMenuItem, bb菜单2ToolStripMenuItem });
+            ssssToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { bb菜单ToolStripMenuItem, bb菜单2ToolStripMenuItem });
             ssssToolStripMenuItem.Name = "ssssToolStripMenuItem";
             ssssToolStripMenuItem.Size = new System.Drawing.Size(132, 26);
             ssssToolStripMenuItem.Text = "b菜单";
@@ -130,7 +134,7 @@
             // toolStrip2
             // 
             toolStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
-            toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripButton1, toolStripLabel1, toolStripSeparator1, toolStripDropDownButton1, toolStripSplitButton1, toolStripSeparator2, toolStripComboBox1, toolStripTextBox1, toolStripProgressBar1 });
+            toolStrip2.Items.AddRange(new ToolStripItem[] { toolStripButton1, toolStripLabel1, toolStripSeparator1, toolStripDropDownButton1, toolStripSplitButton1, toolStripSeparator2, toolStripComboBox1, toolStripTextBox1, toolStripProgressBar1 });
             toolStrip2.Location = new System.Drawing.Point(0, 28);
             toolStrip2.Name = "toolStrip2";
             toolStrip2.Size = new System.Drawing.Size(800, 28);
@@ -139,7 +143,7 @@
             // 
             // toolStripButton1
             // 
-            toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Image;
             toolStripButton1.Image = (System.Drawing.Image)resources.GetObject("toolStripButton1.Image");
             toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             toolStripButton1.Name = "toolStripButton1";
@@ -159,7 +163,7 @@
             // 
             // toolStripDropDownButton1
             // 
-            toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { memnuToolStripMenuItem, fffffffToolStripMenuItem });
+            toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { memnuToolStripMenuItem, fffffffToolStripMenuItem });
             toolStripDropDownButton1.Image = (System.Drawing.Image)resources.GetObject("toolStripDropDownButton1.Image");
             toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             toolStripDropDownButton1.Name = "toolStripDropDownButton1";
@@ -169,7 +173,7 @@
             // memnuToolStripMenuItem
             // 
             memnuToolStripMenuItem.Checked = true;
-            memnuToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            memnuToolStripMenuItem.CheckState = CheckState.Checked;
             memnuToolStripMenuItem.Name = "memnuToolStripMenuItem";
             memnuToolStripMenuItem.Size = new System.Drawing.Size(116, 26);
             memnuToolStripMenuItem.Text = "项1";
@@ -182,7 +186,7 @@
             // 
             // toolStripSplitButton1
             // 
-            toolStripSplitButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { menuToolStripMenuItem });
+            toolStripSplitButton1.DropDownItems.AddRange(new ToolStripItem[] { menuToolStripMenuItem });
             toolStripSplitButton1.Image = (System.Drawing.Image)resources.GetObject("toolStripSplitButton1.Image");
             toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             toolStripSplitButton1.Name = "toolStripSplitButton1";
@@ -227,11 +231,12 @@
             button1.Text = "打开主窗口";
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
+            button1.Paint += button1_Paint;
             // 
             // contextMenuStrip1
             // 
             contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { ddddToolStripMenuItem1, ffffToolStripMenuItem });
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { ddddToolStripMenuItem1, ffffToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new System.Drawing.Size(119, 52);
             // 
@@ -250,7 +255,7 @@
             // statusStrip1
             // 
             statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripStatusLabel1, toolStripProgressBar2, toolStripDropDownButton2, toolStripSplitButton2 });
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, toolStripProgressBar2, toolStripDropDownButton2, toolStripSplitButton2 });
             statusStrip1.Location = new System.Drawing.Point(0, 424);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new System.Drawing.Size(800, 26);
@@ -271,8 +276,8 @@
             // 
             // toolStripDropDownButton2
             // 
-            toolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            toolStripDropDownButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuItem4, toolStripMenuItem3 });
+            toolStripDropDownButton2.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripDropDownButton2.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem4, toolStripMenuItem3 });
             toolStripDropDownButton2.Image = (System.Drawing.Image)resources.GetObject("toolStripDropDownButton2.Image");
             toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             toolStripDropDownButton2.Name = "toolStripDropDownButton2";
@@ -293,7 +298,7 @@
             // 
             // toolStripSplitButton2
             // 
-            toolStripSplitButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripMenuItem6, toolStripMenuItem5 });
+            toolStripSplitButton2.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem6, toolStripMenuItem5 });
             toolStripSplitButton2.Image = (System.Drawing.Image)resources.GetObject("toolStripSplitButton2.Image");
             toolStripSplitButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             toolStripSplitButton2.Name = "toolStripSplitButton2";
@@ -341,11 +346,11 @@
             trackBar1.Location = new System.Drawing.Point(300, 102);
             trackBar1.Maximum = 100;
             trackBar1.Name = "trackBar1";
-            trackBar1.Orientation = System.Windows.Forms.Orientation.Vertical;
+            trackBar1.Orientation = Orientation.Vertical;
             trackBar1.Size = new System.Drawing.Size(56, 291);
             trackBar1.TabIndex = 7;
             trackBar1.TickFrequency = 2;
-            trackBar1.TickStyle = System.Windows.Forms.TickStyle.Both;
+            trackBar1.TickStyle = TickStyle.Both;
             trackBar1.Value = 10;
             trackBar1.Scroll += trackBar1_Scroll;
             // 
@@ -359,15 +364,6 @@
             panel1.Size = new System.Drawing.Size(216, 144);
             panel1.TabIndex = 8;
             // 
-            // button2
-            // 
-            button2.Location = new System.Drawing.Point(43, 18);
-            button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(94, 29);
-            button2.TabIndex = 0;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
-            // 
             // button3
             // 
             button3.Location = new System.Drawing.Point(94, 126);
@@ -377,13 +373,30 @@
             button3.Text = "button3";
             button3.UseVisualStyleBackColor = true;
             // 
+            // button2
+            // 
+            button2.Location = new System.Drawing.Point(43, 18);
+            button2.Name = "button2";
+            button2.Size = new System.Drawing.Size(94, 29);
+            button2.TabIndex = 0;
+            button2.Text = "button2";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            panel2.Location = new System.Drawing.Point(82, 296);
+            panel2.Name = "panel2";
+            panel2.Size = new System.Drawing.Size(200, 80);
+            panel2.TabIndex = 9;
+            // 
             // Form3
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.Font;
             BackColor = System.Drawing.SystemColors.ActiveCaption;
             ClientSize = new System.Drawing.Size(800, 450);
             ContextMenuStrip = contextMenuStrip1;
+            Controls.Add(panel2);
             Controls.Add(panel1);
             Controls.Add(trackBar1);
             Controls.Add(linkLabel1);
@@ -451,5 +464,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
+        private UserControl11 panel2;
     }
 }

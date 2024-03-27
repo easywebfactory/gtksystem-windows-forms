@@ -392,7 +392,7 @@ namespace System.Windows.Forms
         public override Control TopLevelControl { get; }
 
         public override bool UseWaitCursor { get; set; }
-        public override bool Visible { get { return Widget.Visible; } set { Widget.Visible = value; } }
+        public override bool Visible { get { return Widget.Visible; } set { Widget.Visible = value; Widget.NoShowAll = value == false; } }
         public override int Width { get { return Widget.WidthRequest; } set { Widget.WidthRequest = value; } }
         public override IWindowTarget WindowTarget { get; set; }
         public override event EventHandler AutoSizeChanged;
