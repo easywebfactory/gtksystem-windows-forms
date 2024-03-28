@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Windows.Forms;
 
-namespace GTKSystemWinFormsApp11
+namespace GTKWinFormsApp
 {
     partial class UserControl11
     {
@@ -50,6 +50,8 @@ namespace GTKSystemWinFormsApp11
             Controls.Add(button1);
             Name = "UserControl11";
             Size = new System.Drawing.Size(157, 71);
+            Paint += UserControl11_Paint;
+            ParentChanged += UserControl11_ParentChanged;
             ResumeLayout(false);
         }
 

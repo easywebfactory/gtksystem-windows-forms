@@ -86,7 +86,7 @@ namespace System.Windows.Forms
                 }
             }
             if (Paint != null)
-                Paint(o, new PaintEventArgs(new Graphics(this._widget, args.Cr, rec), new Drawing.Rectangle(rec.X, rec.Y, rec.Width, rec.Height)));
+                Paint(this, new PaintEventArgs(new Graphics(this._widget, args.Cr, rec), new Drawing.Rectangle(rec.X, rec.Y, rec.Width, rec.Height)));
         }
 
         private Gdk.Pixbuf backgroundPixbuf;

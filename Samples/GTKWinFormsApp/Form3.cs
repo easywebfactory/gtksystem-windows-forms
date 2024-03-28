@@ -15,6 +15,7 @@ namespace GTKWinFormsApp
         public Form3()
         {
             InitializeComponent();
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -31,9 +32,15 @@ namespace GTKWinFormsApp
         private void button1_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
-            g.DrawEllipse(new Pen(new SolidBrush(Color.Red), 2), 80, 25, 30, 20);
+            g.DrawEllipse(new Pen(new SolidBrush(Color.Red), 2), 0, 0, 30, 20);
             //g.FillEllipse(new SolidBrush(Color.Red), 40, 25, 30, 20);
             // g.DrawEllipse(new Pen(new SolidBrush(Color.Red), 0), 40, 25, 40, 40);
+
+        }
+
+        private void Form3_Load(object sender, EventArgs e)
+        {
+           
 
         }
     }

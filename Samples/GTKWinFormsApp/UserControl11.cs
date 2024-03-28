@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GTKSystemWinFormsApp11
+namespace GTKWinFormsApp
 {
 
     public partial class UserControl11 : UserControl
@@ -18,6 +18,18 @@ namespace GTKSystemWinFormsApp11
         public UserControl11()
         {
             InitializeComponent();
+        }
+
+        private void UserControl11_Paint(object sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            g.DrawEllipse(new Pen(new SolidBrush(Color.Red), 2), 0, 0, 30, 20);
+            //g.FillEllipse(new SolidBrush(Color.Red), 40, 25, 30, 20);
+        }
+
+        private void UserControl11_ParentChanged(object sender, EventArgs e)
+        {
+            MessageBox.Show("sss");
         }
     }
 }

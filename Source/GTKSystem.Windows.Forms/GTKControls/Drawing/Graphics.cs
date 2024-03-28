@@ -361,18 +361,19 @@ namespace System.Drawing
         public void DrawEllipseCore(Pen pen, float x, float y, float width, float height, bool isfill, FillMode fillmode)
         {
             this.context.Save();
-            this.ContextTranslateWithDifference(x, y);
+            this.ContextTranslateWithDifference(x + width, y + height);
             this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
             this.context.LineWidth = pen.Width;
             this.context.LineJoin = Cairo.LineJoin.Round;
             this.context.NewPath();
-            for (double t = 0; t < 2 * Math.PI; t += 0.05)
+			float r = (width + height) / 4;
+			double rs = Math.Min(0.1, 2 / r);
+            for (double t = 0; t < 2 * Math.PI; t += rs)
             {
                 double x2_1 = width * Math.Cos(t);
                 double y2_1 = height * Math.Sin(t);
                 this.context.LineTo(x2_1, y2_1);
             }
-
             this.context.ClosePath();
 			if (isfill)
 			{
@@ -380,8 +381,9 @@ namespace System.Drawing
 				this.context.Fill();
 			}
 			else
+			{
 				this.context.Stroke();
-
+			}
 			this.context.Restore();
 
         }

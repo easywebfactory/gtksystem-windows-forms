@@ -1,4 +1,4 @@
-﻿using GTKSystemWinFormsApp11;
+﻿
 using System.Windows.Forms;
 
 namespace GTKWinFormsApp
@@ -72,7 +72,6 @@ namespace GTKWinFormsApp
             panel1 = new Panel();
             button3 = new Button();
             button2 = new Button();
-            panel2 = new UserControl11();
             menuStrip1.SuspendLayout();
             toolStrip2.SuspendLayout();
             contextMenuStrip1.SuspendLayout();
@@ -382,13 +381,6 @@ namespace GTKWinFormsApp
             button2.Text = "button2";
             button2.UseVisualStyleBackColor = true;
             // 
-            // panel2
-            // 
-            panel2.Location = new System.Drawing.Point(82, 296);
-            panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(200, 80);
-            panel2.TabIndex = 9;
-            // 
             // Form3
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -396,7 +388,6 @@ namespace GTKWinFormsApp
             BackColor = System.Drawing.SystemColors.ActiveCaption;
             ClientSize = new System.Drawing.Size(800, 450);
             ContextMenuStrip = contextMenuStrip1;
-            Controls.Add(panel2);
             Controls.Add(panel1);
             Controls.Add(trackBar1);
             Controls.Add(linkLabel1);
@@ -411,6 +402,7 @@ namespace GTKWinFormsApp
             Name = "Form3";
             ShowInTaskbar = false;
             Text = "Form3";
+            Load += Form3_Load;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             toolStrip2.ResumeLayout(false);
@@ -419,7 +411,7 @@ namespace GTKWinFormsApp
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
-            panel1.ResumeLayout(false);
+
             ResumeLayout(false);
             PerformLayout();
         }
