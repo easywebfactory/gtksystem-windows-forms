@@ -152,6 +152,7 @@ namespace System.Windows.Forms
 
         IAsyncResult BeginInvoke(Delegate method);
         IAsyncResult BeginInvoke(Delegate method, params object[] args);
+        IAsyncResult BeginInvoke(Action method);
         void BringToFront();
         bool Contains(Control ctl);
         void CreateControl();

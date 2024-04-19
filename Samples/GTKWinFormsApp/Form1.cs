@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,8 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
-//using System.Windows.Forms;
 using System.Windows.Forms;
 
 namespace GTKWinFormsApp
@@ -20,6 +17,7 @@ namespace GTKWinFormsApp
     {
         public Form1()
         {
+
             InitializeComponent();
             DataTable dt = new DataTable();
             dt.Columns.Add("ID", typeof(string));
@@ -33,11 +31,17 @@ namespace GTKWinFormsApp
             b.ID = 1;
             b.Title = "test1";
             listBox1.DataBindings.Add(new Binding("SelectedItem", b, "Title"));
+
+            listBox1.DisplayMember = "ID";
+            listBox1.DataSource = dt;
+            var ss = listBox1.Items[0];
+
         }
+
         TestEntity b = new TestEntity();
         private void button1_Click(object sender, EventArgs e)
         {
-            b.Title = "test2";
+            // b.Title = "test2";
 
             treeView1.Nodes.Add(new TreeNode("test1"));
             TreeNode node = new TreeNode("test3");
@@ -60,7 +64,9 @@ namespace GTKWinFormsApp
             data.Add(new TestEntity() { ID = 5, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "Resources\\BindingNavigator.Delete.ico" });
             data.Add(new TestEntity() { ID = 6, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC = "" });
 
-            this.dataGridView1.DataSource = data;
+             this.dataGridView1.DataSource = data;
+            //var s=this.dataGridView1.Rows[0].Cells[0];
+
             //2、datatable数据源
             DataTable dt = new DataTable();
             dt.Columns.Add("ID", typeof(string));
@@ -68,20 +74,17 @@ namespace GTKWinFormsApp
             dt.Columns.Add("State", typeof(bool));
             dt.Rows.Add("test1", DateTime.Now, true);
             dt.Rows.Add("test2", DateTime.Now.AddDays(5), false);
+            //this.dataGridView1.Columns.Clear();
+            //this.dataGridView1.DataSource = dt;
 
-
-            DataSet dataSet = new DataSet();
-            dataSet.Tables.Add(dt);
- 
             //3、通过dataviewrow添加数据
             //for (int i = 0; i < 10; i++)
             //{
             //    var cell = new DataGridViewRow();
-            //    cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString() }, new DataGridViewCheckBoxCell() { Value = true }, new DataGridViewTextBoxCell() { Value = "title" + i.ToString() }, new DataGridViewTextBoxCell() { Value = DateTime.Now } }.ToArray());
+            //    cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString() }, new DataGridViewCheckBoxCell() { Value = true }, new DataGridViewTextBoxCell() { Value = "title" + i.ToString() }, new DataGridViewComboBoxCell() { Value = DateTime.Now } }.ToArray());
             //    cell.DefaultCellStyle = new DataGridViewCellStyle() { BackColor = Color.Red };
-            //    this.dataGridView1.Rows.Add(cell);
+            //   this.dataGridView1.Rows.Add(cell);
             //}
-
         }
 
         public class TestEntity:INotifyPropertyChanged
@@ -95,7 +98,7 @@ namespace GTKWinFormsApp
             public string Operate { get; set; }
             public string PIC { get; set; }
 
-            public event PropertyChangedEventHandler PropertyChanged;
+            public event PropertyChangedEventHandler? PropertyChanged;
             protected void OnPropertyChangedEventHandler([CallerMemberName] string propertyName = null)
             {
                 if(PropertyChanged != null)
@@ -211,11 +214,12 @@ namespace GTKWinFormsApp
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
+            //6
             Console.WriteLine("dataGridView1_SelectionChanged");
         }
 
         private void dataGridView1_MultiSelectChanged(object sender, EventArgs e)
-        {
+        { //1
             Console.WriteLine("dataGridView1_MultiSelectChanged");
         }
 
@@ -230,21 +234,24 @@ namespace GTKWinFormsApp
 
         private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
+            //3
             Console.WriteLine("dataGridView1_CellEnter");
         }
 
         private void dataGridView1_CellLeave(object sender, DataGridViewCellEventArgs e)
-        {
+        {//4
             Console.WriteLine("dataGridView1_CellLeave");
         }
 
         private void dataGridView1_CellValidated(object sender, DataGridViewCellEventArgs e)
         {
+            //7
             Console.WriteLine("dataGridView1_CellValidated");
         }
 
         private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
+            //5
             Console.WriteLine("dataGridView1_CellValidating" + e.FormattedValue);
         }
 
@@ -260,6 +267,7 @@ namespace GTKWinFormsApp
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            //2
             Console.WriteLine("dataGridView1_CellClick");
         }
 
@@ -367,7 +375,7 @@ namespace GTKWinFormsApp
             }
 
             g.DrawString("这是Paint Graphics示例效果", new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 60);
-            g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2), new Rectangle(0, 0, pictureBox2.Width, pictureBox2.Height), 60, 190);
+            g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2), new Rectangle(pictureBox2.Width/2, pictureBox2.Height/2, pictureBox2.Width, pictureBox2.Height), 0, 270);
 
             g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(50, 60), new PointF(100, 80), new PointF(75, 100)});
             g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(75, 100), new PointF(100, 120), new PointF(120, 100)});

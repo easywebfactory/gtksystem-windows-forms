@@ -19,8 +19,14 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 3.  检查form表单是否有使用图像资源，如使用需新建System.Resources.ResourceManager和System.ComponentModel.ComponentResourceManager，具体请看下面内容。
 4.  按默认配置编译发布测试运行
 5.  linux和macos上执行命令：dotnet demo_app.dll
-
- （注：如果出现打开visual studio的Form窗体设计器出现“设计器”相关异常，可自建一个空类，命名为System.Resources.Extensions.dll，引用）。
+6.  编译工程，执行本项目的开发插件菜单“修复窗体设计器”，或者手动在obj目录下创建.designer.runtimeconfig.json，请看下面第5点。
+ 
+linux安装gtk环境：
+```
+ sudo apt install libgtk-3-dev
+ 或
+ sudo apt-get install libgtk3*
+```
 
 #### VisualStudio插件安装
 
@@ -62,8 +68,8 @@ GTKSystem.ComponentModel.ComponentResourceManager实现了项目资源文件和�
 GTKSystem.Windows.Forms是必须引用<br/>
 System.Resources.Extensions是空程序dll，不是必须引用，只有VS在窗体设计器出现相关异常提示时使用
 
-5、GTKWinFormsApp\obj\Debug\net6.0\GTKWinFormsApp.designer.runtimeconfig.json
-GTKWinFormsApp\obj\Release\net6.0\GTKWinFormsApp.designer.runtimeconfig.json
+5、GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.designer.runtimeconfig.json
+GTKWinFormsApp\obj\Release\net8.0\GTKWinFormsApp.designer.runtimeconfig.json
 将name设置为Microsoft.WindowsDesktop.App， **用于VS支持可视化窗体设计器，重新加载工程或重启VS** 
 
 ```
@@ -93,6 +99,11 @@ QQ群：236066073
 2. https://github.com/easywebfactory
 
 #### 更新日志
+ ## 2024/4/20
+ 1. 修正graphic绘图的位置
+ 2. 实现graphicpath绘图、渐变色
+ 3. 实现控件的BeginInvoke和EndInvoke方法
+ 4. 修改DataGridView、ListBox的数据加载程序，修正不能在窗口启动加载数据的问题
  ## 2024/3/27
  1. 改正usercontrol在窗体设计器上打开出现异常的问题（还无法显示控件）
  2. 实现graphics上的椭圆绘画

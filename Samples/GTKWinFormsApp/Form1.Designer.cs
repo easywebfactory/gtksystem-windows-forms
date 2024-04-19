@@ -206,7 +206,7 @@ namespace GTKWinFormsApp
             // CreateDate
             // 
             CreateDate.HeaderText = "CreateDate";
-            CreateDate.Items.AddRange(new object[] { "2012-09-12 12:32:33", "2012-09-13 12:32:33", "2012-09-14 12:32:33" });
+            CreateDate.Items.AddRange(new object[] { "2012-09-12 12:32:11", "2012-09-13 12:32:22", "2012-09-14 12:32:33" });
             CreateDate.MinimumWidth = 6;
             CreateDate.Name = "CreateDate";
             CreateDate.Resizable = DataGridViewTriState.True;

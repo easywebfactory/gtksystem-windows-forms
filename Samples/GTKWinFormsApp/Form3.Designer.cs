@@ -225,7 +225,7 @@ namespace GTKWinFormsApp
             button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, 0);
             button1.Location = new System.Drawing.Point(437, 128);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(275, 52);
+            button1.Size = new System.Drawing.Size(275, 100);
             button1.TabIndex = 3;
             button1.Text = "打开主窗口";
             button1.UseVisualStyleBackColor = false;
@@ -358,7 +358,7 @@ namespace GTKWinFormsApp
             panel1.AutoScroll = true;
             panel1.Controls.Add(button3);
             panel1.Controls.Add(button2);
-            panel1.Location = new System.Drawing.Point(547, 225);
+            panel1.Location = new System.Drawing.Point(547, 250);
             panel1.Name = "panel1";
             panel1.Size = new System.Drawing.Size(216, 144);
             panel1.TabIndex = 8;

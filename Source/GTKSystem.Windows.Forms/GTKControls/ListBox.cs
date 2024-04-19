@@ -5,8 +5,10 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using Gdk;
 using GLib;
 using Gtk;
+using Pango;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,7 +26,7 @@ namespace System.Windows.Forms
     {
         ControlBindingsCollection _collect;
         ObjectCollection _items;
-        private Gtk.FlowBox _flow;
+        private Gtk.FlowBox _flow = new Gtk.FlowBox();
         internal Gtk.FlowBox FlowBox { get { return _flow; } }
         public ListBox():base()
 		{
@@ -32,7 +34,7 @@ namespace System.Windows.Forms
             _items = new ObjectCollection(this);
             Widget.StyleContext.AddClass("ListBox");
             base.Control.Realized += Control_Realized;
-            _flow = new Gtk.FlowBox();
+            
             _flow.MaxChildrenPerLine = 1u;
             _flow.Halign = Gtk.Align.Fill;
             _flow.Valign = Gtk.Align.Start;
@@ -99,13 +101,41 @@ namespace System.Windows.Forms
         }
 
         #region listcontrol
-
+        private object _DataSource;
         [DefaultValue(null)]
         [AttributeProvider(typeof(IListSource))]
         public object DataSource
         {
-            get;
-            set;
+            get => _DataSource;
+            set {
+                _DataSource = value;
+                if (_DataSource != null)
+                {
+                    if (value is DataTable table)
+                    {
+                        if (table.Columns.Contains(DisplayMember))
+                        {
+                            foreach (DataRow row in table.Rows)
+                            {
+                                _items.Add(row[DisplayMember].ToString());
+                            }
+                        }
+                    }
+                    else if (value is IEnumerable source)
+                    {
+                        IEnumerator enumerator = source.GetEnumerator();
+                        while (enumerator.MoveNext())
+                        {
+                            object item = enumerator.Current;
+                            var prop = item.GetType().GetProperty(DisplayMember);
+                            if (prop != null)
+                            {
+                                _items.Add(prop.GetValue(item, null));
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         [DefaultValue("")]

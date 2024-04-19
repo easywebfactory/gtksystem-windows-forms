@@ -1,9 +1,14 @@
+using Cairo;
+using Gtk;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
-
+using System.IO;
+using System.Linq;
+using static System.Drawing.Drawing2D.GraphicsPath;
 
 namespace System.Drawing
 {
@@ -137,7 +142,7 @@ namespace System.Drawing
 			}
 		}
 
-		public Matrix Transform
+		public Drawing2D.Matrix Transform
 		{
 			get
 			{
@@ -174,15 +179,65 @@ namespace System.Drawing
 		{
 			throw null;
 		}
-		internal void ContextTranslateWithDifference(double x,double y)
-		{
+		//internal void ContextTranslateWithDifference(double x,double y)
+		//{
+  //          this.context.Translate(diff_left + x, diff_top + y);
+  //      }
+        internal void SetTranslateWithDifference(double x, double y)
+        {
             this.context.Translate(diff_left + x, diff_top + y);
+        }
+        internal void SetSourceColor(Pen pen)
+		{
+            if (pen.Brush is SolidBrush sbrush)
+            {
+                this.context.SetSourceRGBA(sbrush.Color.R / 255f, sbrush.Color.G / 255f, sbrush.Color.B / 255f, 1);
+            }
+            else if (pen.Brush is LinearGradientBrush lbrush)
+            {
+                double maxsize = Math.Max(diff_left + lbrush.Rectangle.Right, diff_top + lbrush.Rectangle.Bottom); //渐变角度定为方形45度
+                using Cairo.LinearGradient gradient = new Cairo.LinearGradient(diff_left + lbrush.Rectangle.Left, diff_top + lbrush.Rectangle.Top, maxsize, maxsize);
+				int linearcount = lbrush.LinearColors.Length;
+				int idx = 0;
+				foreach (Color color in lbrush.LinearColors)
+					gradient.AddColorStop((++idx) / linearcount, new Cairo.Color(color.R / 255f, color.G / 255f, color.B / 255f, color.A));
+
+				Cairo.Matrix matrix = new Cairo.Matrix(1, 0, 0, 1, 0, 0);
+				matrix.Rotate(Math.PI * 45 / 180);//弧度
+				gradient.Matrix = matrix;
+                using Cairo.Pattern pattern = Cairo.Pattern.Lookup(gradient.Handle, false);
+				this.context.SetSource(pattern);
+			}
+			else if (pen.Brush is HatchBrush hbrush)
+            {
+                this.context.SetSourceRGBA(hbrush.ForegroundColor.R / 255f, hbrush.ForegroundColor.G / 255f, hbrush.ForegroundColor.B / 255f, 1);
+            }
+            else if (pen.Brush is PathGradientBrush pbrush)
+            {
+                double maxsize = Math.Max(diff_left + pbrush.Rectangle.Right, diff_top + pbrush.Rectangle.Bottom); //渐变角度定为方形45度
+                using Cairo.LinearGradient gradient = new Cairo.LinearGradient(diff_left + pbrush.Rectangle.Left, diff_top + pbrush.Rectangle.Top, maxsize, maxsize);
+                int linearcount = pbrush.SurroundColors.Length;
+                double centeridx = Math.Floor((double)linearcount / 2);
+                int idx = 0;
+				foreach (Color color in pbrush.SurroundColors)
+				{
+					if(idx == centeridx)
+                        gradient.AddColorStop((++idx) / linearcount, new Cairo.Color(pbrush.CenterColor.R / 255f, pbrush.CenterColor.G / 255f, pbrush.CenterColor.B / 255f, pbrush.CenterColor.A));
+					else
+						gradient.AddColorStop((++idx) / linearcount, new Cairo.Color(color.R / 255f, color.G / 255f, color.B / 255f, color.A));
+				}
+                Cairo.Matrix matrix = new Cairo.Matrix(1, 0, 0, 1, 0, 0);
+                matrix.Rotate(Math.PI * 45 / 180);//弧度
+                gradient.Matrix = matrix;
+                using Cairo.Pattern pattern = Cairo.Pattern.Lookup(gradient.Handle, false);
+                this.context.SetSource(pattern);
+            }
         }
 		public void Clear(Color color)
 		{
             this.context.Save();
 			this.context.SetSourceRGB(color.R / 255f, color.G / 255f, color.B / 255f);
-            this.ContextTranslateWithDifference(0, 0);
+            this.SetTranslateWithDifference(0, 0);
             this.context.Rectangle(this.rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
 			this.context.Fill();
 			this.context.Paint();
@@ -211,13 +266,14 @@ namespace System.Drawing
         private void DrawArcCore(Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
         {
             this.context.Save();
-            this.ContextTranslateWithDifference(0, 0);
+            this.SetTranslateWithDifference(0, 0);
+            this.SetSourceColor(pen);
             this.context.LineWidth = pen.Width;
             this.context.LineJoin = Cairo.LineJoin.Round;
-            this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
-            this.context.Arc(x + width / 2, y + height / 2, Math.Min(width / 2, height / 2), startAngle, sweepAngle);
-            //this.context.ArcNegative(x + width / 2, y + height / 2, Math.Min(width / 2, height / 2), startAngle, sweepAngle); //相反位置
-            this.context.Stroke();
+            this.context.NewPath();
+            this.context.Arc(x, y, Math.Min(width / 2, height / 2), Math.PI * startAngle / 180, Math.PI * (startAngle + sweepAngle) / 180);
+            //this.context.ArcNegative(x, y, Math.Min(width / 2, height / 2), Math.PI * startAngle / 180, Math.PI * sweepAngle / 180); //相反位置
+            this.context.Stroke(); 
             this.context.Restore();
         }
         public void DrawArc(Pen pen, Rectangle rect, float startAngle, float sweepAngle)
@@ -240,34 +296,94 @@ namespace System.Drawing
             DrawArcCore(pen, x, y, width, height, startAngle, sweepAngle);
         }
 
-		public void DrawBezier(Pen pen, Point pt1, Point pt2, Point pt3, Point pt4)
+        #region 贝塞尔曲线
+        /// <summary>
+        /// 收集贝塞尔曲线坐标点全部点的位置集合
+        /// </summary>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        private List<PointF> GetBezierPoints(List<PointF> points)
+        {
+            float seedNum = 0;
+            for (int i = 1; i < points.Count; i++)
+            {
+                seedNum += Math.Abs(points[i].X - points[i - 1].X) + Math.Abs(points[i].Y - points[i - 1].Y);
+            }
+            seedNum += seedNum * 0.2f;
+            float pStep = 1 / seedNum;
+            List<PointF> rpoint = new List<PointF>();
+            for (float pTime = 0; pTime <= 1; pTime += pStep)
+            {
+                List<PointF> lfpr = CalculateBezier(points, pTime);
+                PointF fpr = lfpr[0];
+                rpoint.Add(fpr);
+            }
+            return rpoint;
+        }
+        /// <summary>
+        /// 计算贝塞尔曲线上坐标点单点位置
+        /// </summary>
+        /// <param name="points">贝塞尔条件坐标集合</param>
+        /// <param name="time">时间因子</param>
+        /// <returns></returns>
+        private List<PointF> CalculateBezier(List<PointF> points, float time)
+        {
+            List<PointF> nList = new List<PointF> { };
+            int listNum = points.Count;
+            if (listNum < 2)
+            {
+                return points.ToList();
+            }
+            for (int n = 1; n < listNum; n++)
+            {
+                float nowX = (points[n].X - points[n - 1].X) * time + points[n - 1].X;
+                float nowY = (points[n].Y - points[n - 1].Y) * time + points[n - 1].Y;
+                PointF nowP = new PointF(nowX, nowY);
+                nList.Add(nowP);
+            }
+
+            List<PointF> p = CalculateBezier(nList, time);
+            return p;
+        }
+
+        private void DrawBeziersCore(Pen pen, PointF[] points)
+        {
+			List<PointF> data = GetBezierPoints(points.ToList());
+            DrawLinesCore(pen, data.ToArray());
+        }
+        public void DrawBezier(Pen pen, Point pt1, Point pt2, Point pt3, Point pt4)
 		{
-		}
+			DrawBeziersCore(pen, new PointF[] { new PointF(pt1.X, pt1.Y), new PointF(pt2.X, pt2.Y), new PointF(pt3.X, pt3.Y), new PointF(pt4.X, pt4.Y) });
+        }
 
 		public void DrawBezier(Pen pen, PointF pt1, PointF pt2, PointF pt3, PointF pt4)
 		{
-
-		}
+            DrawBeziersCore(pen, new PointF[] { pt1, pt2, pt3, pt4 });
+        }
 
 		public void DrawBezier(Pen pen, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4)
 		{
-
-		}
+            DrawBeziersCore(pen, new PointF[] { new PointF(x1, y1), new PointF(x2, y2), new PointF(x3, y3), new PointF(x4, y4) });
+        }
 
 		public void DrawBeziers(Pen pen, PointF[] points)
 		{
-		}
+            DrawBeziersCore(pen, points);
+        }
 
 		public void DrawBeziers(Pen pen, Point[] points)
 		{
-		}
+            DrawBeziersCore(pen, Array.ConvertAll(points, p => new PointF(p.X, p.Y)));
+        }
+        #endregion
+
         private void DrawCurveCore(bool isClosePath, bool isfill, Pen pen, PointF[] points, int offset, int numberOfSegments, float tension, FillMode fillmode)
         {
             if (points.Length > 1)
             {
                 this.context.Save();
-                this.ContextTranslateWithDifference(offset, offset);
-                this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
+                this.SetTranslateWithDifference(offset, offset);
+                this.SetSourceColor(pen);
                 this.context.LineWidth = pen.Width;
                 this.context.NewPath();
                 this.context.CurveTo(points[0].X, points[0].Y, points[1].X, points[1].Y, points[2].X, points[2].Y);
@@ -361,8 +477,8 @@ namespace System.Drawing
         public void DrawEllipseCore(Pen pen, float x, float y, float width, float height, bool isfill, FillMode fillmode)
         {
             this.context.Save();
-            this.ContextTranslateWithDifference(x + width, y + height);
-            this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
+            this.SetTranslateWithDifference(x + width / 2, y + height / 2);
+            this.SetSourceColor(pen);
             this.context.LineWidth = pen.Width;
             this.context.LineJoin = Cairo.LineJoin.Round;
             this.context.NewPath();
@@ -370,8 +486,8 @@ namespace System.Drawing
 			double rs = Math.Min(0.1, 2 / r);
             for (double t = 0; t < 2 * Math.PI; t += rs)
             {
-                double x2_1 = width * Math.Cos(t);
-                double y2_1 = height * Math.Sin(t);
+                double x2_1 = width * Math.Cos(t) / 2;
+                double y2_1 = height * Math.Sin(t) / 2;
                 this.context.LineTo(x2_1, y2_1);
             }
             this.context.ClosePath();
@@ -428,7 +544,7 @@ namespace System.Drawing
 				Gdk.Pixbuf newimg = new Gdk.Pixbuf(surface, 0, 0, width, height);
 				img.CopyArea(x, y, width, height, newimg, 0, 0);
 				this.context.Save();
-				this.ContextTranslateWithDifference(x, y);
+				this.SetTranslateWithDifference(x, y);
 				Gdk.CairoHelper.SetSourcePixbuf(this.context, newimg, x, y);
 
 				using (var p = this.context.GetSource())
@@ -468,7 +584,7 @@ namespace System.Drawing
 
                 img.Scale(scaleimg, 0, 0, destRect.Width, destRect.Height, srcX, srcY, destRect.Width / srcWidth, destRect.Height / srcHeight, Gdk.InterpType.Tiles);
                 this.context.Save();
-                this.ContextTranslateWithDifference(destRect.X, destRect.Y);
+                this.SetTranslateWithDifference(destRect.X, destRect.Y);
                 Gdk.CairoHelper.SetSourcePixbuf(this.context, scaleimg, 0, 0);
                 using (var p = this.context.GetSource())
                 {
@@ -652,72 +768,401 @@ namespace System.Drawing
 		{
             DrawImageUnscaledCore(image, rect.X, rect.Y, rect.Width, rect.Height,true);
         }
+        private void DrawLinesCore(Pen pen, PointF[] points)
+        {
+            if (points.Length > 0)
+            {
+                this.context.Save();
+                this.SetTranslateWithDifference(0, 0);
+                this.SetSourceColor(pen);
+                this.context.LineWidth = pen.Width;
+                this.context.NewPath();
+                foreach (PointF p in points)
+                {
+                    this.context.LineTo(p.X, p.Y);
+                }
+                this.context.Stroke();
+                this.context.Restore();
 
-		public void DrawLine(Pen pen, Point pt1, Point pt2)
+            }
+        }
+        public void DrawLine(Pen pen, Point pt1, Point pt2)
 		{
 			DrawLine(pen, pt1.X, pt1.Y, pt2.X, pt2.Y);
 		}
 
 		public void DrawLine(Pen pen, PointF pt1, PointF pt2)
 		{
-			DrawLines(pen, new PointF[] { pt1, pt2 });
-		}
+            DrawLine(pen, pt1.X, pt1.Y, pt2.X, pt2.Y);
+        }
 
 		public void DrawLine(Pen pen, int x1, int y1, int x2, int y2)
 		{
-			DrawLines(pen, new PointF[] { new PointF(x1, y1), new PointF(x2, y2) });
-		}
+            DrawLine(pen, x1, y1, x2, y2);
+        }
 
 		public void DrawLine(Pen pen, float x1, float y1, float x2, float y2)
 		{
-			DrawLines(pen, new PointF[] { new PointF(x1, y1), new PointF(x2, y2) });
+            DrawLinesCore(pen, new PointF[] { new PointF(x1, y1), new PointF(x2, y2) });
 		}
 
 		public void DrawLines(Pen pen, PointF[] points)
 		{
-			if (points.Length > 0)
-			{
-				this.context.Save();
-                this.ContextTranslateWithDifference(0, 0);
-                this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
-				this.context.LineWidth = pen.Width;
-				foreach (PointF p in points)
-				{
-					this.context.LineTo(p.X, p.Y);
-				}
-				this.context.Stroke();
-				this.context.Restore();
-
-			}
-		}
+            DrawLinesCore(pen, points);
+        }
 
 		public void DrawLines(Pen pen, Point[] points)
 		{
-			DrawLines(pen, Array.ConvertAll<Point, PointF>(points, o => new PointF(o.X, o.Y)));
+            DrawLinesCore(pen, Array.ConvertAll<Point, PointF>(points, o => new PointF(o.X, o.Y)));
         }
         public void DrawPath(Pen pen, GraphicsPath path)
         {
-            DrawLines(pen, path.PathPoints);
+			DrawPathCore(pen, path, false);
         }
+        private void DrawPathCore1(Pen pen, GraphicsPath path, bool isfill)
+        {
+            this.context.Save();
+            path.Context = this.context;
+            this.SetTranslateWithDifference(0, 0);
+            this.SetSourceColor(pen);
+            this.context.LineWidth = pen.Width;
+            this.context.NewPath();
+            foreach (object o in path.list)
+            {
+                if (o is GraphicsPath.FigureMode start && start.start == true)
+                {
+                    this.context.NewSubPath();
+                }
+                else if (o is GraphicsPath.ArcMode arc)
+                {
+                    double rw = arc.rect.Width / 2;
+                    double rh = arc.rect.Height / 2;
+                    double ra = Math.Min(rw, rh);
+                    this.context.Arc(arc.rect.X + rw, arc.rect.Y + rh, ra, Math.PI * arc.startAngle / 180, Math.PI * (arc.startAngle + arc.sweepAngle) / 180);
+                }
+                else if (o is GraphicsPath.BezierMode bezier)
+                {
+                    this.context.MoveTo(bezier.pt1.X, bezier.pt1.Y);
+                    List<PointF> data = GetBezierPoints(new List<PointF>() { bezier.pt1, bezier.pt2, bezier.pt3, bezier.pt4 });
+                    foreach (PointF point in data)
+                    {
+                        this.context.LineTo(point.X, point.Y);
+                    }
+                }
+                else if (o is GraphicsPath.BeziersMode beziers)
+                {
+                    List<PointF> data = GetBezierPoints(beziers.points.ToList());
+                    foreach (PointF point in data)
+                    {
+                        this.context.LineTo(point.X, point.Y);
+                    }
+                }
+                else if (o is GraphicsPath.ClosedCurveMode closedcurve)
+                {
+                    this.context.CurveTo(closedcurve.points[0].X, closedcurve.points[0].Y, closedcurve.points[1].X, closedcurve.points[1].Y, closedcurve.points[2].X, closedcurve.points[2].Y);
+                    this.context.FillRule = closedcurve.fillmode == FillMode.Winding ? Cairo.FillRule.Winding : Cairo.FillRule.EvenOdd;
+                    //this.context.Fill();
+                    this.context.ClosePath();
+                    this.context.NewSubPath();
+                }
+                else if (o is GraphicsPath.CurveMode curve)
+                {
+                    this.context.CurveTo(curve.points[0].X + curve.offset, curve.points[0].Y + curve.offset, curve.points[1].X + curve.offset, curve.points[1].Y + curve.offset, curve.points[2].X + curve.offset, curve.points[2].Y + curve.offset);
 
+                }
+                else if (o is GraphicsPath.EllipseMode ellipse)
+                {
+                    this.context.NewSubPath();
+                    float r = (ellipse.rect.Width + ellipse.rect.Height) / 4;
+                    double rs = Math.Min(0.1, 2 / r);
+                    for (double t = 0; t < 2 * Math.PI; t += rs)
+                    {
+                        double x2_1 = ellipse.rect.Width * Math.Cos(t) / 2;
+                        double y2_1 = ellipse.rect.Height * Math.Sin(t) / 2;
+                        this.context.LineTo(x2_1+ ellipse.rect.X + ellipse.rect.Width / 2, y2_1+ ellipse.rect.Y + ellipse.rect.Height / 2);
+                    }
+                    this.context.ClosePath();
+                    this.context.NewSubPath();
+                }
+                else if (o is GraphicsPath.LineMode line)
+                {
+                    this.context.LineTo(line.pt1.X, line.pt1.Y);
+                    this.context.LineTo(line.pt2.X, line.pt2.Y);
+                }
+                else if (o is GraphicsPath.LinesMode lines)
+                {
+                    this.context.MoveTo(lines.points[0].X, lines.points[0].Y);
+                    foreach (PointF p in lines.points)
+                    {
+                        this.context.LineTo(p.X, p.Y);
+                    }
+                }
+                else if (o is GraphicsPath.PieMode pie)
+                {
+                    this.context.NewSubPath();
+                    double rw = pie.rect.Width / 2;
+                    double rh = pie.rect.Height / 2;
+                    double ra = Math.Min(rw, rh);
+                    this.context.Arc(pie.rect.X + rw, pie.rect.Y + rh, ra, Math.PI * pie.startAngle / 180, Math.PI * (pie.startAngle + pie.sweepAngle) / 180);
+                    this.context.LineTo(pie.rect.X + rw, pie.rect.Y + rh);
+					this.context.ClosePath();
+					this.context.NewSubPath();
+				}
+                else if (o is GraphicsPath.PolygonMode polygon)
+                {
+                    this.context.NewSubPath();
+                    foreach (PointF p in polygon.points)
+                    {
+                        this.context.LineTo(p.X, p.Y);
+                    }
+                    this.context.ClosePath();
+                    this.context.NewSubPath();
+                }
+                else if (o is GraphicsPath.RectangleMode rectangle)
+                {
+                    this.context.Rectangle(rectangle.rect.X, rectangle.rect.Y, rectangle.rect.Width, rectangle.rect.Height);
+                }
+                else if (o is GraphicsPath.RectanglesMode rectangles)
+                {
+                    foreach (RectangleF rect in rectangles.rects)
+                    {
+                        this.context.Rectangle(rect.X, rect.Y, rect.Width, rect.Height);
+                    }
+					
+                }
+                else if (o is GraphicsPath.StringMode str)
+                {
+                    string text = str.text;
+                    if (str.layoutRect.Width > 0)
+                    {
+                        while (text.Length > 0 && this.context.TextExtents(text).Width > str.layoutRect.Width)
+                            text = text.Substring(0, text.Length - 1);
+                    }
+                    float textSize = str.emSize < 1 ? 14f : str.emSize;
+                    FontFamily font = str.family;
+                    Pango.Context pangocontext = this.widget.PangoContext;
+                    string family = pangocontext.FontDescription.Family;
+                    if (string.IsNullOrWhiteSpace(font.Name) == false)
+                    {
+                        var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
+                        if (pangoFamily != null)
+                            family = pangoFamily.Name;
+                    }
+                    this.context.MoveTo(str.layoutRect.X, str.layoutRect.Y + textSize);
+                    this.context.SelectFontFace(family, str.style == 2 ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, str.style == 1 ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
+                    this.context.SetFontSize(textSize);
+                    this.context.ShowText(text);
+                }
+                else if (o is GraphicsPath.PathMode addpath)
+                {
+                    DrawPath(pen, addpath.path);
+                }
+                if (path.IsCloseAllFigures == true || (o is GraphicsPath.FigureMode close && close.close == true))
+                {
+                    this.context.ClosePath();
+                }
+            }
+			if (isfill == true)
+                this.context.Fill();
+			else
+				this.context.Stroke();
+
+			if (path.matrix != null)
+			{
+                this.context.Matrix = ConvertToMatrix(path.matrix);
+            }
+			
+            this.context.Restore();
+        }
+        private void DrawPathCore(Pen pen, GraphicsPath path, bool isfill)
+        {
+            this.context.Save();
+            path.Context = this.context;
+            this.SetTranslateWithDifference(0, 0);
+            this.SetSourceColor(pen);
+            this.context.LineWidth = pen.Width;
+            this.context.NewPath();
+            foreach (object o in path.list)
+            {
+                if (o is GraphicsPath.FigureMode start && start.start == true)
+                {
+                    this.context.NewSubPath();
+                }
+                else if (o is GraphicsPath.ArcMode arc)
+                {
+                    double rw = arc.rect.Width / 2;
+                    double rh = arc.rect.Height / 2;
+                    double ra = Math.Min(rw, rh);
+                    this.context.Arc(arc.rect.X + rw, arc.rect.Y + rh, ra, Math.PI * arc.startAngle / 180, Math.PI * (arc.startAngle + arc.sweepAngle) / 180);
+                }
+                else if (o is GraphicsPath.BezierMode bezier)
+                {
+                    this.context.MoveTo(bezier.pt1.X, bezier.pt1.Y);
+                    List<PointF> data = GetBezierPoints(new List<PointF>() { bezier.pt1, bezier.pt2, bezier.pt3, bezier.pt4 });
+                    foreach (PointF point in data)
+                    {
+                        this.context.LineTo(point.X, point.Y);
+                    }
+                }
+                else if (o is GraphicsPath.BeziersMode beziers)
+                {
+                    List<PointF> data = GetBezierPoints(beziers.points.ToList());
+                    foreach (PointF point in data)
+                    {
+                        this.context.LineTo(point.X, point.Y);
+                    }
+                }
+                else if (o is GraphicsPath.ClosedCurveMode closedcurve)
+                {
+                    this.context.CurveTo(closedcurve.points[0].X, closedcurve.points[0].Y, closedcurve.points[1].X, closedcurve.points[1].Y, closedcurve.points[2].X, closedcurve.points[2].Y);
+                    this.context.FillRule = closedcurve.fillmode == FillMode.Winding ? Cairo.FillRule.Winding : Cairo.FillRule.EvenOdd;
+                    //this.context.Fill();
+                    this.context.ClosePath();
+                    this.context.NewSubPath();
+                }
+                else if (o is GraphicsPath.CurveMode curve)
+                {
+                    this.context.CurveTo(curve.points[0].X + curve.offset, curve.points[0].Y + curve.offset, curve.points[1].X + curve.offset, curve.points[1].Y + curve.offset, curve.points[2].X + curve.offset, curve.points[2].Y + curve.offset);
+                }
+                else if (o is GraphicsPath.EllipseMode ellipse)
+                {
+                    this.context.NewSubPath();
+                    float r = (ellipse.rect.Width + ellipse.rect.Height) / 4;
+                    double rs = Math.Min(0.1, 2 / r);
+                    for (double t = 0; t < 2 * Math.PI; t += rs)
+                    {
+                        double x2_1 = ellipse.rect.Width * Math.Cos(t) / 2;
+                        double y2_1 = ellipse.rect.Height * Math.Sin(t) / 2;
+                        this.context.LineTo(x2_1 + ellipse.rect.X + ellipse.rect.Width / 2, y2_1 + ellipse.rect.Y + ellipse.rect.Height / 2);
+                    }
+                    this.context.ClosePath();
+                    this.context.NewSubPath();
+                }
+                else if (o is GraphicsPath.LineMode line)
+                {
+                    this.context.LineTo(line.pt1.X, line.pt1.Y);
+                    this.context.LineTo(line.pt2.X, line.pt2.Y);
+                }
+                else if (o is GraphicsPath.LinesMode lines)
+                {
+                    this.context.MoveTo(lines.points[0].X, lines.points[0].Y);
+                    foreach (PointF p in lines.points)
+                    {
+                        this.context.LineTo(p.X, p.Y);
+                    }
+                }
+                else if (o is GraphicsPath.PieMode pie)
+                {
+                    this.context.NewSubPath();
+                    double rw = pie.rect.Width / 2;
+                    double rh = pie.rect.Height / 2;
+                    double ra = Math.Min(rw, rh);
+                    this.context.Arc(pie.rect.X + rw, pie.rect.Y + rh, ra, Math.PI * pie.startAngle / 180, Math.PI * (pie.startAngle + pie.sweepAngle) / 180);
+                    this.context.LineTo(pie.rect.X + rw, pie.rect.Y + rh);
+                    this.context.ClosePath();
+                    this.context.NewSubPath();
+                }
+                else if (o is GraphicsPath.PolygonMode polygon)
+                {
+                    this.context.NewSubPath();
+                    foreach (PointF p in polygon.points)
+                    {
+                        this.context.LineTo(p.X, p.Y);
+                    }
+                    this.context.ClosePath();
+                    this.context.NewSubPath();
+                }
+                else if (o is GraphicsPath.RectangleMode rectangle)
+                {
+                    this.context.Rectangle(rectangle.rect.X, rectangle.rect.Y, rectangle.rect.Width, rectangle.rect.Height);
+                }
+                else if (o is GraphicsPath.RectanglesMode rectangles)
+                {
+                    foreach (RectangleF rect in rectangles.rects)
+                    {
+                        this.context.Rectangle(rect.X, rect.Y, rect.Width, rect.Height);
+                    }
+
+                }
+                else if (o is GraphicsPath.StringMode str)
+                {
+                    string text = str.text;
+                    if (str.layoutRect.Width > 0)
+                    {
+                        while (text.Length > 0 && this.context.TextExtents(text).Width > str.layoutRect.Width)
+                            text = text.Substring(0, text.Length - 1);
+                    }
+                    float textSize = str.emSize < 1 ? 14f : str.emSize;
+                    FontFamily font = str.family;
+                    Pango.Context pangocontext = this.widget.PangoContext;
+                    string family = pangocontext.FontDescription.Family;
+                    if (string.IsNullOrWhiteSpace(font.Name) == false)
+                    {
+                        var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
+                        if (pangoFamily != null)
+                            family = pangoFamily.Name;
+                    }
+                    this.context.MoveTo(str.layoutRect.X, str.layoutRect.Y + textSize);
+                    this.context.SelectFontFace(family, str.style == 2 ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, str.style == 1 ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
+                    this.context.SetFontSize(textSize);
+                    this.context.ShowText(text);
+                }
+                else if (o is GraphicsPath.PathMode addpath)
+                {
+                    DrawPath(pen, addpath.path);
+                }
+                if (path.IsCloseAllFigures == true || (o is GraphicsPath.FigureMode close && close.close == true))
+                {
+                    this.context.ClosePath();
+                }
+            }
+            if (isfill == true)
+                this.context.Fill();
+            else
+                this.context.Stroke();
+
+            if (path.matrix != null)
+            {
+                this.context.Matrix = ConvertToMatrix(path.matrix);
+            }
+
+            this.context.Restore();
+        }
+        private Cairo.Matrix ConvertToMatrix(Drawing2D.Matrix matrix)
+        {
+            Cairo.Matrix CairoMatrix = new Cairo.Matrix(matrix.m11, matrix.m12, matrix.m21, matrix.m22, matrix.dx, matrix.dy);
+            CairoMatrix.Init(matrix.m11, matrix.m12, matrix.m21, matrix.m22, matrix.dx, matrix.dy);
+
+            CairoMatrix.Translate(matrix.OffsetX, matrix.OffsetY);
+            CairoMatrix.Scale(matrix.scaleX, matrix.scaleY);
+            CairoMatrix.Rotate(matrix.angle);
+            CairoMatrix.Multiply(ConvertToMatrix(matrix.multiply));
+            if (matrix.invert)
+                CairoMatrix.Invert();
+
+			return CairoMatrix;
+        }
         private void DrawPieCore(bool isFill, Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
         {
             this.context.Save();
-            this.ContextTranslateWithDifference(0, 0);
-            this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
+            this.SetTranslateWithDifference(0, 0);
+            this.SetSourceColor(pen);
             this.context.LineWidth = pen.Width;
-            this.context.Arc(x + width / 2, y + height / 2, Math.Min(width / 2, height / 2), startAngle, sweepAngle);
+            this.context.NewPath();
+            this.context.MoveTo(x, y);
+            this.context.Arc(x, y, Math.Min(width / 2, height / 2), Math.PI * startAngle / 180, Math.PI * (startAngle + sweepAngle) / 180);
+            this.context.LineTo(x, y);
+            this.context.ClosePath();
             if (isFill)
                 this.context.Fill();
             else
                 this.context.Stroke();
             this.context.Restore();
         }
-
-		public void DrawPie(Pen pen, Rectangle rect, float startAngle, float sweepAngle)
-		{
-			DrawPie(pen, rect.X, rect.Y, rect.Width, rect.Height, startAngle, sweepAngle);
-		}
+        public void DrawPie(Pen pen, Rectangle rect, float startAngle, float sweepAngle)
+        {
+            DrawPie(pen, rect.X, rect.Y, rect.Width, rect.Height, startAngle, sweepAngle);
+        }
 
 		public void DrawPie(Pen pen, RectangleF rect, float startAngle, float sweepAngle)
 		{
@@ -739,8 +1184,8 @@ namespace System.Drawing
             if (points.Length > 0)
             {
                 this.context.Save();
-                this.ContextTranslateWithDifference(0, 0);
-                this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
+                this.SetTranslateWithDifference(0, 0);
+                this.SetSourceColor(pen);
                 this.context.LineWidth = pen.Width;
                 this.context.NewPath();
                 foreach (PointF p in points)
@@ -771,8 +1216,9 @@ namespace System.Drawing
         private void DrawRectangleCore(bool isFill, Pen pen, float x, float y, float width, float height)
         {
             this.context.Save();
-            this.ContextTranslateWithDifference(0, 0);
-            this.context.SetSourceRGB(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f);
+            this.SetTranslateWithDifference(0, 0);
+            this.SetSourceColor(pen);
+            this.context.NewPath();
             this.context.Rectangle(x, y, width, height);
 			if(isFill)
 				this.context.Fill();
@@ -841,13 +1287,9 @@ namespace System.Drawing
 					if (font.Unit == GraphicsUnit.Inch)
 						textSize = font.Size * 96;
 				}
-                this.ContextTranslateWithDifference(layoutRectangle.X, layoutRectangle.Y + textSize);
-                if (brush is SolidBrush sbrush)
-				{
-					if (sbrush.Color.Name != "0")
-						this.context.SetSourceRGBA(sbrush.Color.R / 255f, sbrush.Color.G / 255f, sbrush.Color.B / 255f, 1);
-				}
-				Pango.Context pangocontext = this.widget.PangoContext;
+                this.SetTranslateWithDifference(layoutRectangle.X, layoutRectangle.Y + textSize);
+                this.SetSourceColor(new Pen(brush,1));
+                Pango.Context pangocontext = this.widget.PangoContext;
 				string family = pangocontext.FontDescription.Family;
 				if (string.IsNullOrWhiteSpace(font.Name) == false)
 				{
@@ -1081,25 +1523,8 @@ namespace System.Drawing
 
 		public void FillPath(Brush brush, GraphicsPath path)
 		{
-			if (brush is SolidBrush sbrush)
-			{
-				if (path.PathPoints != null && path.PathPoints.Length > 0)
-				{
-					this.context.Save();
-					this.context.SetSourceRGB(sbrush.Color.R / 255f, sbrush.Color.G / 255f, sbrush.Color.B / 255f);
-                    this.ContextTranslateWithDifference(0, 0);
-					this.context.LineJoin = Cairo.LineJoin.Bevel;
-					this.context.LineCap = Cairo.LineCap.Butt;
-
-					foreach (PointF p in path.PathPoints)
-					{
-                        this.context.LineTo(Convert.ToDouble(p.X), Convert.ToDouble(p.Y));
-					}
-					this.context.Fill();
-					this.context.Restore();
-				}
-			}
-		}
+            DrawPathCore(new Pen(brush, 1), path, true);
+        }
 
 		public void FillPie(Brush brush, Rectangle rect, float startAngle, float sweepAngle)
 		{
@@ -1323,21 +1748,44 @@ namespace System.Drawing
 		}
 
 		public SizeF MeasureString(string text, Font font, int width)
-		{
-			throw null;
-		}
+        {
+			return MeasureString(text, font, width, StringFormat.GenericDefault);
+        }
 
 		public SizeF MeasureString(string text, Font font, int width, StringFormat format)
-		{
-			throw null;
-		}
+        {
+            float textSize = 14f;
+            if (font != null)
+            {
+                textSize = font.Size;
+                if (font.Unit == GraphicsUnit.Point)
+                    textSize = font.Size * 1 / 72 * 96;
+                if (font.Unit == GraphicsUnit.Inch)
+                    textSize = font.Size * 96;
+            }
+            Pango.Context pangocontext = this.widget.PangoContext;
+            string family = pangocontext.FontDescription.Family;
+            if (string.IsNullOrWhiteSpace(font.FontFamily.Name) == false)
+            {
+                var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.FontFamily.Name);
+                if (pangoFamily != null)
+                    family = pangoFamily.Name;
+            }
+            this.context.SelectFontFace(family, font.Italic ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, font.Bold ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
+            this.context.SetFontSize(textSize);
+           
+            var extents = this.context.TextExtents(text);
+			return new SizeF((float)Math.Max(width,extents.Width), (float)extents.Height);
+        }
 
-		public void MultiplyTransform(Matrix matrix)
+		public void MultiplyTransform(Drawing2D.Matrix matrix)
 		{
-		}
+            this.context.Matrix?.Multiply(ConvertToMatrix(matrix));
+        }
 
-		public void MultiplyTransform(Matrix matrix, MatrixOrder order)
+		public void MultiplyTransform(Drawing2D.Matrix matrix, MatrixOrder order)
 		{
+			this.context.Matrix?.Multiply(ConvertToMatrix(matrix));
 		}
 
 		public void ReleaseHdc()
@@ -1356,36 +1804,45 @@ namespace System.Drawing
 
 		public void ResetClip()
 		{
+			this.context.ResetClip();
 		}
 
 		public void ResetTransform()
 		{
-		}
+            this.context.Rotate(Math.PI / 180 * _angle * -1);
+        }
 
 		public void Restore(GraphicsState gstate)
 		{
-		}
-
+			this.context.Restore();
+        }
+		private float _angle = 0;
 		public void RotateTransform(float angle)
 		{
-		}
+            this.context.Rotate(Math.PI / 180 * angle);
+            _angle = angle;
+        }
 
 		public void RotateTransform(float angle, MatrixOrder order)
-		{
-		}
+        {
+            this.context.Rotate(Math.PI / 180 * angle);
+            _angle = angle;
+        }
 
 		public GraphicsState Save()
 		{
-			throw null;
+			return new GraphicsState();
 		}
 
 		public void ScaleTransform(float sx, float sy)
 		{
+			this.context.Scale(sx, sy);
 		}
 
 		public void ScaleTransform(float sx, float sy, MatrixOrder order)
 		{
-		}
+            this.context.Scale(sx, sy);
+        }
 
 		public void SetClip(GraphicsPath path)
 		{
@@ -1433,18 +1890,22 @@ namespace System.Drawing
 
 		public void TranslateClip(int dx, int dy)
 		{
-		}
+            //TranslateTransform(dx, dy, MatrixOrder.Append);
+        }
 
 		public void TranslateClip(float dx, float dy)
 		{
-		}
+            //TranslateTransform(dx, dy, MatrixOrder.Append);
+        }
 
 		public void TranslateTransform(float dx, float dy)
 		{
-		}
+            TranslateTransform(dx, dy, MatrixOrder.Append);
+        }
 
 		public void TranslateTransform(float dx, float dy, MatrixOrder order)
 		{
-		}
+            this.SetTranslateWithDifference(dx, dy);
+        }
 	}
 }

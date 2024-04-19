@@ -5,6 +5,7 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using GLib;
 using Gtk;
 using System;
 using System.Collections;
@@ -22,57 +23,32 @@ namespace System.Windows.Forms
     [DesignerCategory("Component")]
     public partial class DataGridView : WidgetContainerControl<Gtk.Viewport>
     {
-        private Gtk.TreeView _treeView;
+        private Gtk.TreeView _treeView = new Gtk.TreeView();
         private DataGridViewColumnCollection _columns;
         private DataGridViewRowCollection _rows;
-        private Gtk.TreeStore _store;
-        internal Gtk.TreeStore Store { get { return _store; } }
+        private ControlBindingsCollection _collect;
+
+        internal Gtk.TreeStore Store = new TreeStore(typeof(CellValue));// new TreeStore(typeof(CellValue), typeof(CellValue), typeof(CellValue), typeof(CellValue), typeof(CellValue), typeof(CellValue), typeof(CellValue), typeof(CellValue), typeof(CellValue), typeof(CellValue));
         internal Gtk.TreeView TreeView { get { return _treeView; } }
-        ControlBindingsCollection _collect;
+        
         public DataGridView():base()
         {
             Widget.StyleContext.AddClass("DataGridView");
-            _treeView = new Gtk.TreeView();
             _treeView.Valign = Gtk.Align.Fill;
             _treeView.Halign = Gtk.Align.Fill;
+            _treeView.Selection.Mode = Gtk.SelectionMode.Multiple;
+            _treeView.HeadersClickable = true;
+            _treeView.HeadersVisible = true;
+            _treeView.ActivateOnSingleClick = true;
+            // _treeView.RowActivated += DataGridView_RowActivated;//此事件必须ActivateOnSingleClick = true;
 
             _columns = new DataGridViewColumnCollection(this);
             _rows = new DataGridViewRowCollection(this);
             _collect = new ControlBindingsCollection(this);
+
             Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow();
-             scroll.Child = _treeView;
-            this.Control.Child =scroll;
-            _treeView.Selection.Mode = Gtk.SelectionMode.Multiple;
-            _treeView.HeadersClickable = true;
-            _treeView.HeadersVisible = true;
-
-            _treeView.ActivateOnSingleClick = true;
-           // _treeView.RowActivated += DataGridView_RowActivated;//此事件必须ActivateOnSingleClick = true;
-
-            _treeView.Realized += _treeView_Realized;
-        }
-
-        private void _treeView_Realized(object sender, EventArgs e)
-        {
-            if (_treeView.Columns.Length > 0)
-            {
-                _store = new Gtk.TreeStore(Array.ConvertAll(_treeView.Columns, o => typeof(CellValue)));
-                _treeView.Model = _store;
-                updateListStore();
-                _columns.Invalidate();
-            }
-        }
-
-        private void DataGridView_RowActivated(object o, Gtk.RowActivatedArgs args)
-        {
-            //Console.WriteLine("--DataGridView_RowActivated");
-            
-            TreePath path = args.Path;
-            DataGridViewColumn column = args.Column as DataGridViewColumn;
-            var model = _treeView.Model;
-            model.GetIter(out TreeIter iter, path);
-            CellValue val = (CellValue)(model.GetValue(iter, column.Index));
-
+            scroll.Child = _treeView;
+            this.Control.Child = scroll;
         }
 
         public event EventHandler MultiSelectChanged
@@ -168,7 +144,12 @@ namespace System.Windows.Forms
 
         internal void CellValueChanagedHandler(int column, int row, CellValue val)
         {
-            _rows[row].Cells[column].Value = val?.Text;
+            var cells = _rows[row].Cells;
+            if(cells.Count>column)
+            {
+                cells[column].Value = val?.Text;
+            }
+
             if (CellValueChanged != null)
             {
                 CellValueChanged(this, new DataGridViewCellEventArgs(column, row));
@@ -223,17 +204,19 @@ namespace System.Windows.Forms
             set
             {
                 _DataSource = value;
-                if (base.Visible && _treeView.IsRealized)
-                {
-                    updateListStore();
-                }
+                Store.Clear();
+                Store = new Gtk.TreeStore(Array.ConvertAll(_treeView.Columns, o => typeof(CellValue)));
+               _treeView.Model = Store;
+                updateListStore();
+                _columns.Invalidate();
             }
         }
+
         private void updateListStore()
         {
-            if (_store != null)
+            if (Store != null)
             {
-                _store.Clear();
+                Store.Clear();
             }
 
             if (_DataSource == null)
@@ -248,7 +231,6 @@ namespace System.Windows.Forms
                 loadListSource();
             }
         }
-
         private void loadDataTableSource()
         {
             DataTable dt = (DataTable)_DataSource;
@@ -261,12 +243,6 @@ namespace System.Windows.Forms
                     else
                         Columns.Add(new DataGridViewColumn() { Name = col.ColumnName, HeaderText = col.ColumnName, ValueType = col.DataType });
                 }
-                if (_store != null)
-                {
-                    _store.Clear();
-                }
-                _store = new Gtk.TreeStore(Array.ConvertAll(_treeView.Columns, o => typeof(CellValue)));
-                _treeView.Model = _store;
                 _columns.Invalidate();
             }
             int ncolumns = Columns.Count;
@@ -297,7 +273,6 @@ namespace System.Windows.Forms
                 }
             }
         }
-
         private void loadListSource()
         {
             Type _type = _DataSource.GetType();
@@ -314,12 +289,6 @@ namespace System.Windows.Forms
                         else
                             Columns.Add(new DataGridViewColumn() { Name = pro.Name, HeaderText = pro.Name, ValueType = pro.PropertyType });
                     }
-                    if (_store != null)
-                    {
-                        _store.Clear();
-                    }
-                    _store = new Gtk.TreeStore(Array.ConvertAll(_treeView.Columns, o => typeof(CellValue)));
-                    _treeView.Model = _store;
                     _columns.Invalidate();
                 }
 
@@ -422,22 +391,38 @@ namespace System.Windows.Forms
         }
         public void Invalidate()
         {
-            int idx = 0;
-            foreach (DataGridViewColumn column in this)
+            if (__owner.TreeView.Columns.Length > __owner.Store.NColumns)
             {
-                column.Index = idx;
-                column.DisplayIndex = column.Index;
-                column.DataGridView = __owner;
-                column.Renderer();
-                __owner.Store.SetSortFunc(idx, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
+                CellValue[] columnTypes = new CellValue[__owner.TreeView.Columns.Length];
+                __owner.Store.Clear();
+                __owner.Store = new TreeStore(Array.ConvertAll(columnTypes, o => typeof(CellValue)));
+                __owner.TreeView.Model = __owner.Store;
+            }
+            else if (__owner.TreeView.Model == null)
+            {
+                __owner.TreeView.Model = __owner.Store;
+            }
+            if (__owner.TreeView.Columns.Length <= __owner.Store.NColumns)
+            {
+                int idx = 0;
+                foreach (DataGridViewColumn column in this)
                 {
-                    __owner.Store.GetSortColumnId(out int sortid, out Gtk.SortType order);
-                    if (m.GetValue(t1, sortid) == null || m.GetValue(t2, sortid) == null)
-                        return 0;
-                    else
-                        return m.GetValue(t1, sortid).ToString().CompareTo(m.GetValue(t2, sortid).ToString());
-                }));
-                idx++;
+                    column.Index = idx;
+                    column.DisplayIndex = column.Index;
+                    column.DataGridView = __owner;
+                    column.Clear();
+                    column.Renderer();
+
+                    __owner.Store.SetSortFunc(idx, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
+                    {
+                        __owner.Store.GetSortColumnId(out int sortid, out Gtk.SortType order);
+                        if (m.GetValue(t1, sortid) == null || m.GetValue(t2, sortid) == null)
+                            return 0;
+                        else
+                            return m.GetValue(t1, sortid).ToString().CompareTo(m.GetValue(t2, sortid).ToString());
+                    }));
+                    idx++;
+                }
             }
         }
         public int GetColumnCount(DataGridViewElementStates includeFilter)

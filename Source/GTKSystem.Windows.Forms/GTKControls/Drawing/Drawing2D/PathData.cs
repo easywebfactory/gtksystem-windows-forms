@@ -7,26 +7,16 @@ namespace System.Drawing.Drawing2D
 		/// <returns>An array of <see cref="T:System.Drawing.PointF" /> objects that represents the points through which the path is constructed.</returns>
 		public PointF[] Points
 		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-			}
-		}
+            get;
+            set;
+        }
 
 		/// <summary>Gets or sets the types of the corresponding points in the path.</summary>
 		/// <returns>An array of bytes that specify the types of the corresponding points in the path.</returns>
 		public byte[] Types
 		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-			}
+			get;
+			set;
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Drawing2D.PathData" /> class.</summary>

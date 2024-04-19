@@ -124,7 +124,7 @@ namespace System.Windows.Forms
             CellRendererComboValue renderer = new CellRendererComboValue();
             renderer.Editable = this.ReadOnly == false;
             renderer.Edited += Renderer_Edited;
-           // renderer.Changed += Renderer_Changed;
+            //renderer.Changed += Renderer_Changed;
             //renderer.WidthChars = 10;
             renderer.TextColumn = 0;
             Gtk.ListStore model = new Gtk.ListStore(typeof(string));
@@ -194,43 +194,30 @@ namespace System.Windows.Forms
         {
             this.SortMode = DataGridViewColumnSortMode.NotSortable;
         }
+
+        private void TreeView_RowActivated(object o, RowActivatedArgs args)
+        {
+            if (args.Column.Handle == this.Handle)
+            {
+                TreePath path = args.Path;
+                if(args.Column.Cells[0] is CellRendererText cell)
+                {
+                    _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], new CellValue() { Text = cell.Text?.ToString() });
+                }
+            }
+        }
+
         public override void Renderer()
         {
             var renderer = new CellRendererButtonValue();
             renderer.Editable = false;
-            renderer.Click += Renderer_Click;
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
             if (this.SortMode != DataGridViewColumnSortMode.NotSortable)
                 base.SortColumnId = this.DisplayIndex;
-        }
-
-        private void Renderer_Click(object o, WidgetEventArgs args)
-        {
-            if (args.Event is Gdk.EventButton button)
-            {
-                if (button.Button == 1)
-                {
-                    TreePath[] paths = _treeView.Selection.GetSelectedRows(out ITreeModel model);
-                    if (paths.Length > 0)
-                    {
-                        TreePath path = paths[0];
-                        if (model.GetIter(out TreeIter iter, path))
-                        {
-                            object cell = model.GetValue(iter, this.DisplayIndex);
-                            if (cell is CellValue val)
-                            {
-                                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], val);
-                            }
-                            else
-                            {
-                                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], new CellValue() { Text = cell?.ToString() });
-                            }
-                        }
-                    }
-                }
-            }
+            if (this.DataGridView != null)
+                this.DataGridView.TreeView.RowActivated += TreeView_RowActivated;
         }
     }
     public class DataGridViewImageColumn : DataGridViewColumn
@@ -247,17 +234,11 @@ namespace System.Windows.Forms
         {
             var renderer = new CellRendererPixbufValue();
             renderer.IconName = "face-smile";
-            renderer.EditingStarted += Renderer_EditingStarted;
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
             if (this.SortMode != DataGridViewColumnSortMode.NotSortable)
                 base.SortColumnId = this.DisplayIndex;
-        }
-
-        private void Renderer_EditingStarted(object o, EditingStartedArgs args)
-        {
-            //Console.WriteLine("CellRendererToggle Renderer_EditingStarted");
         }
     }
     public class DataGridViewLinkColumn : DataGridViewColumn

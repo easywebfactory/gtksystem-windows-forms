@@ -11,6 +11,7 @@ using Gtk;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using Region = System.Drawing.Region;
 
@@ -551,14 +552,30 @@ namespace System.Windows.Forms
             add { Widget.Realized += (object sender, EventArgs e) => { value.Invoke(sender, e); }; }
             remove { Widget.Realized -= (object sender, EventArgs e) => { value.Invoke(sender, e); }; }
         }
+
+        public override IAsyncResult BeginInvoke(Delegate method, params object?[]? args)
+        {
+            AsyncResult asyncResult = new AsyncResult();
+            method.DynamicInvoke(args);
+            asyncResult.AsyncState = args;
+            asyncResult.CompletedSynchronously = true;
+            asyncResult.IsCompleted = true;
+            return asyncResult;
+        }
         public override IAsyncResult BeginInvoke(Delegate method)
         {
             return BeginInvoke(method, null);
         }
-
-        public override IAsyncResult BeginInvoke(Delegate method, params object[] args)
+        public override IAsyncResult BeginInvoke(Action method)
         {
-            return new AsyncResult();
+            AsyncCallback call = new AsyncCallback(o => { });
+            return method.BeginInvoke(call, null);
+        }
+        public override object EndInvoke(IAsyncResult asyncResult)
+        {
+            asyncResult.AsyncWaitHandle.Close();
+
+            return asyncResult.AsyncState;
         }
 
         public override void BringToFront()
@@ -590,11 +607,6 @@ namespace System.Windows.Forms
         public override void DrawToBitmap(Bitmap bitmap, Rectangle targetBounds)
         {
 
-        }
-
-        public override object EndInvoke(IAsyncResult asyncResult)
-        {
-            return asyncResult.AsyncState;
         }
 
         public override Form FindForm()
@@ -875,6 +887,7 @@ namespace System.Windows.Forms
         }
 
         public override bool UseVisualStyleBackColor { get; set; }
+
         protected void ScaleImage(int width, int height, ref Gdk.Pixbuf imagePixbuf, byte[] imagebytes, PictureBoxSizeMode sizeMode, ImageLayout backgroundMode)
         {
             if (imagebytes != null)

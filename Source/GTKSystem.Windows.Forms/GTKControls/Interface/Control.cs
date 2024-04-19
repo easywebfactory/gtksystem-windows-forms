@@ -2,6 +2,7 @@
 using System.ComponentModel.Design;
 using System.ComponentModel.Design.Serialization;
 using System.Drawing;
+using System.Runtime.Remoting.Messaging;
 
 namespace System.Windows.Forms
 {
@@ -231,7 +232,16 @@ namespace System.Windows.Forms
         {
             return new AsyncResult();
         }
+        public virtual IAsyncResult BeginInvoke(Action method) {
+            AsyncCallback call = new AsyncCallback(o => { });
+            return method.BeginInvoke(call, null);
+        }
+        public virtual object EndInvoke(IAsyncResult asyncResult)
+        {
+            asyncResult.AsyncWaitHandle.Close();
 
+            return asyncResult.AsyncState;
+        }
         public virtual void BringToFront()
         {
 
@@ -260,11 +270,6 @@ namespace System.Windows.Forms
         public virtual void DrawToBitmap(Bitmap bitmap, Rectangle targetBounds)
         {
 
-        }
-
-        public virtual object EndInvoke(IAsyncResult asyncResult)
-        {
-            return asyncResult.AsyncState;
         }
 
         public virtual Form FindForm()

@@ -146,26 +146,11 @@ namespace System.Windows.Forms.GtkRender
             }
             widget.StyleContext.RenderHandle(cr, cell_area.X + 3, y, cell_area.Width - 6, height);
             widget.StyleContext.Restore();
-            widget.WidgetEvent += Widget_WidgetEvent;
-            var textExt = cr.TextExtents(this.Text);
+            var textExt = cr.TextExtents(this.Text ?? string.Empty);
             int space = (int)(Math.Max(6f, cell_area.Width - textExt.Width) / 2 - 6);
             base.OnRender(cr, widget, new Gdk.Rectangle(background_area.X, background_area.Y, background_area.Width, background_area.Height), new Gdk.Rectangle(cell_area.X + space, cell_area.Y, cell_area.Width - space, cell_area.Height), flags);
         }
-        private bool eventStarting = false;
-        private void Widget_WidgetEvent(object o, WidgetEventArgs args)
-        {
-            if (args.Event.Type == EventType.ButtonPress)
-            {
-                eventStarting = true;
-            }
-            else if (args.Event.Type == EventType.ButtonRelease && eventStarting == true)
-            {
-                if (Click != null)
-                    Click(o, args);
-                eventStarting = false;
-            }
-        }
-        public event WidgetEventHandler Click;
+
     }
     public class CellValue : IComparable, IComparable<CellValue>, IEquatable<CellValue>
     {

@@ -1,8 +1,15 @@
 ﻿using System.Collections;
 using System.ComponentModel;
+using System.Diagnostics.Tracing;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms.GtkRender;
+using Atk;
 using GLib;
 using Gtk;
+using Pango;
 
 namespace System.Windows.Forms
 {
@@ -14,12 +21,19 @@ namespace System.Windows.Forms
         public DataGridViewRowCollection(DataGridView dataGridView)
         {
             this.dataGridView = dataGridView;
+            this.dataGridView.Columns.Invalidate();
         }
 
         private void AddGtkStore(params CellValue[] values)
         {
-            this.dataGridView.Store.AppendValues(values);
+            TreeIter iter = this.dataGridView.Store.AppendNode();
+            int columnscount = this.dataGridView.Store.NColumns;
+            for (int idx = 0; idx < columnscount; idx++)
+            {
+                this.dataGridView.Store.SetValue(iter, idx, idx < values.Length ? values[idx] : new CellValue());
+            }
         }
+
         private void AddGtkStore(params DataGridViewRow[] dataGridViewRows)
         {
             foreach (DataGridViewRow row in dataGridViewRows)
@@ -33,10 +47,17 @@ namespace System.Windows.Forms
                         return new CellValue() { Text = Convert.ToString(c.Value) };
                 }).ToArray());
             }
+            if (this.dataGridView.Store.NColumns < this.dataGridView.TreeView.Columns.Length)
+                this.dataGridView.Columns.Invalidate();
         }
         private void InsertGtkStore(int rowIndex, params CellValue[] values)
         {
-            dataGridView.Store.InsertWithValues(rowIndex, values);
+            TreeIter iter = this.dataGridView.Store.InsertNode(rowIndex);
+            int columnscount = this.dataGridView.Store.NColumns;
+            for (int idx = 0; idx < columnscount && idx < values.Length; idx++)
+            {
+                this.dataGridView.Store.SetValue(iter, idx, values[idx]);
+            }
         }
         private void InsertGtkStore(int rowIndex, params DataGridViewRow[] dataGridViewRows)
         {

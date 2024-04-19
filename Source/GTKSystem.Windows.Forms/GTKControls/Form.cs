@@ -409,7 +409,8 @@ namespace System.Windows.Forms
             dialogWindow.DefaultWidth = this.Width;
             dialogWindow.Response += Dia_Response;
             dialogWindow.ResizeChecked += Form_ResizeChecked;
-
+            dialogWindow.Shown += Control_Shown;
+            dialogWindow.DeleteEvent += Control_DeleteEvent;
             if (AutoScroll == true)
             {
                 scrollwindow.HscrollbarPolicy = PolicyType.Always;
@@ -435,11 +436,11 @@ namespace System.Windows.Forms
             {
                 dialogWindow.KeepBelow = true;
             }
-            irun = dialogWindow.Run();
 
+            irun = dialogWindow.Run();
             return this.DialogResult;
         }
- 
+
         private void Dia_Response(object o, ResponseArgs args)
         {
             base.Dispose();
