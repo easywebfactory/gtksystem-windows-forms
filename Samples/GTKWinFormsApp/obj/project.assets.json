@@ -108,7 +108,7 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "GTKSystem.Windows.Forms/1.3.24.13": {
+      "GTKSystem.Windows.Forms/1.3.24.14": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -246,7 +246,7 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "GTKSystem.Windows.Forms/1.3.24.13": {
+    "GTKSystem.Windows.Forms/1.3.24.14": {
       "type": "project",
       "path": "../../Source/GTKSystem.Windows.Forms/GTKSystem.Windows.Forms.csproj",
       "msbuildProject": "../../Source/GTKSystem.Windows.Forms/GTKSystem.Windows.Forms.csproj"
@@ -254,7 +254,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "GTKSystem.Windows.Forms >= 1.3.24.13",
+      "GTKSystem.Windows.Forms >= 1.3.24.14",
       "GtkSharp >= 3.24.24.95"
     ]
   },

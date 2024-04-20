@@ -548,14 +548,13 @@ namespace System.Windows.Forms
             add { Widget.Realized += (object sender, EventArgs e) => { value.Invoke(sender, e); }; }
             remove { Widget.Realized -= (object sender, EventArgs e) => { value.Invoke(sender, e); }; }
         }
-        public override IAsyncResult BeginInvoke(Delegate method, params object?[]? args)
+        public override IAsyncResult BeginInvoke(Delegate method, params object[]? args)
         {
-            AsyncResult asyncResult = new AsyncResult();
-            method.DynamicInvoke(args);
-            asyncResult.AsyncState = args;
-            asyncResult.CompletedSynchronously = true;
-            asyncResult.IsCompleted = true;
-            return asyncResult;
+            System.Threading.Tasks.Task task = System.Threading.Tasks.Task.Factory.StartNew(state =>
+            {
+                method.DynamicInvoke((object[])state);
+            }, args);
+            return task;
         }
         public override IAsyncResult BeginInvoke(Delegate method)
         {
@@ -563,13 +562,16 @@ namespace System.Windows.Forms
         }
         public override IAsyncResult BeginInvoke(Action method)
         {
-            AsyncCallback call = new AsyncCallback(o => { });
-            return method.BeginInvoke(call, null);
+            System.Threading.Tasks.Task task = System.Threading.Tasks.Task.Factory.StartNew(method);
+            return task;
         }
         public override object EndInvoke(IAsyncResult asyncResult)
         {
-            asyncResult.AsyncWaitHandle.Close();
-
+            if (asyncResult is System.Threading.Tasks.Task task)
+            {
+                if (task.IsCompleted == false && task.IsCanceled == false && task.IsFaulted == false)
+                    task.GetAwaiter().GetResult();
+            }
             return asyncResult.AsyncState;
         }
         public override void BringToFront()
@@ -670,12 +672,20 @@ namespace System.Windows.Forms
 
         public override object Invoke(Delegate method)
         {
-            return null;
+            return Invoke(method, null);
         }
 
         public override object Invoke(Delegate method, params object[] args)
         {
-            return null;
+            return method.DynamicInvoke(args);
+        }
+        public override void Invoke(Action method)
+        {
+            method.Invoke();
+        }
+        public override O Invoke<O>(Func<O> method)
+        {
+            return method.Invoke();
         }
 
         public override int LogicalToDeviceUnits(int value)

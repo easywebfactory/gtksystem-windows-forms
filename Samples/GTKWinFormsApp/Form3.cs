@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GLib;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -30,15 +31,26 @@ namespace GTKWinFormsApp
             label1.Text = trackBar1.Value.ToString();
         }
 
-        private void button1_Paint(object sender, PaintEventArgs e)
+        private void Form3_Load(object sender, EventArgs e)
+        {
+            var result = this.BeginInvoke(new MethodInvoker(() =>
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    trackBar1.Value = i;
+                    label1.Text = i.ToString();
+                    System.Threading.Thread.Sleep(1000);
+
+                }
+            }));
+        }
+
+        private void panel3_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
-             //g.DrawEllipse(new Pen(new SolidBrush(Color.Red), 2), 0, 0, 30, 20);
-            //g.FillEllipse(new SolidBrush(Color.Red), 40, 25, 30, 20);
-            // g.DrawEllipse(new Pen(new SolidBrush(Color.Red), 0), 40, 25, 40, 40);
 
             GraphicsPath path = new GraphicsPath();
-            path.AddEllipse(40, 25, 40, 20);
+            path.AddEllipse(90, 25, 40, 20);
 
             path.StartFigure();
             path.AddArc(5, 5, 6, 6, 180, 90);
@@ -47,12 +59,12 @@ namespace GTKWinFormsApp
             path.AddArc(5, 18, 6, 6, 90, 90);
             path.CloseFigure();
 
-            //path.StartFigure();
+            path.StartFigure();
+           
+            path.AddLine(new Point(20, 40), new Point(60, 30));
             path.AddPie(-10, 20, 60, 60, 10, 100);
-            path.AddLine(new Point(20, 20), new Point(60, 30));
-
             //path.StartFigure();
-            path.AddBezier(new Point(40, 40), new Point(50, 90), new Point(30, -20), new Point(100, 30));
+            path.AddBezier(new Point(60, 70), new Point(80, 120), new Point(110, 20), new Point(160, 80));
             path.AddRectangle(new Rectangle(30, 10, 190, 30));
             //path.CloseFigure();
 
@@ -72,12 +84,6 @@ namespace GTKWinFormsApp
             //g.DrawPath(new Pen(gradientBrush, 2), path);
 
             //g.FillPath(brush, path);
-        }
-
-        private void Form3_Load(object sender, EventArgs e)
-        {
-           
-
         }
     }
 }

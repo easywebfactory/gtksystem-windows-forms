@@ -72,6 +72,7 @@ namespace GTKWinFormsApp
             panel1 = new Panel();
             button3 = new Button();
             button2 = new Button();
+            panel3 = new Panel();
             menuStrip1.SuspendLayout();
             toolStrip2.SuspendLayout();
             contextMenuStrip1.SuspendLayout();
@@ -223,14 +224,13 @@ namespace GTKWinFormsApp
             // button1
             // 
             button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, 0);
-            button1.Location = new System.Drawing.Point(437, 128);
+            button1.Location = new System.Drawing.Point(488, 102);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(275, 100);
+            button1.Size = new System.Drawing.Size(275, 66);
             button1.TabIndex = 3;
             button1.Text = "打开主窗口";
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
-            button1.Paint += button1_Paint;
             // 
             // contextMenuStrip1
             // 
@@ -321,7 +321,7 @@ namespace GTKWinFormsApp
             label1.AutoSize = true;
             label1.BackColor = System.Drawing.Color.IndianRed;
             label1.Font = new System.Drawing.Font("Tahoma", 15F, System.Drawing.FontStyle.Underline | System.Drawing.FontStyle.Strikeout);
-            label1.Location = new System.Drawing.Point(181, 247);
+            label1.Location = new System.Drawing.Point(215, 326);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(79, 30);
             label1.TabIndex = 5;
@@ -342,7 +342,7 @@ namespace GTKWinFormsApp
             // 
             trackBar1.BackColor = System.Drawing.SystemColors.ControlLight;
             trackBar1.LargeChange = 6;
-            trackBar1.Location = new System.Drawing.Point(300, 102);
+            trackBar1.Location = new System.Drawing.Point(338, 102);
             trackBar1.Maximum = 100;
             trackBar1.Name = "trackBar1";
             trackBar1.Orientation = Orientation.Vertical;
@@ -381,6 +381,14 @@ namespace GTKWinFormsApp
             button2.Text = "button2";
             button2.UseVisualStyleBackColor = true;
             // 
+            // panel3
+            // 
+            panel3.Location = new System.Drawing.Point(29, 102);
+            panel3.Name = "panel3";
+            panel3.Size = new System.Drawing.Size(250, 135);
+            panel3.TabIndex = 9;
+            panel3.Paint += panel3_Paint;
+            // 
             // Form3
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -388,6 +396,7 @@ namespace GTKWinFormsApp
             BackColor = System.Drawing.SystemColors.ActiveCaption;
             ClientSize = new System.Drawing.Size(800, 450);
             ContextMenuStrip = contextMenuStrip1;
+            Controls.Add(panel3);
             Controls.Add(panel1);
             Controls.Add(trackBar1);
             Controls.Add(linkLabel1);
@@ -411,7 +420,7 @@ namespace GTKWinFormsApp
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
-
+            panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -457,5 +466,6 @@ namespace GTKWinFormsApp
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private UserControl11 panel2;
+        private Panel panel3;
     }
 }

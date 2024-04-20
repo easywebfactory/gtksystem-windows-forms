@@ -176,6 +176,7 @@ namespace System.Windows.Forms
         void Invalidate(Region region, bool invalidateChildren);
         object Invoke(Delegate method);
         object Invoke(Delegate method, params object[] args);
+        TEntry Invoke<TEntry>(Func<TEntry> method);
         int LogicalToDeviceUnits(int value);
         Size LogicalToDeviceUnits(Size value);
         void PerformLayout();

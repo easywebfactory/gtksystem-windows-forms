@@ -344,14 +344,21 @@ namespace System.Windows.Forms
 
         public virtual object Invoke(Delegate method)
         {
-            return null;
+            return Invoke(method, null);
         }
 
         public virtual object Invoke(Delegate method, params object[] args)
         {
-            return null;
+            return method.DynamicInvoke(args);
         }
-
+        public virtual void Invoke(Action method)
+        {
+            method.Invoke();
+        }
+        public virtual O Invoke<O>(Func<O> method)
+        {
+            return method.Invoke();
+        }
         public virtual int LogicalToDeviceUnits(int value)
         {
             return value;
