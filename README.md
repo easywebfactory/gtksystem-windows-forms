@@ -93,6 +93,19 @@ GTKWinFormsApp\obj\Release\net8.0\GTKWinFormsApp.designer.runtimeconfig.json
 QQ群：236066073
 邮箱：438865652@qq.com
 
+#### 常见问题
+1、为什么Form窗体设计器打不开？
+答：
+    正确的使用流程：
+    1、编译一下
+    2、执行“修复窗体设计器”
+    3、打开Form窗体
+    （如果不能打开窗体，执行下面流程）
+    4、关闭Form窗体，执行“修复窗体设计器”
+    5、重启vs
+    6、打开Form窗体设计器
+
+
 #### 参与贡献
 
 1. https://gitee.com/easywebfactory
