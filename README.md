@@ -69,15 +69,46 @@ GTKSystem.Windows.Forms是必须引用<br/>
 System.Resources.Extensions是空程序dll，不是必须引用，只有VS在窗体设计器出现相关异常提示时使用
 
 5、GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.designer.runtimeconfig.json
-GTKWinFormsApp\obj\Release\net8.0\GTKWinFormsApp.designer.runtimeconfig.json
+GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.runtimeconfig.json
 将name设置为Microsoft.WindowsDesktop.App， **用于VS支持可视化窗体设计器，重新加载工程或重启VS** 
-
+以下的是我配置：
+GTKWinFormsApp.designer.runtimeconfig.json
 ```
-   "runtimeOptions": {
-     "framework": {
-      "name": "Microsoft.WindowsDesktop.App"
+{
+  "runtimeOptions": {
+    "tfm": "net8.0",
+    "framework": {
+      "name":"Microsoft.WindowsDesktop.App",
+      "version": "8.0.0"
     },
+    "additionalProbingPaths": [
+      "C:\\Users\\chj\\.dotnet\\store\\|arch|\\|tfm|", 
+      "C:\\Users\\chj\\.nuget\\packages",
+      "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+    ],
+    "configProperties": {
+      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false,
+      "Microsoft.NETCore.DotNetHostPolicy.SetAppPaths": true
+    }
+  }
+}
+```
 
+GTKWinFormsApp.runtimeconfig.json
+```
+{
+  "runtimeOptions": {
+    "tfm": "net8.0",
+    "framework": {
+      "name": "Microsoft.WindowsDesktop.App",
+      "version": "8.0.0"
+    },
+    "configProperties": {
+      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false
+    }
+  }
+}
 ```
 
 #### demo效果

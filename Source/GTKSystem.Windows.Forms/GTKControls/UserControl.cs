@@ -59,5 +59,17 @@ namespace System.Windows.Forms
         }
         protected virtual void OnParentChanged(EventArgs e) { 
         }
+        public override void SuspendLayout()
+        {
+
+        }
+        public override void ResumeLayout(bool performLayout)
+        {
+
+        }
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
     }
 }

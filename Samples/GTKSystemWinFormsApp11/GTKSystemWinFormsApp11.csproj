@@ -12,11 +12,15 @@
   <ItemGroup>
     <PackageReference Include="AtkSharp" Version="3.24.24.95" />
     <PackageReference Include="GtkSharp" Version="3.24.24.95" />
-    <PackageReference Include="GTKSystem.Windows.Forms" Version="1.3.24.11" />
+    <PackageReference Include="GTKSystem.Windows.Forms" Version="1.3.24.14" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="obj\Debug\net8.0\" />
   </ItemGroup>
 
 </Project>
