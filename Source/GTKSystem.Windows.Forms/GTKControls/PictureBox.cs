@@ -6,47 +6,110 @@
  * date: 2024/1/3
  */
 using Gtk;
-using System;
+using GTKSystem.Windows.Forms;
+using GTKSystem.Windows.Forms.Utility;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class PictureBox : WidgetControl<Gtk.Image>
+    public partial class PictureBox : Control// WidgetControl<PictureBox.GtkImage>
     {
-        public PictureBox() : base()
+        private PictureBox.GtkImage self;
+        public override Widget Widget { get => self; }
+        public override object GtkControl => self;
+        public PictureBox()
         {
-            Widget.StyleContext.AddClass("PictureBox");
-            base.Control.Halign = Gtk.Align.Center;
-            base.Control.Valign = Gtk.Align.Center;
-            base.Control.Xalign = 0.5f;
-            base.Control.Yalign = 0.5f;
-            base.Control.Realized += Control_Realized;
+            self = new GtkImage();
+            self.Override.AddClass("PictureBox");
+            self.Halign = Gtk.Align.Center;
+            self.Valign = Gtk.Align.Center;
+            self.Xalign = 0.5f;
+            self.Yalign = 0.5f;
+            self.Realized += Control_Realized;
+            //self.Shown += Self_Shown;
         }
 
-        private void Control_Realized(object sender, EventArgs e)
+        private void Self_Shown(object sender, EventArgs e)
         {
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, Width, Height);
+            int width = Width;
+            int height = Height;
+            if (this.MaximumSize.Width > 0)
+            {
+                width = Math.Min(this.MaximumSize.Width, Width);
+            }
+            if (this.MaximumSize.Height > 0)
+            {
+                height = Math.Min(this.MaximumSize.Height, Height);
+            }
+            if (this.MinimumSize.Width > 0)
+            {
+                width = Math.Min(this.MinimumSize.Width, width);
+            }
+            if (this.MinimumSize.Height > 0)
+            {
+                height = Math.Min(this.MinimumSize.Height, height);
+            }
+
             if (BackgroundImage != null && BackgroundImage.PixbufData != null)
             {
-                Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                base.ScaleImage(rec.Width, rec.Height, ref imagePixbuf, BackgroundImage.PixbufData, PictureBoxSizeMode.AutoSize, BackgroundImageLayout == ImageLayout.None ? ImageLayout.Tile : BackgroundImageLayout);
-                base.Control.Pixbuf = imagePixbuf;
+                ImageUtility.ScaleImageByImageLayout(_image.PixbufData, width, height, out Gdk.Pixbuf newImagePixbuf, BackgroundImageLayout);
+                self.Pixbuf = newImagePixbuf;
             }
 
             if (_image != null && _image.PixbufData != null)
             {
-                Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                base.ScaleImage(rec.Width, rec.Height, ref imagePixbuf, _image.PixbufData, SizeMode, ImageLayout.None);
-                base.Control.Pixbuf = imagePixbuf;
+                ImageUtility.ScaleImageByPictureBoxSizeMode(_image.PixbufData, width, height, out Gdk.Pixbuf newImagePixbuf, SizeMode);
+                self.Pixbuf = newImagePixbuf;
             }
             else if (InitialImage != null && InitialImage.PixbufData != null)
             {
-                Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                base.ScaleImage(rec.Width, rec.Height, ref imagePixbuf, InitialImage.PixbufData, SizeMode, ImageLayout.None);
-                base.Control.Pixbuf = imagePixbuf;
+                ImageUtility.ScaleImageByPictureBoxSizeMode(InitialImage.PixbufData, width, height, out Gdk.Pixbuf newImagePixbuf, SizeMode);
+                self.Pixbuf = newImagePixbuf;
+            }
+        }
+
+        private void Control_Realized(object sender, EventArgs e)
+        {
+            UpdateStyle();
+            int width = Width;
+            int height = Height;
+            if (this.MaximumSize.Width > 0)
+            {
+                width = Math.Min(this.MaximumSize.Width, Width);
+            }
+            if (this.MaximumSize.Height > 0)
+            {
+                height = Math.Min(this.MaximumSize.Height, Height);
+            }
+            if (this.MinimumSize.Width > 0)
+            {
+                width = Math.Min(this.MinimumSize.Width, width);
+            }
+            if (this.MinimumSize.Height > 0)
+            {
+                height = Math.Min(this.MinimumSize.Height, height);
+            }
+
+            if (BackgroundImage != null && BackgroundImage.PixbufData != null)
+            {
+                ImageUtility.ScaleImageByImageLayout(_image.PixbufData, width, height, out Gdk.Pixbuf newImagePixbuf, BackgroundImageLayout);
+                self.Pixbuf = newImagePixbuf;
+            }
+
+            if (_image != null && _image.PixbufData != null)
+            {
+                ImageUtility.ScaleImageByPictureBoxSizeMode(_image.PixbufData, width, height, out Gdk.Pixbuf newImagePixbuf, SizeMode);
+                self.Pixbuf = newImagePixbuf;
+            }
+            else if (InitialImage != null && InitialImage.PixbufData != null)
+            {
+                ImageUtility.ScaleImageByPictureBoxSizeMode(InitialImage.PixbufData, width, height, out Gdk.Pixbuf newImagePixbuf, SizeMode);
+                self.Pixbuf = newImagePixbuf;
             }
         }
 
@@ -61,12 +124,9 @@ namespace System.Windows.Forms
             get { return _image; }
             set {
                 _image = value;
-                if (base.Control.IsRealized && _image != null && _image.PixbufData != null)
+                if (self.IsRealized && _image != null && _image.PixbufData != null)
                 {
-                    Gdk.Rectangle rec = Widget.Allocation;
-                    Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                    base.ScaleImage(rec.Width, rec.Height, ref imagePixbuf, _image.PixbufData, SizeMode, ImageLayout.None);
-                    base.Control.Pixbuf = imagePixbuf;
+                    Control_Realized(null, null);
                 }
             }
         }
@@ -109,19 +169,49 @@ namespace System.Windows.Forms
                     Gdk.Rectangle rec = Widget.Allocation;
                     byte[] bytedata = memoryStream.GetBuffer();
                     _image =new Bitmap(bytedata);
-                    Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                    base.ScaleImage(rec.Width, rec.Height, ref imagePixbuf, bytedata, SizeMode, ImageLayout.None);
-                    base.Control.Pixbuf = imagePixbuf;
+ 
+                    ImageUtility.ScaleImageByImageLayout(_image.PixbufData, rec.Width, rec.Height, out Gdk.Pixbuf newImagePixbuf, BackgroundImageLayout);
+                    self.Pixbuf = newImagePixbuf;
                 }
             }
         }
-        public new void Load() { if (System.IO.File.Exists(ImageLocation)) { base.Control.File = ImageLocation; } }
-        public void LoadAsync() { if (System.IO.File.Exists(ImageLocation)) { base.Control.File = ImageLocation; } }
+        public new void Load() { if (System.IO.File.Exists(ImageLocation)) { self.File = ImageLocation; } }
+        public void LoadAsync() { if (System.IO.File.Exists(ImageLocation)) { self.File = ImageLocation; } }
         public void LoadAsync(string url) { Threading.Tasks.Task.Run(() => Load(url)); }
   
         public override void EndInit()
         {
 
+        }
+
+        public override ImageLayout BackgroundImageLayout { get => self.Override.BackgroundImageLayout; set => self.Override.BackgroundImageLayout = value; }
+        public override Drawing.Image BackgroundImage { get => self.Override.BackgroundImage; set => self.Override.BackgroundImage = value; }
+        public override Color BackColor { get => self.Override.BackColor.HasValue ? self.Override.BackColor.Value : Color.Transparent; set => self.Override.BackColor = value; }
+
+        public override event PaintEventHandler Paint
+        {
+            add { self.Override.Paint += value; }
+            remove { self.Override.Paint -= value; }
+        }
+        public sealed class GtkImage : Gtk.Image
+        {
+            internal GtkControlOverride Override;
+            internal GtkImage() : base()
+            {
+                this.Override = new GtkControlOverride(this);
+            }
+            protected override void OnShown()
+            {
+                Override.OnAddClass();
+                base.OnShown();
+            }
+            protected override bool OnDrawn(Cairo.Context cr)
+            {
+                Gdk.Rectangle rec = this.Allocation;
+                Override.OnDrawnBackground(cr, rec);
+                Override.OnPaint(cr, rec);
+                return base.OnDrawn(cr);
+            }
         }
     }
 }

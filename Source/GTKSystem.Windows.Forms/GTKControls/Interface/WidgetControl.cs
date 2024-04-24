@@ -30,7 +30,7 @@ namespace System.Windows.Forms
         {
             get { return _widget; }
         }
-        public new Gtk.Container Container { get; private set; }
+        public override Gtk.Container GtkContainer => _widget as Gtk.Container;
         private T _control;
         public T Control
         {
@@ -45,11 +45,10 @@ namespace System.Windows.Forms
             _gtkControl = widget;
             _control = (T)widget;
             _widget = widget as Gtk.Widget;
-            Container = widget as Gtk.Container;
             Dock = DockStyle.None;
             _widget.MarginStart = 0;
             _widget.MarginTop = 0;
-            _widget.Drawn += Widget_Drawn;
+            //_widget.Drawn += Widget_Drawn;
             _widget.Realized += _widget_Realized;
             _widget.StyleContext.AddClass("DefaultThemeStyle");
         }
@@ -70,15 +69,15 @@ namespace System.Windows.Forms
                         if (backgroundPixbuf == null)
                         {
                             Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                            ScaleImage(rec.Width, rec.Height, ref imagePixbuf, _BackgroundImageBytes, PictureBoxSizeMode.AutoSize, BackgroundImageLayout == ImageLayout.None ? ImageLayout.Tile : BackgroundImageLayout);
+                           // ScaleImage(rec.Width, rec.Height, ref imagePixbuf, _BackgroundImageBytes, PictureBoxSizeMode.AutoSize, BackgroundImageLayout == ImageLayout.None ? ImageLayout.Tile : BackgroundImageLayout);
                             backgroundPixbuf = imagePixbuf.ScaleSimple(imagePixbuf.Width - 8, imagePixbuf.Height - 6, Gdk.InterpType.Tiles);
                         }
                         DrawBackgroundImage(args.Cr, backgroundPixbuf, rec);
-                        if (this.Control is Gtk.Button button)
-                        {
-                            button.Child.Visible = false;
-                            DrawBackgroundText(args.Cr, rec);
-                        }
+                        //if (this.Control is Gtk.Button button)
+                        //{
+                        //    button.Child.Visible = false;
+                        //    DrawBackgroundText(args.Cr, rec);
+                        //}
                     }
                     catch
                     {
@@ -167,7 +166,7 @@ namespace System.Windows.Forms
             if (this.BackColor.Name != "Control" && this.BackColor.Name != "0")
             {
                 string color = $"rgba({this.BackColor.R},{this.BackColor.G},{this.BackColor.B},{this.BackColor.A})";
-                style.AppendFormat("background-color:{0};background:{0};", color);
+               // style.AppendFormat("background-color:{0};background:{0};", color);
             }
             if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
             {
@@ -890,7 +889,6 @@ namespace System.Windows.Forms
                     this._BackgroundImageBytes = null;
                     _control = default(T);
                     _widget = null;
-                    Container = null;
                 }
             }
             catch { }
@@ -899,7 +897,7 @@ namespace System.Windows.Forms
 
         public override bool UseVisualStyleBackColor { get; set; }
 
-        protected void ScaleImage(int width, int height, ref Gdk.Pixbuf imagePixbuf, byte[] imagebytes, PictureBoxSizeMode sizeMode, ImageLayout backgroundMode)
+        protected void ScaleImage1(int width, int height, ref Gdk.Pixbuf imagePixbuf, byte[] imagebytes, PictureBoxSizeMode sizeMode, ImageLayout backgroundMode)
         {
             if (imagebytes != null)
             {
