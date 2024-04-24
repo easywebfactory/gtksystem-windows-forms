@@ -37,7 +37,9 @@ namespace GTKWinFormsApp
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            TreeNode treeNode1 = new TreeNode("Node2");
+            TreeNode treeNode11 = new TreeNode("Node21");
+            TreeNode treeNode12 = new TreeNode("Node22");
+            TreeNode treeNode1 = new TreeNode("Node2", new TreeNode[] { treeNode11, treeNode12 });
             TreeNode treeNode2 = new TreeNode("Node3");
             TreeNode treeNode3 = new TreeNode("Node0", new TreeNode[] { treeNode1, treeNode2 });
             TreeNode treeNode4 = new TreeNode("Node1");
@@ -609,9 +611,10 @@ namespace GTKWinFormsApp
             pictureBox1.Image = (System.Drawing.Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new System.Drawing.Point(1016, 35);
             pictureBox1.Margin = new Padding(4);
+            pictureBox1.MaximumSize = new System.Drawing.Size(200, 130);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new System.Drawing.Size(280, 134);
-            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
+            pictureBox1.Size = new System.Drawing.Size(200, 130);
+            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
             pictureBox1.TabIndex = 5;
             pictureBox1.TabStop = false;
             // 
@@ -785,8 +788,6 @@ namespace GTKWinFormsApp
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Margin = new Padding(4);
-            MaximizeBox = false;
-            MinimizeBox = false;
             Name = "Form1";
             Opacity = 0.5D;
             Text = "C# winform gtk效果";
@@ -807,6 +808,7 @@ namespace GTKWinFormsApp
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);

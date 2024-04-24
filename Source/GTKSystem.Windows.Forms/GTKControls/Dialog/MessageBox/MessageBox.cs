@@ -222,13 +222,13 @@ namespace System.Windows.Forms
             int irun = 0;
             if (owner is System.Windows.Forms.Form control)
             {
-                //irun = ShowMessageDialogCore(control.Control, text, caption, buttons, icon, defaultButton, options, showHelp);
-                irun = ShowCore(control.Control, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon);
+                //irun = ShowMessageDialogCore(control.Control, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon, defaultButton, options, showHelp);
+                irun = ShowCore((Gtk.Window)control.Widget, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon);
             }
             else
             {
-                //irun = ShowMessageDialogCore(new Gtk.Window(Gtk.WindowType.Popup), text, caption, buttons, icon, defaultButton, options, showHelp);
-                irun = ShowCore(new Gtk.Window(Gtk.WindowType.Popup), Gtk.WindowPosition.Center, text, caption, buttons, icon);
+                //irun = ShowMessageDialogCore(new Gtk.Window(Gtk.WindowType.Toplevel), Gtk.WindowPosition.Center, text, caption, buttons, icon, defaultButton, options, showHelp);
+                irun = ShowCore(new Gtk.Window(Gtk.WindowType.Toplevel), Gtk.WindowPosition.Center, text, caption, buttons, icon);
             }
 
             Gtk.ResponseType resp = Enum.Parse<Gtk.ResponseType>(irun.ToString());
@@ -254,7 +254,7 @@ namespace System.Windows.Forms
                 return DialogResult.None;
         }
 
-        private static int ShowMessageDialogCore(Gtk.Window owner, string text, string caption, MessageBoxButtons buttons, params object[] icon)
+        private static int ShowMessageDialogCore(Gtk.Window owner, Gtk.WindowPosition position, string text, string caption, MessageBoxButtons buttons, params object[] icon)
         {
             Gtk.ButtonsType buttonsType = Gtk.ButtonsType.Close;
             if (buttons == MessageBoxButtons.OK)
@@ -268,20 +268,16 @@ namespace System.Windows.Forms
             else if (buttons == MessageBoxButtons.AbortRetryIgnore)
                 buttonsType = Gtk.ButtonsType.OkCancel;
             else if (buttons == MessageBoxButtons.RetryCancel)
-                buttonsType = Gtk.ButtonsType.YesNo;
+                buttonsType = Gtk.ButtonsType.Cancel;
 
 
-            Gtk.MessageDialog dia = new Gtk.MessageDialog(owner, Gtk.DialogFlags.DestroyWithParent | Gtk.DialogFlags.UseHeaderBar, Gtk.MessageType.Warning, buttonsType, "");
-            dia.SetPosition(Gtk.WindowPosition.Center);
+            Gtk.MessageDialog dia = new Gtk.MessageDialog(owner, Gtk.DialogFlags.DestroyWithParent | Gtk.DialogFlags.Modal, Gtk.MessageType.Info, buttonsType, text);
+            dia.SetPosition(position);
             dia.StyleContext.AddClass("MessageBox");
             dia.StyleContext.AddClass("BorderRadiusStyle");
             dia.BorderWidth = 10;
             dia.Title = caption;
-            var content = new Gtk.Label(text);
-            content.MarginBottom = 20;
-            dia.ContentArea.Add(content);
             dia.Response += Dia_Response;
-            dia.ShowAll();
             return dia.Run();
         }
 

@@ -73,12 +73,15 @@ namespace GTKWinFormsApp
             button3 = new Button();
             button2 = new Button();
             panel3 = new Panel();
+            panel5 = new Panel();
+            label2 = new Label();
             menuStrip1.SuspendLayout();
             toolStrip2.SuspendLayout();
             contextMenuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             panel1.SuspendLayout();
+            panel5.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
@@ -389,6 +392,24 @@ namespace GTKWinFormsApp
             panel3.TabIndex = 9;
             panel3.Paint += panel3_Paint;
             // 
+            // panel5
+            // 
+            panel5.Controls.Add(label2);
+            panel5.Location = new System.Drawing.Point(29, 268);
+            panel5.Name = "panel5";
+            panel5.Size = new System.Drawing.Size(180, 113);
+            panel5.TabIndex = 10;
+
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(3, 9);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(168, 20);
+            label2.TabIndex = 0;
+            label2.Text = "这是usercontrol占位框";
+            // 
             // Form3
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -396,6 +417,7 @@ namespace GTKWinFormsApp
             BackColor = System.Drawing.SystemColors.ActiveCaption;
             ClientSize = new System.Drawing.Size(800, 450);
             ContextMenuStrip = contextMenuStrip1;
+            Controls.Add(panel5);
             Controls.Add(panel3);
             Controls.Add(panel1);
             Controls.Add(trackBar1);
@@ -421,6 +443,8 @@ namespace GTKWinFormsApp
             statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
             panel1.ResumeLayout(false);
+            panel5.ResumeLayout(false);
+            panel5.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -465,7 +489,8 @@ namespace GTKWinFormsApp
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
-        private UserControl11 panel2;
         private Panel panel3;
+        private Panel panel5;
+        private Label label2;
     }
 }
