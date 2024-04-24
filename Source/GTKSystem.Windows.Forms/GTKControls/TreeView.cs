@@ -1,12 +1,17 @@
-﻿/*
+/*
  * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
  * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
  * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
  * date: 2024/1/3
  */
+using Atk;
+using GLib;
 using Gtk;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Xml.Linq;
 
 
 namespace System.Windows.Forms
@@ -44,6 +49,7 @@ namespace System.Windows.Forms
             base.Control.Model = _store;
             base.Control.Realized += Control_Realized;
         }
+
         private void Control_Realized(object sender, EventArgs e)
         {
             base.Control.AppendColumn(textcolumn);
@@ -65,7 +71,7 @@ namespace System.Windows.Forms
         {
             TreeIter iter = parent.Equals(TreeIter.Zero) ? Store.AppendValues(node.Text, false) : Store.AppendValues(parent, node.Text, false);
             TreePath path = Store.GetPath(iter);
-            node.Index = path.Indices[0];
+            node.Index = string.Join(",", path.Indices);
             node.TreeIter = iter;
             foreach (TreeNode child in node.Nodes)
             {
@@ -85,7 +91,71 @@ namespace System.Windows.Forms
         public bool ShowNodeToolsTips { get; set; }
         public bool ShowPlusMinus { get; set; } = true;
         public bool ShowRootLines { get; set; } = true;
-
+        public object SelectedItem
+        {
+            get
+            {
+                //TreeViewItem item = new TreeViewItem(this);
+                return SelectedNode.Text;
+            }
+        }
+        public object SelectedValue
+        {
+            get
+            {
+                return SelectedNode.Text;
+            }
+        }
+        public string SelectedValuePath
+        {
+            get
+            {
+                string nodePath = string.Empty;
+                if (this.Control.Selection.GetSelected(out TreeIter iter))
+                {
+                    TreePath[] paths = base.Control.Selection.GetSelectedRows();
+                    List<string> nodeNames = new List<string>();
+                    GetNodePath(root, paths[0].Indices, 0, ref nodeNames);
+                    nodePath = string.Join(PathSeparator, nodeNames);
+                }
+                return nodePath;
+            }
+            set { }
+        }
+        [DefaultValue("\\")]
+        public string PathSeparator
+        {
+            get;
+            set;
+        } = "\\";
+        public TreeNode SelectedNode
+        {
+            get
+            {
+                if (this.Control.Selection.GetSelected(out TreeIter iter)) {
+                    TreePath[] paths = base.Control.Selection.GetSelectedRows();
+                    TreeNode result = new TreeNode();
+                    GetNodeChild(root, paths[0].Indices, ref result);
+                    return result;
+                }
+                else { return null; }
+            }
+            set
+            {
+                this.Control.Selection.SelectIter(value.TreeIter);
+            }
+        }
+        public TreeNode TopNode
+        {
+            get
+            {
+                return root;
+            }
+            set
+            {
+               
+            }
+        }
         TreeViewCancelEventArgs cancelEventArgs = null;
         public event TreeViewCancelEventHandler BeforeSelect
         {
@@ -98,7 +168,8 @@ namespace System.Windows.Forms
                         if (base.Control.Selection.GetSelected(out TreeIter iter))
                         {
                             TreePath[] paths = base.Control.Selection.GetSelectedRows();
-                            GetNodeChild(root, paths[0].Indices[0], out TreeNode result);
+                            TreeNode result = new TreeNode();
+                             GetNodeChild(root, paths[0].Indices, ref result);
                             cancelEventArgs = new TreeViewCancelEventArgs(result, false, TreeViewAction.ByMouse);
                             value.Invoke(sender, cancelEventArgs);
                         }
@@ -114,7 +185,8 @@ namespace System.Windows.Forms
                         if (base.Control.Selection.GetSelected(out TreeIter iter))
                         {
                             TreePath[] paths = base.Control.Selection.GetSelectedRows();
-                            GetNodeChild(root, paths[0].Indices[0], out TreeNode result);
+                            TreeNode result = new TreeNode();
+                            GetNodeChild(root, paths[0].Indices, ref result);
                             cancelEventArgs = new TreeViewCancelEventArgs(result, false, TreeViewAction.ByMouse);
                             value.Invoke(sender, cancelEventArgs);
                         }
@@ -132,7 +204,8 @@ namespace System.Windows.Forms
                     {
                         if (cancelEventArgs == null || cancelEventArgs.Cancel == false)
                         {
-                            GetNodeChild(root, e.Path.Indices[0], out TreeNode result);
+                            TreeNode result = new TreeNode();
+                            GetNodeChild(root, e.Path.Indices, ref result);
                             value.Invoke(this, new TreeViewEventArgs(result));
                         }
                     }
@@ -146,7 +219,8 @@ namespace System.Windows.Forms
                     {
                         if (cancelEventArgs == null || cancelEventArgs.Cancel == false)
                         {
-                            GetNodeChild(root, e.Path.Indices[0], out TreeNode result);
+                            TreeNode result = new TreeNode();
+                            GetNodeChild(root, e.Path.Indices, ref result);
                             value.Invoke(this, new TreeViewEventArgs(result));
                         }
                     }
@@ -162,8 +236,9 @@ namespace System.Windows.Forms
                 {
                     if (base.Control.IsRealized)
                     {
-                        GetNodeChild(root, e.Path.Indices[0], out TreeNode result);
-                        value.Invoke(this, new TreeViewEventArgs(result));
+                        TreeNode result = new TreeNode();
+                        GetNodeChild(root, e.Path.Indices, ref result);
+                        value.Invoke(this, new TreeViewEventArgs(result, TreeViewAction.Collapse));
                     }
                 };
             }
@@ -173,8 +248,9 @@ namespace System.Windows.Forms
                 {
                     if (base.Control.IsRealized)
                     {
-                        GetNodeChild(root, e.Path.Indices[0], out TreeNode result);
-                        value.Invoke(this, new TreeViewEventArgs(result));
+                        TreeNode result = new TreeNode();
+                        GetNodeChild(root, e.Path.Indices, ref result);
+                        value.Invoke(this, new TreeViewEventArgs(result, TreeViewAction.Collapse));
                     }
                 };
             }
@@ -188,8 +264,9 @@ namespace System.Windows.Forms
                 {
                     if (base.Control.IsRealized)
                     {
-                        GetNodeChild(root, e.Path.Indices[0], out TreeNode result);
-                        value.Invoke(this, new TreeViewEventArgs(result));
+                        TreeNode result = new TreeNode();
+                        GetNodeChild(root, e.Path.Indices, ref result);
+                        value.Invoke(this, new TreeViewEventArgs(result, TreeViewAction.Expand));
                     }
                 };
             }
@@ -199,25 +276,58 @@ namespace System.Windows.Forms
                 {
                     if (base.Control.IsRealized)
                     {
-                        GetNodeChild(root, e.Path.Indices[0], out TreeNode result);
-                        value.Invoke(this, new TreeViewEventArgs(result));
+                        TreeNode result = new TreeNode();
+                        GetNodeChild(root, e.Path.Indices, ref result);
+                        value.Invoke(this, new TreeViewEventArgs(result, TreeViewAction.Expand));
                     }
                 };
             }
         }
-
-        private void GetNodeChild(TreeNode node, int index,out TreeNode result)
+        private void GetNodeChild(TreeNode node, int[] indices, ref TreeNode result)
         {
-            result = null;
+            string nodeIndex= string.Join(",", indices);
             foreach (TreeNode child in node.Nodes)
             {
-                if(child.Index == index)
+                if (child.Index == nodeIndex)
                 {
                     result = child;
+                    return;
                 }
-                else
+                else if (nodeIndex.Length >= child.Index.Length)
                 {
-                    GetNodeChild(child, index,out result);
+                    GetNodeChild(child, indices, ref result);
+                }
+            }
+        }
+
+        private void GetNodeChilds(TreeNode node, int[] indices, int depth, ref TreeNode result, ref TreeNode lastNode)
+        {
+            TreeNode treeNode = new TreeNode();
+            string nodeIndex = string.Join(",", indices.Take(depth + 1));
+            foreach (TreeNode child in node.Nodes)
+            {
+                if (child.Index == nodeIndex)
+                {
+                    treeNode = (TreeNode)child.Clone();
+                    result.Nodes.Add(treeNode);
+                    depth++;
+                    if (depth < indices.Length)
+                        GetNodeChilds(child, indices, depth, ref treeNode, ref lastNode);
+                }
+            }
+            lastNode = treeNode;
+        }
+        private void GetNodePath(TreeNode node, int[] indices, int depth, ref List<string> nodePath)
+        {
+            string nodeIndex = string.Join(",", indices.Take(depth + 1));
+            foreach (TreeNode child in node.Nodes)
+            {
+                if (child.Index == nodeIndex)
+                {
+                    nodePath.Add(child.Text);
+                    depth++;
+                    if (depth < indices.Length)
+                        GetNodePath(child, indices, depth, ref nodePath);
                 }
             }
         }
