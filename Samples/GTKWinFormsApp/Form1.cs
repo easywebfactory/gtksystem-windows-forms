@@ -283,14 +283,12 @@ namespace GTKWinFormsApp
 
         private void treeView1_BeforeSelect(object sender, TreeViewCancelEventArgs e)
         {
-            
-            Console.WriteLine("treeView1_BeforeSelect："+ e.Node?.Text);
+            Console.WriteLine("treeView1_BeforeSelect");
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            Console.WriteLine("treeView1_AfterSelect：" + treeView1.SelectedValuePath);
-            Console.WriteLine("treeView1_AfterSelect："+ e.Node?.Text);
+            Console.WriteLine("treeView1_AfterSelect");
         }
 
         private void treeView1_AfterCollapse(object sender, TreeViewEventArgs e)

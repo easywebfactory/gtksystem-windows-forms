@@ -48,7 +48,7 @@ namespace System.Windows.Forms
             Dock = DockStyle.None;
             _widget.MarginStart = 0;
             _widget.MarginTop = 0;
-            //_widget.Drawn += Widget_Drawn;
+            _widget.Drawn += Widget_Drawn;
             _widget.Realized += _widget_Realized;
             _widget.StyleContext.AddClass("DefaultThemeStyle");
         }
@@ -73,12 +73,12 @@ namespace System.Windows.Forms
                             ScaleImage(rec.Width, rec.Height, ref imagePixbuf, _BackgroundImageBytes, PictureBoxSizeMode.AutoSize, BackgroundImageLayout == ImageLayout.None ? ImageLayout.Tile : BackgroundImageLayout);
                             backgroundPixbuf = imagePixbuf.ScaleSimple(imagePixbuf.Width - 8, imagePixbuf.Height - 6, Gdk.InterpType.Tiles);
                         }
-                        //DrawBackgroundImage(args.Cr, backgroundPixbuf, rec);
-                        //if (Control is Gtk.Button button)
-                        //{
-                        //    button.Child.Visible = false;
-                        //    DrawBackgroundText(args.Cr, rec);
-                        //}
+                        DrawBackgroundImage(args.Cr, backgroundPixbuf, rec);
+                        if (Control is Gtk.Button button)
+                        {
+                            button.Child.Visible = false;
+                            DrawBackgroundText(args.Cr, rec);
+                        }
                     }
                     catch
                     {
@@ -86,14 +86,10 @@ namespace System.Windows.Forms
                     }
                 }
             }
-            OnPaint(new PaintEventArgs(new Graphics(this.Widget, args.Cr, rec), new Drawing.Rectangle(rec.X, rec.Y, rec.Width, rec.Height)));
+            if (Paint != null)
+                Paint(this, new PaintEventArgs(new Graphics(this._widget, args.Cr, rec), new Drawing.Rectangle(rec.X, rec.Y, rec.Width, rec.Height)));
         }
-        protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
-        {
-            base.OnPaint(e);
-            //if (Paint != null)
-            //    Paint(this, e);
-        }
+
         private Gdk.Pixbuf backgroundPixbuf;
         internal void DrawBackgroundColor(Cairo.Context ctx, Drawing.Color backcolor, Gdk.Rectangle rec)
         {
@@ -171,7 +167,7 @@ namespace System.Windows.Forms
             if (this.BackColor.Name != "Control" && this.BackColor.Name != "0")
             {
                 string color = $"rgba({this.BackColor.R},{this.BackColor.G},{this.BackColor.B},{this.BackColor.A})";
-               // style.AppendFormat("background-color:{0};background:{0};", color);
+                style.AppendFormat("background-color:{0};background:{0};", color);
             }
             if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
             {

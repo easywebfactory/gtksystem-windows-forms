@@ -8,10 +8,7 @@
 
 using GLib;
 using Gtk;
-using GTKSystem.Windows.Forms;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Numerics;
@@ -24,30 +21,29 @@ namespace System.Windows.Forms
     [DesignerCategory("Form")]
     [DefaultEvent(nameof(Load)),
     InitializationEvent(nameof(Load))]
-    public partial class Form: ScrollableControl, IWin32Window // WidgetContainerControl<Form.GtkWindow>, IWin32Window
+    public partial class Form : WidgetContainerControl<Gtk.Window>, IWin32Window
     {
         private Gtk.Application app = Application.Init();
-        private GtkWindow self = new GtkWindow(WindowType.Toplevel);
-        public override Widget Widget => self;
-
         private Gtk.Fixed _body = new Gtk.Fixed();
         private Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
         private Gtk.Layout windowbody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
-        private ObjectCollection _ObjectCollection;
-        public override event EventHandler SizeChanged;
 
-        public Form() : base()
+        private ObjectCollection _ObjectCollection;
+
+        public override event EventHandler SizeChanged;
+        public Form() : base(WindowType.Toplevel)
         {
             Init();
         }
-        public Form(string title) : this()
+        public Form(string title) : base()
         {
-            self.Title = title;
+            base.Control.Title = title;
+            Init();
         }
 
         private void Init()
         {
-            self.StyleContext.AddClass("Form");
+            this.Control.StyleContext.AddClass("Form");
             scrollwindow.Valign = Gtk.Align.Fill;
             scrollwindow.Halign = Gtk.Align.Fill;
             scrollwindow.Expand = true;
@@ -69,16 +65,26 @@ namespace System.Windows.Forms
 
 
             _ObjectCollection = new ObjectCollection(this, _body);
-            self.WindowPosition = Gtk.WindowPosition.Center;
-            self.BorderWidth = 1;
-            self.SetDefaultSize(100, 100);
-            self.Realized += Control_Realized;
-            self.ResizeChecked += Form_ResizeChecked;
-            self.ButtonReleaseEvent += Body_ButtonReleaseEvent;
+            base.Control.WindowPosition = Gtk.WindowPosition.Center;
+            base.Control.BorderWidth = 1;
+            base.Control.SetDefaultSize(100, 100);
+            base.Control.Realized += Control_Realized;
+            base.Control.ResizeChecked += Form_ResizeChecked;
+            base.Control.ButtonReleaseEvent += Body_ButtonReleaseEvent;
 
-            self.Shown += Control_Shown;
-            self.DeleteEvent += Control_DeleteEvent;
+            base.Control.Shown += Control_Shown;
+            base.Control.DeleteEvent += Control_DeleteEvent;
 
+            WindowBackgroundImage.MarginStart = 0;
+            WindowBackgroundImage.MarginTop = 0;
+            WindowBackgroundImage.Valign = Gtk.Align.Fill;
+            WindowBackgroundImage.Halign = Gtk.Align.Fill;
+            WindowBackgroundImage.Expand = true;
+            WindowBackgroundImage.Hexpand = true;
+            WindowBackgroundImage.Vexpand = true;
+            WindowBackgroundImage.Drawn += Bg_Drawn;
+
+            windowbody.Put(WindowBackgroundImage, 0, 0);
             windowbody.Put(scrollwindow, 0, 0);
         }
         public override ISite Site { get; set; }
@@ -101,11 +107,11 @@ namespace System.Windows.Forms
         {
             if (this.MaximizeBox == false && this.MinimizeBox == false)
             {
-                self.TypeHint = Gdk.WindowTypeHint.Dialog;
+                this.Control.TypeHint = Gdk.WindowTypeHint.Dialog;
             }
             else if (this.MaximizeBox == false && this.MinimizeBox == true)
             {
-                self.Resizable = false;
+                this.Control.Resizable = false;
             }
             try
             {
@@ -114,19 +120,19 @@ namespace System.Windows.Forms
                     if (this.Icon != null)
                     {
                         if (this.Icon.Pixbuf != null)
-                            self.Icon = this.Icon.Pixbuf;
+                            this.Control.Icon = this.Icon.Pixbuf;
                         else if (this.Icon.PixbufData != null)
-                            self.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
+                            this.Control.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
                         else if (this.Icon.FileName != null && System.IO.File.Exists(this.Icon.FileName))
-                            self.SetIconFromFile(this.Icon.FileName);
+                            this.Control.SetIconFromFile(this.Icon.FileName);
                         else if (this.Icon.FileName != null && System.IO.File.Exists("Resources\\" + this.Icon.FileName))
-                            self.SetIconFromFile("Resources\\" + this.Icon.FileName);
+                            this.Control.SetIconFromFile("Resources\\" + this.Icon.FileName);
                     }
                 }
                 else
                 {
                     System.IO.Stream sm = typeof(System.Windows.Forms.Form).Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.view-more.png");
-                    self.Icon = new Gdk.Pixbuf(sm);
+                    this.Control.Icon = new Gdk.Pixbuf(sm);
                 }
             }
             catch
@@ -137,7 +143,27 @@ namespace System.Windows.Forms
             if (Load != null)
                 Load(this, e);
         }
+        private Gtk.Image WindowBackgroundImage = new Gtk.Image();
         private Gdk.Pixbuf backgroundPixbuf;
+        private void Bg_Drawn(object o, DrawnArgs args)
+        {
+            Gdk.Rectangle rec = ((Gtk.Image)o).Allocation;
+            if (this.BackColor.Name != "Control" && this.BackColor.Name != "0")
+            {
+                DrawBackgroundColor(args.Cr, this.BackColor, rec);
+            }
+            if (BackgroundImage != null)
+            {
+                if (backgroundPixbuf == null)
+                {
+                    Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
+                    ScaleImage(rec.Width, rec.Height, ref imagePixbuf, BackgroundImage.PixbufData, PictureBoxSizeMode.AutoSize, BackgroundImageLayout == ImageLayout.None ? ImageLayout.Tile : BackgroundImageLayout);
+                    backgroundPixbuf = imagePixbuf.ScaleSimple(imagePixbuf.Width, imagePixbuf.Height, Gdk.InterpType.Tiles);
+                }
+                args.Cr.Scale(rec.Width * 1.00001 / backgroundPixbuf.Width, rec.Height * 1.00001 / backgroundPixbuf.Height);
+                DrawBackgroundImage(args.Cr, backgroundPixbuf, rec);
+            }
+        }
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate void MenuPositionFuncNative(IntPtr menu, out int x, out int y, out bool push_in, IntPtr user_data);
@@ -147,7 +173,7 @@ namespace System.Windows.Forms
         private static d_gtk_menu_popup gtk_menu_popup = FuncLoader.LoadFunction<d_gtk_menu_popup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_menu_popup"));
         public void PresentMenu(Gtk.Menu menu, uint button, uint activate_time)
         {
-            gtk_menu_popup(menu == null ? IntPtr.Zero : menu.Handle, IntPtr.Zero, IntPtr.Zero, StatusIconPositionMenuFunc, self.Handle, button, activate_time);
+            gtk_menu_popup(menu == null ? IntPtr.Zero : menu.Handle, IntPtr.Zero, IntPtr.Zero, StatusIconPositionMenuFunc, base.Control.Handle, button, activate_time);
         }
         private void Body_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
         {
@@ -164,6 +190,8 @@ namespace System.Windows.Forms
             var window = (Gtk.Window)sender;
             if (window.IsRealized && windowbody.IsRealized)
             {
+                WindowBackgroundImage.WidthRequest = window.AllocatedWidth;
+                WindowBackgroundImage.HeightRequest = window.AllocatedHeight;
                 scrollwindow.WidthRequest = window.AllocatedWidth;
                 scrollwindow.HeightRequest = window.AllocatedHeight;
                 _body.WidthRequest = window.AllocatedWidth;
@@ -310,7 +338,8 @@ namespace System.Windows.Forms
 
             windowbody.WidthRequest = this.Width;
             windowbody.HeightRequest = this.Height;
-
+            WindowBackgroundImage.WidthRequest = this.Width;
+            WindowBackgroundImage.HeightRequest = this.Height;
             if (AutoScroll == true)
             {
                 scrollwindow.HscrollbarPolicy = PolicyType.Always;
@@ -321,18 +350,18 @@ namespace System.Windows.Forms
                 scrollwindow.HscrollbarPolicy = PolicyType.Never;
                 scrollwindow.VscrollbarPolicy = PolicyType.Never;
             }
-            self.Add(windowbody);
-            self.Resizable = this.FormBorderStyle == FormBorderStyle.Sizable || this.FormBorderStyle == FormBorderStyle.SizableToolWindow;
+            this.Control.Add(windowbody);
+            base.Control.Resizable = this.FormBorderStyle == FormBorderStyle.Sizable || this.FormBorderStyle == FormBorderStyle.SizableToolWindow;
             
             if (this.WindowState == FormWindowState.Maximized)
             {
-                self.Maximize();
+                base.Control.Maximize();
             }
             else if (this.WindowState == FormWindowState.Minimized)
             {
-                self.KeepBelow = true;
+                base.Control.KeepBelow = true;
             }
-            self.ShowAll();
+            base.Control.ShowAll();
         }
 
         private Gtk.Dialog dialogWindow;
@@ -359,11 +388,13 @@ namespace System.Windows.Forms
 
             windowbody.WidthRequest = this.Width;
             windowbody.HeightRequest = this.Height;
+            WindowBackgroundImage.WidthRequest = this.Width;
+            WindowBackgroundImage.HeightRequest = this.Height;
 
             int irun = -9;
             if (owner != null)
             {
-                Gtk.Window ownerWindow = ((Form)owner).Widget as Gtk.Window;
+                Gtk.Window ownerWindow = ((Form)owner).Control;
                 dialogWindow = new Dialog(this.Text, ownerWindow, DialogFlags.DestroyWithParent);
                 dialogWindow.SetPosition(Gtk.WindowPosition.CenterOnParent);
  
@@ -427,16 +458,16 @@ namespace System.Windows.Forms
         public event FormClosingEventHandler FormClosing;
         public event FormClosedEventHandler FormClosed;
         public override event EventHandler Load;
-        public override string Text { get { return self.Title; } set { self.Title = value; } }
+        public override string Text { get { return base.Control.Title; } set { base.Control.Title = value; } }
         public override Size ClientSize
         {
             get
             {
-                return new Size(self.WidthRequest, self.HeightRequest);
+                return new Size(base.Control.WidthRequest, base.Control.HeightRequest);
             }
             set
             {
-                self.SetDefaultSize(value.Width, value.Height);
+                base.Control.SetDefaultSize(value.Width, value.Height);
                 base.Width = value.Width;
                 base.Height = value.Height;
             }
@@ -451,22 +482,22 @@ namespace System.Windows.Forms
             get { return formBorderStyle; }
             set {
                 formBorderStyle = value;
-                self.Resizable = value == FormBorderStyle.Sizable || value == FormBorderStyle.SizableToolWindow; 
+                base.Control.Resizable = value == FormBorderStyle.Sizable || value == FormBorderStyle.SizableToolWindow; 
                 if (value == FormBorderStyle.None)
                 {            
-                    self.Titlebar =new Gtk.Fixed() { HeightRequest = 0 }; 
+                    this.Control.Titlebar =new Gtk.Fixed() { HeightRequest = 0 }; 
                 }
                 else if (value == FormBorderStyle.FixedToolWindow)
                 {
-                    self.TypeHint = Gdk.WindowTypeHint.Dialog;
+                    this.Control.TypeHint = Gdk.WindowTypeHint.Dialog;
                 }
                 else if (value == FormBorderStyle.SizableToolWindow)
                 {
-                    self.TypeHint = Gdk.WindowTypeHint.Dialog;
+                    this.Control.TypeHint = Gdk.WindowTypeHint.Dialog;
                 }
                 else
                 {
-                    self.TypeHint = Gdk.WindowTypeHint.Normal;
+                    this.Control.TypeHint = Gdk.WindowTypeHint.Normal;
                 }
             }
         }
@@ -477,7 +508,7 @@ namespace System.Windows.Forms
             {
                 dialogWindow.HideOnDelete();
             }
-            self.Close(); 
+            this.Control.Close(); 
         }
         public override void Hide()
         {
@@ -485,16 +516,16 @@ namespace System.Windows.Forms
             {
                 dialogWindow.Hide();
             }
-            self.Hide();
+            this.Control.Hide();
         }
 
         public override ObjectCollection Controls { get { return _ObjectCollection; } }
 
         public bool MaximizeBox { get; set; } = true;
         public bool MinimizeBox { get; set; } = true;
-        public double Opacity { get { return self.Opacity; } set { self.Opacity = value; } }
+        public double Opacity { get { return base.Control.Opacity; } set { base.Control.Opacity = value; } }
         public bool ShowIcon { get; set; } = true;
-        public bool ShowInTaskbar { get { return self.SkipTaskbarHint == false; } set { self.SkipTaskbarHint = value == false; } }
+        public bool ShowInTaskbar { get { return this.Control.SkipTaskbarHint == false; } set { this.Control.SkipTaskbarHint = value == false; } }
         public System.Drawing.Icon Icon { get; set; }
         public override void SuspendLayout()
         {
@@ -517,7 +548,7 @@ namespace System.Windows.Forms
 
         public MenuStrip MainMenuStrip { get; set; }
 
-        public override IntPtr Handle => self.OwnedHandle;
+        public override IntPtr Handle => base.Control.OwnedHandle;
 
         public class ObjectCollection : ControlCollection
         {
@@ -533,35 +564,6 @@ namespace System.Windows.Forms
         {
         }
 
-        public override ImageLayout BackgroundImageLayout { get => self.Override.BackgroundImageLayout; set => self.Override.BackgroundImageLayout = value; }
-        public override Drawing.Image BackgroundImage { get => self.Override.BackgroundImage; set => self.Override.BackgroundImage = value; }
-        public override Color BackColor { get => self.Override.BackColor.HasValue ? self.Override.BackColor.Value : Color.Transparent; set => self.Override.BackColor = value; }
-
-        public override event PaintEventHandler Paint
-        {
-            add { self.Override.Paint += value; }
-            remove { self.Override.Paint -= value; }
-        }
-        public sealed class GtkWindow : Gtk.Window
-        {
-            internal GtkWindow(WindowType type) : base(type)
-            {
-                this.Override = new GtkControlOverride(this);
-            }
-            internal GtkControlOverride Override;
-            protected override void OnShown()
-            {
-                Override.OnAddClass();
-                base.OnShown();
-            }
-            protected override bool OnDrawn(Cairo.Context cr)
-            {
-                Gdk.Rectangle rec = this.Allocation;
-                Override.OnDrawnBackground(cr, rec);
-                Override.OnPaint(cr, rec);
-                return base.OnDrawn(cr);
-            }
-        }
 
     }
 

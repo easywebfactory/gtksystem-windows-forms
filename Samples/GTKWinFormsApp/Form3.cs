@@ -18,14 +18,12 @@ namespace GTKWinFormsApp
         {
             InitializeComponent();
 
-            UserControl11 userControl11 = new UserControl11();
-            panel5.Controls.Add(userControl11);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             Form1 f = new Form1();
-            f.Show();
+            f.ShowDialog();
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)

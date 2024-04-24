@@ -113,7 +113,7 @@ namespace System.Windows.Forms
 .DefaultThemeStyle button{border-radius:0px;}
 .DefaultThemeStyle border{border:solid 1px #cccccc;}
 .DefaultThemeStyle entry{border-radius:0px;background-color:#ffffff;caret-color:#333333;}
-.BackgroundTransparent{padding:0px;background:transparent;background-color:transparent;} 
+
 /*
 .DefaultThemeStyle{border:solid 1px #cccccc;border-radius:0px;box-shadow: none;color:#000000;}
 .DefaultThemeStyle .background{background-color:#F6F5F4;}
@@ -131,7 +131,7 @@ namespace System.Windows.Forms
 */
 
 .Form{border-width:0px;}
-.BorderRadiusStyle{ }
+.BorderRadiusStyle{ ;}
 .MessageBox{}
 .MessageBox button{margin:10px;border-radius:0px;}
 .MessageBox-BarTitle{font-size:20px;padding-bottom:10px;}
@@ -160,9 +160,7 @@ namespace System.Windows.Forms
 .CheckBox {border-width:0px;} 
 .CheckedListBox {background-color:#ffffff;} 
 .RadioButton {border-width:0px;} 
-/*
 .Label{border-width:0px;background-color:#F6F5F4;} 
-*/
 .LinkLabel{border-width:0px;} 
 .NumericUpDown{padding:0px;min-height:6px;min-width:6px;}
 .NumericUpDown button.up{border-width:0px;padding:0px;font-size:6px;min-height:6px;min-width:6px;}
@@ -172,7 +170,7 @@ namespace System.Windows.Forms
 .ComboBox{border-width:0px;padding:0px;}
 .ComboBox button{padding:0px;}
 .ComboBox entry{padding:0px;}
-.Panel{} 
+.Panel{background-color:#F6F5F4;} 
 .SplitContainer.horizontal{border-width:1px;}
 .SplitContainer>viewport{}
 .UserControl{border-width:0px;}
@@ -219,7 +217,7 @@ namespace System.Windows.Forms
 
         public static void Run(Form mainForm)
         {
-            mainForm.Widget.Destroyed += Control_Destroyed;
+            mainForm.Control.Destroyed += Control_Destroyed;
             mainForm.Show();
             Gtk.Application.Run();
         }

@@ -9,11 +9,10 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.Design;
 
 namespace GTKWinFormsApp
 {
-    [Designer(typeof(ControlDesigner))]
+
     public partial class UserControl11 : UserControl
     {
         public UserControl11()
@@ -31,22 +30,6 @@ namespace GTKWinFormsApp
         private void UserControl11_ParentChanged(object sender, EventArgs e)
         {
             MessageBox.Show("sss");
-        }
-
-        private void UserControl11_Load(object sender, EventArgs e)
-        {
-            Invalidate();
-            System.IO.File.AppendAllText("F:\\我的项目\\GTK\\gtksystem-windows-forms\\Samples\\GTKWinFormsApp\\bin\\ii2.txt", "UserControl11_Load");
-        }
-
-        protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
-        {
-
-            //using SolidBrush brush = new SolidBrush(_backgroundColor);
-            //e.Graphics.FillRectangle(brush, new Rectangle(0, 0, Width, Height));
-            //using SolidBrush brush2 = new SolidBrush(Color.Red);
-            //e.Graphics.DrawEllipse(new Pen(brush2), new Rectangle(30, 30, Width, Height));
-            base.OnPaint(e);
         }
     }
 }
