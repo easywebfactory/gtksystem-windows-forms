@@ -74,7 +74,7 @@ namespace System.Windows.Forms
                     statusbar.self.Expand = false;
                     statusbarlayout.Child = statusbar.self;
                     form.self.ResizeChecked += Self_ResizeChecked;
-                    form.self.ContentArea.PackStart(statusbarlayout, false, true, 0);
+                    form.self.ContentArea.PackEnd(statusbarlayout, false, true, 0);
                 }
                 else
                 {
@@ -103,8 +103,11 @@ namespace System.Windows.Forms
         }
         private void Self_ResizeChecked(object sender, EventArgs e)
         {
-            foreach (var bar in statusbarlayout.Children)
-                ((Gtk.MenuBar)bar).WidthRequest = statusbarlayout.AllocatedWidth;
+            foreach (Gtk.MenuBar bar in statusbarlayout.Children)
+            {
+                if (bar.WidthRequest != statusbarlayout.AllocatedWidth)
+                    bar.WidthRequest = statusbarlayout.AllocatedWidth;
+            }
         }
         public override int Add(object item)
         {

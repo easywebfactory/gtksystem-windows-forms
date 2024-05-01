@@ -172,7 +172,7 @@ namespace System.Windows.Forms
 		public bool UseCompatibleStateImageBehavior { get; set; }
 		public System.Windows.Forms.View View { get; set; }
 
-        public void AddItem(ListViewItem item, int position)
+        internal void AddItem(ListViewItem item, int position)
         {
             Gtk.Box hBox = new Gtk.Box(Gtk.Orientation.Horizontal,0);
             hBox.Valign = Gtk.Align.Fill;
@@ -180,7 +180,7 @@ namespace System.Windows.Forms
             hBox.Spacing = 0;
             hBox.BorderWidth = 0;
             hBox.Homogeneous = false;
-           // hBox.StyleContext.AddClass("listviewgrid");
+
             Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
             boxitem.TooltipText = item.Text;
             boxitem.Halign = Gtk.Align.Start;
@@ -200,8 +200,6 @@ namespace System.Windows.Forms
             flowBox.Name = item.Group.Name;
             flowBox.ColumnSpacing = 0;
             flowBox.Add(boxitem);
-
-
             if (this.CheckBoxes == true)
             {
                 if (this.View == View.SmallIcon || this.View == View.LargeIcon)
@@ -395,9 +393,7 @@ namespace System.Windows.Forms
                 subtitle.StyleContext.AddClass("SubTitle");
                 hBox.Add(subtitle);
             }
-
             Gtk.FlowBox _flow = group.FlowBox;
-           // _flow.StyleContext.AddClass("FlowBox");
             _flow.MaxChildrenPerLine = 100u;
             _flow.MinChildrenPerLine = 0u;
             _flow.ColumnSpacing = 12;
@@ -419,14 +415,10 @@ namespace System.Windows.Forms
             _flow.SelectionMode = Gtk.SelectionMode.Single;
             _flow.ChildActivated += _flow_ChildActivated;
             hBox.Add(_flow);
-            
-            if (position < 0)
+            flowBoxContainer.PackStart(hBox, true, true, 0);
+            if (position > -1)
             {
-                flowBoxContainer.PackStart(hBox,true,true,0);
-            }
-            else
-            {
-                flowBoxContainer.PackStart(hBox, true, true,Convert.ToUInt32(position));
+                flowBoxContainer.ReorderChild(hBox, position);
             }
         }
  
@@ -662,12 +654,18 @@ namespace System.Windows.Forms
                 return item;
             }
 
-            public void AddCore(ListViewItem item, int position)
+            private void AddCore(ListViewItem item, int position)
 			{
                 item.Index = Count;
                 base.Add(item);
                 if (_owner.self.IsRealized)
                 {
+                    if (_owner.Groups.Contains(item.Group?.Name) == false)
+                    {
+                        _owner.Groups.Add(item.Group);
+                        _owner.AddGroup(item.Group, -1);
+                    }
+                    
                     _owner.AddItem(item, position);
                     _owner.self.ShowAll();
                 }

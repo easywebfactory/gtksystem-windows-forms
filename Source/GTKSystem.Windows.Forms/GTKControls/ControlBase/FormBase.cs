@@ -28,6 +28,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             ScrollArea.VscrollbarPolicy = PolicyType.Always;
             this.ContentArea.PackStart(ScrollArea, true, true, 0);
 
+            //this.ContentArea.PackEnd(new Gtk.Button("ddddddd"), false, true, 0);
             // this.Decorated = false; //删除工具栏
         }
 

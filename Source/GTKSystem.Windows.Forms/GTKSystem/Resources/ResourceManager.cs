@@ -177,7 +177,7 @@ namespace GTKSystem.Resources
         public virtual object GetObject(string name)
         {
             GetResourceInfo.ResourceName = name;
-            //if (name.EndsWith(".ImageStream1"))
+            //if (name.EndsWith(".ImageStream"))
             //{
             //    //图片组不能读取
             //    try
@@ -190,7 +190,7 @@ namespace GTKSystem.Resources
             //        return new ImageListStreamer(new ImageList()) { ResourceInfo = GetResourceInfo };
             //    }
             //}
-            //else 
+            //else
             if (name.EndsWith(".Icon")) {
                 return new System.Drawing.Icon(name.Substring(0,name.Length-1));
             }
@@ -199,17 +199,24 @@ namespace GTKSystem.Resources
                 object obj = ReadResourceData(name);
                 if (obj == null)
                 {
-                    byte[] filebytes = ReadResourceFile(name);
-                    if (filebytes == null)
+                    if (name.EndsWith(".ImageStream"))
                     {
-                        return GetResourceInfo;
+                        return new ImageListStreamer(new ImageList()) { ResourceInfo = GetResourceInfo };
                     }
                     else
                     {
-                        System.Drawing.Bitmap img = new System.Drawing.Bitmap(1, 1);
-                        img.FileName = name;
-                        img.PixbufData = filebytes;
-                        return img;
+                        byte[] filebytes = ReadResourceFile(name);
+                        if (filebytes == null)
+                        {
+                            return GetResourceInfo;
+                        }
+                        else
+                        {
+                            System.Drawing.Bitmap img = new System.Drawing.Bitmap(1, 1);
+                            img.FileName = name;
+                            img.PixbufData = filebytes;
+                            return img;
+                        }
                     }
                 }
                 else

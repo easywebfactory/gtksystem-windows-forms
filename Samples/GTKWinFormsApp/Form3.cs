@@ -37,11 +37,11 @@ namespace GTKWinFormsApp
         {
             var result = this.BeginInvoke(new MethodInvoker(() =>
             {
-                for (int i = 0; i < 90; i++)
+                for (int i = 0; i < 30; i++)
                 {
                     trackBar1.Value = i;
                     label1.Text = i.ToString();
-                    System.Threading.Thread.Sleep(100);
+                    System.Threading.Thread.Sleep(200);
 
                 }
             }));

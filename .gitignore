@@ -10,9 +10,9 @@ ehthumbs_vista.db
 /Source/GTKSystem.Windows.Forms/bin/
 /Source/GTKSystem.Windows.Forms/obj/
 /Samples/GTKWinFormsApp/bin/
-/Samples/GTKWinFormsApp/obj/
+
 /Samples/GTKSystemWinFormsApp11/bin/
-/Samples/GTKSystemWinFormsApp11/obj/
+
 
 # Folder config file
 [Dd]esktop.ini

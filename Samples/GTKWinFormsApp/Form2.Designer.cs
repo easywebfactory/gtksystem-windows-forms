@@ -34,13 +34,13 @@ namespace GTKWinFormsApp
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             ListViewGroup listViewGroup1 = new ListViewGroup("ListViewGroup1", HorizontalAlignment.Left);
             ListViewGroup listViewGroup2 = new ListViewGroup("ListViewGroup2", HorizontalAlignment.Left);
-            ListViewItem listViewItem1 = new ListViewItem("test1ddddddddddddddddddddddddddddddddddddddddddddddddddddd", 1);
-            ListViewItem listViewItem2 = new ListViewItem(new string[] { "特别说明：本框架不支持ImageList使用窗口设计器（资源数据反序列化加解密没解决", "sssss特别说明：本框架不支持ImageList使用窗口设计器（资源数据反序列化加解密没解决", "ffffffff特别说明：本框架不支持ImageList使用窗口设计器（资源数据反序列化加解密没解决" }, 0);
-            ListViewItem listViewItem3 = new ListViewItem("ttt3", 1);
-            ListViewItem listViewItem4 = new ListViewItem("ttt31", 1);
-            ListViewItem listViewItem5 = new ListViewItem("ttt32", 1);
-            ListViewItem listViewItem6 = new ListViewItem("ttt33", 1);
-            ListViewItem listViewItem7 = new ListViewItem("ttt34", 1);
+            ListViewItem listViewItem1 = new ListViewItem("test1ddddddddddddddddddddddddddddddddddddddddddddddddddddd", 0);
+            ListViewItem listViewItem2 = new ListViewItem(new string[] { "特别说明：本框架不支持ImageList使用窗口设计器（资源数据反序列化加解密没解决", "sssss特别说明：本框架不支持ImageList使用窗口设计器（资源数据反序列化加解密没解决", "ffffffff特别说明：本框架不支持ImageList使用窗口设计器（资源数据反序列化加解密没解决" }, 1);
+            ListViewItem listViewItem3 = new ListViewItem("ttt3", 0);
+            ListViewItem listViewItem4 = new ListViewItem("ttt31", 0);
+            ListViewItem listViewItem5 = new ListViewItem("ttt32", 0);
+            ListViewItem listViewItem6 = new ListViewItem("ttt33", 0);
+            ListViewItem listViewItem7 = new ListViewItem("ttt34", 0);
             imageList1 = new ImageList(components);
             listView1 = new ListView();
             columnHeader1 = new ColumnHeader();
@@ -49,6 +49,7 @@ namespace GTKWinFormsApp
             listBox1 = new ListBox();
             richTextBox1 = new RichTextBox();
             label1 = new Label();
+            button1 = new Button();
             SuspendLayout();
             // 
             // imageList1
@@ -58,12 +59,12 @@ namespace GTKWinFormsApp
             imageList1.TransparentColor = System.Drawing.Color.Transparent;
             imageList1.Images.SetKeyName(0, "010.jpg");
             imageList1.Images.SetKeyName(1, "timg2.jpg");
-            imageList1.Images.SetKeyName(2, "0062a864_E964096_2d030bca.jpg");
             // 
             // listView1
             // 
             listView1.CheckBoxes = true;
             listView1.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3 });
+            listView1.Dock = DockStyle.Top;
             listView1.FullRowSelect = true;
             listView1.GridLines = true;
             listViewGroup1.Footer = "ggg1";
@@ -86,13 +87,12 @@ namespace GTKWinFormsApp
             listViewItem5.StateImageIndex = 0;
             listViewItem6.Group = listViewGroup1;
             listViewItem6.StateImageIndex = 0;
-            listViewItem7.Group = listViewGroup1;
             listViewItem7.StateImageIndex = 0;
             listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7 });
             listView1.LargeImageList = imageList1;
-            listView1.Location = new System.Drawing.Point(105, 12);
+            listView1.Location = new System.Drawing.Point(0, 0);
             listView1.Name = "listView1";
-            listView1.Size = new System.Drawing.Size(419, 184);
+            listView1.Size = new System.Drawing.Size(902, 184);
             listView1.SmallImageList = imageList1;
             listView1.TabIndex = 13;
             listView1.UseCompatibleStateImageBehavior = false;
@@ -121,7 +121,7 @@ namespace GTKWinFormsApp
             // 
             listBox1.FormattingEnabled = true;
             listBox1.Items.AddRange(new object[] { "sdfdfdf", "ssss", "fffff", "ddddddddd", "ddddddd" });
-            listBox1.Location = new System.Drawing.Point(671, 41);
+            listBox1.Location = new System.Drawing.Point(721, 462);
             listBox1.Name = "listBox1";
             listBox1.Size = new System.Drawing.Size(150, 104);
             listBox1.TabIndex = 3;
@@ -129,7 +129,7 @@ namespace GTKWinFormsApp
             // richTextBox1
             // 
             richTextBox1.BackColor = System.Drawing.Color.Yellow;
-            richTextBox1.Location = new System.Drawing.Point(105, 380);
+            richTextBox1.Location = new System.Drawing.Point(48, 446);
             richTextBox1.Name = "richTextBox1";
             richTextBox1.Size = new System.Drawing.Size(549, 120);
             richTextBox1.TabIndex = 14;
@@ -139,18 +139,29 @@ namespace GTKWinFormsApp
             // 
             label1.AutoSize = true;
             label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
-            label1.Location = new System.Drawing.Point(48, 214);
+            label1.Location = new System.Drawing.Point(48, 298);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(1032, 135);
             label1.TabIndex = 15;
             label1.Text = resources.GetString("label1.Text");
+            // 
+            // button1
+            // 
+            button1.Location = new System.Drawing.Point(266, 229);
+            button1.Name = "button1";
+            button1.Size = new System.Drawing.Size(295, 29);
+            button1.TabIndex = 16;
+            button1.Text = "add listview item";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // Form2
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (System.Drawing.Image)resources.GetObject("$this.BackgroundImage");
-            ClientSize = new System.Drawing.Size(1136, 658);
+            ClientSize = new System.Drawing.Size(902, 596);
+            Controls.Add(button1);
             Controls.Add(label1);
             Controls.Add(richTextBox1);
             Controls.Add(listBox1);
@@ -170,5 +181,6 @@ namespace GTKWinFormsApp
         private ColumnHeader columnHeader3;
         private RichTextBox richTextBox1;
         private Label label1;
+        private Button button1;
     }
 }

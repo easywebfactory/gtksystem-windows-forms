@@ -16,7 +16,8 @@ namespace GTKWinFormsApp
         public Form2()
         {
             InitializeComponent();
-
+           // listView1.Items.Add(new ListViewItem("test1", new ListViewGroup("ListViewGroup1", "ListViewGroup1")) { });
+            
         }
 
         private void listView1_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -50,7 +51,13 @@ namespace GTKWinFormsApp
 
         private void listView1_Click(object sender, EventArgs e)
         {
-             
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            listView1.Items.Add(new ListViewItem("test1") { Group=new ListViewGroup("listViewGroup12", "ListViewGroup1")  });
+            listView1.Items.Add(new ListViewItem("aatest1"));
         }
     }
 } 

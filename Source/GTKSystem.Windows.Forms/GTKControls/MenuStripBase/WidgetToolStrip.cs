@@ -110,7 +110,7 @@ namespace System.Windows.Forms
                     button.Hexpand = false;
                     button.Vexpand = false;
                     itemBox.PackStart(icoViewport, false, false, 0);
-                    itemBox.PackStart(button, false, false, 1);
+                    itemBox.PackStart(button, false, false, 0);
                     _menuItem.Add(itemBox);
                 }
                 else if(stripType == "ToolStripTextBox")
@@ -138,7 +138,7 @@ namespace System.Windows.Forms
                 else
                 {
                     itemBox.PackStart(icoViewport, false, false, 0);
-                    itemBox.PackStart(label, false, false, 1);
+                    itemBox.PackStart(label, false, false, 0);
                     _menuItem.Add(itemBox);
                 }
 
