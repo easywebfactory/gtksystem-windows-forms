@@ -57,7 +57,7 @@ namespace System.Windows.Forms
             _ObjectCollection = new ObjectCollection(this, _body);
 
             self.Mapped += Self_Mapped;
-           // self.ResizeChecked += Form_ResizeChecked;
+            self.ResizeChecked += Form_ResizeChecked;
             self.ButtonReleaseEvent += Body_ButtonReleaseEvent;
 
             self.Shown += Control_Shown;
