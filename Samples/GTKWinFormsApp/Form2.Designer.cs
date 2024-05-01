@@ -103,7 +103,6 @@ namespace GTKWinFormsApp
             listView1.ItemSelectionChanged += listView1_ItemSelectionChanged;
             listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
             listView1.Click += listView1_Click;
-            listView1.Dock = DockStyle.Top;
             // 
             // columnHeader1
             // 
@@ -151,7 +150,7 @@ namespace GTKWinFormsApp
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (System.Drawing.Image)resources.GetObject("$this.BackgroundImage");
-            ClientSize = new System.Drawing.Size(636, 658);
+            ClientSize = new System.Drawing.Size(1136, 658);
             Controls.Add(label1);
             Controls.Add(richTextBox1);
             Controls.Add(listBox1);
