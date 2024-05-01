@@ -8,6 +8,7 @@
 using Atk;
 using GLib;
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -17,8 +18,10 @@ using System.Xml.Linq;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class TreeView : WidgetControl<Gtk.TreeView>
+    public partial class TreeView : Control
     {
+        public readonly TreeViewBase self = new TreeViewBase();
+        public override object GtkControl => self;
         private Gtk.TreeStore _store;
         internal TreeNode root;
         internal Gtk.TreeStore Store { get { return _store; } }
@@ -26,11 +29,6 @@ namespace System.Windows.Forms
         private Gtk.TreeViewColumn checkboxcolumn;
         public TreeView() : base()
         {
-            Widget.StyleContext.AddClass("TreeView");
-            base.Control.BorderWidth = 0;
-            base.Control.Expand = true;
-            base.Control.HeadersVisible = false;
-            base.Control.ActivateOnSingleClick = true;
             root = new TreeNode(this);
             root.Name = "root";
 
@@ -46,15 +44,15 @@ namespace System.Windows.Forms
             checkboxcolumn = new Gtk.TreeViewColumn("", renderercheckbox, "active", 1);
             
             _store = new Gtk.TreeStore(typeof(string), typeof(bool));
-            base.Control.Model = _store;
-            base.Control.Realized += Control_Realized;
+            self.Model = _store;
+            self.Realized += Control_Realized;
         }
 
         private void Control_Realized(object sender, EventArgs e)
         {
-            base.Control.AppendColumn(textcolumn);
+            self.AppendColumn(textcolumn);
             if (CheckBoxes == true)
-                base.Control.AppendColumn(checkboxcolumn);
+                self.AppendColumn(checkboxcolumn);
         }
 
         private void CellName_Toggled(object o, ToggledArgs args)
@@ -111,9 +109,9 @@ namespace System.Windows.Forms
             get
             {
                 string nodePath = string.Empty;
-                if (this.Control.Selection.GetSelected(out TreeIter iter))
+                if (self.Selection.GetSelected(out TreeIter iter))
                 {
-                    TreePath[] paths = base.Control.Selection.GetSelectedRows();
+                    TreePath[] paths = self.Selection.GetSelectedRows();
                     List<string> nodeNames = new List<string>();
                     GetNodePath(root, paths[0].Indices, 0, ref nodeNames);
                     nodePath = string.Join(PathSeparator, nodeNames);
@@ -132,8 +130,8 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (this.Control.Selection.GetSelected(out TreeIter iter)) {
-                    TreePath[] paths = base.Control.Selection.GetSelectedRows();
+                if (self.Selection.GetSelected(out TreeIter iter)) {
+                    TreePath[] paths = self.Selection.GetSelectedRows();
                     TreeNode result = new TreeNode();
                     GetNodeChild(root, paths[0].Indices, ref result);
                     return result;
@@ -142,7 +140,7 @@ namespace System.Windows.Forms
             }
             set
             {
-                this.Control.Selection.SelectIter(value.TreeIter);
+                self.Selection.SelectIter(value.TreeIter);
             }
         }
         public TreeNode TopNode
@@ -161,13 +159,13 @@ namespace System.Windows.Forms
         {
             add
             {
-                base.Control.Selection.Changed += (object sender, EventArgs e) =>
+                self.Selection.Changed += (object sender, EventArgs e) =>
                 {
-                    if (base.Control.IsRealized)
+                    if (self.IsRealized)
                     {
-                        if (base.Control.Selection.GetSelected(out TreeIter iter))
+                        if (self.Selection.GetSelected(out TreeIter iter))
                         {
-                            TreePath[] paths = base.Control.Selection.GetSelectedRows();
+                            TreePath[] paths = self.Selection.GetSelectedRows();
                             TreeNode result = new TreeNode();
                              GetNodeChild(root, paths[0].Indices, ref result);
                             cancelEventArgs = new TreeViewCancelEventArgs(result, false, TreeViewAction.ByMouse);
@@ -178,13 +176,13 @@ namespace System.Windows.Forms
             }
             remove
             {
-                base.Control.Selection.Changed -= (object sender, EventArgs e) =>
+                self.Selection.Changed -= (object sender, EventArgs e) =>
                 {
-                    if (base.Control.IsRealized)
+                    if (self.IsRealized)
                     {
-                        if (base.Control.Selection.GetSelected(out TreeIter iter))
+                        if (self.Selection.GetSelected(out TreeIter iter))
                         {
-                            TreePath[] paths = base.Control.Selection.GetSelectedRows();
+                            TreePath[] paths = self.Selection.GetSelectedRows();
                             TreeNode result = new TreeNode();
                             GetNodeChild(root, paths[0].Indices, ref result);
                             cancelEventArgs = new TreeViewCancelEventArgs(result, false, TreeViewAction.ByMouse);
@@ -198,9 +196,9 @@ namespace System.Windows.Forms
         {
             add
             {
-                base.Control.RowActivated += (object sender, Gtk.RowActivatedArgs e) =>
+                self.RowActivated += (object sender, Gtk.RowActivatedArgs e) =>
                 {
-                    if (base.Control.IsRealized)
+                    if (self.IsRealized)
                     {
                         if (cancelEventArgs == null || cancelEventArgs.Cancel == false)
                         {
@@ -213,9 +211,9 @@ namespace System.Windows.Forms
             }
             remove
             {
-                base.Control.RowActivated -= (object sender, Gtk.RowActivatedArgs e) =>
+                self.RowActivated -= (object sender, Gtk.RowActivatedArgs e) =>
                 {
-                    if (base.Control.IsRealized)
+                    if (self.IsRealized)
                     {
                         if (cancelEventArgs == null || cancelEventArgs.Cancel == false)
                         {
@@ -232,9 +230,9 @@ namespace System.Windows.Forms
         {
             add
             {
-                base.Control.RowCollapsed += (object sender, Gtk.RowCollapsedArgs e) =>
+                self.RowCollapsed += (object sender, Gtk.RowCollapsedArgs e) =>
                 {
-                    if (base.Control.IsRealized)
+                    if (self.IsRealized)
                     {
                         TreeNode result = new TreeNode();
                         GetNodeChild(root, e.Path.Indices, ref result);
@@ -244,9 +242,9 @@ namespace System.Windows.Forms
             }
             remove
             {
-                base.Control.RowCollapsed -= (object sender, Gtk.RowCollapsedArgs e) =>
+                self.RowCollapsed -= (object sender, Gtk.RowCollapsedArgs e) =>
                 {
-                    if (base.Control.IsRealized)
+                    if (self.IsRealized)
                     {
                         TreeNode result = new TreeNode();
                         GetNodeChild(root, e.Path.Indices, ref result);
@@ -260,9 +258,9 @@ namespace System.Windows.Forms
         {
             add
             {
-                base.Control.RowExpanded += (object sender, Gtk.RowExpandedArgs e) =>
+                self.RowExpanded += (object sender, Gtk.RowExpandedArgs e) =>
                 {
-                    if (base.Control.IsRealized)
+                    if (self.IsRealized)
                     {
                         TreeNode result = new TreeNode();
                         GetNodeChild(root, e.Path.Indices, ref result);
@@ -272,9 +270,9 @@ namespace System.Windows.Forms
             }
             remove
             {
-                base.Control.RowExpanded -= (object sender, Gtk.RowExpandedArgs e) =>
+                self.RowExpanded -= (object sender, Gtk.RowExpandedArgs e) =>
                 {
-                    if (base.Control.IsRealized)
+                    if (self.IsRealized)
                     {
                         TreeNode result = new TreeNode();
                         GetNodeChild(root, e.Path.Indices, ref result);

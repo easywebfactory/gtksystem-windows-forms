@@ -474,7 +474,7 @@ namespace System.Drawing
 		{
 			DrawEllipseCore(pen, x, y, width, height, false, FillMode.Winding);
         }
-        public void DrawEllipseCore(Pen pen, float x, float y, float width, float height, bool isfill, FillMode fillmode)
+        private void DrawEllipseCore(Pen pen, float x, float y, float width, float height, bool isfill, FillMode fillmode)
         {
             this.context.Save();
             this.SetTranslateWithDifference(x + width / 2, y + height / 2);

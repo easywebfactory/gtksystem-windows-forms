@@ -2,6 +2,7 @@
 using Pango;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Security.Cryptography;
 
 namespace System.Windows.Forms
@@ -44,7 +45,7 @@ namespace System.Windows.Forms
 
         public ControlCollection(CheckedListBox owner, Type itemType)
         {
-            __ownerControl = owner.Container;
+            __ownerControl = owner.self;
             checkedListBox = owner;
             __owner = owner;
             __itemType = itemType;
@@ -57,9 +58,31 @@ namespace System.Windows.Forms
             }
             __ownerControl.ShowAll();
         }
+        Gtk.Layout statusbarlayout = new Gtk.Layout(new Gtk.Adjustment(1, 1, 100, 1, 0, 1), new Gtk.Adjustment(1, 1, 100, 1, 0, 1));
         private void AddToWidget(object item)
         {
-            if (item is Control control)
+            if (item is StatusStrip statusbar)
+            {
+                if (statusbarlayout.Parent is null && __owner is Form form)
+                {
+                    statusbarlayout.Halign = Gtk.Align.Fill;
+                    statusbarlayout.Valign = Gtk.Align.Fill;
+                    statusbarlayout.Expand = false;
+                    statusbarlayout.HeightRequest = 35;
+                    statusbar.self.Halign = Gtk.Align.Fill;
+                    statusbar.self.Valign = Gtk.Align.Fill;
+                    statusbar.self.Expand = false;
+                    statusbarlayout.Child = statusbar.self;
+                    form.self.ResizeChecked += Self_ResizeChecked;
+                    form.self.ContentArea.PackStart(statusbarlayout, false, true, 0);
+                }
+                else
+                {
+                    statusbarlayout.Child = statusbar.self;
+                }
+                statusbarlayout.ShowAll();
+            }
+            else if (item is Control control)
             {
                 if (fixedContainer != null)
                     fixedContainer.Put(control.Widget, control.Left, control.Top);
@@ -78,17 +101,25 @@ namespace System.Windows.Forms
                     __ownerControl.Add(widget);
             }
         }
+        private void Self_ResizeChecked(object sender, EventArgs e)
+        {
+            foreach (var bar in statusbarlayout.Children)
+                ((Gtk.MenuBar)bar).WidthRequest = statusbarlayout.AllocatedWidth;
+        }
         public override int Add(object item)
         {
             if (item is Control control)
+            {
                 control.Parent = __owner;
-            if(__ownerControl.IsRealized)
+            }
+            if (__ownerControl.IsRealized)
             {
                 AddToWidget(item);
                 __ownerControl.ShowAll();
             }
             return base.Add(item);
         }
+
         public int AddWidget(Gtk.Widget item, Control control)
         {
             control.Parent = __owner;

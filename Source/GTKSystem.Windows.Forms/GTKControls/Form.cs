@@ -6,9 +6,8 @@
  * date: 2024/1/3
  */
 
-using GLib;
 using Gtk;
-using GTKSystem.Windows.Forms;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,15 +23,12 @@ namespace System.Windows.Forms
     [DesignerCategory("Form")]
     [DefaultEvent(nameof(Load)),
     InitializationEvent(nameof(Load))]
-    public partial class Form: ScrollableControl, IWin32Window // WidgetContainerControl<Form.GtkWindow>, IWin32Window
+    public partial class Form: ScrollableControl, IWin32Window
     {
         private Gtk.Application app = Application.Init();
-        private GtkWindow self = new GtkWindow(WindowType.Toplevel);
-        public override Widget Widget => self;
-
+        public FormBase self = new FormBase();
+        public override object GtkControl { get => self; }
         private Gtk.Fixed _body = new Gtk.Fixed();
-        private Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
-        private Gtk.Layout windowbody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
         private ObjectCollection _ObjectCollection;
         public override event EventHandler SizeChanged;
 
@@ -45,60 +41,31 @@ namespace System.Windows.Forms
             self.Title = title;
         }
 
+        public Form(string title, Window parent) : base()
+        {
+
+        }
         private void Init()
         {
-            self.StyleContext.AddClass("Form");
-            scrollwindow.Valign = Gtk.Align.Fill;
-            scrollwindow.Halign = Gtk.Align.Fill;
-            scrollwindow.Expand = true;
-            scrollwindow.Hexpand = true;
-            scrollwindow.Vexpand = true;
-            scrollwindow.HscrollbarPolicy = PolicyType.Always;
-            scrollwindow.VscrollbarPolicy = PolicyType.Always;
             _body.Valign = Gtk.Align.Fill;
             _body.Halign = Gtk.Align.Fill;
             _body.Expand = true;
             _body.Hexpand = true;
             _body.Vexpand = true;
-            scrollwindow.Child = _body;
-            windowbody.Valign = Gtk.Align.Fill;
-            windowbody.Halign = Gtk.Align.Fill;
-            windowbody.Expand = true;
-            windowbody.Hexpand = true;
-            windowbody.Vexpand = true;
 
-
+            self.ScrollArea.Child = _body;
             _ObjectCollection = new ObjectCollection(this, _body);
-            self.WindowPosition = Gtk.WindowPosition.Center;
-            self.BorderWidth = 1;
-            self.SetDefaultSize(100, 100);
-            self.Realized += Control_Realized;
+
+            self.Mapped += Self_Mapped;
             self.ResizeChecked += Form_ResizeChecked;
             self.ButtonReleaseEvent += Body_ButtonReleaseEvent;
 
             self.Shown += Control_Shown;
             self.DeleteEvent += Control_DeleteEvent;
-
-            windowbody.Put(scrollwindow, 0, 0);
         }
-        public override ISite Site { get; set; }
-        private void Control_DeleteEvent(object o, DeleteEventArgs args)
+        private void Self_Mapped(object sender, EventArgs e)
         {
-            if (FormClosing != null)
-                FormClosing(this, new FormClosingEventArgs(CloseReason.UserClosing, false));
-            if (FormClosed != null)
-                FormClosed(this, new FormClosedEventArgs(CloseReason.UserClosing));
-
-        }
-
-        private void Control_Shown(object sender, EventArgs e)
-        {
-            if (Shown != null)
-                Shown(this, e);
-        }
-
-        private void Control_Realized(object sender, EventArgs e)
-        {
+            //Console.WriteLine("Self_Mapped");
             if (this.MaximizeBox == false && this.MinimizeBox == false)
             {
                 self.TypeHint = Gdk.WindowTypeHint.Dialog;
@@ -137,7 +104,21 @@ namespace System.Windows.Forms
             if (Load != null)
                 Load(this, e);
         }
-        private Gdk.Pixbuf backgroundPixbuf;
+
+        public override ISite Site { get; set; }
+        private void Control_DeleteEvent(object o, DeleteEventArgs args)
+        {
+            if (FormClosing != null)
+                FormClosing(this, new FormClosingEventArgs(CloseReason.UserClosing, false));
+            if (FormClosed != null)
+                FormClosed(this, new FormClosedEventArgs(CloseReason.UserClosing));
+        }
+
+        private void Control_Shown(object sender, EventArgs e)
+        {
+            if (Shown != null)
+                Shown(this, e);
+        }
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate void MenuPositionFuncNative(IntPtr menu, out int x, out int y, out bool push_in, IntPtr user_data);
@@ -153,28 +134,34 @@ namespace System.Windows.Forms
         {
             if (base.ContextMenuStrip != null)
             {
-                base.ContextMenuStrip.Control.ShowAll();
+                base.ContextMenuStrip.self.ShowAll();
                 if (args.Event.Button == 3)
-                    PresentMenu(base.ContextMenuStrip.Control, args.Event.Button, args.Event.Time);
+                    PresentMenu(base.ContextMenuStrip.self, args.Event.Button, args.Event.Time);
             }
         }
-
+        int resizeWidth= 0;
+        int resizeHeight= 0;
         private void Form_ResizeChecked(object sender, EventArgs e)
         {
-            var window = (Gtk.Window)sender;
-            if (window.IsRealized && windowbody.IsRealized)
+            if (self.Resizable == true)
             {
-                scrollwindow.WidthRequest = window.AllocatedWidth;
-                scrollwindow.HeightRequest = window.AllocatedHeight;
-                _body.WidthRequest = window.AllocatedWidth;
-                _body.HeightRequest = window.AllocatedHeight;
-                ResizeControls(window, _body, false, null);
+                if (_body.IsMapped && resizeWidth != self.AllocatedWidth && resizeHeight != self.AllocatedHeight)
+                {
+                    resizeWidth = self.AllocatedWidth;
+                    resizeHeight = self.AllocatedHeight;
+                    _body.WidthRequest = self.AllocatedWidth - (AutoScroll ? 18 : 0); //留出滚动条位置
+                    _body.HeightRequest = self.AllocatedHeight - (AutoScroll ? 18 : 0);
+                    int widthIncrement = self.AllocatedWidth - self.DefaultSize.Width;
+                    int heightIncrement = self.AllocatedHeight - self.DefaultSize.Height;
+                    ResizeControls(widthIncrement, heightIncrement, _body, false, null);
+                }
             }
             if (SizeChanged != null)
                 SizeChanged(this, e);
+
         }
 
-        private void ResizeControls(Gtk.Window window, Gtk.Container parent, bool isPaned, Gtk.Paned gtkPaned)
+        private void ResizeControls(int widthIncrement, int heightIncrement, Gtk.Container parent, bool isPaned, Gtk.Paned gtkPaned)
         {
             foreach (Gtk.Widget control in parent.Children)
             {
@@ -184,8 +171,6 @@ namespace System.Windows.Forms
                     if (dock != null)
                     {
                         string dockStyle = dock.ToString();
-                        int widthIncrement = window.AllocatedWidth - window.DefaultSize.Width;
-                        int heightIncrement = window.AllocatedHeight - window.DefaultSize.Height;
                         if (gtkPaned != null)
                         {
                             if (gtkPaned.Orientation == Gtk.Orientation.Vertical)
@@ -193,6 +178,7 @@ namespace System.Windows.Forms
                             else
                                 widthIncrement = gtkPaned.Child1.AllocatedWidth - gtkPaned.Child1.WidthRequest;
                         }
+
                         Gtk.Widget sizeParent = getSizeParent(control);
                         int width = sizeParent.WidthRequest;
                         int height = sizeParent.HeightRequest;
@@ -236,35 +222,45 @@ namespace System.Windows.Forms
                             if (control.WidthRequest > -1 && width > -1)
                                 control.WidthRequest = width;
                         }
-                        if (control is Gtk.TreeView)
+                        if (control is Gtk.MenuBar menuba)
                         {
+                            //菜单不用处理
+                        }
+                        else if (control is Gtk.TreeView)
+                        {
+                            //树目录不用处理
                         }
                         else if (control is Gtk.Paned paned)
                         {
-                            ResizeControls(window, paned, true, paned);
+                            ResizeControls(widthIncrement, heightIncrement, paned, true, paned);
                         }
                         else if (control is Gtk.Container container)
                         {
-                            ResizeControls(window, container, isPaned, gtkPaned);
+                            ResizeControls(widthIncrement, heightIncrement, container, isPaned, gtkPaned);
                         }
                     }
                     else
                     {
-                        if (control is Gtk.TreeView)
+                        if (control is Gtk.MenuBar)
+                        {
+
+                        }
+                        else if (control is Gtk.TreeView)
                         {
                         }
                         else if (control is Gtk.Paned paned)
                         {
-                            ResizeControls(window, paned, true, paned);
+                            ResizeControls(widthIncrement, heightIncrement, paned, true, paned);
                         }
                         else if (control is Gtk.Container container)
                         {
-                            ResizeControls(window, container, isPaned, gtkPaned);
+                            ResizeControls(widthIncrement, heightIncrement, container, isPaned, gtkPaned);
                         }
                     }
                 }
             }
         }
+
         private Gtk.Widget getSizeParent(Gtk.Widget control)
         {
             while (control.Parent != null)
@@ -297,31 +293,24 @@ namespace System.Windows.Forms
                 throw new InvalidOperationException("ShowDialogOnDisabled");
             }
 
-            if (owner != null && owner is Form)
+            if (owner != null && owner is Form parent)
             {
-                this.Parent = ((Form)owner);
+                this.Parent = parent;
             }
 
-
-            scrollwindow.WidthRequest = this.Width;
-            scrollwindow.HeightRequest = this.Height;
             _body.WidthRequest = this.Width;
             _body.HeightRequest = this.Height;
 
-            windowbody.WidthRequest = this.Width;
-            windowbody.HeightRequest = this.Height;
-
             if (AutoScroll == true)
             {
-                scrollwindow.HscrollbarPolicy = PolicyType.Always;
-                scrollwindow.VscrollbarPolicy = PolicyType.Always;
+                self.ScrollArea.HscrollbarPolicy = PolicyType.Always;
+                self.ScrollArea.VscrollbarPolicy = PolicyType.Always;
             }
             else
             {
-                scrollwindow.HscrollbarPolicy = PolicyType.Never;
-                scrollwindow.VscrollbarPolicy = PolicyType.Never;
+                self.ScrollArea.HscrollbarPolicy = PolicyType.External;
+                self.ScrollArea.VscrollbarPolicy = PolicyType.External;
             }
-            self.Add(windowbody);
             self.Resizable = this.FormBorderStyle == FormBorderStyle.Sizable || this.FormBorderStyle == FormBorderStyle.SizableToolWindow;
             
             if (this.WindowState == FormWindowState.Maximized)
@@ -330,12 +319,11 @@ namespace System.Windows.Forms
             }
             else if (this.WindowState == FormWindowState.Minimized)
             {
-                self.KeepBelow = true;
+                self.Iconify();
             }
             self.ShowAll();
         }
 
-        private Gtk.Dialog dialogWindow;
         public DialogResult ShowDialog()
         {
             return ShowDialog(null);
@@ -357,70 +345,10 @@ namespace System.Windows.Forms
                 throw new InvalidOperationException("ShowDialogOnDisabled");
             }
 
-            windowbody.WidthRequest = this.Width;
-            windowbody.HeightRequest = this.Height;
+            Show(owner);
+            int irun = self.Run();
 
-            int irun = -9;
-            if (owner != null)
-            {
-                Gtk.Window ownerWindow = ((Form)owner).Widget as Gtk.Window;
-                dialogWindow = new Dialog(this.Text, ownerWindow, DialogFlags.DestroyWithParent);
-                dialogWindow.SetPosition(Gtk.WindowPosition.CenterOnParent);
- 
-            }
-            else
-            {
-                dialogWindow = new Dialog();
-                dialogWindow.SetPosition(Gtk.WindowPosition.Center);
-            }
-            dialogWindow.StyleContext.AddClass("Form");
-            dialogWindow.DefaultHeight = this.Height;
-            dialogWindow.DefaultWidth = this.Width;
-            dialogWindow.Response += Dia_Response;
-            dialogWindow.ResizeChecked += Form_ResizeChecked;
-            dialogWindow.Shown += Control_Shown;
-            dialogWindow.DeleteEvent += Control_DeleteEvent;
-            if (AutoScroll == true)
-            {
-                scrollwindow.HscrollbarPolicy = PolicyType.Always;
-                scrollwindow.VscrollbarPolicy = PolicyType.Always;
-            }
-            else
-            {
-                scrollwindow.HscrollbarPolicy = PolicyType.Never;
-                scrollwindow.VscrollbarPolicy = PolicyType.Never;
-            }
-
-            dialogWindow.ContentArea.BorderWidth = 0;
-            dialogWindow.ContentArea.Spacing = 0;
-            dialogWindow.ContentArea.PackStart(windowbody, true, true, 0);
-            dialogWindow.Resizable = this.FormBorderStyle == FormBorderStyle.Sizable || this.FormBorderStyle == FormBorderStyle.SizableToolWindow;
-
-            dialogWindow.ShowAll();
-            if (this.WindowState == FormWindowState.Maximized)
-            {
-                dialogWindow.Maximize();
-            }
-            else if (this.WindowState == FormWindowState.Minimized)
-            {
-                dialogWindow.KeepBelow = true;
-            }
-
-            irun = dialogWindow.Run();
             return this.DialogResult;
-        }
-
-        private void Dia_Response(object o, ResponseArgs args)
-        {
-            base.Dispose();
-            try
-            {
-                ((Gtk.Dialog)o).Dispose();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
         }
 
         public event EventHandler Shown;
@@ -441,8 +369,16 @@ namespace System.Windows.Forms
                 base.Height = value.Height;
             }
         }
-        //public override Rectangle ClientRectangle { get; }
-
+        public override bool AutoScroll { 
+            get => base.AutoScroll; 
+            set {
+                base.AutoScroll = value;
+                if (value == true)
+                    self.StyleContext.AddClass("ScrollForm");
+                else
+                    self.StyleContext.RemoveClass("ScrollForm");
+            }
+        }
         public SizeF AutoScaleDimensions { get; set; }
         public AutoScaleMode AutoScaleMode { get; set; }
         public FormBorderStyle formBorderStyle = FormBorderStyle.Sizable;
@@ -453,19 +389,23 @@ namespace System.Windows.Forms
                 formBorderStyle = value;
                 self.Resizable = value == FormBorderStyle.Sizable || value == FormBorderStyle.SizableToolWindow; 
                 if (value == FormBorderStyle.None)
-                {            
-                    self.Titlebar =new Gtk.Fixed() { HeightRequest = 0 }; 
+                {
+                    self.BorderWidth = 0;
+                    self.Decorated = false; //删除工具栏
                 }
                 else if (value == FormBorderStyle.FixedToolWindow)
                 {
+                    self.Decorated = true;
                     self.TypeHint = Gdk.WindowTypeHint.Dialog;
                 }
                 else if (value == FormBorderStyle.SizableToolWindow)
                 {
+                    self.Decorated = true;
                     self.TypeHint = Gdk.WindowTypeHint.Dialog;
                 }
                 else
                 {
+                    self.Decorated = true;
                     self.TypeHint = Gdk.WindowTypeHint.Normal;
                 }
             }
@@ -473,19 +413,18 @@ namespace System.Windows.Forms
         public FormWindowState WindowState { get; set; } = FormWindowState.Normal;
         public DialogResult DialogResult { get; set; }
         public void Close() {
-            if (dialogWindow != null)
+            if (self != null)
             {
-                dialogWindow.HideOnDelete();
+                self.CloseWindow();
+                self.Dispose();
             }
-            self.Close(); 
         }
         public override void Hide()
         {
-            if (dialogWindow != null)
+            if (self != null)
             {
-                dialogWindow.Hide();
+                self.Hide();
             }
-            self.Hide();
         }
 
         public override ObjectCollection Controls { get { return _ObjectCollection; } }
@@ -517,7 +456,7 @@ namespace System.Windows.Forms
 
         public MenuStrip MainMenuStrip { get; set; }
 
-        public override IntPtr Handle => self.OwnedHandle;
+        public override IntPtr Handle => self.Handle;
 
         public class ObjectCollection : ControlCollection
         {
@@ -532,37 +471,6 @@ namespace System.Windows.Forms
         public class MdiLayout
         {
         }
-
-        public override ImageLayout BackgroundImageLayout { get => self.Override.BackgroundImageLayout; set => self.Override.BackgroundImageLayout = value; }
-        public override Drawing.Image BackgroundImage { get => self.Override.BackgroundImage; set => self.Override.BackgroundImage = value; }
-        public override Color BackColor { get => self.Override.BackColor.HasValue ? self.Override.BackColor.Value : Color.Transparent; set => self.Override.BackColor = value; }
-
-        public override event PaintEventHandler Paint
-        {
-            add { self.Override.Paint += value; }
-            remove { self.Override.Paint -= value; }
-        }
-        public sealed class GtkWindow : Gtk.Window
-        {
-            internal GtkWindow(WindowType type) : base(type)
-            {
-                this.Override = new GtkControlOverride(this);
-            }
-            internal GtkControlOverride Override;
-            protected override void OnShown()
-            {
-                Override.OnAddClass();
-                base.OnShown();
-            }
-            protected override bool OnDrawn(Cairo.Context cr)
-            {
-                Gdk.Rectangle rec = this.Allocation;
-                Override.OnDrawnBackground(cr, rec);
-                Override.OnPaint(cr, rec);
-                return base.OnDrawn(cr);
-            }
-        }
-
     }
 
     public class BindingContext : ContextBoundObject

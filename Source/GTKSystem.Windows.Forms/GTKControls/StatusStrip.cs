@@ -15,10 +15,9 @@ namespace System.Windows.Forms
     {
         public StatusStrip():base()
         {
-            this.Control.StyleContext.RemoveClass("ToolStrip");
-            this.Control.StyleContext.AddClass("StatusStrip");
+            this.self.StyleContext.RemoveClass("ToolStrip");
+            this.self.StyleContext.AddClass("StatusStrip");
             Dock = DockStyle.Bottom;
-
         }
         public override Point Location { get => base.Location; set => base.Location = new Point(value.X, value.Y - 12); }
         public override Size Size { get => base.Size; set => base.Size = new Size(value.Width, value.Height + 12); }

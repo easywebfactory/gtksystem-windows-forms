@@ -5,26 +5,26 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
 
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class GroupBox : WidgetContainerControl<Gtk.Frame>
+    public partial class GroupBox : ContainerControl
     {
+        public readonly GroupBoxBase self = new GroupBoxBase();
+        public override object GtkControl => self;
         private Gtk.Fixed contaner = new Gtk.Fixed();
         private ControlCollection _controls = null;
         public GroupBox() : base()
         {
-            Widget.StyleContext.AddClass("GroupBox");
-            base.Control.LabelXalign = 0.03f;
-
             _controls = new ControlCollection(this, contaner);
-            base.Control.Child = contaner;
+            self.Child = contaner;
         }
 
-        public override string Text { get { return base.Control.Label; } set { base.Control.Label = value; } }
+        public override string Text { get { return self.Label; } set { self.Label = value; } }
         public override ControlCollection Controls => _controls;
 
         public override void SuspendLayout()

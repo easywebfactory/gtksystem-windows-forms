@@ -17,7 +17,7 @@ namespace GTKWinFormsApp
         public Form3()
         {
             InitializeComponent();
-
+            //目前自定义控件无法在窗体设计器中可视化，建议使用程序添加，如下示例：
             UserControl11 userControl11 = new UserControl11();
             panel5.Controls.Add(userControl11);
         }
@@ -37,11 +37,11 @@ namespace GTKWinFormsApp
         {
             var result = this.BeginInvoke(new MethodInvoker(() =>
             {
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 90; i++)
                 {
                     trackBar1.Value = i;
                     label1.Text = i.ToString();
-                    System.Threading.Thread.Sleep(1000);
+                    System.Threading.Thread.Sleep(100);
 
                 }
             }));

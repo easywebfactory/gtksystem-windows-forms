@@ -5,6 +5,7 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,45 +15,40 @@ namespace System.Windows.Forms
 {
 
     [DesignerCategory("Component")]
-    public partial class ComboBox: WidgetControl<Gtk.ComboBox>
+    public partial class ComboBox: Control
     {
+        public readonly ComboBoxBase self = new ComboBoxBase();
+        public override object GtkControl => self;
         private ObjectCollection __itemsData;
         public ComboBox():base()
         {
-            Widget.StyleContext.AddClass("ComboBox");
-            __itemsData = new ObjectCollection(this);
+            __itemsData = new ObjectCollection(self);
         }
-        public ComboBox(Gtk.ITreeModel model):base(model)
-        {
-            Widget.StyleContext.AddClass("ComboBox");
-            __itemsData = new ObjectCollection(this);
-        }
-        
-
+ 
         public bool FormattingEnabled { get; set; }
 
         public object SelectedItem { get { return __itemsData[SelectedIndex]; } }
-        public int SelectedIndex { get { return base.Control.Active; } }
+        public int SelectedIndex { get { return self.Active; } }
         public ObjectCollection Items { get { return __itemsData; } }
 
         public event EventHandler SelectedIndexChanged
         {
-            add { base.Control.Changed += (object sender, EventArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
-            remove { base.Control.Changed -= (object sender, EventArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
+            add { self.Changed += (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
+            remove { self.Changed -= (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
         }
         public event EventHandler SelectedValueChanged
         {
-            add { base.Control.Changed += (object sender, EventArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
-            remove { base.Control.Changed -= (object sender, EventArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
+            add { self.Changed += (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
+            remove { self.Changed -= (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
         }
 
         [ListBindable(false)]
         public class ObjectCollection : Gtk.TreeStore,IList
         {
             Gtk.ComboBox __owner;
-            public ObjectCollection(ComboBox owner):base(typeof(string))
+            public ObjectCollection(Gtk.ComboBox owner) :base(typeof(string))
             {
-                __owner = owner.Control;
+                __owner = owner;
                 __owner.Model = this;
                 var textCell = new Gtk.CellRendererText();
                 __owner.PackStart(textCell, true);

@@ -5,31 +5,34 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
 
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class CheckBox : WidgetControl<Gtk.CheckButton>
+    public partial class CheckBox : Control
     {
+        public readonly CheckBoxBase self = new CheckBoxBase();
+        public override object GtkControl => self;
         public CheckBox() {
-            Widget.StyleContext.AddClass("CheckBox");
+             
         }
 
-        public override string Text { get { return base.Control.Label; } set { base.Control.Label = value; } }
-        public  bool Checked { get { return base.Control.Active; } set { base.Control.Active = value; } }
-        public CheckState CheckState { get { return base.Control.Active ? CheckState.Checked : CheckState.Unchecked; } set { base.Control.Active = value != CheckState.Unchecked; } }
+        public override string Text { get { return self.Label; } set { self.Label = value; } }
+        public  bool Checked { get { return self.Active; } set { self.Active = value; } }
+        public CheckState CheckState { get { return self.Active ? CheckState.Checked : CheckState.Unchecked; } set { self.Active = value != CheckState.Unchecked; } }
         
         public event EventHandler CheckedChanged
         {
-            add { base.Control.Toggled += (object sender, EventArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
-            remove { base.Control.Toggled -= (object sender, EventArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
+            add { self.Toggled += value; }
+            remove { self.Toggled -= value; }
         }
         public virtual event EventHandler CheckStateChanged
         {
-            add { base.Control.Toggled += (object sender, EventArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
-            remove { base.Control.Toggled -= (object sender, EventArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
+            add { self.Toggled += value; }
+            remove { self.Toggled -= value; }
         }
     }
 }

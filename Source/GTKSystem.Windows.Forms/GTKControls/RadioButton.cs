@@ -5,16 +5,18 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class RadioButton : WidgetControl<Gtk.RadioButton>
+    public partial class RadioButton : Control
     {
-        public RadioButton():base(new Gtk.RadioButton("baseradio")) {
-            Widget.StyleContext.AddClass("RadioButton");
-            base.Control.Realized += Control_Realized; ;
+        public readonly RadioButtonBase self = new RadioButtonBase();
+        public override object GtkControl => self;
+        public RadioButton():base() {
+            self.Realized += Control_Realized; ;
         }
 
         private void Control_Realized(object sender, EventArgs e)
@@ -29,18 +31,18 @@ namespace System.Windows.Forms
                     break;
                 }
             }
-            base.Control.Active = _Checked;
+            self.Active = _Checked;
             isLoaded = true;
         }
         bool isLoaded = false;
         public event EventHandler CheckedChanged
         {
-            add { base.Control.Toggled += (object sender, EventArgs e) => { if (isLoaded) { value.Invoke(this, e); } }; }
-            remove { base.Control.Toggled -= (object sender, EventArgs e) => { if (isLoaded) { value.Invoke(this, e); } }; }
+            add { self.Toggled += (object sender, EventArgs e) => { if (isLoaded) { value.Invoke(this, e); } }; }
+            remove { self.Toggled -= (object sender, EventArgs e) => { if (isLoaded) { value.Invoke(this, e); } }; }
         }
 
-        public override string Text { get { return base.Control.Label; } set { base.Control.Label = value;} }
-        public bool Checked { get { return base.Control.Active; } set { _Checked = true; base.Control.Active = true; } }
+        public override string Text { get { return self.Label; } set { self.Label = value;} }
+        public bool Checked { get { return self.Active; } set { _Checked = true; self.Active = true; } }
         private bool _Checked;
     }
 }

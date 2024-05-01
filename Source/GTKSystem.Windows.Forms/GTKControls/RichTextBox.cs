@@ -6,18 +6,20 @@
  * date: 2024/1/3
  */
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
 
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class RichTextBox : WidgetControl<Gtk.Viewport>
+    public partial class RichTextBox : Control
     {
+        public readonly RichTextBoxBase self = new RichTextBoxBase();
+        public override object GtkControl => self;
         private Gtk.TextView textView = new Gtk.TextView();
         public RichTextBox():base()
         {
-            Widget.StyleContext.AddClass("RichTextBox");
             textView.BorderWidth = 1;
             textView.WrapMode = Gtk.WrapMode.Char;
             textView.Halign = Gtk.Align.Fill;
@@ -25,7 +27,7 @@ namespace System.Windows.Forms
             textView.Expand = true;
             Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
             scrolledWindow.Child = textView;
-            this.Control.Child = scrolledWindow;
+            self.Child = scrolledWindow;
         }
         protected override void SetStyle(Widget widget)
         {
@@ -49,6 +51,5 @@ namespace System.Windows.Forms
         {
             get { return textView.Buffer.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); }
         }
-        public override Color BackColor { get => base.BackColor; set => base.BackColor = value; }
     }
 }

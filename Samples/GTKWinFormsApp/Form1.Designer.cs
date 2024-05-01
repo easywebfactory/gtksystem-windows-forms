@@ -37,12 +37,12 @@ namespace GTKWinFormsApp
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            TreeNode treeNode11 = new TreeNode("Node21");
-            TreeNode treeNode12 = new TreeNode("Node22");
-            TreeNode treeNode1 = new TreeNode("Node2", new TreeNode[] { treeNode11, treeNode12 });
-            TreeNode treeNode2 = new TreeNode("Node3");
-            TreeNode treeNode3 = new TreeNode("Node0", new TreeNode[] { treeNode1, treeNode2 });
-            TreeNode treeNode4 = new TreeNode("Node1");
+            TreeNode treeNode19 = new TreeNode("Node21");
+            TreeNode treeNode20 = new TreeNode("Node22");
+            TreeNode treeNode21 = new TreeNode("Node2", new TreeNode[] { treeNode19, treeNode20 });
+            TreeNode treeNode22 = new TreeNode("Node3");
+            TreeNode treeNode23 = new TreeNode("Node0", new TreeNode[] { treeNode21, treeNode22 });
+            TreeNode treeNode24 = new TreeNode("Node1");
             button1 = new Button();
             comboBox1 = new ComboBox();
             textBox1 = new TextBox();
@@ -586,19 +586,23 @@ namespace GTKWinFormsApp
             // 
             // treeView1
             // 
-            treeView1.BackColor = System.Drawing.Color.Tomato;
+            //treeView1.BackColor = System.Drawing.Color.Tomato;
             treeView1.Location = new System.Drawing.Point(127, 66);
             treeView1.Margin = new Padding(4);
             treeView1.Name = "treeView1";
-            treeNode1.Name = "Node2";
-            treeNode1.Text = "Node2";
-            treeNode2.Name = "Node3";
-            treeNode2.Text = "Node3";
-            treeNode3.Name = "Node0";
-            treeNode3.Text = "Node0";
-            treeNode4.Name = "Node1";
-            treeNode4.Text = "Node1";
-            treeView1.Nodes.AddRange(new TreeNode[] { treeNode3, treeNode4 });
+            treeNode19.Name = "";
+            treeNode19.Text = "Node21";
+            treeNode20.Name = "";
+            treeNode20.Text = "Node22";
+            treeNode21.Name = "Node2";
+            treeNode21.Text = "Node2";
+            treeNode22.Name = "Node3";
+            treeNode22.Text = "Node3";
+            treeNode23.Name = "Node0";
+            treeNode23.Text = "Node0";
+            treeNode24.Name = "Node1";
+            treeNode24.Text = "Node1";
+            treeView1.Nodes.AddRange(new TreeNode[] { treeNode23, treeNode24 });
             treeView1.Size = new System.Drawing.Size(154, 113);
             treeView1.TabIndex = 4;
             treeView1.AfterCollapse += treeView1_AfterCollapse;
@@ -608,13 +612,14 @@ namespace GTKWinFormsApp
             // 
             // pictureBox1
             // 
+            pictureBox1.BackgroundImage = Properties.Resources.timg;
             pictureBox1.Image = (System.Drawing.Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new System.Drawing.Point(1016, 35);
             pictureBox1.Margin = new Padding(4);
             pictureBox1.MaximumSize = new System.Drawing.Size(200, 130);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new System.Drawing.Size(200, 130);
-            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 5;
             pictureBox1.TabStop = false;
             // 
@@ -789,7 +794,9 @@ namespace GTKWinFormsApp
             MainMenuStrip = menuStrip1;
             Margin = new Padding(4);
             Name = "Form1";
-            Opacity = 0.5D;
+            Opacity = 1D;
+            MaximizeBox = true;
+            MinimizeBox=false;
             Text = "C# winform gtk效果";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox1.ResumeLayout(false);
@@ -808,7 +815,6 @@ namespace GTKWinFormsApp
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             splitContainer1.Panel1.ResumeLayout(false);
-            splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);

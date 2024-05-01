@@ -7,8 +7,7 @@
  */
 
 using Gtk;
-using GTKSystem.Windows.Forms;
-using GTKSystem.Windows.Forms.Utility;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -17,21 +16,18 @@ using System.Drawing;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class Button : Control // WidgetControl<Button.GtkButton>
+    public partial class Button : Control
     {
-        public GtkButton self = new GtkButton();
-        public override Widget Widget => self;
+        public readonly ButtonBase self = new ButtonBase();
+        public override object GtkControl => self;
         public Button() : base()
         {
-            self.Override.AddClass("Button");
             //self.Override.DrawnBackground += Control_DrawnBackground;
         }
 
         private void Control_DrawnBackground(object o, DrawnArgs args)
         {
             Gdk.Rectangle rec = Widget.Allocation;
-
-
             Graphics g = new Graphics(this.Widget, args.Cr, rec);
             using SolidBrush brush = new SolidBrush(Color.Yellow);
             g.FillRectangle(brush, new Rectangle(0, 0, rec.Width, rec.Height));
@@ -40,37 +36,11 @@ namespace System.Windows.Forms
         }
 
         public override string Text { get => self.Label; set => self.Label = value; }
-
-        public override ImageLayout BackgroundImageLayout { get => self.Override.BackgroundImageLayout; set => self.Override.BackgroundImageLayout = value; }
-        public override Drawing.Image BackgroundImage { get => self.Override.BackgroundImage; set => self.Override.BackgroundImage = value; }
-        public override Color BackColor { get => self.Override.BackColor.HasValue ? self.Override.BackColor.Value : Color.Transparent; set => self.Override.BackColor = value; }
-
-        public override event PaintEventHandler Paint
+        
+        public override event EventHandler Click
         {
-            add { self.Override.Paint += value; }
-            remove { self.Override.Paint -= value; }
-        }
-        public sealed class GtkButton : Gtk.Button
-        {
-            internal Button owner { set; get; }
-            internal GtkButton() : base()
-            {
-                this.Override = new GtkControlOverride(this);
-            }
-            public GtkControlOverride Override { get; set; }
- 
-            protected override void OnShown()
-            {
-                Override.OnAddClass();
-                base.OnShown();
-            }
-            protected override bool OnDrawn(Cairo.Context cr)
-            {
-                Gdk.Rectangle rec = this.Allocation;
-                Override.OnDrawnBackground(cr, rec);
-                Override.OnPaint(cr, rec);
-                return base.OnDrawn(cr);
-            }
+            add { self.Clicked += value; }
+            remove { self.Clicked -= value; }
         }
     }
 }

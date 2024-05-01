@@ -16,13 +16,13 @@ namespace System.Windows.Forms
         {
             _owner = owner;
             _listBox = owner;
-            _listBox.Control.Shown += Control_Shown;
+            _listBox.self.Shown += Control_Shown;
         }
         public ControlBindingsCollection(DataGridView owner) : base(owner)
         {
             _owner = owner;
             _dataGridView = owner;
-            _dataGridView.Control.Shown += Control_Shown;
+            _dataGridView.self.Shown += Control_Shown;
         }
 
         private void Control_Shown(object sender, EventArgs e)

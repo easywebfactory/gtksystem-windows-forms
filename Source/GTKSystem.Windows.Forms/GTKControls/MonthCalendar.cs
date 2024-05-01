@@ -5,18 +5,20 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
 
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class MonthCalendar : WidgetControl<Gtk.Calendar>
+    public partial class MonthCalendar : Control
     {
+        public readonly MonthCalendarBase self = new MonthCalendarBase();
+        public override object GtkControl => self;
         public MonthCalendar():base()
         {
-            Widget.StyleContext.AddClass("MonthCalendar");
-            base.Control.DaySelected += MonthCalendar_DaySelected;
+            self.DaySelected += MonthCalendar_DaySelected;
         }
 
         private void MonthCalendar_DaySelected(object sender, EventArgs e)
@@ -47,8 +49,8 @@ namespace System.Windows.Forms
         public SelectionRange SelectionRange { get; set; }
         public DateTime TodayDate
         {
-            get { return base.Control.Date; }
-            set { base.Control.Date = value; }
+            get { return self.Date; }
+            set { self.Date = value; }
         }
         public bool ShowWeekNumbers { get; set; }
         public event DateRangeEventHandler DateChanged;

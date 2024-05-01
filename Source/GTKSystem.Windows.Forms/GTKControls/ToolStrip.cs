@@ -11,33 +11,30 @@ using System.Text;
 using System.Drawing;
 using System.Collections;
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 
 namespace System.Windows.Forms
 {
-    public class ToolStrip : WidgetControl<Gtk.MenuBar>
+    public class ToolStrip : Control
     {
+        public readonly ToolStripBase self = new ToolStripBase();
+        public override object GtkControl => self;
         public ToolStripItemCollection toolStripItemCollection;
         public ToolStrip() : base()
         {
-            this.Control.StyleContext.AddClass("ToolStrip");
-            this.Control.Hexpand = false;
-            this.Control.Vexpand = false;
-            this.Control.Valign = Gtk.Align.Start;
-            this.Control.Halign = Gtk.Align.Start;
-            this.Control.HeightRequest = 20;
             toolStripItemCollection = new ToolStripItemCollection(this);
-            base.Control.ActivateCurrent += ToolStripItem_Activated;
+            self.ActivateCurrent += ToolStripItem_Activated;
             Dock = DockStyle.Top;
         }
         public ToolStrip(string owner) : base()
         {
-            this.Control.StyleContext.AddClass("ToolStrip");
-            this.Control.Hexpand = false;
-            this.Control.Vexpand = false;
-            this.Control.Valign = Gtk.Align.Start;
-            this.Control.Halign = Gtk.Align.Start;
+            self.StyleContext.AddClass("ToolStrip");
+            self.Hexpand = false;
+            self.Vexpand = false;
+            self.Valign = Gtk.Align.Start;
+            self.Halign = Gtk.Align.Start;
             toolStripItemCollection = new ToolStripItemCollection(this, owner);
-            base.Control.ActivateCurrent += ToolStripItem_Activated;
+            self.ActivateCurrent += ToolStripItem_Activated;
         }
         private void ToolStripItem_Activated(object sender, ActivateCurrentArgs e)
         {

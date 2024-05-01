@@ -6,6 +6,7 @@
  * date: 2024/1/3
  */
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,37 +14,35 @@ using System.Text;
 
 namespace System.Windows.Forms
 {
-    public class TabPage : WidgetContainerControl<Gtk.Layout>
+    public class TabPage : ContainerControl
     {
+        public readonly TabPageBase self = new TabPageBase();
+        public override object GtkControl => self;
         internal Gtk.Label _tabLabel = new Gtk.Label();
         private ControlCollection _controls;
-        public TabPage() : base(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero))
+        public TabPage() : base()
         {
-            Widget.StyleContext.AddClass("TabPage");
-            Control.BorderWidth = 0;
-            _controls = new ControlCollection(this, this.Control);
+            _controls = new ControlCollection(this, self);
 
-            Widget.Data["Dock"] = DockStyle.Fill;
+            self.Data["Dock"] = DockStyle.Fill;
         }
 
         public TabPage(string text)
         {
             _tabLabel.Text = text;
-            _controls = new ControlCollection(this, this.Control);
+            _controls = new ControlCollection(this, self);
         }
 
         public override Point Location
         {
             get
             {
-                return new Point(Widget.MarginStart, Widget.MarginTop);
+                return new Point(self.MarginStart, self.MarginTop);
             }
             set
             {
-                Widget.MarginStart = 0;
-                Widget.MarginTop = 0;
-                Widget.Data["InitMarginStart"] = 0;
-                Widget.Data["InitMarginTop"] = 0;
+                self.MarginStart = 0;
+                self.MarginTop = 0;
             }
         }
         public new DockStyle Dock
@@ -52,7 +51,7 @@ namespace System.Windows.Forms
             {
                 return DockStyle.Fill;
             }
-            set { Widget.Data["Dock"] = DockStyle.Fill; }
+            set { self.Data["Dock"] = DockStyle.Fill; }
         }
         public override string Text { get { return _tabLabel.Text; } set { _tabLabel.Text = value; } }
         public Gtk.Label TabLabel { get { return _tabLabel; } }

@@ -77,10 +77,10 @@ namespace System.Windows.Forms
                         layout.Add(cell.Control.Widget);
                     }
 
-                    Container.Control.Attach(viewport, colLeft, rowTop, 1, 1);
+                    Container.self.Attach(viewport, colLeft, rowTop, 1, 1);
                 }
             }
-            Container.Control.ShowAll();
+            Container.self.ShowAll();
         }
         public object GetCellControl(int column, int row)
         {

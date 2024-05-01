@@ -8,6 +8,7 @@
 
 using GLib;
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using Pango;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,23 +18,17 @@ namespace System.Windows.Forms
 {
 
     [DesignerCategory("Component")]
-    public partial class CheckedListBox : WidgetContainerControl<Gtk.Viewport>
+    public partial class CheckedListBox : ContainerControl
     {
-        ObjectCollection _items;
-        internal Gtk.FlowBox _flow;
+        public readonly CheckedListBoxBase self = new CheckedListBoxBase();
+        public override object GtkControl => self;
+        internal Gtk.FlowBox _flow = new Gtk.FlowBox();
+        private ObjectCollection _items;
         public CheckedListBox() : base()
         {
-            this.BackColor = Drawing.Color.White;
-            Widget.StyleContext.AddClass("CheckedListBox");
-
-            _flow = new Gtk.FlowBox();
             _flow.Orientation = Gtk.Orientation.Horizontal;
-            //_flow.MaxChildrenPerLine = 3u;
-            //_flow.MinChildrenPerLine = 2u;
             _flow.Halign = Gtk.Align.Start;
             _flow.Valign = Gtk.Align.Start;
-            //_flow.Hexpand = true;
-            //_flow.Vexpand = true;
             _items = new ObjectCollection(_flow);
             _flow.ChildActivated += Control_ChildActivated;
             _flow.Realized += _flow_Realized;
@@ -43,7 +38,7 @@ namespace System.Windows.Forms
             scrolledWindow.Hexpand = true;
             scrolledWindow.Vexpand = true;
             scrolledWindow.Child = _flow;
-            this.Control.Child = scrolledWindow;
+            self.Child = scrolledWindow;
         }
 
         private void _flow_Realized(object sender, EventArgs e)
@@ -66,11 +61,11 @@ namespace System.Windows.Forms
 
         public int ColumnWidth { get; set; } = 160;
         public bool MultiColumn { get; set; }
-        public bool MultiColumn1
-        {
-            get { return _flow.Orientation == Gtk.Orientation.Vertical; }
-            set { _flow.Orientation = value == true ? Gtk.Orientation.Vertical : Gtk.Orientation.Horizontal; }
-        }
+        //public bool MultiColumn1
+        //{
+        //    get { return _flow.Orientation == Gtk.Orientation.Vertical; }
+        //    set { _flow.Orientation = value == true ? Gtk.Orientation.Vertical : Gtk.Orientation.Horizontal; }
+        //}
 
         public bool HorizontalScrollbar { get; set; }
         public bool FormattingEnabled { get; set; }
@@ -162,17 +157,17 @@ namespace System.Windows.Forms
             if (position < 0)
             {
                 this._flow.Add(boxitem);
-                if (this.Control.IsRealized)
+                if (self.IsRealized)
                 {
-                    this.Control.ShowAll();
+                    self.ShowAll();
                 }
             }
             else
             {
                 this._flow.Insert(boxitem, position);
-                if (this.Control.IsRealized)
+                if (self.IsRealized)
                 {
-                    this.Control.ShowAll();
+                    self.ShowAll();
                 }
             }
         }

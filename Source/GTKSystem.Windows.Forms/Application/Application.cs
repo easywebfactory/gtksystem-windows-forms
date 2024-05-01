@@ -130,8 +130,10 @@ namespace System.Windows.Forms
 .DefaultThemeStyle:active{border-color:#cccccc;}
 */
 
-.Form{border-width:0px;}
-.BorderRadiusStyle{ }
+scrolledwindow{border-width:0px;}
+.Form {border-width:0px;padding:0px;margin:0px;}
+.ScrollForm {border:solid 2px #cccccc;border-right:solid 18px #F6F5F4;}
+
 .MessageBox{}
 .MessageBox button{margin:10px;border-radius:0px;}
 .MessageBox-BarTitle{font-size:20px;padding-bottom:10px;}
@@ -160,9 +162,8 @@ namespace System.Windows.Forms
 .CheckBox {border-width:0px;} 
 .CheckedListBox {background-color:#ffffff;} 
 .RadioButton {border-width:0px;} 
-/*
-.Label{border-width:0px;background-color:#F6F5F4;} 
-*/
+
+.Label{border-width:0px;} 
 .LinkLabel{border-width:0px;} 
 .NumericUpDown{padding:0px;min-height:6px;min-width:6px;}
 .NumericUpDown button.up{border-width:0px;padding:0px;font-size:6px;min-height:6px;min-width:6px;}
@@ -178,6 +179,7 @@ namespace System.Windows.Forms
 .UserControl{border-width:0px;}
 
 .GroupBox{background-color:#F6F5F4;} 
+
 .TableLayoutPanel viewport{border:solid 1px #eeeeee;}
 .FlowLayoutPanel{}
 .ToolStrip{padding:0px;background:linear-gradient(#fefefd,#efefef);border-width:0px;background-color:#F6F5F4;} 

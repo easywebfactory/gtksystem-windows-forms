@@ -36,7 +36,7 @@ namespace System.Windows.Forms
         }
         public ToolStripItemCollection(ToolStripDropDown owner)
         {
-             this.menu = owner.Control;
+             this.menu = owner.self;
             isContextMenu = true;
            // this.menu.ShowAll();
         }
@@ -89,16 +89,16 @@ namespace System.Windows.Forms
             value.Parent = owner;
             if (isToolStrip == true)
             {
-                toolStrip.Control.Add(value.Widget);
+                toolStrip.self.Add(value.Widget);
             }
             else if (isStatusStrip == true)
             {
-                statusStrip.Control.Add(value.Widget);
+                statusStrip.self.Add(value.Widget);
             }
             else if(isMenuStrip == true)
             {
                 value.CreateControl(value.Widget, "", "", null, null, "");
-                toolStrip.Control.Add(value.Widget);
+                toolStrip.self.Add(value.Widget);
             }
             else if (isContextMenu == true)
             {

@@ -5,36 +5,35 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class NumericUpDown : WidgetControl<Gtk.SpinButton>
+    public partial class NumericUpDown : Control
     {
-       
-        public NumericUpDown() : base(0, 100, 1)
+        public readonly NumericUpDownBase self = new NumericUpDownBase();
+        public override object GtkControl => self;
+        public NumericUpDown() : base()
         {
-            Widget.StyleContext.AddClass("NumericUpDown");
-            base.Control.Value = 0;
-            base.Control.Orientation = Gtk.Orientation.Horizontal;
         }
 
         public event EventHandler ValueChanged
         {
-            add { base.Control.ValueChanged += (object sender, EventArgs e) => { value.Invoke(this, e); }; }
-            remove { base.Control.ValueChanged -= (object sender, EventArgs e) => { value.Invoke(this, e); }; }
+            add { self.ValueChanged += (object sender, EventArgs e) => { value.Invoke(this, e); }; }
+            remove { self.ValueChanged -= (object sender, EventArgs e) => { value.Invoke(this, e); }; }
         }
 
-        public int DecimalPlaces { get => Convert.ToInt32(base.Control.Digits); set => base.Control.Digits = Convert.ToUInt32(value); }
+        public int DecimalPlaces { get => Convert.ToInt32(self.Digits); set => self.Digits = Convert.ToUInt32(value); }
         public decimal Increment
         {
-            get => Convert.ToDecimal(base.Control.Adjustment.StepIncrement);
-            set => base.Control.Adjustment.StepIncrement = Convert.ToDouble(value);
+            get => Convert.ToDecimal(self.Adjustment.StepIncrement);
+            set => self.Adjustment.StepIncrement = Convert.ToDouble(value);
         }
-        public decimal Maximum { get => Convert.ToDecimal(base.Control.Adjustment.Upper); set => base.Control.Adjustment.Upper = Convert.ToDouble(value); }
+        public decimal Maximum { get => Convert.ToDecimal(self.Adjustment.Upper); set => self.Adjustment.Upper = Convert.ToDouble(value); }
 
-        public decimal Minimum { get => Convert.ToDecimal(base.Control.Adjustment.Lower); set => base.Control.Adjustment.Lower = Convert.ToDouble(value); }
-        public decimal Value { get { return Convert.ToDecimal(base.Control.Value); } set { base.Control.Value = Convert.ToDouble(value); } }
+        public decimal Minimum { get => Convert.ToDecimal(self.Adjustment.Lower); set => self.Adjustment.Lower = Convert.ToDouble(value); }
+        public decimal Value { get { return Convert.ToDecimal(self.Value); } set { self.Value = Convert.ToDouble(value); } }
     }
 }

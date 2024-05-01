@@ -16,8 +16,8 @@ namespace System.Windows.Forms
     {
         public MenuStrip() : base("MenuStrip")
         {
-            Widget.StyleContext.RemoveClass("ToolStrip");
-            Widget.StyleContext.AddClass("MenuStrip");
+            this.self.StyleContext.RemoveClass("ToolStrip");
+            this.self.StyleContext.AddClass("MenuStrip");
             this.Dock = DockStyle.Top;
         }
 

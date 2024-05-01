@@ -23,7 +23,6 @@ namespace System.Windows.Forms
     /// <typeparam name="T"></typeparam>
     public class WidgetContainerControl<T> : ContainerControl, ISynchronizeInvoke, IComponent, IDisposable, IControl, ISupportInitialize
     {
-        public override string unique_key { get; protected set; }
         private Gtk.Widget _widget;
         public override Gtk.Widget Widget
         {
@@ -39,7 +38,6 @@ namespace System.Windows.Forms
         public override object GtkControl => _gtkControl;
         public WidgetContainerControl(params object[] args)
         {
-            unique_key = Guid.NewGuid().ToString();
             object widget = Activator.CreateInstance(typeof(T), args);
             _gtkControl = widget;
             _control = (T)widget;

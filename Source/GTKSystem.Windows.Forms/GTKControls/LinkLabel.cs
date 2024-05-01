@@ -5,6 +5,7 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -14,20 +15,21 @@ using System.Linq;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class LinkLabel: WidgetControl<Gtk.LinkButton>
+    public partial class LinkLabel: Control
     {
-        public LinkLabel():base("")
+        public readonly LinkLabelBase self = new LinkLabelBase();
+        public override object GtkControl => self;
+        public LinkLabel():base()
         {
-            Widget.StyleContext.AddClass("LinkLabel");
-            base.Control.Clicked += LinkLabel_Click;
-            base.Control.ActivateLink += LinkLabel_ActivateLink;
+            self.Clicked += LinkLabel_Click;
+            self.ActivateLink += LinkLabel_ActivateLink;
         }
 
         private void LinkLabel_ActivateLink(object o, Gtk.ActivateLinkArgs args)
         {
             if (LinkClicked != null)
             {
-                LinkClicked(this, new LinkLabelLinkClickedEventArgs(new Link() { Description = base.Control.Label, LinkData = base.Control.Uri }));
+                LinkClicked(this, new LinkLabelLinkClickedEventArgs(new Link() { Description = self.Label, LinkData = self.Uri }));
             }
         }
 
@@ -40,7 +42,7 @@ namespace System.Windows.Forms
             }
         }
         public override event EventHandler Click;
-        public override string Text { get { return string.IsNullOrEmpty(base.Control.Label)? base.Control.Uri : base.Control.Label; } set { base.Control.Label = value; base.Control.Uri = value; } }
+        public override string Text { get { return string.IsNullOrEmpty(self.Label)? self.Uri : self.Label; } set { self.Label = value; self.Uri = value; } }
          
 
         public event LinkLabelLinkClickedEventHandler LinkClicked;

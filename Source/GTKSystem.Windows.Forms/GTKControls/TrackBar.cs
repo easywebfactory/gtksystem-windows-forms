@@ -6,6 +6,7 @@
  * date: 2024/1/3
  */
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using Pango;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -15,14 +16,15 @@ using static System.Formats.Asn1.AsnWriter;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public class TrackBar : WidgetControl<Gtk.Viewport>
-	{
-		Gtk.Adjustment adjustment = new Gtk.Adjustment(10, 0, 100, 1, 1, 0);
+    public class TrackBar : Control
+    {
+        public readonly TrackBarBase self = new TrackBarBase();
+        public override object GtkControl => self;
+        Gtk.Adjustment adjustment = new Gtk.Adjustment(10, 0, 100, 1, 1, 0);
         Gtk.Scale scale;
 		public TrackBar():base()
 		{
-            base.Control.StyleContext.AddClass("TrackBar");
-            base.Control.Realized += Control_Realized;
+            self.Realized += Control_Realized;
         }
 
         private void Control_Realized(object sender, EventArgs e)
@@ -37,7 +39,7 @@ namespace System.Windows.Forms
             adjustment.Upper = Maximum;
             adjustment.Value = Value;
             adjustment.ValueChanged += Control_ValueChanged;
-            this.Control.Child = scale;
+            self.Child = scale;
         }
 
         private void Control_ValueChanged(object sender, EventArgs e)

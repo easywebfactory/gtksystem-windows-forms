@@ -6,6 +6,7 @@
  * date: 2024/1/3
  */
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,22 +20,23 @@ namespace System.Windows.Forms
 {
 
 	[DefaultEvent("SelectedIndexChanged")]
-	public class ListView : WidgetControl<Gtk.Box>
+	public class ListView : ContainerControl
     {
-		private ListViewItemCollection _items;
+        public readonly ListViewBase self = new ListViewBase();
+        public override object GtkControl => self;
+        private ListViewItemCollection _items;
 		private ListViewGroupCollection _groups;
 		private ColumnHeaderCollection _columns;
         internal Gtk.Box flowBoxContainer = null;
         internal Gtk.StackSwitcher header = new Gtk.StackSwitcher();
-        public ListView():base(Gtk.Orientation.Vertical,0)
+        public ListView():base()
         {
 			_items = new ListViewItemCollection(this);
 			_groups = new ListViewGroupCollection(this);
 			_columns = new ColumnHeaderCollection(this);
-			base.Control.StyleContext.AddClass("ListView");
             header.StyleContext.AddClass("ListViewHeader");
-            this.Control.PackStart(header, false, true, 0);
-            base.Control.Realized += Control_Realized;
+            self.PackStart(header, false, true, 0);
+            self.Realized += Control_Realized;
             header.Halign = Gtk.Align.Fill;
             header.Valign = Gtk.Align.Fill;
             header.HeightRequest = 20;
@@ -42,12 +44,11 @@ namespace System.Windows.Forms
             header.Visible = false;
             header.Hide();
            
-
             flowBoxContainer = new Gtk.Box(Gtk.Orientation.Vertical, 0);
             Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
             //scrolledWindow.HscrollbarPolicy = PolicyType.Never;
             scrolledWindow.Add(flowBoxContainer);
-            this.Control.PackStart(scrolledWindow, true, true, 1);
+            self.PackStart(scrolledWindow, true, true, 1);
         }
  
         private HashSet<int> selectedIndexes = new HashSet<int>();
@@ -113,7 +114,7 @@ namespace System.Windows.Forms
                 }
             }
 
-            this.Control.ShowAll();
+            self.ShowAll();
         }
 
 		public bool Sorted
@@ -665,10 +666,10 @@ namespace System.Windows.Forms
 			{
                 item.Index = Count;
                 base.Add(item);
-                if (_owner.Control.IsRealized)
+                if (_owner.self.IsRealized)
                 {
                     _owner.AddItem(item, position);
-                    _owner.Control.ShowAll();
+                    _owner.self.ShowAll();
                 }
             }
             public void AddRange(ListViewItem[] items)

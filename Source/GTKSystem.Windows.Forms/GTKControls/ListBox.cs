@@ -8,6 +8,7 @@
 using Gdk;
 using GLib;
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using Pango;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,24 +23,22 @@ namespace System.Windows.Forms
 	[DefaultEvent("SelectedIndexChanged")]
 	[DefaultProperty("Items")]
 	[DefaultBindingProperty("SelectedValue")]
-	public partial class ListBox : WidgetControl<Gtk.Viewport>
+	public partial class ListBox : Control
     {
-        ControlBindingsCollection _collect;
-        ObjectCollection _items;
+        public readonly ListBoxBase self = new ListBoxBase();
+        public override object GtkControl => self;
+        private ControlBindingsCollection _collect;
+        private ObjectCollection _items;
         private Gtk.FlowBox _flow = new Gtk.FlowBox();
         internal Gtk.FlowBox FlowBox { get { return _flow; } }
         public ListBox():base()
 		{
             _collect = new ControlBindingsCollection(this);
             _items = new ObjectCollection(this);
-            Widget.StyleContext.AddClass("ListBox");
-            base.Control.Realized += Control_Realized;
-            
             _flow.MaxChildrenPerLine = 1u;
             _flow.Halign = Gtk.Align.Fill;
             _flow.Valign = Gtk.Align.Start;
             _flow.SortFunc = new FlowBoxSortFunc((fbc1, fbc2) => !this.Sorted ? 0 : fbc1.TooltipText.CompareTo(fbc2.TooltipText));
-
             _flow.ChildActivated += Control_ChildActivated;
 
             Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
@@ -48,7 +47,8 @@ namespace System.Windows.Forms
             scrolledWindow.Hexpand = true;
             scrolledWindow.Vexpand = true;
             scrolledWindow.Child = _flow;
-            this.Control.Child = scrolledWindow;
+            self.Realized += Control_Realized;
+            self.Child = scrolledWindow;
         }
 
         private HashSet<int> selectedIndexes = new HashSet<int>();
@@ -88,7 +88,7 @@ namespace System.Windows.Forms
                 AddItem(item, -1);
             }
 
-            this.Control.ShowAll();
+            self.ShowAll();
         }
         internal void BindDataSource(string propertyName, object datasource, string dataMember,int selectindex, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode, object nullValue, string formatString)
         {
@@ -524,7 +524,7 @@ namespace System.Windows.Forms
 
 		public override void Refresh()
 		{
-			this.Control.ShowAll();
+			self.ShowAll();
 		}
 
 		public override void ResetBackColor()
@@ -787,20 +787,20 @@ namespace System.Windows.Forms
                 if (position < 0)
                 {
                     int idx = base.Add(item);
-                    if (_owner.Control.IsRealized)
+                    if (_owner.self.IsRealized)
                     {
                         _owner.AddItem(item, position);
-                        _owner.Control.ShowAll();
+                        _owner.self.ShowAll();
                     }
                     return idx;
                 }
                 else
                 {
                     base.Insert(position, item);
-                    if (_owner.Control.IsRealized)
+                    if (_owner.self.IsRealized)
                     {
                         _owner.AddItem(item, position);
-                        _owner.Control.ShowAll();
+                        _owner.self.ShowAll();
                     }
                     return position;
                 }

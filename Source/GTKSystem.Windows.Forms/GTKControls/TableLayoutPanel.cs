@@ -6,6 +6,7 @@
  * date: 2024/1/3
  */
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections.Generic;
 using System.ComponentModel;
 using static System.Windows.Forms.TableLayoutControlCollection;
@@ -19,24 +20,18 @@ namespace System.Windows.Forms
 	//[ProvideProperty("CellPosition", typeof(Control))]
 	//[DefaultProperty("ColumnCount")]
     [DesignerCategory("Component")]
-    public partial class TableLayoutPanel : WidgetContainerControl<Gtk.Grid>, IExtenderProvider
-	{
-		private TableLayoutControlCollection _controls;
+    public partial class TableLayoutPanel : ContainerControl, IExtenderProvider
+    {
+        public readonly TableLayoutPanelBase self = new TableLayoutPanelBase();
+        public override object GtkControl => self;
+        private TableLayoutControlCollection _controls;
 		private TableLayoutColumnStyleCollection _columnStyles;
 		private TableLayoutRowStyleCollection _rowStyles;
         public TableLayoutPanel():base()
         {
-            Widget.StyleContext.AddClass("TableLayoutPanel");
             _controls=new TableLayoutControlCollection(this);
 			_columnStyles = new TableLayoutColumnStyleCollection();
 			_rowStyles = new TableLayoutRowStyleCollection();
-
-			base.Control.RowHomogeneous = false;
-			base.Control.ColumnHomogeneous= false;
-			base.Control.BorderWidth = 1;
-            base.Control.BaselineRow = 0;
-            base.Control.ColumnSpacing = 0;
-			base.Control.RowSpacing = 0;
         }
 
         public override void PerformLayout()
@@ -214,8 +209,8 @@ namespace System.Windows.Forms
                     int row = 0;
                     foreach (RowStyle rowStyle in RowStyles)
                     {
-                        if (base.Control.GetChildAt(col, row) != null)
-                            colMaxWidth = Math.Max(colMaxWidth, base.Control.GetChildAt(col, row).AllocatedWidth);
+                        if (self.GetChildAt(col, row) != null)
+                            colMaxWidth = Math.Max(colMaxWidth, self.GetChildAt(col, row).AllocatedWidth);
                         row++;
                     }
                     list.Add(colMaxWidth);
@@ -257,9 +252,9 @@ namespace System.Windows.Forms
                     int colMaxHeight = 0;
                     foreach (ColumnStyle colStyle in ColumnStyles)
                     {
-						if (base.Control.GetChildAt(col, row)!=null)
+						if (self.GetChildAt(col, row)!=null)
 						{
-							colMaxHeight = Math.Max(colMaxHeight, base.Control.GetChildAt(col, row).AllocatedHeight);
+							colMaxHeight = Math.Max(colMaxHeight, self.GetChildAt(col, row).AllocatedHeight);
 						}
                         row++;
                     }

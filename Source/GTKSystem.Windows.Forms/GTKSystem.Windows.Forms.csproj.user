@@ -20,6 +20,9 @@
     <Compile Update="GTKControls\ComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\ContextMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\ImageList\ImageList.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -39,9 +42,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\ImageList\ImageList.OriginalOptions.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\Interface\WidgetControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\ListView.cs">
@@ -80,9 +80,6 @@
     <Compile Update="GTKControls\Interface\ScrollableControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="GTKControls\Interface\WidgetContainerControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Update="GTKControls\Label.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -98,7 +95,10 @@
     <Compile Update="GTKControls\MenuStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="GTKControls\ContextMenuStrip.cs">
+    <Compile Update="GTKControls\MenuStripBase\ToolStripDropDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripDropDownMenu.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\MenuStripBase\ToolStripStatusLabel.cs">
@@ -113,28 +113,16 @@
     <Compile Update="GTKControls\StatusStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="GTKControls\TabControlBase\TabPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\ToolStrip.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Update="GTKControls\MenuStripBase\ToolStripButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\MenuStripBase\ToolStripComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="GTKControls\MenuStripBase\ToolStripDropDown.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Update="GTKControls\MenuStripBase\ToolStripDropDownButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\MenuStripBase\ToolStripDropDownItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\MenuStripBase\ToolStripDropDownMenu.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\MenuStripBase\ToolStripItem.cs">
@@ -185,10 +173,16 @@
     <Compile Update="GTKControls\TabControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\TabControlBase\TabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\TableLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\TextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\TrackBar.cs">

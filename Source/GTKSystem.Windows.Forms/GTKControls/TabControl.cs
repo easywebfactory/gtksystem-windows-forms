@@ -7,6 +7,7 @@
  */
 using GLib;
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,16 +18,17 @@ using System.Linq;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class TabControl : WidgetContainerControl<Gtk.Notebook>
+    public partial class TabControl : ContainerControl
     {
+        public readonly TabControlBase self = new TabControlBase();
+        public override object GtkControl => self;
         private TabControl.ControlCollection _controls;
         private TabControl.TabPageCollection _tabPageControls;
         public TabControl() : base()
         {
-            Widget.StyleContext.AddClass("TabControl");
             _controls = new ControlCollection(this);
             _tabPageControls = new TabPageCollection(this);
-            base.Control.Realized += Control_Realized;
+            self.Realized += Control_Realized;
         }
 
         private void Control_Realized(object sender, EventArgs e)
@@ -41,15 +43,15 @@ namespace System.Windows.Forms
             }
         }
 
-        public int SelectedIndex { get { return base.Control.CurrentPage; } set { base.Control.CurrentPage = value; } }
+        public int SelectedIndex { get { return self.CurrentPage; } set { self.CurrentPage = value; } }
 
-        public TabPage SelectedTab { get { return _controls[base.Control.CurrentPage]; } set { } }
+        public TabPage SelectedTab { get { return _controls[self.CurrentPage]; } set { } }
 
         public TabSizeMode SizeMode { get; set; }
         public TabDrawMode DrawMode { get; set; }
         public bool ShowToolTips { get; set; }
         public Size ItemSize { get; set; }
-        public int TabCount { get => base.Control.NPages; }
+        public int TabCount { get => self.NPages; }
         public TabPageCollection TabPages { get { return _tabPageControls; } }
         public Rectangle GetTabRect(int index)
         {
@@ -66,8 +68,8 @@ namespace System.Windows.Forms
         public new TabControl.ControlCollection Controls => _controls;
         public event EventHandler SelectedIndexChanged
         {
-            add { base.Control.SwitchPage += (object sender, Gtk.SwitchPageArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
-            remove { base.Control.SwitchPage -= (object sender, Gtk.SwitchPageArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
+            add { self.SwitchPage += (object sender, Gtk.SwitchPageArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
+            remove { self.SwitchPage -= (object sender, Gtk.SwitchPageArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
         }
 
         public event DrawItemEventHandler DrawItem;
@@ -83,6 +85,8 @@ namespace System.Windows.Forms
             {
                 item.Parent = _owner;
                 item.TabLabel.Name = base.Count.ToString();
+                item._tabLabel.WidthRequest = _owner.ItemSize.Width;
+                item._tabLabel.HeightRequest = _owner.ItemSize.Height;
                 base.Add(item);
                 item.TabLabel.Drawn += (object sender, DrawnArgs args) =>
                 {
@@ -98,17 +102,17 @@ namespace System.Windows.Forms
 
                     }
                 };
-                return _owner.Control.AppendPage(item.Control, item.TabLabel);
+                return _owner.self.AppendPage(item.self, item.TabLabel);
             }
             public new void RemoveAt(int index)
             {
                 base.RemoveAt(index);
-                _owner.Control.RemovePage(index);
+                _owner.self.RemovePage(index);
             }
             public new void Remove(TabPage value)
             {
                 base.Remove(value);
-                _owner.Control.Remove(((TabPage)value).Widget);
+                _owner.self.Remove(((TabPage)value).Widget);
             }
         }
 

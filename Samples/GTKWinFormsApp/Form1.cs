@@ -43,11 +43,6 @@ namespace GTKWinFormsApp
         {
             // b.Title = "test2";
 
-            treeView1.Nodes.Add(new TreeNode("test1"));
-            TreeNode node = new TreeNode("test3");
-            node.Nodes.Add(new TreeNode("test31"));
-            treeView1.Nodes.Add(node);
-
             DialogResult result = MessageBox.Show("1、加载数据点yes \n2、不加载数据点no", "加载数据提示", MessageBoxButtons.YesNo);
             if (result == DialogResult.No)
             {
@@ -393,7 +388,7 @@ namespace GTKWinFormsApp
         {
             Form2 form = new Form2();
             form.ShowDialog(this);
-
+            //form.Show();
         }
 
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)

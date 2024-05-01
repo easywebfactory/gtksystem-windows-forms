@@ -36,7 +36,7 @@ namespace GTKWinFormsApp
             // 
             // button1
             // 
-            button1.Location = new System.Drawing.Point(0, 20);
+            button1.Location = new System.Drawing.Point(3, 44);
             button1.Name = "button1";
             button1.Size = new System.Drawing.Size(153, 34);
             button1.TabIndex = 0;

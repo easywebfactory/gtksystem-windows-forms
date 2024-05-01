@@ -7,6 +7,7 @@
  */
 
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -14,38 +15,24 @@ using System.Drawing;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class SplitContainer : WidgetContainerControl<Gtk.Paned>
+    public partial class SplitContainer : ContainerControl
     {
-        public SplitContainer() : base(Gtk.Orientation.Vertical)
+        public readonly SplitContainerBase self = new SplitContainerBase();
+        public override object GtkControl => self;
+        public SplitContainer() : base()
         {
-            Widget.StyleContext.AddClass("SplitContainer");
-            base.Control.BorderWidth = 1;
-            base.Control.WideHandle = true;
-            //base.Control.PositionSet = false;
-
-            base.Control.Orientation = Gtk.Orientation.Horizontal;
-
             _panel1 = new SplitterPanel(this);
             _panel2 = new SplitterPanel(this);
-            //_panel1.Control.Hexpand = true;
-            //_panel1.Control.Vexpand = true;
-            //_panel1.Control.Halign = Gtk.Align.Fill;
-            //_panel1.Control.Valign = Gtk.Align.Fill;
-            //_panel2.Control.Hexpand = true;
-            //_panel2.Control.Vexpand = true;
-            //_panel2.Control.Halign = Gtk.Align.Fill;
-            //_panel2.Control.Valign = Gtk.Align.Fill;
 
+            self.Add1(_panel1.Widget);
+            self.Add2(_panel2.Widget);
 
-            base.Control.Add1(_panel1.Control);
-            base.Control.Add2(_panel2.Control);
-
-            base.Control.Realized += Control_Realized;
+            self.Realized += Control_Realized;
         }
 
         private void Control_Realized(object sender, EventArgs e)
         {
-            if (base.Control.Orientation == Gtk.Orientation.Horizontal)
+            if (self.Orientation == Gtk.Orientation.Horizontal)
             {
                 _panel1.Width = this.SplitterDistance;
             }
@@ -58,7 +45,7 @@ namespace System.Windows.Forms
         private SplitterPanel _panel1;
         private SplitterPanel _panel2;
 
-        public override BorderStyle BorderStyle { get { return base.Control.BorderWidth == 1 ? BorderStyle.FixedSingle : BorderStyle.None; } set { base.Control.BorderWidth = 1; } }
+        public override BorderStyle BorderStyle { get { return self.BorderWidth == 1 ? BorderStyle.FixedSingle : BorderStyle.None; } set { self.BorderWidth = 1; } }
         public SplitterPanel Panel1
         {
             get
@@ -83,12 +70,12 @@ namespace System.Windows.Forms
 
         public int SplitterDistance { get; set; }
         private int _SplitterWidth;
-        public int SplitterWidth { get { return _SplitterWidth; } set { _SplitterWidth = value; base.Control.WideHandle = value > 2; } }
+        public int SplitterWidth { get { return _SplitterWidth; } set { _SplitterWidth = value; self.WideHandle = value > 2; } }
         public int SplitterIncrement { get; set; }
         public Orientation Orientation {
-            get { return base.Control.Orientation == Gtk.Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal; }
+            get { return self.Orientation == Gtk.Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal; }
             set {
-                base.Control.Orientation = value == Orientation.Horizontal ? Gtk.Orientation.Vertical : Gtk.Orientation.Horizontal;
+                self.Orientation = value == Orientation.Horizontal ? Gtk.Orientation.Vertical : Gtk.Orientation.Horizontal;
             }
         }
     }

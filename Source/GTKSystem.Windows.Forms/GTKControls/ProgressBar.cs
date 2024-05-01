@@ -6,6 +6,7 @@
  * date: 2024/1/3
  */
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
@@ -14,19 +15,20 @@ namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
     [DefaultProperty("Value")]
-	public class ProgressBar : WidgetControl<Gtk.LevelBar>
+	public class ProgressBar : Control
     {
+        private ProgressBarBase self = new ProgressBarBase();
+        public override object GtkControl => self;
         public ProgressBar():base()
         {
-			base.Control.StyleContext.AddClass("ProgressBar");
-            base.Control.Realized += Control_Realized;
+            self.Realized += Control_Realized;
         }
 
         private void Control_Realized(object sender, EventArgs e)
         {
-            base.Control.MaxValue = Maximum;
-            base.Control.MinValue = Minimum;
-            base.Control.Value = Value;
+            self.MaxValue = Maximum;
+            self.MinValue = Minimum;
+            self.Value = Value;
         }
 
         public ProgressBarStyle Style { get; set; }
@@ -40,7 +42,7 @@ namespace System.Windows.Forms
         [DefaultValue(10)]
         public int Step { get; set; }
         [DefaultValue(0)]
-        public int Value { get => (int)base.Control.Value; set => base.Control.Value = value; }
+        public int Value { get => (int)self.Value; set => self.Value = value; }
         public void Increment(int value)
         {
 
@@ -50,11 +52,5 @@ namespace System.Windows.Forms
 		{
 	
 		}
-		 
-		public override string ToString()
-		{
-			throw null;
-		}
-
 	}
 }

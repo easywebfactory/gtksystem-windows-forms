@@ -6,6 +6,7 @@
  * date: 2024/1/3
  */
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 
 
@@ -14,21 +15,22 @@ namespace System.Windows.Forms
 	[ProvideProperty("FlowBreak", typeof(Control))]
 	[DefaultProperty("FlowDirection")]
     [DesignerCategory("Component")]
-    public partial class FlowLayoutPanel : WidgetContainerControl<Gtk.FlowBox>, IExtenderProvider
+    public partial class FlowLayoutPanel : Control, IExtenderProvider
     {
+        public readonly FlowLayoutPanelBase self = new FlowLayoutPanelBase();
+        public override object GtkControl => self;
         private ObjectCollection _controls;
         public FlowLayoutPanel() : base()
         {
-            Widget.StyleContext.AddClass("FlowLayoutPanel");
-            base.Control.Orientation = Gtk.Orientation.Horizontal;
-            base.Control.Halign = Align.Start;
-            base.Control.Valign = Align.Start;
-            base.Control.MinChildrenPerLine = 1;
-            base.Control.MaxChildrenPerLine = 999;
-            base.Control.ColumnSpacing = 0;
-            base.Control.BorderWidth = 0;
+            self.Orientation = Gtk.Orientation.Horizontal;
+            self.Halign = Align.Start;
+            self.Valign = Align.Start;
+            self.MinChildrenPerLine = 1;
+            self.MaxChildrenPerLine = 999;
+            self.ColumnSpacing = 0;
+            self.BorderWidth = 0;
 
-            base.Control.ChildActivated += Control_ChildActivated;
+            self.ChildActivated += Control_ChildActivated;
             _controls = new ObjectCollection(this);
 
         }
@@ -44,8 +46,8 @@ namespace System.Windows.Forms
             get { return _FlowDirection; }
             set
             {
-                if (value == FlowDirection.LeftToRight || value == FlowDirection.RightToLeft) { base.Control.Orientation = Gtk.Orientation.Horizontal; }
-                else if (value == FlowDirection.TopDown || value == FlowDirection.BottomUp) { base.Control.Orientation = Gtk.Orientation.Vertical; }
+                if (value == FlowDirection.LeftToRight || value == FlowDirection.RightToLeft) { self.Orientation = Gtk.Orientation.Horizontal; }
+                else if (value == FlowDirection.TopDown || value == FlowDirection.BottomUp) { self.Orientation = Gtk.Orientation.Vertical; }
             }
         }
 

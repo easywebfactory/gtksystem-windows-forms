@@ -19,15 +19,15 @@ namespace System.Windows.Forms
             Widget.StyleContext.AddClass("DateTimePicker");
 
             base.Mask = "____年__月__日";
-            //base.Control.PrimaryIconActivatable = true;
-            //base.Control.PrimaryIconStock = "gtk-index";
+            //self.PrimaryIconActivatable = true;
+            //self.PrimaryIconStock = "gtk-index";
 
-            base.Control.SecondaryIconActivatable = true;
-            base.Control.SecondaryIconStock= "gtk-index";
-           // base.Control.SecondaryIconName = "x-office-calendar";
+            self.SecondaryIconActivatable = true;
+            self.SecondaryIconStock= "gtk-index";
+           // self.SecondaryIconName = "x-office-calendar";
             System.IO.Stream sm = this.GetType().Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.DateTimePicker.ico");
-            base.Control.SecondaryIconPixbuf = new Gdk.Pixbuf(sm);
-            base.Control.IconRelease += DateTimePicker_IconRelease;
+            self.SecondaryIconPixbuf = new Gdk.Pixbuf(sm);
+            self.IconRelease += DateTimePicker_IconRelease;
         }
 
         private void DateTimePicker_IconRelease(object o, Gtk.IconReleaseArgs args)
@@ -54,7 +54,7 @@ namespace System.Windows.Forms
             Gtk.Calendar calendar = sender as Gtk.Calendar;
             DateTime dt = calendar.GetDate();
 
-            base.Control.DeleteSelection();
+            self.DeleteSelection();
             base.Mask = "";
             this.Text = dt.ToString("yyyy年MM月dd日");
             base.Mask = "____年__月__日";
@@ -92,8 +92,8 @@ namespace System.Windows.Forms
 
         public event EventHandler ValueChanged
         {
-            add { base.Control.Changed += (object sender, EventArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
-            remove { base.Control.Changed -= (object sender, EventArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
+            add { self.Changed += (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
+            remove { self.Changed -= (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
         }
     }
 }

@@ -232,7 +232,7 @@ namespace GTKWinFormsApp
             button1.Size = new System.Drawing.Size(275, 66);
             button1.TabIndex = 3;
             button1.Text = "打开主窗口";
-            button1.UseVisualStyleBackColor = false;
+            button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
             // contextMenuStrip1
@@ -399,7 +399,6 @@ namespace GTKWinFormsApp
             panel5.Name = "panel5";
             panel5.Size = new System.Drawing.Size(180, 113);
             panel5.TabIndex = 10;
-
             // 
             // label2
             // 
@@ -414,7 +413,7 @@ namespace GTKWinFormsApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = System.Drawing.SystemColors.ActiveCaption;
+            BackColor = System.Drawing.Color.FromArgb(238,235,230);
             ClientSize = new System.Drawing.Size(800, 450);
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(panel5);

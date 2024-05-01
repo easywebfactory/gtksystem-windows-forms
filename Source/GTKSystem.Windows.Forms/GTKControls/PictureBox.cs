@@ -6,7 +6,7 @@
  * date: 2024/1/3
  */
 using Gtk;
-using GTKSystem.Windows.Forms;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using GTKSystem.Windows.Forms.Utility;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,63 +17,16 @@ using System.Reflection;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class PictureBox : Control// WidgetControl<PictureBox.GtkImage>
+    public partial class PictureBox : Control
     {
-        private PictureBox.GtkImage self;
-        public override Widget Widget { get => self; }
+        private readonly PictureBoxBase self = new PictureBoxBase();
         public override object GtkControl => self;
         public PictureBox()
         {
-            self = new GtkImage();
-            self.Override.AddClass("PictureBox");
-            self.Halign = Gtk.Align.Center;
-            self.Valign = Gtk.Align.Center;
-            self.Xalign = 0.5f;
-            self.Yalign = 0.5f;
-            self.Realized += Control_Realized;
-            //self.Shown += Self_Shown;
+            self.Shown += Self_Shown;
         }
 
         private void Self_Shown(object sender, EventArgs e)
-        {
-            int width = Width;
-            int height = Height;
-            if (this.MaximumSize.Width > 0)
-            {
-                width = Math.Min(this.MaximumSize.Width, Width);
-            }
-            if (this.MaximumSize.Height > 0)
-            {
-                height = Math.Min(this.MaximumSize.Height, Height);
-            }
-            if (this.MinimumSize.Width > 0)
-            {
-                width = Math.Min(this.MinimumSize.Width, width);
-            }
-            if (this.MinimumSize.Height > 0)
-            {
-                height = Math.Min(this.MinimumSize.Height, height);
-            }
-
-            if (BackgroundImage != null && BackgroundImage.PixbufData != null)
-            {
-                ImageUtility.ScaleImageByImageLayout(_image.PixbufData, width, height, out Gdk.Pixbuf newImagePixbuf, BackgroundImageLayout);
-                self.Pixbuf = newImagePixbuf;
-            }
-
-            if (_image != null && _image.PixbufData != null)
-            {
-                ImageUtility.ScaleImageByPictureBoxSizeMode(_image.PixbufData, width, height, out Gdk.Pixbuf newImagePixbuf, SizeMode);
-                self.Pixbuf = newImagePixbuf;
-            }
-            else if (InitialImage != null && InitialImage.PixbufData != null)
-            {
-                ImageUtility.ScaleImageByPictureBoxSizeMode(InitialImage.PixbufData, width, height, out Gdk.Pixbuf newImagePixbuf, SizeMode);
-                self.Pixbuf = newImagePixbuf;
-            }
-        }
-
-        private void Control_Realized(object sender, EventArgs e)
         {
             UpdateStyle();
             int width = Width;
@@ -95,12 +48,6 @@ namespace System.Windows.Forms
                 height = Math.Min(this.MinimumSize.Height, height);
             }
 
-            if (BackgroundImage != null && BackgroundImage.PixbufData != null)
-            {
-                ImageUtility.ScaleImageByImageLayout(_image.PixbufData, width, height, out Gdk.Pixbuf newImagePixbuf, BackgroundImageLayout);
-                self.Pixbuf = newImagePixbuf;
-            }
-
             if (_image != null && _image.PixbufData != null)
             {
                 ImageUtility.ScaleImageByPictureBoxSizeMode(_image.PixbufData, width, height, out Gdk.Pixbuf newImagePixbuf, SizeMode);
@@ -112,6 +59,7 @@ namespace System.Windows.Forms
                 self.Pixbuf = newImagePixbuf;
             }
         }
+
 
         public PictureBoxSizeMode SizeMode { get; set; }
 
@@ -126,7 +74,7 @@ namespace System.Windows.Forms
                 _image = value;
                 if (self.IsRealized && _image != null && _image.PixbufData != null)
                 {
-                    Control_Realized(null, null);
+                    Self_Shown(null, null);
                 }
             }
         }
@@ -182,36 +130,6 @@ namespace System.Windows.Forms
         public override void EndInit()
         {
 
-        }
-
-        public override ImageLayout BackgroundImageLayout { get => self.Override.BackgroundImageLayout; set => self.Override.BackgroundImageLayout = value; }
-        public override Drawing.Image BackgroundImage { get => self.Override.BackgroundImage; set => self.Override.BackgroundImage = value; }
-        public override Color BackColor { get => self.Override.BackColor.HasValue ? self.Override.BackColor.Value : Color.Transparent; set => self.Override.BackColor = value; }
-
-        public override event PaintEventHandler Paint
-        {
-            add { self.Override.Paint += value; }
-            remove { self.Override.Paint -= value; }
-        }
-        public sealed class GtkImage : Gtk.Image
-        {
-            internal GtkControlOverride Override;
-            internal GtkImage() : base()
-            {
-                this.Override = new GtkControlOverride(this);
-            }
-            protected override void OnShown()
-            {
-                Override.OnAddClass();
-                base.OnShown();
-            }
-            protected override bool OnDrawn(Cairo.Context cr)
-            {
-                Gdk.Rectangle rec = this.Allocation;
-                Override.OnDrawnBackground(cr, rec);
-                Override.OnPaint(cr, rec);
-                return base.OnDrawn(cr);
-            }
         }
     }
 }
