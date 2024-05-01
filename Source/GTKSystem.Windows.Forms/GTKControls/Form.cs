@@ -57,7 +57,7 @@ namespace System.Windows.Forms
             _ObjectCollection = new ObjectCollection(this, _body);
 
             self.Mapped += Self_Mapped;
-            self.ResizeChecked += Form_ResizeChecked;
+           // self.ResizeChecked += Form_ResizeChecked;
             self.ButtonReleaseEvent += Body_ButtonReleaseEvent;
 
             self.Shown += Control_Shown;
@@ -364,9 +364,9 @@ namespace System.Windows.Forms
             }
             set
             {
+                self.WidthRequest = 100;
+                self.HeightRequest = 60;
                 self.SetDefaultSize(value.Width, value.Height);
-                base.Width = value.Width;
-                base.Height = value.Height;
             }
         }
         public override bool AutoScroll { 
