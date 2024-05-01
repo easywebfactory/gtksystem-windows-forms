@@ -145,7 +145,7 @@ namespace System.Windows.Forms
         {
             if (self.Resizable == true)
             {
-                if (_body.IsMapped && resizeWidth != self.AllocatedWidth && resizeHeight != self.AllocatedHeight)
+                if (_body.IsMapped && (resizeWidth != self.AllocatedWidth || resizeHeight != self.AllocatedHeight))
                 {
                     resizeWidth = self.AllocatedWidth;
                     resizeHeight = self.AllocatedHeight;
