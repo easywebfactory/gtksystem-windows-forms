@@ -56,7 +56,7 @@ namespace GTKWinFormsApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            listView1.Items.Add(new ListViewItem("test1") { Group=new ListViewGroup("listViewGroup12", "ListViewGroup1")  });
+            listView1.Items.Add(new ListViewItem("123") { Group=new ListViewGroup("listViewGroup1", "ListViewGroup1")  });
             listView1.Items.Add(new ListViewItem("aatest1"));
         }
     }

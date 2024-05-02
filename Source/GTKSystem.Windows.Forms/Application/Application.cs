@@ -195,8 +195,8 @@ scrolledwindow{border-width:0px;}
 .ListBox{border-width:1px;background-color:#ffffff; padding:0px;}
 .ListView{background-color:#ffffff; padding:0px;}
 .ListViewHeader button{padding:0px;border-right:solid 1px #cccccc;border-top-width:0px;border-left-width:0px;border-bottom-width:0px;}
-.ListView .Group{background-color:#fefefe; background-image:linear-gradient(#ffffff 12px,#ccccce 3px,#ffffff 14px);}
-.ListView .Title{background-color:#fefefe; padding-left:5px;padding-right:5px; }
+.ListView .Group{background-color:#fefefe; background-image:linear-gradient(#ffffff 12px,#3333bb 3px,#ffffff 14px);}
+.ListView .Title{background-color:#fefefe; padding-left:5px;padding-right:5px; color:#3333bb;}
 .ListView .SubTitle{padding-left:5px;padding-right:5px;color:#666666; font-size:14px; }
 
 ");

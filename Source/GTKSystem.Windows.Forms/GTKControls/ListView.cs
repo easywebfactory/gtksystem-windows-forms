@@ -7,12 +7,14 @@
  */
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+using Pango;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 
 
 
@@ -50,7 +52,7 @@ namespace System.Windows.Forms
             scrolledWindow.Add(flowBoxContainer);
             self.PackStart(scrolledWindow, true, true, 1);
         }
- 
+
         private HashSet<int> selectedIndexes = new HashSet<int>();
         private void _flow_ChildActivated(object o, Gtk.ChildActivatedArgs args)
         {
@@ -95,13 +97,18 @@ namespace System.Windows.Forms
                     header.Add(new Gtk.Button(col.Text ?? "") { WidthRequest = col.Width, Halign = Gtk.Align.Fill, Valign = Gtk.Align.Fill });
                 }
             }
-
-            if (this.Sorting == SortOrder.Ascending)
-                Items.Sort(new Comparison<ListViewItem>((x, y) => x.Text.CompareTo(y.Text)));
-            else if (this.Sorting == SortOrder.Descending)
-                Items.Sort(new Comparison<ListViewItem>((x, y) => y.Text.CompareTo(x.Text)));
-
-            var group = Items.GroupBy(g => new { g.Group.Header,g.Group.Name }).OrderBy(o => o.Key.Name);
+            var group = Items.GroupBy(g => new { g.Group.Header, g.Group.Name });
+            if (this.Sorted)
+            {
+                if (this.Sorting == SortOrder.Descending)
+                {
+                    group = group.OrderByDescending(o => o.Key.Header);
+                }
+                else if (this.Sorting == SortOrder.Ascending)
+                {
+                    group = group.OrderBy(o => o.Key.Header);
+                }
+            }
             foreach (var g in group)
             {
                 if (g.Count() > 0)
@@ -117,7 +124,7 @@ namespace System.Windows.Forms
             self.ShowAll();
         }
 
-		public bool Sorted
+        public bool Sorted
         {
             get; set;
         }
@@ -162,12 +169,13 @@ namespace System.Windows.Forms
 
         public bool OwnerDraw { get; set; }
 		public bool Scrollable { get; set; }
-		public bool ShowGroups { get; set; }
+        public bool ShowGroups { get; set; } = true;
 		public bool ShowItemToolTips { get; set; }
 
 		public ImageList SmallImageList { get; set; }
-		public System.Windows.Forms.SortOrder Sorting { get; set; }
-		public ImageList StateImageList { get; set; }
+        public System.Windows.Forms.SortOrder Sorting { get; set; }
+
+        public ImageList StateImageList { get; set; }
 
 		public bool UseCompatibleStateImageBehavior { get; set; }
 		public System.Windows.Forms.View View { get; set; }
@@ -199,7 +207,11 @@ namespace System.Windows.Forms
             flowBox.Valign = Gtk.Align.Fill;
             flowBox.Name = item.Group.Name;
             flowBox.ColumnSpacing = 0;
-            flowBox.Add(boxitem);
+            if (position == -1)
+                flowBox.Add(boxitem);
+            else
+                flowBox.Insert(boxitem, position);
+
             if (this.CheckBoxes == true)
             {
                 if (this.View == View.SmallIcon || this.View == View.LargeIcon)
@@ -370,6 +382,7 @@ namespace System.Windows.Forms
 
                 hBox.Add(label);
             }
+            //flowBox.InvalidateSort();
         }
 
         public void AddGroup(ListViewGroup group, int position)
@@ -379,19 +392,23 @@ namespace System.Windows.Forms
             Gtk.Box hBox = new Gtk.Box(Gtk.Orientation.Vertical, 0);
             hBox.Valign = Gtk.Align.Start;
             hBox.Halign = Gtk.Align.Fill;
-            Gtk.Viewport groupbox = new Gtk.Viewport();
-            groupbox.StyleContext.AddClass("Group");
-            var title = new Gtk.Label(group.Header) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
-            title.MarginStart = 3;
-            title.StyleContext.AddClass("Title");
-            groupbox.Child = title;
-            hBox.Add(groupbox);
-            if (!string.IsNullOrWhiteSpace(group.Subtitle))
+            hBox.Expand = false;
+            if (ShowGroups == true)
             {
-                var subtitle = new Gtk.Label(group.Subtitle) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
-                subtitle.MarginStart = 3;
-                subtitle.StyleContext.AddClass("SubTitle");
-                hBox.Add(subtitle);
+                Gtk.Viewport groupbox = new Gtk.Viewport();
+                groupbox.StyleContext.AddClass("Group");
+                var title = new Gtk.Label(group.Header) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
+                title.MarginStart = 3;
+                title.StyleContext.AddClass("Title");
+                groupbox.Child = title;
+                hBox.Add(groupbox);
+                if (!string.IsNullOrWhiteSpace(group.Subtitle))
+                {
+                    var subtitle = new Gtk.Label(group.Subtitle) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
+                    subtitle.MarginStart = 3;
+                    subtitle.StyleContext.AddClass("SubTitle");
+                    hBox.Add(subtitle);
+                }
             }
             Gtk.FlowBox _flow = group.FlowBox;
             _flow.MaxChildrenPerLine = 100u;
@@ -399,15 +416,20 @@ namespace System.Windows.Forms
             _flow.ColumnSpacing = 12;
             if (this.Sorted)
             {
-                _flow.SortFunc = new Gtk.FlowBoxSortFunc((fbc1, fbc2) =>
+                if (this.Sorting == SortOrder.Descending)
                 {
-                    if(this.Sorting==SortOrder.Descending)
+                    _flow.SortFunc = new Gtk.FlowBoxSortFunc((fbc1, fbc2) =>
+                    {
                         return fbc2.TooltipText.CompareTo(fbc1.TooltipText);
-                    else if(this.Sorting == SortOrder.Ascending)
+                    });
+                }
+                else if (this.Sorting == SortOrder.Ascending)
+                {
+                    _flow.SortFunc = new Gtk.FlowBoxSortFunc((fbc1, fbc2) =>
+                    {
                         return fbc1.TooltipText.CompareTo(fbc2.TooltipText);
-                    else
-                        return 0;
-                });
+                    });
+                }
             }
             _flow.Halign = Gtk.Align.Fill;
             _flow.Valign = Gtk.Align.Fill;
@@ -415,7 +437,7 @@ namespace System.Windows.Forms
             _flow.SelectionMode = Gtk.SelectionMode.Single;
             _flow.ChildActivated += _flow_ChildActivated;
             hBox.Add(_flow);
-            flowBoxContainer.PackStart(hBox, true, true, 0);
+            flowBoxContainer.PackStart(hBox, false, true, 0);
             if (position > -1)
             {
                 flowBoxContainer.ReorderChild(hBox, position);
@@ -632,9 +654,10 @@ namespace System.Windows.Forms
             }
 
 			public virtual ListViewItem Add(string text, string imageKey)
-			{
-				return Add("", text, imageKey);
+            {
+                SortedSet<ListViewItem> dd = new SortedSet<ListViewItem>();
 
+                return Add("", text, imageKey);
             }
 
 			public virtual ListViewItem Add(string key, string text, string imageKey)
@@ -653,19 +676,30 @@ namespace System.Windows.Forms
                 AddCore(item, -1);
                 return item;
             }
-
             private void AddCore(ListViewItem item, int position)
 			{
                 item.Index = Count;
                 base.Add(item);
+
                 if (_owner.self.IsRealized)
                 {
                     if (_owner.Groups.Contains(item.Group?.Name) == false)
                     {
                         _owner.Groups.Add(item.Group);
-                        _owner.AddGroup(item.Group, -1);
+                        int index = -1; 
+                        if (_owner.Sorted)
+                        {
+                            if (_owner.Sorting == SortOrder.Descending)
+                            {
+                                index = _owner.Groups.OrderByDescending(o => o.Header).ToList().FindIndex(g => g.Name == item.Group?.Name);
+                            }
+                            else if (_owner.Sorting == SortOrder.Ascending)
+                            {
+                                index = _owner.Groups.OrderBy(o => o.Header).ToList().FindIndex(g => g.Name == item.Group?.Name);
+                            }
+                        }
+                        _owner.AddGroup(item.Group, index);
                     }
-                    
                     _owner.AddItem(item, position);
                     _owner.self.ShowAll();
                 }
@@ -918,7 +952,7 @@ namespace System.Windows.Forms
 			throw null;
 		}
 
-		public Rectangle GetItemRect(int index)
+		public Drawing.Rectangle GetItemRect(int index)
 		{
 			throw null;
 		}

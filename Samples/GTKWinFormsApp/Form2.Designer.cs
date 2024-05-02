@@ -67,6 +67,7 @@ namespace GTKWinFormsApp
             listView1.Dock = DockStyle.Top;
             listView1.FullRowSelect = true;
             listView1.GridLines = true;
+            listView1.GroupImageList = imageList1;
             listViewGroup1.Footer = "ggg1";
             listViewGroup1.Header = "ListViewGroup1";
             listViewGroup1.Name = "listViewGroup1";
@@ -87,6 +88,7 @@ namespace GTKWinFormsApp
             listViewItem5.StateImageIndex = 0;
             listViewItem6.Group = listViewGroup1;
             listViewItem6.StateImageIndex = 0;
+            listViewItem7.Group = listViewGroup1;
             listViewItem7.StateImageIndex = 0;
             listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7 });
             listView1.LargeImageList = imageList1;
