@@ -39,6 +39,17 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             }
         }
         private Gdk.Pixbuf backgroundPixbuf;
+        public void DrawnBackColor(Cairo.Context cr, Gdk.Rectangle area)
+        {
+            if (BackColor.HasValue)
+            {
+                cr.Save();
+                cr.SetSourceRGBA(BackColor.Value.R / 255f, BackColor.Value.G / 255f, BackColor.Value.B / 255f, BackColor.Value.A / 255f);
+                //cr.Fill();
+                cr.Paint();
+                cr.Restore();
+            }
+        }
         public void OnDrawnBackground(Cairo.Context cr, Gdk.Rectangle area)
         {
             if (BackgroundImage != null && BackgroundImage.PixbufData != null)

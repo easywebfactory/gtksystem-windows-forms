@@ -225,10 +225,11 @@ namespace System.Windows.Forms
 
         internal void AddItem(ListViewItem item, int position)
         {
-            Gtk.Box hBox = new Gtk.Box(Gtk.Orientation.Horizontal,4);
+            BoxBase hBox = new BoxBase(Gtk.Orientation.Horizontal, 4);
+            if (item.BackColor.HasValue)
+                hBox.Override.BackColor = item.BackColor.Value;
             hBox.Valign = Gtk.Align.Fill;
             hBox.Halign = Gtk.Align.Start;
-            hBox.Spacing = 2;
             hBox.BorderWidth = 0;
             hBox.Homogeneous = false;
 
@@ -237,7 +238,7 @@ namespace System.Windows.Forms
             boxitem.Data.Add("ItemId", item.Index);
             boxitem.Halign = Gtk.Align.Start;
             boxitem.Valign = Gtk.Align.Start;
-            boxitem.HeightRequest = 25;
+            boxitem.HeightRequest = 28;
             boxitem.BorderWidth = 0;
             boxitem.Margin = 0;
             foreach (ColumnHeader col in Columns)
@@ -347,8 +348,6 @@ namespace System.Windows.Forms
                 Label lab = new Label();
                 if (item.ForeColor.HasValue)
                     lab.ForeColor = item.ForeColor.Value;
-                if (item.BackColor.HasValue)
-                    lab.BackColor = item.BackColor.Value;
                 lab.self.MaxWidthChars = fistcell.WidthRequest / 12;
                 lab.self.Halign = Gtk.Align.Start;
                 lab.self.Valign = Gtk.Align.Fill;
@@ -386,7 +385,7 @@ namespace System.Windows.Forms
                             sublabel.self.Halign = Gtk.Align.Fill;
                             sublabel.self.Valign = Gtk.Align.Fill;
                             sublabel.self.Ellipsize = Pango.EllipsizeMode.End;
-                            sublabel.Text = subitem.Text;
+                            sublabel.self.Text = subitem.Text;
                             sublayout.Add(sublabel.self);
                         }
                         hBox.Add(sublayout);
@@ -419,13 +418,11 @@ namespace System.Windows.Forms
                 Label lab = new Label();
                 if (item.ForeColor.HasValue)
                     lab.ForeColor = item.ForeColor.Value;
-                if(item.BackColor.HasValue)
-                    lab.BackColor = item.BackColor.Value;
                 lab.self.MaxWidthChars = 100;
                 lab.self.Halign = Gtk.Align.Start;
                 lab.self.Valign = Gtk.Align.Center;
                 lab.self.Ellipsize = Pango.EllipsizeMode.End;
-                lab.Text = item.Text;
+                lab.self.Text = item.Text;
                 hBox.Add(lab.self);
             }
             else if (this.View == View.LargeIcon)
@@ -457,13 +454,11 @@ namespace System.Windows.Forms
                 Label lab= new Label();
                 if (item.ForeColor.HasValue)
                     lab.ForeColor = item.ForeColor.Value;
-                if (item.BackColor.HasValue)
-                    lab.BackColor = item.BackColor.Value;
                 lab.self.MaxWidthChars = 16;
                 lab.self.Halign = Gtk.Align.Center;
                 lab.self.Valign = Gtk.Align.Center;
                 lab.self.Ellipsize = Pango.EllipsizeMode.End;
-                lab.Text = item.Text;
+                lab.self.Text = item.Text;
                 vBox.Add(lab.self);
                 hBox.Add(vBox);
             }
@@ -475,11 +470,9 @@ namespace System.Windows.Forms
                 Label lab = new Label();
                 if (item.ForeColor.HasValue)
                     lab.ForeColor = item.ForeColor.Value;
-                if (item.BackColor.HasValue)
-                    lab.BackColor = item.BackColor.Value;
                 lab.self.Halign = Gtk.Align.Start;
                 lab.self.Valign = Gtk.Align.Fill;
-                lab.Text = item.Text;
+                lab.self.Text = item.Text;
                 hBox.Add(lab.self);
             }
         }
@@ -520,7 +513,7 @@ namespace System.Windows.Forms
 
             _flow.MaxChildrenPerLine = 100u;
             _flow.MinChildrenPerLine = 0u;
-            _flow.ColumnSpacing = 6;
+            _flow.ColumnSpacing = 0;
             _flow.Halign = Gtk.Align.Fill;
             _flow.Valign = Gtk.Align.Fill;
             _flow.Orientation = Gtk.Orientation.Horizontal;
