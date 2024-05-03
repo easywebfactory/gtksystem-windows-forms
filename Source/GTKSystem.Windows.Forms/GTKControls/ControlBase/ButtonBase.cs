@@ -12,6 +12,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Button");
         }
+        internal ButtonBase(Widget widget) : base(widget)
+        {
+            this.Override = new GtkControlOverride(this);
+            this.Override.AddClass("Button");
+        }
         protected override void OnShown()
         {
             Override.OnAddClass();

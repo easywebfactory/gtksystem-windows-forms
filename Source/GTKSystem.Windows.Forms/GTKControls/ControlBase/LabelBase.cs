@@ -19,6 +19,14 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Xalign = 0.08f;
             this.Yalign = 0.08f;
         }
+        internal LabelBase(string text) : base(text)
+        {
+            this.Override = new GtkControlOverride(this);
+            this.Override.AddClass("Label");
+            //self.Override.AddClass("BackgroundTransparent");
+            this.Xalign = 0.08f;
+            this.Yalign = 0.08f;
+        }
         protected override void OnShown()
         {
             Override.OnAddClass();

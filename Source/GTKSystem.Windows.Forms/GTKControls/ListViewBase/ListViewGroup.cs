@@ -7,11 +7,12 @@ namespace System.Windows.Forms
 {
 	public sealed class ListViewGroup : ISerializable
 	{
+        public readonly string SerialGuid = Guid.NewGuid().ToString();
         public static readonly string defaultListViewGroupKey = "00000defaultListViewGroup";
         ListView.ListViewItemCollection _items;
 
         public static ListViewGroup GetDefaultListViewGroup() {
-            ListViewGroup defaultGroup = new ListViewGroup("defaultListViewGroup", HorizontalAlignment.Left);
+            ListViewGroup defaultGroup = new ListViewGroup("default", HorizontalAlignment.Left);
             defaultGroup.Header = "default";
             defaultGroup.Name = ListViewGroup.defaultListViewGroupKey;
             defaultGroup.Subtitle = "";
@@ -23,12 +24,8 @@ namespace System.Windows.Forms
 
         public ListViewGroup(string key, string headerText)
         {
-            _items = new ListView.ListViewItemCollection(ListView);
             this.Name = string.IsNullOrWhiteSpace(key) ? headerText : key;
             this.Header = headerText;
-            this.FlowBox = new Gtk.FlowBox();
-            this.FlowBox.Orientation = Gtk.Orientation.Horizontal;
-            this.FlowBox.Name = this.Name;
         }
 
         public ListViewGroup(string header) : this(header, header)
@@ -41,11 +38,7 @@ namespace System.Windows.Forms
 			this.HeaderAlignment = headerAlignment;
 
         }
-        internal Gtk.FlowBox FlowBox
-        {
-            get;
-            set;
-        } = new Gtk.FlowBox() { Orientation = Gtk.Orientation.Horizontal };
+        internal readonly Gtk.FlowBox FlowBox = new Gtk.FlowBox() { Orientation = Gtk.Orientation.Horizontal, Name = Guid.NewGuid().ToString() };
         public string Header
 		{
             get;
@@ -111,7 +104,10 @@ namespace System.Windows.Forms
 		{
 			get
 			{
-				return _items;
+                ListView.ListViewItemCollection coll = new ListView.ListViewItemCollection(ListView);
+                var all = ListView.Items.FindAll(m => m.Group.SerialGuid == this.SerialGuid);
+                coll.AddRange(all);
+                return coll;
 			}
 		}
  

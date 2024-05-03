@@ -21,7 +21,7 @@ namespace System.Windows.Forms
 
         private void Control_Realized(object sender, EventArgs e)
         {
-            Gtk.Container con = this.WidgetParent as Gtk.Container;
+            Gtk.Container con = self.Parent as Gtk.Container;
             foreach (var widget in con.AllChildren)
             {
                 if (widget is Gtk.RadioButton)

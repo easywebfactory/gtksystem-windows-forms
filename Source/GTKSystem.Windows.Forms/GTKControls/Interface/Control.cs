@@ -1,12 +1,8 @@
 ﻿using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.ComponentModel.Design.Serialization;
 using System.Drawing;
-using System.Reflection;
 using System.Text;
-using System.Web;
 using System.Windows.Forms.Design;
 
 namespace System.Windows.Forms
@@ -25,7 +21,6 @@ namespace System.Windows.Forms
         public virtual Gtk.Widget Widget { get => GtkControl as Gtk.Widget; }
         public virtual Gtk.Container GtkContainer { get => GtkControl as Gtk.Container; }
         public IControlGtk ISelf { get => (IControlGtk)GtkControl; }
-        private object _GtkControl;
         public virtual object GtkControl { get; protected set; }
 
         public Control()
@@ -196,7 +191,7 @@ namespace System.Windows.Forms
             if (this.BackColor.Name != "Control" && this.BackColor.Name != "0")
             {
                 string color = $"rgba({this.BackColor.R},{this.BackColor.G},{this.BackColor.B},{this.BackColor.A})";
-                 style.AppendFormat("background-color:{0};background:{0};", color);
+                style.AppendFormat("background-color:{0};background:{0};", color);
             }
             if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
             {
@@ -389,7 +384,6 @@ namespace System.Windows.Forms
         //public virtual Size MinimumSize { get; set; }
         public virtual string Name { get { return Widget.Name; } set { Widget.Name = value; } }
         public virtual Padding Padding { get; set; }
-        public Gtk.Widget WidgetParent { get { return Widget.Parent; } set { Widget.Parent = value; } }
         public virtual Control Parent { get; set; }
         public virtual Size PreferredSize { get; }
         public virtual string ProductName { get; }

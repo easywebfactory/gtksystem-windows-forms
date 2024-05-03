@@ -15,7 +15,7 @@ namespace System.Windows.Forms
 		private ListViewSubItemCollection _subitems;
         public class ListViewSubItem
 		{
-			public Color BackColor
+			public Color? BackColor
 			{
 				get;
 				set;
@@ -34,7 +34,7 @@ namespace System.Windows.Forms
                 set;
             }
 
-			public Color ForeColor
+			public Color? ForeColor
 			{
                 get;
                 set;
@@ -174,7 +174,7 @@ namespace System.Windows.Forms
             get;
             set;
         }
-        public Color BackColor
+        public Color? BackColor
 		{
             get;
             set;
@@ -214,30 +214,19 @@ namespace System.Windows.Forms
 
 		
 		
-		public Color ForeColor
+		public Color? ForeColor
 		{
             get;
             set;
         }
 
-		
-		
-		
-		public ListViewGroup Group
-		{
-			get;
-			set;
-		}
+        public ListViewGroup Group
+        {
+            get { return _group; }
+            set { _group = value;}
+        }
 
-		
-		
-		
-		
-		
-		
-		
-		
-		public int ImageIndex
+        public int ImageIndex
 		{
             get;
             set;
@@ -389,7 +378,7 @@ namespace System.Windows.Forms
 
 		public ListViewItem()
 		{
-            InitListViewItem("", -1, "", Color.Black, Color.Black, null, null);
+            InitListViewItem("", -1, "", null, null, null, null);
         }
 
 		protected ListViewItem(SerializationInfo info, StreamingContext context)
@@ -399,22 +388,22 @@ namespace System.Windows.Forms
 
 		public ListViewItem(string text)
 		{
-            InitListViewItem(text, -1, "", Color.Black, Color.Black, null, null);
+            InitListViewItem(text, -1, "", null, null, null, null);
         }
 
 		public ListViewItem(string text, int imageIndex)
 		{
-            InitListViewItem(text, imageIndex, "", Color.Black, Color.Black, null, null);
+            InitListViewItem(text, imageIndex, "", null, null, null, null);
         }
 
 		public ListViewItem(string[] items)
 		{
-            InitListViewItem(items, -1, "", Color.Black, Color.Black, null, null);
+            InitListViewItem(items, -1, "", null, null, null, null);
         }
 
 		public ListViewItem(string[] items, int imageIndex)
 		{
-            InitListViewItem(items, imageIndex, "", Color.Black, Color.Black, null, null);
+            InitListViewItem(items, imageIndex, "", null, null, null, null);
         }
 
 		public ListViewItem(string[] items, int imageIndex, Color foreColor, Color backColor, Font font)
@@ -426,32 +415,32 @@ namespace System.Windows.Forms
 		{
             foreach (ListViewSubItem item in subItems)
                 _subitems.Add(item);
-            InitListViewItem("", imageIndex, "", Color.Black, Color.Black, null, null);
+            InitListViewItem("", imageIndex, "", null, null, null, null);
         }
 
 		public ListViewItem(ListViewGroup group)
 		{
-            InitListViewItem("", -1, "", Color.Black, Color.Black, null, group);
+            InitListViewItem("", -1, "", null, null, null, group);
         }
 
 		public ListViewItem(string text, ListViewGroup group)
 		{
-            InitListViewItem(text, -1, null, Color.Black, Color.Black, null, group);
+            InitListViewItem(text, -1, null, null, null, null, group);
         }
 
 		public ListViewItem(string text, int imageIndex, ListViewGroup group)
 		{
-            InitListViewItem(text, imageIndex, null, Color.Black, Color.Black, null, group);
+            InitListViewItem(text, imageIndex, null, null, null, null, group);
         }
 
 		public ListViewItem(string[] items, ListViewGroup group)
 		{
-            InitListViewItem(items, -1, "", Color.Black, Color.Black, null, group);
+            InitListViewItem(items, -1, "", null, null, null, group);
         }
 
 		public ListViewItem(string[] items, int imageIndex, ListViewGroup group)
 		{
-            InitListViewItem(items, imageIndex, "", Color.Black, Color.Black, null, group);
+            InitListViewItem(items, imageIndex, "", null, null, null, group);
         }
 
 		public ListViewItem(string[] items, int imageIndex, Color foreColor, Color backColor, Font font, ListViewGroup group)
@@ -463,17 +452,17 @@ namespace System.Windows.Forms
 		{
             foreach (ListViewSubItem item in subItems)
                 _subitems.Add(item);
-            InitListViewItem(new string[0], imageIndex, "", Color.Black, Color.Black, null, group);
+            InitListViewItem(new string[0], imageIndex, "", null, null, null, group);
         }
 
 		public ListViewItem(string text, string imageKey)
 		{
-            InitListViewItem(text, -1, imageKey, Color.Black, Color.Black, null, null);
+            InitListViewItem(text, -1, imageKey, null, null, null, null);
         }
 
 		public ListViewItem(string[] items, string imageKey) 
 		{
-            InitListViewItem(items, -1, imageKey, Color.Black, Color.Black, null, null);
+            InitListViewItem(items, -1, imageKey, null, null, null, null);
         }
 
 		public ListViewItem(string[] items, string imageKey, Color foreColor, Color backColor, Font font)
@@ -485,17 +474,17 @@ namespace System.Windows.Forms
 		{
             foreach (ListViewSubItem item in subItems)
                 _subitems.Add(item);
-            InitListViewItem(new string[0], -1, imageKey, Color.Black, Color.Black, null, null);
+            InitListViewItem(new string[0], -1, imageKey, null, null, null, null);
         }
 
 		public ListViewItem(string text, string imageKey, ListViewGroup group)
 		{
-            InitListViewItem(text, -1, imageKey, Color.Black, Color.Black, null, group);
+            InitListViewItem(text, -1, imageKey, null, null, null, group);
         }
 
 		public ListViewItem(string[] items, string imageKey, ListViewGroup group)
         {
-            InitListViewItem(items, -1, imageKey, Color.Black, Color.Black, null, group);
+            InitListViewItem(items, -1, imageKey, null, null, null, group);
         }
 
 		public ListViewItem(string[] items, string imageKey, Color foreColor, Color backColor, Font font, ListViewGroup group)
@@ -507,9 +496,9 @@ namespace System.Windows.Forms
 		{
 			 foreach(ListViewSubItem item in subItems)
 				_subitems.Add(item);
-			InitListViewItem("", -1, imageKey, Color.Black, Color.Black, null, group);
+			InitListViewItem("", -1, imageKey, null, null, null, group);
         }
-        internal void InitListViewItem(string text, int imageIndex, string imageKey, Color foreColor, Color backColor, Font font, ListViewGroup group)
+        internal void InitListViewItem(string text, int imageIndex, string imageKey, Color? foreColor, Color? backColor, Font font, ListViewGroup group)
         {
             _subitems = new ListViewSubItemCollection(this);
 			SubItems = _subitems;
@@ -520,15 +509,11 @@ namespace System.Windows.Forms
             this.BackColor = backColor;
             this.Font = font;
             this.Group = group;
-			if (group == null)
-			{
-				this.Group = ListViewGroup.GetDefaultListViewGroup();
-			}
         }
-        internal void InitListViewItem(string[] items, int imageIndex, string imageKey, Color foreColor, Color backColor, Font font, ListViewGroup group)
+        internal void InitListViewItem(string[] items, int imageIndex, string imageKey, Color? foreColor, Color? backColor, Font font, ListViewGroup group)
         {
 			InitListViewItem(items[0], imageIndex, imageKey, foreColor, backColor, font, group);
-            foreach (string item in items)
+            foreach (string item in items.Skip(1))
                 _subitems.Add(item);
 
         }

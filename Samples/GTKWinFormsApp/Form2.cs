@@ -16,8 +16,8 @@ namespace GTKWinFormsApp
         public Form2()
         {
             InitializeComponent();
-           // listView1.Items.Add(new ListViewItem("test1", new ListViewGroup("ListViewGroup1", "ListViewGroup1")) { });
-            
+            // listView1.Items.Add(new ListViewItem("test1", new ListViewGroup("ListViewGroup1", "ListViewGroup1")) { });
+
         }
 
         private void listView1_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -56,8 +56,23 @@ namespace GTKWinFormsApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            listView1.Items.Add(new ListViewItem("123") { Group=new ListViewGroup("listViewGroup1", "ListViewGroup1")  });
-            listView1.Items.Add(new ListViewItem("aatest1"));
+            listView1.Items.Add(new ListViewItem("123") { ForeColor=Color.Red, BackColor=Color.Yellow, Group = new ListViewGroup("listViewGroup1", "ListViewGroup1") });
+
+            ListViewItem m = new ListViewItem("这是一种添加多栏数据的方法", 0);
+            m.Checked = true;
+            m.Selected = true;
+            m.ForeColor = Color.Green;
+            m.BackColor = Color.Yellow;
+            m.SubItems.Add(new ListViewItem.ListViewSubItem(m, "子列数据1", Color.HotPink, Color.Gray, new Font(FontFamily.GenericSansSerif, 16)));
+            m.SubItems.Add(new ListViewItem.ListViewSubItem(m, "子列数据2"));
+            m.SubItems.Add(new ListViewItem.ListViewSubItem(m, "子列数据3子列数据3子列数据3"));
+            m.SubItems.Add(new ListViewItem.ListViewSubItem(m, "子列数据1"));
+            listView1.Items.Add(m);
+        }
+
+        private void listView1_ColumnReordered(object sender, ColumnReorderedEventArgs e)
+        {
+
         }
     }
 } 

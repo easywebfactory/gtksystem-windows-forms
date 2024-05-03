@@ -88,20 +88,17 @@ namespace GTKSystem.Windows.Forms.Utility
 
         public static void DrawBackgroundImage(Cairo.Context ctx, Gdk.Pixbuf img, Gdk.Rectangle rec)
         {
-            Gdk.Size size = new Gdk.Size(rec.Width, rec.Height);
             ctx.Save();
-            ctx.Translate(4, 4);
+            ctx.ResetClip();
+            ctx.Rectangle(rec.X, rec.Y, rec.Width, rec.Height);
+            ctx.Clip();
+            ctx.Translate(rec.Left, rec.Top);
             Gdk.CairoHelper.SetSourcePixbuf(ctx, img, 0, 0);
             using (var p = ctx.GetSource())
             {
                 if (p is Cairo.SurfacePattern pattern)
                 {
-                    if (size.Width > img.Width || size.Height > img.Height)
-                    {
-                        pattern.Filter = Cairo.Filter.Fast;
-                    }
-                    else
-                        pattern.Filter = Cairo.Filter.Good;
+                    pattern.Filter = Cairo.Filter.Fast;
                 }
             }
             ctx.Paint();

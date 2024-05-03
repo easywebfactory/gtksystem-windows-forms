@@ -138,12 +138,18 @@ scrolledwindow{border-width:0px;}
 .MessageBox button{margin:10px;border-radius:0px;}
 .MessageBox-BarTitle{font-size:20px;padding-bottom:10px;}
 .TabControl{padding:0px;} 
-/*
-.TabControl header.top{background-color:#ffcccc;} 
-.TabControl header.top tab:hover{background-color:#ffeeee;} 
-*/
+.TabControl header.top{background-color:#e7e5e3;} 
+.TabControl header.top tab:hover{background-color:#EFEFEF;} 
+.TabControl header.top tab:checked{background-color:#f9f9f9;} 
+
 .DataGridView{margin:0px;}
-.DataGridView treeview.view{margin:0px;padding:0px;border-bottom:solid 1px #dddddd;border-left-width:0px;border-top-width:0px;;border-right-width:0px;}
+.DataGridView treeview.view{background-color:#ffffff;margin:0px;padding:0px;border-bottom:solid 1px #dddddd;border-left-width:0px;border-top-width:0px;;border-right-width:0px;}
+.DataGridView treeview.view:hover{background-color:#ffff88;}
+.DataGridView treeview.view:selected{background-color:#5555ff;color:#ffffff;}
+.DataGridView treeview.view header{background-color:#EFEFEF;}
+.DataGridView treeview.view header button{background-color:#f9f9f9; padding-top:6px;padding-bottom:6px;}
+.DataGridView treeview.view header button:hover{background-color:#cccccc;}
+
 .DataGridView button{} 
 .GridViewCell-Button{ font-size:12px; border:solid 1px #aaaaaa; border-radius:0px; background:linear-gradient(#e9e9e9,#e0e0e0);}
 .GridViewCell-Button:hover{  border:solid 1px #aaaaaa;background:linear-gradient(#eeeeee,#efefef);}
@@ -163,7 +169,7 @@ scrolledwindow{border-width:0px;}
 .CheckedListBox {background-color:#ffffff;} 
 .RadioButton {border-width:0px;} 
 
-.Label{border-width:0px;} 
+.Label{border-width:0px;background-color:#F6F5F4;} 
 .LinkLabel{border-width:0px;} 
 .NumericUpDown{padding:0px;min-height:6px;min-width:6px;}
 .NumericUpDown button.up{border-width:0px;padding:0px;font-size:6px;min-height:6px;min-width:6px;}
@@ -175,11 +181,8 @@ scrolledwindow{border-width:0px;}
 .ComboBox entry{padding:0px;}
 .Panel{} 
 .SplitContainer.horizontal{border-width:1px;}
-.SplitContainer>viewport{}
 .UserControl{border-width:0px;}
-
 .GroupBox{background-color:#F6F5F4;} 
-
 .TableLayoutPanel viewport{border:solid 1px #eeeeee;}
 .FlowLayoutPanel{}
 .ToolStrip{padding:0px;background:linear-gradient(#fefefd,#efefef);border-width:0px;background-color:#F6F5F4;} 
@@ -194,7 +197,8 @@ scrolledwindow{border-width:0px;}
 
 .ListBox{border-width:1px;background-color:#ffffff; padding:0px;}
 .ListView{background-color:#ffffff; padding:0px;}
-.ListViewHeader button{padding:0px;border-right:solid 1px #cccccc;border-top-width:0px;border-left-width:0px;border-bottom-width:0px;}
+.ListView .Label{background-color:transparent;} 
+.ListViewHeader { background-color:#eeeeee;}
 .ListView .Group{background-color:#fefefe; background-image:linear-gradient(#ffffff 12px,#3333bb 3px,#ffffff 14px);}
 .ListView .Title{background-color:#fefefe; padding-left:5px;padding-right:5px; color:#3333bb;}
 .ListView .SubTitle{padding-left:5px;padding-right:5px;color:#666666; font-size:14px; }

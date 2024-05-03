@@ -55,12 +55,12 @@ namespace System.Windows.Forms
 		}
 		private void AddCore(ListViewGroup group)
 		{
+			group.ListView = _listView;
 			Add(group);
 		}
 		public bool Contains(string name)
 		{
             return base.FindIndex(w => w.Name == name) > -1;
         }
-
     }
 }
