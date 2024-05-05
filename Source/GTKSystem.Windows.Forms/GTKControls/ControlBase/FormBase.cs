@@ -12,15 +12,14 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public GtkControlOverride Override { get; set; }
         public FormBase() : base()
         {
+            this.KeepAbove = true;
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Form");
             this.WindowPosition = Gtk.WindowPosition.Center;
             this.BorderWidth = 0;
-
             this.SetDefaultSize(100, 100);
             this.TypeHint = Gdk.WindowTypeHint.Normal;
             this.Response += FormBase_Response;
-
             ScrollArea.BorderWidth = 0;
             ScrollArea.Valign = Gtk.Align.Fill;
             ScrollArea.Halign = Gtk.Align.Fill;
@@ -50,19 +49,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                     this.OnClose();
         }
 
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
-        }
-        protected override bool OnDrawn(Cairo.Context cr)
-        {
-           // Gdk.Rectangle rec = new Gdk.Rectangle(25, 25, this.AllocatedWidth-50, this.AllocatedHeight-54);
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnDrawnBackground(cr, rec);
-            Override.OnPaint(cr, rec);
-            return base.OnDrawn(cr);
-        }
         public void CloseWindow()
         {
             this.OnClose();

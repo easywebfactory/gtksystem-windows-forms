@@ -27,7 +27,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         }
         protected override bool OnDrawn(Cairo.Context cr)
         {
-            Gdk.Rectangle rec = new Gdk.Rectangle(2, 2, this.AllocatedWidth - 4, this.AllocatedHeight - 4);
+            Gdk.Rectangle rec = new Gdk.Rectangle(3, 3, this.WidthRequest - 3, this.HeightRequest - 3);
             Override.OnDrawnBackground(cr, rec);
             Override.OnPaint(cr, rec);
             return base.OnDrawn(cr);

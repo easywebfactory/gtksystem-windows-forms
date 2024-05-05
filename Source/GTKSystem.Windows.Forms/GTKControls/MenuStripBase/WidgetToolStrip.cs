@@ -214,12 +214,12 @@ namespace System.Windows.Forms
         {
             string stylename = $"s{unique_key}";
             StringBuilder style = new StringBuilder();
-            if (this.BackColor.Name != "Control" && this.BackColor.Name != "0")
+            if (this.BackColor.Name != "0")
             {
                 string color = $"rgba({this.BackColor.R},{this.BackColor.G},{this.BackColor.B},{this.BackColor.A})";
                 style.AppendFormat("background-color:{0};background:{0};", color);
             }
-            if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
+            if (this.ForeColor.Name != "0")
             {
                 string color = $"rgba({this.ForeColor.R},{this.ForeColor.G},{this.ForeColor.B},{this.ForeColor.A})";
                 style.AppendFormat("color:{0};", color);

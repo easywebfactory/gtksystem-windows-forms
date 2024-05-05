@@ -186,21 +186,23 @@ namespace System.Windows.Forms
         }
         protected virtual void SetStyle(Gtk.Widget widget)
         {
+            Pango.AttrList attributes = new Pango.AttrList();
             string stylename = $"s{unique_key}";
             StringBuilder style = new StringBuilder();
-            if (this.BackColor.Name != "Control" && this.BackColor.Name != "0")
+            if (this.BackColor.Name != "0")
             {
                 string color = $"rgba({this.BackColor.R},{this.BackColor.G},{this.BackColor.B},{this.BackColor.A})";
                 style.AppendFormat("background-color:{0};background:{0};", color);
+                attributes.Insert(new Pango.AttrBackground(Convert.ToUInt16(this.BackColor.R * 257), Convert.ToUInt16(this.BackColor.G * 257), Convert.ToUInt16(this.BackColor.B * 257)));
             }
-            if (this.ForeColor.Name != "Control" && this.ForeColor.Name != "0")
+            if (this.ForeColor.Name != "0")
             {
                 string color = $"rgba({this.ForeColor.R},{this.ForeColor.G},{this.ForeColor.B},{this.ForeColor.A})";
                 style.AppendFormat("color:{0};", color);
+                attributes.Insert(new Pango.AttrBackground(Convert.ToUInt16(this.ForeColor.R * 257), Convert.ToUInt16(this.ForeColor.G * 257), Convert.ToUInt16(this.ForeColor.B * 257)));
             }
             if (this.Font != null)
             {
-                Pango.AttrList attributes = new Pango.AttrList();
                 float textSize = this.Font.Size;
                 if (this.Font.Unit == GraphicsUnit.Point)
                     textSize = this.Font.Size / 72 * 96;
@@ -275,7 +277,10 @@ namespace System.Windows.Forms
                 else
                     return Color.Transparent; 
             }
-            set { ISelf.Override.BackColor = value; UpdateStyle(); }
+            set { 
+                ISelf.Override.BackColor = value; 
+                UpdateStyle(); 
+            }
         }
         public virtual event PaintEventHandler Paint
         {

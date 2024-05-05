@@ -5,8 +5,7 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
-using Atk;
-using GLib;
+
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using GTKSystem.Windows.Forms.Utility;
@@ -17,9 +16,6 @@ using System.ComponentModel;
 
 using System.Drawing;
 using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using static System.Windows.Forms.ListViewItem;
 
 
@@ -353,7 +349,7 @@ namespace System.Windows.Forms
                 lab.self.Valign = Gtk.Align.Fill;
                 lab.self.Ellipsize = Pango.EllipsizeMode.End;
                 lab.Text = item.Text;
-                
+                 
                 fistcell.PackStart(lab.self, false, false, 1);
                 Gtk.Layout fistlayout = new Gtk.Layout(new Adjustment(IntPtr.Zero), new Adjustment(IntPtr.Zero));
                 fistlayout.Halign = Gtk.Align.Start;

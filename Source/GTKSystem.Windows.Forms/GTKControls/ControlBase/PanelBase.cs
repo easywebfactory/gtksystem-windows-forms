@@ -1,10 +1,6 @@
-﻿using Gtk;
+﻿
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
@@ -15,8 +11,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Panel");
-            this.MarginStart = 0;
-            this.MarginTop = 0;
             this.ShadowType = Gtk.ShadowType.In;
             this.BorderWidth = 0;
         }

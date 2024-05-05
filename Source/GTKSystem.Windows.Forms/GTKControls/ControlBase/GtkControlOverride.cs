@@ -33,10 +33,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             {
                 container.StyleContext.AddClass(cssClass);
             }
-            if (BackgroundImage != null)
-            {
-                container.StyleContext.AddClass("BackgroundTransparent");
-            }
         }
         private Gdk.Pixbuf backgroundPixbuf;
         public void DrawnBackColor(Cairo.Context cr, Gdk.Rectangle area)
@@ -45,7 +41,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             {
                 cr.Save();
                 cr.SetSourceRGBA(BackColor.Value.R / 255f, BackColor.Value.G / 255f, BackColor.Value.B / 255f, BackColor.Value.A / 255f);
-                //cr.Fill();
                 cr.Paint();
                 cr.Restore();
             }
@@ -59,34 +54,34 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                     ImageUtility.ScaleImageByImageLayout(BackgroundImage.PixbufData, area.Width, area.Height, out backgroundPixbuf, BackgroundImageLayout);
                 }
                 cr.Save();
-                //Console.WriteLine($"{area.Width},{area.Height}");
                 cr.ResetClip();
                 cr.Rectangle(area.Left, area.Top, area.Width, area.Height);
                 cr.Clip();
                 if (BackColor.HasValue)
                     cr.SetSourceRGBA(BackColor.Value.R / 255f, BackColor.Value.G / 255f, BackColor.Value.B / 255f, BackColor.Value.A / 255f);
                 else
-                    cr.SetSourceRGBA(0.98, 0.97, 0.97, 1);
-                cr.Fill();
+                    cr.SetSourceRGBA(0.97, 0.97, 0.97, 1);
 
-                cr.Translate(area.Left, area.Top);
                 Gdk.CairoHelper.SetSourcePixbuf(cr, backgroundPixbuf, 0, 0);
                 using (var p = cr.GetSource())
                 {
                     if (p is Cairo.SurfacePattern pattern)
                     {
-                        if (area.Width > backgroundPixbuf.Width || area.Height > backgroundPixbuf.Height)
-                        {
-                            pattern.Filter = Cairo.Filter.Fast;
-                        }
-                        else
-                            pattern.Filter = Cairo.Filter.Good;
+                        pattern.Filter = Cairo.Filter.Good;
                     }
                 }
 
                 cr.Paint();
                 cr.Restore();
             }
+            else if (BackColor.HasValue)
+            {
+                cr.Save();
+                cr.SetSourceRGBA(BackColor.Value.R / 255f, BackColor.Value.G / 255f, BackColor.Value.B / 255f, BackColor.Value.A / 255f);
+                cr.Paint();
+                cr.Restore();
+            }
+
             DrawnArgs args = new DrawnArgs() { Args = new object[] { cr } };
             if (DrawnBackground != null)
             {

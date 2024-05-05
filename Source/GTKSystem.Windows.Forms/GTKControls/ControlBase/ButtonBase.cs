@@ -1,5 +1,6 @@
 ﻿using Gtk;
 using System;
+using System.ComponentModel;
 
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
@@ -19,12 +20,16 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         }
         protected override void OnShown()
         {
-            Override.OnAddClass();
+            if (Override.BackgroundImage != null || Override.BackColor.HasValue)
+                this.StyleContext.AddClass("BackgroundTransparent");
+            else
+                Override.OnAddClass();
+
             base.OnShown();
         }
         protected override bool OnDrawn(Cairo.Context cr)
         {
-            Gdk.Rectangle rec = new Gdk.Rectangle(2, 2, this.AllocatedWidth - 4, this.AllocatedHeight - 4);
+            Gdk.Rectangle rec = new Gdk.Rectangle(3, 3, this.WidthRequest - 3, this.HeightRequest - 3);
             Override.OnDrawnBackground(cr, rec);
             Override.OnPaint(cr, rec);
             return base.OnDrawn(cr);

@@ -29,6 +29,7 @@ namespace System.Windows.Forms
         public FormBase self = new FormBase();
         public override object GtkControl { get => self; }
         private Gtk.Fixed _body = new Gtk.Fixed();
+        private ViewportBase background = new ViewportBase();
         private ObjectCollection _ObjectCollection;
         public override event EventHandler SizeChanged;
 
@@ -52,8 +53,8 @@ namespace System.Windows.Forms
             _body.Expand = true;
             _body.Hexpand = true;
             _body.Vexpand = true;
-
-            self.ScrollArea.Child = _body;
+            background.Child = _body;
+            self.ScrollArea.Child = background;
             _ObjectCollection = new ObjectCollection(this, _body);
 
             self.Mapped += Self_Mapped;
@@ -104,7 +105,9 @@ namespace System.Windows.Forms
             if (Load != null)
                 Load(this, e);
         }
-
+        public override Drawing.Image BackgroundImage { get => background.Override.BackgroundImage; set { background.Override.BackgroundImage = value; } }
+        public override ImageLayout BackgroundImageLayout { get => background.Override.BackgroundImageLayout; set { background.Override.BackgroundImageLayout = value; } }
+        public override Color BackColor { get => base.BackColor; set { base.BackColor = value; background.Override.BackColor = value; } }
         public override ISite Site { get; set; }
         private void Control_DeleteEvent(object o, DeleteEventArgs args)
         {
@@ -374,9 +377,9 @@ namespace System.Windows.Forms
             set {
                 base.AutoScroll = value;
                 if (value == true)
-                    self.StyleContext.AddClass("ScrollForm");
+                    background.StyleContext.AddClass("ScrollForm");
                 else
-                    self.StyleContext.RemoveClass("ScrollForm");
+                    background.StyleContext.RemoveClass("ScrollForm");
             }
         }
         public SizeF AutoScaleDimensions { get; set; }
@@ -387,7 +390,7 @@ namespace System.Windows.Forms
             get { return formBorderStyle; }
             set {
                 formBorderStyle = value;
-                self.Resizable = value == FormBorderStyle.Sizable || value == FormBorderStyle.SizableToolWindow; 
+                self.Resizable = value == FormBorderStyle.Sizable || value == FormBorderStyle.SizableToolWindow;
                 if (value == FormBorderStyle.None)
                 {
                     self.BorderWidth = 0;

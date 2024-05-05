@@ -112,7 +112,8 @@ namespace System.Windows.Forms
 .DefaultThemeStyle>button{border:solid 1px #cccccc;}
 .DefaultThemeStyle button{border-radius:0px;}
 .DefaultThemeStyle border{border:solid 1px #cccccc;}
-.DefaultThemeStyle entry{border-radius:0px;background-color:#ffffff;caret-color:#333333;}
+.DefaultThemeStyle entry{border-radius:0px;background-color:#ffffff;}
+
 .BackgroundTransparent{padding:0px;background:transparent;background-color:transparent;} 
 /*
 .DefaultThemeStyle{border:solid 1px #cccccc;border-radius:0px;box-shadow: none;color:#000000;}
@@ -130,9 +131,9 @@ namespace System.Windows.Forms
 .DefaultThemeStyle:active{border-color:#cccccc;}
 */
 
-scrolledwindow{border-width:0px;}
+
 .Form {border-width:0px;padding:0px;margin:0px;}
-.ScrollForm {border:solid 2px #cccccc;border-right:solid 18px #F6F5F4;}
+.ScrollForm {border-right:solid 15px #F6F5F4;}
 
 .MessageBox{}
 .MessageBox button{margin:10px;border-radius:0px;}
@@ -159,8 +160,9 @@ scrolledwindow{border-width:0px;}
 .TreeView:selected{ color:blue}
 
 .Button{padding:0px;} 
-.TextBox{padding:0px 3px 0px 3px;} 
-.RichTextBox {border-width:1px;}
+
+.TextBox{padding:0px 3px 0px 3px;caret-color:#999999;} 
+.RichTextBox {border-width:1px;caret-color:#999999;}
 .RichTextBox border.top{border-width:1px;}
 .RichTextBox border.left{border-width:1px;}
 .RichTextBox border.right{border-width:1px;}
@@ -171,7 +173,7 @@ scrolledwindow{border-width:0px;}
 
 .Label{border-width:0px;background-color:#F6F5F4;} 
 .LinkLabel{border-width:0px;} 
-.NumericUpDown{padding:0px;min-height:6px;min-width:6px;}
+.NumericUpDown{padding:0px;min-height:6px;min-width:6px;caret-color:#999999;}
 .NumericUpDown button.up{border-width:0px;padding:0px;font-size:6px;min-height:6px;min-width:6px;}
 .NumericUpDown button.down{border-width:0px;padding:0px;font-size:6px;min-height:6px;min-width:6px;}
 .NumericUpDown entry{border-width:0px;padding:0px 0px 0px 3px;min-height:6px;min-width:6px;} 

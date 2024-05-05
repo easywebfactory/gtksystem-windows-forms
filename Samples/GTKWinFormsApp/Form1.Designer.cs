@@ -786,6 +786,7 @@ namespace GTKWinFormsApp
             AutoScroll = true;
             BackgroundImage = Properties.Resources.timg;
             BackgroundImageLayout = ImageLayout.Stretch;
+            BackColor = System.Drawing.Color.AliceBlue;
             ClientSize = new System.Drawing.Size(1360, 743);
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(groupBox1);

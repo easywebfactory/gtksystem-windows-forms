@@ -271,11 +271,12 @@ namespace System.Windows.Forms
                 buttonsType = Gtk.ButtonsType.Cancel;
 
 
-            Gtk.MessageDialog dia = new Gtk.MessageDialog(owner, Gtk.DialogFlags.DestroyWithParent | Gtk.DialogFlags.Modal, Gtk.MessageType.Info, buttonsType, text);
+            Gtk.MessageDialog dia = new Gtk.MessageDialog(owner, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Info, buttonsType, text);
             dia.SetPosition(position);
             dia.StyleContext.AddClass("MessageBox");
             dia.StyleContext.AddClass("BorderRadiusStyle");
             dia.BorderWidth = 10;
+            dia.KeepAbove = true;
             dia.Title = caption;
             dia.Response += Dia_Response;
             return dia.Run();
@@ -283,12 +284,13 @@ namespace System.Windows.Forms
 
         private static int ShowCore(Gtk.Window owner, Gtk.WindowPosition position, string text, string caption, MessageBoxButtons buttons, params object[] icon)
         {
-            Gtk.Dialog dia = new Gtk.Dialog(caption, owner, Gtk.DialogFlags.DestroyWithParent | DialogFlags.Modal);
+            Gtk.Dialog dia = new Gtk.Dialog(caption, owner, Gtk.DialogFlags.DestroyWithParent);
             dia.SetPosition(position);
             dia.StyleContext.AddClass("MessageBox");
             dia.StyleContext.AddClass("BorderRadiusStyle");
             // dia.SetSizeRequest(300, 160);
             dia.BorderWidth = 10;
+            dia.KeepAbove = true;
             dia.Response += Dia_Response;
 
             var content = new Gtk.Label(text);
