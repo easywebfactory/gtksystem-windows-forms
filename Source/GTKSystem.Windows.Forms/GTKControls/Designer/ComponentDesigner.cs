@@ -5,81 +5,82 @@ using System.Collections;
 using System.Configuration;
 using System.Windows.Forms.Design;
 
-namespace System.ComponentModel.Design;
-
-/// <summary>
-///  The default designer for all components.
-/// </summary>
-public partial class ComponentDesigner : ITreeDesigner, IDesignerFilter, IComponentInitializer
+namespace System.ComponentModel.Design
 {
-    private InheritanceAttribute? _inheritanceAttribute;
-
-    private DesignerVerbCollection? _verbs;
-    private bool _settingsKeyExplicitlySet;
-    private IComponent? _component;
-
-    private protected const string SettingsKeyName = "SettingsKey";
-
-    public ICollection Children => throw new NotImplementedException();
-
-    public IDesigner Parent => throw new NotImplementedException();
-
-    public IComponent Component => throw new NotImplementedException();
-
-    public DesignerVerbCollection Verbs => throw new NotImplementedException();
-
-    public void DoDefaultAction()
+    /// <summary>
+    ///  The default designer for all components.
+    /// </summary>
+    public partial class ComponentDesigner : ITreeDesigner, IDesignerFilter, IComponentInitializer
     {
+        private InheritanceAttribute? _inheritanceAttribute;
 
-    }
+        private DesignerVerbCollection? _verbs;
+        private bool _settingsKeyExplicitlySet;
+        private IComponent? _component;
 
-    public void Initialize(IComponent component)
-    {
+        private protected const string SettingsKeyName = "SettingsKey";
 
-    }
+        public ICollection Children => throw new NotImplementedException();
 
-    public void Dispose()
-    {
+        public IDesigner Parent => throw new NotImplementedException();
 
-    }
+        public IComponent Component => throw new NotImplementedException();
 
-    public void PostFilterAttributes(IDictionary attributes)
-    {
+        public DesignerVerbCollection Verbs => throw new NotImplementedException();
 
-    }
+        public void DoDefaultAction()
+        {
 
-    public void PostFilterEvents(IDictionary events)
-    {
+        }
 
-    }
+        public void Initialize(IComponent component)
+        {
 
-    public void PostFilterProperties(IDictionary properties)
-    {
+        }
 
-    }
+        public void Dispose()
+        {
 
-    public void PreFilterAttributes(IDictionary attributes)
-    {
+        }
 
-    }
+        public void PostFilterAttributes(IDictionary attributes)
+        {
 
-    public void PreFilterEvents(IDictionary events)
-    {
+        }
 
-    }
+        public void PostFilterEvents(IDictionary events)
+        {
 
-    public void PreFilterProperties(IDictionary properties)
-    {
+        }
 
-    }
+        public void PostFilterProperties(IDictionary properties)
+        {
 
-    public void InitializeExistingComponent(IDictionary defaultValues)
-    {
+        }
 
-    }
+        public void PreFilterAttributes(IDictionary attributes)
+        {
 
-    public void InitializeNewComponent(IDictionary defaultValues)
-    {
+        }
 
+        public void PreFilterEvents(IDictionary events)
+        {
+
+        }
+
+        public void PreFilterProperties(IDictionary properties)
+        {
+
+        }
+
+        public void InitializeExistingComponent(IDictionary defaultValues)
+        {
+
+        }
+
+        public void InitializeNewComponent(IDictionary defaultValues)
+        {
+
+        }
     }
 }

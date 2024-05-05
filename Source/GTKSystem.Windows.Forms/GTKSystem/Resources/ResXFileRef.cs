@@ -121,7 +121,7 @@ namespace System.Resources
             }
 
             result += TypeName;
-            if (TextFileEncoding is not null)
+            if (TextFileEncoding != null)
             {
                 result += (";" + TextFileEncoding.WebName);
             }

@@ -37,9 +37,9 @@ namespace System.Windows.Forms
         }
 
         internal bool IsBindable =>
-            BindableComponent is not null
+            BindableComponent != null
             && !string.IsNullOrEmpty(PropertyName)
-            && DataSource is not null;
+            && DataSource != null;
 
         public BindingManagerBase BindingManagerBase
 		{

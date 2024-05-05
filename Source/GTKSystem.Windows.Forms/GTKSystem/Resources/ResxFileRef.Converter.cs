@@ -50,7 +50,7 @@ namespace System.Resources
             internal static string[] ParseResxFileRefString(string stringValue)
             {
                 string[] result = null;
-                if (stringValue is not null)
+                if (stringValue != null)
                 {
                     stringValue = stringValue.Trim();
                     string fileName;
@@ -137,7 +137,7 @@ namespace System.Resources
 
                     using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
-                        Debug.Assert(fileStream is not null, "Couldn't open " + fileName);
+                        Debug.Assert(fileStream != null, "Couldn't open " + fileName);
                         temp = new byte[fileStream.Length];
                         fileStream.Read(temp, 0, (int)fileStream.Length);
                     }

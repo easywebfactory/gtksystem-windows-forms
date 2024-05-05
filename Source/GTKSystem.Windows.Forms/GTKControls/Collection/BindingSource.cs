@@ -290,7 +290,7 @@ namespace System.Windows.Forms
 			{
 				throw null;
 			}
-			[RequiresUnreferencedCode("Members of types used in the filter expression might be trimmed.")]
+			//[RequiresUnreferencedCode("Members of types used in the filter expression might be trimmed.")]
 			set
 			{
 				throw null;

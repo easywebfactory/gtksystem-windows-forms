@@ -32,12 +32,12 @@ namespace System.Windows.Forms
 
         public override bool Equals(object otherObject)
         {
-            if (otherObject is not BindingMemberInfo otherMember)
+            if (otherObject is BindingMemberInfo otherMember)
             {
-                return false;
+                return Equals(otherMember);
+                
             }
-
-            return Equals(otherMember);
+            return false;
         }
 
         public bool Equals(BindingMemberInfo other)

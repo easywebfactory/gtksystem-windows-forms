@@ -1,68 +1,72 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-namespace System.Windows.Forms;
-
-public sealed partial class ImageList
+namespace System.Windows.Forms
 {
-    /// <summary>
-    ///  This class is for classes that want to support both an ImageIndex
-    ///  and ImageKey. We want to toggle between using keys or indexes.
-    ///  Default is to use the integer index.
-    /// </summary>
-    internal class Indexer
+    public sealed partial class ImageList
     {
-        // Used by TreeViewImageIndexConverter to show "(none)"
-        internal const int NoneIndex = -2;
-
-        // Used by generally across the board to indicate unset image
-        internal const string DefaultKey = "";
-        internal const int DefaultIndex = -1;
-
-        private string _key = DefaultKey;
-        private int _index = DefaultIndex;
-        private bool _useIntegerIndex = true;
-
-        public virtual ImageList? ImageList { get; set; }
-
- 
-        public virtual string Key
+        /// <summary>
+        ///  This class is for classes that want to support both an ImageIndex
+        ///  and ImageKey. We want to toggle between using keys or indexes.
+        ///  Default is to use the integer index.
+        /// </summary>
+        internal class Indexer
         {
-            get => _key;
-            set
-            {
-                _index = DefaultIndex;
-                _key = value ?? DefaultKey;
-                _useIntegerIndex = false;
-            }
-        }
+            // Used by TreeViewImageIndexConverter to show "(none)"
+            internal const int NoneIndex = -2;
 
-        public virtual int Index
-        {
-            get => _index;
-            set
-            {
-                _key = DefaultKey;
-                _index = value;
-                _useIntegerIndex = true;
-            }
-        }
+            // Used by generally across the board to indicate unset image
+            internal const string DefaultKey = "";
+            internal const int DefaultIndex = -1;
 
-        public virtual int ActualIndex
-        {
-            get
+            private string _key = DefaultKey;
+            private int _index = DefaultIndex;
+            private bool _useIntegerIndex = true;
+
+            public virtual ImageList? ImageList { get; set; }
+
+
+            public virtual string Key
             {
-                if (_useIntegerIndex)
+                get => _key;
+                set
                 {
-                    return Index;
+                    _index = DefaultIndex;
+                    _key = value ?? DefaultKey;
+                    _useIntegerIndex = false;
                 }
+            }
 
-                if (ImageList is not null)
+            public virtual int Index
+            {
+                get => _index;
+                set
                 {
-                    return ImageList.Images.IndexOfKey(Key);
+                    _key = DefaultKey;
+                    _index = value;
+                    _useIntegerIndex = true;
                 }
+            }
 
-                return DefaultIndex;
+            public virtual int ActualIndex
+            {
+                get
+                {
+                    if (_useIntegerIndex)
+                    {
+                        return Index;
+                    }
+                    if (ImageList is null)
+                    {
+
+                    }
+                     else //  if (ImageList != null)
+                    {
+                        return ImageList.Images.IndexOfKey(Key);
+                    }
+
+                    return DefaultIndex;
+                }
             }
         }
     }

@@ -6,35 +6,36 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.Drawing.Design;
- 
-namespace System.Windows.Forms.Design;
 
-/// <summary>
-///  The ParentControlDesigner class builds on the ControlDesigner.  It adds the ability
-///  to manipulate child components, and provides a selection UI handler for all
-///  components it contains.
-/// </summary>
-public partial class ParentControlDesigner : ControlDesigner, IOleDragClient
+namespace System.Windows.Forms.Design
 {
-    public bool CanModifyComponents => throw new NotImplementedException();
-
-    public bool AddComponent(IComponent component, string name, bool firstAdd)
+    /// <summary>
+    ///  The ParentControlDesigner class builds on the ControlDesigner.  It adds the ability
+    ///  to manipulate child components, and provides a selection UI handler for all
+    ///  components it contains.
+    /// </summary>
+    public partial class ParentControlDesigner : ControlDesigner, IOleDragClient
     {
-        throw new NotImplementedException();
-    }
+        public bool CanModifyComponents => throw new NotImplementedException();
 
-    public Control GetControlForComponent(object component)
-    {
-        throw new NotImplementedException();
-    }
+        public bool AddComponent(IComponent component, string name, bool firstAdd)
+        {
+            throw new NotImplementedException();
+        }
 
-    public Control GetDesignerControl()
-    {
-        throw new NotImplementedException();
-    }
+        public Control GetControlForComponent(object component)
+        {
+            throw new NotImplementedException();
+        }
 
-    public bool IsDropOk(IComponent component)
-    {
-        throw new NotImplementedException();
+        public Control GetDesignerControl()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsDropOk(IComponent component)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

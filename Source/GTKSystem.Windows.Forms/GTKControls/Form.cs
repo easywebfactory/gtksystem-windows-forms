@@ -430,7 +430,7 @@ namespace System.Windows.Forms
             }
         }
 
-        public override ObjectCollection Controls { get { return _ObjectCollection; } }
+        public new ObjectCollection Controls { get { return _ObjectCollection; } }
 
         public bool MaximizeBox { get; set; } = true;
         public bool MinimizeBox { get; set; } = true;

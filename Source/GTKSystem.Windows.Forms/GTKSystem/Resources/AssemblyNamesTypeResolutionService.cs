@@ -31,7 +31,7 @@ namespace System.Resources
             return GetAssembly(name, true);
         }
 
-        [UnconditionalSuppressMessage("SingleFile", "IL3002", Justification = "Handles single file case")]
+       // [UnconditionalSuppressMessage("SingleFile", "IL3002", Justification = "Handles single file case")]
         public Assembly GetAssembly(AssemblyName name, bool throwOnError)
         {
             Assembly result = null;
@@ -49,18 +49,18 @@ namespace System.Resources
             if (result is null)
             {
                 result = Assembly.Load(name.FullName);
-                if (result is not null)
+                if (result != null)
                 {
                     _cachedAssemblies[name] = result;
                 }
-                else if (_names is not null)
+                else if (_names != null)
                 {
                     foreach (AssemblyName asmName in _names.Where(an => an.Equals(name)))
                     {
                         try
                         {
                             result = Assembly.LoadFrom(GetPathOfAssembly(asmName));
-                            if (result is not null)
+                            if (result != null)
                             {
                                 _cachedAssemblies[asmName] = result;
                             }
@@ -79,7 +79,7 @@ namespace System.Resources
             return result;
         }
 
-        [UnconditionalSuppressMessage("SingleFile", "IL3002", Justification = "Returns null if in a single file")]
+        //[UnconditionalSuppressMessage("SingleFile", "IL3002", Justification = "Returns null if in a single file")]
         public string GetPathOfAssembly(AssemblyName name)
         {
 #pragma warning disable SYSLIB0044 // Type or member is obsolete. Ref https://github.com/dotnet/winforms/issues/7308
@@ -119,7 +119,7 @@ namespace System.Resources
                 result = Type.GetType(name, false, ignoreCase);
             }
 
-            if (result is null && _names is not null)
+            if (result is null && _names != null)
             {
                 // If the type is assembly qualified name, we sort the assembly names
                 // to put assemblies with same name in the front so that they can
@@ -137,7 +137,7 @@ namespace System.Resources
                     {
                     }
 
-                    if (assemblyName is not null)
+                    if (assemblyName != null)
                     {
                         List<AssemblyName> assemblyList = new List<AssemblyName>(_names.Length);
                         foreach (AssemblyName asmName in _names)
@@ -160,7 +160,7 @@ namespace System.Resources
                 foreach (AssemblyName asmName in _names)
                 {
                     Assembly asm = GetAssembly(asmName, false);
-                    if (asm is not null)
+                    if (asm != null)
                     {
                         result = asm.GetType(name, false, ignoreCase);
                         if (result is null)
@@ -174,7 +174,7 @@ namespace System.Resources
                         }
                     }
 
-                    if (result is not null)
+                    if (result != null)
                     {
                         break;
                     }
@@ -186,7 +186,7 @@ namespace System.Resources
                 throw new ArgumentException(string.Format("SR.InvalidResXNoType,{0}", name));
             }
 
-            if (result is not null)
+            if (result != null)
             {
                 // Only cache types from the shared framework  because they don't need to update.
                 // For simplicity, don't cache custom types
@@ -204,7 +204,7 @@ namespace System.Resources
         /// </summary>
         private static bool IsDotNetAssembly(string assemblyPath)
         {
-            return assemblyPath is not null && (assemblyPath.StartsWith(s_dotNetPath, StringComparison.OrdinalIgnoreCase) || assemblyPath.StartsWith(s_dotNetPathX86, StringComparison.OrdinalIgnoreCase));
+            return assemblyPath != null && (assemblyPath.StartsWith(s_dotNetPath, StringComparison.OrdinalIgnoreCase) || assemblyPath.StartsWith(s_dotNetPathX86, StringComparison.OrdinalIgnoreCase));
         }
 
         public void ReferenceAssembly(AssemblyName name)

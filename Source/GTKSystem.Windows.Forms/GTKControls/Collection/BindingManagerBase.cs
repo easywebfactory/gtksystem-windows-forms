@@ -138,12 +138,15 @@ namespace System.Windows.Forms
 			throw null;
 		}
 
-		protected virtual PropertyDescriptorCollection GetItemProperties([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type listType, int offset, ArrayList dataSources, ArrayList listAccessors)
-		{
-			throw null;
-		}
-
-		internal abstract string GetListName();
+		//protected virtual PropertyDescriptorCollection GetItemProperties([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type listType, int offset, ArrayList dataSources, ArrayList listAccessors)
+		//{
+		//	throw null;
+		//}
+        protected virtual PropertyDescriptorCollection GetItemProperties(Type listType, int offset, ArrayList dataSources, ArrayList listAccessors)
+        {
+            throw null;
+        }
+        internal abstract string GetListName();
 
 		public abstract void CancelCurrentEdit();
 

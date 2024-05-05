@@ -55,7 +55,7 @@ namespace System.Windows.Forms
         }
 
 		[Browsable(false)]
-		public override TableLayoutControlCollection Controls
+		public new TableLayoutControlCollection Controls
 		{
 			get => _controls;
         }

@@ -3,17 +3,18 @@
 
 using System.ComponentModel;
 
-namespace System.Windows.Forms;
-
-internal class ImageListConverter : ComponentConverter
+namespace System.Windows.Forms
 {
-    public ImageListConverter() : base(typeof(ImageList))
+    internal class ImageListConverter : ComponentConverter
     {
-    }
+        public ImageListConverter() : base(typeof(ImageList))
+        {
+        }
 
-    /// <summary>
-    ///  Gets a value indicating whether this object supports properties using the
-    ///  specified context.
-    /// </summary>
-    public override bool GetPropertiesSupported(ITypeDescriptorContext? context) => true;
+        /// <summary>
+        ///  Gets a value indicating whether this object supports properties using the
+        ///  specified context.
+        /// </summary>
+        public override bool GetPropertiesSupported(ITypeDescriptorContext? context) => true;
+    }
 }

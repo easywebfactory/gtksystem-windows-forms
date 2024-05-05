@@ -48,7 +48,7 @@ namespace System.Windows.Forms
                 return thispath;
             }
         }
-        public static string ExecutablePath { get { return Environment.ProcessPath; } }
+        public static string ExecutablePath { get { return System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName; } }
         public static string StartupPath { get { return Environment.CurrentDirectory; } }
 
         private static readonly object internalSyncObject = new object();

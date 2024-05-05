@@ -5,12 +5,13 @@ using System.ComponentModel;
 using System.Collections;
 using System.Drawing;
 
-namespace System.Windows.Forms.Design;
-
-/// <summary>
-///  <para>Provides a base implementation of a designer for user controls.</para>
-/// </summary>
-[ToolboxItemFilter("System.Windows.Forms.UserControl", ToolboxItemFilterType.Custom)]
-internal class UserControlDocumentDesigner : DocumentDesigner
+namespace System.Windows.Forms.Design
 {
+    /// <summary>
+    ///  <para>Provides a base implementation of a designer for user controls.</para>
+    /// </summary>
+    [ToolboxItemFilter("System.Windows.Forms.UserControl", ToolboxItemFilterType.Custom)]
+    internal class UserControlDocumentDesigner : DocumentDesigner
+    {
+    }
 }

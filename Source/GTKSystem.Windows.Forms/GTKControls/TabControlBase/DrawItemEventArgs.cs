@@ -122,7 +122,7 @@ namespace System.Windows.Forms
             }
         }
 
-        public nint GetHdc()
+        public IntPtr GetHdc()
         {
            return IntPtr.Zero;
         }

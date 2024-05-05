@@ -2,21 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 
-namespace System.Drawing.Design;
-
-/// <summary>
-///  Provides notifications of toolbox actions to designers which implement this interface.
-/// </summary>
-public interface IToolboxUser
+namespace System.Drawing.Design
 {
     /// <summary>
-    ///  Gets a value indicating whether the specified tool is supported by the current designer
+    ///  Provides notifications of toolbox actions to designers which implement this interface.
     /// </summary>
-    bool GetToolSupported(ToolboxItem tool);
+    public interface IToolboxUser
+    {
+        /// <summary>
+        ///  Gets a value indicating whether the specified tool is supported by the current designer
+        /// </summary>
+        bool GetToolSupported(ToolboxItem tool);
 
-    /// <summary>
-    ///  Selects the specified tool.
-    /// </summary>
-    /// <param name="tool">toolbox item</param>
-    void ToolPicked(ToolboxItem tool);
+        /// <summary>
+        ///  Selects the specified tool.
+        /// </summary>
+        /// <param name="tool">toolbox item</param>
+        void ToolPicked(ToolboxItem tool);
+    }
 }
