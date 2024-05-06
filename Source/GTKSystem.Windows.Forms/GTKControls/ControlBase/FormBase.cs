@@ -12,7 +12,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public GtkControlOverride Override { get; set; }
         public FormBase() : base()
         {
-            this.KeepAbove = true;
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Form");
             this.WindowPosition = Gtk.WindowPosition.Center;

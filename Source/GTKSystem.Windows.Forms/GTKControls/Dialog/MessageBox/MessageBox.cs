@@ -285,12 +285,13 @@ namespace System.Windows.Forms
         private static int ShowCore(Gtk.Window owner, Gtk.WindowPosition position, string text, string caption, MessageBoxButtons buttons, params object[] icon)
         {
             Gtk.Dialog dia = new Gtk.Dialog(caption, owner, Gtk.DialogFlags.DestroyWithParent);
+            dia.KeepAbove = true;
             dia.SetPosition(position);
             dia.StyleContext.AddClass("MessageBox");
             dia.StyleContext.AddClass("BorderRadiusStyle");
             // dia.SetSizeRequest(300, 160);
             dia.BorderWidth = 10;
-            dia.KeepAbove = true;
+            
             dia.Response += Dia_Response;
 
             var content = new Gtk.Label(text);
