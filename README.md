@@ -114,7 +114,7 @@ GTKWinFormsApp.runtimeconfig.json
 ```
 
 #### demo效果
-![输入图片说明](/pic/run.jpg)
+![输入图片说明](/pic/run.png)
 
 #### 工具栏菜单
 ![输入图片说明](/pic/toolstrip.jpeg)
