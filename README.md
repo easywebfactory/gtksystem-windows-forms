@@ -135,8 +135,7 @@ QQ群：236066073
 
 #### 常见问题
 1、为什么Form窗体设计器打不开？
-答：
-    正确的使用流程：
+答：检查runtimeconfig的确保配置正确，NuGet安装GTKSystem.Windows.FormsDesigner，然后按以下流程操作：
     1、编译一下
     3、打开Form窗体
     （如果不能打开窗体，执行下面流程）
