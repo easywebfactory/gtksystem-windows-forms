@@ -1,8 +1,8 @@
-﻿{
+{
   "runtimeOptions": {
     "tfm": "net8.0",
     "framework": {
-      "name": "Microsoft.WindowsDesktop.App",
+      "name":"Microsoft.WindowsDesktop.App",
       "version": "8.0.0"
     },
     "additionalProbingPaths": [
@@ -12,7 +12,7 @@
       "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
     ],
     "configProperties": {
-      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false,
+      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": true,
       "Microsoft.NETCore.DotNetHostPolicy.SetAppPaths": true
     }
   }

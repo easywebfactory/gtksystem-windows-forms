@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
+	<PropertyGroup>
+	<OutputType>WinExe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
 	 <Nullable>enable</Nullable>
     <UseWindowsForms>False</UseWindowsForms>
@@ -12,10 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="GtkSharp" Version="3.24.24.95" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj" />
+    <PackageReference Include="GTKSystem.Windows.FormsDesigner" Version="1.0.0.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +45,10 @@
 
   <ItemGroup>
     <Folder Include="obj\Debug\net8.0\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj" />
   </ItemGroup>
 
 </Project>

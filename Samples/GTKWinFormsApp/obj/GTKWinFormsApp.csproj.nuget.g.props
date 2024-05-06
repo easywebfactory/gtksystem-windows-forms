@@ -14,4 +14,7 @@
     <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
     <SourceRoot Include="C:\Program Files\dotnet\sdk\NuGetFallbackFolder\" />
   </ItemGroup>
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)gtksystem.windows.formsdesigner\1.0.0.4\build\GTKSystem.Windows.FormsDesigner.props" Condition="Exists('$(NuGetPackageRoot)gtksystem.windows.formsdesigner\1.0.0.4\build\GTKSystem.Windows.FormsDesigner.props')" />
+  </ImportGroup>
 </Project>

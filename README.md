@@ -30,7 +30,9 @@ linux安装gtk环境：
 
 #### VisualStudio插件安装
 
-下载本插件工具，关闭visual studio，直接双击GTKWinformVSIXProject.vsix文件安装
+工具一、从NuGet上安装GTKSystem.Windows.FormsDesigner类库，此类库可以在编译工程时修正窗体设计器。
+
+工具二、下载本插件工具，关闭visual studio，直接双击GTKWinformVSIXProject.vsix文件安装
 
 插件会安装两个功能，都是在右键菜单和工具菜单上添加：
 
