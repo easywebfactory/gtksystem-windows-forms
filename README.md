@@ -125,18 +125,23 @@ GTKWinFormsApp.runtimeconfig.json
 #### 交流/合作/商务/赞助
 QQ群：236066073
 邮箱：438865652@qq.com
+![交流qq群](/pic/qrcode_1715011817825.jpg)
+
+#### 支持作者，获取技术服务
+ ![支持作者](/pic/mm_reward_qrcode_1715012020446.png)
+ ![联系作者](/pic/contact_weixin.png)
 
 #### 常见问题
 1、为什么Form窗体设计器打不开？
 答：
     正确的使用流程：
     1、编译一下
-    2、执行“修复窗体设计器”
     3、打开Form窗体
     （如果不能打开窗体，执行下面流程）
-    4、关闭Form窗体，执行“修复窗体设计器”
+    4、关闭Form窗体，编译一下
     5、重启vs
     6、打开Form窗体设计器
+
 
 
 #### 参与贡献
@@ -145,6 +150,10 @@ QQ群：236066073
 2. https://github.com/easywebfactory
 
 #### 更新日志
+ ## 2024/5/6
+   1. 完善treeview、listview功能
+   2. 新增开发工具GTKSystem.Windows.FormsDesigner.dll(NuGet安装)，编译时自动检查并修正窗体设计器配置
+   3.修正datagridview的取数错误
  ## 2024/5/1
   1. 重大更新！重构控件的结构程序，优化了很多控件功能和性能，修正一些错误
   2. 优化了绘图、控件背景功能程序，绘制背景图不再覆盖子控件
