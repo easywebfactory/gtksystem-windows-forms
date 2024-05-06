@@ -125,10 +125,10 @@ GTKWinFormsApp.runtimeconfig.json
 #### 交流/合作/商务/赞助
 QQ群：236066073
 邮箱：438865652@qq.com
-![交流qq群](/pic/qrcode_1715011817825.jpg)
+![交流qq群](/pic/qqchat.png)
 
 #### 支持作者，获取技术服务
- ![支持作者](/pic/mm_reward_qrcode_1715012020446.png)
+ ![支持作者](/pic/love_reward_qrcode_.png)
  ![联系作者](/pic/contact_weixin.png)
 
 #### 常见问题
