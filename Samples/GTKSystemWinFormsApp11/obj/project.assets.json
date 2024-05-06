@@ -79,7 +79,7 @@
           "build/GtkSharp.targets": {}
         }
       },
-      "GTKSystem.Windows.Forms/1.3.24.20": {
+      "GTKSystem.Windows.Forms/1.3.24.22": {
         "type": "package",
         "dependencies": {
           "GtkSharp": "3.24.24.95",
@@ -733,16 +733,16 @@
         "lib/netstandard2.0/GtkSharp.dll"
       ]
     },
-    "GTKSystem.Windows.Forms/1.3.24.20": {
-      "sha512": "oWmNSj6MIY1XIZviN8Nt23LtbN9/WW/a2HBEDItKAQqgS38E5q2n9O9/+XAqg2yjOjySamETCURt0gJlsZsiIA==",
+    "GTKSystem.Windows.Forms/1.3.24.22": {
+      "sha512": "9AHALisfDDyI7mhBH2DdVoGcuEROZoAhajGFnJHk+d/bySRZH9WBRQ+vcOCSxTaG3P7bjjHxbanYeDIxBwYv8A==",
       "type": "package",
-      "path": "gtksystem.windows.forms/1.3.24.20",
+      "path": "gtksystem.windows.forms/1.3.24.22",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.txt",
         "README.md",
-        "gtksystem.windows.forms.1.3.24.20.nupkg.sha512",
+        "gtksystem.windows.forms.1.3.24.22.nupkg.sha512",
         "gtksystem.windows.forms.nuspec",
         "lib/net6.0/GTKSystem.Windows.Forms.dll",
         "lib/net7.0/GTKSystem.Windows.Forms.dll",
@@ -2245,7 +2245,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "GTKSystem.Windows.Forms >= 1.3.24.20",
+      "GTKSystem.Windows.Forms >= 1.3.24.22",
       "GTKSystem.Windows.FormsDesigner >= 1.0.0.4",
       "GtkSharp >= 3.24.24.95"
     ]
@@ -2300,7 +2300,7 @@
         "dependencies": {
           "GTKSystem.Windows.Forms": {
             "target": "Package",
-            "version": "[1.3.24.20, )"
+            "version": "[1.3.24.22, )"
           },
           "GTKSystem.Windows.FormsDesigner": {
             "target": "Package",

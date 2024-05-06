@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "V7232O3GLQDcxIvipMs8y/SOlytwjaf/rc4eY5GUPjd45+4g03YuRWN77/dHx+KQHXUUcxylm7CycnuTuWddag==",
+  "dgSpecHash": "Tq+rgngKfGs6SPI/XDAaI2QSnVrhODf1EiTqUTEFATCTgq8v9pvKtFGz+9Y3fqf4ytshSJsdykRADz3JgPzdPg==",
   "success": true,
   "projectFilePath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Samples\\GTKSystemWinFormsApp11\\GTKSystemWinFormsApp11.csproj",
   "expectedPackageFiles": [
@@ -10,7 +10,7 @@
     "C:\\Users\\chj\\.nuget\\packages\\giosharp\\3.24.24.95\\giosharp.3.24.24.95.nupkg.sha512",
     "C:\\Users\\chj\\.nuget\\packages\\glibsharp\\3.24.24.95\\glibsharp.3.24.24.95.nupkg.sha512",
     "C:\\Users\\chj\\.nuget\\packages\\gtksharp\\3.24.24.95\\gtksharp.3.24.24.95.nupkg.sha512",
-    "C:\\Users\\chj\\.nuget\\packages\\gtksystem.windows.forms\\1.3.24.20\\gtksystem.windows.forms.1.3.24.20.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\gtksystem.windows.forms\\1.3.24.22\\gtksystem.windows.forms.1.3.24.22.nupkg.sha512",
     "C:\\Users\\chj\\.nuget\\packages\\gtksystem.windows.formsdesigner\\1.0.0.4\\gtksystem.windows.formsdesigner.1.0.0.4.nupkg.sha512",
     "C:\\Users\\chj\\.nuget\\packages\\microsoft.build.framework\\17.1.0\\microsoft.build.framework.17.1.0.nupkg.sha512",
     "C:\\Users\\chj\\.nuget\\packages\\microsoft.build.utilities.core\\17.1.0\\microsoft.build.utilities.core.17.1.0.nupkg.sha512",
