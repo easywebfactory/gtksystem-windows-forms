@@ -1,15 +1,12 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
 using System.Windows.Forms.GtkRender;
-using Atk;
-using GLib;
+using System.Linq;
 using Gtk;
-using Pango;
+using System.Data;
+using GLib;
+
 
 namespace System.Windows.Forms
 {
@@ -24,14 +21,15 @@ namespace System.Windows.Forms
             this.dataGridView.Columns.Invalidate();
         }
 
-        private void AddGtkStore(params CellValue[] values)
+        private TreeIter AddGtkStore(List<CellValue> values)
         {
             TreeIter iter = this.dataGridView.Store.AppendNode();
             int columnscount = this.dataGridView.Store.NColumns;
             for (int idx = 0; idx < columnscount; idx++)
             {
-                this.dataGridView.Store.SetValue(iter, idx, idx < values.Length ? values[idx] : new CellValue());
+                this.dataGridView.Store.SetValue(iter, idx, idx < values.Count ? values[idx] : new CellValue());
             }
+            return iter;
         }
 
         private void AddGtkStore(params DataGridViewRow[] dataGridViewRows)
@@ -39,39 +37,42 @@ namespace System.Windows.Forms
             foreach (DataGridViewRow row in dataGridViewRows)
             {
                 row.DataGridView = dataGridView;
-                AddGtkStore(row.Cells.ConvertAll(c =>
+                TreeIter iter = AddGtkStore(row.Cells.ConvertAll(c =>
                 {
                     if (row.DefaultCellStyle != null && row.DefaultCellStyle.BackColor.Name != "0" && row.DefaultCellStyle.BackColor.Name != "")
                         return new CellValue() { Text = Convert.ToString(c.Value), Background = row.DefaultCellStyle.BackColor };
                     else
                         return new CellValue() { Text = Convert.ToString(c.Value) };
-                }).ToArray());
+                }));
+                row.Handler = iter.UserData;
             }
             if (this.dataGridView.Store.NColumns < this.dataGridView.TreeView.Columns.Length)
                 this.dataGridView.Columns.Invalidate();
         }
-        private void InsertGtkStore(int rowIndex, params CellValue[] values)
+        private TreeIter InsertGtkStore(int rowIndex, List<CellValue> values)
         {
             TreeIter iter = this.dataGridView.Store.InsertNode(rowIndex);
             int columnscount = this.dataGridView.Store.NColumns;
-            for (int idx = 0; idx < columnscount && idx < values.Length; idx++)
+            for (int idx = 0; idx < columnscount && idx < values.Count; idx++)
             {
                 this.dataGridView.Store.SetValue(iter, idx, values[idx]);
             }
+            return iter;
         }
         private void InsertGtkStore(int rowIndex, params DataGridViewRow[] dataGridViewRows)
         {
             int idx = rowIndex;
             foreach (DataGridViewRow row in dataGridViewRows)
             {
-                InsertGtkStore(idx, row.Cells.ConvertAll(c =>
+                TreeIter iter = InsertGtkStore(idx, row.Cells.ConvertAll(c =>
                 {
                     if (row.DefaultCellStyle != null && row.DefaultCellStyle.BackColor.Name != "0")
                         return new CellValue() { Text = Convert.ToString(c.Value), Background = row.DefaultCellStyle.BackColor };
                     else
                         return new CellValue() { Text = Convert.ToString(c.Value) };
-                }).ToArray());
+                }));
                 idx++;
+                row.Handler = iter.UserData;
             }
         }
         public DataGridViewRow this[int index]
@@ -350,6 +351,15 @@ namespace System.Windows.Forms
         }
         public DataGridViewRow SharedRow(int rowIndex)
         {
+            bool hasiter = dataGridView.Store.GetIter(out TreeIter iter,new TreePath(new int[] { rowIndex }));
+            if (hasiter)
+            {
+                foreach (DataGridViewRow item in items)
+                {
+                    if(item.Handler==iter.UserData)
+                        return item;
+                }
+            }
             return (DataGridViewRow)SharedList[rowIndex];
         }
         //**************************************

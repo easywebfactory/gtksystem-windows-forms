@@ -121,10 +121,6 @@ namespace System.Windows.Forms
             return items.Add(dataGridViewCell);
         }
 
-        //public void Clear()
-        //{
-        //    items.Clear();
-        //}
         public virtual void AddRange(params DataGridViewCell[] dataGridViewCells)
         {
             if (dataGridViewCells == null)
@@ -151,6 +147,10 @@ namespace System.Windows.Forms
                 dataGridViewCell2.OwningRowInternal = owner;
                 items.Add(dataGridViewCell2);
             }
+        }
+        public override int Count
+        {
+            get { return items.Count; }
         }
         public virtual void Clear()
         {

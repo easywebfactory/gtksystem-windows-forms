@@ -3,6 +3,7 @@
     public class DataGridViewRow
     {
         public int Index { get; internal set; }
+        public IntPtr Handler { get; internal set; }
         public DataGridView DataGridView { get; set; }
         private DataGridViewCellCollection _cell;
         public DataGridViewRow()

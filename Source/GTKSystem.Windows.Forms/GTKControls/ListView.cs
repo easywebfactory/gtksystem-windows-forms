@@ -560,7 +560,29 @@ namespace System.Windows.Forms
             if (Click != null)
                 Click(this, args);
         }
-
+        public void Sort()
+        {
+            foreach (Gtk.Box vbox in flowBoxContainer.AllChildren)
+            {
+                foreach (var flow in vbox.AllChildren)
+                {
+                    if (flow is Gtk.FlowBox _flow)
+                    {
+                        _flow.InvalidateSort();
+                    }
+                }
+            }
+        }
+        private bool IsCacheUpdate;
+        public void BeginUpdate()
+        {
+            IsCacheUpdate = true;
+        }
+        public void EndUpdate()
+        {
+            IsCacheUpdate = false;
+            self.ShowAll();
+        }
         public class CheckedIndexCollection : List<int>
 		{
 			 
@@ -837,7 +859,8 @@ namespace System.Windows.Forms
                         _owner.AddGroup(item.Group, index);
                     }
                     _owner.AddItem(item, position);
-                    _owner.self.ShowAll();
+                    if (_owner.IsCacheUpdate == false)
+                        _owner.self.ShowAll();
                 }
             }
             public void AddRange(ListViewItem[] items)
@@ -1067,12 +1090,7 @@ namespace System.Windows.Forms
 			throw null;
 		}
 
-		public void Sort()
-		{
-			 
-		}
-
-		public event ColumnClickEventHandler ColumnClick;
+        public event ColumnClickEventHandler ColumnClick;
         public event ColumnReorderedEventHandler ColumnReordered;
         public event ItemCheckEventHandler ItemCheck;
         public event ItemCheckedEventHandler ItemChecked;

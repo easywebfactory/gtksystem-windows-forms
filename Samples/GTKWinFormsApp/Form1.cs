@@ -242,6 +242,8 @@ namespace GTKWinFormsApp
         {
             //7
             Console.WriteLine("dataGridView1_CellValidated");
+        
+            Console.WriteLine(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
         }
 
         private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
