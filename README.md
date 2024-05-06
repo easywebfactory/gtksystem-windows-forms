@@ -119,8 +119,8 @@ GTKWinFormsApp.runtimeconfig.json
 #### 工具栏菜单
 ![输入图片说明](/pic/toolstrip.jpeg)
 
-#### 窗口背景
-![输入图片说明](/pic/backgroundimage.jpg)
+#### 图文窗口
+![输入图片说明](/pic/listview.png)
 
 #### 交流/合作/商务/赞助
 QQ群：236066073

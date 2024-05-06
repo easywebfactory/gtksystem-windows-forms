@@ -101,7 +101,7 @@ namespace GTKWinFormsApp
             listView1.Sorting = SortOrder.Descending;
             listView1.TabIndex = 13;
             listView1.UseCompatibleStateImageBehavior = false;
-            listView1.View = View.Details;
+            listView1.View = View.SmallIcon;
             listView1.ColumnClick += listView1_ColumnClick;
             listView1.ColumnReordered += listView1_ColumnReordered;
             listView1.ItemCheck += listView1_ItemCheck;
