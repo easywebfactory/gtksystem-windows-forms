@@ -160,9 +160,9 @@ QQ群：236066073
 
 #### 更新日志
  ## 2024/5/11
-    1. 修正form启动时窗口大小异常
-    2. button增加image属性图片
-    3. 修正控件背景位置
+   1. 修正form启动时窗口大小异常
+   2. button增加image属性图片
+   3. 修正控件背景位置
  ## 2024/5/6
    1. 完善treeview、listview功能
    2. 新增开发工具GTKSystem.Windows.FormsDesigner.dll(NuGet安装)，编译时自动检查并修正窗体设计器配置
