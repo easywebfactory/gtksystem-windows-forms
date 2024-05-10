@@ -389,7 +389,11 @@ namespace GTKWinFormsApp
         private void button7_Click(object sender, EventArgs e)
         {
             Form2 form = new Form2();
-            form.ShowDialog(this);
+            DialogResult result = form.ShowDialog(this);
+            if (result == DialogResult.None || result == DialogResult.Cancel)
+            {
+               // MessageBox.Show("关闭窗口返回");
+            }
             //form.Show();
         }
 

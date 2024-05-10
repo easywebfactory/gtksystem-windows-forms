@@ -28,7 +28,7 @@ namespace System.Windows.Forms
 
         private void Self_Shown(object sender, EventArgs e)
         {
-            UpdateStyle();
+            //UpdateStyle();
             int width = Width;
             int height = Height;
             if (this.MaximumSize.Width > 0)

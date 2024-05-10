@@ -15,13 +15,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("RadioButton");
-            //self.Override.AddClass("BackgroundTransparent");
         }
         internal RadioButtonBase(Gtk.RadioButton radio_group_member) : base(radio_group_member)
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("RadioButton");
-            //self.Override.AddClass("BackgroundTransparent");
         }
         public void AddClass(string cssClass)
         {
@@ -34,7 +32,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         }
         protected override bool OnDrawn(Cairo.Context cr)
         {
-            Gdk.Rectangle rec = this.Allocation;
+            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
             Override.OnDrawnBackground(cr, rec);
             Override.OnPaint(cr, rec);
             return base.OnDrawn(cr);

@@ -58,29 +58,21 @@ namespace System.Windows.Forms
             }
             __ownerControl.ShowAll();
         }
-        Gtk.Layout statusbarlayout = new Gtk.Layout(new Gtk.Adjustment(1, 1, 100, 1, 0, 1), new Gtk.Adjustment(1, 1, 100, 1, 0, 1));
         private void AddToWidget(object item)
         {
             if (item is StatusStrip statusbar)
             {
-                if (statusbarlayout.Parent is null && __owner is Form form)
+                if (__owner is Form form)
                 {
-                    statusbarlayout.Halign = Gtk.Align.Fill;
-                    statusbarlayout.Valign = Gtk.Align.Fill;
-                    statusbarlayout.Expand = false;
-                    statusbarlayout.HeightRequest = 35;
                     statusbar.self.Halign = Gtk.Align.Fill;
                     statusbar.self.Valign = Gtk.Align.Fill;
-                    statusbar.self.Expand = false;
-                    statusbarlayout.Child = statusbar.self;
-                    form.self.ResizeChecked += Self_ResizeChecked;
-                    form.self.ContentArea.PackEnd(statusbarlayout, false, true, 0);
+                    statusbar.self.Expand = true;
+                    form.self.StatusBar.NoShowAll = false;
+                    form.self.StatusBar.Visible = true;
+                    form.self.StatusBar.HeightRequest = 35;
+                    form.self.StatusBar.Child = statusbar.self;
+                    form.self.StatusBar.ShowAll();
                 }
-                else
-                {
-                    statusbarlayout.Child = statusbar.self;
-                }
-                statusbarlayout.ShowAll();
             }
             else if (item is Control control)
             {
@@ -99,14 +91,6 @@ namespace System.Windows.Forms
                     layoutContainer.Put(widget, widget.Allocation.X, widget.Allocation.Y);
                 else
                     __ownerControl.Add(widget);
-            }
-        }
-        private void Self_ResizeChecked(object sender, EventArgs e)
-        {
-            foreach (Gtk.MenuBar bar in statusbarlayout.Children)
-            {
-                if (bar.WidthRequest != statusbarlayout.AllocatedWidth)
-                    bar.WidthRequest = statusbarlayout.AllocatedWidth;
             }
         }
         public override int Add(object item)

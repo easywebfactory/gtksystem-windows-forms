@@ -222,7 +222,7 @@ namespace System.Windows.Forms
             int irun = 0;
             if (owner is System.Windows.Forms.Form control)
             {
-                //irun = ShowMessageDialogCore(control.Control, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon, defaultButton, options, showHelp);
+                //irun = ShowMessageDialogCore(control.self, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon, defaultButton, options, showHelp);
                 irun = ShowCore((Gtk.Window)control.Widget, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon);
             }
             else
@@ -277,6 +277,7 @@ namespace System.Windows.Forms
             dia.StyleContext.AddClass("BorderRadiusStyle");
             dia.BorderWidth = 10;
             dia.KeepAbove = true;
+            dia.KeepBelow = false;
             dia.Title = caption;
             dia.Response += Dia_Response;
             return dia.Run();
@@ -286,6 +287,8 @@ namespace System.Windows.Forms
         {
             Gtk.Dialog dia = new Gtk.Dialog(caption, owner, Gtk.DialogFlags.DestroyWithParent);
             dia.KeepAbove = true;
+            dia.KeepBelow = false;
+            dia.TypeHint = Gdk.WindowTypeHint.Dialog;
             dia.SetPosition(position);
             dia.StyleContext.AddClass("MessageBox");
             dia.StyleContext.AddClass("BorderRadiusStyle");

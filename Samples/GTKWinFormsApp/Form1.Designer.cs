@@ -37,12 +37,12 @@ namespace GTKWinFormsApp
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            TreeNode treeNode19 = new TreeNode("Node21");
-            TreeNode treeNode20 = new TreeNode("Node22");
-            TreeNode treeNode21 = new TreeNode("Node2", new TreeNode[] { treeNode19, treeNode20 });
-            TreeNode treeNode22 = new TreeNode("Node3");
-            TreeNode treeNode23 = new TreeNode("Node0", new TreeNode[] { treeNode21, treeNode22 });
-            TreeNode treeNode24 = new TreeNode("Node1");
+            TreeNode treeNode1 = new TreeNode("Node21");
+            TreeNode treeNode2 = new TreeNode("Node22");
+            TreeNode treeNode3 = new TreeNode("Node2", new TreeNode[] { treeNode1, treeNode2 });
+            TreeNode treeNode4 = new TreeNode("Node3");
+            TreeNode treeNode5 = new TreeNode("Node0", new TreeNode[] { treeNode3, treeNode4 });
+            TreeNode treeNode6 = new TreeNode("Node1");
             button1 = new Button();
             comboBox1 = new ComboBox();
             textBox1 = new TextBox();
@@ -121,7 +121,10 @@ namespace GTKWinFormsApp
             // button1
             // 
             button1.BackColor = System.Drawing.Color.Gold;
+            button1.BackgroundImage = Properties.Resources.timg;
+            button1.BackgroundImageLayout = ImageLayout.Stretch;
             button1.ForeColor = System.Drawing.Color.Red;
+            button1.Image = Properties.Resources.timg;
             button1.Location = new System.Drawing.Point(317, 148);
             button1.Margin = new Padding(4);
             button1.Name = "button1";
@@ -255,7 +258,7 @@ namespace GTKWinFormsApp
             groupBox1.Size = new System.Drawing.Size(1339, 167);
             groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
-            groupBox1.Text = "groupBox1";
+            groupBox1.Text = "分组框标题";
             // 
             // button7
             // 
@@ -586,23 +589,22 @@ namespace GTKWinFormsApp
             // 
             // treeView1
             // 
-            //treeView1.BackColor = System.Drawing.Color.Tomato;
             treeView1.Location = new System.Drawing.Point(127, 66);
             treeView1.Margin = new Padding(4);
             treeView1.Name = "treeView1";
-            treeNode19.Name = "";
-            treeNode19.Text = "Node21";
-            treeNode20.Name = "";
-            treeNode20.Text = "Node22";
-            treeNode21.Name = "Node2";
-            treeNode21.Text = "Node2";
-            treeNode22.Name = "Node3";
-            treeNode22.Text = "Node3";
-            treeNode23.Name = "Node0";
-            treeNode23.Text = "Node0";
-            treeNode24.Name = "Node1";
-            treeNode24.Text = "Node1";
-            treeView1.Nodes.AddRange(new TreeNode[] { treeNode23, treeNode24 });
+            treeNode1.Name = "";
+            treeNode1.Text = "Node21";
+            treeNode2.Name = "";
+            treeNode2.Text = "Node22";
+            treeNode3.Name = "Node2";
+            treeNode3.Text = "Node2";
+            treeNode4.Name = "Node3";
+            treeNode4.Text = "Node3";
+            treeNode5.Name = "Node0";
+            treeNode5.Text = "Node0";
+            treeNode6.Name = "Node1";
+            treeNode6.Text = "Node1";
+            treeView1.Nodes.AddRange(new TreeNode[] { treeNode5, treeNode6 });
             treeView1.Size = new System.Drawing.Size(154, 113);
             treeView1.TabIndex = 4;
             treeView1.AfterCollapse += treeView1_AfterCollapse;
@@ -784,9 +786,9 @@ namespace GTKWinFormsApp
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
+            BackColor = System.Drawing.Color.AliceBlue;
             BackgroundImage = Properties.Resources.timg;
             BackgroundImageLayout = ImageLayout.Stretch;
-            BackColor = System.Drawing.Color.AliceBlue;
             ClientSize = new System.Drawing.Size(1360, 743);
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(groupBox1);
@@ -794,10 +796,8 @@ namespace GTKWinFormsApp
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Margin = new Padding(4);
+            MinimizeBox = false;
             Name = "Form1";
-            Opacity = 1D;
-            MaximizeBox = true;
-            MinimizeBox=false;
             Text = "C# winform gtk效果";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox1.ResumeLayout(false);

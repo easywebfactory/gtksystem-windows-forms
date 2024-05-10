@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -104,7 +105,41 @@ namespace GTKSystem.Windows.Forms.Utility
             ctx.Paint();
             ctx.Restore();
         }
+        public static void DrawImage(Cairo.Context ctx, Gdk.Pixbuf img, Gdk.Rectangle rec, ContentAlignment ImageAlign)
+        {
+            ctx.Save();
+            if (ImageAlign == ContentAlignment.TopLeft)
+                ctx.Translate(rec.X, rec.Y);
+            else if (ImageAlign == ContentAlignment.TopCenter)
+                ctx.Translate((img.Width - rec.Width) / 2 + rec.X, rec.Y);
+            else if (ImageAlign == ContentAlignment.TopRight)
+                ctx.Translate((img.Width - rec.Width) + rec.X, rec.Y);
+            else if (ImageAlign == ContentAlignment.MiddleLeft)
+                ctx.Translate(rec.X, (img.Height - rec.Height) / 2 + rec.Y);
+            else if (ImageAlign == ContentAlignment.MiddleCenter)
+                ctx.Translate((img.Width - rec.Width) / 2 + rec.X, (img.Height - rec.Height) / 2 + rec.Y);
+            else if (ImageAlign == ContentAlignment.MiddleRight)
+                ctx.Translate((img.Width - rec.Width) + rec.X, (img.Height - rec.Height) / 2 + rec.Y);
+            else if (ImageAlign == ContentAlignment.BottomLeft)
+                ctx.Translate(rec.X, (img.Height - rec.Height) + rec.Y);
+            else if (ImageAlign == ContentAlignment.BottomCenter)
+                ctx.Translate((img.Width - rec.Width)/2 + rec.X, (img.Height - rec.Height) + rec.Y);
+            else if (ImageAlign == ContentAlignment.BottomRight)
+                ctx.Translate((img.Width - rec.Width) + rec.X, (img.Height - rec.Height) + rec.Y);
+            else
+                ctx.Translate(rec.X, rec.Y);
 
+            Gdk.CairoHelper.SetSourcePixbuf(ctx, img, 0, 0);
+            using (var p = ctx.GetSource())
+            {
+                if (p is Cairo.SurfacePattern pattern)
+                {
+                    pattern.Filter = Cairo.Filter.Fast;
+                }
+            }
+            ctx.Paint();
+            ctx.Restore();
+        }
         /// <summary>
         /// PictureBox图像显示模式
         /// </summary>

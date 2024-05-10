@@ -13,7 +13,7 @@ namespace System.Windows.Forms
         }
 
         private static string appDataDirectory { get {
-                string[] assemblyFullName = Assembly.GetExecutingAssembly().FullName.Split(",");
+                string[] assemblyFullName = Assembly.GetCallingAssembly().FullName.Split(",");
                 string _namespace = assemblyFullName[0];
                 string _version = assemblyFullName[1].Split("=")[1];
                 return $"{_namespace}\\{Assembly.GetExecutingAssembly().GetName().Name}\\{_version}";
@@ -133,7 +133,7 @@ namespace System.Windows.Forms
 
 
 .Form {border-width:0px;padding:0px;margin:0px;}
-.ScrollForm {border-right:solid 15px #F6F5F4;}
+.ScrollForm {border-right:solid 15px #e6e5e4;}
 
 .MessageBox{}
 .MessageBox button{margin:10px;border-radius:0px;}
@@ -181,17 +181,17 @@ namespace System.Windows.Forms
 .ComboBox{border-width:0px;padding:0px;}
 .ComboBox button{padding:0px;}
 .ComboBox entry{padding:0px;}
-.Panel{} 
+.Panel{border-width:0px;} 
 .SplitContainer.horizontal{border-width:1px;}
-.UserControl{border-width:0px;}
-.GroupBox{background-color:#F6F5F4;} 
+.GroupBox{border-color:#DCDCDC;} 
 .TableLayoutPanel viewport{border:solid 1px #eeeeee;}
 .FlowLayoutPanel{}
 .ToolStrip{padding:0px;background:linear-gradient(#fefefd,#efefef);border-width:0px;background-color:#F6F5F4;} 
 .ToolStrip viewport{border-width:0px;} 
 .ToolStripMenuItemNoChecked check{color:transparent;opacity:0;} 
+.UserControl{border-width:0px;}
 
-.StatusStrip{padding:0px;border-top:solid 1px #cccccc;background-image:linear-gradient(#eeeeee,#ececec);border-top:solid 1px #cccccc;}
+.StatusStrip{padding:0px;background-image:linear-gradient(#ECECEC,#e7e5e3,#e7e5e3); border-width:0px; border-top:solid 1px #c6c6c6;}
 .StatusStrip viewport{border-width:0px;} 
 
 .MenuStrip{padding:0px;background-color:#F6F5F4;background-image:none;border-width:0px;}

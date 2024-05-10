@@ -11,7 +11,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("ToolStrip");
-            //self.Override.AddClass("BackgroundTransparent");
             this.Hexpand = false;
             this.Vexpand = false;
             this.Valign = Gtk.Align.Start;
@@ -34,7 +33,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         //}
         //protected override bool OnDrawn(Cairo.Context cr)
         //{
-        //    Gdk.Rectangle rec = this.Allocation;
+        //    Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
         //    Override.OnDrawnBackground(cr, rec);
         //    Override.OnPaint(cr, rec);
         //    return base.OnDrawn(cr);

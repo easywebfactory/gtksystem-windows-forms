@@ -57,53 +57,11 @@ namespace System.Windows.Forms
             self.ScrollArea.Child = background;
             _ObjectCollection = new ObjectCollection(this, _body);
 
-            self.Mapped += Self_Mapped;
             self.ResizeChecked += Form_ResizeChecked;
             self.ButtonReleaseEvent += Body_ButtonReleaseEvent;
 
             self.Shown += Control_Shown;
             self.DeleteEvent += Control_DeleteEvent;
-        }
-        private void Self_Mapped(object sender, EventArgs e)
-        {
-            //Console.WriteLine("Self_Mapped");
-            if (this.MaximizeBox == false && this.MinimizeBox == false)
-            {
-                self.TypeHint = Gdk.WindowTypeHint.Dialog;
-            }
-            else if (this.MaximizeBox == false && this.MinimizeBox == true)
-            {
-                self.Resizable = false;
-            }
-            try
-            {
-                if (this.ShowIcon)
-                {
-                    if (this.Icon != null)
-                    {
-                        if (this.Icon.Pixbuf != null)
-                            self.Icon = this.Icon.Pixbuf;
-                        else if (this.Icon.PixbufData != null)
-                            self.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
-                        else if (this.Icon.FileName != null && System.IO.File.Exists(this.Icon.FileName))
-                            self.SetIconFromFile(this.Icon.FileName);
-                        else if (this.Icon.FileName != null && System.IO.File.Exists("Resources\\" + this.Icon.FileName))
-                            self.SetIconFromFile("Resources\\" + this.Icon.FileName);
-                    }
-                }
-                else
-                {
-                    System.IO.Stream sm = typeof(System.Windows.Forms.Form).Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.view-more.png");
-                    self.Icon = new Gdk.Pixbuf(sm);
-                }
-            }
-            catch
-            {
-
-            }
-
-            if (Load != null)
-                Load(this, e);
         }
         public override Drawing.Image BackgroundImage { get => background.Override.BackgroundImage; set { background.Override.BackgroundImage = value; } }
         public override ImageLayout BackgroundImageLayout { get => background.Override.BackgroundImageLayout; set { background.Override.BackgroundImageLayout = value; } }
@@ -152,8 +110,8 @@ namespace System.Windows.Forms
                 {
                     resizeWidth = self.AllocatedWidth;
                     resizeHeight = self.AllocatedHeight;
-                    _body.WidthRequest = self.AllocatedWidth - (AutoScroll ? 18 : 0); //留出滚动条位置
-                    _body.HeightRequest = self.AllocatedHeight - (AutoScroll ? 18 : 0);
+                    _body.WidthRequest = self.AllocatedWidth - (AutoScroll ? 15 : 0); //留出滚动条位置
+                    _body.HeightRequest = self.AllocatedHeight - (AutoScroll ? 15 : 0);
                     int widthIncrement = self.AllocatedWidth - self.DefaultSize.Width;
                     int heightIncrement = self.AllocatedHeight - self.DefaultSize.Height;
                     ResizeControls(widthIncrement, heightIncrement, _body, false, null);
@@ -275,6 +233,13 @@ namespace System.Windows.Forms
             }
             return control.Parent;
         }
+
+        private void OnLoad()
+        {
+            if (Load != null)
+                Load(this, new EventArgs());
+        }
+
         public override void Show()
         {
             this.Show(null);
@@ -300,6 +265,7 @@ namespace System.Windows.Forms
             {
                 this.Parent = parent;
             }
+            OnLoad();
 
             _body.WidthRequest = this.Width;
             _body.HeightRequest = this.Height;
@@ -314,8 +280,23 @@ namespace System.Windows.Forms
                 self.ScrollArea.HscrollbarPolicy = PolicyType.External;
                 self.ScrollArea.VscrollbarPolicy = PolicyType.External;
             }
-            self.Resizable = this.FormBorderStyle == FormBorderStyle.Sizable || this.FormBorderStyle == FormBorderStyle.SizableToolWindow;
-            
+
+            this.FormBorderStyle = this.FormBorderStyle;
+            if (this.MaximizeBox == false && this.MinimizeBox == false)
+            {
+                self.TypeHint = Gdk.WindowTypeHint.Dialog;
+            }
+            else if (this.MaximizeBox == false && this.MinimizeBox == true)
+            {
+                self.Resizable = false;
+            }
+
+            if(self.Resizable==false)
+            {
+                self.WidthRequest = self.DefaultSize.Width;
+                self.HeightRequest = self.DefaultSize.Height;
+            }
+
             if (this.WindowState == FormWindowState.Maximized)
             {
                 self.Maximize();
@@ -324,6 +305,34 @@ namespace System.Windows.Forms
             {
                 self.Iconify();
             }
+
+            try
+            {
+                if (this.ShowIcon)
+                {
+                    if (this.Icon != null)
+                    {
+                        if (this.Icon.Pixbuf != null)
+                            self.Icon = this.Icon.Pixbuf;
+                        else if (this.Icon.PixbufData != null)
+                            self.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
+                        else if (this.Icon.FileName != null && System.IO.File.Exists(this.Icon.FileName))
+                            self.SetIconFromFile(this.Icon.FileName);
+                        else if (this.Icon.FileName != null && System.IO.File.Exists("Resources\\" + this.Icon.FileName))
+                            self.SetIconFromFile("Resources\\" + this.Icon.FileName);
+                    }
+                }
+                else
+                {
+                    System.IO.Stream sm = typeof(System.Windows.Forms.Form).Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.view-more.png");
+                    self.Icon = new Gdk.Pixbuf(sm);
+                }
+            }
+            catch
+            {
+
+            }
+
             self.ShowAll();
         }
 
@@ -347,7 +356,6 @@ namespace System.Windows.Forms
             {
                 throw new InvalidOperationException("ShowDialogOnDisabled");
             }
-
             Show(owner);
             int irun = self.Run();
 

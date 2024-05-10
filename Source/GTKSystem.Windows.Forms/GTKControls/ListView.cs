@@ -581,6 +581,7 @@ namespace System.Windows.Forms
         public void EndUpdate()
         {
             IsCacheUpdate = false;
+            self.Window.ProcessUpdates(true);
             self.ShowAll();
         }
         public class CheckedIndexCollection : List<int>

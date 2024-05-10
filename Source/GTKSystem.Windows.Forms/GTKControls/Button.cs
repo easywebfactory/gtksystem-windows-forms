@@ -6,8 +6,11 @@
  * date: 2024/1/3
  */
 
+using Atk;
+using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+using GTKSystem.Windows.Forms.Utility;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -22,25 +25,25 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         public Button() : base()
         {
-            //self.Override.DrawnBackground += Control_DrawnBackground;
-        }
 
-        private void Control_DrawnBackground(object o, DrawnArgs args)
-        {
-            Gdk.Rectangle rec = Widget.Allocation;
-            Graphics g = new Graphics(this.Widget, args.Cr, rec);
-            using SolidBrush brush = new SolidBrush(Color.Yellow);
-            g.FillRectangle(brush, new Rectangle(0, 0, rec.Width, rec.Height));
-            using SolidBrush brush2 = new SolidBrush(Color.White);
-            g.DrawEllipse(new Pen(brush2, 5), new Rectangle(10, 10, 30, 20));
         }
-
         public override string Text { get => self.Label; set => self.Label = value; }
-        
+
         public override event EventHandler Click
         {
             add { self.Clicked += value; }
             remove { self.Clicked -= value; }
         }
+        private System.Drawing.Image _image;
+        public System.Drawing.Image Image
+        {
+            get { return _image; }
+            set
+            {
+                _image = value;
+                self.Override.Image = new Bitmap(value.PixbufData);
+            }
+        }
+        public System.Drawing.ContentAlignment ImageAlign { get; set; }
     }
 }

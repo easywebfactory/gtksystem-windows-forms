@@ -1,7 +1,9 @@
-﻿using Gtk;
+﻿using GLib;
+using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows.Forms.Design;
 
@@ -22,7 +24,7 @@ namespace System.Windows.Forms
         public virtual Gtk.Container GtkContainer { get => GtkControl as Gtk.Container; }
         public IControlGtk ISelf { get => (IControlGtk)GtkControl; }
         public virtual object GtkControl { get; protected set; }
-
+        CssProvider provider = new CssProvider();
         public Control()
         {
             this.unique_key = Guid.NewGuid().ToString();
@@ -43,13 +45,16 @@ namespace System.Windows.Forms
                 widget.LeaveNotifyEvent += Widget_LeaveNotifyEvent;
                 widget.MotionNotifyEvent += Widget_MotionNotifyEvent;
                 widget.GrabNotify += Widget_GrabNotify;
-                widget.StateChanged += Widget_StateChanged;
+                widget.Realized += Widget_Realized;
                 widget.WidgetEventAfter += Widget_WidgetEventAfter;
+
+                this.Widget.StyleContext.AddProvider(provider, 900);
+                this.Widget.StyleContext.AddClass("forestyle");
             }
         }
+        #region events
         private void Widget_WidgetEventAfter(object o, WidgetEventAfterArgs args)
         {
-            //Console.WriteLine($"Widget_WidgetEventAfter：{args.Event.Type.ToString()}");
             if (args.Event.Type == Gdk.EventType.KeyPress)
             {
                 if (KeyDown != null)
@@ -61,23 +66,16 @@ namespace System.Windows.Forms
                     }
                 }
             }
-            else if (args.Event.Type == Gdk.EventType.Configure)
-            {
-                UpdateStyle();
-                //到这里控件创建完成、控件布局完成
-                if (Load != null)
-                    Load(this, args);
-            }
         }
- 
-        private void Widget_StateChanged(object o, Gtk.StateChangedArgs args)
+
+        private void Widget_Realized(object sender, EventArgs e)
         {
-            //Console.WriteLine($"Widget_StateChanged：{args.PreviousState.ToString()}");
+            UpdateForeStyle();
+            if (Load != null)
+                Load(this, e);
         }
- 
         private void Widget_GrabNotify(object o, GrabNotifyArgs args)
         {
-            //Console.WriteLine($"Widget_GrabNotify：{args.WasGrabbed.ToString()}");
             if (Validating != null && args.WasGrabbed == false)
                 Validating(this, cancelEventArgs);
             if (Validated != null && args.WasGrabbed == true)
@@ -86,7 +84,6 @@ namespace System.Windows.Forms
 
         private void Widget_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
-            //Console.WriteLine($"Widget_ButtonPressEvent：{args.Event.Type.ToString()},Detail:{args.Event.Device.Name.ToString()}");
             if (MouseDown != null)
             {
                 MouseButtons result = MouseButtons.None;
@@ -101,14 +98,12 @@ namespace System.Windows.Forms
         }
         private void Widget_FocusOutEvent(object o, FocusOutEventArgs args)
         {
-            //Console.WriteLine($"Widget_FocusOutEvent：{args.Event.Type.ToString()}");
             if (LostFocus != null)
                 LostFocus(this, args);
         }
 
         private void Widget_MotionNotifyEvent(object o, MotionNotifyEventArgs args)
         {
-           // Console.WriteLine($"Widget_MotionNotifyEvent：{args.Event.Type.ToString()},Detail:{args.Event.Device.Name.ToString()}");
             if (Move != null)
                 Move(this, args);
             if (MouseMove != null)
@@ -117,7 +112,6 @@ namespace System.Windows.Forms
 
         private void Widget_LeaveNotifyEvent(object o, LeaveNotifyEventArgs args)
         {
-            //Console.WriteLine($"Widget_LeaveNotifyEvent：{args.Event.Type.ToString()},Detail:{args.Event.Detail.ToString()}");
             if (Leave != null)
                 Leave(this, args);
             if (MouseHover != null)
@@ -126,7 +120,6 @@ namespace System.Windows.Forms
 
         private void Widget_KeyReleaseEvent(object o, KeyReleaseEventArgs args)
         {
-            //Console.WriteLine($"Widget_KeyReleaseEvent：{args.Event.Key.ToString()}");
             if (KeyUp != null)
             {
                 Keys keys = (Keys)args.Event.HardwareKeycode;
@@ -136,7 +129,6 @@ namespace System.Windows.Forms
 
         private void Widget_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
         {
-            //Console.WriteLine($"Widget_KeyPressEvent：{args.Event.Key.ToString()}");
             if (KeyPress != null)
             {
                 Keys keys = (Keys)args.Event.HardwareKeycode;
@@ -146,14 +138,12 @@ namespace System.Windows.Forms
 
         private void Widget_FocusInEvent(object o, FocusInEventArgs args)
         {
-            //Console.WriteLine($"Widget_FocusInEvent：{args.Event.Type.ToString()}");
             if (GotFocus != null)
                 GotFocus(this, args);
         }
 
         private void Widget_EnterNotifyEvent(object o, EnterNotifyEventArgs args)
         {
-            //Console.WriteLine($"Widget_EnterNotifyEvent：{args.Event.Type.ToString()},ModifierType:{args.Event.State.ToString()},Detail:{args.Event.Detail.ToString()},Detail:{args.Event.Mode.ToString()}");
             if (Enter != null)
                 Enter(this, args);
             if (MouseEnter != null)
@@ -177,24 +167,25 @@ namespace System.Windows.Forms
                 MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0));
             }
         }
+        #endregion
 
         //===================
 
-        protected virtual void UpdateStyle()
+        protected virtual void UpdateForeStyle()
         {
-            SetStyle(this.Widget);
+            if (this.Widget != null && this.Widget.IsRealized)
+                SetStyle(this.Widget);
+        }
+        protected virtual void UpdateBackgroundStyle()
+        {
+            if (this.Widget != null && this.Widget.IsRealized)
+                ISelf.Override.OnAddClass();
         }
         protected virtual void SetStyle(Gtk.Widget widget)
         {
             Pango.AttrList attributes = new Pango.AttrList();
-            string stylename = $"s{unique_key}";
+            string stylename = $"forestyle";
             StringBuilder style = new StringBuilder();
-            if (this.BackColor.Name != "0")
-            {
-                string color = $"rgba({this.BackColor.R},{this.BackColor.G},{this.BackColor.B},{this.BackColor.A})";
-                style.AppendFormat("background-color:{0};background:{0};", color);
-                attributes.Insert(new Pango.AttrBackground(Convert.ToUInt16(this.BackColor.R * 257), Convert.ToUInt16(this.BackColor.G * 257), Convert.ToUInt16(this.BackColor.B * 257)));
-            }
             if (this.ForeColor.Name != "0")
             {
                 string color = $"rgba({this.ForeColor.R},{this.ForeColor.G},{this.ForeColor.B},{this.ForeColor.A})";
@@ -253,14 +244,17 @@ namespace System.Windows.Forms
                 css.AppendLine($".{stylename} text{{{style.ToString()}}}");
                 css.AppendLine($".{stylename} .view{{{style.ToString()}}}");
             }
-            CssProvider provider = new CssProvider();
+            css.AppendLine(".BGTransparent{padding:0px;background:transparent;background-color:transparent;}");
+            
             if (provider.LoadFromData(css.ToString()))
             {
-                widget.StyleContext.AddProvider(provider, 900);
-                widget.StyleContext.RemoveClass(stylename);
-                widget.StyleContext.AddClass(stylename);
+                //widget.StyleContext.AddProvider(provider, 900);
+                //widget.StyleContext.RemoveProvider(provider);
+                //widget.StyleContext.AddClass(stylename);
             }
         }
+        
+
         #region 背景
         public virtual bool UseVisualStyleBackColor { get; set; } = true;
         public virtual Color VisualStyleBackColor { get; }
@@ -278,8 +272,13 @@ namespace System.Windows.Forms
                     return Color.Transparent; 
             }
             set { 
-                ISelf.Override.BackColor = value; 
-                UpdateStyle(); 
+                ISelf.Override.BackColor = value;
+                ISelf.Override.OnAddClass();
+                if (Widget != null)
+                {
+                    Widget.AppPaintable = false;
+                    Widget.AppPaintable = true;
+                }
             }
         }
         public virtual event PaintEventHandler Paint
@@ -349,9 +348,13 @@ namespace System.Windows.Forms
 
         public virtual bool Focused { get { return Widget.IsFocus; } }
         private Font _Font;
-        public virtual Font Font { get => _Font; set { _Font = value; UpdateStyle(); } }
+        public virtual Font Font { get => _Font; 
+            set { _Font = value; UpdateForeStyle();} 
+        }
         private Color _ForeColor;
-        public virtual Color ForeColor { get => _ForeColor; set { _ForeColor = value; UpdateStyle(); } }
+        public virtual Color ForeColor { get => _ForeColor; 
+            set { _ForeColor = value; UpdateForeStyle(); } 
+        }
 
         public virtual bool HasChildren { get; }
 
@@ -592,32 +595,50 @@ namespace System.Windows.Forms
 
         public virtual void Invalidate()
         {
-
+            if (this.Widget != null)
+            {
+                this.Widget.Window.ProcessUpdates(true);
+            }
         }
 
         public virtual void Invalidate(bool invalidateChildren)
         {
-
+            if (this.Widget != null)
+            {
+                this.Widget.Window.ProcessUpdates(invalidateChildren);
+            }
         }
 
         public virtual void Invalidate(Rectangle rc)
         {
-
+            if (this.Widget != null)
+            {
+                this.Widget.Window.ProcessUpdates(true);
+            }
         }
 
         public virtual void Invalidate(Rectangle rc, bool invalidateChildren)
         {
-
+            if (this.Widget != null)
+            {
+                this.Widget.Window.ProcessUpdates(invalidateChildren);
+            }
         }
 
         public virtual void Invalidate(Drawing.Region region)
         {
-
+            if (this.Widget != null)
+            {
+                this.Widget.Window.ProcessUpdates(true);
+            }
         }
 
         public virtual void Invalidate(Drawing.Region region, bool invalidateChildren)
         {
-
+            if (this.Widget != null)
+            {
+                this.Widget.Window.ProcessUpdates(invalidateChildren);
+            }
         }
 
         public virtual object Invoke(Delegate method)

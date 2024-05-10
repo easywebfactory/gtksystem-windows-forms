@@ -15,13 +15,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("ComboBox");
-            //self.Override.AddClass("BackgroundTransparent");
         }
         internal ComboBoxBase(Gtk.ITreeModel model) : base(model)
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("ComboBox");
-            //self.Override.AddClass("BackgroundTransparent");
         }
         protected override void OnShown()
         {
@@ -30,7 +28,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         }
         protected override bool OnDrawn(Cairo.Context cr)
         {
-            Gdk.Rectangle rec = this.Allocation;
+            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
             Override.OnDrawnBackground(cr, rec);
             Override.OnPaint(cr, rec);
             return base.OnDrawn(cr);

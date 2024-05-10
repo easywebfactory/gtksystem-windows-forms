@@ -9,6 +9,9 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
     public sealed class FormBase : Gtk.Dialog, IControlGtk
     {
         public readonly Gtk.ScrolledWindow ScrollArea = new Gtk.ScrolledWindow();
+        public readonly Gtk.Layout StatusBar = new Gtk.Layout(new Gtk.Adjustment(1, 1, 100, 1, 0, 1), new Gtk.Adjustment(1, 1, 100, 1, 0, 1));
+        private readonly Gtk.Viewport StatusBarView = new Gtk.Viewport();
+
         public GtkControlOverride Override { get; set; }
         public FormBase() : base()
         {
@@ -25,8 +28,15 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             ScrollArea.HscrollbarPolicy = PolicyType.Always;
             ScrollArea.VscrollbarPolicy = PolicyType.Always;
             this.ContentArea.PackStart(ScrollArea, true, true, 0);
-
-            //this.ContentArea.PackEnd(new Gtk.Button("ddddddd"), false, true, 0);
+            StatusBar.Hexpand = true;
+            StatusBar.Vexpand = false;
+            StatusBar.Halign = Gtk.Align.Fill;
+            StatusBar.Valign = Gtk.Align.Fill;
+            StatusBar.NoShowAll = true;
+            StatusBar.Visible = false;
+            StatusBarView.StyleContext.AddClass("StatusStrip");
+            StatusBarView.Child = StatusBar;
+            this.ContentArea.PackEnd(StatusBarView, false, true, 0);
             // this.Decorated = false; //删除工具栏
         }
 
@@ -45,7 +55,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             //Console.WriteLine(args.ResponseId);
             if (args.ResponseId == ResponseType.DeleteEvent)
                 if (this.IsActive)
-                    this.OnClose();
+                    this.Destroy();
         }
 
         public void CloseWindow()

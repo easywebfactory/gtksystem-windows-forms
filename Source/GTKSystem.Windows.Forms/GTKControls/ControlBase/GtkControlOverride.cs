@@ -1,9 +1,10 @@
-﻿using Gtk;
+﻿
+using Gtk;
 using GTKSystem.Windows.Forms.Utility;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
@@ -18,20 +19,32 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 
         public event DrawnHandler DrawnBackground;
         public event PaintEventHandler Paint;
-        public Color? BackColor { get; set; }
+        public System.Drawing.Color? BackColor { get; set; }
         public System.Drawing.Image BackgroundImage { get; set; }
         public ImageLayout BackgroundImageLayout { get; set; }
+        public System.Drawing.Image Image { get; set; }
+        public System.Drawing.ContentAlignment ImageAlign { get; set; }
 
         private List<string> cssList = new List<string>();
         public void AddClass(string cssClass)
         {
             cssList.Add(cssClass);
         }
+        public void RemoveClass(string cssClass)
+        {
+            cssList.Remove(cssClass);
+        }
         public void OnAddClass()
         {
             foreach (string cssClass in cssList)
             {
+                container.StyleContext.RemoveClass(cssClass);
                 container.StyleContext.AddClass(cssClass);
+            }
+            if (BackgroundImage != null || BackColor.HasValue || Image != null)
+            {
+                container.StyleContext.RemoveClass("BGTransparent");
+                container.StyleContext.AddClass("BGTransparent");
             }
         }
         private Gdk.Pixbuf backgroundPixbuf;
@@ -47,45 +60,39 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         }
         public void OnDrawnBackground(Cairo.Context cr, Gdk.Rectangle area)
         {
-            if (BackgroundImage != null && BackgroundImage.PixbufData != null)
-            {
-                if (backgroundPixbuf == null || backgroundPixbuf.Width != area.Width || backgroundPixbuf.Height != area.Height)
-                {
-                    ImageUtility.ScaleImageByImageLayout(BackgroundImage.PixbufData, area.Width, area.Height, out backgroundPixbuf, BackgroundImageLayout);
-                }
-                cr.Save();
-                cr.ResetClip();
-                cr.Rectangle(area.Left, area.Top, area.Width, area.Height);
-                cr.Clip();
-                if (BackColor.HasValue)
-                    cr.SetSourceRGBA(BackColor.Value.R / 255f, BackColor.Value.G / 255f, BackColor.Value.B / 255f, BackColor.Value.A / 255f);
-                else
-                    cr.SetSourceRGBA(0.97, 0.97, 0.97, 1);
-
-                Gdk.CairoHelper.SetSourcePixbuf(cr, backgroundPixbuf, 0, 0);
-                using (var p = cr.GetSource())
-                {
-                    if (p is Cairo.SurfacePattern pattern)
-                    {
-                        pattern.Filter = Cairo.Filter.Good;
-                    }
-                }
-
-                cr.Paint();
-                cr.Restore();
-            }
-            else if (BackColor.HasValue)
+            if (BackColor.HasValue)
             {
                 cr.Save();
                 cr.SetSourceRGBA(BackColor.Value.R / 255f, BackColor.Value.G / 255f, BackColor.Value.B / 255f, BackColor.Value.A / 255f);
                 cr.Paint();
                 cr.Restore();
             }
+            if (BackgroundImage != null && BackgroundImage.PixbufData != null)
+            {
+                if (backgroundPixbuf == null || backgroundPixbuf.Width != area.Width || backgroundPixbuf.Height != area.Height)
+                {
+                    ImageUtility.ScaleImageByImageLayout(BackgroundImage.PixbufData, area.Width, area.Height, out backgroundPixbuf, BackgroundImageLayout);
+                }
+                ImageUtility.DrawImage(cr, backgroundPixbuf, area, ContentAlignment.TopLeft);
+            }
 
-            DrawnArgs args = new DrawnArgs() { Args = new object[] { cr } };
             if (DrawnBackground != null)
             {
+                DrawnArgs args = new DrawnArgs() { Args = new object[] { cr } };
                 DrawnBackground(this.container, args);
+            }
+        }
+        private Gdk.Pixbuf imagePixbuf;
+        public void OnDrawnImage(Cairo.Context cr, Gdk.Rectangle area)
+        {
+            if (Image != null && Image.PixbufData != null)
+            {
+                if (imagePixbuf == null || imagePixbuf.Width != area.Width || imagePixbuf.Height != area.Height)
+                {
+                    Gdk.Pixbuf imagepixbuf = new Gdk.Pixbuf(Image.PixbufData);
+                    imagePixbuf = imagepixbuf.ScaleSimple(area.Width, area.Height, Gdk.InterpType.Nearest);
+                }
+                ImageUtility.DrawImage(cr, imagePixbuf, area, ImageAlign);
             }
         }
         public void OnPaint(Cairo.Context cr, Gdk.Rectangle area)

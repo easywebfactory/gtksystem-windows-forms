@@ -24,6 +24,8 @@ namespace GTKWinFormsApp
 
         private void button1_Click(object sender, EventArgs e)
         {
+            //button1.ForeColor=Color.Red;
+            //button1.BackColor=Color.Green;
             Form1 f = new Form1();
             f.Show();
         }

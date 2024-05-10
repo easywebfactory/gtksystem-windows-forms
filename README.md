@@ -14,25 +14,33 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 使用GTK3.24.24.95作为表单UI重写C#的System.Windows.Forms组件，在应用时，兼容原生C#程序组件。
 
 #### 安装教程
-1.  把项目工程改为配置UseWindowsForms为false或“控制台应用程序”，框架.net6或以上版本
-2.  NulGet安装GtkSharp(3.24.24.95)、GTKSystem.Windows.Forms，或引用GTKSystem.Windows.Forms.dll
+1.  项目工程框架选择“window应用程序”改配置UseWindowsForms为false或“控制台应用程序”，框架.netcore3.1或.net6及以上版本
+2.  NulGet安装GtkSharp(3.24.24.95)、GTKSystem.Windows.Forms、GTKSystem.Windows.FormsDesigner
 3.  检查form表单是否有使用图像资源，如使用需新建System.Resources.ResourceManager和System.ComponentModel.ComponentResourceManager，具体请看下面内容。
 4.  按默认配置编译发布测试运行
 5.  linux和macos上执行命令：dotnet demo_app.dll
 6.  编译工程，执行本项目的开发插件菜单“修复窗体设计器”，或者手动在obj目录下创建.designer.runtimeconfig.json，请看下面第5点。
- 
+
+注意：安装GtkSharp后，编译你的工程项目时，会自动下载$(LOCALAPPDATA)\Gtk\3.24.24\gtk.zip配置Gtk环境，目前国内网络限制，可能会出现无法下载的错误，可以尝试安装fastgithub软件解决，或者其它vpn软件。
+如果无法自动下载，也可以自行解决网络限制后下载https://github.com/GtkSharp/Dependencies/raw/master/gtk-3.24.24.zip，把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24\gtk.zip目录即可。
+
+ps:$(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData\Local\Gtk\3.24.24
+. 
 linux安装gtk环境：
 ```
  sudo apt install libgtk-3-dev
  或
  sudo apt-get install libgtk3*
 ```
-
+linux安装dotnet环境：
+```
+  安装方法可以查看微软官网教程：https://learn.microsoft.com/zh-cn/dotnet/core/install/linux-scripted-manual
+```
 #### VisualStudio插件安装
 
 工具一、从NuGet上安装GTKSystem.Windows.FormsDesigner类库，此类库可以在编译工程时修正窗体设计器。
 
-工具二、下载本插件工具，关闭visual studio，直接双击GTKWinformVSIXProject.vsix文件安装
+工具二、下载本插件工具，关闭visual studio，直接双击GTKWinformVSIXProject.vsix文件安装（建议用工具一即可）
 
 插件会安装两个功能，都是在右键菜单和工具菜单上添加：
 
@@ -73,7 +81,7 @@ System.Resources.Extensions是空程序dll，不是必须引用，只有VS在窗
 5、GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.designer.runtimeconfig.json
 GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.runtimeconfig.json
 将name设置为Microsoft.WindowsDesktop.App， **用于VS支持可视化窗体设计器，重新加载工程或重启VS** 
-以下的是我配置：
+如以下配置：
 GTKWinFormsApp.designer.runtimeconfig.json
 ```
 {
@@ -151,10 +159,14 @@ QQ群：236066073
 2. https://github.com/easywebfactory
 
 #### 更新日志
+ ## 2024/5/11
+    1. 修正form启动时窗口大小异常
+    2. button增加image属性图片
+    3. 修正控件背景位置
  ## 2024/5/6
    1. 完善treeview、listview功能
    2. 新增开发工具GTKSystem.Windows.FormsDesigner.dll(NuGet安装)，编译时自动检查并修正窗体设计器配置
-   3.修正datagridview的取数错误
+   3. 修正datagridview的取数错误
  ## 2024/5/1
   1. 重大更新！重构控件的结构程序，优化了很多控件功能和性能，修正一些错误
   2. 优化了绘图、控件背景功能程序，绘制背景图不再覆盖子控件
