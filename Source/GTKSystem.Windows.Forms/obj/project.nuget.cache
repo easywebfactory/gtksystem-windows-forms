@@ -1,16 +1,27 @@
 {
   "version": 2,
-  "dgSpecHash": "slaRWwsut896NzXJ6TBYe8StTHIFKYOnZredf2A8J+CPH5jOT20XldQr0pMSITQLohfW3Y0KRxgaXraCmTu0Cw==",
+  "dgSpecHash": "DUcRg/LESiIcgfP3tALS/Lc1Bc1dGxRmQ3mtmNyOdSHwVVtqjySaO+15ot8X1PcnUo+r2fE5hsR0NsFqhj89ag==",
   "success": true,
   "projectFilePath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\chj\\.nuget\\packages\\atksharp\\3.24.24.34\\atksharp.3.24.24.34.nupkg.sha512",
-    "C:\\Users\\chj\\.nuget\\packages\\cairosharp\\3.24.24.34\\cairosharp.3.24.24.34.nupkg.sha512",
-    "C:\\Users\\chj\\.nuget\\packages\\gdksharp\\3.24.24.34\\gdksharp.3.24.24.34.nupkg.sha512",
-    "C:\\Users\\chj\\.nuget\\packages\\giosharp\\3.24.24.34\\giosharp.3.24.24.34.nupkg.sha512",
-    "C:\\Users\\chj\\.nuget\\packages\\glibsharp\\3.24.24.34\\glibsharp.3.24.24.34.nupkg.sha512",
-    "C:\\Users\\chj\\.nuget\\packages\\gtksharp\\3.24.24.34\\gtksharp.3.24.24.34.nupkg.sha512",
-    "C:\\Users\\chj\\.nuget\\packages\\pangosharp\\3.24.24.34\\pangosharp.3.24.24.34.nupkg.sha512"
+    "C:\\Users\\chj\\.nuget\\packages\\atksharp\\3.24.24.95\\atksharp.3.24.24.95.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\cairosharp\\3.24.24.95\\cairosharp.3.24.24.95.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\gdksharp\\3.24.24.95\\gdksharp.3.24.24.95.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\giosharp\\3.24.24.95\\giosharp.3.24.24.95.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\glibsharp\\3.24.24.95\\glibsharp.3.24.24.95.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\gtksharp\\3.24.24.95\\gtksharp.3.24.24.95.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\microsoft.net.illink.analyzers\\7.0.100-1.23211.1\\microsoft.net.illink.analyzers.7.0.100-1.23211.1.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\microsoft.net.illink.tasks\\7.0.100-1.23211.1\\microsoft.net.illink.tasks.7.0.100-1.23211.1.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\microsoft.net.illink.tasks\\8.0.0\\microsoft.net.illink.tasks.8.0.0.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\pangosharp\\3.24.24.95\\pangosharp.3.24.24.95.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\system.resources.extensions\\8.0.0\\system.resources.extensions.8.0.0.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.14\\microsoft.windowsdesktop.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.14\\microsoft.netcore.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\chj\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.14\\microsoft.aspnetcore.app.ref.7.0.14.nupkg.sha512"
   ],
   "logs": []
 }

@@ -1,4 +1,6 @@
 ﻿
+using Gtk;
+using Pango;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,9 +34,13 @@ namespace System.Windows.Forms
             {
                 throw new ArgumentNullException("node");
             }
-            node.Parent = node;
+            node.Parent = owner;
             node.treeView = owner.TreeView;
             base.Add(node);
+            if (owner != null && owner.TreeView != null)
+            {
+                owner.TreeView.LoadNodeValue(node, owner.TreeIter);
+            }
         }
     }
 }

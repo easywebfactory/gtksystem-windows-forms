@@ -9,7 +9,7 @@ namespace System.Drawing
 {
 	public class ImageConverter : TypeConverter
 	{
-		public override bool CanConvertFrom(ITypeDescriptorContext? context, Type? sourceType)
+		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
 		{
 			//if (!(sourceType == typeof(byte[])))
 			//{
@@ -18,7 +18,7 @@ namespace System.Drawing
 			return true;
 		}
 
-		public override bool CanConvertTo(ITypeDescriptorContext? context, [NotNullWhen(true)] Type? destinationType)
+		public override bool CanConvertTo(ITypeDescriptorContext context, [NotNullWhen(true)] Type destinationType)
 		{
 			if (!(destinationType == typeof(byte[])))
 			{
@@ -27,7 +27,7 @@ namespace System.Drawing
 			return true;
 		}
 
-		public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
+		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
 			//Icon icon = value as Icon;
 			//if (icon != null)
@@ -43,7 +43,7 @@ namespace System.Drawing
 			return base.ConvertFrom(context, culture, value);
 		}
 
-		public override object ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
+		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
 		{
 			if (destinationType == typeof(string))
 			{
@@ -96,12 +96,12 @@ namespace System.Drawing
 		}
 
 		//[RequiresUnreferencedCode("The Type of value cannot be statically discovered. The public parameterless constructor or the 'Default' static field may be trimmed from the Attribute's Type.")]
-		public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext? context, object? value, Attribute[]? attributes)
+		public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
 		{
 			return TypeDescriptor.GetProperties(typeof(Image), attributes);
 		}
 
-		public override bool GetPropertiesSupported(ITypeDescriptorContext? context)
+		public override bool GetPropertiesSupported(ITypeDescriptorContext context)
 		{
 			return true;
 		}

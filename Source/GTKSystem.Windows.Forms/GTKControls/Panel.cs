@@ -1,37 +1,60 @@
-﻿//基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
-//使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows和linux运行
-//技术支持438865652@qq.com，https://www.cnblogs.com/easywebfactory
+﻿/*
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * author:chenhongjin
+ * date: 2024/1/3
+ */
+using GLib;
+using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Text;
+using System.Web;
+using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class Panel : WidgetControl<Gtk.Viewport>
+    public partial class Panel : ContainerControl
     {
-        private Gtk.Layout contaner;
+        public readonly PanelBase self = new PanelBase();
+        public override object GtkControl => self;
+
+        private Gtk.Fixed contaner = new Gtk.Fixed();
+        private Gtk.ScrolledWindow scrolledwindow = new Gtk.ScrolledWindow();
         private ControlCollection _controls;
 
         public Panel() : base()
         {
-            Widget.StyleContext.AddClass("Panel");
-            base.Control.Margin = 0;
-            base.Control.MarginStart = 0;
-            base.Control.MarginTop = 0;
-            base.Control.ShadowType = Gtk.ShadowType.In;
-            base.Control.BorderWidth = 1;
-            contaner = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
-            contaner.Margin = 0;
+            _controls = new ControlCollection(this, contaner);
             contaner.MarginStart = 0;
             contaner.MarginTop = 0;
-            _controls = new ControlCollection(contaner);
+            contaner.Halign = Align.Fill;
+            contaner.Valign = Align.Fill;
 
-            base.Control.Add(contaner);
+            scrolledwindow.Halign = Align.Fill;
+            scrolledwindow.Valign = Align.Fill;
+            scrolledwindow.VscrollbarPolicy = PolicyType.Never;
+            scrolledwindow.HscrollbarPolicy = PolicyType.Never;
+            scrolledwindow.Child = contaner;
+            self.Child = scrolledwindow;
         }
-
-        public BorderStyle BorderStyle { get { return base.Control.ShadowType == Gtk.ShadowType.None ? BorderStyle.None : BorderStyle.FixedSingle; } set { base.Control.BorderWidth = 1; base.Control.ShadowType = Gtk.ShadowType.In; } }
+        public override BorderStyle BorderStyle { get { return self.ShadowType == Gtk.ShadowType.None ? BorderStyle.None : BorderStyle.FixedSingle; } set { self.BorderWidth = 1; self.ShadowType = Gtk.ShadowType.In; } }
         public override ControlCollection Controls => _controls;
+        public override bool AutoScroll { 
+            get => base.AutoScroll; 
+            set { 
+                base.AutoScroll = value;
+                if (value == true)
+                {
+                    scrolledwindow.VscrollbarPolicy = PolicyType.Automatic;
+                    scrolledwindow.HscrollbarPolicy = PolicyType.Automatic;
+                }
+            } 
+        }
     }
 }

@@ -1,74 +1,84 @@
-﻿//基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
-//使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows和linux运行
-//开发联系438865652@qq.com，https://www.cnblogs.com/easywebfactory
+﻿/*
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * author:chenhongjin
+ * date: 2024/1/3
+ */
+
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Imaging;
+using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
 
 namespace System.Windows.Forms
 {
-    [DesignerCategory("Form"),
-    DefaultEvent(nameof(Load)),
+    [DesignerCategory("Form")]
+    [DefaultEvent(nameof(Load)),
     InitializationEvent(nameof(Load))]
-    public partial class Form : WidgetControl<Gtk.Window>, IWin32Window
+    public partial class Form: ScrollableControl, IWin32Window
     {
-        private Gtk.Fixed _body = null;
+        private Gtk.Application app = Application.Init();
+        public FormBase self = new FormBase();
+        public override object GtkControl { get => self; }
+        private Gtk.Fixed _body = new Gtk.Fixed();
+        private ViewportBase background = new ViewportBase();
         private ObjectCollection _ObjectCollection;
-        private Gtk.Menu contextMenu = new Gtk.Menu();
         public override event EventHandler SizeChanged;
-        public Form() : base(WindowType.Toplevel)
+
+        public Form() : base()
         {
             Init();
         }
-        public Form(string title) : base()
+        public Form(string title) : this()
         {
-            base.Control.Title = title;
-            Init();
+            self.Title = title;
         }
 
+        public Form(string title, Window parent) : base()
+        {
+
+        }
         private void Init()
         {
-            this.Control.StyleContext.AddClass("Form");
-            _body = new Fixed();
             _body.Valign = Gtk.Align.Fill;
             _body.Halign = Gtk.Align.Fill;
-            _ObjectCollection = new ObjectCollection(_body);
-            base.Control.WindowPosition = Gtk.WindowPosition.Center;
-            base.Control.BorderWidth = 1;
-            base.Control.SetDefaultSize(100, 100);
+            _body.Expand = true;
+            _body.Hexpand = true;
+            _body.Vexpand = true;
+            background.Child = _body;
+            self.ScrollArea.Child = background;
+            _ObjectCollection = new ObjectCollection(this, _body);
 
-            base.Control.Realized += Control_Realized;
+            self.ResizeChecked += Form_ResizeChecked;
+            self.ButtonReleaseEvent += Body_ButtonReleaseEvent;
 
-            base.Control.ResizeChecked += Form_ResizeChecked;
-            base.Control.ButtonReleaseEvent += Body_ButtonReleaseEvent;
-
-            base.Control.Shown += Control_Shown;
-            base.Control.DeleteEvent += Control_DeleteEvent;
+            self.Shown += Control_Shown;
+            self.DeleteEvent += Control_DeleteEvent;
         }
+        public override Drawing.Image BackgroundImage { get => background.Override.BackgroundImage; set { background.Override.BackgroundImage = value; } }
+        public override ImageLayout BackgroundImageLayout { get => background.Override.BackgroundImageLayout; set { background.Override.BackgroundImageLayout = value; } }
+        public override Color BackColor { get => base.BackColor; set { base.BackColor = value; background.Override.BackColor = value; } }
+        public override ISite Site { get; set; }
         private void Control_DeleteEvent(object o, DeleteEventArgs args)
         {
             if (FormClosing != null)
                 FormClosing(this, new FormClosingEventArgs(CloseReason.UserClosing, false));
             if (FormClosed != null)
                 FormClosed(this, new FormClosedEventArgs(CloseReason.UserClosing));
-
         }
 
         private void Control_Shown(object sender, EventArgs e)
         {
             if (Shown != null)
                 Shown(this, e);
-        }
-
-        private void Control_Realized(object sender, EventArgs e)
-        {
-            if (Load != null)
-                Load(this, e);
         }
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -79,117 +89,158 @@ namespace System.Windows.Forms
         private static d_gtk_menu_popup gtk_menu_popup = FuncLoader.LoadFunction<d_gtk_menu_popup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_menu_popup"));
         public void PresentMenu(Gtk.Menu menu, uint button, uint activate_time)
         {
-            gtk_menu_popup(menu == null ? IntPtr.Zero : menu.Handle, IntPtr.Zero, IntPtr.Zero, StatusIconPositionMenuFunc, base.Control.Handle, button, activate_time);
+            gtk_menu_popup(menu == null ? IntPtr.Zero : menu.Handle, IntPtr.Zero, IntPtr.Zero, StatusIconPositionMenuFunc, self.Handle, button, activate_time);
         }
         private void Body_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
         {
             if (base.ContextMenuStrip != null)
             {
-                base.ContextMenuStrip.Control.ShowAll();
+                base.ContextMenuStrip.self.ShowAll();
                 if (args.Event.Button == 3)
-                    PresentMenu(base.ContextMenuStrip.Control, args.Event.Button, args.Event.Time);
+                    PresentMenu(base.ContextMenuStrip.self, args.Event.Button, args.Event.Time);
             }
         }
-        int width = 0;
-        int height = 0;
+        int resizeWidth= 0;
+        int resizeHeight= 0;
         private void Form_ResizeChecked(object sender, EventArgs e)
         {
-            if (base.Control.IsRealized)
+            if (self.Resizable == true)
             {
-                if (base.Control.Allocation.Width != width || base.Control.Allocation.Height != height)
+                if (_body.IsMapped && (resizeWidth != self.AllocatedWidth || resizeHeight != self.AllocatedHeight))
                 {
-                    width = base.Control.Allocation.Width;
-                    height = base.Control.Allocation.Height;
-                    ResizeChildren(base.Control);
+                    resizeWidth = self.AllocatedWidth;
+                    resizeHeight = self.AllocatedHeight;
+                    _body.WidthRequest = self.AllocatedWidth - (AutoScroll ? 15 : 0); //留出滚动条位置
+                    _body.HeightRequest = self.AllocatedHeight - (AutoScroll ? 15 : 0);
+                    int widthIncrement = self.AllocatedWidth - self.DefaultSize.Width;
+                    int heightIncrement = self.AllocatedHeight - self.DefaultSize.Height;
+                    ResizeControls(widthIncrement, heightIncrement, _body, false, null);
                 }
             }
             if (SizeChanged != null)
-                SizeChanged(sender, e);
+                SizeChanged(this, e);
+
         }
 
-        private void ResizeChildren(Gtk.Container container)
+        private void ResizeControls(int widthIncrement, int heightIncrement, Gtk.Container parent, bool isPaned, Gtk.Paned gtkPaned)
         {
-            foreach (var o in container.AllChildren)
+            foreach (Gtk.Widget control in parent.Children)
             {
-                if (o is Gtk.Container control)
+                if (control != null)
                 {
                     object dock = control.Data["Dock"];
                     if (dock != null)
                     {
                         string dockStyle = dock.ToString();
-                        int widthIncrement = base.Control.AllocatedWidth - base.Control.DefaultWidth;
-                        int heightIncrement = base.Control.AllocatedHeight - base.Control.DefaultHeight;
-                        if (GetParentWidget(container, out Gtk.Widget parent))
+                        if (gtkPaned != null)
                         {
-                            int width = parent.WidthRequest - control.MarginStart - ((int)control.BorderWidth);
-                            int height = parent.HeightRequest - ((int)control.BorderWidth);
-                            if (parent.GetType().Name == "Window")
-                            {
-                                width = parent.AllocatedWidth - 2;
-                                height = parent.AllocatedHeight - 1;
-                            }
-                            if (parent.GetType().Name == "Dialog")
-                            {
-                                width = parent.AllocatedWidth - 1;
-                                height = parent.AllocatedHeight - 1;
-                            }
-                            width = width - control.MarginStart - control.MarginStart - 2;
-                            height = width - control.MarginTop - control.MarginTop - 1;
-
-                            if (dockStyle == DockStyle.Top.ToString())
-                            {
-                                control.WidthRequest = width;
-                            }
-                            else if (dockStyle == DockStyle.Bottom.ToString())
-                            {
-                                control.WidthRequest = width;
-
-                                if ((int)control.Data["InitMarginTop"] + heightIncrement > 0)
-                                    control.MarginTop = (int)control.Data["InitMarginTop"] + heightIncrement;
-                            }
-                            else if (dockStyle == DockStyle.Left.ToString())
-                            {
-                                control.HeightRequest = height;
-                            }
-                            else if (dockStyle == DockStyle.Right.ToString())
-                            {
-                                control.HeightRequest = height;
-                                if ((int)control.Data["InitMarginStart"] + widthIncrement > 0)
-                                    control.MarginStart = (int)control.Data["InitMarginStart"] + widthIncrement;
-                            }
-                            else if (dockStyle == DockStyle.Fill.ToString())
-                            {
-                                control.HeightRequest = height;
-                                control.WidthRequest = width;
-                            }
+                            if (gtkPaned.Orientation == Gtk.Orientation.Vertical)
+                                heightIncrement = gtkPaned.Child1.AllocatedHeight - gtkPaned.Child1.HeightRequest;
+                            else
+                                widthIncrement = gtkPaned.Child1.AllocatedWidth - gtkPaned.Child1.WidthRequest;
                         }
-                    }
-                    if (o is Gtk.ScrolledWindow)
-                    {
 
+                        Gtk.Widget sizeParent = getSizeParent(control);
+                        int width = sizeParent.WidthRequest;
+                        int height = sizeParent.HeightRequest;
+                        if (dockStyle == DockStyle.Top.ToString())
+                        {
+                            control.Valign = Gtk.Align.Start;
+                            control.Hexpand = true;
+                            if (control.WidthRequest > -1 && width > -1)
+                                control.WidthRequest = width;
+                        }
+                        else if (dockStyle == DockStyle.Bottom.ToString())
+                        {
+                            control.Valign = Gtk.Align.End;
+                            control.Halign = Gtk.Align.Fill;
+                            control.Hexpand = true;
+                            control.MarginTop = heightIncrement;
+                            if (control.WidthRequest > -1 && width > -1)
+                                control.WidthRequest = width;
+                        }
+                        else if (dockStyle == DockStyle.Left.ToString())
+                        {
+                            control.Halign = Gtk.Align.Start;
+                            control.Vexpand = true;
+                            if (control.HeightRequest > -1 && height > -1)
+                                control.HeightRequest = height;
+                        }
+                        else if (dockStyle == DockStyle.Right.ToString())
+                        {
+                            control.Halign = Gtk.Align.End;
+                            control.Vexpand = true;
+                            if (control.HeightRequest > -1 && height > -1)
+                                control.HeightRequest = height;
+                            control.MarginStart = widthIncrement;
+                        }
+                        else if (dockStyle == DockStyle.Fill.ToString())
+                        {
+                            control.Hexpand = true;
+                            control.Vexpand = true;
+                            if (control.HeightRequest > -1 && height > -1)
+                                control.HeightRequest = height;
+                            if (control.WidthRequest > -1 && width > -1)
+                                control.WidthRequest = width;
+                        }
+                        if (control is Gtk.MenuBar menuba)
+                        {
+                            //菜单不用处理
+                        }
+                        else if (control is Gtk.TreeView)
+                        {
+                            //树目录不用处理
+                        }
+                        else if (control is Gtk.Paned paned)
+                        {
+                            ResizeControls(widthIncrement, heightIncrement, paned, true, paned);
+                        }
+                        else if (control is Gtk.Container container)
+                        {
+                            ResizeControls(widthIncrement, heightIncrement, container, isPaned, gtkPaned);
+                        }
                     }
                     else
                     {
-                        ResizeChildren(control);
+                        if (control is Gtk.MenuBar)
+                        {
+
+                        }
+                        else if (control is Gtk.TreeView)
+                        {
+                        }
+                        else if (control is Gtk.Paned paned)
+                        {
+                            ResizeControls(widthIncrement, heightIncrement, paned, true, paned);
+                        }
+                        else if (control is Gtk.Container container)
+                        {
+                            ResizeControls(widthIncrement, heightIncrement, container, isPaned, gtkPaned);
+                        }
                     }
                 }
             }
         }
-        private bool GetParentWidget(Gtk.Widget container, out Gtk.Widget parent)
+
+        private Gtk.Widget getSizeParent(Gtk.Widget control)
         {
-            parent = container;
-            while (parent.Parent != null)
+            while (control.Parent != null)
             {
-                parent = parent.Parent;
-                if (parent.WidthRequest > -1)
-                {
-                    return true;
-                }
+                if (control.Parent.WidthRequest > -1)
+                    return control.Parent;
+                else
+                    return getSizeParent(control.Parent);
             }
-            return true;
+            return control.Parent;
         }
 
-        public void Show()
+        private void OnLoad()
+        {
+            if (Load != null)
+                Load(this, new EventArgs());
+        }
+
+        public override void Show()
         {
             this.Show(null);
         }
@@ -210,37 +261,81 @@ namespace System.Windows.Forms
                 throw new InvalidOperationException("ShowDialogOnDisabled");
             }
 
-            if (owner != null && owner is Form)
+            if (owner != null && owner is Form parent)
             {
-                this.Control.Parent = ((Form)owner).Control;
+                this.Parent = parent;
             }
+            OnLoad();
 
-            if (this.AutoScroll == true)
+            _body.WidthRequest = this.Width;
+            _body.HeightRequest = this.Height;
+
+            if (AutoScroll == true)
             {
-                Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
-                _body.WidthRequest = this.Width;
-                _body.HeightRequest = this.Height;
-                scrollwindow.Child = _body;
-                base.Control.Add(scrollwindow);
+                self.ScrollArea.HscrollbarPolicy = PolicyType.Always;
+                self.ScrollArea.VscrollbarPolicy = PolicyType.Always;
             }
             else
             {
-                Gtk.Layout laybody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
-                laybody.Add(_body);
-                base.Control.Add(laybody);
+                self.ScrollArea.HscrollbarPolicy = PolicyType.External;
+                self.ScrollArea.VscrollbarPolicy = PolicyType.External;
             }
-            base.Control.ShowAll();
+
+            this.FormBorderStyle = this.FormBorderStyle;
+            if (this.MaximizeBox == false && this.MinimizeBox == false)
+            {
+                self.TypeHint = Gdk.WindowTypeHint.Dialog;
+            }
+            else if (this.MaximizeBox == false && this.MinimizeBox == true)
+            {
+                self.Resizable = false;
+            }
+
+            if(self.Resizable==false)
+            {
+                self.WidthRequest = self.DefaultSize.Width;
+                self.HeightRequest = self.DefaultSize.Height;
+            }
+
             if (this.WindowState == FormWindowState.Maximized)
             {
-                base.Control.Maximize();
+                self.Maximize();
             }
             else if (this.WindowState == FormWindowState.Minimized)
             {
-                base.Control.KeepBelow = true;
+                self.Iconify();
             }
 
+            try
+            {
+                if (this.ShowIcon)
+                {
+                    if (this.Icon != null)
+                    {
+                        if (this.Icon.Pixbuf != null)
+                            self.Icon = this.Icon.Pixbuf;
+                        else if (this.Icon.PixbufData != null)
+                            self.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
+                        else if (this.Icon.FileName != null && System.IO.File.Exists(this.Icon.FileName))
+                            self.SetIconFromFile(this.Icon.FileName);
+                        else if (this.Icon.FileName != null && System.IO.File.Exists("Resources\\" + this.Icon.FileName))
+                            self.SetIconFromFile("Resources\\" + this.Icon.FileName);
+                    }
+                }
+                else
+                {
+                    System.IO.Stream sm = typeof(System.Windows.Forms.Form).Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.view-more.png");
+                    self.Icon = new Gdk.Pixbuf(sm);
+                }
+            }
+            catch
+            {
+
+            }
+
+            self.ShowAll();
         }
-        private Gtk.Dialog dialogWindow;
+
         public DialogResult ShowDialog()
         {
             return ShowDialog(null);
@@ -261,133 +356,96 @@ namespace System.Windows.Forms
             {
                 throw new InvalidOperationException("ShowDialogOnDisabled");
             }
-            int irun = -9;
-            if (owner != null)
-            {
-                Gtk.Window ownerWindow = ((Form)owner).Control;
-                dialogWindow = new Dialog(this.Text, ownerWindow, DialogFlags.DestroyWithParent);
-                dialogWindow.SetPosition(Gtk.WindowPosition.CenterOnParent);
-                dialogWindow.DefaultHeight = this.Height;
-                dialogWindow.DefaultWidth = this.Width;
-                dialogWindow.Response += Dia_Response;
-                if (this.AutoScroll == true)
-                {
-                    Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
-                    _body.WidthRequest = this.Width;
-                    _body.HeightRequest = this.Height;
-                    scrollwindow.Child = _body;
-                    dialogWindow.ContentArea.PackStart(scrollwindow,true,true,1);
-                }
-                else
-                {
-                    Gtk.Layout laybody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
-                    laybody.Add(_body);
-                    dialogWindow.ContentArea.PackStart(laybody, true, true, 1);
-                }
-                dialogWindow.ShowAll();
-                if (this.WindowState == FormWindowState.Maximized)
-                {
-                    dialogWindow.Maximize();
-                }
-                else if (this.WindowState == FormWindowState.Minimized)
-                {
-                    dialogWindow.KeepBelow = true;
-                }
+            Show(owner);
+            int irun = self.Run();
 
-                irun = dialogWindow.Run();
-            }
-            else
-            {
-                dialogWindow = new Dialog();
-                dialogWindow.SetPosition(Gtk.WindowPosition.Center);
-                dialogWindow.DefaultHeight = this.Height;
-                dialogWindow.DefaultWidth = this.Width;
-                dialogWindow.Response += Dia_Response;
-                if (this.AutoScroll == true)
-                {
-                    Gtk.ScrolledWindow scrollwindow = new Gtk.ScrolledWindow();
-                    _body.WidthRequest = this.Width;
-                    _body.HeightRequest = this.Height;
-                    scrollwindow.Child = _body;
-                    dialogWindow.ContentArea.PackStart(scrollwindow, true, true, 1);
-                }
-                else
-                {
-                    Gtk.Layout laybody = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
-                    laybody.Add(_body);
-                    dialogWindow.ContentArea.PackStart(laybody, true, true, 1);
-                }
-                dialogWindow.ShowAll();
-                if (this.WindowState == FormWindowState.Maximized)
-                {
-                    dialogWindow.Maximize();
-                }
-                else if (this.WindowState == FormWindowState.Minimized)
-                {
-                    dialogWindow.KeepBelow = true;
-                }
-
-                irun = dialogWindow.Run();
-
-            }
             return this.DialogResult;
-        }
-
-        private void Dia_Response(object o, ResponseArgs args)
-        {
-            base.Dispose();
-            try
-            {
-                ((Gtk.Dialog)o).Dispose();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
         }
 
         public event EventHandler Shown;
         public event FormClosingEventHandler FormClosing;
         public event FormClosedEventHandler FormClosed;
         public override event EventHandler Load;
-        public override string Text { get { return base.Control.Title; } set { base.Control.Title = value; } }
-        public Size ClientSize
+        public override string Text { get { return self.Title; } set { self.Title = value; } }
+        public override Size ClientSize
         {
             get
             {
-                return new Size(base.Control.WidthRequest, base.Control.HeightRequest);
+                return new Size(self.WidthRequest, self.HeightRequest);
             }
             set
             {
-                base.Control.SetDefaultSize(value.Width, value.Height);
-                base.Control.Data["InitWidth"] = value.Width;
-                base.Control.Data["InitHeight"] = value.Height;
-                base.Width = value.Width;
-                base.Height = value.Height;
+                self.WidthRequest = 100;
+                self.HeightRequest = 60;
+                self.SetDefaultSize(value.Width, value.Height);
             }
         }
-        public Rectangle ClientRectangle { get; }
-
+        public override bool AutoScroll { 
+            get => base.AutoScroll; 
+            set {
+                base.AutoScroll = value;
+                if (value == true)
+                    background.StyleContext.AddClass("ScrollForm");
+                else
+                    background.StyleContext.RemoveClass("ScrollForm");
+            }
+        }
         public SizeF AutoScaleDimensions { get; set; }
         public AutoScaleMode AutoScaleMode { get; set; }
+        public FormBorderStyle formBorderStyle = FormBorderStyle.Sizable;
         public FormBorderStyle FormBorderStyle
         {
-            get { return base.Control.Resizable == true ? FormBorderStyle.Sizable : FormBorderStyle.None; }
-            set { base.Control.Resizable = value == FormBorderStyle.Sizable; }
+            get { return formBorderStyle; }
+            set {
+                formBorderStyle = value;
+                self.Resizable = value == FormBorderStyle.Sizable || value == FormBorderStyle.SizableToolWindow;
+                if (value == FormBorderStyle.None)
+                {
+                    self.BorderWidth = 0;
+                    self.Decorated = false; //删除工具栏
+                }
+                else if (value == FormBorderStyle.FixedToolWindow)
+                {
+                    self.Decorated = true;
+                    self.TypeHint = Gdk.WindowTypeHint.Dialog;
+                }
+                else if (value == FormBorderStyle.SizableToolWindow)
+                {
+                    self.Decorated = true;
+                    self.TypeHint = Gdk.WindowTypeHint.Dialog;
+                }
+                else
+                {
+                    self.Decorated = true;
+                    self.TypeHint = Gdk.WindowTypeHint.Normal;
+                }
+            }
         }
         public FormWindowState WindowState { get; set; } = FormWindowState.Normal;
         public DialogResult DialogResult { get; set; }
         public void Close() {
-            if (dialogWindow != null)
+            if (self != null)
             {
-                dialogWindow.HideOnDelete();
+                self.CloseWindow();
+                self.Dispose();
             }
-            this.Control.Close(); 
         }
+        public override void Hide()
+        {
+            if (self != null)
+            {
+                self.Hide();
+            }
+        }
+
         public new ObjectCollection Controls { get { return _ObjectCollection; } }
 
-        public object ActiveControl { get; set; }
-
+        public bool MaximizeBox { get; set; } = true;
+        public bool MinimizeBox { get; set; } = true;
+        public double Opacity { get { return self.Opacity; } set { self.Opacity = value; } }
+        public bool ShowIcon { get; set; } = true;
+        public bool ShowInTaskbar { get { return self.SkipTaskbarHint == false; } set { self.SkipTaskbarHint = value == false; } }
+        public System.Drawing.Icon Icon { get; set; }
         public override void SuspendLayout()
         {
             _Created = false;
@@ -407,365 +465,23 @@ namespace System.Windows.Forms
             return true;
         }
 
-        public bool ActivateControl(Control active)
-        {
-            return false;
-        }
-
-        public bool AutoScroll { get; set; }
-
         public MenuStrip MainMenuStrip { get; set; }
 
-        public IntPtr Handle => base.Control.OwnedHandle;
+        public override IntPtr Handle => self.Handle;
 
         public class ObjectCollection : ControlCollection
         {
             Gtk.Container __owner;
-            public ObjectCollection(Gtk.Container owner) : base(owner)
+            public ObjectCollection(Control control, Gtk.Container owner) : base(control, owner)
             {
                 __owner = owner;
             }
-            public static Form ActiveForm { get; }
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-            [EditorBrowsable(EditorBrowsableState.Never)]
-
-            public bool AutoScale { get; set; }
-            [SettingsBindable(true)]
-            public Point Location { get; set; }
-            [DefaultValue(false)]
-
-            public bool KeyPreview { get; set; }
-            [Browsable(false)]
-            [EditorBrowsable(EditorBrowsableState.Advanced)]
-            public bool IsRestrictedWindow { get; }
-            [DefaultValue(false)]
-
-
-            public bool IsMdiContainer { get; set; }
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-
-
-            public bool IsMdiChild { get; }
-
-            //[AmbientValue(null)]
-            //[Localizable(true)]
-            //public Icon Icon { get; set; }
-
-            [DefaultValue(false)]
-            public bool HelpButton { get; set; }
-
-            //[Browsable(false)]
-            //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-
-            public DialogResult DialogResult { get; set; }
-
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-
-            public Point DesktopLocation { get; set; }
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-
-            public Form ActiveMdiChild { get; }
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-
-
-            public Rectangle DesktopBounds { get; set; }
-
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-            [Localizable(true)]
-            public Size ClientSize { get; set; }
-
-            [DefaultValue(null)]
-
-            public IButtonControl CancelButton { get; set; }
-
-            [DefaultValue(FormBorderStyle.Sizable)]
-
-
-            public FormBorderStyle FormBorderStyle { get; set; }
-
-            public Color BackColor { get; set; }
-            [Browsable(true)]
-            [EditorBrowsable(EditorBrowsableState.Always)]
-            public AutoValidate AutoValidate { get; set; }
-            [Browsable(true)]
-            [DefaultValue(AutoSizeMode.GrowOnly)]
-            [Localizable(true)]
-
-
-            public AutoSizeMode AutoSizeMode { get; set; }
-            [Browsable(true)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-            [EditorBrowsable(EditorBrowsableState.Always)]
-            public bool AutoSize { get; set; }
-            [Localizable(true)]
-            public bool AutoScroll { get; set; }
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            [Localizable(true)]
-            public virtual Size AutoScaleBaseSize { get; set; }
-            [DefaultValue(typeof(Size), "0, 0")]
-            [Localizable(true)]
-            [RefreshProperties(RefreshProperties.Repaint)]
-
-
-            public Size MaximumSize { get; set; }
-            [DefaultValue(true)]
-
-
-            public bool ControlBox { get; set; }
-            [DefaultValue(null)]
-
-
-            [TypeConverter(typeof(ReferenceConverter))]
-            public MenuStrip MainMenuStrip { get; set; }
-            [Localizable(true)]
-            [RefreshProperties(RefreshProperties.Repaint)]
-
-
-            public Size MinimumSize { get; set; }
-            [DefaultValue(FormWindowState.Normal)]
-            public FormWindowState WindowState { get; set; }
-
-
-            public Color TransparencyKey { get; set; }
-            [DefaultValue(false)]
-
-
-            public bool TopMost { get; set; }
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-            [EditorBrowsable(EditorBrowsableState.Advanced)]
-            public bool TopLevel { get; set; }
-            [SettingsBindable(true)]
-            public string Text { get; set; }
-            [Browsable(false)]
-            [DefaultValue(true)]
-
-            [EditorBrowsable(EditorBrowsableState.Never)]
-
-
-            public bool TabStop { get; set; }
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public int TabIndex { get; set; }
-
-            [DefaultValue(FormStartPosition.WindowsDefaultLocation)]
-            [Localizable(true)]
-
-
-            public FormStartPosition StartPosition { get; set; }
-            [DefaultValue(SizeGripStyle.Auto)]
-
-
-            public SizeGripStyle SizeGripStyle { get; set; }
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-            [Localizable(false)]
-            public Size Size { get; set; }
-            [Browsable(false)]
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public Padding Margin { get; set; }
-            [DefaultValue(true)]
-
-
-            public bool ShowIcon { get; set; }
-            [DefaultValue(false)]
-            [Localizable(true)]
-            public virtual bool RightToLeftLayout { get; set; }
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-            public Rectangle RestoreBounds { get; }
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-            public Form Owner { get; set; }
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-            public Form[] OwnedForms { get; }
-            [DefaultValue(1)]
-            [TypeConverter(typeof(OpacityConverter))]
-            public double Opacity { get; set; }
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-            public bool Modal { get; }
-            [DefaultValue(true)]
-
-
-            public bool MinimizeBox { get; set; }
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-
-
-            public Form MdiParent { get; set; }
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-
-
-            public Form[] MdiChildren { get; }
-            [DefaultValue(true)]
-
-
-            public bool MaximizeBox { get; set; }
-            [DefaultValue(true)]
-
-
-            public bool ShowInTaskbar { get; set; }
-            [DefaultValue(null)]
-
-            public IButtonControl AcceptButton { get; set; }
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-
-            public bool AllowTransparency { get; set; }
-
-            public event FormClosingEventHandler FormClosing;
-            [Browsable(false)]
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public event EventHandler TabIndexChanged;
-
-
-            public event EventHandler MinimumSizeChanged;
-            [Browsable(false)]
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public event EventHandler MarginChanged;
-
-
-            public event EventHandler ResizeEnd;
-
-
-            public event EventHandler MaximumSizeChanged;
-            [Browsable(true)]
-            [EditorBrowsable(EditorBrowsableState.Always)]
-
-
-            public event EventHandler AutoSizeChanged;
-            [Browsable(true)]
-            [EditorBrowsable(EditorBrowsableState.Always)]
-            public event EventHandler AutoValidateChanged;
-
-
-            public event EventHandler MdiChildActivate;
-
-
-            public event FormClosedEventHandler FormClosed;
-
-
-            public event EventHandler Deactivate;
-
-
-            public event EventHandler Load;
-
-
-            public event EventHandler MaximizedBoundsChanged;
-            [Browsable(false)]
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public event EventHandler TabStopChanged;
-            [Browsable(true)]
-            [EditorBrowsable(EditorBrowsableState.Always)]
-
-
-            public event CancelEventHandler HelpButtonClicked;
-            [Browsable(false)]
-            [EditorBrowsable(EditorBrowsableState.Never)]
-
-
-            public event CancelEventHandler Closing;
-            [Browsable(false)]
-            [EditorBrowsable(EditorBrowsableState.Never)]
-
-
-            public event EventHandler Closed;
-
-
-            public event EventHandler ResizeBegin;
-
-
-            public event DpiChangedEventHandler DpiChanged;
-
-
-            public event EventHandler Shown;
-
-            public event EventHandler Activated;
-
-
-            public event InputLanguageChangingEventHandler InputLanguageChanging;
-
-
-            public event InputLanguageChangedEventHandler InputLanguageChanged;
-            [Browsable(false)]
-            public event EventHandler MenuStart;
-
-            public event EventHandler RightToLeftLayoutChanged;
-            [Browsable(false)]
-            public event EventHandler MenuComplete;
-
-            [EditorBrowsable(EditorBrowsableState.Never)]
-
-            public static SizeF GetAutoScaleSize(Font font) { return new SizeF(); }
-            public void Activate() { }
-            public void AddOwnedForm(Form ownedForm) { }
-            public void Close() { }
-            public void LayoutMdi(MdiLayout value) { }
-            public void RemoveOwnedForm(Form ownedForm) { }
-            public void SetDesktopBounds(int x, int y, int width, int height) { }
-            public void SetDesktopLocation(int x, int y) { }
-            public void Show(IWin32Window owner) { }
-            //public DialogResult ShowDialog(IWin32Window owner) { return new DialogResult(); }
-            //public DialogResult ShowDialog() { return new DialogResult(); }
-
-            [Browsable(true)]
-            [EditorBrowsable(EditorBrowsableState.Always)]
-            public bool ValidateChildren() { return true; }
-            [Browsable(true)]
-            [EditorBrowsable(EditorBrowsableState.Always)]
-            public bool ValidateChildren(ValidationConstraints validationConstraints) { return true; }
-
-
-            [Browsable(false)]
-            [EditorBrowsable(EditorBrowsableState.Advanced)]
-            public SizeF CurrentAutoScaleDimensions { get; }
-
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-            public Control ActiveControl { get; set; }
-
-            [Browsable(false)]
-            public BindingContext BindingContext { get; set; }
-
-
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-            [EditorBrowsable(EditorBrowsableState.Advanced)]
-            public AutoScaleMode AutoScaleMode { get; set; }
-
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-            [EditorBrowsable(EditorBrowsableState.Advanced)]
-            [Localizable(true)]
-            public SizeF AutoScaleDimensions { get; set; }
-
-            [Browsable(false)]
-            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-            public Form ParentForm { get; }
-
-            public void PerformAutoScale() { }
-
-            public bool Validate() { return true; }
-
-            public bool Validate(bool checkAutoValidate) { return true; }
 
         }
 
         public class MdiLayout
         {
         }
-
-
     }
 
     public class BindingContext : ContextBoundObject

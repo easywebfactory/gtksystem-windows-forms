@@ -92,7 +92,7 @@ namespace System.Drawing.Imaging
 		/// <summary>Sets the color-adjustment matrix and the grayscale-adjustment matrix for the default category.</summary>
 		/// <param name="newColorMatrix">The color-adjustment matrix.</param>
 		/// <param name="grayMatrix">The grayscale-adjustment matrix.</param>
-		public void SetColorMatrices(ColorMatrix newColorMatrix, ColorMatrix? grayMatrix)
+		public void SetColorMatrices(ColorMatrix newColorMatrix, ColorMatrix grayMatrix)
 		{
 			SetColorMatrices(newColorMatrix, grayMatrix, ColorMatrixFlag.Default, ColorAdjustType.Default);
 		}
@@ -101,7 +101,7 @@ namespace System.Drawing.Imaging
 		/// <param name="newColorMatrix">The color-adjustment matrix.</param>
 		/// <param name="grayMatrix">The grayscale-adjustment matrix.</param>
 		/// <param name="flags">An element of <see cref="T:System.Drawing.Imaging.ColorMatrixFlag" /> that specifies the type of image and color that will be affected by the color-adjustment and grayscale-adjustment matrices.</param>
-		public void SetColorMatrices(ColorMatrix newColorMatrix, ColorMatrix? grayMatrix, ColorMatrixFlag flags)
+		public void SetColorMatrices(ColorMatrix newColorMatrix, ColorMatrix grayMatrix, ColorMatrixFlag flags)
 		{
 			SetColorMatrices(newColorMatrix, grayMatrix, flags, ColorAdjustType.Default);
 		}
@@ -111,7 +111,7 @@ namespace System.Drawing.Imaging
 		/// <param name="grayMatrix">The grayscale-adjustment matrix.</param>
 		/// <param name="mode">An element of <see cref="T:System.Drawing.Imaging.ColorMatrixFlag" /> that specifies the type of image and color that will be affected by the color-adjustment and grayscale-adjustment matrices.</param>
 		/// <param name="type">An element of <see cref="T:System.Drawing.Imaging.ColorAdjustType" /> that specifies the category for which the color-adjustment and grayscale-adjustment matrices are set.</param>
-		public void SetColorMatrices(ColorMatrix newColorMatrix, ColorMatrix? grayMatrix, ColorMatrixFlag mode, ColorAdjustType type)
+		public void SetColorMatrices(ColorMatrix newColorMatrix, ColorMatrix grayMatrix, ColorMatrixFlag mode, ColorAdjustType type)
 		{
 
 		}

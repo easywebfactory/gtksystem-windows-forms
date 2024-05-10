@@ -1,29 +1,89 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	  <TargetFrameworks>netcoreapp3.1;net6.0;net7.0;net8.0</TargetFrameworks>
+      <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	  <Authors>chenhongjin</Authors>
 	  <Company>chenhongjin</Company>
 	  <Copyright>438865652@qq.com，chenhongjin</Copyright>
-	  <Version>0.3.24.1</Version>
-	  <PackageProjectUrl>https://gitee.com/easywebfactory/gtksystem-windows-forms</PackageProjectUrl>
-	  <PackageReleaseNotes>一次编译，跨windows和linux平台运行</PackageReleaseNotes>
-	  <Title>GTK跨平台winform组件，一次编译，跨windows和linux平台运行</Title>
-	  <Description>基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
-使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows和linux运行。
-技术支持438865652@qq.com，https://gitee.com/easywebfactory/gtksystem-windows-forms
-	</Description>
+	  <Version>1.3.24.23</Version>
+	  <PackageProjectUrl>https://github.com/easywebfactory/gtksystem-windows-forms</PackageProjectUrl>
+	  <PackageReleaseNotes>C#界面跨平台开发组件gtksystem-windows-forms</PackageReleaseNotes>
+	  <Title>GTK跨平台winform界面组件，一次编译，可运行于windows、linux、macos平台</Title>
+	  <Description>
+		  基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+		  使用本组件GTKSystem.Windows.Forms一次编译，跨平台windows\linux\macos运行。
+		  更新平台：
+		  https://github.com/easywebfactory/gtksystem-windows-forms；
+		  https://gitee.com/easywebfactory/gtksystem-windows-forms；
+	  </Description>
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <RepositoryUrl>https://github.com/easywebfactory/gtksystem-windows-forms</RepositoryUrl>
+	  <PackAsTool>False</PackAsTool>
+	  <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+	  <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+	  <SignAssembly>False</SignAssembly>
+	  <EnableUnsafeBinaryFormatterSerialization>True</EnableUnsafeBinaryFormatterSerialization>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>True</Optimize>
+    <IsAotCompatible>True</IsAotCompatible>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <IsAotCompatible>True</IsAotCompatible>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GtkSharp" Version="3.24.24.34" />
+    <Compile Remove="Resources\Forms_ico\**" />
+    <Compile Remove="Resources\icons\**" />
+    <EmbeddedResource Remove="Resources\Forms_ico\**" />
+    <EmbeddedResource Remove="Resources\icons\**" />
+    <None Remove="Resources\Forms_ico\**" />
+    <None Remove="Resources\icons\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="GTKControls\Button.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Remove="GTKControls\Enum\Enums\ColorDepth.cs" />
+    <Compile Remove="GTKControls\Interface\WidgetContainerControl.cs" />
+    <Compile Remove="GTKControls\Interface\WidgetControl.cs" />
+    <Compile Remove="GTKControls\ListViewBase\ImageList.cs" />
+    <Compile Remove="GTKControls\ListViewBase\ImageListStreamer.cs" />
+    <Compile Remove="GTKControls\ListViewBase\SerializationInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\System\CloseWin.png" />
+    <None Remove="Resources\System\CloseWindow.png" />
+    <None Remove="Resources\System\DateTimePicker.ico" />
+    <None Remove="Resources\System\MaxWin.png" />
+    <None Remove="Resources\System\MaxWindow.png" />
+    <None Remove="Resources\System\MinWin.png" />
+    <None Remove="Resources\System\MinWindow.png" />
+    <None Remove="Resources\System\view-more.ico" />
+    <None Remove="Resources\System\view-more.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\System\CloseWin.png" />
+    <EmbeddedResource Include="Resources\System\CloseWindow.png" />
+    <EmbeddedResource Include="Resources\System\DateTimePicker.ico" />
+    <EmbeddedResource Include="Resources\System\MaxWin.png" />
+    <EmbeddedResource Include="Resources\System\MaxWindow.png" />
+    <EmbeddedResource Include="Resources\System\MinWin.png" />
+    <EmbeddedResource Include="Resources\System\MinWindow.png" />
+    <EmbeddedResource Include="Resources\System\view-more.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GtkSharp" Version="3.24.24.95" />
+    <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="GTKControls\Button.cs" />
     <Compile Update="GTKControls\CheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -39,9 +99,7 @@
     <Compile Update="GTKControls\DateTimePicker.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="GTKControls\EventArgs\Control.PrintPaintEventArgs.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="GTKControls\EventArgs\Control.PrintPaintEventArgs.cs" />
     <Compile Update="GTKControls\Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,8 +156,19 @@
     </Compile>
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy $(ProjectDir)bin\Release\netcoreapp3.1\*.*   $(SolutionDir)Libs\*.*" />
-  </Target>
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\licenses\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="obj\Debug\" />
+  </ItemGroup>
 
 </Project>

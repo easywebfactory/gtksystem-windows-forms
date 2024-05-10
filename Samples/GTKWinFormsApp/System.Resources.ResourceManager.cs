@@ -20,7 +20,7 @@ namespace System.Resources
         {
 
         }
-        public ResourceManager(string baseName, Assembly assembly, System.Type? resourceSource) : base(baseName, assembly, resourceSource)
+        public ResourceManager(string baseName, Assembly assembly, System.Type resourceSource) : base(baseName, assembly, resourceSource)
         {
 
         }

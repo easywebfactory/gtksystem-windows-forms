@@ -1,6 +1,11 @@
-﻿//基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
-//使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows和linux运行
-//技术支持438865652@qq.com，https://www.cnblogs.com/easywebfactory
+﻿/*
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * author:chenhongjin
+ * date: 2024/1/3
+ */
+using Atk;
 using System.ComponentModel;
 using System.Drawing;
 
@@ -12,18 +17,17 @@ namespace System.Windows.Forms
         public DateTimePicker() : base()
         {
             Widget.StyleContext.AddClass("DateTimePicker");
-            Widget.StyleContext.AddClass("BorderRadiusStyle");
+
             base.Mask = "____年__月__日";
-            //base.Control.PrimaryIconActivatable = true;
-            //base.Control.PrimaryIconStock = "gtk-index";
+            //self.PrimaryIconActivatable = true;
+            //self.PrimaryIconStock = "gtk-index";
 
-            base.Control.SecondaryIconActivatable = true;
-            //base.Control.SecondaryIconStock= "gtk-index";
-            //base.Control.SecondaryIconName = "DateTimePicker.ico";
-
-            //base.Control.SecondaryIconPixbuf = new Gdk.Pixbuf(WindowsFormsApp1.Properties.Resources.DateTimePicker);
-            base.Control.SecondaryIconName = "x-office-calendar";
-            base.Control.IconRelease += DateTimePicker_IconRelease;
+            self.SecondaryIconActivatable = true;
+            self.SecondaryIconStock= "gtk-index";
+           // self.SecondaryIconName = "x-office-calendar";
+            System.IO.Stream sm = this.GetType().Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.DateTimePicker.ico");
+            self.SecondaryIconPixbuf = new Gdk.Pixbuf(sm);
+            self.IconRelease += DateTimePicker_IconRelease;
         }
 
         private void DateTimePicker_IconRelease(object o, Gtk.IconReleaseArgs args)
@@ -50,7 +54,7 @@ namespace System.Windows.Forms
             Gtk.Calendar calendar = sender as Gtk.Calendar;
             DateTime dt = calendar.GetDate();
 
-            base.Control.DeleteSelection();
+            self.DeleteSelection();
             base.Mask = "";
             this.Text = dt.ToString("yyyy年MM月dd日");
             base.Mask = "____年__月__日";
@@ -88,8 +92,8 @@ namespace System.Windows.Forms
 
         public event EventHandler ValueChanged
         {
-            add { base.Control.Changed += (object sender, EventArgs e) => { if (base.Control.IsRealized) { value.Invoke(sender, e); } }; }
-            remove { base.Control.Changed -= (object sender, EventArgs e) => { if (base.Control.IsRealized) { value.Invoke(sender, e); } }; }
+            add { self.Changed += (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
+            remove { self.Changed -= (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
         }
     }
 }

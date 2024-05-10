@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
-//using System.Windows.Forms;
 using System.Windows.Forms;
 
 namespace GTKWinFormsApp
@@ -15,12 +17,32 @@ namespace GTKWinFormsApp
     {
         public Form1()
         {
+
             InitializeComponent();
+            DataTable dt = new DataTable();
+            dt.Columns.Add("ID", typeof(string));
+            dt.Columns.Add("CreateDate", typeof(DateTime));
+            dt.Columns.Add("State", typeof(bool));
+            dt.Rows.Add("user1", DateTime.Now, true);
+            dt.Rows.Add("user2", DateTime.Now.AddDays(5), false);
+
+            DataSet dataSet = new DataSet();
+            // dataSet.Tables.Add(dt);
+            b.ID = 1;
+            b.Title = "test1";
+            listBox1.DataBindings.Add(new Binding("SelectedItem", b, "Title"));
+
+            listBox1.DisplayMember = "ID";
+            listBox1.DataSource = dt;
+            var ss = listBox1.Items[0];
 
         }
 
+        TestEntity b = new TestEntity();
         private void button1_Click(object sender, EventArgs e)
         {
+            // b.Title = "test2";
+
             DialogResult result = MessageBox.Show("1、加载数据点yes \n2、不加载数据点no", "加载数据提示", MessageBoxButtons.YesNo);
             if (result == DialogResult.No)
             {
@@ -29,43 +51,54 @@ namespace GTKWinFormsApp
             //1、数据集列表数据源
             List<TestEntity> data = new List<TestEntity>();
             var createdate = DateTime.Now;
-            data.Add(new TestEntity() { ID = 0, Title = "test1", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC = "face-smile-big-symbolic.symbolic" });
-            data.Add(new TestEntity() { ID = 1, Title = "test2", Info = " 3234fdf", State = true, CreateDate = createdate, Operate = "编辑", PIC = "face-smile" });
-            data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "" });
+            data.Add(new TestEntity() { ID = 0, Title = "test1", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC = "face-smile-big" });
+            data.Add(new TestEntity() { ID = 1, Title = "test2", Info = " 3234fdf", State = true, CreateDate = createdate, Operate = "编辑", PIC = "Resources\\timg2.jpg" });
+            data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "Resources\\BindingNavigator.Delete.ico" });
             data.Add(new TestEntity() { ID = 4, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC = "" });
 
+            data.Add(new TestEntity() { ID = 5, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "Resources\\BindingNavigator.Delete.ico" });
+            data.Add(new TestEntity() { ID = 6, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC = "" });
+
+             this.dataGridView1.DataSource = data;
+            //var s=this.dataGridView1.Rows[0].Cells[0];
+
             //2、datatable数据源
-            //DataTable dt = new DataTable();
-            //dt.Columns.Add("ID", typeof(string));
-            //dt.Columns.Add("CreateDate", typeof(DateTime));
-            //dt.Columns.Add("State", typeof(bool));
-            //dt.Rows.Add("user1", DateTime.Now,true);
-            //dt.Rows.Add("user2", DateTime.Now.AddDays(5),false);
+            DataTable dt = new DataTable();
+            dt.Columns.Add("ID", typeof(string));
+            dt.Columns.Add("CreateDate", typeof(DateTime));
+            dt.Columns.Add("State", typeof(bool));
+            dt.Rows.Add("test1", DateTime.Now, true);
+            dt.Rows.Add("test2", DateTime.Now.AddDays(5), false);
+            //this.dataGridView1.Columns.Clear();
+            //this.dataGridView1.DataSource = dt;
 
-            this.dataGridView1.DataSource = data;
-
-             //3、通过dataviewrow添加数据
+            //3、通过dataviewrow添加数据
             //for (int i = 0; i < 10; i++)
             //{
             //    var cell = new DataGridViewRow();
-            //    cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString() }, new DataGridViewCheckBoxCell() { Value=true }, new DataGridViewTextBoxCell() { Value = "title" + i.ToString() }, new DataGridViewTextBoxCell() { Value = DateTime.Now } }.ToArray());
+            //    cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString() }, new DataGridViewCheckBoxCell() { Value = true }, new DataGridViewTextBoxCell() { Value = "title" + i.ToString() }, new DataGridViewComboBoxCell() { Value = DateTime.Now } }.ToArray());
             //    cell.DefaultCellStyle = new DataGridViewCellStyle() { BackColor = Color.Red };
-            //    this.dataGridView1.Rows.Add(cell);
+            //   this.dataGridView1.Rows.Add(cell);
             //}
-
-            this.textBox1.Text = this.comboBox1.SelectedItem?.ToString() + "/" + this.comboBox1.SelectedIndex;
-
         }
 
-        public class TestEntity
+        public class TestEntity:INotifyPropertyChanged
         {
             public int ID { get; set; }
-            public string Title { get; set; }
+            public string title;
+            public string Title { get { return title; } set { title = value; OnPropertyChangedEventHandler(); } }
             public string Info { get; set; }
             public bool State { get; set; }
             public DateTime CreateDate { get; set; }
             public string Operate { get; set; }
             public string PIC { get; set; }
+
+            public event PropertyChangedEventHandler? PropertyChanged;
+            protected void OnPropertyChangedEventHandler([CallerMemberName] string propertyName = null)
+            {
+                if(PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -84,6 +117,7 @@ namespace GTKWinFormsApp
             if (result == DialogResult.OK)
             {
                 textBox1.Text = "#" + cd.Color.Name;
+                textBox1.BackColor = ColorTranslator.FromHtml(textBox1.Text);
             }
 
             //DialogResult result = MessageBox.Show(this, " 弹窗测试 ", "信息提示", MessageBoxButtons.OKCancel);
@@ -175,37 +209,47 @@ namespace GTKWinFormsApp
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
+            //6
             Console.WriteLine("dataGridView1_SelectionChanged");
         }
 
         private void dataGridView1_MultiSelectChanged(object sender, EventArgs e)
-        {
+        { //1
             Console.WriteLine("dataGridView1_MultiSelectChanged");
         }
 
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             Console.WriteLine("dataGridView1_CellValueChanged");
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                Console.WriteLine(row.Cells[1].Value);
+            }
         }
 
         private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
+            //3
             Console.WriteLine("dataGridView1_CellEnter");
         }
 
         private void dataGridView1_CellLeave(object sender, DataGridViewCellEventArgs e)
-        {
+        {//4
             Console.WriteLine("dataGridView1_CellLeave");
         }
 
         private void dataGridView1_CellValidated(object sender, DataGridViewCellEventArgs e)
         {
+            //7
             Console.WriteLine("dataGridView1_CellValidated");
+        
+            Console.WriteLine(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
         }
 
         private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            Console.WriteLine("dataGridView1_CellValidating"+e.FormattedValue);
+            //5
+            Console.WriteLine("dataGridView1_CellValidating" + e.FormattedValue);
         }
 
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
@@ -220,6 +264,7 @@ namespace GTKWinFormsApp
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            //2
             Console.WriteLine("dataGridView1_CellClick");
         }
 
@@ -235,12 +280,14 @@ namespace GTKWinFormsApp
 
         private void treeView1_BeforeSelect(object sender, TreeViewCancelEventArgs e)
         {
-            Console.WriteLine("treeView1_BeforeSelect");
+            
+            Console.WriteLine("treeView1_BeforeSelect："+ e.Node?.Text);
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            Console.WriteLine("treeView1_AfterSelect");
+            Console.WriteLine("treeView1_AfterSelect：" + treeView1.SelectedValuePath);
+            Console.WriteLine("treeView1_AfterSelect："+ e.Node?.Text);
         }
 
         private void treeView1_AfterCollapse(object sender, TreeViewEventArgs e)
@@ -285,16 +332,11 @@ namespace GTKWinFormsApp
 
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Console.WriteLine("checkedListBox1_ItemCheck，"+e.NewValue + e.CurrentValue);
+            Console.WriteLine("checkedListBox1_ItemCheck，" + e.NewValue + e.CurrentValue);
             if (e.Index == 2)
             {
-              //  checkedListBox1.ClearSelected(); 
+                //  checkedListBox1.ClearSelected(); 
             }
-        }
-
-        private void button1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
 
         private void pictureBox2_Paint(object sender, PaintEventArgs e)
@@ -302,12 +344,72 @@ namespace GTKWinFormsApp
             var g = e.Graphics;
             g.Clear(Color.White);
 
-            //g.DrawImage(new Bitmap(GTKWinFormsApp.Properties.Resources.timg6), new Point(0, 0));
-            g.DrawImage(new Bitmap(GTKWinFormsApp.Properties.Resources.timg6), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
+
+            using (MemoryStream mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6))
+            {
+                //g.DrawImage(new Bitmap(mem), new Point(0, 0));
+                g.DrawImage(new Bitmap(mem), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
+            }
             g.FillRectangle(new SolidBrush(Color.AliceBlue), new Rectangle(0, 0, 100, 50));
-            g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new Point(10, 10), new Point(50, 30));
-            g.DrawString("这是Paint Graphics示例效果", new Font(new FontFamily(""), 12, FontStyle.Regular),new SolidBrush(Color.Red),0,80);
-            g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2),new Rectangle(0,0, pictureBox2.Width, pictureBox2.Height), 60, 190);
+            // g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new Point(10, 10), new Point(50, 30));
+            List<PointF> Rps = new List<PointF>();
+            List<PointF> rps = new List<PointF>();
+            float R = 50;
+            double rad = Math.PI / 180;
+            float r = (float)(R * Math.Sin(18 * R) / Math.Cos(36 * R));
+            float x = pictureBox2.Width / 2;
+            float y = pictureBox2.Height / 2;
+            for (int k = 0; k < 5; k++)
+            {
+                Rps.Add(new PointF(x - (R * (float)Math.Cos((90 + k * 72) * rad)), y - (R * (float)Math.Sin((90 + k * 72) * rad))));
+                rps.Add(new PointF(x - (r * (float)Math.Cos((90 + k * 72 + 36) * rad)), y - (r * (float)Math.Sin((90 + k * 72 + 36) * rad))));
+            }
+            for (int i = 0; i < 5; i++)
+            {
+                //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), Rps[i], rps[i]);
+                //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), rps[i], new PointF(x, y));
+                //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new PointF(x, y), Rps[i]);
+
+                g.DrawLines(new Pen(new SolidBrush(Color.Red), 2), new PointF[] { Rps[i], rps[i], new PointF(x, y), Rps[i] });
+            }
+
+            g.DrawString("这是Paint Graphics示例效果", new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 60);
+            g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2), new Rectangle(pictureBox2.Width/2, pictureBox2.Height/2, pictureBox2.Width, pictureBox2.Height), 0, 270);
+
+            g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(50, 60), new PointF(100, 80), new PointF(75, 100)});
+            g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(75, 100), new PointF(100, 120), new PointF(120, 100)});
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            Form2 form = new Form2();
+            DialogResult result = form.ShowDialog(this);
+            if (result == DialogResult.None || result == DialogResult.Cancel)
+            {
+               // MessageBox.Show("关闭窗口返回");
+            }
+            //form.Show();
+        }
+
+        private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            var rect = tabControl1.GetTabRect(e.Index);
+            //e.Graphics.FillRectangle(new SolidBrush(Color.Gray), new Rectangle(rect.X, rect.Y, rect.Width, rect.Height));
+            e.Graphics.FillRectangle(new SolidBrush(Color.DarkBlue), e.Bounds);
+            var font = new Font(FontFamily.GenericSansSerif, 12);
+            e.Graphics.DrawString($"tab组{e.Index}", font, new SolidBrush(Color.Red), new PointF(0, 0));
+            e.Graphics.DrawImage(Image.FromFile("Resources\\BindingNavigator.Delete.ico"),new Point(e.Bounds.Width-16, 0));
+        }
+
+        private void button1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 

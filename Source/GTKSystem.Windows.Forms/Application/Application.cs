@@ -1,14 +1,56 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
+using System.Reflection;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace System.Windows.Forms
 {
     public sealed class Application
     {
         static Application() {
-           // Init();
+            Init();
         }
+
+        private static string appDataDirectory { get {
+                string[] assemblyFullName = Assembly.GetCallingAssembly().FullName.Split(",");
+                string _namespace = assemblyFullName[0];
+                string _version = assemblyFullName[1].Split("=")[1];
+                return $"{_namespace}\\{Assembly.GetExecutingAssembly().GetName().Name}\\{_version}";
+            }
+        }
+
+        public static string CommonAppDataPath {
+            get {
+                string thispath = $"{System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}\\{appDataDirectory}";
+                if(!System.IO.Directory.Exists(thispath))
+                    System.IO.Directory.CreateDirectory(thispath);
+                return thispath;
+            } 
+        }
+        public static string UserAppDataPath
+        {
+            get
+            {
+                string thispath = $"{System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\{appDataDirectory}";
+                if (!System.IO.Directory.Exists(thispath))
+                    System.IO.Directory.CreateDirectory(thispath);
+                return thispath;
+            }
+        }
+        public static string LocalUserAppDataPath
+        {
+            get
+            {
+                string thispath = $"{System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\{appDataDirectory}";
+                if (!System.IO.Directory.Exists(thispath))
+                    System.IO.Directory.CreateDirectory(thispath);
+                return thispath;
+            }
+        }
+        public static string ExecutablePath { get { return System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName; } }
+        public static string StartupPath { get { return Environment.CurrentDirectory; } }
+
         private static readonly object internalSyncObject = new object();
         public static CultureInfo CurrentCulture
         {
@@ -34,52 +76,93 @@ namespace System.Windows.Forms
             }
         }
 
-        public static Gtk.Application App;
-        public static void Init()
+        public static Gtk.Application App { get; private set; }
+        public static Gtk.Application Init()
         {
-            Gtk.Application.Init();
-            App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
-            App.Register(GLib.Cancellable.Current);
-            var quitAction = new GLib.SimpleAction("quit", null);
-            quitAction.Activated += QuitActivated;
-            App.AddAction(quitAction);
+            if (App == null)
+            {
+                Gtk.Application.Init();
+                App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.IsLauncher);
+                //App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
+                //App.Register(GLib.Cancellable.Current);
+                var quitAction = new GLib.SimpleAction("quit", null);
+                quitAction.Activated += QuitActivated;
+                App.AddAction(quitAction);
 
-            Gtk.CssProvider css = new Gtk.CssProvider();
-
-            css.LoadFromData(@"
-.DefaultThemeStyle{border:solid 1px #ddaaaa;border-radius:0px;box-shadow: none;color:#993333;}
-.DefaultThemeStyle.background{background-color:#ffeeee;}
-.DefaultThemeStyle.titlebar{background-color:#996666;}
-.DefaultThemeStyle border{border:solid 1px #ddaaaa;}
-.DefaultThemeStyle button{color:#993333;border-radius:0px;}
-.DefaultThemeStyle entry{border-radius:0px;}
-.DefaultThemeStyle label{color:#993333;}
-.DefaultThemeStyle>button{border:solid 1px #cccccc;}
+                Gtk.CssProvider css = new Gtk.CssProvider();
+                //粉红色主题
+                //.DefaultThemeStyle{border:solid 1px #ddaaaa;border-radius:0px;box-shadow: none;color:#993333;}
+                //.DefaultThemeStyle.background{background-color:#ffeeee;}
+                //.DefaultThemeStyle.titlebar{background-color:#996666;}
+                //.DefaultThemeStyle border{border:solid 1px #ddaaaa;}
+                //.DefaultThemeStyle button{color:#993333;border-radius:0px;}
+                //.DefaultThemeStyle entry{border-radius:0px;}
+                //.DefaultThemeStyle label{color:#993333;}
+                //.DefaultThemeStyle>button{border:solid 1px #cccccc;}
+                //.DefaultThemeStyle>entry{border:solid 1px #cccccc;}
+                //.DefaultThemeStyle header.top{background-color:#ffcccc;} 
+                //.DefaultThemeStyle header.top tab:hover{background-color:#ffeeee;} 
+                //.DefaultThemeStyle stack{background-color:#ffeeee;padding:0px;margin:0px;} 
+                //.DefaultThemeStyle .view button{background-color:#ffcccc;}
+                //.DefaultThemeStyle:focus{border-color:#000099;}
+                //.DefaultThemeStyle:active{border-color:#000099;}
+                css.LoadFromData(@"
+.DefaultThemeStyle{border-radius:0px;border:solid 1px #cccccc;box-shadow: none;color:#000000;}
 .DefaultThemeStyle>entry{border:solid 1px #cccccc;}
-.DefaultThemeStyle header.top{background-color:#ffcccc;} 
-.DefaultThemeStyle header.top tab:hover{background-color:#ffeeee;} 
-.DefaultThemeStyle stack{background-color:#ffeeee;padding:0px;margin:0px;} 
-.DefaultThemeStyle .view button{background-color:#ffcccc;}
-.DefaultThemeStyle:focus{border-color:#000099;}
-.DefaultThemeStyle:active{border-color:#000099;}
+.DefaultThemeStyle>button{border:solid 1px #cccccc;}
+.DefaultThemeStyle button{border-radius:0px;}
+.DefaultThemeStyle border{border:solid 1px #cccccc;}
+.DefaultThemeStyle entry{border-radius:0px;background-color:#ffffff;}
 
-.Form{}
-.BorderRadiusStyle{ ;}
+.BackgroundTransparent{padding:0px;background:transparent;background-color:transparent;} 
+/*
+.DefaultThemeStyle{border:solid 1px #cccccc;border-radius:0px;box-shadow: none;color:#000000;}
+.DefaultThemeStyle .background{background-color:#F6F5F4;}
+.DefaultThemeStyle .titlebar{background-color:#666655;}
+.DefaultThemeStyle .view{background:#ffffff}
+.DefaultThemeStyle label{color:#000000;}
+.DefaultThemeStyle header.top{background-color:#CFCFCF;} 
+.DefaultThemeStyle header.top tab{background-color:#C7C7C7;} 
+.DefaultThemeStyle header.top tab:hover{background-color:#EFEFEF;} 
+
+.DefaultThemeStyle stack{background-color:#ffffff;padding:0px;margin:0px;} 
+.DefaultThemeStyle .view button{background:linear-gradient(#f6f6f6,#f9f9f9)}
+.DefaultThemeStyle:focus{border-color:#eeeeee;}
+.DefaultThemeStyle:active{border-color:#cccccc;}
+*/
+
+
+.Form {border-width:0px;padding:0px;margin:0px;}
+.ScrollForm {border-right:solid 15px #e6e5e4;}
+
 .MessageBox{}
-.MessageBox button{margin:10px;}
+.MessageBox button{margin:10px;border-radius:0px;}
 .MessageBox-BarTitle{font-size:20px;padding-bottom:10px;}
 .TabControl{padding:0px;} 
+.TabControl header.top{background-color:#e7e5e3;} 
+.TabControl header.top tab:hover{background-color:#EFEFEF;} 
+.TabControl header.top tab:checked{background-color:#f9f9f9;} 
+
 .DataGridView{margin:0px;}
-.DataGridView treeview.view{margin:0px;padding:0px;border-bottom:solid 1px #dddddd;border-left-width:0px;border-top-width:0px;;border-right-width:0px;}
+.DataGridView treeview.view{background-color:#ffffff;margin:0px;padding:0px;border-bottom:solid 1px #dddddd;border-left-width:0px;border-top-width:0px;;border-right-width:0px;}
+.DataGridView treeview.view:hover{background-color:#ffff88;}
+.DataGridView treeview.view:selected{background-color:#5555ff;color:#ffffff;}
+.DataGridView treeview.view header{background-color:#EFEFEF;}
+.DataGridView treeview.view header button{background-color:#f9f9f9; padding-top:6px;padding-bottom:6px;}
+.DataGridView treeview.view header button:hover{background-color:#cccccc;}
+
 .DataGridView button{} 
-.GridViewCell-Button{ font-size:12px; border:solid 1px #c0c0c0; border-radius:0px; background:linear-gradient(#eeeeee,#e2e2e2);box-shadow:0px 1px 1px 1px #eeeeee;}
-.GridViewCell-Button:hover{ background:linear-gradient(#f6f6f6,#f9f9f9);}
+.GridViewCell-Button{ font-size:12px; border:solid 1px #aaaaaa; border-radius:0px; background:linear-gradient(#e9e9e9,#e0e0e0);}
+.GridViewCell-Button:hover{  border:solid 1px #aaaaaa;background:linear-gradient(#eeeeee,#efefef);}
 .GridViewCell-Button:selected{ color:blue}
-.TreeView{border-bottom-width:0px;border-left-width:1px;border-top-width:1px;;border-right-width:1px;}
+.TreeView{border-bottom-width:0px;border-left-width:0px;border-top-width:1px;;border-right-width:0px;}
 .TreeView button{border-left-width:0px;border-right-width:0px;}
+.TreeView:selected{ color:blue}
+
 .Button{padding:0px;} 
-.TextBox{background-color:#ffffff;padding:0px 3px 0px 3px;} 
-.RichTextBox .view{background-color:#ffffff;border-width:1px;}
+
+.TextBox{padding:0px 3px 0px 3px;caret-color:#999999;} 
+.RichTextBox {border-width:1px;caret-color:#999999;}
 .RichTextBox border.top{border-width:1px;}
 .RichTextBox border.left{border-width:1px;}
 .RichTextBox border.right{border-width:1px;}
@@ -87,9 +170,10 @@ namespace System.Windows.Forms
 .CheckBox {border-width:0px;} 
 .CheckedListBox {background-color:#ffffff;} 
 .RadioButton {border-width:0px;} 
-.Label{border-width:0px;} 
+
+.Label{border-width:0px;background-color:#F6F5F4;} 
 .LinkLabel{border-width:0px;} 
-.NumericUpDown{padding:0px;min-height:6px;min-width:6px;}
+.NumericUpDown{padding:0px;min-height:6px;min-width:6px;caret-color:#999999;}
 .NumericUpDown button.up{border-width:0px;padding:0px;font-size:6px;min-height:6px;min-width:6px;}
 .NumericUpDown button.down{border-width:0px;padding:0px;font-size:6px;min-height:6px;min-width:6px;}
 .NumericUpDown entry{border-width:0px;padding:0px 0px 0px 3px;min-height:6px;min-width:6px;} 
@@ -97,32 +181,53 @@ namespace System.Windows.Forms
 .ComboBox{border-width:0px;padding:0px;}
 .ComboBox button{padding:0px;}
 .ComboBox entry{padding:0px;}
-.Panel{} 
+.Panel{border-width:0px;} 
 .SplitContainer.horizontal{border-width:1px;}
-.GroupBox{} 
-.ButtonFontStyle{font-size:14px;color:red;}
+.GroupBox{border-color:#DCDCDC;} 
+.TableLayoutPanel viewport{border:solid 1px #eeeeee;}
+.FlowLayoutPanel{}
+.ToolStrip{padding:0px;background:linear-gradient(#fefefd,#efefef);border-width:0px;background-color:#F6F5F4;} 
+.ToolStrip viewport{border-width:0px;} 
+.ToolStripMenuItemNoChecked check{color:transparent;opacity:0;} 
+.UserControl{border-width:0px;}
+
+.StatusStrip{padding:0px;background-image:linear-gradient(#ECECEC,#e7e5e3,#e7e5e3); border-width:0px; border-top:solid 1px #c6c6c6;}
+.StatusStrip viewport{border-width:0px;} 
+
+.MenuStrip{padding:0px;background-color:#F6F5F4;background-image:none;border-width:0px;}
+.MenuStrip viewport{border-width:0px;} 
+
+.ListBox{border-width:1px;background-color:#ffffff; padding:0px;}
+.ListView{background-color:#ffffff; padding:0px;}
+.ListView .Label{background-color:transparent;} 
+.ListViewHeader { background-color:#eeeeee;}
+.ListView .Group{background-color:#fefefe; background-image:linear-gradient(#ffffff 12px,#3333bb 3px,#ffffff 14px);}
+.ListView .Title{background-color:#fefefe; padding-left:5px;padding-right:5px; color:#3333bb;}
+.ListView .SubTitle{padding-left:5px;padding-right:5px;color:#666666; font-size:14px; }
+
 ");
 
-            Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, 800);
-
+                Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, 800);
+            }
+            return App;
         }
         private static void QuitActivated(object sender, EventArgs e)
         {
             Gtk.Application.Quit();
         }
         public static bool SetHighDpiMode(HighDpiMode highDpiMode) {
-             return false;
+             return true;
          }
         public static void EnableVisualStyles() {
 
         }
         public static void SetCompatibleTextRenderingDefault(bool defaultValue) {
-            Init();
+            
         }
 
         public static void Run(Form mainForm)
         {
-            mainForm.Control.Destroyed += Control_Destroyed;
+            mainForm.Widget.Destroyed += Control_Destroyed;
             mainForm.Show();
             Gtk.Application.Run();
         }
@@ -166,4 +271,21 @@ namespace System.Windows.Forms
         }
     }
 
+    public static class InitAppliction
+    {
+       private static Gtk.Application app = Application.Init();
+        static InitAppliction()
+        {
+
+        }
+    }
+}
+public sealed class ApplicationConfiguration
+{
+    public static void Initialize()
+    {
+        global::System.Windows.Forms.Application.EnableVisualStyles();
+        global::System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+        global::System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.SystemAware);
+    }
 }

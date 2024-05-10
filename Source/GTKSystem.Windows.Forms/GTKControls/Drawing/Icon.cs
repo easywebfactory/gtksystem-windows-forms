@@ -1,54 +1,50 @@
+using Gdk;
+using GTKSystem.Resources;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization;
 
 namespace System.Drawing
 {
-	/// <summary>Represents a Windows icon, which is a small bitmap image that is used to represent an object. Icons can be thought of as transparent bitmaps, although their size is determined by the system.</summary>
-	[TypeConverter("System.Drawing.IconConverter, System.Windows.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51")]
 	public sealed class Icon : MarshalByRefObject, ICloneable, IDisposable, ISerializable
 	{
-		/// <summary>Gets the Windows handle for this <see cref="T:System.Drawing.Icon" />. This is not a copy of the handle; do not free it.</summary>
-		/// <returns>The Windows handle for the icon.</returns>
-		[Browsable(false)]
+        #region 只取图像byte[]数据 
+        public byte[] PixbufData { get; set; }
+        public Gdk.Pixbuf Pixbuf { get; set; }
+        public string FileName { get; set; }
+        #endregion
+
+        [Browsable(false)]
 		public IntPtr Handle
 		{
-			get
-			{
-				throw null;
-			}
-		}
+            get;
+            private set;
+        }
 
 		/// <summary>Gets the height of this <see cref="T:System.Drawing.Icon" />.</summary>
 		/// <returns>The height of this <see cref="T:System.Drawing.Icon" />.</returns>
 		[Browsable(false)]
 		public int Height
 		{
-			get
-			{
-				throw null;
-			}
-		}
+            get;
+            private set;
+        }
 
 		/// <summary>Gets the size of this <see cref="T:System.Drawing.Icon" />.</summary>
 		/// <returns>A <see cref="T:System.Drawing.Size" /> structure that specifies the width and height of this <see cref="T:System.Drawing.Icon" />.</returns>
 		public Size Size
 		{
-			get
-			{
-				throw null;
-			}
-		}
+            get;
+            private set;
+        }
 
 		/// <summary>Gets the width of this <see cref="T:System.Drawing.Icon" />.</summary>
 		/// <returns>The width of this <see cref="T:System.Drawing.Icon" />.</returns>
 		[Browsable(false)]
 		public int Width
 		{
-			get
-			{
-				throw null;
-			}
+			get;
+			private set;
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Icon" /> class and attempts to find a version of the icon that matches the requested size.</summary>
@@ -71,16 +67,16 @@ namespace System.Drawing
 		/// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Icon" /> class from the specified data stream.</summary>
 		/// <param name="stream">The data stream from which to load the <see cref="T:System.Drawing.Icon" />.</param>
 		/// <exception cref="T:System.ArgumentException">The <paramref name="stream" /> parameter is <see langword="null" />.</exception>
-		public Icon(Stream stream)
-		{
+		public Icon(Stream stream) : this(stream, 0, 0)
+        {
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Icon" /> class of the specified size from the specified stream.</summary>
 		/// <param name="stream">The stream that contains the icon data.</param>
 		/// <param name="size">The desired size of the icon.</param>
 		/// <exception cref="T:System.ArgumentException">The <paramref name="stream" /> is <see langword="null" /> or does not contain image data.</exception>
-		public Icon(Stream stream, Size size)
-		{
+		public Icon(Stream stream, Size size) : this(stream, size.Width, size.Height)
+        {
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Icon" /> class from the specified data stream and with the specified width and height.</summary>
@@ -89,21 +85,33 @@ namespace System.Drawing
 		/// <param name="height">The height, in pixels, of the icon.</param>
 		/// <exception cref="T:System.ArgumentException">The <paramref name="stream" /> parameter is <see langword="null" />.</exception>
 		public Icon(Stream stream, int width, int height)
-		{
-		}
+        {
+            this.Width = width;
+            this.Height = height;
+            using(BinaryReader reader =new BinaryReader(stream))
+            {
+                byte[] bytes = reader.ReadBytes((int)stream.Length);
+                this.PixbufData = bytes;
+                this.Pixbuf = new Gdk.Pixbuf(bytes);
+                if (width < 1)
+                    this.Width = this.Pixbuf.Width;
+                if (height < 1)
+                    this.Height = this.Pixbuf.Height;
+            }
+        }
 
-		/// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Icon" /> class from the specified file name.</summary>
-		/// <param name="fileName">The file to load the <see cref="T:System.Drawing.Icon" /> from.</param>
-		public Icon(string fileName)
-		{
-		}
+        /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Icon" /> class from the specified file name.</summary>
+        /// <param name="fileName">The file to load the <see cref="T:System.Drawing.Icon" /> from.</param>
+        public Icon(string fileName) : this(fileName, 0, 0)
+        {
+        }
 
-		/// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Icon" /> class of the specified size from the specified file.</summary>
-		/// <param name="fileName">The name and path to the file that contains the icon data.</param>
-		/// <param name="size">The desired size of the icon.</param>
-		/// <exception cref="T:System.ArgumentException">The <paramref name="string" /> is <see langword="null" /> or does not contain image data.</exception>
-		public Icon(string fileName, Size size)
-		{
+        /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Icon" /> class of the specified size from the specified file.</summary>
+        /// <param name="fileName">The name and path to the file that contains the icon data.</param>
+        /// <param name="size">The desired size of the icon.</param>
+        /// <exception cref="T:System.ArgumentException">The <paramref name="string" /> is <see langword="null" /> or does not contain image data.</exception>
+		public Icon(string fileName, Size size) : this(fileName, size.Width, size.Height)
+        {
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Icon" /> class with the specified width and height from the specified file.</summary>
@@ -113,7 +121,20 @@ namespace System.Drawing
 		/// <exception cref="T:System.ArgumentException">The <paramref name="string" /> is <see langword="null" /> or does not contain image data.</exception>
 		public Icon(string fileName, int width, int height)
 		{
-		}
+			this.FileName= fileName;
+			this.Width = width;
+			this.Height = height;
+            if (System.IO.File.Exists(fileName))
+            {
+                byte[] bytes = System.IO.File.ReadAllBytes(fileName);
+                this.PixbufData = bytes;
+                this.Pixbuf = new Gdk.Pixbuf(bytes);
+                if (width < 1)
+                    this.Width = this.Pixbuf.Width;
+                if (height < 1)
+                    this.Height = this.Pixbuf.Height;
+            }
+        }
 
 		/// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Icon" /> class from a resource in the specified assembly.</summary>
 		/// <param name="type">A <see cref="T:System.Type" /> that specifies the assembly in which to look for the resource.</param>
@@ -121,18 +142,21 @@ namespace System.Drawing
 		/// <exception cref="T:System.ArgumentException">An icon specified by <paramref name="resource" /> cannot be found in the assembly that contains the specified <paramref name="type" />.</exception>
 		public Icon(Type type, string resource)
 		{
-		}
+
+        }
 
 		/// <summary>Clones the <see cref="T:System.Drawing.Icon" />, creating a duplicate image.</summary>
 		/// <returns>An object that can be cast to an <see cref="T:System.Drawing.Icon" />.</returns>
 		public object Clone()
 		{
-			throw null;
-		}
+            return new Icon(this.FileName, this.Width, this.Height) { Pixbuf = this.Pixbuf, PixbufData = this.PixbufData };
+        }
 
-		/// <summary>Releases all resources used by this <see cref="T:System.Drawing.Icon" />.</summary>
-		public void Dispose()
+        /// <summary>Releases all resources used by this <see cref="T:System.Drawing.Icon" />.</summary>
+        public void Dispose()
 		{
+			this.PixbufData = null;
+			this.Pixbuf = null;
 		}
 
 		/// <summary>Returns an icon representation of an image that is contained in the specified file.</summary>
@@ -143,7 +167,7 @@ namespace System.Drawing
 		/// The <paramref name="filePath" /> indicates a Universal Naming Convention (UNC) path.</exception>
 		public static Icon ExtractAssociatedIcon(string filePath)
 		{
-			throw null;
+			return new Icon(filePath);
 		}
 
 		/// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
@@ -163,7 +187,16 @@ namespace System.Drawing
 		/// <param name="outputStream">The <see cref="T:System.IO.Stream" /> to save to.</param>
 		public void Save(Stream outputStream)
 		{
-		}
+			if(PixbufData != null)
+				foreach(byte data in PixbufData)
+                    outputStream.WriteByte(data);
+            else if (Pixbuf != null)
+                foreach (byte data in Pixbuf.PixelBytes.Data)
+                    outputStream.WriteByte(data);
+            else if (FileName != null && System.IO.File.Exists(FileName))
+                foreach (byte data in System.IO.File.ReadAllBytes(FileName))
+                    outputStream.WriteByte(data);
+        }
 
 		/// <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" /> with the data that is required to serialize the target object.</summary>
 		/// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> object to populate with data.</param>
@@ -176,14 +209,14 @@ namespace System.Drawing
 		/// <returns>A <see cref="T:System.Drawing.Bitmap" /> that represents the converted <see cref="T:System.Drawing.Icon" />.</returns>
 		public Bitmap ToBitmap()
 		{
-			throw null;
+			return new Bitmap(this.Width, this.Height) { PixbufData = this.PixbufData, Pixbuf = this.Pixbuf, FileName = this.FileName };
 		}
 
 		/// <summary>Gets a human-readable string that describes the <see cref="T:System.Drawing.Icon" />.</summary>
 		/// <returns>A string that describes the <see cref="T:System.Drawing.Icon" />.</returns>
 		public override string ToString()
 		{
-			throw null;
+			return "Icon";
 		}
 	}
 }

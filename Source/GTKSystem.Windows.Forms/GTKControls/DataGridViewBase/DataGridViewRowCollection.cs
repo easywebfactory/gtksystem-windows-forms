@@ -1,7 +1,12 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms.GtkRender;
+using System.Linq;
 using Gtk;
+using System.Data;
+using GLib;
+
 
 namespace System.Windows.Forms
 {
@@ -13,48 +18,61 @@ namespace System.Windows.Forms
         public DataGridViewRowCollection(DataGridView dataGridView)
         {
             this.dataGridView = dataGridView;
+            this.dataGridView.Columns.Invalidate();
         }
 
-        private void AddGtkStore(params CellValue[] values)
+        private TreeIter AddGtkStore(List<CellValue> values)
         {
-            this.dataGridView.Store.AppendValues(values);
+            TreeIter iter = this.dataGridView.Store.AppendNode();
+            int columnscount = this.dataGridView.Store.NColumns;
+            for (int idx = 0; idx < columnscount; idx++)
+            {
+                this.dataGridView.Store.SetValue(iter, idx, idx < values.Count ? values[idx] : new CellValue());
+            }
+            return iter;
         }
+
         private void AddGtkStore(params DataGridViewRow[] dataGridViewRows)
         {
             foreach (DataGridViewRow row in dataGridViewRows)
-                AddGtkStore(row.Cells.ConvertAll(c =>
+            {
+                row.DataGridView = dataGridView;
+                TreeIter iter = AddGtkStore(row.Cells.ConvertAll(c =>
                 {
-                    if (row.DefaultCellStyle != null && row.DefaultCellStyle.BackColor != null)
+                    if (row.DefaultCellStyle != null && row.DefaultCellStyle.BackColor.Name != "0" && row.DefaultCellStyle.BackColor.Name != "")
                         return new CellValue() { Text = Convert.ToString(c.Value), Background = row.DefaultCellStyle.BackColor };
                     else
                         return new CellValue() { Text = Convert.ToString(c.Value) };
-                }).ToArray());
-        }
-        private void AddGtkStore()
-        {
-            Gtk.TreeIter iter = dataGridView.Store.AppendNode();
-            for (int i = 0; i < dataGridView.Store.NColumns; i++)
-            {
-                dataGridView.Store.SetValue(iter, i, new CellValue() { Text = "" });
+                }));
+                row.Handler = iter.UserData;
             }
+            if (this.dataGridView.Store.NColumns < this.dataGridView.TreeView.Columns.Length)
+                this.dataGridView.Columns.Invalidate();
         }
-        private void InsertGtkStore(int rowIndex, params CellValue[] values)
+        private TreeIter InsertGtkStore(int rowIndex, List<CellValue> values)
         {
-            dataGridView.Store.InsertWithValues(rowIndex, values);
+            TreeIter iter = this.dataGridView.Store.InsertNode(rowIndex);
+            int columnscount = this.dataGridView.Store.NColumns;
+            for (int idx = 0; idx < columnscount && idx < values.Count; idx++)
+            {
+                this.dataGridView.Store.SetValue(iter, idx, values[idx]);
+            }
+            return iter;
         }
         private void InsertGtkStore(int rowIndex, params DataGridViewRow[] dataGridViewRows)
         {
             int idx = rowIndex;
             foreach (DataGridViewRow row in dataGridViewRows)
             {
-                InsertGtkStore(idx, row.Cells.ConvertAll(c =>
+                TreeIter iter = InsertGtkStore(idx, row.Cells.ConvertAll(c =>
                 {
-                    if (row.DefaultCellStyle != null && row.DefaultCellStyle.BackColor != null)
+                    if (row.DefaultCellStyle != null && row.DefaultCellStyle.BackColor.Name != "0")
                         return new CellValue() { Text = Convert.ToString(c.Value), Background = row.DefaultCellStyle.BackColor };
                     else
                         return new CellValue() { Text = Convert.ToString(c.Value) };
-                }).ToArray());
+                }));
                 idx++;
+                row.Handler = iter.UserData;
             }
         }
         public DataGridViewRow this[int index]
@@ -86,8 +104,9 @@ namespace System.Windows.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual int Add()
         {
-            AddGtkStore();
-            items.Add(new DataGridViewRow() { Index = items.Count });
+            DataGridViewRow row = new DataGridViewRow() { Index = items.Count };
+            AddGtkStore(row);
+            items.Add(row);
             return 1;
         }
         public virtual int Add(DataGridViewRow dataGridViewRow)
@@ -114,8 +133,9 @@ namespace System.Windows.Forms
         {
             for (int i = 0; i < count; i++)
             {
-                AddGtkStore();
-                items.Add(new DataGridViewRow() { Index = items.Count });
+                DataGridViewRow row = new DataGridViewRow() { Index = items.Count };
+                AddGtkStore(row);
+                items.Add(row);
             }
 
             return count;
@@ -331,6 +351,15 @@ namespace System.Windows.Forms
         }
         public DataGridViewRow SharedRow(int rowIndex)
         {
+            bool hasiter = dataGridView.Store.GetIter(out TreeIter iter,new TreePath(new int[] { rowIndex }));
+            if (hasiter)
+            {
+                foreach (DataGridViewRow item in items)
+                {
+                    if(item.Handler==iter.UserData)
+                        return item;
+                }
+            }
             return (DataGridViewRow)SharedList[rowIndex];
         }
         //**************************************

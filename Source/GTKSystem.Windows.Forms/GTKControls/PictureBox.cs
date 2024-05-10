@@ -1,49 +1,65 @@
-﻿//基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
-//使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows和linux运行
-//技术支持438865652@qq.com，https://www.cnblogs.com/easywebfactory
+﻿/*
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * author:chenhongjin
+ * date: 2024/1/3
+ */
 using Gtk;
-using System;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+using GTKSystem.Windows.Forms.Utility;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class PictureBox : WidgetControl<Gtk.Image>
+    public partial class PictureBox : Control
     {
-        public PictureBox() : base()
+        private readonly PictureBoxBase self = new PictureBoxBase();
+        public override object GtkControl => self;
+        public PictureBox()
         {
-            Widget.StyleContext.AddClass("PictureBox");
-            base.Control.SetAlignment(0.5f, 0.5f);
-            base.Control.Xalign = 0.5f;
-            base.Control.Yalign = 0.5f;
-            base.Control.Realized += Control_Realized;
+            self.Shown += Self_Shown;
         }
 
-        private void Control_Realized(object sender, EventArgs e)
+        private void Self_Shown(object sender, EventArgs e)
         {
-
-            if (BackgroundImage != null && BackgroundImage.PixbufData != null)
+            //UpdateStyle();
+            int width = Width;
+            int height = Height;
+            if (this.MaximumSize.Width > 0)
             {
-                Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                base.ScaleImage(ref imagePixbuf, BackgroundImage.PixbufData, PictureBoxSizeMode.AutoSize, BackgroundImageLayout == ImageLayout.None ? ImageLayout.Tile : BackgroundImageLayout);
-                base.Control.Pixbuf = imagePixbuf;
+                width = Math.Min(this.MaximumSize.Width, Width);
+            }
+            if (this.MaximumSize.Height > 0)
+            {
+                height = Math.Min(this.MaximumSize.Height, Height);
+            }
+            if (this.MinimumSize.Width > 0)
+            {
+                width = Math.Min(this.MinimumSize.Width, width);
+            }
+            if (this.MinimumSize.Height > 0)
+            {
+                height = Math.Min(this.MinimumSize.Height, height);
             }
 
             if (_image != null && _image.PixbufData != null)
             {
-                Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                base.ScaleImage(ref imagePixbuf, _image.PixbufData, SizeMode, ImageLayout.None);
-                base.Control.Pixbuf = imagePixbuf;
+                ImageUtility.ScaleImageByPictureBoxSizeMode(_image.PixbufData, width, height, out Gdk.Pixbuf newImagePixbuf, SizeMode);
+                self.Pixbuf = newImagePixbuf;
             }
             else if (InitialImage != null && InitialImage.PixbufData != null)
             {
-                Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                base.ScaleImage(ref imagePixbuf, InitialImage.PixbufData, SizeMode, ImageLayout.None);
-                base.Control.Pixbuf = imagePixbuf;
+                ImageUtility.ScaleImageByPictureBoxSizeMode(InitialImage.PixbufData, width, height, out Gdk.Pixbuf newImagePixbuf, SizeMode);
+                self.Pixbuf = newImagePixbuf;
             }
         }
+
 
         public PictureBoxSizeMode SizeMode { get; set; }
 
@@ -56,11 +72,9 @@ namespace System.Windows.Forms
             get { return _image; }
             set {
                 _image = value;
-                if (base.Control.IsRealized && _image != null && _image.PixbufData != null)
+                if (self.IsRealized && _image != null && _image.PixbufData != null)
                 {
-                    Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                    base.ScaleImage(ref imagePixbuf, _image.PixbufData, SizeMode, ImageLayout.None);
-                    base.Control.Pixbuf = imagePixbuf;
+                    Self_Shown(null, null);
                 }
             }
         }
@@ -68,7 +82,7 @@ namespace System.Windows.Forms
         public System.Drawing.Image ErrorImage { get; set; }
 
         [DefaultValue(BorderStyle.None)]
-        public BorderStyle BorderStyle { get; set; }
+        public override BorderStyle BorderStyle { get; set; }
 
         public void CancelAsync() { }
         public new void Load(string url) {
@@ -100,16 +114,17 @@ namespace System.Windows.Forms
                         else
                             memoryStream.Write(buffer);
                     }
+                    Gdk.Rectangle rec = Widget.Allocation;
                     byte[] bytedata = memoryStream.GetBuffer();
                     _image =new Bitmap(bytedata);
-                    Gdk.Pixbuf imagePixbuf = new Gdk.Pixbuf(IntPtr.Zero);
-                    base.ScaleImage(ref imagePixbuf, bytedata, SizeMode, ImageLayout.None);
-                    base.Control.Pixbuf = imagePixbuf;
+ 
+                    ImageUtility.ScaleImageByImageLayout(_image.PixbufData, rec.Width, rec.Height, out Gdk.Pixbuf newImagePixbuf, BackgroundImageLayout);
+                    self.Pixbuf = newImagePixbuf;
                 }
             }
         }
-        public new void Load() { if (System.IO.File.Exists(ImageLocation)) { base.Control.File = ImageLocation; } }
-        public void LoadAsync() { if (System.IO.File.Exists(ImageLocation)) { base.Control.File = ImageLocation; } }
+        public new void Load() { if (System.IO.File.Exists(ImageLocation)) { self.File = ImageLocation; } }
+        public void LoadAsync() { if (System.IO.File.Exists(ImageLocation)) { self.File = ImageLocation; } }
         public void LoadAsync(string url) { Threading.Tasks.Task.Run(() => Load(url)); }
   
         public override void EndInit()

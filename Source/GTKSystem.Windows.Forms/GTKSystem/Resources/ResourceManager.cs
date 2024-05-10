@@ -1,12 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.Serialization;
-using System.Text;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace GTKSystem.Resources
@@ -17,7 +17,7 @@ namespace GTKSystem.Resources
         public static readonly int HeaderVersionNumber = 1;
         public static readonly int MagicNumber = -1091581234;
 
-        //internal const string ResFileExtension = ".resources";
+        internal const string ResFileExtension = ".resources";
         //internal const int ResFileExtensionLength = 10;
         //internal static readonly int DEBUG = 0;
 
@@ -26,6 +26,7 @@ namespace GTKSystem.Resources
         private System.Type _resourceSource;
         private Assembly _assembly;
         private string _baseName;
+        public ResourceInfo GetResourceInfo = new ResourceInfo();
         public ResourceManager(System.Type resourceSource) : this(null, null, resourceSource)
         {
 
@@ -39,6 +40,9 @@ namespace GTKSystem.Resources
             this._baseName = baseName;
             this._assembly = assembly;
             this._resourceSource = resourceSource;
+            GetResourceInfo.Assembly = assembly;
+            GetResourceInfo.BaseName = baseName;
+            GetResourceInfo.SourceType = resourceSource;
         }
         protected ResourceManager()
         {
@@ -68,41 +72,33 @@ namespace GTKSystem.Resources
             try
             {
                 string resourceDirctory = System.AppContext.BaseDirectory.Replace("\\", "/") + $"Resources";//linux路径必须用/
-                //string[] files = Directory.GetFiles(resourceDirctory, $"{name}.*");
-                //if (files != null && files.Length > 0)
-                //{
-                //    byte[] imagebytes = File.ReadAllBytes(files[0]);
-                //    result = imagebytes;
-                //}
-                //else
-                //{
-                    string filepath = resourceDirctory + $"/{Path.GetExtension(_baseName).TrimStart('.')}.resx"; //linux路径必须用/
-                    if (System.IO.File.Exists(filepath))
+                //string resourceDirctory = Environment.CurrentDirectory.Replace("\\", "/") + $"Resources";//linux路径必须用/
+                string filepath = resourceDirctory + $"/{Path.GetExtension(_baseName).TrimStart('.')}.resx"; //linux路径必须用/
+                if (System.IO.File.Exists(filepath))
+                {
+                    try
                     {
-                        try
-                        {
-                            XmlDocument doc = new XmlDocument();
-                            XmlReaderSettings xmlReaderSettings = new XmlReaderSettings { CheckCharacters = false };
-                            doc.Load(filepath);
-                            var docElem = doc.DocumentElement;
-                            XmlNodeList nodes = docElem.SelectNodes("data");
-                            //<data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
-                            //<value> </value>
-                            //</data>
+                        XmlDocument doc = new XmlDocument();
+                        XmlReaderSettings xmlReaderSettings = new XmlReaderSettings { CheckCharacters = false };
+                        doc.Load(filepath);
+                        var docElem = doc.DocumentElement;
+                        XmlNodeList nodes = docElem.SelectNodes("data");
+                        //<data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+                        //<value> </value>
+                        //</data>
 
-                            foreach (XmlNode xn in nodes)
+                        foreach (XmlNode xn in nodes)
+                        {
+                            if (xn.Attributes["name"].Value == name)
                             {
-                                if (xn.Attributes["name"].Value == name)
-                                {
-                                    string data = xn.SelectSingleNode("value").InnerText;
-                                    result = System.Convert.FromBase64String(data);
-                                    break;
-                                }
+                                string data = xn.SelectSingleNode("value").InnerText;
+                                result = System.Convert.FromBase64String(data);
+                                break;
                             }
                         }
-                        catch { }
                     }
-                //}
+                    catch { }
+                }
             }
             catch (System.Exception ex)
             {
@@ -116,23 +112,36 @@ namespace GTKSystem.Resources
                 throw new FileNotFoundException();
             else
             {
-                Stream stream = _assembly.GetManifestResourceStream(_baseName + ".resources");
-                GTKSystem.Resources.Extensions.DeserializingResourceReader reader = new GTKSystem.Resources.Extensions.DeserializingResourceReader(stream);
-                IDictionaryEnumerator dict = reader.GetEnumerator();
-                while (dict.MoveNext())
+                try
                 {
-                    if (dict.Key.ToString() == name)
+                    Stream stream = _assembly.GetManifestResourceStream(_baseName + ResFileExtension);
+                    GTKSystem.Resources.Extensions.DeserializingResourceReader reader = new GTKSystem.Resources.Extensions.DeserializingResourceReader(stream);
+                    IDictionaryEnumerator dict = reader.GetEnumerator();
+                    while (dict.MoveNext())
                     {
-                        try
+                        if (dict.Key.ToString() == name)
                         {
-                            return dict.Value;
-                        }
-                        catch
-                        {
-                            //图像格式内容不能提取
-                            return null;
+                            try
+                            {
+                                if(dict.Value is ImageListStreamer streamer)
+                                {
+                                    streamer.ResourceInfo = GetResourceInfo;
+                                    return streamer;
+                                }
+                                else
+                                    return dict.Value;
+                            }
+                            catch
+                            {
+                                //图像格式内容不能提取
+                                return null;
+                            }
                         }
                     }
+                }
+                catch
+                {
+                    return null;
                 }
             }
             return null;
@@ -169,17 +178,54 @@ namespace GTKSystem.Resources
         }
         public virtual object GetObject(string name)
         {
-            object obj = ReadResourceData(name);
-            if (obj == null)
-            {
-                System.Drawing.Bitmap img = new System.Drawing.Bitmap(1, 1);
-                img.FileName = name;
-                img.PixbufData = ReadResourceFile(name);
-                return img;
+            GetResourceInfo.ResourceName = name;
+            //if (name.EndsWith(".ImageStream"))
+            //{
+            //    //图片组不能读取
+            //    try
+            //    {
+            //        return new ImageListStreamer(new MemoryStream(GetResourceInfo.ImageBytes)) { ResourceInfo = GetResourceInfo };
+            //    }
+            //    catch
+            //    {
+            //        SerializationInfo info = new SerializationInfo(typeof(ImageListStreamer), new FormatterConverter());
+            //        return new ImageListStreamer(new ImageList()) { ResourceInfo = GetResourceInfo };
+            //    }
+            //}
+            //else
+            if (name.EndsWith(".Icon")) {
+                return new System.Drawing.Icon(name.Substring(0,name.Length-1));
             }
             else
             {
-                return obj;
+                object obj = ReadResourceData(name);
+                if (obj == null)
+                {
+                    if (name.EndsWith(".ImageStream"))
+                    {
+                        return new ImageListStreamer(new ImageList()) { ResourceInfo = GetResourceInfo };
+                    }
+                    else
+                    {
+                        byte[] filebytes = ReadResourceFile(name);
+                        if (filebytes == null)
+                        {
+                            return GetResourceInfo;
+                        }
+                        else
+                        {
+                            System.Drawing.Bitmap img = new System.Drawing.Bitmap(1, 1);
+                            img.FileName = name;
+                            img.PixbufData = filebytes;
+                            return img;
+                        }
+                    }
+                }
+                else
+                {
+                    GetResourceInfo.ImageBytes = obj as byte[];
+                    return obj;
+                }
             }
         }
         public virtual ResourceSet GetResourceSet(CultureInfo culture, bool createIfNotExists, bool tryParents)
@@ -226,6 +272,15 @@ namespace GTKSystem.Resources
         {
 
             return null;
+        }
+
+        public class ResourceInfo
+        {
+            public string ResourceName { get; set; }
+            public byte[] ImageBytes { get; set; }
+            public string BaseName { get; set; }
+            public Assembly Assembly { get; set; }
+            public System.Type SourceType { get; set; }
         }
     }
 }

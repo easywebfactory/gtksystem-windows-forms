@@ -2,6 +2,8 @@
 {
     public enum RightToLeft
     {
-        Inherit
+        Inherit,
+        No,
+        Yes
     }
 }

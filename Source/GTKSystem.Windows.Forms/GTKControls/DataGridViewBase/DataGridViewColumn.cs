@@ -1,6 +1,6 @@
 ﻿using Gtk;
+using System.Collections;
 using System.ComponentModel;
-using System.Reflection;
 using System.Windows.Forms.GtkRender;
 
 namespace System.Windows.Forms
@@ -29,7 +29,8 @@ namespace System.Windows.Forms
         public override void Renderer()
         {
             var renderer = new CellRendererToggleValue();
-            renderer.Activatable = true;
+            renderer.Activatable = this.ReadOnly == false;
+            renderer.Mode = CellRendererMode.Activatable;
             renderer.Toggled += CellName_Toggled;
 
             base.PackStart(renderer, true);
@@ -44,17 +45,18 @@ namespace System.Windows.Forms
             TreePath path = new TreePath(args.Path);
             var model = _treeView.Model;
             model.GetIter(out TreeIter iter, path);
-            CellValue val = (CellValue)(model.GetValue(iter, this.DisplayIndex));
-            if (val == null)
-            {
-            }
-            else
+            object cell = model.GetValue(iter, this.DisplayIndex);
+            if (cell is CellValue val)
             {
                 Boolean.TryParse(val.Text, out bool result);
                 val.Text = result == true ? "False" : "True";
                 model.SetValue(iter, this.DisplayIndex, val);
+                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], val);
             }
-            _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0]);
+            else
+            {
+                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], new CellValue() { Text = cell?.ToString() });
+            }
         }
     }
 
@@ -73,8 +75,9 @@ namespace System.Windows.Forms
         public override void Renderer()
         {
             var renderer = new CellRendererToggleValue();
+            renderer.Activatable = this.ReadOnly == false;
+            renderer.Mode = CellRendererMode.Activatable;
             renderer.Radio = true;
-            renderer.Activatable = true;
             renderer.Toggled += CellName_Toggled;
 
             base.PackStart(renderer, true);
@@ -89,38 +92,51 @@ namespace System.Windows.Forms
             TreePath path = new TreePath(args.Path);
             var model = _treeView.Model;
             model.GetIter(out TreeIter iter, path);
-            CellValue val = (CellValue)(model.GetValue(iter, this.DisplayIndex));
-            if (val == null)
-            {
-            }
-            else
+            object cell = model.GetValue(iter, this.DisplayIndex);
+            if (cell is CellValue val)
             {
                 Boolean.TryParse(val.Text, out bool result);
                 val.Text = result == true ? "False" : "True";
                 model.SetValue(iter, this.DisplayIndex, val);
+                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], val);
             }
-            _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0]);
+            else
+            {
+                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], new CellValue() { Text = cell?.ToString() });
+            }
         }
     }
     public class DataGridViewComboBoxColumn : DataGridViewColumn
     {
+        ObjectCollection _items;
         public DataGridViewComboBoxColumn() : base(new DataGridViewComboBoxCell())
         {
             this.SortMode = DataGridViewColumnSortMode.NotSortable;
+            _items = new ObjectCollection(this);
         }
         public DataGridViewComboBoxColumn(DataGridView owningDataGridView) : base(owningDataGridView, new DataGridViewComboBoxCell())
         {
             this.SortMode = DataGridViewColumnSortMode.NotSortable;
+            _items = new ObjectCollection(this);
         }
         public override void Renderer()
         {
-            var renderer = new CellRendererComboValue();
-            renderer.Editable = true;
+            CellRendererComboValue renderer = new CellRendererComboValue();
+            renderer.Editable = this.ReadOnly == false;
             renderer.Edited += Renderer_Edited;
             //renderer.Changed += Renderer_Changed;
+            //renderer.WidthChars = 10;
+            renderer.TextColumn = 0;
+            Gtk.ListStore model = new Gtk.ListStore(typeof(string));
+            foreach(var item in _items)
+            {
+                model.AppendValues(item);
+            }
 
+            renderer.Model = model;
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
+            
             base.Sizing = TreeViewColumnSizing.GrowOnly;
             if (this.SortMode != DataGridViewColumnSortMode.NotSortable)
                 base.SortColumnId = this.DisplayIndex;
@@ -128,19 +144,46 @@ namespace System.Windows.Forms
 
         private void Renderer_Changed(object o, ChangedArgs args)
         {
-            Console.WriteLine("CellRendererToggle Renderer_Changed");
-            
+            CellRendererCombo combo = (CellRendererCombo)o;
+            TreePath path = new TreePath(args.Args[0].ToString());
+            TreeIter iter = (TreeIter)args.Args[1];
+            object val = combo.Model.GetValue(iter, 0);
+            _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], new CellValue() { Text = val?.ToString() });
         }
 
         private void Renderer_Edited(object o, EditedArgs args)
         {
-            //Console.WriteLine("CellRendererToggle Renderer_Edited");
-
             TreePath path = new TreePath(args.Path);
-            _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0]);
+            var model = _treeView.Model;
+            model.GetIter(out TreeIter iter, path);
+            object cell = model.GetValue(iter, this.DisplayIndex);
+            if (cell is CellValue val)
+            {
+                val.Text = args.NewText;
+                model.SetValue(iter, this.DisplayIndex, val);
+                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], val);
+            }
+            else
+            {
+                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], new CellValue() { Text = cell?.ToString() });
+            }
+        }
+        public ObjectCollection Items => _items;
+        public class ObjectCollection : ArrayList
+        {
+            private DataGridViewColumn _owner;
+            public ObjectCollection(DataGridViewColumn owner)
+            {
+                _owner = owner;
+            }
+            public void AddRange(object[] items)
+            {
+                foreach (object item in items)
+                    Add(item);
+            }
         }
     }
-
+    
     public class DataGridViewButtonColumn : DataGridViewColumn
     {
         public DataGridViewButtonColumn():base(new DataGridViewButtonCell())
@@ -151,24 +194,30 @@ namespace System.Windows.Forms
         {
             this.SortMode = DataGridViewColumnSortMode.NotSortable;
         }
+
+        private void TreeView_RowActivated(object o, RowActivatedArgs args)
+        {
+            if (args.Column.Handle == this.Handle)
+            {
+                TreePath path = args.Path;
+                if(args.Column.Cells[0] is CellRendererText cell)
+                {
+                    _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], new CellValue() { Text = cell.Text?.ToString() });
+                }
+            }
+        }
+
         public override void Renderer()
         {
             var renderer = new CellRendererButtonValue();
-            // renderer.Pixbuf = new Gdk.Pixbuf(Assembly.GetExecutingAssembly(), "CodePrintImg/button.png");
-           // renderer.IconName = "document-edit-symbolic.symbolic";
-           // renderer.IconName = "zoom-original";
-           
-           // renderer.EditingStarted += Renderer_EditingStarted;
+            renderer.Editable = false;
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
             if (this.SortMode != DataGridViewColumnSortMode.NotSortable)
                 base.SortColumnId = this.DisplayIndex;
-        }
-
-        private void Renderer_EditingStarted(object o, EditingStartedArgs args)
-        {
-            Console.WriteLine("CellRendererToggle Renderer_EditingStarted");
+            if (this.DataGridView != null)
+                this.DataGridView.TreeView.RowActivated += TreeView_RowActivated;
         }
     }
     public class DataGridViewImageColumn : DataGridViewColumn
@@ -184,19 +233,12 @@ namespace System.Windows.Forms
         public override void Renderer()
         {
             var renderer = new CellRendererPixbufValue();
-             renderer.IconName = "face-smile";
-            //renderer.EditingStarted += Renderer_EditingStarted;
-
+            renderer.IconName = "face-smile";
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
             if (this.SortMode != DataGridViewColumnSortMode.NotSortable)
                 base.SortColumnId = this.DisplayIndex;
-        }
-
-        private void Renderer_EditingStarted(object o, EditingStartedArgs args)
-        {
-            Console.WriteLine("CellRendererToggle Renderer_EditingStarted");
         }
     }
     public class DataGridViewLinkColumn : DataGridViewColumn
@@ -233,19 +275,19 @@ namespace System.Windows.Forms
             _treeView = owningDataGridView?.TreeView;
             _gridview = owningDataGridView;
             _cellTemplate = cellTemplate;
-            base.Resizable = true;
+            base.Resizable = this.Resizable == DataGridViewTriState.True;
             this.SortMode = DataGridViewColumnSortMode.Automatic;
         }
 
         public DataGridViewColumn(string title, CellRenderer cell, params object[] attrs) : base(title, cell, attrs)
         {
             _cellTemplate = new DataGridViewTextBoxCell();
-            base.Resizable = true;
+            base.Resizable = this.Resizable == DataGridViewTriState.True;
         }
         public virtual void Renderer()
         {
             var renderer = new CellRendererValue();
-            renderer.Editable = false;
+            renderer.Editable = this.ReadOnly == false;
             renderer.Edited += Renderer_Edited;
             renderer.Mode = CellRendererMode.Editable;
             renderer.PlaceholderText = "---";
@@ -262,9 +304,21 @@ namespace System.Windows.Forms
 
         private void Renderer_Edited(object o, EditedArgs args)
         {
-            //Console.WriteLine("CellRendererToggle Renderer_Edited");
             TreePath path = new TreePath(args.Path);
-            _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0]);
+            var model = _treeView.Model;
+            model.GetIter(out TreeIter iter, path);
+            object cell = model.GetValue(iter, this.DisplayIndex);
+            if (cell is CellValue val)
+            {
+                val.Text = args.NewText;
+                model.SetValue(iter, this.DisplayIndex, val);
+                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], val);
+            }
+            else
+            {
+                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], new CellValue() { Text = cell?.ToString() });
+            }
+
         }
 
         public DataGridView DataGridView { get { return _gridview; } set { _gridview = value; _treeView = value.TreeView; } }

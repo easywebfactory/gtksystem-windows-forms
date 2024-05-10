@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System.ComponentModel;
-using System.Reflection.Metadata;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
@@ -11,9 +10,10 @@ namespace System.Windows.Forms
 {
     public class TreeNode: ICloneable, ISerializable, IEquatable<TreeNode>
     {
-        private int index = 0;
-        internal int Index { get { return index; } set { index = value; } }
-
+        //格式，各级索引并集：1,2,3....
+        private string index = "";
+        internal string Index { get { return index; } set { index = value; } }
+        internal Gtk.TreeIter TreeIter = Gtk.TreeIter.Zero;
         private TreeNode parent;
         internal TreeView treeView;
         internal TreeView TreeView { get { return treeView; } }
@@ -100,7 +100,12 @@ namespace System.Windows.Forms
         public object Clone()
         {
             TreeNode newnode = new TreeNode(treeView);
-            Array.ForEach(newnode.GetType().GetProperties(), o => { o.SetValue(this, o.GetValue(this)); });
+            Reflection.PropertyInfo[] props = newnode.GetType().GetProperties(Reflection.BindingFlags.Public | Reflection.BindingFlags.Instance);
+            foreach(var pro in props)
+            {
+                if (pro.GetSetMethod()!=null)
+                    pro.SetValue(newnode, pro.GetValue(this));
+            }
             return newnode;
         }
 

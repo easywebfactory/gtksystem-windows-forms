@@ -1,7 +1,13 @@
-﻿//基于GTK3.24.24.34版本组件开发，兼容原生C#控件winform界面的跨平台界面组件。
-//使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows和linux运行
-//技术支持438865652@qq.com，https://www.cnblogs.com/easywebfactory
+﻿/*
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * author:chenhongjin
+ * date: 2024/1/3
+ */
+using GLib;
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,79 +22,56 @@ using System.Windows.Forms.GtkRender;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class DataGridView : WidgetControl<Gtk.Box>
+    public partial class DataGridView : Control
     {
-        private Gtk.TreeView _treeView;
+        public readonly DataGridViewBase self = new DataGridViewBase();
+        public override object GtkControl => self;
+        private Gtk.TreeView _treeView = new Gtk.TreeView();
         private DataGridViewColumnCollection _columns;
         private DataGridViewRowCollection _rows;
-        private Gtk.TreeStore _store;
-        internal Gtk.TreeStore Store { get { return _store; } }
-        internal Gtk.TreeView TreeView { get { return _treeView; } }
-        public DataGridView():base(Gtk.Orientation.Vertical,0)
-        {
-            Widget.StyleContext.AddClass("DataGridView");
-            Widget.StyleContext.AddClass("BorderRadiusStyle");
+        private ControlBindingsCollection _collect;
 
-            _treeView = new Gtk.TreeView();
+        internal Gtk.TreeStore Store = new TreeStore(typeof(CellValue));
+        internal Gtk.TreeView TreeView { get { return _treeView; } }
+        
+        public DataGridView():base()
+        {
             _treeView.Valign = Gtk.Align.Fill;
             _treeView.Halign = Gtk.Align.Fill;
-
-            _columns = new DataGridViewColumnCollection(this);
-            _rows = new DataGridViewRowCollection(this);
-
-             Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow();
-             scroll.Child = _treeView;
-             this.Control.PackStart(scroll, true, true, 1);
-
             _treeView.Selection.Mode = Gtk.SelectionMode.Multiple;
             _treeView.HeadersClickable = true;
             _treeView.HeadersVisible = true;
-
             _treeView.ActivateOnSingleClick = true;
-           // _treeView.RowActivated += DataGridView_RowActivated;//此事件必须ActivateOnSingleClick = true;
+            // _treeView.RowActivated += DataGridView_RowActivated;//此事件必须ActivateOnSingleClick = true;
 
-            _treeView.Realized += _treeView_Realized;
-        }
+            _columns = new DataGridViewColumnCollection(this);
+            _rows = new DataGridViewRowCollection(this);
+            _collect = new ControlBindingsCollection(this);
 
-        private void _treeView_Realized(object sender, EventArgs e)
-        {
-            _store = new Gtk.TreeStore(Array.ConvertAll(_treeView.Columns, o => typeof(CellValue)));
-            _treeView.Model = _store;
-            updateListStore();
-            _columns.Invalidate();
-        }
-
-        private void DataGridView_RowActivated(object o, Gtk.RowActivatedArgs args)
-        {
-            //Console.WriteLine("--DataGridView_RowActivated");
-            
-            TreePath path = args.Path;
-            DataGridViewColumn column = args.Column as DataGridViewColumn;
-            var model = _treeView.Model;
-            model.GetIter(out TreeIter iter, path);
-            CellValue val = (CellValue)(model.GetValue(iter, column.Index));
-
+            Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow();
+            scroll.Child = _treeView;
+            self.Child = scroll;
         }
 
         public event EventHandler MultiSelectChanged
         {
-            add { _treeView.RowActivated += (object sender, RowActivatedArgs e) => { if (base.Control.IsRealized) { value.Invoke(sender, e); } }; }
-            remove { _treeView.RowActivated -= (object sender, RowActivatedArgs e) => { if (base.Control.IsRealized) { value.Invoke(sender, e); } }; }
+            add { _treeView.RowActivated += (object sender, RowActivatedArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
+            remove { _treeView.RowActivated -= (object sender, RowActivatedArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
         }
         public event DataGridViewCellEventHandler CellClick
         {
-            add { _treeView.RowActivated += (object sender, RowActivatedArgs e) => { if (base.Control.IsRealized) { DataGridViewColumn column = e.Column as DataGridViewColumn; value.Invoke(sender, new DataGridViewCellEventArgs(column.Index, e.Path.Indices[0])); } }; }
-            remove { _treeView.RowActivated -= (object sender, RowActivatedArgs e) => { if (base.Control.IsRealized) { DataGridViewColumn column = e.Column as DataGridViewColumn; value.Invoke(sender, new DataGridViewCellEventArgs(column.Index, e.Path.Indices[0])); } }; }
+            add { _treeView.RowActivated += (object sender, RowActivatedArgs e) => { if (self.IsRealized) { DataGridViewColumn column = e.Column as DataGridViewColumn; value.Invoke(this, new DataGridViewCellEventArgs(column.Index, e.Path.Indices[0])); } }; }
+            remove { _treeView.RowActivated -= (object sender, RowActivatedArgs e) => { if (self.IsRealized) { DataGridViewColumn column = e.Column as DataGridViewColumn; value.Invoke(this, new DataGridViewCellEventArgs(column.Index, e.Path.Indices[0])); } }; }
         }
         public event DataGridViewCellEventHandler CellEnter
         {
-            add { _treeView.RowActivated += (object sender, RowActivatedArgs e) => { if (base.Control.IsRealized) { DataGridViewColumn column = e.Column as DataGridViewColumn; value.Invoke(sender, new DataGridViewCellEventArgs(column.Index, e.Path.Indices[0])); } }; }
-            remove { _treeView.RowActivated -= (object sender, RowActivatedArgs e) => { if (base.Control.IsRealized) { DataGridViewColumn column = e.Column as DataGridViewColumn; value.Invoke(sender, new DataGridViewCellEventArgs(column.Index, e.Path.Indices[0])); } }; }
+            add { _treeView.RowActivated += (object sender, RowActivatedArgs e) => { if (self.IsRealized) { DataGridViewColumn column = e.Column as DataGridViewColumn; value.Invoke(this, new DataGridViewCellEventArgs(column.Index, e.Path.Indices[0])); } }; }
+            remove { _treeView.RowActivated -= (object sender, RowActivatedArgs e) => { if (self.IsRealized) { DataGridViewColumn column = e.Column as DataGridViewColumn; value.Invoke(this, new DataGridViewCellEventArgs(column.Index, e.Path.Indices[0])); } }; }
         }
         public event DataGridViewCellEventHandler CellLeave
         {
-            add { _treeView.RowActivated += (object sender, RowActivatedArgs e) => { if (base.Control.IsRealized) { DataGridViewColumn column = e.Column as DataGridViewColumn; value.Invoke(sender, new DataGridViewCellEventArgs(column.Index, e.Path.Indices[0])); } }; }
-            remove { _treeView.RowActivated -= (object sender, RowActivatedArgs e) => { if (base.Control.IsRealized) { DataGridViewColumn column = e.Column as DataGridViewColumn; value.Invoke(sender, new DataGridViewCellEventArgs(column.Index, e.Path.Indices[0])); } }; }
+            add { _treeView.RowActivated += (object sender, RowActivatedArgs e) => { if (self.IsRealized) { DataGridViewColumn column = e.Column as DataGridViewColumn; value.Invoke(this, new DataGridViewCellEventArgs(column.Index, e.Path.Indices[0])); } }; }
+            remove { _treeView.RowActivated -= (object sender, RowActivatedArgs e) => { if (self.IsRealized) { DataGridViewColumn column = e.Column as DataGridViewColumn; value.Invoke(this, new DataGridViewCellEventArgs(column.Index, e.Path.Indices[0])); } }; }
         }
         public event DataGridViewCellEventHandler CellValidated
         {
@@ -96,11 +79,11 @@ namespace System.Windows.Forms
             {
                 _treeView.WidgetEventAfter += (object sender, WidgetEventAfterArgs e) =>
                 {
-                     if (base.Control.IsRealized) {
+                     if (self.IsRealized) {
                         if (isCellValidating)
                         {
                             isCellValidating = false;
-                            value.Invoke(sender, new DataGridViewCellEventArgs(columnid, rowid));
+                            value.Invoke(this, new DataGridViewCellEventArgs(columnid, rowid));
                         }
                     }
                 };
@@ -109,12 +92,12 @@ namespace System.Windows.Forms
             {
                 _treeView.WidgetEventAfter -= (object sender, WidgetEventAfterArgs e) =>
                 {
-                    if (base.Control.IsRealized)
+                    if (self.IsRealized)
                     {
                         if (isCellValidating)
                         {
                             isCellValidating = false;
-                            value.Invoke(sender, new DataGridViewCellEventArgs(columnid, rowid));
+                            value.Invoke(this, new DataGridViewCellEventArgs(columnid, rowid));
                         }
                     }
                 };
@@ -129,13 +112,13 @@ namespace System.Windows.Forms
             {
                 _treeView.RowActivated += (object sender, RowActivatedArgs e) =>
                 {
-                    if (base.Control.IsRealized)
+                    if (self.IsRealized)
                     {
                         DataGridViewColumn column = e.Column as DataGridViewColumn;
                         var model = _treeView.Model;
                         model.GetIter(out TreeIter iter, e.Path);
                         CellValue val = (CellValue)(model.GetValue(iter, column.Index));
-                        value.Invoke(sender, new DataGridViewCellValidatingEventArgs(column.Index, e.Path.Indices[0], val?.Text));
+                        value.Invoke(this, new DataGridViewCellValidatingEventArgs(column.Index, e.Path.Indices[0], val?.Text));
                         columnid = column.Index;
                         rowid = e.Path.Indices[0];
                         isCellValidating = true;
@@ -145,14 +128,14 @@ namespace System.Windows.Forms
             remove
             {
                 _treeView.RowActivated -= (object sender, RowActivatedArgs e) => {
-                    if (base.Control.IsRealized)
+                    if (self.IsRealized)
                     {
                         DataGridViewColumn column = e.Column as DataGridViewColumn;
                         var model = _treeView.Model;
                         model.GetIter(out TreeIter iter, e.Path);
                         CellValue val = (CellValue)(model.GetValue(iter, column.Index));
 
-                        value.Invoke(sender, new DataGridViewCellValidatingEventArgs(column.Index, e.Path.Indices[0], val?.Text));
+                        value.Invoke(this, new DataGridViewCellValidatingEventArgs(column.Index, e.Path.Indices[0], val?.Text));
                         columnid = column.Index;
                         rowid = e.Path.Indices[0];
                         isCellValidating = true;
@@ -161,8 +144,14 @@ namespace System.Windows.Forms
             }
         }
 
-        public void CellValueChanagedHandler(int column, int row)
+        internal void CellValueChanagedHandler(int column, int row, CellValue val)
         {
+            var cells = _rows[row].Cells;
+            if(cells.Count>column)
+            {
+                cells[column].Value = val?.Text;
+            }
+
             if (CellValueChanged != null)
             {
                 CellValueChanged(this, new DataGridViewCellEventArgs(column, row));
@@ -175,8 +164,8 @@ namespace System.Windows.Forms
 
         public event EventHandler SelectionChanged
         {
-            add { _treeView.RowActivated += (object sender, RowActivatedArgs e) => { if (base.Control.IsRealized) { DataGridViewColumn column = e.Column as DataGridViewColumn; value.Invoke(sender, new DataGridViewCellEventArgs(column.Index, e.Path.Indices[0])); } }; }
-            remove { _treeView.RowActivated -= (object sender, RowActivatedArgs e) => { if (base.Control.IsRealized) { DataGridViewColumn column = e.Column as DataGridViewColumn; value.Invoke(sender, new DataGridViewCellEventArgs(column.Index, e.Path.Indices[0])); } }; }
+            add { _treeView.RowActivated += (object sender, RowActivatedArgs e) => { if (self.IsRealized) { DataGridViewColumn column = e.Column as DataGridViewColumn; value.Invoke(this, new DataGridViewCellEventArgs(column.Index, e.Path.Indices[0])); } }; }
+            remove { _treeView.RowActivated -= (object sender, RowActivatedArgs e) => { if (self.IsRealized) { DataGridViewColumn column = e.Column as DataGridViewColumn; value.Invoke(this, new DataGridViewCellEventArgs(column.Index, e.Path.Indices[0])); } }; }
         }
 
 
@@ -194,7 +183,22 @@ namespace System.Windows.Forms
             get { return new DataGridViewRow(); }
             set { }
         }
+        internal void BindDataSource(string propertyName, object datasource, string dataMember, int selectindex, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode, object nullValue, string formatString)
+        {
+            if (datasource == null || string.IsNullOrWhiteSpace(propertyName) || string.IsNullOrWhiteSpace(dataMember))
+                return;
 
+            this.TreeView.SelectionNotifyEvent += (object o, SelectionNotifyEventArgs args) => {
+                datasource.GetType().GetProperty(propertyName).SetValue(datasource, dataMember);
+            };
+
+            this.TreeView.RowActivated += (object o, RowActivatedArgs args)
+             => {
+                 datasource.GetType().GetProperty(propertyName).SetValue(datasource, dataMember);
+             };
+        }
+
+        public override ControlBindingsCollection DataBindings { get => _collect; }
         private object _DataSource;
         public object DataSource
         {
@@ -202,16 +206,21 @@ namespace System.Windows.Forms
             set
             {
                 _DataSource = value;
-                if (base.Visible && _treeView.IsRealized)
-                {
-                    updateListStore();
-                }
+                Store.Clear();
+                Store = new Gtk.TreeStore(Array.ConvertAll(_treeView.Columns, o => typeof(CellValue)));
+               _treeView.Model = Store;
+                updateListStore();
+                _columns.Invalidate();
             }
-           
         }
+
         private void updateListStore()
         {
-            _store.Clear();
+            if (Store != null)
+            {
+                Store.Clear();
+            }
+
             if (_DataSource == null)
             {
             }
@@ -236,6 +245,7 @@ namespace System.Windows.Forms
                     else
                         Columns.Add(new DataGridViewColumn() { Name = col.ColumnName, HeaderText = col.ColumnName, ValueType = col.DataType });
                 }
+                _columns.Invalidate();
             }
             int ncolumns = Columns.Count;
             if (ncolumns > 0)
@@ -281,7 +291,9 @@ namespace System.Windows.Forms
                         else
                             Columns.Add(new DataGridViewColumn() { Name = pro.Name, HeaderText = pro.Name, ValueType = pro.PropertyType });
                     }
+                    _columns.Invalidate();
                 }
+
                 int ncolumns = Columns.Count;
                 if (ncolumns > 0)
                 {
@@ -359,24 +371,18 @@ namespace System.Windows.Forms
         }
         public new void Add(DataGridViewColumn column)
         {
+            column.DataGridView = __owner;
             base.Add(column);
             _treeview.AppendColumn(column);
-            if (_treeview.IsRealized && __owner.Visible)
-            {
-                Invalidate();
-            }
         }
         public new void AddRange(IEnumerable<DataGridViewColumn> columns)
         {
             foreach (DataGridViewColumn column in columns)
             {
+                column.DataGridView = __owner;
                 _treeview.AppendColumn(column);
             }
             base.AddRange(columns);
-            if(_treeview.IsRealized && __owner.Visible)
-            {
-                Invalidate();
-            }
         }
         public new void Clear()
         {
@@ -387,22 +393,38 @@ namespace System.Windows.Forms
         }
         public void Invalidate()
         {
-            int idx = 0;
-            foreach (DataGridViewColumn column in this)
+            if (__owner.TreeView.Columns.Length > __owner.Store.NColumns)
             {
-                column.Index = idx;
-                column.DisplayIndex = column.Index;
-                column.DataGridView = __owner;
-                column.Renderer();
-                __owner.Store.SetSortFunc(idx, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
+                CellValue[] columnTypes = new CellValue[__owner.TreeView.Columns.Length];
+                __owner.Store.Clear();
+                __owner.Store = new TreeStore(Array.ConvertAll(columnTypes, o => typeof(CellValue)));
+                __owner.TreeView.Model = __owner.Store;
+            }
+            else if (__owner.TreeView.Model == null)
+            {
+                __owner.TreeView.Model = __owner.Store;
+            }
+            if (__owner.TreeView.Columns.Length <= __owner.Store.NColumns)
+            {
+                int idx = 0;
+                foreach (DataGridViewColumn column in this)
                 {
-                    __owner.Store.GetSortColumnId(out int sortid, out Gtk.SortType order);
-                    if (m.GetValue(t1, sortid) == null || m.GetValue(t2, sortid) == null)
-                        return 0;
-                    else
-                        return m.GetValue(t1, sortid).ToString().CompareTo(m.GetValue(t2, sortid).ToString());
-                }));
-                idx++;
+                    column.Index = idx;
+                    column.DisplayIndex = column.Index;
+                    column.DataGridView = __owner;
+                    column.Clear();
+                    column.Renderer();
+
+                    __owner.Store.SetSortFunc(idx, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
+                    {
+                        __owner.Store.GetSortColumnId(out int sortid, out Gtk.SortType order);
+                        if (m.GetValue(t1, sortid) == null || m.GetValue(t2, sortid) == null)
+                            return 0;
+                        else
+                            return m.GetValue(t1, sortid).ToString().CompareTo(m.GetValue(t2, sortid).ToString());
+                    }));
+                    idx++;
+                }
             }
         }
         public int GetColumnCount(DataGridViewElementStates includeFilter)

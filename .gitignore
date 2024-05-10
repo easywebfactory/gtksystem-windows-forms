@@ -6,6 +6,13 @@ ehthumbs_vista.db
 
 # Dump file
 *.stackdump
+.vs
+/Source/GTKSystem.Windows.Forms/bin/
+/Source/GTKSystem.Windows.Forms/obj/
+/Samples/GTKWinFormsApp/bin/
+
+/Samples/GTKSystemWinFormsApp11/bin/
+
 
 # Folder config file
 [Dd]esktop.ini
@@ -22,3 +29,14 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+/Samples/GTKWinFormsApp/bin/Debug/net8.0/*.*
+/Samples/GTKWinFormsApp/obj/Debug/net8.0/*.*
+/Samples/GTKWinFormsApp/obj/Debug/net8.0/TempPE/*.*
+
+/Source/GTKSystem.Windows.Forms/bin/Debug/net6.0/*.*
+/Source/GTKSystem.Windows.Forms/obj/Debug/net6.0/ref/*.*
+/Source/GTKSystem.Windows.Forms/bin/Debug/*.*
+/Source/GTKSystem.Windows.Forms/obj/Debug/ref/*.*
+/Source/GTKSystem.Windows.Forms/obj/Debug/net6.0/ref/*.*
+/Source/GTKSystem.Windows.Forms/obj/Debug/net6.0/refint/*.*

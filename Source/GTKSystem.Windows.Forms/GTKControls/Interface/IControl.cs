@@ -152,6 +152,7 @@ namespace System.Windows.Forms
 
         IAsyncResult BeginInvoke(Delegate method);
         IAsyncResult BeginInvoke(Delegate method, params object[] args);
+        IAsyncResult BeginInvoke(Action method);
         void BringToFront();
         bool Contains(Control ctl);
         void CreateControl();
@@ -175,6 +176,7 @@ namespace System.Windows.Forms
         void Invalidate(Region region, bool invalidateChildren);
         object Invoke(Delegate method);
         object Invoke(Delegate method, params object[] args);
+        TEntry Invoke<TEntry>(Func<TEntry> method);
         int LogicalToDeviceUnits(int value);
         Size LogicalToDeviceUnits(Size value);
         void PerformLayout();

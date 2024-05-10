@@ -1,33 +1,51 @@
-﻿using System;
+﻿using Gtk;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
 
 namespace System.Windows.Forms
 {
-    public class ToolStripMenuItem : ToolStripItem
+    public class ToolStripMenuItem : WidgetToolStrip<Gtk.MenuItem>
     {
-        public ToolStripMenuItem():base()
+        public ToolStripMenuItem():base("ToolStripMenuItem")
         {
-            base.Shown += ToolStripMenuItem_Shown;
+            DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
         }
 
-        private void ToolStripMenuItem_Shown(object sender, EventArgs e)
-        {
-            if (Checked == true)
+        public override CheckState CheckState { 
+            get => base.CheckState;
+            set
             {
-                AlwaysShowImage =CheckState == CheckState.Checked || CheckState == CheckState.Indeterminate;
-                if (CheckState == CheckState.Indeterminate)
+                base.CheckState = value;
+                if (this.Widget is Gtk.CheckMenuItem checkMenuItem)
                 {
-                    Image = Gtk.Image.NewFromIconName("pan-end-symbolic", Gtk.IconSize.Menu);
-                }
-                else
-                {
-                    Image = Gtk.Image.NewFromIconName("object-select-symbolic", Gtk.IconSize.Menu);
+                    if (value == CheckState.Indeterminate)
+                    {
+                        checkMenuItem.DrawAsRadio = true;
+                    }
+                    else if (value == CheckState.Checked)
+                    {
+                        checkMenuItem.DrawAsRadio = false;
+                    }
                 }
             }
         }
-
-        
+        public override bool Checked {
+            get
+            {
+                if (this.Widget is Gtk.CheckMenuItem checkMenuItem)
+                {
+                   return checkMenuItem.Active;
+                }
+                return base.Checked; 
+            }
+            set { 
+                base.Checked = value;
+                if (this.Widget is Gtk.CheckMenuItem checkMenuItem)
+                {
+                    checkMenuItem.Active = value;
+                }
+            } }
     }
 }

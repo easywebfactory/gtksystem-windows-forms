@@ -5,16 +5,17 @@
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace System
+namespace System.Runtime.Remoting.Messaging
+//namespace System
 {
     public class AsyncResult : IAsyncResult
     {
-        public object AsyncState => throw new NotImplementedException();
+        public object AsyncState { get; set; }
 
-        public WaitHandle AsyncWaitHandle => throw new NotImplementedException();
+        public WaitHandle AsyncWaitHandle => new EventWaitHandle(false, EventResetMode.AutoReset);
 
-        public bool CompletedSynchronously => throw new NotImplementedException();
+        public bool CompletedSynchronously { get; set; }
 
-        public bool IsCompleted => throw new NotImplementedException();
+        public bool IsCompleted { get; set; }
     }
 }
