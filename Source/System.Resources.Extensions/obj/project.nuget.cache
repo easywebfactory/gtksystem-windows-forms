@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "cbdsMO6ChiO3Sb+wzfySwtwaMMl5Dgrw7iJbhNvcwPQkBxRjueSkVOeIcvaVk5aO0c14E6sYqNfRvEuX2oKNfg==",
+  "dgSpecHash": "EiYdUVJW43NPia/0KxzGlyyq2wpGY0YAgchPdbqGnlxnwnBibAHFm/rU9ATAlrFTPdt6qR1+0bA+t2NjdLqrrA==",
   "success": true,
-  "projectFilePath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj",
+  "projectFilePath": "F:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\chj\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
     "C:\\Users\\chj\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",

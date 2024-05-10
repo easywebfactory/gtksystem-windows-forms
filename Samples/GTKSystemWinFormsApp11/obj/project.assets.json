@@ -2258,11 +2258,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Samples\\GTKSystemWinFormsApp11\\GTKSystemWinFormsApp11.csproj",
+      "projectUniqueName": "F:\\我的项目\\GTK\\GTKSystemWindowsForms\\Samples\\GTKSystemWinFormsApp11\\GTKSystemWinFormsApp11.csproj",
       "projectName": "GTKSystemWinFormsApp11",
-      "projectPath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Samples\\GTKSystemWinFormsApp11\\GTKSystemWinFormsApp11.csproj",
+      "projectPath": "F:\\我的项目\\GTK\\GTKSystemWindowsForms\\Samples\\GTKSystemWinFormsApp11\\GTKSystemWinFormsApp11.csproj",
       "packagesPath": "C:\\Users\\chj\\.nuget\\packages\\",
-      "outputPath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Samples\\GTKSystemWinFormsApp11\\obj\\",
+      "outputPath": "F:\\我的项目\\GTK\\GTKSystemWindowsForms\\Samples\\GTKSystemWinFormsApp11\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

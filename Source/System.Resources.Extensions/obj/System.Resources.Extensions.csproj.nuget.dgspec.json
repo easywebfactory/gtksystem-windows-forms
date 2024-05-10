@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj": {}
+    "F:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj": {}
   },
   "projects": {
-    "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj": {
+    "F:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj",
+        "projectUniqueName": "F:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj",
         "projectName": "System.Resources.Extensions",
-        "projectPath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj",
+        "projectPath": "F:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj",
         "packagesPath": "C:\\Users\\chj\\.nuget\\packages\\",
-        "outputPath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\System.Resources.Extensions\\obj\\",
+        "outputPath": "F:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

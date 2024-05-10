@@ -2247,11 +2247,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
+      "projectUniqueName": "F:\\我的项目\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
       "projectName": "GTKWinFormsApp",
-      "projectPath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
+      "projectPath": "F:\\我的项目\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
       "packagesPath": "C:\\Users\\chj\\.nuget\\packages\\",
-      "outputPath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Samples\\GTKWinFormsApp\\obj\\",
+      "outputPath": "F:\\我的项目\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -2275,8 +2275,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {
-              "projectPath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj"
+            "F:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {
+              "projectPath": "F:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj"
             }
           }
         }

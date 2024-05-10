@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Tq+rgngKfGs6SPI/XDAaI2QSnVrhODf1EiTqUTEFATCTgq8v9pvKtFGz+9Y3fqf4ytshSJsdykRADz3JgPzdPg==",
+  "dgSpecHash": "PzNanTIXKZEsdS1shOC/2pXEkNL9yp/zFrj5TyEfYRZabGLGvLPXgXWdc/7rPZOL+qwOGs5NNZ3YLDGFjGxXvg==",
   "success": true,
-  "projectFilePath": "F:\\我的项目\\GTK\\gtksystem-windows-forms\\Samples\\GTKSystemWinFormsApp11\\GTKSystemWinFormsApp11.csproj",
+  "projectFilePath": "F:\\我的项目\\GTK\\GTKSystemWindowsForms\\Samples\\GTKSystemWinFormsApp11\\GTKSystemWinFormsApp11.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\chj\\.nuget\\packages\\atksharp\\3.24.24.95\\atksharp.3.24.24.95.nupkg.sha512",
     "C:\\Users\\chj\\.nuget\\packages\\cairosharp\\3.24.24.95\\cairosharp.3.24.24.95.nupkg.sha512",
