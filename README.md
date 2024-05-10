@@ -22,10 +22,10 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 6.  编译工程，执行本项目的开发插件菜单“修复窗体设计器”，或者手动在obj目录下创建.designer.runtimeconfig.json，请看下面第5点。
 
 注意：安装GtkSharp后，编译你的工程项目时，会自动下载$(LOCALAPPDATA)\Gtk\3.24.24\gtk.zip配置Gtk环境，目前国内网络限制，可能会出现无法下载的错误，可以尝试安装fastgithub软件解决，或者其它vpn软件。
-如果无法自动下载，也可以自行解决网络限制后下载https://github.com/GtkSharp/Dependencies/raw/master/gtk-3.24.24.zip，把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24\gtk.zip目录即可。
+如果无法自动下载，也可以自行解决网络限制后下载[https://github.com/GtkSharp/Dependencies/raw/master/gtk-3.24.24.zip](https://github.com/GtkSharp/Dependencies/raw/master/gtk-3.24.24.zip)，把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24\gtk.zip目录即可。
 
 ps:$(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData\Local\Gtk\3.24.24
-. 
+
 linux安装gtk环境：
 ```
  sudo apt install libgtk-3-dev
