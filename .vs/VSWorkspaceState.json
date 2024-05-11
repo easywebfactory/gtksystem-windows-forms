@@ -1,11 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\pic",
-    "\\Samples",
-    "\\Samples\\GTKWinFormsApp",
-    "\\Source"
+    ""
   ],
-  "SelectedNode": "\\Samples\\GTKWinFormsApp\\配置说明.txt",
+  "SelectedNode": "\\GTKWinFormsApp.sln",
   "PreviewInSolutionExplorer": false
 }
