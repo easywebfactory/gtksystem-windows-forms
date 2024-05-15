@@ -6,14 +6,8 @@
  * date: 2024/1/3
  */
 
-using Atk;
-using GLib;
-using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using GTKSystem.Windows.Forms.Utility;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 
 namespace System.Windows.Forms

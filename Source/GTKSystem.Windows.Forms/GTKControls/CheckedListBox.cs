@@ -6,8 +6,6 @@
  * date: 2024/1/3
  */
 
-using GLib;
-using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using Pango;
 using System.Collections;

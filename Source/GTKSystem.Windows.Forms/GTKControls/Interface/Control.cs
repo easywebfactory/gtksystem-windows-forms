@@ -1,9 +1,7 @@
-﻿using GLib;
-using Gtk;
+﻿using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows.Forms.Design;
 
@@ -244,14 +242,8 @@ namespace System.Windows.Forms
                 css.AppendLine($".{stylename} text{{{style.ToString()}}}");
                 css.AppendLine($".{stylename} .view{{{style.ToString()}}}");
             }
-            css.AppendLine(".BGTransparent{padding:0px;background:transparent;background-color:transparent;}");
-            
-            if (provider.LoadFromData(css.ToString()))
-            {
-                //widget.StyleContext.AddProvider(provider, 900);
-                //widget.StyleContext.RemoveProvider(provider);
-                //widget.StyleContext.AddClass(stylename);
-            }
+            css.AppendLine(".BGTransparent{background:transparent;background-color:transparent;}");
+            provider.LoadFromData(css.ToString());
         }
         
 
@@ -259,7 +251,7 @@ namespace System.Windows.Forms
         public virtual bool UseVisualStyleBackColor { get; set; } = true;
         public virtual Color VisualStyleBackColor { get; }
         public virtual ImageLayout BackgroundImageLayout { get => ISelf.Override.BackgroundImageLayout; set => ISelf.Override.BackgroundImageLayout = value; }
-        public virtual Drawing.Image BackgroundImage { get => ISelf.Override.BackgroundImage; set => ISelf.Override.BackgroundImage = value; }
+        public virtual Drawing.Image BackgroundImage { get => ISelf.Override.BackgroundImage; set { ISelf.Override.BackgroundImage = value; ISelf.Override.OnPaint(); Invalidate(); } }
         public virtual Color BackColor
         {
             get
@@ -274,11 +266,7 @@ namespace System.Windows.Forms
             set { 
                 ISelf.Override.BackColor = value;
                 ISelf.Override.OnAddClass();
-                if (Widget != null)
-                {
-                    Widget.AppPaintable = false;
-                    Widget.AppPaintable = true;
-                }
+                Invalidate();
             }
         }
         public virtual event PaintEventHandler Paint
@@ -418,7 +406,6 @@ namespace System.Windows.Forms
         public virtual object Tag { get; set; }
         public virtual string Text { get; set; }
         public virtual int Top { get; set; }
-
         public virtual Control TopLevelControl { get; }
 
         public virtual bool UseWaitCursor { get; set; }
@@ -595,42 +582,35 @@ namespace System.Windows.Forms
 
         public virtual void Invalidate()
         {
-            if (this.Widget != null)
-            {
-                this.Widget.Window.ProcessUpdates(true);
-            }
+            Invalidate(true);
         }
 
         public virtual void Invalidate(bool invalidateChildren)
         {
-            if (this.Widget != null)
+            if (this.Widget != null && this.Widget.IsVisible)
             {
-                this.Widget.Window.ProcessUpdates(invalidateChildren);
+                Widget.AppPaintable = !Widget.AppPaintable;
+                Widget.AppPaintable = !Widget.AppPaintable;
+                //Widget.Window.ProcessUpdates(invalidateChildren);
             }
         }
 
         public virtual void Invalidate(Rectangle rc)
         {
-            if (this.Widget != null)
-            {
-                this.Widget.Window.ProcessUpdates(true);
-            }
+            Invalidate(rc, true);
         }
 
         public virtual void Invalidate(Rectangle rc, bool invalidateChildren)
         {
             if (this.Widget != null)
             {
-                this.Widget.Window.ProcessUpdates(invalidateChildren);
+                this.Widget.Window.ProcessUpdates(true);
             }
         }
 
         public virtual void Invalidate(Drawing.Region region)
         {
-            if (this.Widget != null)
-            {
-                this.Widget.Window.ProcessUpdates(true);
-            }
+            Invalidate(region, true);
         }
 
         public virtual void Invalidate(Drawing.Region region, bool invalidateChildren)

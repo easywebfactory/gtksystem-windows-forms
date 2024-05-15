@@ -7,7 +7,6 @@
  */
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
-using System.Drawing;
 
 namespace System.Windows.Forms
 {

@@ -5,18 +5,13 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
-using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.Common;
-using System.Drawing;
 using System.Reflection;
-using System.Text;
 using System.Windows.Forms.GtkRender;
 
 namespace System.Windows.Forms

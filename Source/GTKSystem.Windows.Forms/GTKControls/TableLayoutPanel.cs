@@ -5,7 +5,6 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
-using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,12 +12,12 @@ using static System.Windows.Forms.TableLayoutControlCollection;
 
 namespace System.Windows.Forms
 {
-	//[ProvideProperty("ColumnSpan", typeof(Control))]
-	//[ProvideProperty("RowSpan", typeof(Control))]
-	//[ProvideProperty("Row", typeof(Control))]
-	//[ProvideProperty("Column", typeof(Control))]
-	//[ProvideProperty("CellPosition", typeof(Control))]
-	//[DefaultProperty("ColumnCount")]
+    //[ProvideProperty("ColumnSpan", typeof(Control))]
+    //[ProvideProperty("RowSpan", typeof(Control))]
+    //[ProvideProperty("Row", typeof(Control))]
+    //[ProvideProperty("Column", typeof(Control))]
+    //[ProvideProperty("CellPosition", typeof(Control))]
+    //[DefaultProperty("ColumnCount")]
     [DesignerCategory("Component")]
     public partial class TableLayoutPanel : ContainerControl, IExtenderProvider
     {

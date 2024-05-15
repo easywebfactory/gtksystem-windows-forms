@@ -273,8 +273,8 @@ namespace System.Windows.Forms
 
             Gtk.MessageDialog dia = new Gtk.MessageDialog(owner, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Info, buttonsType, text);
             dia.SetPosition(position);
+            dia.StyleContext.AddClass("DefaultThemeStyle");
             dia.StyleContext.AddClass("MessageBox");
-            dia.StyleContext.AddClass("BorderRadiusStyle");
             dia.BorderWidth = 10;
             dia.KeepAbove = true;
             dia.KeepBelow = false;
@@ -290,8 +290,8 @@ namespace System.Windows.Forms
             dia.KeepBelow = false;
             dia.TypeHint = Gdk.WindowTypeHint.Dialog;
             dia.SetPosition(position);
+            dia.StyleContext.AddClass("DefaultThemeStyle");
             dia.StyleContext.AddClass("MessageBox");
-            dia.StyleContext.AddClass("BorderRadiusStyle");
             // dia.SetSizeRequest(300, 160);
             dia.BorderWidth = 10;
             

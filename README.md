@@ -159,6 +159,11 @@ QQ群：236066073
 2. https://github.com/easywebfactory
 
 #### 更新日志
+ ## 2024/5/16
+   1. 修正form窗口有透明边线的问题
+   2. 增加了几个控件常用属性
+   3. combobox控件增加DropDown或DropDownList可选模式
+   4. 修改了VisualStudio开发插件的功能错误，提高了安装适配兼容性
  ## 2024/5/11
    1. 修正form启动时窗口大小异常
    2. button增加image属性图片

@@ -1,7 +1,4 @@
-﻿using Cairo;
-using Gtk;
-using System;
-using System.Drawing.Drawing2D;
+﻿using Gtk;
 
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
@@ -19,6 +16,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Override.AddClass("Form");
             this.WindowPosition = Gtk.WindowPosition.Center;
             this.BorderWidth = 0;
+            this.ContentArea.BorderWidth = 0;
+            this.ContentArea.Spacing = 0;
             this.SetDefaultSize(100, 100);
             this.TypeHint = Gdk.WindowTypeHint.Normal;
             this.Response += FormBase_Response;
@@ -37,7 +36,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             StatusBarView.StyleContext.AddClass("StatusStrip");
             StatusBarView.Child = StatusBar;
             this.ContentArea.PackEnd(StatusBarView, false, true, 0);
-            // this.Decorated = false; //删除工具栏
+            //this.Decorated = false; //删除工具栏
         }
 
         public FormBase(string title, Gtk.Window parent, DialogFlags flags, params object[] button_data) : base(title, parent, flags, button_data)
@@ -57,7 +56,12 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 if (this.IsActive)
                     this.Destroy();
         }
-
+        protected override bool OnDrawn(Cairo.Context cr)
+        {
+            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
+            Override.OnDrawnBackground(cr, rec);
+            return base.OnDrawn(cr);
+        }
         public void CloseWindow()
         {
             this.OnClose();

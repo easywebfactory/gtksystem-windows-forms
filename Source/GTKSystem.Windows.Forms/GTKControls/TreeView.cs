@@ -5,14 +5,11 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
-using Atk;
-using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Xml.Linq;
 
 
 namespace System.Windows.Forms

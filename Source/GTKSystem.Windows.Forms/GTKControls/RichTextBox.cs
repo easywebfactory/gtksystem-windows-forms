@@ -8,7 +8,6 @@
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
-using System.Drawing;
 
 namespace System.Windows.Forms
 {
@@ -34,6 +33,7 @@ namespace System.Windows.Forms
             base.SetStyle(textView);
         }
         public override string Text { get => textView.Buffer.Text; set => textView.Buffer.Text = value; }
+        public virtual bool ReadOnly { get { return textView.CanFocus; } set { textView.CanFocus = value; } }
 
         public override event EventHandler TextChanged
         {

@@ -125,7 +125,6 @@ namespace System.Windows.Forms
                 }
                 else if (stripType == "ToolStripComboBox")
                 {
-                    comboBox.StyleContext.AddClass("ComboBox");
                     _menuItem.Add(comboBox);
                 }
                 else if (stripType == "ToolStripProgressBar")

@@ -1,8 +1,4 @@
-﻿using Gtk;
-using System;
-
-
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public sealed class TableLayoutPanelBase : Gtk.Grid, IControlGtk
     {

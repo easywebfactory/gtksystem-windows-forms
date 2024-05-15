@@ -1,9 +1,7 @@
 ﻿
 using Gtk;
 using GTKSystem.Windows.Forms.Utility;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -20,7 +18,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public event DrawnHandler DrawnBackground;
         public event PaintEventHandler Paint;
         public System.Drawing.Color? BackColor { get; set; }
-        public System.Drawing.Image BackgroundImage { get; set; }
+        private System.Drawing.Image _BackgroundImage;
+        public System.Drawing.Image BackgroundImage { get { return _BackgroundImage; } set { _BackgroundImage = value; backgroundPixbuf = null; } }
         public ImageLayout BackgroundImageLayout { get; set; }
         public System.Drawing.Image Image { get; set; }
         public System.Drawing.ContentAlignment ImageAlign { get; set; }
@@ -41,6 +40,14 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 container.StyleContext.RemoveClass(cssClass);
                 container.StyleContext.AddClass(cssClass);
             }
+            if (BackgroundImage != null || BackColor.HasValue || Image != null)
+            {
+                container.StyleContext.RemoveClass("BGTransparent");
+                container.StyleContext.AddClass("BGTransparent");
+            }
+        }
+        public void OnPaint()
+        {
             if (BackgroundImage != null || BackColor.HasValue || Image != null)
             {
                 container.StyleContext.RemoveClass("BGTransparent");

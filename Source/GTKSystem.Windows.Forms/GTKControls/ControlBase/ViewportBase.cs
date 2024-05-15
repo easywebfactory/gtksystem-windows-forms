@@ -1,9 +1,4 @@
-﻿using Gtk;
-using System;
-using System.ComponentModel;
-
-
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public sealed class ViewportBase : Gtk.Viewport, IControlGtk
     {

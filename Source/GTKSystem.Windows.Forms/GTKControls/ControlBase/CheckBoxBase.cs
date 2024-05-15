@@ -1,8 +1,4 @@
-﻿using Gtk;
-using System;
-using System.Collections.Generic;
-
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public sealed class CheckBoxBase : Gtk.CheckButton, IControlGtk
     {

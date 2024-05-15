@@ -5,11 +5,8 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
-using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 
 namespace System.Windows.Forms
 {

@@ -5,21 +5,17 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
-using Gdk;
-using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using Pango;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
- 
+
 namespace System.Windows.Forms
 {
-	[DesignerCategory("Component")]
+    [DesignerCategory("Component")]
 	[DefaultEvent("SelectedIndexChanged")]
 	[DefaultProperty("Items")]
 	[DefaultBindingProperty("SelectedValue")]

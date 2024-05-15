@@ -1,8 +1,4 @@
-﻿using Gtk;
-using System;
-
-
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public sealed class ToolStripDropDownBase : Gtk.Menu, IControlGtk
     {
@@ -20,17 +16,5 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             Override.OnAddClass();
             base.OnShown();
         }
-        //protected override void OnResizeChecked()
-        //{
-        //    base.OnResizeChecked();
-        //    Override.OnResizeChecked(this.Allocation);
-        //}
-        //protected override bool OnDrawn(Cairo.Context cr)
-        //{
-        //    Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-        //    Override.OnDrawnBackground(cr, rec);
-        //    Override.OnPaint(cr, rec);
-        //    return base.OnDrawn(cr);
-        //}
     }
 }

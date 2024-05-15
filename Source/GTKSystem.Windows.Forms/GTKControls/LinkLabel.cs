@@ -6,11 +6,9 @@
  * date: 2024/1/3
  */
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 
 namespace System.Windows.Forms
 {

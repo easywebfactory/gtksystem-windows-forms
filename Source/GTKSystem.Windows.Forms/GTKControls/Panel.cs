@@ -5,16 +5,9 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
-using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Text;
-using System.Web;
-using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {

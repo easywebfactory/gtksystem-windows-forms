@@ -429,6 +429,7 @@ namespace GTKWinFormsApp
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
             MaximizeBox = false;
+            //FormBorderStyle = FormBorderStyle.None;
             Name = "Form3";
             ShowInTaskbar = false;
             Text = "Form3";

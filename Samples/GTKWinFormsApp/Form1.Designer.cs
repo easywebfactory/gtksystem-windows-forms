@@ -138,13 +138,14 @@ namespace GTKWinFormsApp
             // comboBox1
             // 
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "test1", "test2", "test3" });
-            comboBox1.Location = new System.Drawing.Point(483, 25);
+            comboBox1.Items.AddRange(new object[] { "test1", "test2", "test3333333333333333333" });
+            comboBox1.Location = new System.Drawing.Point(383, 25);
             comboBox1.Margin = new Padding(4);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new System.Drawing.Size(134, 28);
             comboBox1.TabIndex = 1;
             comboBox1.Text = "combobox99";
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDown;
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             comboBox1.SelectedValueChanged += comboBox1_SelectedValueChanged;
             // 
@@ -789,6 +790,7 @@ namespace GTKWinFormsApp
             BackColor = System.Drawing.Color.AliceBlue;
             BackgroundImage = Properties.Resources.timg;
             BackgroundImageLayout = ImageLayout.Stretch;
+            //FormBorderStyle = FormBorderStyle.None;
             ClientSize = new System.Drawing.Size(1360, 743);
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(groupBox1);

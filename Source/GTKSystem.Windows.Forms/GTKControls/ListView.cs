@@ -23,7 +23,7 @@ using static System.Windows.Forms.ListViewItem;
 namespace System.Windows.Forms
 {
 
-	[DefaultEvent("SelectedIndexChanged")]
+    [DefaultEvent("SelectedIndexChanged")]
 	public class ListView : ContainerControl
     {
         public readonly ListViewBase self = new ListViewBase();

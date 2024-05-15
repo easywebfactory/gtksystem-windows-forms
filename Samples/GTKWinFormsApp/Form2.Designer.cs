@@ -178,6 +178,8 @@ namespace GTKWinFormsApp
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (System.Drawing.Image)resources.GetObject("$this.BackgroundImage");
+            //BackColor = System.Drawing.Color.AliceBlue;
+            //BackgroundImage = Properties.Resources.timg;
             ClientSize = new System.Drawing.Size(1078, 596);
             Controls.Add(button1);
             Controls.Add(label1);

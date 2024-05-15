@@ -108,15 +108,11 @@ namespace System.Windows.Forms
                 //.DefaultThemeStyle:active{border-color:#000099;}
                 css.LoadFromData(@"
 .DefaultThemeStyle{border-radius:0px;border:solid 1px #cccccc;box-shadow: none;color:#000000;}
-.DefaultThemeStyle>entry{border:solid 1px #cccccc;}
-.DefaultThemeStyle>button{border:solid 1px #cccccc;}
-.DefaultThemeStyle button{border-radius:0px;}
+.DefaultThemeStyle button{padding:0px;border-radius:0px;}
 .DefaultThemeStyle border{border:solid 1px #cccccc;}
-.DefaultThemeStyle entry{border-radius:0px;background-color:#ffffff;}
+.DefaultThemeStyle entry{background-color:#ffffff; padding: 0px 6px;border-radius:0px;}
 
-.BackgroundTransparent{padding:0px;background:transparent;background-color:transparent;} 
 /*
-.DefaultThemeStyle{border:solid 1px #cccccc;border-radius:0px;box-shadow: none;color:#000000;}
 .DefaultThemeStyle .background{background-color:#F6F5F4;}
 .DefaultThemeStyle .titlebar{background-color:#666655;}
 .DefaultThemeStyle .view{background:#ffffff}
@@ -132,27 +128,27 @@ namespace System.Windows.Forms
 */
 
 
-.Form {border-width:0px;padding:0px;margin:0px;}
+.Form {border-width:0px;margin:0px;}
 .ScrollForm {border-right:solid 15px #e6e5e4;}
 
 .MessageBox{}
-.MessageBox button{margin:10px;border-radius:0px;}
+.MessageBox button{margin:10px;}
 .MessageBox-BarTitle{font-size:20px;padding-bottom:10px;}
-.TabControl{padding:0px;} 
+.TabControl{} 
 .TabControl header.top{background-color:#e7e5e3;} 
 .TabControl header.top tab:hover{background-color:#EFEFEF;} 
 .TabControl header.top tab:checked{background-color:#f9f9f9;} 
 
 .DataGridView{margin:0px;}
-.DataGridView treeview.view{background-color:#ffffff;margin:0px;padding:0px;border-bottom:solid 1px #dddddd;border-left-width:0px;border-top-width:0px;;border-right-width:0px;}
+.DataGridView treeview.view{background-color:#ffffff;margin:0px;border-bottom:solid 1px #dddddd;border-left-width:0px;border-top-width:0px;;border-right-width:0px;}
 .DataGridView treeview.view:hover{background-color:#ffff88;}
 .DataGridView treeview.view:selected{background-color:#5555ff;color:#ffffff;}
 .DataGridView treeview.view header{background-color:#EFEFEF;}
-.DataGridView treeview.view header button{background-color:#f9f9f9; padding-top:6px;padding-bottom:6px;}
+.DataGridView treeview.view header button{background-color:#f9f9f9; padding-top:6px;padding-bottom:6px;border-radius:0px;}
 .DataGridView treeview.view header button:hover{background-color:#cccccc;}
 
 .DataGridView button{} 
-.GridViewCell-Button{ font-size:12px; border:solid 1px #aaaaaa; border-radius:0px; background:linear-gradient(#e9e9e9,#e0e0e0);}
+.GridViewCell-Button{ font-size:12px; border:solid 1px #aaaaaa; background:linear-gradient(#e9e9e9,#e0e0e0);}
 .GridViewCell-Button:hover{  border:solid 1px #aaaaaa;background:linear-gradient(#eeeeee,#efefef);}
 .GridViewCell-Button:selected{ color:blue}
 .TreeView{border-bottom-width:0px;border-left-width:0px;border-top-width:1px;;border-right-width:0px;}
@@ -161,7 +157,7 @@ namespace System.Windows.Forms
 
 .Button{padding:0px;} 
 
-.TextBox{padding:0px 3px 0px 3px;caret-color:#999999;} 
+.TextBox{caret-color:#999999;} 
 .RichTextBox {border-width:1px;caret-color:#999999;}
 .RichTextBox border.top{border-width:1px;}
 .RichTextBox border.left{border-width:1px;}
@@ -173,14 +169,21 @@ namespace System.Windows.Forms
 
 .Label{border-width:0px;background-color:#F6F5F4;} 
 .LinkLabel{border-width:0px;} 
-.NumericUpDown{padding:0px;min-height:6px;min-width:6px;caret-color:#999999;}
+.NumericUpDown{min-height:6px;min-width:6px;caret-color:#999999;}
 .NumericUpDown button.up{border-width:0px;padding:0px;font-size:6px;min-height:6px;min-width:6px;}
 .NumericUpDown button.down{border-width:0px;padding:0px;font-size:6px;min-height:6px;min-width:6px;}
 .NumericUpDown entry{border-width:0px;padding:0px 0px 0px 3px;min-height:6px;min-width:6px;} 
 .NumericUpDown entry:focus{border-width:0px;}
-.ComboBox{border-width:0px;padding:0px;}
-.ComboBox button{padding:0px;}
-.ComboBox entry{padding:0px;}
+
+.ComboBox{border-width:0px;}
+.ComboBox button{padding:0px 5px 0px 5px; border-width:1px 0px 1px 0px;border-color:#c9c9c9;}
+.ComboBox entry{padding:0px 5px;border:solid 1px #c9c9c9;}
+
+.DropDownList button{padding:0px; border-width:1px 0px 1px 0px;border-color:#c9c9c9;}
+.DropDownList entry{padding:0px 5px;background:linear-gradient(#F6F5F3,#F1F0EE,#ECEBE7);border:solid 1px #c9c9c9;}
+.DropDownList entry:hover{background:linear-gradient(#F6F5F3,#F6F5F3);}
+
+
 .Panel{border-width:0px;} 
 .SplitContainer.horizontal{border-width:1px;}
 .GroupBox{border-color:#DCDCDC;} 
@@ -197,8 +200,8 @@ namespace System.Windows.Forms
 .MenuStrip{padding:0px;background-color:#F6F5F4;background-image:none;border-width:0px;}
 .MenuStrip viewport{border-width:0px;} 
 
-.ListBox{border-width:1px;background-color:#ffffff; padding:0px;}
-.ListView{background-color:#ffffff; padding:0px;}
+.ListBox{border-width:1px;background-color:#ffffff; }
+.ListView{background-color:#ffffff; }
 .ListView .Label{background-color:transparent;} 
 .ListViewHeader { background-color:#eeeeee;}
 .ListView .Group{background-color:#fefefe; background-image:linear-gradient(#ffffff 12px,#3333bb 3px,#ffffff 14px);}

@@ -1,22 +1,14 @@
-﻿using Gtk;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class ComboBoxBase : Gtk.ComboBox, IControlGtk
+    public sealed class ComboBoxBase : Gtk.ComboBoxText, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal ComboBoxBase() : base()
+        internal ComboBoxBase() : base(true)
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("ComboBox");
         }
-        internal ComboBoxBase(Gtk.ITreeModel model) : base(model)
+        internal ComboBoxBase(bool hasEntry) : base(hasEntry)
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("ComboBox");

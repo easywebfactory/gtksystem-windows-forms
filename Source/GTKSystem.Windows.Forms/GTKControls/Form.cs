@@ -8,13 +8,8 @@
 
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Numerics;
-using System.Reflection;
 using System.Runtime.InteropServices;
 
 
@@ -29,7 +24,6 @@ namespace System.Windows.Forms
         public FormBase self = new FormBase();
         public override object GtkControl { get => self; }
         private Gtk.Fixed _body = new Gtk.Fixed();
-        private ViewportBase background = new ViewportBase();
         private ObjectCollection _ObjectCollection;
         public override event EventHandler SizeChanged;
 
@@ -53,8 +47,7 @@ namespace System.Windows.Forms
             _body.Expand = true;
             _body.Hexpand = true;
             _body.Vexpand = true;
-            background.Child = _body;
-            self.ScrollArea.Child = background;
+            self.ScrollArea.Child = _body;
             _ObjectCollection = new ObjectCollection(this, _body);
 
             self.ResizeChecked += Form_ResizeChecked;
@@ -63,9 +56,7 @@ namespace System.Windows.Forms
             self.Shown += Control_Shown;
             self.DeleteEvent += Control_DeleteEvent;
         }
-        public override Drawing.Image BackgroundImage { get => background.Override.BackgroundImage; set { background.Override.BackgroundImage = value; } }
-        public override ImageLayout BackgroundImageLayout { get => background.Override.BackgroundImageLayout; set { background.Override.BackgroundImageLayout = value; } }
-        public override Color BackColor { get => base.BackColor; set { base.BackColor = value; background.Override.BackColor = value; } }
+
         public override ISite Site { get; set; }
         private void Control_DeleteEvent(object o, DeleteEventArgs args)
         {
@@ -265,74 +256,76 @@ namespace System.Windows.Forms
             {
                 this.Parent = parent;
             }
-            OnLoad();
+            if (self.IsVisible == false)
+            {
+                OnLoad();
 
-            _body.WidthRequest = this.Width;
-            _body.HeightRequest = this.Height;
+                _body.WidthRequest = this.Width;
+                _body.HeightRequest = this.Height;
 
-            if (AutoScroll == true)
-            {
-                self.ScrollArea.HscrollbarPolicy = PolicyType.Always;
-                self.ScrollArea.VscrollbarPolicy = PolicyType.Always;
-            }
-            else
-            {
-                self.ScrollArea.HscrollbarPolicy = PolicyType.External;
-                self.ScrollArea.VscrollbarPolicy = PolicyType.External;
-            }
-
-            this.FormBorderStyle = this.FormBorderStyle;
-            if (this.MaximizeBox == false && this.MinimizeBox == false)
-            {
-                self.TypeHint = Gdk.WindowTypeHint.Dialog;
-            }
-            else if (this.MaximizeBox == false && this.MinimizeBox == true)
-            {
-                self.Resizable = false;
-            }
-
-            if(self.Resizable==false)
-            {
-                self.WidthRequest = self.DefaultSize.Width;
-                self.HeightRequest = self.DefaultSize.Height;
-            }
-
-            if (this.WindowState == FormWindowState.Maximized)
-            {
-                self.Maximize();
-            }
-            else if (this.WindowState == FormWindowState.Minimized)
-            {
-                self.Iconify();
-            }
-
-            try
-            {
-                if (this.ShowIcon)
+                if (AutoScroll == true)
                 {
-                    if (this.Icon != null)
-                    {
-                        if (this.Icon.Pixbuf != null)
-                            self.Icon = this.Icon.Pixbuf;
-                        else if (this.Icon.PixbufData != null)
-                            self.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
-                        else if (this.Icon.FileName != null && System.IO.File.Exists(this.Icon.FileName))
-                            self.SetIconFromFile(this.Icon.FileName);
-                        else if (this.Icon.FileName != null && System.IO.File.Exists("Resources\\" + this.Icon.FileName))
-                            self.SetIconFromFile("Resources\\" + this.Icon.FileName);
-                    }
+                    self.ScrollArea.HscrollbarPolicy = PolicyType.Always;
+                    self.ScrollArea.VscrollbarPolicy = PolicyType.Always;
                 }
                 else
                 {
-                    System.IO.Stream sm = typeof(System.Windows.Forms.Form).Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.view-more.png");
-                    self.Icon = new Gdk.Pixbuf(sm);
+                    self.ScrollArea.HscrollbarPolicy = PolicyType.External;
+                    self.ScrollArea.VscrollbarPolicy = PolicyType.External;
+                }
+
+                this.FormBorderStyle = this.FormBorderStyle;
+                if (this.MaximizeBox == false && this.MinimizeBox == false)
+                {
+                    self.TypeHint = Gdk.WindowTypeHint.Dialog;
+                }
+                else if (this.MaximizeBox == false && this.MinimizeBox == true)
+                {
+                    self.Resizable = false;
+                }
+
+                if (self.Resizable == false)
+                {
+                    self.WidthRequest = self.DefaultSize.Width;
+                    self.HeightRequest = self.DefaultSize.Height;
+                }
+
+                if (this.WindowState == FormWindowState.Maximized)
+                {
+                    self.Maximize();
+                }
+                else if (this.WindowState == FormWindowState.Minimized)
+                {
+                    self.Iconify();
+                }
+
+                try
+                {
+                    if (this.ShowIcon)
+                    {
+                        if (this.Icon != null)
+                        {
+                            if (this.Icon.Pixbuf != null)
+                                self.Icon = this.Icon.Pixbuf;
+                            else if (this.Icon.PixbufData != null)
+                                self.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
+                            else if (this.Icon.FileName != null && System.IO.File.Exists(this.Icon.FileName))
+                                self.SetIconFromFile(this.Icon.FileName);
+                            else if (this.Icon.FileName != null && System.IO.File.Exists("Resources\\" + this.Icon.FileName))
+                                self.SetIconFromFile("Resources\\" + this.Icon.FileName);
+                        }
+                    }
+                    else
+                    {
+                        System.IO.Stream sm = typeof(System.Windows.Forms.Form).Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.view-more.png");
+                        self.Icon = new Gdk.Pixbuf(sm);
+                    }
+                }
+                catch
+                {
+
                 }
             }
-            catch
-            {
-
-            }
-
             self.ShowAll();
         }
 
@@ -385,9 +378,9 @@ namespace System.Windows.Forms
             set {
                 base.AutoScroll = value;
                 if (value == true)
-                    background.StyleContext.AddClass("ScrollForm");
+                    self.StyleContext.AddClass("ScrollForm");
                 else
-                    background.StyleContext.RemoveClass("ScrollForm");
+                    self.StyleContext.RemoveClass("ScrollForm");
             }
         }
         public SizeF AutoScaleDimensions { get; set; }
@@ -401,7 +394,6 @@ namespace System.Windows.Forms
                 self.Resizable = value == FormBorderStyle.Sizable || value == FormBorderStyle.SizableToolWindow;
                 if (value == FormBorderStyle.None)
                 {
-                    self.BorderWidth = 0;
                     self.Decorated = false; //删除工具栏
                 }
                 else if (value == FormBorderStyle.FixedToolWindow)
