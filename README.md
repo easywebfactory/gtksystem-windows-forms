@@ -40,13 +40,13 @@ linux安装dotnet环境：
 
 工具一、从NuGet上安装GTKSystem.Windows.FormsDesigner类库，此类库可以在编译工程时修正窗体设计器。
 
-工具二、下载本插件工具，关闭visual studio，直接双击GTKWinformVSIXProject.vsix文件安装（建议用工具一即可）
+工具二、下载本插件工具，关闭visual studio，直接双击GTKWinformVSIXProject.vsix文件安装（本框架下的工程，Studio没有添加Form模板项，需要安装此插件）
 
-插件会安装两个功能，都是在右键菜单和工具菜单上添加：
+插件会安装两个功能：
 
-1、新建项的Form窗体模板
+1、新建项的Form窗体模板、用户控件模板。
 
-2、菜单增加设置/修复窗体设计器
+2、工程右键菜单。
 
 ![输入图片说明](pic/vs_vsix.jpeg)
 
