@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
+using Gdk;
 using Microsoft.Win32;
 
 namespace System.Windows.Forms
@@ -37,21 +38,15 @@ namespace System.Windows.Forms
         {
             get
             {
-
-                // note we can obtain the KeyboardLayout for a given thread...
-               // return new InputLanguage(SafeNativeMethods.GetKeyboardLayout(0));
-                return new InputLanguage(IntPtr.Zero);
+                return new InputLanguage(PangoHelper.ContextGet().Language.Handle);
             }
             set
             {
-                // OleInitialize needs to be called before we can call ActivateKeyboardLayout.
-
                 if (value == null)
                 {
                     value = InputLanguage.DefaultInputLanguage;
                 }
-               // IntPtr handleOld = SafeNativeMethods.ActivateKeyboardLayout(new HandleRef(value, value.handle), 0);
-
+            
             }
         }
 
@@ -62,8 +57,7 @@ namespace System.Windows.Forms
         {
             get
             {
-                IntPtr[] data = new IntPtr[1];
-                return new InputLanguage(data[0]);
+                return new InputLanguage(PangoHelper.ContextGet().Language.Handle);
             }
         }
 
@@ -79,17 +73,13 @@ namespace System.Windows.Forms
         {
             get
             {
-                int size = 2;
-                   //int size = SafeNativeMethods.GetKeyboardLayoutList(0, null);
+                int size = 1;
+                InputLanguage[] ils = new InputLanguage[size];
 
-                   //IntPtr[] handles = new IntPtr[size];
-                   // SafeNativeMethods.GetKeyboardLayoutList(size, handles);
-
-                   InputLanguage[] ils = new InputLanguage[size];
-                //for (int i = 0; i < size; i++)
-                //{
-                //    ils[i] = new InputLanguage(handles[i]);
-                //}
+                for (int i = 0; i < size; i++)
+                {
+                    ils[i] = new InputLanguage(PangoHelper.ContextGet().Language.Handle);
+                }
 
                 return new InputLanguageCollection(ils);
             }
@@ -104,23 +94,9 @@ namespace System.Windows.Forms
             get
             {
                
-                return "";
+                return PangoHelper.ContextGet().Language.ToString();
             }
         }
-
-        /// <summary>
-        ///  Attempts to extract the localized keyboard layout name using the
-        ///  SHLoadIndirectString API (only on OSVersions >= 5).  Returning
-        ///  null from this method will force us to use the legacy codepath
-        ///  (pulling the text directly from the registry).
-        /// </summary>
-        private static string GetLocalizedKeyboardLayoutName(string layoutDisplayName)
-        {
-
-            return null;
-        }
-
-        
 
         /// <summary>
         ///  Specifies whether two input languages are equal.
@@ -139,7 +115,6 @@ namespace System.Windows.Forms
             {
                 throw new ArgumentNullException(nameof(culture));
             }
-
             // KeyboardLayoutId is the LCID for built-in cultures, but it
             // is the CU-preferred keyboard language for custom cultures.
             int lcid = culture.KeyboardLayoutId;
@@ -151,8 +126,7 @@ namespace System.Windows.Forms
                     return lang;
                 }
             }
-
-            return null;
+            return DefaultInputLanguage;
         }
 
         /// <summary>
