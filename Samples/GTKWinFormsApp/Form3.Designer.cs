@@ -413,7 +413,7 @@ namespace GTKWinFormsApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = System.Drawing.Color.FromArgb(238,235,230);
+            //BackColor = System.Drawing.Color.FromArgb(238,235,230);
             ClientSize = new System.Drawing.Size(800, 450);
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(panel5);

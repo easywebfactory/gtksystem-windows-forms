@@ -5,10 +5,10 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public sealed class FormBase : Gtk.Dialog, IControlGtk
     {
-        public readonly Gtk.ScrolledWindow ScrollArea = new Gtk.ScrolledWindow();
+        public readonly Gtk.ScrolledWindow ScrollView = new Gtk.ScrolledWindow();
         public readonly Gtk.Layout StatusBar = new Gtk.Layout(new Gtk.Adjustment(1, 1, 100, 1, 0, 1), new Gtk.Adjustment(1, 1, 100, 1, 0, 1));
         private readonly Gtk.Viewport StatusBarView = new Gtk.Viewport();
-
+        public readonly ViewportBase ContentView = new ViewportBase();
         public GtkControlOverride Override { get; set; }
         public FormBase() : base()
         {
@@ -20,13 +20,15 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.ContentArea.Spacing = 0;
             this.SetDefaultSize(100, 100);
             this.TypeHint = Gdk.WindowTypeHint.Normal;
+            this.AppPaintable = false;
             this.Response += FormBase_Response;
-            ScrollArea.BorderWidth = 0;
-            ScrollArea.Valign = Gtk.Align.Fill;
-            ScrollArea.Halign = Gtk.Align.Fill;
-            ScrollArea.HscrollbarPolicy = PolicyType.Always;
-            ScrollArea.VscrollbarPolicy = PolicyType.Always;
-            this.ContentArea.PackStart(ScrollArea, true, true, 0);
+            ScrollView.BorderWidth = 0;
+            ScrollView.Valign = Gtk.Align.Fill;
+            ScrollView.Halign = Gtk.Align.Fill;
+            ScrollView.HscrollbarPolicy = PolicyType.Always;
+            ScrollView.VscrollbarPolicy = PolicyType.Always;
+            ScrollView.Add(ContentView);
+            this.ContentArea.PackStart(ScrollView, true, true, 0);
             StatusBar.Hexpand = true;
             StatusBar.Vexpand = false;
             StatusBar.Halign = Gtk.Align.Fill;
@@ -59,6 +61,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         protected override bool OnDrawn(Cairo.Context cr)
         {
             Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
+            this.SetClip(rec);
             Override.OnDrawnBackground(cr, rec);
             return base.OnDrawn(cr);
         }

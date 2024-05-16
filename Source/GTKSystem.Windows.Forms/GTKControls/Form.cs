@@ -22,7 +22,7 @@ namespace System.Windows.Forms
     {
         private Gtk.Application app = Application.Init();
         public FormBase self = new FormBase();
-        public override object GtkControl { get => self; }
+        public override object GtkControl { get => self.ContentView; }
         private Gtk.Fixed _body = new Gtk.Fixed();
         private ObjectCollection _ObjectCollection;
         public override event EventHandler SizeChanged;
@@ -47,7 +47,7 @@ namespace System.Windows.Forms
             _body.Expand = true;
             _body.Hexpand = true;
             _body.Vexpand = true;
-            self.ScrollArea.Child = _body;
+            self.ContentView.Child = _body;
             _ObjectCollection = new ObjectCollection(this, _body);
 
             self.ResizeChecked += Form_ResizeChecked;
@@ -265,13 +265,13 @@ namespace System.Windows.Forms
 
                 if (AutoScroll == true)
                 {
-                    self.ScrollArea.HscrollbarPolicy = PolicyType.Always;
-                    self.ScrollArea.VscrollbarPolicy = PolicyType.Always;
+                    self.ScrollView.HscrollbarPolicy = PolicyType.Always;
+                    self.ScrollView.VscrollbarPolicy = PolicyType.Always;
                 }
                 else
                 {
-                    self.ScrollArea.HscrollbarPolicy = PolicyType.External;
-                    self.ScrollArea.VscrollbarPolicy = PolicyType.External;
+                    self.ScrollView.HscrollbarPolicy = PolicyType.External;
+                    self.ScrollView.VscrollbarPolicy = PolicyType.External;
                 }
 
                 this.FormBorderStyle = this.FormBorderStyle;

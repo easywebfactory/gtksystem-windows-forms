@@ -263,7 +263,7 @@ namespace System.Windows.Forms
                 else
                     return Color.Transparent; 
             }
-            set { 
+            set {
                 ISelf.Override.BackColor = value;
                 ISelf.Override.OnAddClass();
                 Invalidate();
