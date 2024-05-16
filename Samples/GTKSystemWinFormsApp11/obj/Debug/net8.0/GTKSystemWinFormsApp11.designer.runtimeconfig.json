@@ -12,7 +12,7 @@
       "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
     ],
     "configProperties": {
-      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": true,
+      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false,
       "Microsoft.NETCore.DotNetHostPolicy.SetAppPaths": true
     }
   }

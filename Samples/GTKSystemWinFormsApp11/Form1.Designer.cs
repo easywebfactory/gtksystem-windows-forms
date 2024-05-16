@@ -396,9 +396,9 @@
             Controls.Add(menuStrip1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
-            MaximizeBox = false;
+            //MaximizeBox = false;
             Name = "Form1";
-            ShowInTaskbar = false;
+           // ShowInTaskbar = false;
             Text = "Form3";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();

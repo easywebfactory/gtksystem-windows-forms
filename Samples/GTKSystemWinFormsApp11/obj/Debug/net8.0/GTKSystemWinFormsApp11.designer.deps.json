@@ -74,26 +74,26 @@
           }
         }
       },
-      "GTKSystem.Windows.Forms/1.3.24.20": {
+      "GTKSystem.Windows.Forms/1.3.24.26": {
         "dependencies": {
           "GtkSharp": "3.24.24.95",
           "System.Resources.Extensions": "8.0.0"
         },
         "runtime": {
           "lib/net8.0/GTKSystem.Windows.Forms.dll": {
-            "assemblyVersion": "1.3.24.20",
-            "fileVersion": "1.3.24.20"
+            "assemblyVersion": "1.3.24.26",
+            "fileVersion": "1.3.24.26"
           }
         }
       },
-      "GTKSystem.Windows.FormsDesigner/1.0.0": {
+      "GTKSystem.Windows.FormsDesigner/1.0.0.4": {
         "dependencies": {
           "Microsoft.Build.Utilities.Core": "17.1.0"
         },
         "runtime": {
           "lib/netstandard2.0/GTKSystem.Windows.FormsDesigner.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
+            "assemblyVersion": "1.0.0.4",
+            "fileVersion": "1.0.0.4"
           }
         }
       },
@@ -528,19 +528,19 @@
       "path": "gtksharp/3.24.24.95",
       "hashPath": "gtksharp.3.24.24.95.nupkg.sha512"
     },
-    "GTKSystem.Windows.Forms/1.3.24.20": {
+    "GTKSystem.Windows.Forms/1.3.24.26": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-oWmNSj6MIY1XIZviN8Nt23LtbN9/WW/a2HBEDItKAQqgS38E5q2n9O9/+XAqg2yjOjySamETCURt0gJlsZsiIA==",
-      "path": "gtksystem.windows.forms/1.3.24.20",
-      "hashPath": "gtksystem.windows.forms.1.3.24.20.nupkg.sha512"
+      "sha512": "sha512-J4mX7HYZgkSZ4rg3DpRGI2YY5IMOWcoMSSwKAVqhqXk6Y5YEQU6IY1MD5h9PhOEIBlwqfmzziVjo6COucS8b2g==",
+      "path": "gtksystem.windows.forms/1.3.24.26",
+      "hashPath": "gtksystem.windows.forms.1.3.24.26.nupkg.sha512"
     },
-    "GTKSystem.Windows.FormsDesigner/1.0.0": {
+    "GTKSystem.Windows.FormsDesigner/1.0.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ensO8vPDMqE5WoyMSP3bWjzL1bRgGPkWrSM3yIzvX5GPZMYxML9KJSsAdXvZc5cGFwzwY12UKMVKakfIRLBnEA==",
-      "path": "gtksystem.windows.formsdesigner/1.0.0",
-      "hashPath": "gtksystem.windows.formsdesigner.1.0.0.nupkg.sha512"
+      "sha512": "sha512-lv6mhLYcA6jxJhyMSFlKuDX3RZhy4jZZs3XWJXNPW+kBOjJpvWVlHAEgvQdTxtu+CzQt5EQZuaAHnXtoo25USQ==",
+      "path": "gtksystem.windows.formsdesigner/1.0.0.4",
+      "hashPath": "gtksystem.windows.formsdesigner.1.0.0.4.nupkg.sha512"
     },
     "Microsoft.Build.Framework/17.1.0": {
       "type": "package",
