@@ -10,12 +10,11 @@
 	  <PackageProjectUrl>https://github.com/easywebfactory/gtksystem-windows-forms</PackageProjectUrl>
 	  <PackageReleaseNotes>C#界面跨平台开发组件gtksystem-windows-forms</PackageReleaseNotes>
 	  <Title>GTK跨平台winform界面组件，一次编译，可运行于windows、linux、macos平台</Title>
-	  <Description>
-		  基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
-		  使用本组件GTKSystem.Windows.Forms一次编译，跨平台windows\linux\macos运行。
-		  更新平台：
-		  https://github.com/easywebfactory/gtksystem-windows-forms；
-		  https://gitee.com/easywebfactory/gtksystem-windows-forms；
+	  <Description>基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+使用本组件GTKSystem.Windows.Forms一次编译，跨平台windows\linux\macos运行。
+更新平台：
+https://github.com/easywebfactory/gtksystem-windows-forms；
+https://gitee.com/easywebfactory/gtksystem-windows-forms；
 	  </Description>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
