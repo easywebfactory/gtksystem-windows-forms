@@ -144,11 +144,8 @@ namespace GTKWinFormsApp
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new System.Drawing.Size(134, 28);
             comboBox1.TabIndex = 1;
-            comboBox1.Text = "combobox99";
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDown;
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             comboBox1.SelectedValueChanged += comboBox1_SelectedValueChanged;
-            comboBox1.SelectedIndex = 2;
             // 
             // textBox1
             // 
@@ -715,6 +712,10 @@ namespace GTKWinFormsApp
             // 
             // dateTimePicker1
             // 
+            dateTimePicker1.CustomFormat = "yyyy/MM/dd HH时mm分ss秒";
+            dateTimePicker1.Format = DateTimePickerFormat.Custom;
+            dateTimePicker1.MaxDate=DateTime.Now.AddYears(5);
+            dateTimePicker1.MinDate = DateTime.Now.AddMonths(-2);
             dateTimePicker1.Location = new System.Drawing.Point(26, 21);
             dateTimePicker1.Margin = new Padding(4);
             dateTimePicker1.Name = "dateTimePicker1";
@@ -791,7 +792,6 @@ namespace GTKWinFormsApp
             BackColor = System.Drawing.Color.AliceBlue;
             BackgroundImage = Properties.Resources.timg;
             BackgroundImageLayout = ImageLayout.Stretch;
-            //FormBorderStyle = FormBorderStyle.None;
             ClientSize = new System.Drawing.Size(1360, 743);
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(groupBox1);

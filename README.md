@@ -159,6 +159,8 @@ QQ群：236066073
 2. https://github.com/easywebfactory
 
 #### 更新日志
+ ## 2024/5/17
+   1. datetimepicker增加时间数据和format模式
  ## 2024/5/16
    1. 修正form窗口有透明边线的问题
    2. 增加了几个控件常用属性

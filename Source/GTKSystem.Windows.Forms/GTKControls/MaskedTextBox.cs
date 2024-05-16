@@ -18,7 +18,14 @@ namespace System.Windows.Forms
             self.TextInserted += Control_TextInserted;
             self.Shown += Control_Shown;
         }
-        public override string Text { get { return self.Text; } set { self.Text = value??""; } }
+        internal MaskedTextBox(string cssClass) : base()
+        {
+            self.AddClass(cssClass);
+            self.Backspace += Control_Backspace;
+            self.TextInserted += Control_TextInserted;
+            self.Shown += Control_Shown;
+        }
+        public override string Text { get { return self.Text; } set { IsMasking = false; self.Text = value??""; IsMasking = true; } }
         private void Control_Shown(object sender, EventArgs e)
         {
             if (_PasswordChar != '\0')
@@ -123,10 +130,10 @@ namespace System.Windows.Forms
         public override char PasswordChar { get => _PasswordChar; set { _PasswordChar = value; self.InvisibleChar = value; } }
         public Type ValidatingType { get; set; }
         public MaskFormat TextMaskFormat { get; set; }
-
+        internal bool IsMasking = true;
         private bool IsMaskPassword
         {
-            get { return !string.IsNullOrWhiteSpace(Mask); }
+            get { return !string.IsNullOrWhiteSpace(Mask) && IsMasking; }
         }
     }
 }

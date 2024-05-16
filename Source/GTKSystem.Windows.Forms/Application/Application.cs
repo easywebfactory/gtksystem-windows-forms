@@ -129,7 +129,7 @@ namespace System.Windows.Forms
 
 
 .Form {border-width:0px;margin:0px;box-shadow: none;}
-.ScrollForm {border-right:solid 15px #e6e5e4;}
+.ScrollForm {border-right:solid 6px #e6e5e4;}
 
 .MessageBox{}
 .MessageBox button{margin:10px;}

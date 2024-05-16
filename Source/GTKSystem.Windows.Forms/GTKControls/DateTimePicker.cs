@@ -5,46 +5,113 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+
+using Gtk;
 using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
     public partial class DateTimePicker : MaskedTextBox
     {
-        public DateTimePicker() : base()
+        Gtk.Popover popver;
+        Gtk.Calendar calendar = new Gtk.Calendar();
+        public DateTimePicker() : base("DateTimePicker")
         {
-            Widget.StyleContext.AddClass("DateTimePicker");
-
             base.Mask = "____年__月__日";
             //self.PrimaryIconActivatable = true;
             //self.PrimaryIconStock = "gtk-index";
-
+            
             self.SecondaryIconActivatable = true;
             self.SecondaryIconStock= "gtk-index";
            // self.SecondaryIconName = "x-office-calendar";
-            System.IO.Stream sm = this.GetType().Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.DateTimePicker.ico");
+            System.IO.Stream sm = this.GetType().Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.MonthCalendar.ico");
             self.SecondaryIconPixbuf = new Gdk.Pixbuf(sm);
             self.IconRelease += DateTimePicker_IconRelease;
+            self.Shown += Self_Shown;
+
+            popver = new Gtk.Popover(self);
+            popver.BorderWidth = 5;
+            popver.Modal = true;
+            popver.Position = PositionType.Bottom;
+
+            calendar.Halign = Gtk.Align.Fill;
+            calendar.Valign = Gtk.Align.Fill;
+            calendar.DaySelected += Calendar_DaySelected;
+            calendar.PrevYear += Calendar_PrevYear;
+            calendar.NextYear += Calendar_NextYear;
+            calendar.PrevMonth += Calendar_PrevMonth;
+            calendar.NextMonth += Calendar_NextMonth;
+
+            Gtk.Box popbody=new Gtk.Box(Gtk.Orientation.Vertical, 6);
+            popbody.Add(calendar);
+            Gtk.Button todaybtn = new Gtk.Button() { Label = "选择今天"+DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") };
+            todaybtn.Clicked += Todaybtn_Clicked;
+            popbody.Add(todaybtn);
+            popver.Add(popbody);
+        }
+
+        private void Calendar_NextMonth(object sender, EventArgs e)
+        {
+            if (calendar.GetDate() > MaxDate)
+            {
+                calendar.Date = MaxDate.Date.AddDays(-1);
+            }
+        }
+
+        private void Calendar_PrevMonth(object sender, EventArgs e)
+        {
+            if (calendar.GetDate() < MinDate)
+            {
+                calendar.Date = MinDate.Date.AddDays(1);
+            }
+        }
+
+        private void Calendar_NextYear(object sender, EventArgs e)
+        {
+            if (calendar.GetDate() > MaxDate)
+            {
+                calendar.Date = MaxDate.Date.AddDays(-1);
+            }
+        }
+
+        private void Calendar_PrevYear(object sender, EventArgs e)
+        {
+            if (calendar.GetDate() < MinDate)
+            {
+                calendar.Date = MinDate.Date.AddDays(1);
+            }
+        }
+
+        private void Todaybtn_Clicked(object sender, EventArgs e)
+        {
+            this.Value = DateTime.Now;
+            popver.Hide();
+        }
+
+        private void Self_Shown(object sender, EventArgs e)
+        {
+            this.Value = DateTime.Now;
         }
 
         private void DateTimePicker_IconRelease(object o, Gtk.IconReleaseArgs args)
         {
-            //Console.Write("DateTimePicker_IconRelease");
-            Gtk.Popover popver = new Gtk.Popover((Gtk.Widget)o);
-            popver.StyleContext.AddClass("DateTimePicker");
-            popver.StyleContext.AddClass("BorderRadiusStyle");
-            popver.WidthRequest = 300;
-            popver.HeightRequest = 200;
-            popver.Modal = true;
-
-            Gtk.Calendar calendar = new Gtk.Calendar();
-            calendar.Halign = Gtk.Align.Fill;
-            calendar.Valign = Gtk.Align.Fill;
-            calendar.Date= DateTime.Now;
-            calendar.DaySelected += Calendar_DaySelected;
-            popver.Add(calendar);
+            DateTime current = Value;
+            if (current >= MaxDate)
+            {
+                calendar.Date = MaxDate.Date.AddDays(-1);
+            }
+            else if(current <= MinDate)
+            {
+                calendar.Date = MinDate.AddDays(1);
+            }
+            else
+            {
+                calendar.Date = Value;
+            }
             popver.ShowAll();
         }
 
@@ -52,36 +119,89 @@ namespace System.Windows.Forms
         {
             Gtk.Calendar calendar = sender as Gtk.Calendar;
             DateTime dt = calendar.GetDate();
-
-            self.DeleteSelection();
-            base.Mask = "";
-            this.Text = dt.ToString("yyyy年MM月dd日");
-            base.Mask = "____年__月__日";
-            // Console.Write(dt.ToString("yyyy年MM月dd日"));
+            if (dt > MaxDate || dt < MinDate)
+            {
+                calendar.Date = Value;
+                MessageBox.Show($"选择的日期超出限制范围 \n最大时间：{MaxDate.ToString("yyyy/MM/dd HH:mm:ss")}\n最小时间：{MinDate.ToString("yyyy/MM/dd HH:mm:ss")}","日期限制");
+            }
+            else
+            {
+                DateTime current = Value;
+                this.Value = dt.AddHours(current.Hour).AddMinutes(current.Minute).AddSeconds(current.Second);
+            }
         }
 
-        public DateTime MaxDate
-        {
-            get; set;
-        }
-        public DateTime MinDate
-        {
-            get; set;
-        }
-
+        public DateTime MaxDate { get; set; } = DateTime.MaxValue;
+        public DateTime MinDate { get; set; } = DateTime.MinValue;
         public DateTime Value
         {
             get
             {
-                string val = Text.Replace("_", "0").Replace("年", "-").Replace("月", "-").Replace("日", "-");
-                if (DateTime.TryParse(val, out DateTime result))
-                    return result;
+                DateTime result = DateTime.Now;
+                CultureInfo provider = CultureInfo.InvariantCulture;
+                if (string.IsNullOrWhiteSpace(Text))
+                { }
+                else if (Format == DateTimePickerFormat.Custom && DateTime.TryParseExact(Text, CustomFormat, provider, Globalization.DateTimeStyles.AllowWhiteSpaces, out result))
+                { }
+                else if (DateTime.TryParse(Text, provider, Globalization.DateTimeStyles.AllowWhiteSpaces, out result))
+                { }
                 else
-                    return DateTime.MinValue;
+                { 
+                    result = DateTime.Now;
+                }
+                if (result > MaxDate)
+                {
+                    return MaxDate;
+                }
+                if (result < MinDate)
+                {
+                    return MinDate;
+                }
+                return result;
             }
-            set { base.Text = value.ToString("yyyy年MM月dd日"); }
+            set { 
+                if(value > MaxDate)
+                {
+                    value = MaxDate.AddDays(-1);
+                }
+                if (value < MinDate)
+                {
+                    value = MinDate.AddDays(1);
+                }
+                if (Format==DateTimePickerFormat.Long)
+                    base.Text = value.ToString("yyyy年MM月dd日");
+                else if (Format == DateTimePickerFormat.Short)
+                    base.Text = value.ToString("yyyy/MM/dd");
+                else if (Format == DateTimePickerFormat.Time)
+                    base.Text = value.ToString("HH:mm:ss");
+                else if (Format == DateTimePickerFormat.Custom)
+                    base.Text = value.ToString(CustomFormat);
+                else
+                    base.Text = value.ToString("yyyy年MM月dd日"); 
+            }
         }
-
+        private string _CustomFormat= "yyyy年MM月dd日";
+        public string CustomFormat { get => _CustomFormat; 
+            set { _CustomFormat = value; 
+                base.Mask = Regex.Replace(value,"[ymdhs]","_",RegexOptions.IgnoreCase); 
+            }
+        }
+        public DateTimePickerFormat _Format;
+        public DateTimePickerFormat Format { get => _Format;
+            set {
+                _Format = value;
+                if (Format == DateTimePickerFormat.Long)
+                    base.Mask = "____年__月__日";
+                else if (Format == DateTimePickerFormat.Short)
+                    base.Mask = "____/__/__";
+                else if (Format == DateTimePickerFormat.Time)
+                    base.Mask = "__:__:__";
+                else if (Format == DateTimePickerFormat.Custom)
+                    base.Mask = Regex.Replace(CustomFormat, "[ymdhs]", "_", RegexOptions.IgnoreCase);
+                else
+                    base.Mask = "____年__月__日";
+            } 
+        }
         public Font CalendarFont { get; set; }
         public Color CalendarForeColor { get; set; }
         public Color CalendarMonthBackground { get; set; }
@@ -91,8 +211,8 @@ namespace System.Windows.Forms
 
         public event EventHandler ValueChanged
         {
-            add { self.Changed += (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
-            remove { self.Changed -= (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
+            add { self.Changed += (object sender, EventArgs e) => { value.Invoke(this, e); }; }
+            remove { self.Changed -= (object sender, EventArgs e) => { value.Invoke(this, e); }; }
         }
     }
 }

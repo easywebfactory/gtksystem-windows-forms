@@ -101,8 +101,8 @@ namespace System.Windows.Forms
                 {
                     resizeWidth = self.AllocatedWidth;
                     resizeHeight = self.AllocatedHeight;
-                    _body.WidthRequest = self.AllocatedWidth - (AutoScroll ? 15 : 0); //留出滚动条位置
-                    _body.HeightRequest = self.AllocatedHeight - (AutoScroll ? 15 : 0);
+                    _body.WidthRequest = self.AllocatedWidth - (AutoScroll ? 6 : 0); //留出滚动条位置
+                    _body.HeightRequest = self.AllocatedHeight - (AutoScroll ? 6 : 0);
                     int widthIncrement = self.AllocatedWidth - self.DefaultSize.Width;
                     int heightIncrement = self.AllocatedHeight - self.DefaultSize.Height;
                     ResizeControls(widthIncrement, heightIncrement, _body, false, null);
@@ -371,16 +371,6 @@ namespace System.Windows.Forms
                 self.WidthRequest = 100;
                 self.HeightRequest = 60;
                 self.SetDefaultSize(value.Width, value.Height);
-            }
-        }
-        public override bool AutoScroll { 
-            get => base.AutoScroll; 
-            set {
-                base.AutoScroll = value;
-                if (value == true)
-                    self.StyleContext.AddClass("ScrollForm");
-                else
-                    self.StyleContext.RemoveClass("ScrollForm");
             }
         }
         public SizeF AutoScaleDimensions { get; set; }
