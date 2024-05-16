@@ -148,6 +148,7 @@ namespace GTKWinFormsApp
             comboBox1.DropDownStyle = ComboBoxStyle.DropDown;
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             comboBox1.SelectedValueChanged += comboBox1_SelectedValueChanged;
+            comboBox1.SelectedIndex = 2;
             // 
             // textBox1
             // 

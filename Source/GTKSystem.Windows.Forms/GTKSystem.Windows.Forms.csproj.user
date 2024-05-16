@@ -20,6 +20,15 @@
     <Compile Update="GTKControls\ComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\ComboBoxBase\ComboBox.ObjectCollection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ComboBoxBase\ComboBox.ObjectCollection.Entry.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ComboBoxBase\ComboBox.ObjectCollection.EntryEnumerator.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\ContextMenuStrip.cs">
       <SubType>Component</SubType>
     </Compile>

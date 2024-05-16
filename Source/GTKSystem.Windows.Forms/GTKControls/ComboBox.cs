@@ -5,12 +5,9 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
-using Gtk;
+
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System.Collections;
 using System.ComponentModel;
-using System.Drawing;
-using System.Runtime.CompilerServices;
 
 namespace System.Windows.Forms
 {
@@ -25,7 +22,7 @@ namespace System.Windows.Forms
         {
             self.Entry.HasFrame = false;
             self.Entry.WidthChars = 0;
-            __itemsData = new ObjectCollection(self);
+            __itemsData = new ObjectCollection(this);
         }
         public bool FormattingEnabled { get; set; }
         private ComboBoxStyle _DropDownStyle;
@@ -50,10 +47,23 @@ namespace System.Windows.Forms
             } 
         }
         public override string Text { get => self.Entry.Text; set { self.Entry.Text = value; } }
-        public object SelectedItem { get { return __itemsData[SelectedIndex]; } }
-        public int SelectedIndex { get { return self.Active; } }
+        public object SelectedItem { 
+            get { return __itemsData[SelectedIndex]; } 
+            set { int _index = __itemsData.IndexOf(value); if (_index != -1) { SelectedIndex = _index; } } 
+        }
+        internal int _selectedIndex;
+        public int SelectedIndex { get { return self.Active; } set { self.Active = value; _selectedIndex = value; } }
         public ObjectCollection Items { get { return __itemsData; } }
-
+        public string GetItemText(object item)
+        {
+            return item.ToString();
+        }
+        public string NativeGetItemText(int index)
+        {
+            return __itemsData[index].ToString();
+        }
+        private bool _sorted;
+        public bool Sorted { get=> _sorted; set=> _sorted = value; }
         public event EventHandler SelectedIndexChanged
         {
             add { self.Changed += (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
@@ -63,130 +73,6 @@ namespace System.Windows.Forms
         {
             add { self.Changed += (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
             remove { self.Changed -= (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
-        }
-        [ListBindable(false)]
-        public class ObjectCollection : IList, ICollection, IEnumerable, IDisposable
-        {
-            Gtk.ComboBoxText __owner;
-            Gtk.ListStore __store;
-            public ObjectCollection(Gtk.ComboBoxText owner) : base()
-            {
-                __owner = owner;
-                __store = owner.Model as Gtk.ListStore;
-            }
-
-            public object this[int index]
-            {
-                get
-                {
-                    if (__store.GetIter(out Gtk.TreeIter iter, new Gtk.TreePath(new int[] { index })))
-                        return __store.GetValue(iter, 0);
-                    else
-                        return null;
-                }
-                set
-                {
-                    if (__store.GetIter(out Gtk.TreeIter iter, new Gtk.TreePath(new int[] { index })))
-                        __store.SetValue(iter, 0, Convert.ToString(value));
-                    else
-                    {
-                        throw new Exception("索引值超出范围");
-                    }
-                }
-            }
-
-            public bool IsFixedSize => throw new NotImplementedException();
-
-            public bool IsReadOnly => throw new NotImplementedException();
-
-            public int Count
-            {
-                get
-                {
-                    var iEnumerator = __store.GetEnumerator();
-                    int count = 0;
-                    while (iEnumerator.MoveNext())
-                        count++;
-                    return count;
-                }
-            }
-            public bool IsSynchronized => throw new NotImplementedException();
-
-            public object SyncRoot => throw new NotImplementedException();
-
-            public int Add(object value)
-            {
-                __owner.AppendText(Convert.ToString(value));
-                return 1;
-            }
-            public void AddRange(object[] items)
-            {
-                foreach (object item in items)
-                    Add(Convert.ToString(item));
-            }
-            public void Clear()
-            {
-                __store.Clear();
-                __owner.Clear();
-            }
-
-            public bool Contains(object value)
-            {
-                var enumrator = __store.GetEnumerator();
-                while (enumrator.MoveNext()) {
-                    var vals = enumrator.Current as object[];
-                    if (vals[0].Equals(value))
-                        return true;
-                }
-                return false;
-            }
-
-            public void CopyTo(Array array, int index)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Dispose()
-            {
-                __store.Clear();
-                __owner.Dispose();
-            }
-
-            public IEnumerator GetEnumerator()
-            {
-                return __store.GetEnumerator();
-            }
-
-            public int IndexOf(object value)
-            {
-                int idx = -1;
-                var enumrator = __store.GetEnumerator();
-                while (enumrator.MoveNext())
-                {
-                    idx++;
-                    var vals = enumrator.Current as object[];
-                    if (vals[0].Equals(value))
-                        break;
-                }
-                return idx;
-            }
-
-            public void Insert(int index, object value)
-            {
-                __owner.InsertText(index, value.ToString());
-            }
-
-            public void Remove(object value)
-            {
-                int position = this.IndexOf(value);
-                if (position > -1)
-                    __owner.Remove(position);
-            }
-
-            public void RemoveAt(int index)
-            {
-                __owner.Remove(index);
-            }
         }
     }
 
