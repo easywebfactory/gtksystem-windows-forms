@@ -66,13 +66,13 @@ namespace System.Windows.Forms
         public bool Sorted { get=> _sorted; set=> _sorted = value; }
         public event EventHandler SelectedIndexChanged
         {
-            add { self.Changed += (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
-            remove { self.Changed -= (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
+            add { self.Changed += (object sender, EventArgs e) => { value.Invoke(this, e);  }; }
+            remove { self.Changed -= (object sender, EventArgs e) => { value.Invoke(this, e); }; }
         }
         public event EventHandler SelectedValueChanged
         {
-            add { self.Changed += (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
-            remove { self.Changed -= (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
+            add { self.Changed += (object sender, EventArgs e) => { value.Invoke(this, e); }; }
+            remove { self.Changed -= (object sender, EventArgs e) => { value.Invoke(this, e); }; }
         }
     }
 
