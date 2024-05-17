@@ -141,8 +141,9 @@ namespace GTKWinFormsApp
             listBox1.Items.AddRange(new object[] { "sdfdfdf", "ssss", "fffff", "ddddddddd", "ddddddd" });
             listBox1.Location = new System.Drawing.Point(721, 462);
             listBox1.Name = "listBox1";
-            listBox1.Size = new System.Drawing.Size(150, 104);
+            listBox1.Size = new System.Drawing.Size(250, 204);
             listBox1.TabIndex = 3;
+            listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             // 
             // richTextBox1
             // 
@@ -178,8 +179,6 @@ namespace GTKWinFormsApp
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (System.Drawing.Image)resources.GetObject("$this.BackgroundImage");
-            //BackColor = System.Drawing.Color.AliceBlue;
-            //BackgroundImage = Properties.Resources.timg;
             ClientSize = new System.Drawing.Size(1078, 596);
             Controls.Add(button1);
             Controls.Add(label1);

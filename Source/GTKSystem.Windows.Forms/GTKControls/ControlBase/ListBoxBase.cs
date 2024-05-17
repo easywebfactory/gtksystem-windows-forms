@@ -3,10 +3,15 @@
     public sealed class ListBoxBase : Gtk.Viewport, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
+        internal Gtk.ListBox ListBox = new Gtk.ListBox();
         internal ListBoxBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("ListBox");
+
+            Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
+            scrolledWindow.Add(ListBox);
+            this.Child = scrolledWindow;
         }
         protected override void OnShown()
         {

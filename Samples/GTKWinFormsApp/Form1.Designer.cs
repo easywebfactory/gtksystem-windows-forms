@@ -164,6 +164,7 @@ namespace GTKWinFormsApp
             // 
             dataGridView1.ColumnHeadersHeight = 29;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { ID, State, Title, CreateDate, Operate, PIC });
+            dataGridView1.DataMember = "ID,State,Title";
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.Location = new System.Drawing.Point(4, 4);
             dataGridView1.Margin = new Padding(4);
@@ -544,7 +545,7 @@ namespace GTKWinFormsApp
             listBox1.DisplayMember = "Title";
             listBox1.FormattingEnabled = true;
             listBox1.HorizontalScrollbar = true;
-            listBox1.Items.AddRange(new object[] { "test1", "test2" });
+            listBox1.Items.AddRange(new object[] { "test1 ddd", "test2 sssss" });
             listBox1.Location = new System.Drawing.Point(636, 26);
             listBox1.MultiColumn = true;
             listBox1.Name = "listBox1";
@@ -714,10 +715,10 @@ namespace GTKWinFormsApp
             // 
             dateTimePicker1.CustomFormat = "yyyy/MM/dd HH时mm分ss秒";
             dateTimePicker1.Format = DateTimePickerFormat.Custom;
-            dateTimePicker1.MaxDate=DateTime.Now.AddYears(5);
-            dateTimePicker1.MinDate = DateTime.Now.AddMonths(-2);
             dateTimePicker1.Location = new System.Drawing.Point(26, 21);
             dateTimePicker1.Margin = new Padding(4);
+            dateTimePicker1.MaxDate = new DateTime(2029, 5, 17, 15, 58, 47, 534);
+            dateTimePicker1.MinDate = new DateTime(2024, 3, 17, 15, 58, 47, 535);
             dateTimePicker1.Name = "dateTimePicker1";
             dateTimePicker1.Size = new System.Drawing.Size(256, 27);
             dateTimePicker1.TabIndex = 8;

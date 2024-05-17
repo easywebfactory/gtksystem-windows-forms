@@ -19,30 +19,16 @@ namespace GTKWinFormsApp
         {
 
             InitializeComponent();
-            DataTable dt = new DataTable();
-            dt.Columns.Add("ID", typeof(string));
-            dt.Columns.Add("CreateDate", typeof(DateTime));
-            dt.Columns.Add("State", typeof(bool));
-            dt.Rows.Add("user1", DateTime.Now, true);
-            dt.Rows.Add("user2", DateTime.Now.AddDays(5), false);
 
-            DataSet dataSet = new DataSet();
-            // dataSet.Tables.Add(dt);
             b.ID = 1;
             b.Title = "test1";
             listBox1.DataBindings.Add(new Binding("SelectedItem", b, "Title"));
-
-            listBox1.DisplayMember = "ID";
-            listBox1.DataSource = dt;
-            var ss = listBox1.Items[0];
-
         }
 
         TestEntity b = new TestEntity();
         private void button1_Click(object sender, EventArgs e)
         {
             // b.Title = "test2";
-
             DialogResult result = MessageBox.Show("1、加载数据点yes \n2、不加载数据点no", "加载数据提示", MessageBoxButtons.YesNo);
             if (result == DialogResult.No)
             {

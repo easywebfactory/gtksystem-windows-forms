@@ -53,6 +53,24 @@
     <Compile Update="GTKControls\ImageList\ImageList.OriginalOptions.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\ListBoxBase\ListBox.IntegerCollection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ListBoxBase\ListBox.IntegerCollection.CustomTabOffsetsEnumerator.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ListBoxBase\ListBox.ObjectCollection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ListBoxBase\ListBox.SelectedIndexCollection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ListBoxBase\ListBox.SelectedIndexCollection.SelectedIndexEnumerator.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ListBoxBase\ListBox.SelectedObjectCollection.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\ListView.cs">
       <SubType>Component</SubType>
     </Compile>

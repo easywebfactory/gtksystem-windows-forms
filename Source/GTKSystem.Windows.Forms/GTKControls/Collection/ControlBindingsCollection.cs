@@ -10,21 +10,10 @@ namespace System.Windows.Forms
     public class ControlBindingsCollection : BindingsCollection
     {
         private Control _owner;
-        private ListBox _listBox;
-        private DataGridView _dataGridView;
-        public ControlBindingsCollection(ListBox owner) : base(owner)
+        public ControlBindingsCollection(Control owner) : base(owner)
         {
             _owner = owner;
-            _listBox = owner;
-            _listBox.self.Shown += Control_Shown;
         }
-        public ControlBindingsCollection(DataGridView owner) : base(owner)
-        {
-            _owner = owner;
-            _dataGridView = owner;
-            _dataGridView.self.Shown += Control_Shown;
-        }
-
         private void Control_Shown(object sender, EventArgs e)
         {
             foreach(Binding bin in this)
@@ -71,29 +60,14 @@ namespace System.Windows.Forms
         public new void Add(Binding binding)
         {
             binding.Control = this.Control;
-            binding.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
+            if (binding.DataSource is INotifyPropertyChanged notify)
             {
-                Binding bind = (Binding)sender;
-                bind.ReadValue();
-            };
-            base.Add(binding);
+                notify.PropertyChanged += (object sender, PropertyChangedEventArgs e) => {
+                    binding.ReadValue();
+                };
+            }
 
-            if (_listBox != null)
-            {
-                _listBox.BindDataSource(binding.PropertyName, binding.DataSource, binding.DataMember, _listBox.SelectedIndex, binding.FormattingEnabled, binding.DataSourceUpdateMode, binding.NullValue, binding.FormatString);
-                _listBox.FlowBox.SelectedChildrenChanged += (object o, EventArgs args)
-                 => {
-                     binding.WriteValue();
-                 };
-            }
-            if (_dataGridView != null)
-            {
-                _dataGridView.BindDataSource(binding.PropertyName, binding.DataSource, binding.DataMember, _dataGridView.TreeView.Selection.GetSelectedRows()[0].Indices[0], binding.FormattingEnabled, binding.DataSourceUpdateMode, binding.NullValue, binding.FormatString);
-                _dataGridView.TreeView.RowActivated += (object o, RowActivatedArgs args)
-                 => {
-                     binding.WriteValue();
-                 };
-            }
+            base.Add(binding);
         }
 
         public Binding Add(string propertyName, object dataSource, string dataMember)

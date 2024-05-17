@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Gtk;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -6,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,7 +20,27 @@ namespace GTKWinFormsApp
         {
             InitializeComponent();
             // listView1.Items.Add(new ListViewItem("test1", new ListViewGroup("ListViewGroup1", "ListViewGroup1")) { });
+            
+            
+            DataTable dt = new DataTable();
+            dt.Columns.Add("ID", typeof(string));
+            dt.Columns.Add("CreateDate", typeof(DateTime));
+            dt.Rows.Add("user1", DateTime.Now);
+            dt.Rows.Add("user2", DateTime.Now.AddDays(1));
+            dt.Rows.Add("user3", DateTime.Now.AddDays(2));
+            dt.Rows.Add("user4", DateTime.Now.AddDays(3));
+            //Dictionary<int, string> dic = new Dictionary<int, string>();
+            //dic.Add(0, "111");
+            //dic.Add(3, "333");
+            //List<string> list = new List<string>();
+            //list.Add("ddd");
+            //list.Add("rrrr");
+            //Hashtable hashtable = new Hashtable();
+            //hashtable.Add("11", "ddd");
+            //hashtable.Add("22", "rrrr");
 
+            listBox1.DisplayMember = "CreateDate";
+            listBox1.DataSource = dt;
         }
 
         private void listView1_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -56,7 +79,7 @@ namespace GTKWinFormsApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            listView1.Items.Add(new ListViewItem("同时添加分组和数据") { ForeColor=Color.Red, BackColor=Color.Yellow, Group = new ListViewGroup("listViewGroup1", "ListViewGroup1") });
+            listView1.Items.Add(new ListViewItem("同时添加分组和数据") { ForeColor = Color.Red, BackColor = Color.Yellow, Group = new ListViewGroup("listViewGroup1", "ListViewGroup1") });
             listView1.Items.Add(new ListViewItem("向指定分组添加数据") { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[1] });
 
             ListViewItem m = new ListViewItem("这是一种添加多栏数据的方法", 0);
@@ -74,6 +97,11 @@ namespace GTKWinFormsApp
         private void listView1_ColumnReordered(object sender, ColumnReorderedEventArgs e)
         {
 
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            richTextBox1.Text += $"{listBox1.SelectedIndex}-{listBox1.SelectedValue}\n";
         }
     }
 } 

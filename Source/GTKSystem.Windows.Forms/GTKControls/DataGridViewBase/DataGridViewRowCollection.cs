@@ -46,7 +46,7 @@ namespace System.Windows.Forms
                 }));
                 row.Handler = iter.UserData;
             }
-            if (this.dataGridView.Store.NColumns < this.dataGridView.TreeView.Columns.Length)
+            if (this.dataGridView.Store.NColumns < this.dataGridView.GridView.Columns.Length)
                 this.dataGridView.Columns.Invalidate();
         }
         private TreeIter InsertGtkStore(int rowIndex, List<CellValue> values)

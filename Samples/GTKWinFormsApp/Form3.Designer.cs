@@ -414,7 +414,7 @@ namespace GTKWinFormsApp
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             //BackColor = System.Drawing.Color.FromArgb(238,235,230);
-            ClientSize = new System.Drawing.Size(800, 450);
+            ClientSize = new System.Drawing.Size(800, 500);
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(panel5);
             Controls.Add(panel3);
@@ -428,8 +428,7 @@ namespace GTKWinFormsApp
             Controls.Add(menuStrip1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
-            MaximizeBox = false;
-            //FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.Sizable;
             Name = "Form3";
             ShowInTaskbar = false;
             Text = "Form3";

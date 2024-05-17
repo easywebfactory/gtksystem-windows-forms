@@ -1,7 +1,6 @@
 using System.Collections;
 using System.ComponentModel;
-using System.Drawing.Design;
-
+ 
 namespace System.Windows.Forms
 {
 	[LookupBindingProperties("DataSource", "DisplayMember", "ValueMember", "SelectedValue")]
@@ -10,13 +9,13 @@ namespace System.Windows.Forms
 		[DefaultValue(null)]
 		[RefreshProperties(RefreshProperties.Repaint)]
 		[AttributeProvider(typeof(IListSource))]
-		public object DataSource
+		public virtual object DataSource
 		{
 			get;set;
 		}
 
 		[DefaultValue("")]
-		public string DisplayMember
+        public virtual string DisplayMember
         {
             get; set;
         }
@@ -24,26 +23,26 @@ namespace System.Windows.Forms
         [Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		[DefaultValue(null)]
-		public IFormatProvider FormatInfo
+        public virtual IFormatProvider FormatInfo
         {
             get; set;
         }
 
         [DefaultValue("")]
 		[MergableProperty(false)]
-		public string FormatString
+        public virtual string FormatString
         {
             get; set;
         }
 
         [DefaultValue(false)]
-		public bool FormattingEnabled
+        public virtual bool FormattingEnabled
         {
             get; set;
         }
 
 		[DefaultValue("")]
-		public string ValueMember
+        public virtual string ValueMember
         {
             get; set;
         }
@@ -54,14 +53,18 @@ namespace System.Windows.Forms
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		[Bindable(true)]
-		public object SelectedValue
+        public virtual object SelectedValue
         {
             get; set;
         }
 
-		public event EventHandler DataSourceChanged;
+		public event EventHandler DataSourceChanged
+        {
+            add { Events.AddHandler("DataSourceChanged", value); }
+            remove { Events.RemoveHandler("DataSourceChanged", value); }
+        }
 
-		public event EventHandler DisplayMemberChanged;
+        public event EventHandler DisplayMemberChanged;
 
 		public event ListControlConvertEventHandler Format;
 
@@ -71,16 +74,28 @@ namespace System.Windows.Forms
 
 		public event EventHandler FormatStringChanged;
 
-		public event EventHandler FormattingEnabledChanged;
+        public event EventHandler FormattingEnabledChanged;
 
-		public event EventHandler ValueMemberChanged;
-
-		public event EventHandler SelectedValueChanged;
-
-		public string GetItemText(object item)
+        public event EventHandler ValueMemberChanged;
+        public event EventHandler SelectedItemChanged
+        {
+            add { Events.AddHandler("SelectedItemChanged", value); }
+            remove { Events.RemoveHandler("SelectedItemChanged", value); }
+        }
+        public event EventHandler SelectedValueChanged
+        {
+            add { Events.AddHandler("SelectedValueChanged", value); }
+            remove { Events.RemoveHandler("SelectedValueChanged", value); }
+        }
+        public event EventHandler SelectedIndexChanged 
+        { 
+            add { Events.AddHandler("SelectedIndexChanged", value);}
+            remove { Events.RemoveHandler("SelectedIndexChanged", value);}
+        }
+        public virtual string GetItemText(object item)
 		{
-			throw null;
-		}
+            return item?.ToString();
+        }
 
 	}
 }

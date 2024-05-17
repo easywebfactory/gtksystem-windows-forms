@@ -171,6 +171,7 @@ https://gitee.com/easywebfactory/gtksystem-windows-forms；
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="GTKControls\Internal\" />
     <Folder Include="obj\Debug\" />
   </ItemGroup>
 

@@ -22,12 +22,9 @@ namespace System.Windows.Forms
         public DateTimePicker() : base("DateTimePicker")
         {
             base.Mask = "____年__月__日";
-            //self.PrimaryIconActivatable = true;
-            //self.PrimaryIconStock = "gtk-index";
-            
+
             self.SecondaryIconActivatable = true;
-            self.SecondaryIconStock= "gtk-index";
-           // self.SecondaryIconName = "x-office-calendar";
+            self.SecondaryIconStock= "open-menu";
             System.IO.Stream sm = this.GetType().Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.MonthCalendar.ico");
             self.SecondaryIconPixbuf = new Gdk.Pixbuf(sm);
             self.IconRelease += DateTimePicker_IconRelease;
@@ -211,8 +208,8 @@ namespace System.Windows.Forms
 
         public event EventHandler ValueChanged
         {
-            add { self.Changed += (object sender, EventArgs e) => { value.Invoke(this, e); }; }
-            remove { self.Changed -= (object sender, EventArgs e) => { value.Invoke(this, e); }; }
+            add { self.Changed += (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
+            remove { self.Changed -= (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
         }
     }
 }

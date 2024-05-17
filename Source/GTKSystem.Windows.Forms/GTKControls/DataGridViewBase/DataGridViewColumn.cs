@@ -217,7 +217,7 @@ namespace System.Windows.Forms
             if (this.SortMode != DataGridViewColumnSortMode.NotSortable)
                 base.SortColumnId = this.DisplayIndex;
             if (this.DataGridView != null)
-                this.DataGridView.TreeView.RowActivated += TreeView_RowActivated;
+                this.DataGridView.GridView.RowActivated += TreeView_RowActivated;
         }
     }
     public class DataGridViewImageColumn : DataGridViewColumn
@@ -272,7 +272,7 @@ namespace System.Windows.Forms
         }
         protected DataGridViewColumn(int key,DataGridView owningDataGridView, DataGridViewCell cellTemplate) : base()
         {
-            _treeView = owningDataGridView?.TreeView;
+            _treeView = owningDataGridView?.GridView;
             _gridview = owningDataGridView;
             _cellTemplate = cellTemplate;
             base.Resizable = this.Resizable == DataGridViewTriState.True;
@@ -321,7 +321,7 @@ namespace System.Windows.Forms
 
         }
 
-        public DataGridView DataGridView { get { return _gridview; } set { _gridview = value; _treeView = value.TreeView; } }
+        public DataGridView DataGridView { get { return _gridview; } set { _gridview = value; _treeView = value.GridView; } }
         public string Markup { get; set; }
         public DataGridViewElementStates State { get { return DataGridViewElementStates.None; } internal set { } }
         [DefaultValue("")]

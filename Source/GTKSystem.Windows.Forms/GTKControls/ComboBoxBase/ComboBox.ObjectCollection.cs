@@ -14,7 +14,7 @@ namespace System.Windows.Forms
         public partial class ObjectCollection : IList, IComparer<ComboBox.ObjectCollection.Entry>
         {
             private readonly ComboBox _owner;
-            private List<Entry> _innerList;
+            private List<Entry> _innerList = new List<Entry>();
 
             public ObjectCollection(ComboBox owner)
             {
@@ -25,8 +25,6 @@ namespace System.Windows.Forms
             {
                 get
                 {
-                    _innerList ??= new List<Entry>();
-
                     return _innerList;
                 }
             }
@@ -86,53 +84,46 @@ namespace System.Windows.Forms
 
             private int AddInternal(object item)
             {
-
+                item ??= "";
                 int index = -1;
-                if (!_owner._sorted)
+                if (_owner.IsHandleCreated)
                 {
-                    InnerList.Add(new Entry(item));
-                }
-                else
-                {
-                    Entry entry = item is Entry entryItem ? entryItem : new Entry(item);
-                    index = InnerList.BinarySearch(index: 0, Count, entry, this);
-                    if (index < 0)
+                    if (!_owner._sorted)
                     {
-                        index = ~index; // getting the index of the first element that is larger than the search value
-                    }
-                    InnerList.Insert(index, entry);
-                }
-
-                bool successful = false;
-
-                try
-                {
-                    if (_owner._sorted)
-                    {
-                        if (_owner.IsHandleCreated)
-                        {
-                            _owner.self.InsertText(index, item?.ToString());
-                        }
+                        InnerList.Add(new Entry(item));
+                        index = InnerList.Count - 1;
                     }
                     else
                     {
-                        index = Count - 1;
-                        if (_owner.IsHandleCreated)
+                        Entry entry = item is Entry entryItem ? entryItem : new Entry(item);
+                        index = InnerList.BinarySearch(index: 0, Count, entry, this);
+                        if (index < 0)
                         {
-                            _owner.self.AppendText(item?.ToString());
+                            index = ~index; // getting the index of the first element that is larger than the search value
+                        }
+                        InnerList.Insert(index, entry);
+                    }
+                    bool successful = false;
+                    try
+                    {
+                        if (_owner._sorted)
+                        {
+                            _owner.self.InsertText(index, item.ToString());
+                        }
+                        else
+                        {
+                            _owner.self.AppendText(item.ToString());
+                        }
+                        successful = true;
+                    }
+                    finally
+                    {
+                        if (!successful)
+                        {
+                            InnerList.RemoveAt(index);
                         }
                     }
-
-                    successful = true;
                 }
-                finally
-                {
-                    if (!successful)
-                    {
-                        Remove(item);
-                    }
-                }
-
                 return index;
             }
 
@@ -180,25 +171,7 @@ namespace System.Windows.Forms
                     SetItemInternal(index, value!);
                 }
             }
-            //public object this[int index]
-            //{
-            //    get
-            //    {
-            //        if (__store.GetIter(out Gtk.TreeIter iter, new Gtk.TreePath(new int[] { index })))
-            //            return __store.GetValue(iter, 0);
-            //        else
-            //            return null;
-            //    }
-            //    set
-            //    {
-            //        if (__store.GetIter(out Gtk.TreeIter iter, new Gtk.TreePath(new int[] { index })))
-            //            __store.SetValue(iter, 0, Convert.ToString(value));
-            //        else
-            //        {
-            //            throw new Exception("索引值超出范围");
-            //        }
-            //    }
-            //}
+
             /// <summary>
             ///  Removes all items from the ComboBox.
             /// </summary>
@@ -211,11 +184,9 @@ namespace System.Windows.Forms
             {
                 if (_owner.IsHandleCreated)
                 {
-                    _owner.self.Clear();
+                    ((Gtk.ListStore)_owner.self.Model).Clear();
+                    InnerList.Clear();
                 }
-
-                InnerList.Clear();
-
                 _owner.SelectedIndex = -1;
             }
 
@@ -264,6 +235,7 @@ namespace System.Windows.Forms
             /// </summary>
             public void Insert(int index, object? item)
             {
+                item ??= "";
                 if (_owner._sorted)
                 {
                     Add(item);
@@ -277,7 +249,7 @@ namespace System.Windows.Forms
 
                         try
                         {
-                            _owner.self.InsertText(index, item?.ToString());
+                            _owner.self.InsertText(index, item.ToString());
                             successful = true;
                         }
                         finally
@@ -302,10 +274,8 @@ namespace System.Windows.Forms
                 if (_owner.IsHandleCreated)
                 {
                     _owner.self.Remove(index);
+                    InnerList.RemoveAt(index);
                 }
-
-                InnerList.RemoveAt(index);
-
                 if (!_owner.IsHandleCreated)
                 {
                     if (index < _owner._selectedIndex)

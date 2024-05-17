@@ -6,6 +6,7 @@
  * date: 2024/1/3
  */
 
+using Cairo;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
@@ -107,6 +108,7 @@ namespace System.Windows.Forms
                     int heightIncrement = self.AllocatedHeight - self.DefaultSize.Height;
                     ResizeControls(widthIncrement, heightIncrement, _body, false, null);
                 }
+
             }
             if (SizeChanged != null)
                 SizeChanged(this, e);
@@ -259,10 +261,6 @@ namespace System.Windows.Forms
             if (self.IsVisible == false)
             {
                 OnLoad();
-
-                _body.WidthRequest = this.Width;
-                _body.HeightRequest = this.Height;
-
                 if (AutoScroll == true)
                 {
                     self.ScrollView.HscrollbarPolicy = PolicyType.Always;

@@ -135,9 +135,8 @@ namespace System.Windows.Forms
 			NullValue = nullValue;
 			FormatString = formatString;
 			FormatInfo = formatInfo;
-            OnPropertyChanged(PropertyName);
         }
-		//更新数据源
+        //更新数据源
         public void WriteValue()
 		{
 			object _dataSource = DataSource ?? this.DataSourceNullValue;
@@ -210,22 +209,6 @@ namespace System.Windows.Forms
                     }
                     propertyInfo.SetValue(this.Control, corVal);
                 }
-            }
-        }
-		public event PropertyChangedEventHandler PropertyChanged;
-		private void OnPropertyChanged(string propertyName)
-		{
-			if(DataSource is INotifyPropertyChanged notifyChanged)
-			{
-                notifyChanged.PropertyChanged += NotifyChanged_PropertyChanged;
-            }
-		}
-
-        private void NotifyChanged_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(e.PropertyName));
             }
         }
     }
