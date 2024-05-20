@@ -14,7 +14,7 @@ using System.Drawing;
 namespace System.Windows.Forms
 {
     [DesignerCategory("UserControl")]
-    [DefaultEvent(nameof(Load))]
+    [ToolboxItem(true)]
     public partial class UserControl : ContainerControl
     {
         public readonly UserControlBase self = new UserControlBase();

@@ -57,8 +57,6 @@ namespace System.Windows.Forms
             self.Shown += Control_Shown;
             self.DeleteEvent += Control_DeleteEvent;
         }
-
-        public override ISite Site { get; set; }
         private void Control_DeleteEvent(object o, DeleteEventArgs args)
         {
             if (FormClosing != null)

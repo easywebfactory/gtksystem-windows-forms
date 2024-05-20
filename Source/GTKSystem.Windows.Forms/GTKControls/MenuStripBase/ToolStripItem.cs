@@ -124,7 +124,7 @@ namespace System.Windows.Forms
         public virtual int Right { get; }
 
         public virtual RightToLeft RightToLeft { get; set; }
-        public virtual ISite Site { get; set; }
+        //public virtual ISite Site { get; set; }
         public virtual Size Size { get; set; }
 
         public virtual object Tag { get; set; }

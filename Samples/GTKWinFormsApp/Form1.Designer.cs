@@ -3,8 +3,7 @@ using System.Runtime.InteropServices;
 using System;
 using System.Windows.Forms;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
- 
+
 namespace GTKWinFormsApp
 {
     partial class Form1
@@ -713,7 +712,7 @@ namespace GTKWinFormsApp
             // 
             // dateTimePicker1
             // 
-            dateTimePicker1.CustomFormat = "yyyy/MM/dd HH时mm分ss秒";
+            dateTimePicker1.CustomFormat = "yyyy年MM年dd HH时mm分ss秒";
             dateTimePicker1.Format = DateTimePickerFormat.Custom;
             dateTimePicker1.Location = new System.Drawing.Point(26, 21);
             dateTimePicker1.Margin = new Padding(4);

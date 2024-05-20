@@ -389,7 +389,7 @@ namespace System.Windows.Forms
         public virtual int Right { get; }
 
         public virtual RightToLeft RightToLeft { get; set; }
-        public virtual ISite Site { get; set; }
+        //public override ISite Site { get => base.Site; set => base.Site = value; }
         public virtual Size Size
         {
             get
@@ -589,9 +589,8 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null && this.Widget.IsVisible)
             {
-                Widget.AppPaintable = !Widget.AppPaintable;
-                Widget.AppPaintable = !Widget.AppPaintable;
-                //Widget.Window.ProcessUpdates(invalidateChildren);
+                Widget.Window.InvalidateRect(Widget.Allocation, invalidateChildren);
+                Widget.Show();
             }
         }
 
@@ -604,7 +603,8 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null)
             {
-                this.Widget.Window.ProcessUpdates(true);
+                Widget.Window.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
+                Widget.Show();
             }
         }
 
@@ -617,6 +617,8 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null)
             {
+                Widget.Visible = false;
+                Widget.Visible = true;
                 this.Widget.Window.ProcessUpdates(invalidateChildren);
             }
         }
@@ -650,12 +652,24 @@ namespace System.Windows.Forms
 
         public virtual Point PointToClient(Point p)
         {
-            return p;
+            if (Widget != null)
+            {
+                Widget.Window.GetPosition(out int x, out int y);
+                if (p.X > x && p.Y > y)
+                    return new Point(p.X - x, p.Y - y);
+            }
+            return new Point(p.X, p.Y);
         }
 
         public virtual Point PointToScreen(Point p)
         {
-            return p;
+            if (Widget != null)
+            {
+                Widget.Window.GetPosition(out int x, out int y);
+                if (p.X < x && p.Y < y)
+                    return new Point(p.X + x, p.Y + y);
+            }
+            return new Point(p.X, p.Y);
         }
 
         public virtual PreProcessControlState PreProcessControlMessage(ref Message msg)
@@ -670,17 +684,32 @@ namespace System.Windows.Forms
 
         public virtual Rectangle RectangleToClient(Rectangle r)
         {
-            return r;
+            if (Widget != null)
+            {
+                Widget.Window.GetPosition(out int x, out int y);
+                if (r.X > x && r.Y > y)
+                    return new Rectangle(r.X - x, r.Y - y, r.Width, r.Height);
+            }
+            return new Rectangle(r.X, r.Y, r.Width, r.Height);
         }
 
         public virtual Rectangle RectangleToScreen(Rectangle r)
         {
-            return r;
+            if (Widget != null)
+            {
+                Widget.Window.GetPosition(out int x, out int y);
+                if (r.X < x && r.Y < y)
+                    return new Rectangle(r.X + x, r.Y + y, r.Width, r.Height);
+            }
+            return new Rectangle(r.X, r.Y, r.Width, r.Height);
         }
 
         public virtual void Refresh()
         {
-
+            if (this.Widget != null && this.Widget.IsVisible)
+            {
+                Widget.Display.Flush();
+            }
         }
 
         public virtual void ResetBackColor()
@@ -802,7 +831,10 @@ namespace System.Windows.Forms
 
         public virtual void Show()
         {
-
+            if (this.Widget != null)
+            {
+                Widget.ShowAll();
+            }
         }
         protected virtual void OnPaint(System.Windows.Forms.PaintEventArgs e)
         {
@@ -828,7 +860,10 @@ namespace System.Windows.Forms
 
         public virtual void Update()
         {
-
+            if (this.Widget != null)
+            {
+                this.Widget.Window.ProcessUpdates(true);
+            }
         }
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -861,9 +896,5 @@ namespace System.Windows.Forms
             catch { }
             base.Dispose(disposing);
         }
-
-
-        //=========================
-     
     }
 }
