@@ -46,7 +46,7 @@ namespace System.Windows.Forms
         }
         private ToolStripItemCollection dropDownItems;
 
-        public virtual event EventHandler Disposed;
+        //public virtual event EventHandler Disposed;
 
         public virtual ToolStripItemCollection DropDownItems
         {

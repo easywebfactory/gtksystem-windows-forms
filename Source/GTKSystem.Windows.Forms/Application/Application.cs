@@ -130,6 +130,7 @@ namespace System.Windows.Forms
 
 .Form {border-width:0px;margin:0px;box-shadow: none;}
 .ScrollForm {border-right:solid 6px #e6e5e4;}
+.UserControl{border-width:0px;}
 
 .MessageBox{}
 .MessageBox button{margin:10px;}
@@ -189,16 +190,17 @@ namespace System.Windows.Forms
 .GroupBox{border-color:#DCDCDC;} 
 .TableLayoutPanel viewport{border:solid 1px #eeeeee;}
 .FlowLayoutPanel{}
+
+.MenuStrip{padding:0px;background-color:#F6F5F4;background-image:none;border-width:0px;}
+.MenuStrip viewport{border-width:0px;} 
 .ToolStrip{padding:0px;background:linear-gradient(#fefefd,#efefef);border-width:0px;background-color:#F6F5F4;} 
 .ToolStrip viewport{border-width:0px;} 
 .ToolStripMenuItemNoChecked check{color:transparent;opacity:0;} 
-.UserControl{border-width:0px;}
+.ToolStripSeparator{background-color:#C9C9C9;border-bottom: 1px inset rgba(250, 250, 250, 1);border-right: 1px inset rgba(250, 250, 250, 1);}
 
 .StatusStrip{padding:0px;background-image:linear-gradient(#ECECEC,#e7e5e3,#e7e5e3); border-width:0px; border-top:solid 1px #c6c6c6;}
 .StatusStrip viewport{border-width:0px;} 
 
-.MenuStrip{padding:0px;background-color:#F6F5F4;background-image:none;border-width:0px;}
-.MenuStrip viewport{border-width:0px;} 
 
 .ListBox{border-width:1px;background-color:#ffffff; }
 .ListView{background-color:#ffffff; }

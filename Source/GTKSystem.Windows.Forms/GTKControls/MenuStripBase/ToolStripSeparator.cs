@@ -7,16 +7,22 @@ namespace System.Windows.Forms
 
     public class ToolStripSeparator : WidgetToolStrip<Gtk.SeparatorMenuItem>
     {
-        public ToolStripSeparator() : base()
+        public ToolStripSeparator() : base("ToolStripSeparator")
         {
-            this.Control.Hexpand = false;
-            this.Control.Vexpand = false;
-            this.Control.Halign=Gtk.Align.Start;
-            this.Control.Valign=Gtk.Align.Center;
-            this.Control.HeightRequest = 25;
-            this.Control.WidthRequest = 2;
+            this.Widget.Hexpand = false;
+            this.Widget.Vexpand = false;
+            this.Widget.Halign=Gtk.Align.Center;
+            this.Widget.Valign=Gtk.Align.Center;
+            this.Widget.StyleContext.AddClass("ToolStripSeparator");
         }
-        public override Size Size { get => base.Size; set => base.Size = new Size(2, value.Height); }
+        public override Size Size { get => base.Size;
+            set {
+                if (value.Width > value.Height)
+                    base.Size = new Size(value.Width, 2); 
+                else
+                    base.Size = new Size(2, value.Height);
+            }
+        }
         public override int Width { get; set; }
     }
 }

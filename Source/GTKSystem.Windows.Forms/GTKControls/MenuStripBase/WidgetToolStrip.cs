@@ -51,6 +51,7 @@ namespace System.Windows.Forms
         public WidgetToolStrip(string stripType) : base("", null, null, "")
         {
             object widget = Activator.CreateInstance(typeof(T));
+            _control = (T)widget;
             Widget = widget as Gtk.Widget;
             this.StripType = stripType;
         }
@@ -73,15 +74,15 @@ namespace System.Windows.Forms
 
         public override void CreateControl(object widget, string stripType, string text, System.Drawing.Image image, EventHandler onClick, string name, params object[] args)
         {
-            this.StripType = stripType;
-            _control = (T)widget;
-            _widget = widget as Gtk.Widget;
-            if (widget is Gtk.SeparatorMenuItem)
+            if (this.StripType == "ToolStripSeparator" || widget is Gtk.SeparatorMenuItem)
             {
-
+                
             }
             else
             {
+                this.StripType = stripType;
+                _control = (T)widget;
+                _widget = widget as Gtk.Widget;
                 _menuItem = widget as Gtk.MenuItem;
                 
                 _menuItem.Activated += _menuItem_Activated;
