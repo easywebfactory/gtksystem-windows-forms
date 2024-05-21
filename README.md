@@ -161,6 +161,7 @@ QQ群：236066073
 #### 更新日志
  ## 2024/5/21
    1. combobox\listbox功能
+   2. ToolStripSeparator修正
  ## 2024/5/17
    1. datetimepicker增加时间数据和format模式
  ## 2024/5/16
