@@ -130,17 +130,15 @@ GTKWinFormsApp.runtimeconfig.json
 #### 图文窗口
 ![输入图片说明](/pic/listview.png)
 
-#### 交流/合作/商务/赞助
-QQ群：236066073
-邮箱：438865652@qq.com <br/>
-![交流qq群](/pic/qqchat.png)
-
 #### 支持作者，获取技术服务
  ![支持作者](/pic/love_reward_qrcode_.png)
 
 #### 添加作者微信，更多服务帮助
  ![联系作者](/pic/contact_weixin.png)
-
+ 
+#### 交流/合作/商务/赞助
+QQ群：236066073
+邮箱：438865652@qq.com <br/>
 #### 常见问题
 1、为什么Form窗体设计器打不开？
 答：检查runtimeconfig的确保配置正确，NuGet安装GTKSystem.Windows.FormsDesigner，然后按以下流程操作：
