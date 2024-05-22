@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
@@ -13,43 +14,42 @@ namespace System.Windows.Forms
         }
 
         private static string appDataDirectory { get {
-                string[] assemblyFullName = Assembly.GetCallingAssembly().FullName.Split(",");
+                string[] assemblyFullName = Assembly.GetEntryAssembly().FullName.Split(",");
                 string _namespace = assemblyFullName[0];
-                string _version = assemblyFullName[1].Split("=")[1];
-                return $"{_namespace}\\{Assembly.GetExecutingAssembly().GetName().Name}\\{_version}";
+                AssemblyName assembly = Assembly.GetExecutingAssembly().GetName();
+                return Path.Combine(_namespace, assembly.Name, assembly.Version.ToString());
             }
         }
 
         public static string CommonAppDataPath {
             get {
-                string thispath = $"{System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}\\{appDataDirectory}";
-                if(!System.IO.Directory.Exists(thispath))
-                    System.IO.Directory.CreateDirectory(thispath);
-                return thispath;
+                return Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),appDataDirectory);
             } 
         }
         public static string UserAppDataPath
         {
             get
             {
-                string thispath = $"{System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\{appDataDirectory}";
-                if (!System.IO.Directory.Exists(thispath))
-                    System.IO.Directory.CreateDirectory(thispath);
-                return thispath;
+                return Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),appDataDirectory);
             }
         }
         public static string LocalUserAppDataPath
         {
             get
             {
-                string thispath = $"{System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\{appDataDirectory}";
-                if (!System.IO.Directory.Exists(thispath))
-                    System.IO.Directory.CreateDirectory(thispath);
-                return thispath;
+                return Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),appDataDirectory);
             }
         }
-        public static string ExecutablePath { get { return System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName; } }
-        public static string StartupPath { get { return Environment.CurrentDirectory; } }
+        public static string ExecutablePath { 
+            get {
+                System.Diagnostics.ProcessModule module = System.Diagnostics.Process.GetCurrentProcess().MainModule;
+                if (module.ModuleName.ToLower() == "dotnet" || module.ModuleName.ToLower() == "dotnet.exe")
+                    return Assembly.GetEntryAssembly().Location;
+                else
+                    return module.FileName;
+            }
+        }
+        public static string StartupPath { get { return System.IO.Directory.GetCurrentDirectory(); } }
 
         private static readonly object internalSyncObject = new object();
         public static CultureInfo CurrentCulture

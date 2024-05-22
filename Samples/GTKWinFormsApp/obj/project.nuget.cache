@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "X9sm79GAJae/SfFP2wRgKagTgZckGtl1c9zNrwLFHsm0cQFJUWtk60e7zVE9vVyooE+irLHnETONxSL+y2UAWw==",
+  "dgSpecHash": "3diUZp8GvKsduaRmw9N17fbhYSmgZIElVgZhu10HyIv8lqvgXFFFs4FRromAPaPthX9eCHjIgxngBrK7wJdkiA==",
   "success": true,
   "projectFilePath": "F:\\我的项目\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
   "expectedPackageFiles": [
@@ -43,8 +43,7 @@
     "C:\\Users\\chj\\.nuget\\packages\\system.text.encoding.codepages\\4.0.1\\system.text.encoding.codepages.4.0.1.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.threading\\4.0.11\\system.threading.4.0.11.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
-    "C:\\Users\\chj\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
-    "C:\\Users\\chj\\.nuget\\packages\\gtksystem.windows.forms\\1.3.24.28\\gtksystem.windows.forms.1.3.24.28.nupkg.sha512"
+    "C:\\Users\\chj\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512"
   ],
   "logs": []
 }
