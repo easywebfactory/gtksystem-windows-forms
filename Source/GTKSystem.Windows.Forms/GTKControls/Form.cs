@@ -55,14 +55,21 @@ namespace System.Windows.Forms
             self.ButtonReleaseEvent += Body_ButtonReleaseEvent;
 
             self.Shown += Control_Shown;
-            self.DeleteEvent += Control_DeleteEvent;
+            self.DeleteEvent += Self_DeleteEvent;
         }
-        private void Control_DeleteEvent(object o, DeleteEventArgs args)
+
+        private void Self_DeleteEvent(object o, DeleteEventArgs args)
         {
+            FormClosingEventArgs closing = new FormClosingEventArgs(CloseReason.UserClosing, false);
             if (FormClosing != null)
-                FormClosing(this, new FormClosingEventArgs(CloseReason.UserClosing, false));
-            if (FormClosed != null)
-                FormClosed(this, new FormClosedEventArgs(CloseReason.UserClosing));
+                FormClosing(this, closing);
+
+            args.RetVal = closing.Cancel == true;
+            if (closing.Cancel == false)
+            {
+                if (FormClosed != null)
+                    FormClosed(this, new FormClosedEventArgs(CloseReason.UserClosing));
+            }
         }
 
         private void Control_Shown(object sender, EventArgs e)
@@ -258,7 +265,6 @@ namespace System.Windows.Forms
             }
             if (self.IsVisible == false)
             {
-                OnLoad();
                 if (AutoScroll == true)
                 {
                     self.ScrollView.HscrollbarPolicy = PolicyType.Always;
@@ -321,7 +327,10 @@ namespace System.Windows.Forms
                 {
 
                 }
+
+                OnLoad();
             }
+
             self.ShowAll();
         }
 

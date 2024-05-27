@@ -56,7 +56,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             //Console.WriteLine(args.ResponseId);
             if (args.ResponseId == ResponseType.DeleteEvent)
                 if (this.IsActive)
-                    this.Destroy();
+                    this.OnClose();
         }
         protected override bool OnDrawn(Cairo.Context cr)
         {

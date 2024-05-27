@@ -42,7 +42,11 @@ namespace GTKWinFormsApp
                 System.Threading.Thread.Sleep(2000);
                 for (int i = 0; i < 100; i++)
                 {
-                    trackBar1.Value = i;
+                    //gtk多线程更新界面必须使用Gdk.Threads.AddIdle输出
+                    Gdk.Threads.AddIdle(100, () => {
+                        trackBar1.Value = i;
+                        return false;
+                    });
                     System.Threading.Thread.Sleep(10);
                 }
             }));

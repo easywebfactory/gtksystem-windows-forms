@@ -82,9 +82,9 @@ namespace System.Windows.Forms
             if (App == null)
             {
                 Gtk.Application.Init();
-                App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.IsLauncher);
-                //App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
-                //App.Register(GLib.Cancellable.Current);
+                //App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.IsLauncher);
+                App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
+                App.Register(GLib.Cancellable.Current);
                 App.Shutdown += App_Shutdown;
                 var quitAction = new GLib.SimpleAction("quit", null);
                 quitAction.Activated += QuitActivated;
@@ -217,16 +217,15 @@ namespace System.Windows.Forms
             }
             return App;
         }
-
+        private static void QuitActivated(object sender, EventArgs e)
+        {
+            Gtk.Application.Quit();
+        }
         private static void App_Shutdown(object sender, EventArgs e)
         {
             Gtk.Application.Quit();
         }
 
-        private static void QuitActivated(object sender, EventArgs e)
-        {
-            Gtk.Application.Quit();
-        }
         public static bool SetHighDpiMode(HighDpiMode highDpiMode) {
              return true;
          }

@@ -41,8 +41,42 @@ namespace GTKWinFormsApp
 
             listBox1.DisplayMember = "CreateDate";
             listBox1.DataSource = dt;
+
+            System.Threading.Tasks.Task.Run(() => {
+                System.Threading.Thread.Sleep(1000);
+                for (int i = 0; i < 1000; i++)
+                {
+                    //gtk多线程更新界面必须使用Gdk.Threads.AddIdle输出
+                    Gdk.Threads.AddIdle(100, () => {
+                        UpdateListBox();
+                        return false;
+                    });
+                    System.Threading.Thread.Sleep(1000);
+                }
+            });
+ 
+
+            //this.FormClosing += Form2_FormClosing;
+            //this.FormClosed += Form2_FormClosed;
+        }
+        private void UpdateListBox()
+        {
+            listBox1.Items.Clear();
+            for (int i = 0; i < 30; i++)
+            {
+                listBox1.Items.Add(i.ToString() + "=" + DateTime.Now.ToString());
+            }
+        }
+        private void Form2_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            MessageBox.Show("Form2_FormClosed");
         }
 
+        private void Form2_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult res = MessageBox.Show("Form2_FormClosing");
+            e.Cancel = res != DialogResult.OK;
+        }
         private void listView1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             MessageBox.Show($"ItemCheck:{e.NewValue.ToString()},{e.CurrentValue.ToString()}");
