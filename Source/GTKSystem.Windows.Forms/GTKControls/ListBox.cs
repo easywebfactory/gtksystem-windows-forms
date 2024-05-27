@@ -169,6 +169,7 @@ namespace System.Windows.Forms
             Gtk.ListBoxRow row = new Gtk.ListBoxRow();
             row.HeightRequest = ItemHeight > 0 ? ItemHeight : DefaultItemHeight;
             row.Add(new Gtk.Label(item.ToString()) { Valign = Align.Center, Halign = Align.Start, Expand = true });
+            //row.Add(new LitorLabel() { Label = item.ToString(), Valign = Align.Center, Halign = Align.Start, Expand = true }); ;
             ListBoxView.Insert(row, index);
             if (self.IsVisible && !IsUpdateing)
             {
@@ -180,6 +181,7 @@ namespace System.Windows.Forms
             Gtk.ListBoxRow row = new Gtk.ListBoxRow();
             row.HeightRequest = ItemHeight > 0 ? ItemHeight : DefaultItemHeight;
             row.Add(new Gtk.Label(item.ToString()) { Valign = Align.Center, Halign = Align.Start, Expand = true });
+            //row.Add(new LitorLabel() { Label = item.ToString(), Valign = Align.Center, Halign = Align.Start, Expand = true }); ;
             ListBoxView.Add(row);
             if (self.IsVisible && !IsUpdateing)
             {
@@ -188,8 +190,13 @@ namespace System.Windows.Forms
         }
         protected void NativeClear()
         {
-            while (ListBoxView.Children.Length > 0)
-                ListBoxView.Remove(ListBoxView.GetRowAtIndex(0));
+            int count = ListBoxView.Children.Length;
+            while (count > 0)
+            {
+                ListBoxView.Remove(ListBoxView.GetRowAtIndex(count - 1));
+                count--;
+                //System.Threading.Thread.Sleep(3);
+            }
         }
         protected void NativeRemoveAt(int index)
         {

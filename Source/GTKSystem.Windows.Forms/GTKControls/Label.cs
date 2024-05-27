@@ -5,6 +5,7 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 
@@ -16,10 +17,9 @@ namespace System.Windows.Forms
         public readonly LabelBase self = new LabelBase();
         public override object GtkControl => self;
         public Label() : base() {
-
+      
         }
-
-        public override string Text { get => self.Text; set => self.Text = value; }
+        public override string Text { get => self.Text; set { self.Text = value; System.Threading.Thread.Sleep(10); } }
         public override RightToLeft RightToLeft { get { return self.Direction == Gtk.TextDirection.Rtl ? RightToLeft.Yes : RightToLeft.No; } set { self.Direction = value == RightToLeft.Yes ?  Gtk.TextDirection.Rtl : Gtk.TextDirection.Ltr; } }
         public System.Drawing.ContentAlignment TextAlign { 
             get { return textAlign; } 
@@ -32,7 +32,7 @@ namespace System.Windows.Forms
                 }
                 else if (value == System.Drawing.ContentAlignment.TopCenter)
                 {
-                    self.Xalign = 0.5f; 
+                    self.Xalign = 0.5f;
                     self.Yalign = 0.08f;
                 }
                 else if (value == System.Drawing.ContentAlignment.TopRight)

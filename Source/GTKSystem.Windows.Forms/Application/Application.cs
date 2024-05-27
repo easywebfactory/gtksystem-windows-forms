@@ -85,6 +85,7 @@ namespace System.Windows.Forms
                 App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.IsLauncher);
                 //App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
                 //App.Register(GLib.Cancellable.Current);
+                App.Shutdown += App_Shutdown;
                 var quitAction = new GLib.SimpleAction("quit", null);
                 quitAction.Activated += QuitActivated;
                 App.AddAction(quitAction);
@@ -216,6 +217,12 @@ namespace System.Windows.Forms
             }
             return App;
         }
+
+        private static void App_Shutdown(object sender, EventArgs e)
+        {
+            Gtk.Application.Quit();
+        }
+
         private static void QuitActivated(object sender, EventArgs e)
         {
             Gtk.Application.Quit();

@@ -32,20 +32,19 @@ namespace GTKWinFormsApp
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-            label1.Text = trackBar1.Value.ToString();
+             label1.Text = trackBar1.Value.ToString();
         }
 
         private void Form3_Load(object sender, EventArgs e)
         {
             var result = this.BeginInvoke(new MethodInvoker(() =>
             {
-                //for (int i = 0; i < 30; i++)
-                //{
-                //    trackBar1.Value = i;
-                //    label1.Text = i.ToString();
-                //    System.Threading.Thread.Sleep(200);
-
-                //}
+                System.Threading.Thread.Sleep(2000);
+                for (int i = 0; i < 100; i++)
+                {
+                    trackBar1.Value = i;
+                    System.Threading.Thread.Sleep(10);
+                }
             }));
         }
 

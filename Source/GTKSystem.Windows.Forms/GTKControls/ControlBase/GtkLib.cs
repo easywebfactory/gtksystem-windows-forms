@@ -7,14 +7,15 @@ using GLib;
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
 
-    internal class FuncLoader
+    internal
+class FuncLoader
     {
         private class Windows
         {
             [DllImport("kernel32", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
             public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
 
-            [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
+            [DllImport("kernel32", SetLastError = true, CharSet = CharSet.Unicode)]
             public static extern IntPtr LoadLibraryW(string lpszLib);
         }
 
@@ -36,24 +37,30 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             public static extern IntPtr dlsym(IntPtr handle, string symbol);
         }
 
-        private const int RTLD_LAZY = 1;
+        private class Unix
+        {
+            [DllImport("libc")]
+            public static extern IntPtr dlopen(string path, int flags);
 
-        private const int RTLD_GLOBAL = 256;
-
-        public static bool IsWindows;
-
-        public static bool IsOSX;
+            [DllImport("libc")]
+            public static extern IntPtr dlsym(IntPtr handle, string symbol);
+        }
 
         [DllImport("libc")]
         private static extern int uname(IntPtr buf);
+
+        private const int RTLD_LAZY = 0x0001;
+        private const int RTLD_GLOBAL = 0x0100;
+
+        public static bool IsWindows, IsOSX, IsLinux;
 
         static FuncLoader()
         {
             switch (Environment.OSVersion.Platform)
             {
+                case PlatformID.Win32NT:
                 case PlatformID.Win32S:
                 case PlatformID.Win32Windows:
-                case PlatformID.Win32NT:
                 case PlatformID.WinCE:
                     IsWindows = true;
                     break;
@@ -63,20 +70,16 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 case PlatformID.Unix:
                     try
                     {
-                        IntPtr intPtr = Marshal.AllocHGlobal(8192);
-                        if (uname(intPtr) == 0 && Marshal.PtrToStringAnsi(intPtr) == "Darwin")
-                        {
+                        var buf = Marshal.AllocHGlobal(8192);
+                        if (uname(buf) == 0 && Marshal.PtrToStringAnsi(buf) == "Darwin")
                             IsOSX = true;
-                        }
+                        if (uname(buf) == 0 && Marshal.PtrToStringAnsi(buf) == "Linux")
+                            IsLinux = true;
 
-                        Marshal.FreeHGlobal(intPtr);
+                        Marshal.FreeHGlobal(buf);
                     }
-                    catch
-                    {
-                    }
+                    catch { }
 
-                    break;
-                case PlatformID.Xbox:
                     break;
             }
         }
@@ -84,40 +87,37 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public static IntPtr LoadLibrary(string libname)
         {
             if (IsWindows)
-            {
                 return Windows.LoadLibraryW(libname);
-            }
 
             if (IsOSX)
-            {
-                return OSX.dlopen(libname, 257);
-            }
+                return OSX.dlopen(libname, RTLD_GLOBAL | RTLD_LAZY);
 
-            return Linux.dlopen(libname, 257);
+            if (IsLinux)
+                return Linux.dlopen(libname, RTLD_GLOBAL | RTLD_LAZY);
+
+            return Unix.dlopen(libname, RTLD_GLOBAL | RTLD_LAZY);
         }
 
         public static IntPtr GetProcAddress(IntPtr library, string function)
         {
-            IntPtr zero = IntPtr.Zero;
+            var ret = IntPtr.Zero;
+
             if (IsWindows)
-            {
-                return Windows.GetProcAddress(library, function);
-            }
+                ret = Windows.GetProcAddress(library, function);
+            else if (IsOSX)
+                ret = OSX.dlsym(library, function);
+            else if (IsLinux)
+                ret = Linux.dlsym(library, function);
+            else
+                ret = Unix.dlsym(library, function);
 
-            if (IsOSX)
-            {
-                return OSX.dlsym(library, function);
-            }
-
-            return Linux.dlsym(library, function);
+            return ret;
         }
 
         public static T LoadFunction<T>(IntPtr procaddress)
         {
             if (procaddress == IntPtr.Zero)
-            {
-                return default;
-            }
+                return default(T);
 
             return Marshal.GetDelegateForFunctionPointer<T>(procaddress);
         }
@@ -151,6 +151,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             _libraryDefinitions[Library.Gtk] = new string[4] { "libgtk-3-0.dll", "libgtk-3.so.0", "libgtk-3.0.dylib", "gtk-3.dll" };
             _libraryDefinitions[Library.PangoCairo] = new string[4] { "libpangocairo-1.0-0.dll", "libpangocairo-1.0.so.0", "libpangocairo-1.0.0.dylib", "pangocairo-1.dll" };
             _libraryDefinitions[Library.GtkSource] = new string[4] { "libgtksourceview-4-0.dll", "libgtksourceview-4.so.0", "libgtksourceview-4.0.dylib", "gtksourceview-4.dll" };
+            _libraryDefinitions[Library.Webkit] = new[] { "libwebkit2gtk-4.0.dll", "libwebkit2gtk-4.0.so.37", "libwebkit2gtk-4.0.dylib", "libwebkit2gtk-4.0.0.dll" };
         }
 
         public static IntPtr Load(Library library)
@@ -217,7 +218,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         Gdk,
         GdkPixbuf,
         Gtk,
-        GtkSource
+        GtkSource,
+        Webkit
     }
 
 }

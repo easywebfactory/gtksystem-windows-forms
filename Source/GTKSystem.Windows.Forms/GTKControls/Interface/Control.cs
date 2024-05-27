@@ -1,7 +1,9 @@
 ﻿using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms.Design;
 
@@ -21,7 +23,7 @@ namespace System.Windows.Forms
         public virtual Gtk.Widget Widget { get => GtkControl as Gtk.Widget; }
         public virtual Gtk.Container GtkContainer { get => GtkControl as Gtk.Container; }
         public IControlGtk ISelf { get => (IControlGtk)GtkControl; }
-        public virtual object GtkControl { get; protected set; }
+        public virtual object GtkControl { get; set; }
         CssProvider provider = new CssProvider();
         public Control()
         {
@@ -245,7 +247,10 @@ namespace System.Windows.Forms
             css.AppendLine(".BGTransparent{background:transparent;background-color:transparent;}");
             provider.LoadFromData(css.ToString());
         }
-        
+        protected virtual void SetStyle(ControlStyles styles,bool value)
+        {
+
+        }
 
         #region 背景
         public virtual bool UseVisualStyleBackColor { get; set; } = true;
@@ -542,17 +547,31 @@ namespace System.Windows.Forms
 
         public virtual void DrawToBitmap(Bitmap bitmap, Rectangle targetBounds)
         {
-
         }
 
         public virtual Form FindForm()
         {
-            return null;
+            Control control = this.Parent;
+            while (control != null)
+            {
+                if (control is Form)
+                    break;
+                else
+                    control = this.Parent;
+            }
+            return control as Form;
         }
 
         public virtual bool Focus()
         {
-            return false;
+            if (this.Widget != null)
+            {
+                this.Widget.IsFocus = true;
+                return this.Widget.IsFocus;
+            }
+            else { 
+                return false; 
+            }
         }
 
         public virtual Control GetChildAtPoint(Point pt)
@@ -590,7 +609,7 @@ namespace System.Windows.Forms
             if (this.Widget != null && this.Widget.IsVisible)
             {
                 Widget.Window.InvalidateRect(Widget.Allocation, invalidateChildren);
-                Widget.Show();
+                System.Threading.Thread.Sleep(10);
             }
         }
 
@@ -604,7 +623,7 @@ namespace System.Windows.Forms
             if (this.Widget != null)
             {
                 Widget.Window.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
-                Widget.Show();
+                System.Threading.Thread.Sleep(10);
             }
         }
 
@@ -617,9 +636,7 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null)
             {
-                Widget.Visible = false;
-                Widget.Visible = true;
-                this.Widget.Window.ProcessUpdates(invalidateChildren);
+                Widget.Window.InvalidateRect(Widget.Allocation, invalidateChildren);
             }
         }
 
@@ -708,7 +725,8 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null && this.Widget.IsVisible)
             {
-                Widget.Display.Flush();
+                Widget.QueueDraw();
+                System.Threading.Thread.Sleep(10);
             }
         }
 
@@ -784,7 +802,8 @@ namespace System.Windows.Forms
 
         public virtual void Select()
         {
-
+            if (this.Widget != null)
+                this.Widget.SetStateFlags(StateFlags.Selected, true);
         }
 
         public virtual bool SelectNextControl(Control ctl, bool forward, bool tabStopOnly, bool nested, bool wrap)
@@ -799,25 +818,51 @@ namespace System.Windows.Forms
 
         public virtual void SetBounds(int x, int y, int width, int height)
         {
-
+            SetBounds(x, y, width, height, BoundsSpecified.All);
         }
 
         public virtual void SetBounds(int x, int y, int width, int height, BoundsSpecified specified)
         {
-
+            if (this.Widget != null)
+            {
+                Gdk.Rectangle rect = this.Widget.Clip;
+                if (specified == BoundsSpecified.X)
+                    rect.X = x;
+                else if (specified == BoundsSpecified.Y)
+                    rect.Y = y;
+                else if (specified == BoundsSpecified.Width)
+                    rect.Width = width;
+                else if (specified == BoundsSpecified.Height)
+                    rect.Height = height;
+                else if (specified == BoundsSpecified.Size)
+                {
+                    rect.Width = width;
+                    rect.Height = height;
+                }
+                else if (specified == BoundsSpecified.Location)
+                {
+                    rect.X = x;
+                    rect.Y = y;
+                }
+                else
+                {
+                    rect.X = x;
+                    rect.Y = y;
+                    rect.Width = width;
+                    rect.Height = height;
+                }
+                this.Widget.SetClip(rect);
+            }
         }
-        public virtual Rectangle ClientRectangle { get; }
+        public virtual Rectangle ClientRectangle { get { if (Widget == null) { return new Rectangle(); } else { Widget.GetAllocatedSize(out Gdk.Rectangle allocation, out int baseline); return new Rectangle(allocation.X, allocation.Y, allocation.Width, allocation.Height); } } }
 
-        public virtual Size ClientSize { get; set; }
+        public virtual Size ClientSize { get { Widget.GetSizeRequest(out int width,out int height); return new Size(width, height); } set { if (Widget != null) { Widget.SetSizeRequest(value.Width, value.Height); } } }
 
-        public virtual IntPtr Handle { get => this.Widget.Handle; }
+        public virtual IntPtr Handle { get => this.Widget == null ? IntPtr.Zero : this.Widget.Handle; }
 
         public virtual Padding Margin { get; set; }
         public virtual Size MaximumSize { get; set; }
         public virtual Size MinimumSize { get; set; }
-
-        //public virtual ISite Site { get; set; }
-
         public virtual BorderStyle BorderStyle { get; set; }
 
         public virtual void Hide()
@@ -863,6 +908,7 @@ namespace System.Windows.Forms
             if (this.Widget != null)
             {
                 this.Widget.Window.ProcessUpdates(true);
+                this.Widget.QueueDraw();
             }
         }
 
@@ -895,6 +941,45 @@ namespace System.Windows.Forms
             }
             catch { }
             base.Dispose(disposing);
+        }
+
+
+        protected virtual CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams createParams = new CreateParams();
+                createParams.ExStyle |= 32;
+                return createParams;
+            }
+        }
+        protected virtual void OnKeyDown(KeyEventArgs e)
+        {
+
+        }
+        protected virtual void OnKeyUp(KeyEventArgs e)
+        {
+
+        }
+        protected virtual void OnVisibleChanged(EventArgs e)
+        {
+
+        }
+        protected virtual void OnSizeChanged(EventArgs e)
+        {
+
+        }
+        protected virtual void Select(bool directed, bool forward)
+        {
+
+        }
+        protected virtual void OnGotFocus(EventArgs e)
+        {
+
+        }
+        protected virtual void WndProc(ref Message m)
+        {
+            //Console.WriteLine($"HWnd:{m.HWnd},WParam:{m.WParam},LParam:{m.LParam},Msg:{m.Msg}");
         }
     }
 }

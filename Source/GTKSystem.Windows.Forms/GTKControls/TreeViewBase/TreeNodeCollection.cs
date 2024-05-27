@@ -1,4 +1,5 @@
 ﻿
+using Atk;
 using Gtk;
 using Pango;
 using System;
@@ -41,6 +42,26 @@ namespace System.Windows.Forms
             {
                 owner.TreeView.LoadNodeValue(node, owner.TreeIter);
             }
+        }
+
+        public new void Clear()
+        {
+            this.owner?.TreeView?.Clear();
+            base.Clear();
+        }
+        public new void Remove(TreeNode node)
+        {
+            int indx = base.FindIndex(m => m.Index == node.Index);
+            if (indx > -1)
+                RemoveAt(indx);
+        }
+        public new void RemoveAt(int index)
+        {
+            if (this.owner.TreeView.Store.GetIter(out TreeIter iter, new TreePath(new int[] { index })))
+            {
+                this.owner.TreeView.Store.Remove(ref iter);
+            }
+            base.RemoveAt(index);
         }
     }
 }

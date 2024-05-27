@@ -44,7 +44,10 @@ namespace System.Windows.Forms
             self.Model = _store;
             self.Realized += Control_Realized;
         }
-
+        public void Clear()
+        {
+            Store.Clear();
+        }
         private void Control_Realized(object sender, EventArgs e)
         {
             self.AppendColumn(textcolumn);

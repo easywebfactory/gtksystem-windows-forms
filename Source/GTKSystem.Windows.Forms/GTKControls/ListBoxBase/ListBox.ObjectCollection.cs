@@ -221,7 +221,6 @@ namespace System.Windows.Forms
                 {
                     _owner.NativeClear();
                 }
-
                 InnerArray.Clear();
             }
 
