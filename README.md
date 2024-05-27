@@ -158,6 +158,9 @@ QQ群：236066073
 2. https://github.com/easywebfactory
 
 #### 更新日志
+ ## 2024/5/28
+   1. 修正和增加了控件的一些方法。
+   2. 添加GTK多线程UI更新程序
  ## 2024/5/21
    1. combobox\listbox功能
    2. ToolStripSeparator修正
