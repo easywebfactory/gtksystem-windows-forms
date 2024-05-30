@@ -8,7 +8,10 @@
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("ListBox");
-
+            this.ListBox.Halign = Gtk.Align.Fill;
+            this.ListBox.Valign = Gtk.Align.Fill;
+            this.ListBox.Hexpand = true;
+            this.ListBox.Vexpand = true;
             Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
             scrolledWindow.Add(ListBox);
             this.Child = scrolledWindow;

@@ -47,7 +47,7 @@ namespace System.Windows.Forms
             header.Homogeneous = false;
             header.Halign = Gtk.Align.Fill;
             header.Valign = Gtk.Align.Fill;
-            header.HeightRequest = 40;
+            header.HeightRequest = 35;
             header.NoShowAll = true;
             header.Visible = false;
             header.Hide();
@@ -88,10 +88,10 @@ namespace System.Windows.Forms
             var group = Items.GroupBy(g => g.Group);
             foreach (var g in group)
             {
-                AddGroup(g.Key, -1);
+                NativeGroupAdd(g.Key, -1);
                 foreach (ListViewItem item in g)
                 {
-                    AddItem(item, -1);
+                    NativeAdd(item, -1);
                 }
             }
 
@@ -154,9 +154,9 @@ namespace System.Windows.Forms
                 if (((Gtk.Label)o).Data["ColumnIndex"].ToString() == SortingColumnIndex.ToString())
                 {
                     if (Sorting == SortOrder.Descending)
-                        ImageUtility.DrawBackgroundImage(args.Cr, godownpixbuf, new Gdk.Rectangle((int)rec.Width / 2 - 16, -10, 16, 16));
+                        ImageUtility.DrawBackgroundImage(args.Cr, godownpixbuf, new Gdk.Rectangle((int)rec.Width / 2 - 16, -8, 16, 16));
                     else if (Sorting == SortOrder.Ascending)
-                        ImageUtility.DrawBackgroundImage(args.Cr, gouppixbuf, new Gdk.Rectangle((int)rec.Width / 2 - 16, -10, 16, 16));
+                        ImageUtility.DrawBackgroundImage(args.Cr, gouppixbuf, new Gdk.Rectangle((int)rec.Width / 2 - 16, -8, 16, 16));
                 }
             }
         }
@@ -219,7 +219,7 @@ namespace System.Windows.Forms
 		public bool UseCompatibleStateImageBehavior { get; set; }
 		public System.Windows.Forms.View View { get; set; }
 
-        internal void AddItem(ListViewItem item, int position)
+        protected void NativeAdd(ListViewItem item, int position)
         {
             BoxBase hBox = new BoxBase(Gtk.Orientation.Horizontal, 4);
             if (item.BackColor.HasValue)
@@ -265,29 +265,26 @@ namespace System.Windows.Forms
 
             if (this.CheckBoxes == true)
             {
-                if (this.View == View.SmallIcon || this.View == View.LargeIcon)
+                CheckBox checkBox = new CheckBox();
+                checkBox.self.Halign = Gtk.Align.Start;
+                checkBox.Width = 20;
+                checkBox.Checked = item.Checked;
+                checkBox.CheckedChanged += (object sender, EventArgs e) =>
                 {
-                    CheckBox checkBox = new CheckBox();
-                    checkBox.self.Halign = Gtk.Align.Start;
-                    checkBox.Width = 20;
-                    checkBox.Checked= item.Checked;
-                    checkBox.CheckedChanged += (object sender, EventArgs e) =>
+                    CheckBox box = sender as CheckBox;
+                    Gtk.FlowBoxChild boxitem = box.self.Parent.Parent as Gtk.FlowBoxChild;
+                    ListViewItem thisitem = this.Items[Convert.ToInt32(boxitem.Data["ItemId"])];
+                    thisitem.Checked = box.self.Active;
+                    if (ItemCheck != null)
                     {
-                        CheckBox box = sender as CheckBox;
-                        Gtk.FlowBoxChild boxitem = box.self.Parent.Parent as Gtk.FlowBoxChild;
-                        ListViewItem thisitem = this.Items[Convert.ToInt32(boxitem.Data["ItemId"])];
-                        thisitem.Checked = box.self.Active;
-                        if (ItemCheck != null)
-                        {
-                            ItemCheck(sender, new ItemCheckEventArgs(boxitem.Index, box.self.Active ? CheckState.Checked : CheckState.Unchecked, box.self.Active ? CheckState.Unchecked : CheckState.Checked));
-                        }
-                        if (ItemChecked != null)
-                        {
-                            ItemChecked(sender, new ItemCheckedEventArgs(thisitem));
-                        }
-                    };
-                    hBox.Add(checkBox.self);
-                }
+                        ItemCheck(sender, new ItemCheckEventArgs(boxitem.Index, box.self.Active ? CheckState.Checked : CheckState.Unchecked, box.self.Active ? CheckState.Unchecked : CheckState.Checked));
+                    }
+                    if (ItemChecked != null)
+                    {
+                        ItemChecked(sender, new ItemCheckedEventArgs(thisitem));
+                    }
+                };
+                hBox.PackStart(checkBox.self, false, false, 0);
             }
 
             if (this.View == View.Details)
@@ -301,31 +298,7 @@ namespace System.Windows.Forms
                 fistcell.Halign = Gtk.Align.Start;
                 fistcell.Valign = Gtk.Align.Fill;
                 fistcell.BorderWidth = 0;
-                fistcell.WidthRequest = Columns.Count > 0 ? Columns[0].Width - 4 : -1;
-
-                if (this.CheckBoxes == true)
-                {
-                    CheckBox checkBox = new CheckBox();
-                    checkBox.self.Halign = Gtk.Align.Start;
-                    checkBox.Width = 20;
-                    checkBox.Checked = item.Checked;
-                    checkBox.CheckedChanged += (object sender, EventArgs e) =>
-                    {
-                        CheckBox box = sender as CheckBox;
-                        Gtk.FlowBoxChild boxitem = box.self.Parent.Parent.Parent.Parent as Gtk.FlowBoxChild;
-                        ListViewItem thisitem = this.Items[Convert.ToInt32(boxitem.Data["ItemId"])];
-                        thisitem.Checked = box.self.Active;
-                        if (ItemCheck != null)
-                        {
-                            ItemCheck(sender, new ItemCheckEventArgs(boxitem.Index, box.self.Active ? CheckState.Checked : CheckState.Unchecked, box.self.Active ? CheckState.Unchecked : CheckState.Checked));
-                        }
-                        if (ItemChecked != null)
-                        {
-                            ItemChecked(sender, new ItemCheckedEventArgs(thisitem));
-                        }
-                    };
-                    fistcell.PackStart(checkBox.self, false, false, 1);
-                }
+                fistcell.WidthRequest = Columns.Count > 0 ? Columns[0].Width - 32 : -1;
                 if (this.SmallImageList != null)
                 {
                     this.SmallImageList.ImageSize = new Size(16, 16);
@@ -344,20 +317,17 @@ namespace System.Windows.Forms
                 Label lab = new Label();
                 if (item.ForeColor.HasValue)
                     lab.ForeColor = item.ForeColor.Value;
-                lab.self.MaxWidthChars = fistcell.WidthRequest / 12;
                 lab.self.Halign = Gtk.Align.Start;
                 lab.self.Valign = Gtk.Align.Fill;
                 lab.self.Ellipsize = Pango.EllipsizeMode.End;
                 lab.Text = item.Text;
-                 
-                fistcell.PackStart(lab.self, false, false, 1);
+                fistcell.PackStart(lab.self, true, true, 1);
                 Gtk.Layout fistlayout = new Gtk.Layout(new Adjustment(IntPtr.Zero), new Adjustment(IntPtr.Zero));
                 fistlayout.Halign = Gtk.Align.Start;
                 fistlayout.Valign = Gtk.Align.Fill;
                 fistlayout.WidthRequest = fistcell.WidthRequest;
                 fistlayout.Add(fistcell);
-                hBox.Add(fistlayout);
-
+                hBox.PackStart(fistlayout, false, false, 0);
                 int index = 0;
                 foreach (ColumnHeader col in Columns)
                 {
@@ -384,7 +354,7 @@ namespace System.Windows.Forms
                             sublabel.self.Text = subitem.Text;
                             sublayout.Add(sublabel.self);
                         }
-                        hBox.Add(sublayout);
+                        hBox.PackStart(sublayout, false, false, 0);
                     }
                     index++;
                 }
@@ -402,12 +372,12 @@ namespace System.Windows.Forms
                     if (!string.IsNullOrWhiteSpace(item.ImageKey))
                     {
                         Drawing.Image img = this.SmallImageList.Images[item.ImageKey];
-                        hBox.Add(new Gtk.Image(img.Pixbuf));
+                        hBox.PackStart(new Gtk.Image(img.Pixbuf), false, false, 0);
                     }
                     else if (item.ImageIndex > -1)
                     {
                         Drawing.Image img = this.SmallImageList.Images[item.ImageIndex];
-                        hBox.Add(new Gtk.Image(img.Pixbuf));
+                        hBox.PackStart(new Gtk.Image(img.Pixbuf), false, false, 0);
                     }
 
                 }
@@ -419,7 +389,7 @@ namespace System.Windows.Forms
                 lab.self.Valign = Gtk.Align.Center;
                 lab.self.Ellipsize = Pango.EllipsizeMode.End;
                 lab.self.Text = item.Text;
-                hBox.Add(lab.self);
+                hBox.PackStart(lab.self, false, false, 0);
             }
             else if (this.View == View.LargeIcon)
             {
@@ -456,7 +426,7 @@ namespace System.Windows.Forms
                 lab.self.Ellipsize = Pango.EllipsizeMode.End;
                 lab.self.Text = item.Text;
                 vBox.Add(lab.self);
-                hBox.Add(vBox);
+                hBox.PackStart(vBox, false, false, 0);
             }
             else
             {
@@ -469,11 +439,11 @@ namespace System.Windows.Forms
                 lab.self.Halign = Gtk.Align.Start;
                 lab.self.Valign = Gtk.Align.Fill;
                 lab.self.Text = item.Text;
-                hBox.Add(lab.self);
+                hBox.PackStart(lab.self, false, false, 0);
             }
         }
 
-        internal void AddGroup(ListViewGroup group, int position)
+        protected void NativeGroupAdd(ListViewGroup group, int position)
         {
             if (group == null)
                 return;
@@ -489,19 +459,24 @@ namespace System.Windows.Forms
                 if (_flow.Parent != null)
                     return;
 
-                Gtk.Viewport groupbox = new Gtk.Viewport();
-                groupbox.StyleContext.AddClass("Group");
+                Gtk.Box groupbox=new Box(Gtk.Orientation.Horizontal, 0);
                 var title = new Gtk.Label(group.Header) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
                 title.MarginStart = 3;
                 title.StyleContext.AddClass("Title");
-                groupbox.Child = title;
-                hBox.Add(groupbox);
-                if (!string.IsNullOrWhiteSpace(group.Subtitle))
+                groupbox.PackStart(title, false, false, 0);
+                Gtk.Viewport groupline = new Gtk.Viewport();
+                groupline.StyleContext.AddClass("GroupLine");
+                groupline.Halign = Gtk.Align.Fill;
+                groupline.Valign = Gtk.Align.Center;
+                groupline.Vexpand = false;
+                groupbox.PackEnd(groupline, true, true, 0);
+                hBox.PackStart(groupbox, false, false, 0);
+                if (!string.IsNullOrEmpty(group.Subtitle))
                 {
                     var subtitle = new Gtk.Label(group.Subtitle) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
                     subtitle.MarginStart = 3;
                     subtitle.StyleContext.AddClass("SubTitle");
-                    hBox.Add(subtitle);
+                    hBox.PackStart(subtitle, false, false, 0);
                 }
             }
             if (_flow.Parent != null)
@@ -529,11 +504,21 @@ namespace System.Windows.Forms
                     return 0;
             });
             _flow.ChildActivated += _flow_ChildActivated;
-            hBox.Add(_flow);
+            hBox.PackStart(_flow, true, true, 0);
             flowBoxContainer.PackStart(hBox, true, true, 0);
             if (position > -1)
             {
                 flowBoxContainer.ReorderChild(hBox, position);
+            }
+            if (ShowGroups == true && this.View != View.List && this.View != View.Tile)
+            {
+                if (!string.IsNullOrEmpty(group.Footer))
+                {
+                    var footer = new Gtk.Label(group.Footer) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
+                    footer.MarginStart = 3;
+                    footer.StyleContext.AddClass("SubTitle");
+                    hBox.PackEnd(footer, false, false, 0);
+                }
             }
         }
         private void _flow_ChildActivated(object o, Gtk.ChildActivatedArgs args)
@@ -857,9 +842,9 @@ namespace System.Windows.Forms
                                 index = _owner.Groups.OrderBy(o => o.Header).ToList().FindIndex(g => g.Name == item.Group.Name);
                             }
                         }
-                        _owner.AddGroup(item.Group, index);
+                        _owner.NativeGroupAdd(item.Group, index);
                     }
-                    _owner.AddItem(item, position);
+                    _owner.NativeAdd(item, position);
                     if (_owner.IsCacheUpdate == false)
                         _owner.self.ShowAll();
                 }

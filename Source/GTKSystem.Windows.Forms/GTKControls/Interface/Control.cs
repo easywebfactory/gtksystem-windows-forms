@@ -1,4 +1,5 @@
-﻿using Gtk;
+﻿using GLib;
+using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
 using System.ComponentModel;
@@ -15,7 +16,7 @@ namespace System.Windows.Forms
     //[Designer("System.Windows.Forms.Design.ControlDesigner, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     //[DesignerSerializer("System.Windows.Forms.Design.ControlCodeDomSerializer, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", "System.ComponentModel.Design.Serialization.CodeDomSerializer, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     [ToolboxItemFilter("System.Windows.Forms")]
-    public partial class Control: Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize
+    public partial class Control : Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize
     {
         private Gtk.Application app = Application.Init();
         public string unique_key { get; protected set; }
@@ -153,7 +154,7 @@ namespace System.Windows.Forms
         private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
         {
             //Console.WriteLine($"Widget_ButtonReleaseEvent：{args.Event.Type.ToString()},{args.Event.Device.Name}");
-            
+
             if (MouseUp != null)
             {
                 MouseButtons result = MouseButtons.None;
@@ -247,16 +248,16 @@ namespace System.Windows.Forms
             css.AppendLine(".BGTransparent{background:transparent;background-color:transparent;}");
             provider.LoadFromData(css.ToString());
         }
-        protected virtual void SetStyle(ControlStyles styles,bool value)
+        protected virtual void SetStyle(ControlStyles styles, bool value)
         {
-
+            
         }
 
         #region 背景
         public virtual bool UseVisualStyleBackColor { get; set; } = true;
         public virtual Color VisualStyleBackColor { get; }
-        public virtual ImageLayout BackgroundImageLayout { get => ISelf.Override.BackgroundImageLayout; set => ISelf.Override.BackgroundImageLayout = value; }
-        public virtual Drawing.Image BackgroundImage { get => ISelf.Override.BackgroundImage; set { ISelf.Override.BackgroundImage = value; ISelf.Override.OnPaint(); Invalidate(); } }
+        public virtual ImageLayout BackgroundImageLayout { get => ISelf == null ? ImageLayout.None : ISelf.Override.BackgroundImageLayout; set { if (ISelf != null) { ISelf.Override.BackgroundImageLayout = value; } } }
+        public virtual Drawing.Image BackgroundImage { get => ISelf == null ? null : ISelf.Override.BackgroundImage; set { if (ISelf != null) { ISelf.Override.BackgroundImage = value; Refresh(); } } }
         public virtual Color BackColor
         {
             get
@@ -609,7 +610,6 @@ namespace System.Windows.Forms
             if (this.Widget != null && this.Widget.IsVisible)
             {
                 Widget.Window.InvalidateRect(Widget.Allocation, invalidateChildren);
-                System.Threading.Thread.Sleep(10);
             }
         }
 
@@ -622,8 +622,9 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null)
             {
+                if (ISelf != null)
+                    ISelf.Override.OnAddClass();
                 Widget.Window.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
-                System.Threading.Thread.Sleep(10);
             }
         }
 
@@ -636,6 +637,8 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null)
             {
+                if (ISelf != null)
+                    ISelf.Override.OnAddClass();
                 Widget.Window.InvalidateRect(Widget.Allocation, invalidateChildren);
             }
         }
@@ -647,15 +650,25 @@ namespace System.Windows.Forms
 
         public virtual object Invoke(Delegate method, params object[] args)
         {
-            return method.DynamicInvoke(args);
+            object result = null;
+            Gtk.Application.Invoke(delegate {
+                result = method.DynamicInvoke(args);
+            });
+            return result;
         }
         public virtual void Invoke(Action method)
         {
-            method.Invoke();
+            Gtk.Application.Invoke(delegate {
+                method.Invoke();
+            }); 
         }
-        public virtual O Invoke<O>(Func<O> method)
+        public virtual ENTRY Invoke<ENTRY>(Func<ENTRY> method)
         {
-            return method.Invoke();
+            ENTRY result = default(ENTRY);
+            Gtk.Application.Invoke(delegate {
+                result = method.Invoke();
+            });
+            return result;
         }
         public virtual int LogicalToDeviceUnits(int value)
         {
@@ -725,8 +738,9 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null && this.Widget.IsVisible)
             {
+                if (ISelf != null)
+                    ISelf.Override.ClearNativeBackground();
                 Widget.QueueDraw();
-                System.Threading.Thread.Sleep(10);
             }
         }
 

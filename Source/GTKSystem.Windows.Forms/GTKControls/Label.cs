@@ -27,22 +27,22 @@ namespace System.Windows.Forms
                 textAlign = value;
                 if (value == System.Drawing.ContentAlignment.TopLeft)
                 {
-                    self.Xalign = 0.08f;
-                    self.Yalign = 0.08f;
+                    self.Xalign = 0.0f;
+                    self.Yalign = 0.0f;
                 }
                 else if (value == System.Drawing.ContentAlignment.TopCenter)
                 {
                     self.Xalign = 0.5f;
-                    self.Yalign = 0.08f;
+                    self.Yalign = 0.0f;
                 }
                 else if (value == System.Drawing.ContentAlignment.TopRight)
                 {
-                    self.Xalign = 0.92f;
-                    self.Yalign = 0.08f;
+                    self.Xalign = 1.0f;
+                    self.Yalign = 0.0f;
                 }
                 else if (value == System.Drawing.ContentAlignment.MiddleLeft)
                 {
-                    self.Xalign = 0.08f;
+                    self.Xalign = 0.0f;
                     self.Yalign = 0.5f;
                 }
                 else if (value == System.Drawing.ContentAlignment.MiddleCenter)
@@ -52,23 +52,23 @@ namespace System.Windows.Forms
                 }
                 else if (value == System.Drawing.ContentAlignment.MiddleRight)
                 {
-                    self.Xalign = 0.92f;
+                    self.Xalign = 1.0f;
                     self.Yalign = 0.5f;
                 }
                 else if (value == System.Drawing.ContentAlignment.BottomLeft)
                 {
-                    self.Xalign = 0.08f;
-                    self.Yalign = 0.08f;
+                    self.Xalign = 0.0f;
+                    self.Yalign = 1.0f;
                 }
-                else if (value == System.Drawing.ContentAlignment.MiddleCenter)
+                else if (value == System.Drawing.ContentAlignment.BottomCenter)
                 {
                     self.Xalign = 0.5f;
-                    self.Yalign = 0.08f;
+                    self.Yalign = 1.0f;
                 }
-                else if (value == System.Drawing.ContentAlignment.MiddleRight)
+                else if (value == System.Drawing.ContentAlignment.BottomRight)
                 {
-                    self.Xalign = 0.92f;
-                    self.Yalign = 0.08f;
+                    self.Xalign = 1.0f;
+                    self.Yalign = 1.0f;
                 }
 
             }

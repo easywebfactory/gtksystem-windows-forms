@@ -3,11 +3,20 @@ namespace System.Windows.Forms
 {
     public class ContainerControl : ScrollableControl, IContainerControl
     {
-        public Control ActiveControl { get; set; }
+        private Control _ActiveControl;
+        public Control ActiveControl { get => _ActiveControl; set { ActivateControl(value); } }
 
         public bool ActivateControl(Control active)
         {
-            return (active != null && ActiveControl != null && ActiveControl.Equals(active));
+            _ActiveControl = active;
+            if (active != null)
+            {
+                if (active.GtkControl is Gtk.Widget widget)
+                {
+                    return widget.Activate();
+                }
+            }
+            return false;
         }
         public virtual StatusStrip StatusStrip { get; set; }
     }

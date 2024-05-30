@@ -7,16 +7,16 @@
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Label");
-            this.Xalign = 0.08f;
-            this.Yalign = 0.08f;
+            this.Xalign = 0.0f;
+            this.Yalign = 0.0f;
         }
 
         internal LabelBase(string text) : base(text)
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Label");
-            this.Xalign = 0.08f;
-            this.Yalign = 0.08f;
+            this.Xalign = 0.0f;
+            this.Yalign = 0.0f;
         }
         protected override void OnShown()
         {

@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -81,6 +82,11 @@ namespace System.Windows.Forms
         {
             if (App == null)
             {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    Environment.SetEnvironmentVariable("GTK_EXE_PREFIX", Directory.GetCurrentDirectory());
+                    Environment.SetEnvironmentVariable("GTK_DATA_PREFIX", Directory.GetCurrentDirectory());
+                }
                 Gtk.Application.Init();
                 //App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.IsLauncher);
                 App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
@@ -160,11 +166,15 @@ namespace System.Windows.Forms
 .Button{padding:0px;} 
 
 .TextBox{caret-color:#999999;} 
-.RichTextBox {border-width:1px;caret-color:#999999;}
+.RichTextBox {border-width:1px;caret-color:#999999;background-color:#FFFFFF;background:#FFFFFF;}
 .RichTextBox border.top{border-width:1px;}
 .RichTextBox border.left{border-width:1px;}
 .RichTextBox border.right{border-width:1px;}
 .RichTextBox border.bottom{border-width:1px;}
+.RichTextBox text{background-color:transparent;background:transparent;}
+.RichTextBox .view{background-color:transparent;background:transparent;}
+
+
 .CheckBox {border-width:0px;} 
 .CheckedListBox {background-color:#ffffff;} 
 .RadioButton {border-width:0px;} 
@@ -203,13 +213,16 @@ namespace System.Windows.Forms
 .StatusStrip viewport{border-width:0px;} 
 
 
-.ListBox{border-width:1px;background-color:#ffffff; }
+.ListBox{border-width:1px;background-color:#FFFFFF;}
+.ListBox list{background-color:transparent;background:transparent; }
+
 .ListView{background-color:#ffffff; }
 .ListView .Label{background-color:transparent;} 
-.ListViewHeader { background-color:#eeeeee;}
-.ListView .Group{background-color:#fefefe; background-image:linear-gradient(#ffffff 12px,#3333bb 3px,#ffffff 14px);}
-.ListView .Title{background-color:#fefefe; padding-left:5px;padding-right:5px; color:#3333bb;}
-.ListView .SubTitle{padding-left:5px;padding-right:5px;color:#666666; font-size:14px; }
+.ListViewHeader {background-color:#EFEEEE; border:solid 1px #BBBBBB; opacity:0.88; }
+.ListView .Group{background-image:linear-gradient(#ffffff 12px,#3333bb 3px,#ffffff 14px);}
+.ListView .GroupLine{border-top:inset 1px #6677bb;}
+.ListView .Title{padding-left:5px;padding-right:5px; color:#3333bb;}
+.ListView .SubTitle{padding-left:5px;padding-right:5px;color:#333366;  }
 
 ");
 

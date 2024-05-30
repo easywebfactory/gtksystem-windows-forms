@@ -40,13 +40,9 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 container.StyleContext.RemoveClass(cssClass);
                 container.StyleContext.AddClass(cssClass);
             }
-            if (BackgroundImage != null || BackColor.HasValue || Image != null)
-            {
-                container.StyleContext.RemoveClass("BGTransparent");
-                container.StyleContext.AddClass("BGTransparent");
-            }
+            ClearNativeBackground();
         }
-        public void OnPaint()
+        public void ClearNativeBackground()
         {
             if (BackgroundImage != null || BackColor.HasValue || Image != null)
             {

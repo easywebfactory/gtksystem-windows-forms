@@ -14,14 +14,13 @@ namespace System.Windows.Forms
     [ToolboxItemFilter("System.Windows.Forms")]
     public class Timer : Component
     {
-        System.Timers.Timer TimersTimer;
+        readonly System.Timers.Timer TimersTimer = new Timers.Timer();
         public Timer() {
 
-            TimersTimer = new Timers.Timer();
         }
 
-        public Timer(IContainer container):this() {
-           // container.Add(this);
+        public Timer(IContainer container) : this() {
+            // container.Add(this);
         }
 
         [Bindable(true)]
@@ -38,8 +37,12 @@ namespace System.Windows.Forms
 
         public event EventHandler Tick
         {
-            add { TimersTimer.Elapsed += (object sender, Timers.ElapsedEventArgs e)=> { value.Invoke(this, e); }; }
-            remove { TimersTimer.Elapsed -= (object sender, Timers.ElapsedEventArgs e) => { value.Invoke(this, e); }; }
+            add { TimersTimer.Elapsed += (object sender, Timers.ElapsedEventArgs e) => {
+                Gtk.Application.Invoke(value);
+            }; }
+            remove { TimersTimer.Elapsed -= (object sender, Timers.ElapsedEventArgs e) => {
+                Gtk.Application.Invoke(value);
+            }; }
         }
 
         public void Start()
@@ -56,11 +59,11 @@ namespace System.Windows.Forms
 
         protected override void Dispose(bool disposing) {
             TimersTimer.Dispose();
-            this.Dispose();
+            base.Dispose();
         }
-
-        //protected virtual void OnTick(EventArgs e) { 
-            
-        //}
+        protected new void Dispose()
+        {
+            Dispose(true);
+        }
     }
 }

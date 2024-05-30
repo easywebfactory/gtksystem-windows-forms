@@ -16,40 +16,32 @@ namespace System.Windows.Forms
     {
         public readonly RichTextBoxBase self = new RichTextBoxBase();
         public override object GtkControl => self;
-        private Gtk.TextView textView = new Gtk.TextView();
         public RichTextBox():base()
         {
-            textView.BorderWidth = 1;
-            textView.WrapMode = Gtk.WrapMode.Char;
-            textView.Halign = Gtk.Align.Fill;
-            textView.Valign = Gtk.Align.Fill;
-            textView.Expand = true;
-            Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
-            scrolledWindow.Child = textView;
-            self.Child = scrolledWindow;
+
         }
-        protected override void SetStyle(Widget widget)
-        {
-            base.SetStyle(textView);
-        }
-        public override string Text { get => textView.Buffer.Text; set => textView.Buffer.Text = value; }
-        public virtual bool ReadOnly { get { return textView.CanFocus; } set { textView.CanFocus = value; } }
+        //protected override void SetStyle(Widget widget)
+        //{
+        //    base.SetStyle(self.TextView);
+        //}
+        public override string Text { get => self.TextView.Buffer.Text; set => self.TextView.Buffer.Text = value; }
+        public virtual bool ReadOnly { get { return self.TextView.CanFocus; } set { self.TextView.CanFocus = value; } }
 
         public override event EventHandler TextChanged
         {
-            add { textView.Buffer.Changed += (object o, EventArgs args) => { value.Invoke(this, args); }; }
-            remove { textView.Buffer.Changed -= (object o, EventArgs args) => { value.Invoke(this, args); }; }
+            add { self.TextView.Buffer.Changed += (object o, EventArgs args) => { value.Invoke(this, args); }; }
+            remove { self.TextView.Buffer.Changed -= (object o, EventArgs args) => { value.Invoke(this, args); }; }
         }
 
         public void AppendText(string text)
         {
-            var enditer = textView.Buffer.EndIter;
-            textView.Buffer.Insert(ref enditer, text);
+            var enditer = self.TextView.Buffer.EndIter;
+            self.TextView.Buffer.Insert(ref enditer, text);
         }
 
         public string[] Lines
         {
-            get { return textView.Buffer.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); }
+            get { return self.TextView.Buffer.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); }
         }
     }
 }

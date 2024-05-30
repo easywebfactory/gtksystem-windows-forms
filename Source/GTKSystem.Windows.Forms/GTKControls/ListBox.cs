@@ -169,7 +169,6 @@ namespace System.Windows.Forms
             Gtk.ListBoxRow row = new Gtk.ListBoxRow();
             row.HeightRequest = ItemHeight > 0 ? ItemHeight : DefaultItemHeight;
             row.Add(new Gtk.Label(item.ToString()) { Valign = Align.Center, Halign = Align.Start, Expand = true });
-            //row.Add(new LitorLabel() { Label = item.ToString(), Valign = Align.Center, Halign = Align.Start, Expand = true }); ;
             ListBoxView.Insert(row, index);
             if (self.IsVisible && !IsUpdateing)
             {
@@ -181,7 +180,6 @@ namespace System.Windows.Forms
             Gtk.ListBoxRow row = new Gtk.ListBoxRow();
             row.HeightRequest = ItemHeight > 0 ? ItemHeight : DefaultItemHeight;
             row.Add(new Gtk.Label(item.ToString()) { Valign = Align.Center, Halign = Align.Start, Expand = true });
-            //row.Add(new LitorLabel() { Label = item.ToString(), Valign = Align.Center, Halign = Align.Start, Expand = true }); ;
             ListBoxView.Add(row);
             if (self.IsVisible && !IsUpdateing)
             {

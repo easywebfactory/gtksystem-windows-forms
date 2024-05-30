@@ -16,6 +16,7 @@ namespace GTKWinFormsApp
 {
     public partial class Form2 : Form
     {
+
         public Form2()
         {
             InitializeComponent();
@@ -42,29 +43,16 @@ namespace GTKWinFormsApp
             listBox1.DisplayMember = "CreateDate";
             listBox1.DataSource = dt;
 
-            System.Threading.Tasks.Task.Run(() => {
-                System.Threading.Thread.Sleep(1000);
-                for (int i = 0; i < 1000; i++)
-                {
-                    //gtk多线程更新界面必须使用Gdk.Threads.AddIdle输出
-                    Gdk.Threads.AddIdle(100, () => {
-                        UpdateListBox();
-                        return false;
-                    });
-                    System.Threading.Thread.Sleep(1000);
-                }
-            });
- 
-
             //this.FormClosing += Form2_FormClosing;
             //this.FormClosed += Form2_FormClosed;
         }
-        private void UpdateListBox()
+
+        private void Timer1_Tick(object sender, System.EventArgs e)
         {
             listBox1.Items.Clear();
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 10; i++)
             {
-                listBox1.Items.Add(i.ToString() + "=" + DateTime.Now.ToString());
+                listBox1.Items.Add($"异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}");
             }
         }
         private void Form2_FormClosed(object sender, FormClosedEventArgs e)

@@ -39,15 +39,14 @@ namespace GTKWinFormsApp
         {
             var result = this.BeginInvoke(new MethodInvoker(() =>
             {
-                System.Threading.Thread.Sleep(2000);
+                System.Threading.Thread.Sleep(3000);
                 for (int i = 0; i < 100; i++)
                 {
-                    //gtk多线程更新界面必须使用Gdk.Threads.AddIdle输出
-                    Gdk.Threads.AddIdle(100, () => {
+                    trackBar1.Invoke(() =>
+                    {
                         trackBar1.Value = i;
-                        return false;
                     });
-                    System.Threading.Thread.Sleep(10);
+                    System.Threading.Thread.Sleep(20);
                 }
             }));
         }
