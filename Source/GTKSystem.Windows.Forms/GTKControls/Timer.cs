@@ -5,6 +5,7 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
+
 using System.ComponentModel;
 
 namespace System.Windows.Forms
@@ -15,12 +16,13 @@ namespace System.Windows.Forms
     public class Timer : Component
     {
         readonly System.Timers.Timer TimersTimer = new Timers.Timer();
-        public Timer() {
-
+        private const string TICK_EVENT_KEY = "Form_Timer_Tick";
+        public Timer()
+        {
         }
 
-        public Timer(IContainer container) : this() {
-            // container.Add(this);
+        public Timer(IContainer container) : this()
+        {
         }
 
         [Bindable(true)]
@@ -37,12 +39,23 @@ namespace System.Windows.Forms
 
         public event EventHandler Tick
         {
-            add { TimersTimer.Elapsed += (object sender, Timers.ElapsedEventArgs e) => {
-                Gtk.Application.Invoke(value);
-            }; }
-            remove { TimersTimer.Elapsed -= (object sender, Timers.ElapsedEventArgs e) => {
-                Gtk.Application.Invoke(value);
-            }; }
+            add
+            {
+                Events.AddHandler(TICK_EVENT_KEY, value);
+                TimersTimer.Elapsed += TimersTimer_Elapsed;
+            }
+            remove
+            {
+                if (Events[TICK_EVENT_KEY] != null)
+                    Events.RemoveHandler(TICK_EVENT_KEY, value);
+                TimersTimer.Elapsed -= TimersTimer_Elapsed;
+            }
+        }
+
+        private void TimersTimer_Elapsed(object sender, Timers.ElapsedEventArgs e)
+        {
+            if (Events[TICK_EVENT_KEY] != null)
+                Gtk.Application.Invoke((EventHandler)Events[TICK_EVENT_KEY]);
         }
 
         public void Start()
@@ -55,9 +68,10 @@ namespace System.Windows.Forms
             TimersTimer.Stop();
         }
 
-        public override string ToString() { return "Timer"; }
+        public override string ToString() { return "System.Windows.Forms.Timer"; }
 
-        protected override void Dispose(bool disposing) {
+        protected override void Dispose(bool disposing)
+        {
             TimersTimer.Dispose();
             base.Dispose();
         }

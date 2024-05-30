@@ -10,20 +10,19 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace GTKWinFormsApp
 {
     public partial class Form2 : Form
     {
-
         public Form2()
         {
             InitializeComponent();
             // listView1.Items.Add(new ListViewItem("test1", new ListViewGroup("ListViewGroup1", "ListViewGroup1")) { });
-            
-            
-            DataTable dt = new DataTable();
+
+          DataTable dt = new DataTable();
             dt.Columns.Add("ID", typeof(string));
             dt.Columns.Add("CreateDate", typeof(DateTime));
             dt.Rows.Add("user1", DateTime.Now);
@@ -47,7 +46,26 @@ namespace GTKWinFormsApp
             //this.FormClosed += Form2_FormClosed;
         }
 
-        private void Timer1_Tick(object sender, System.EventArgs e)
+        private void TimersTimer_Elapsed(object? sender, ElapsedEventArgs e)
+        {
+            Gtk.Application.Invoke(delegate
+            {
+                listBox1.Items.Clear();
+                for (int i = 0; i < 10; i++)
+                {
+                    listBox1.Items.Add($"a异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}");
+                }
+            });
+        }
+        private void Timer1_Tick1(object? sender, System.EventArgs e)
+        {
+            listBox1.Items.Clear();
+            for (int i = 0; i < 10; i++)
+            {
+                listBox1.Items.Add($"b异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}");
+            }
+        }
+        private void Timer1_Tick(object? sender, System.EventArgs e)
         {
             listBox1.Items.Clear();
             for (int i = 0; i < 10; i++)
