@@ -123,27 +123,27 @@ GTKWinFormsApp.runtimeconfig.json
 ```
 
 #### demo效果
-![输入图片说明](/pic/run.png)
+![demo效果](/pic/run.png)
 
 #### 工具栏菜单
-![输入图片说明](/pic/toolstrip.jpeg)
+![工具栏菜单](/pic/toolstrip.jpeg)
 
 #### 图文窗口
-![输入图片说明](/pic/listview.png)
+![图文窗口](/pic/listview.png)
 
 ## 支持各种主题风格界面（windows xp、vista、7、8、10，macOS系列，等等）
 
 #### 主题风格，windows7风格界面
-![输入图片说明](/pic/windows7-1.png =1374x795)
-![输入图片说明](/pic/windows7-0.png =812x548)
+![windows7风格界面](/pic/windows7-1.png)
+![windows7风格界面](/pic/windows7-0.png)
 #### 主题风格，macOS风格界面
-![输入图片说明](/pic/macOS-1.png =811x570)
+![macOS风格界面](/pic/macOS-1.png)
 
-#### 支持作者，获取技术服务
- ![支持作者](/pic/love_reward_qrcode_.png)
+#### 支持GTKSystem，获取技术服务
+ ![支持GTKSystem](/pic/love_reward_qrcode_.png)
 
-#### 添加作者微信，更多服务帮助
- ![联系作者](/pic/contact_weixin.png)
+#### 添加GTKSystem微信，更多服务帮助
+ ![联系GTKSystem](/pic/contact_weixin.png)
  
 #### 交流/合作/商务/赞助
 QQ群：236066073
