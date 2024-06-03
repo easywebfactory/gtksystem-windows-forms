@@ -134,10 +134,10 @@ GTKWinFormsApp.runtimeconfig.json
 ## 支持各种主题风格界面（windows xp、vista、7、8、10，macOS系列，等等）
 
 #### 主题风格，windows7风格界面
-![输入图片说明](/pic/windows7-1.png =1374x795)
-![输入图片说明](/pic/windows7-0.png =812x548)
+![输入图片说明](/pic/windows7-1.png=1374x795)
+![输入图片说明](/pic/windows7-0.png=812x548)
 #### 主题风格，macOS风格界面
-![输入图片说明](/pic/macOS-1.png =811x570)
+![输入图片说明](/pic/macOS-1.png=811x570)
 
 #### 支持作者，获取技术服务
  ![支持作者](/pic/love_reward_qrcode_.png)
