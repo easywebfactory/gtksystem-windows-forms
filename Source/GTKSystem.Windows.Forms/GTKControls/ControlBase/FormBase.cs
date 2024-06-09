@@ -8,7 +8,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public readonly Gtk.ScrolledWindow ScrollView = new Gtk.ScrolledWindow();
         public readonly Gtk.Layout StatusBar = new Gtk.Layout(new Gtk.Adjustment(1, 1, 100, 1, 0, 1), new Gtk.Adjustment(1, 1, 100, 1, 0, 1));
         private readonly Gtk.Viewport StatusBarView = new Gtk.Viewport();
-        public readonly ViewportBase ContentView = new ViewportBase();
         public GtkControlOverride Override { get; set; }
         public FormBase() : base()
         {
@@ -27,7 +26,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             ScrollView.Halign = Gtk.Align.Fill;
             ScrollView.HscrollbarPolicy = PolicyType.Always;
             ScrollView.VscrollbarPolicy = PolicyType.Always;
-            ScrollView.Add(ContentView);
             this.ContentArea.PackStart(ScrollView, true, true, 0);
             StatusBar.Hexpand = true;
             StatusBar.Vexpand = false;
@@ -61,7 +59,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         protected override bool OnDrawn(Cairo.Context cr)
         {
             Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnDrawnBackground(cr, rec);
+            Override.OnPaint(cr, rec);
             return base.OnDrawn(cr);
         }
         public void CloseWindow()

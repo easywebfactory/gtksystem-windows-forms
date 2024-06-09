@@ -1,9 +1,8 @@
 ﻿/*
  * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
  * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://github.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
- * date: 2024/1/3
  */
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
@@ -17,8 +16,10 @@ namespace System.Windows.Forms
     [DesignerCategory("Component")]
     public partial class TreeView : Control
     {
+        protected Gtk.Viewport viewport = new Gtk.Viewport();
+        public override object GtkControl => viewport;
         public readonly TreeViewBase self = new TreeViewBase();
-        public override object GtkControl => self;
+        public override IControlGtk ISelf { get => self; }
         private Gtk.TreeStore _store;
         internal TreeNode root;
         internal Gtk.TreeStore Store { get { return _store; } }
@@ -26,6 +27,16 @@ namespace System.Windows.Forms
         private Gtk.TreeViewColumn checkboxcolumn;
         public TreeView() : base()
         {
+            self.Halign = Gtk.Align.Fill;
+            self.Valign = Gtk.Align.Fill;
+            self.Hexpand = true;
+            self.Vexpand = true;
+            Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
+            scrolledWindow.Add(self);
+            viewport.BorderWidth = 1;
+            viewport.Child = scrolledWindow;
+            viewport.StyleContext.AddClass("TreeView");
+
             root = new TreeNode(this);
             root.Name = "root";
 

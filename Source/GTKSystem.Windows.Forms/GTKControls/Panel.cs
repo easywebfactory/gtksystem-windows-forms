@@ -1,13 +1,13 @@
 ﻿/*
  * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
  * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://github.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
- * date: 2024/1/3
  */
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
+using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
@@ -28,12 +28,14 @@ namespace System.Windows.Forms
             contaner.MarginTop = 0;
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
+            contaner.BorderWidth = 0;
 
             scrolledwindow.Halign = Align.Fill;
             scrolledwindow.Valign = Align.Fill;
             scrolledwindow.VscrollbarPolicy = PolicyType.Never;
             scrolledwindow.HscrollbarPolicy = PolicyType.Never;
             scrolledwindow.Child = contaner;
+            scrolledwindow.BorderWidth = 0;
             self.Child = scrolledwindow;
         }
         public override BorderStyle BorderStyle { get { return self.ShadowType == Gtk.ShadowType.None ? BorderStyle.None : BorderStyle.FixedSingle; } set { self.BorderWidth = 1; self.ShadowType = Gtk.ShadowType.In; } }

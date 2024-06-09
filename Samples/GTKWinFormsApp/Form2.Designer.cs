@@ -67,10 +67,11 @@ namespace GTKWinFormsApp
             // listView1
             // 
             listView1.AllowColumnReorder = true;
-            listView1.BackColor = System.Drawing.Color.LightGreen;
+            listView1.BackColor = System.Drawing.SystemColors.Window;
             listView1.CheckBoxes = true;
             listView1.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3, columnHeader4, columnHeader5 });
             listView1.Dock = DockStyle.Top;
+            listView1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
             listView1.FullRowSelect = true;
             listView1.GridLines = true;
             listView1.GroupImageList = imageList1;
@@ -141,11 +142,12 @@ namespace GTKWinFormsApp
             // listBox1
             // 
             listBox1.BackColor = System.Drawing.SystemColors.Info;
+            listBox1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
             listBox1.FormattingEnabled = true;
             listBox1.Items.AddRange(new object[] { "0-异常警告0 --- 机房空调运行监控事件 --- 638526419125153303 ------ 2024/5/30 4:58:32", "1-异常警告1 --- 机房空调运行监控事件 --- 638526419135198480 ------ 2024/5/30 4:58:33", "2-异常警告2 --- 机房空调运行监控事件 --- 638526419155233741 ------ 2024/5/30 4:58:35", "3-异常警告3 --- 机房空调运行监控事件 --- 638526419495254800 ------ 2024/5/30 4:59:09", "4-异常警告4 --- 机房空调运行监控事件 --- 638526419505198651 ------ 2024/5/30 4:59:10", "5-异常警告5 --- 机房空调运行监控事件 --- 638526419565218661 ------ 2024/5/30 4:59:16" });
             listBox1.Location = new System.Drawing.Point(0, 455);
             listBox1.Name = "listBox1";
-            listBox1.Size = new System.Drawing.Size(720, 144);
+            listBox1.Size = new System.Drawing.Size(720, 124);
             listBox1.TabIndex = 3;
             listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             // 
@@ -155,7 +157,7 @@ namespace GTKWinFormsApp
             richTextBox1.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
             richTextBox1.Location = new System.Drawing.Point(740, 429);
             richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new System.Drawing.Size(563, 170);
+            richTextBox1.Size = new System.Drawing.Size(551, 150);
             richTextBox1.TabIndex = 14;
             richTextBox1.Text = "rich text";
             // 

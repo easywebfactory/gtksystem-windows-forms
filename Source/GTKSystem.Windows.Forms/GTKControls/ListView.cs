@@ -1,15 +1,13 @@
 /*
  * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
  * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://github.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
- * date: 2024/1/3
  */
 
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using GTKSystem.Windows.Forms.Utility;
-using Pango;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -73,7 +71,7 @@ namespace System.Windows.Forms
                 header.ShowAll();
                 foreach (ColumnHeader col in Columns)
                 {
-                    LabelBase label = new LabelBase(col.Text) { WidthRequest = col.Width, MaxWidthChars = 0, Valign = Gtk.Align.Center, Ellipsize = EllipsizeMode.End};
+                    LabelBase label = new LabelBase(col.Text) { WidthRequest = col.Width, MaxWidthChars = 0, Valign = Gtk.Align.Center, Ellipsize = Pango.EllipsizeMode.End};
                     label.TooltipText = col.Text;
                     label.Markup = col.Text;
                     label.Data.Add("ColumnIndex", col.DisplayIndex);
@@ -218,7 +216,24 @@ namespace System.Windows.Forms
 
 		public bool UseCompatibleStateImageBehavior { get; set; }
 		public System.Windows.Forms.View View { get; set; }
-
+        private int _fontSize;
+        protected int FontSize
+        {
+            get
+            {
+                if (_fontSize < 5)
+                {
+                    if (Font?.Size != null && Font.Size > 5)
+                    {
+                        if (Font.Unit == GraphicsUnit.Point)
+                            _fontSize = (int)Font.Size * 96 / 72;
+                        else
+                            _fontSize = (int)Font.Size;
+                    }
+                }
+                return _fontSize;
+            }
+        }
         protected void NativeAdd(ListViewItem item, int position)
         {
             BoxBase hBox = new BoxBase(Gtk.Orientation.Horizontal, 4);
@@ -234,7 +249,7 @@ namespace System.Windows.Forms
             boxitem.Data.Add("ItemId", item.Index);
             boxitem.Halign = Gtk.Align.Start;
             boxitem.Valign = Gtk.Align.Start;
-            boxitem.HeightRequest = 28;
+            boxitem.HeightRequest = FontSize + 12; 
             boxitem.BorderWidth = 0;
             boxitem.Margin = 0;
             foreach (ColumnHeader col in Columns)
@@ -267,7 +282,8 @@ namespace System.Windows.Forms
             {
                 CheckBox checkBox = new CheckBox();
                 checkBox.self.Halign = Gtk.Align.Start;
-                checkBox.Width = 20;
+                checkBox.Width = 25;
+                checkBox.self.BorderWidth = 0;
                 checkBox.Checked = item.Checked;
                 checkBox.CheckedChanged += (object sender, EventArgs e) =>
                 {
@@ -293,41 +309,57 @@ namespace System.Windows.Forms
                 flowBox.MinChildrenPerLine = 1;
                 flowBox.MaxChildrenPerLine = 1;
 
-                Gtk.Box fistcell = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
-                fistcell.Homogeneous = false;
+                Gtk.Layout fistcell = new Gtk.Layout(new Adjustment(IntPtr.Zero), new Adjustment(IntPtr.Zero));
                 fistcell.Halign = Gtk.Align.Start;
                 fistcell.Valign = Gtk.Align.Fill;
+                fistcell.Vexpand = true;
                 fistcell.BorderWidth = 0;
-                fistcell.WidthRequest = Columns.Count > 0 ? Columns[0].Width - 32 : -1;
+                fistcell.WidthRequest = Columns.Count > 0 ? Columns[0].Width - 30 : -1;
+                fistcell.HeightRequest = boxitem.HeightRequest;
+
+                int x_position = 0;
+                int padding = 2;
                 if (this.SmallImageList != null)
                 {
-                    this.SmallImageList.ImageSize = new Size(16, 16);
+                    int imgsize = FontSize + 2;
+                    this.SmallImageList.ImageSize = new Size(imgsize, imgsize);
                     if (!string.IsNullOrWhiteSpace(item.ImageKey))
                     {
                         Drawing.Image img = this.SmallImageList.Images[item.ImageKey];
-
-                        fistcell.PackStart(new Gtk.Image(img.Pixbuf) { Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill, WidthRequest = 20 }, false, false, 1);
+                        fistcell.Put(new Gtk.Image(img.Pixbuf) { Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill }, x_position, padding + 2);
+                        x_position += imgsize + 5;
                     }
                     else if (item.ImageIndex > -1)
                     {
                         Drawing.Image img = this.SmallImageList.Images[item.ImageIndex];
-                        fistcell.PackStart(new Gtk.Image(img.Pixbuf) { Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill, WidthRequest = 20 }, false, false, 1);
+                        fistcell.Put(new Gtk.Image(img.Pixbuf) { Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill }, x_position, padding + 2);
+                        x_position += imgsize + 5;
                     }
                 }
-                Label lab = new Label();
+                Gtk.Label lab = new Gtk.Label();
+                Pango.AttrList attributes = new Pango.AttrList();
                 if (item.ForeColor.HasValue)
-                    lab.ForeColor = item.ForeColor.Value;
-                lab.self.Halign = Gtk.Align.Start;
-                lab.self.Valign = Gtk.Align.Fill;
-                lab.self.Ellipsize = Pango.EllipsizeMode.End;
+                {
+                    Pango.AttrForeground fg = new Pango.AttrForeground(Convert.ToUInt16(item.ForeColor.Value.R * 257), Convert.ToUInt16(item.ForeColor.Value.G * 257), Convert.ToUInt16(item.ForeColor.Value.B * 257));
+                    attributes.Insert(fg);
+                }
+                if (item.BackColor.HasValue)
+                {
+                    Pango.AttrBackground fg = new Pango.AttrBackground(Convert.ToUInt16(item.BackColor.Value.R * 257), Convert.ToUInt16(item.BackColor.Value.G * 257), Convert.ToUInt16(item.BackColor.Value.B * 257));
+                    attributes.Insert(fg);
+                }
+                lab.Attributes = attributes;
+                lab.Halign = Gtk.Align.Start;
+                lab.Valign = Gtk.Align.Fill;
+                lab.Ellipsize = Pango.EllipsizeMode.End;
                 lab.Text = item.Text;
-                fistcell.PackStart(lab.self, true, true, 1);
-                Gtk.Layout fistlayout = new Gtk.Layout(new Adjustment(IntPtr.Zero), new Adjustment(IntPtr.Zero));
-                fistlayout.Halign = Gtk.Align.Start;
-                fistlayout.Valign = Gtk.Align.Fill;
-                fistlayout.WidthRequest = fistcell.WidthRequest;
-                fistlayout.Add(fistcell);
-                hBox.PackStart(fistlayout, false, false, 0);
+                lab.Xalign = 0;
+                lab.Xpad = 0;
+                lab.Ypad = 0;
+                lab.WidthRequest = fistcell.WidthRequest - x_position;
+                fistcell.Put(lab, x_position, padding);
+                hBox.PackStart(fistcell, false, true, 0);
+
                 int index = 0;
                 foreach (ColumnHeader col in Columns)
                 {
@@ -340,21 +372,30 @@ namespace System.Windows.Forms
                         if (item.SubItems != null && item.SubItems.Count > index - 1)
                         {
                             ListViewSubItem subitem = item.SubItems[index - 1];
-                            Label sublabel = new Label();
+                            Gtk.Label sublabel = new Gtk.Label();
+                            Pango.AttrList subattributes = new Pango.AttrList();
                             if (subitem.ForeColor.HasValue)
-                                sublabel.ForeColor = subitem.ForeColor.Value;
+                            {
+                                Pango.AttrForeground fg = new Pango.AttrForeground(Convert.ToUInt16(subitem.ForeColor.Value.R * 257), Convert.ToUInt16(subitem.ForeColor.Value.G * 257), Convert.ToUInt16(subitem.ForeColor.Value.B * 257));
+                                subattributes.Insert(fg);
+                                sublabel.Attributes = subattributes;
+                            }
                             if (subitem.BackColor.HasValue)
-                                sublabel.BackColor = subitem.BackColor.Value;
-                            sublabel.self.WidthRequest = col.Width + 2;
-                            sublabel.self.MaxWidthChars = 0;
+                            {
+                                Pango.AttrBackground fg = new Pango.AttrBackground(Convert.ToUInt16(subitem.BackColor.Value.R * 257), Convert.ToUInt16(subitem.BackColor.Value.G * 257), Convert.ToUInt16(subitem.BackColor.Value.B * 257));
+                                subattributes.Insert(fg);
+                            }
+                            sublabel.Attributes = subattributes;
+                            sublabel.WidthRequest = col.Width + 2;
+                            sublabel.MaxWidthChars = 0;
 
-                            sublabel.self.Halign = Gtk.Align.Fill;
-                            sublabel.self.Valign = Gtk.Align.Fill;
-                            sublabel.self.Ellipsize = Pango.EllipsizeMode.End;
-                            sublabel.self.Text = subitem.Text;
-                            sublayout.Add(sublabel.self);
+                            sublabel.Halign = Gtk.Align.Fill;
+                            sublabel.Valign = Gtk.Align.Fill;
+                            sublabel.Ellipsize = Pango.EllipsizeMode.End;
+                            sublabel.Text = subitem.Text;
+                            sublayout.Add(sublabel);
                         }
-                        hBox.PackStart(sublayout, false, false, 0);
+                        hBox.PackStart(sublayout, false, true, 0);
                     }
                     index++;
                 }
@@ -381,15 +422,26 @@ namespace System.Windows.Forms
                     }
 
                 }
-                Label lab = new Label();
+                Gtk.Label lab = new Gtk.Label();
+                Pango.AttrList attributes = new Pango.AttrList();
                 if (item.ForeColor.HasValue)
-                    lab.ForeColor = item.ForeColor.Value;
-                lab.self.MaxWidthChars = 100;
-                lab.self.Halign = Gtk.Align.Start;
-                lab.self.Valign = Gtk.Align.Center;
-                lab.self.Ellipsize = Pango.EllipsizeMode.End;
-                lab.self.Text = item.Text;
-                hBox.PackStart(lab.self, false, false, 0);
+                {
+                    Pango.AttrForeground fg = new Pango.AttrForeground(Convert.ToUInt16(item.ForeColor.Value.R * 257), Convert.ToUInt16(item.ForeColor.Value.G * 257), Convert.ToUInt16(item.ForeColor.Value.B * 257));
+                    attributes.Insert(fg);
+
+                }
+                if (item.BackColor.HasValue)
+                {
+                    Pango.AttrBackground fg = new Pango.AttrBackground(Convert.ToUInt16(item.BackColor.Value.R * 257), Convert.ToUInt16(item.BackColor.Value.G * 257), Convert.ToUInt16(item.BackColor.Value.B * 257));
+                    attributes.Insert(fg);
+                }
+                lab.Attributes = attributes;
+                lab.MaxWidthChars = 100;
+                lab.Halign = Gtk.Align.Start;
+                lab.Valign = Gtk.Align.Center;
+                lab.Ellipsize = Pango.EllipsizeMode.End;
+                lab.Text = item.Text;
+                hBox.PackStart(lab, false, false, 0);
             }
             else if (this.View == View.LargeIcon)
             {
@@ -417,15 +469,25 @@ namespace System.Windows.Forms
                         vBox.Add(new Gtk.Image(img.Pixbuf) { WidthRequest = Math.Min(50, width), HeightRequest = Math.Min(50, height) });
                     }
                 }
-                Label lab= new Label();
+                Gtk.Label lab = new Gtk.Label();
+                Pango.AttrList attributes = new Pango.AttrList();
                 if (item.ForeColor.HasValue)
-                    lab.ForeColor = item.ForeColor.Value;
-                lab.self.MaxWidthChars = 16;
-                lab.self.Halign = Gtk.Align.Center;
-                lab.self.Valign = Gtk.Align.Center;
-                lab.self.Ellipsize = Pango.EllipsizeMode.End;
-                lab.self.Text = item.Text;
-                vBox.Add(lab.self);
+                {
+                    Pango.AttrForeground fg = new Pango.AttrForeground(Convert.ToUInt16(item.ForeColor.Value.R * 257), Convert.ToUInt16(item.ForeColor.Value.G * 257), Convert.ToUInt16(item.ForeColor.Value.B * 257));
+                    attributes.Insert(fg);
+
+                }
+                if (item.BackColor.HasValue)
+                {
+                    Pango.AttrBackground fg = new Pango.AttrBackground(Convert.ToUInt16(item.BackColor.Value.R * 257), Convert.ToUInt16(item.BackColor.Value.G * 257), Convert.ToUInt16(item.BackColor.Value.B * 257));
+                    attributes.Insert(fg);
+                }
+                lab.MaxWidthChars = 16;
+                lab.Halign = Gtk.Align.Center;
+                lab.Valign = Gtk.Align.Center;
+                lab.Ellipsize = Pango.EllipsizeMode.End;
+                lab.Text = item.Text;
+                vBox.Add(lab);
                 hBox.PackStart(vBox, false, false, 0);
             }
             else
@@ -433,13 +495,23 @@ namespace System.Windows.Forms
                 header.Visible = false;
                 boxitem.Halign = Gtk.Align.Fill;
 
-                Label lab = new Label();
+                Gtk.Label lab = new Gtk.Label();
+                Pango.AttrList attributes = new Pango.AttrList();
                 if (item.ForeColor.HasValue)
-                    lab.ForeColor = item.ForeColor.Value;
-                lab.self.Halign = Gtk.Align.Start;
-                lab.self.Valign = Gtk.Align.Fill;
-                lab.self.Text = item.Text;
-                hBox.PackStart(lab.self, false, false, 0);
+                {
+                    Pango.AttrForeground fg = new Pango.AttrForeground(Convert.ToUInt16(item.ForeColor.Value.R * 257), Convert.ToUInt16(item.ForeColor.Value.G * 257), Convert.ToUInt16(item.ForeColor.Value.B * 257));
+                    attributes.Insert(fg);
+
+                }
+                if (item.BackColor.HasValue)
+                {
+                    Pango.AttrBackground fg = new Pango.AttrBackground(Convert.ToUInt16(item.BackColor.Value.R * 257), Convert.ToUInt16(item.BackColor.Value.G * 257), Convert.ToUInt16(item.BackColor.Value.B * 257));
+                    attributes.Insert(fg);
+                }
+                lab.Halign = Gtk.Align.Start;
+                lab.Valign = Gtk.Align.Fill;
+                lab.Text = item.Text;
+                hBox.PackStart(lab, false, false, 0);
             }
         }
 

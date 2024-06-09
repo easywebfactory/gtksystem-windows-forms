@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -8,6 +10,7 @@ using System.Resources;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
 using System.Xml;
+using static System.Windows.Forms.ImageList;
 
 namespace GTKSystem.Resources
 {
@@ -174,7 +177,18 @@ namespace GTKSystem.Resources
         }
         public virtual object GetObject(string name, CultureInfo culture)
         {
-            return GetObject(name);
+            object result = GetObject(name);
+            var stack = new StackTrace(true);
+            System.Reflection.MethodInfo method = (System.Reflection.MethodInfo)stack.GetFrame(1).GetMethod();
+            if (method.ReturnType.Name == "Object" || method.ReturnType.Name.Equals(result.GetType().Name))
+            {
+                return result;
+            }
+            else
+            {
+                return null;
+            }
+
         }
         public virtual object GetObject(string name)
         {
@@ -208,22 +222,34 @@ namespace GTKSystem.Resources
                     else
                     {
                         byte[] filebytes = ReadResourceFile(name);
-                        if (filebytes == null)
+                        if (name.EndsWith(".BackgroundImage"))
                         {
-                            return GetResourceInfo;
+                            System.Drawing.Bitmap img = new System.Drawing.Bitmap(filebytes);
+                            img.FileName = name;
+                            return img;
+                        }
+                        else if(name.EndsWith(".Image"))
+                        {
+                            System.Drawing.Bitmap img = new System.Drawing.Bitmap(filebytes);
+                            img.FileName = name;
+                            return img;
+                        }
+                        else if (filebytes == null)
+                        {
+                            System.Drawing.Bitmap img = new System.Drawing.Bitmap(0,0);
+                            img.FileName = name;
+                            return img;
                         }
                         else
                         {
-                            System.Drawing.Bitmap img = new System.Drawing.Bitmap(1, 1);
+                            System.Drawing.Bitmap img = new System.Drawing.Bitmap(filebytes);
                             img.FileName = name;
-                            img.PixbufData = filebytes;
                             return img;
                         }
                     }
                 }
                 else
                 {
-                    GetResourceInfo.ImageBytes = obj as byte[];
                     return obj;
                 }
             }

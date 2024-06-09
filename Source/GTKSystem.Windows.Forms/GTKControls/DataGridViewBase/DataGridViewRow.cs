@@ -30,7 +30,7 @@
 
         public DataGridViewRowHeaderCell HeaderCell { get; set; }
 
-        public int Height { get; set; }
+        public int Height { get; set; } = 28;
 
         public  DataGridViewCellStyle InheritedStyle { get; }
 

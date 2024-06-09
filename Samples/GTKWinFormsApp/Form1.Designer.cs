@@ -53,17 +53,19 @@ namespace GTKWinFormsApp
             Operate = new DataGridViewButtonColumn();
             PIC = new DataGridViewImageColumn();
             groupBox1 = new GroupBox();
-            button7 = new Button();
             checkBox2 = new CheckBox();
             maskedTextBox2 = new MaskedTextBox();
             radioButton3 = new RadioButton();
+            dateTimePicker1 = new DateTimePicker();
             radioButton2 = new RadioButton();
             label2 = new Label();
+            numericUpDown1 = new NumericUpDown();
             radioButton1 = new RadioButton();
             linkLabel1 = new LinkLabel();
             button2 = new Button();
             label1 = new Label();
             maskedTextBox1 = new MaskedTextBox();
+            button7 = new Button();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
             tabPage2 = new TabPage();
@@ -81,6 +83,7 @@ namespace GTKWinFormsApp
             label3 = new Label();
             checkBox1 = new CheckBox();
             button3 = new Button();
+            tabPage3 = new TabPage();
             treeView1 = new TreeView();
             pictureBox1 = new PictureBox();
             contextMenuStrip1 = new ContextMenuStrip(components);
@@ -94,13 +97,12 @@ namespace GTKWinFormsApp
             test2ToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem4 = new ToolStripMenuItem();
             二级菜单1ToolStripMenuItem = new ToolStripMenuItem();
-            dateTimePicker1 = new DateTimePicker();
-            numericUpDown1 = new NumericUpDown();
             checkedListBox1 = new CheckedListBox();
             splitContainer1 = new SplitContainer();
             pictureBox2 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -109,7 +111,6 @@ namespace GTKWinFormsApp
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             contextMenuStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -122,12 +123,13 @@ namespace GTKWinFormsApp
             button1.BackColor = System.Drawing.Color.Gold;
             button1.BackgroundImage = Properties.Resources.timg;
             button1.BackgroundImageLayout = ImageLayout.Stretch;
-            button1.ForeColor = System.Drawing.Color.Red;
+            button1.Font = new System.Drawing.Font("Microsoft YaHei UI", 11F);
+            button1.ForeColor = System.Drawing.Color.FromArgb(192, 255, 255);
             button1.Image = Properties.Resources.timg;
-            button1.Location = new System.Drawing.Point(317, 148);
+            button1.Location = new System.Drawing.Point(273, 115);
             button1.Margin = new Padding(4);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(175, 31);
+            button1.Size = new System.Drawing.Size(175, 50);
             button1.TabIndex = 0;
             button1.Text = "加载数据表数据";
             button1.UseVisualStyleBackColor = false;
@@ -136,12 +138,15 @@ namespace GTKWinFormsApp
             // 
             // comboBox1
             // 
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
+            comboBox1.ForeColor = System.Drawing.Color.FromArgb(192, 55, 55);
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "test1", "test2", "test3333333333333333333" });
-            comboBox1.Location = new System.Drawing.Point(383, 25);
+            comboBox1.Items.AddRange(new object[] { "test1", "test2", "test3333333333333333333", "这是下拉列表控件数据测试" });
+            comboBox1.Location = new System.Drawing.Point(355, 31);
             comboBox1.Margin = new Padding(4);
             comboBox1.Name = "comboBox1";
-            comboBox1.Size = new System.Drawing.Size(134, 28);
+            comboBox1.Size = new System.Drawing.Size(154, 28);
             comboBox1.TabIndex = 1;
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             comboBox1.SelectedValueChanged += comboBox1_SelectedValueChanged;
@@ -149,7 +154,7 @@ namespace GTKWinFormsApp
             // textBox1
             // 
             textBox1.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            textBox1.Location = new System.Drawing.Point(524, 71);
+            textBox1.Location = new System.Drawing.Point(669, 107);
             textBox1.Margin = new Padding(4);
             textBox1.Name = "textBox1";
             textBox1.Size = new System.Drawing.Size(93, 27);
@@ -157,6 +162,9 @@ namespace GTKWinFormsApp
             textBox1.Text = "text";
             textBox1.TextChanged += textBox1_TextChanged;
             textBox1.Enter += textBox1_Enter;
+            textBox1.KeyDown += textBox1_KeyDown;
+            textBox1.KeyPress += textBox1_KeyPress;
+            textBox1.KeyUp += textBox1_KeyUp;
             textBox1.Validating += textBox1_Validating;
             // 
             // dataGridView1
@@ -169,7 +177,8 @@ namespace GTKWinFormsApp
             dataGridView1.Margin = new Padding(4);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new System.Drawing.Size(1323, 269);
+            dataGridView1.RowTemplate.Height = 36;
+            dataGridView1.Size = new System.Drawing.Size(1323, 313);
             dataGridView1.TabIndex = 2;
             dataGridView1.MultiSelectChanged += dataGridView1_MultiSelectChanged;
             dataGridView1.CellClick += dataGridView1_CellClick;
@@ -236,12 +245,13 @@ namespace GTKWinFormsApp
             // groupBox1
             // 
             groupBox1.AutoSize = true;
-            groupBox1.Controls.Add(button7);
             groupBox1.Controls.Add(checkBox2);
             groupBox1.Controls.Add(maskedTextBox2);
             groupBox1.Controls.Add(radioButton3);
+            groupBox1.Controls.Add(dateTimePicker1);
             groupBox1.Controls.Add(radioButton2);
             groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(numericUpDown1);
             groupBox1.Controls.Add(radioButton1);
             groupBox1.Controls.Add(linkLabel1);
             groupBox1.Controls.Add(comboBox1);
@@ -254,28 +264,17 @@ namespace GTKWinFormsApp
             groupBox1.Margin = new Padding(4);
             groupBox1.Name = "groupBox1";
             groupBox1.Padding = new Padding(4);
-            groupBox1.Size = new System.Drawing.Size(1339, 167);
+            groupBox1.Size = new System.Drawing.Size(1339, 177);
             groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
             groupBox1.Text = "分组框标题";
-            // 
-            // button7
-            // 
-            button7.BackColor = System.Drawing.Color.LightCoral;
-            button7.Location = new System.Drawing.Point(827, 21);
-            button7.Name = "button7";
-            button7.Size = new System.Drawing.Size(154, 29);
-            button7.TabIndex = 14;
-            button7.Text = "listview演示";
-            button7.UseVisualStyleBackColor = false;
-            button7.Click += button7_Click;
             // 
             // checkBox2
             // 
             checkBox2.AutoSize = true;
             checkBox2.Checked = true;
             checkBox2.CheckState = CheckState.Indeterminate;
-            checkBox2.Location = new System.Drawing.Point(681, 26);
+            checkBox2.Location = new System.Drawing.Point(605, 31);
             checkBox2.Margin = new Padding(4);
             checkBox2.Name = "checkBox2";
             checkBox2.Size = new System.Drawing.Size(109, 24);
@@ -287,7 +286,7 @@ namespace GTKWinFormsApp
             // 
             // maskedTextBox2
             // 
-            maskedTextBox2.Location = new System.Drawing.Point(101, 71);
+            maskedTextBox2.Location = new System.Drawing.Point(101, 75);
             maskedTextBox2.Margin = new Padding(4);
             maskedTextBox2.Name = "maskedTextBox2";
             maskedTextBox2.PasswordChar = '*';
@@ -307,6 +306,19 @@ namespace GTKWinFormsApp
             radioButton3.Text = "radioButton3";
             radioButton3.UseVisualStyleBackColor = true;
             radioButton3.CheckedChanged += radioButton3_CheckedChanged;
+            // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.CustomFormat = "yyyy年MM年dd HH时mm分ss秒";
+            dateTimePicker1.Format = DateTimePickerFormat.Custom;
+            dateTimePicker1.Location = new System.Drawing.Point(68, 122);
+            dateTimePicker1.Margin = new Padding(4);
+            dateTimePicker1.MaxDate = new DateTime(2029, 5, 17, 15, 58, 47, 534);
+            dateTimePicker1.MinDate = new DateTime(2024, 3, 17, 15, 58, 47, 535);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new System.Drawing.Size(256, 27);
+            dateTimePicker1.TabIndex = 8;
+            dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged;
             // 
             // radioButton2
             // 
@@ -332,6 +344,15 @@ namespace GTKWinFormsApp
             label2.TabIndex = 3;
             label2.Text = "掩 码：";
             // 
+            // numericUpDown1
+            // 
+            numericUpDown1.Location = new System.Drawing.Point(355, 76);
+            numericUpDown1.Margin = new Padding(4);
+            numericUpDown1.Name = "numericUpDown1";
+            numericUpDown1.Size = new System.Drawing.Size(154, 27);
+            numericUpDown1.TabIndex = 9;
+            numericUpDown1.ValueChanged += numericUpDown1_ValueChanged;
+            // 
             // radioButton1
             // 
             radioButton1.AutoSize = true;
@@ -349,7 +370,7 @@ namespace GTKWinFormsApp
             linkLabel1.ActiveLinkColor = System.Drawing.Color.Blue;
             linkLabel1.AutoSize = true;
             linkLabel1.LinkColor = System.Drawing.Color.Red;
-            linkLabel1.Location = new System.Drawing.Point(886, 108);
+            linkLabel1.Location = new System.Drawing.Point(804, 29);
             linkLabel1.Margin = new Padding(4, 0, 4, 0);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new System.Drawing.Size(82, 20);
@@ -359,23 +380,24 @@ namespace GTKWinFormsApp
             // 
             // button2
             // 
+            button2.BackColor = System.Drawing.Color.FromArgb(255, 128, 255);
             button2.BackgroundImage = (System.Drawing.Image)resources.GetObject("button2.BackgroundImage");
-            button2.BackgroundImageLayout = ImageLayout.Stretch;
+            button2.BackgroundImageLayout = ImageLayout.Center;
             button2.Font = new System.Drawing.Font("Microsoft YaHei UI", 15F);
             button2.ForeColor = System.Drawing.Color.Blue;
-            button2.Location = new System.Drawing.Point(681, 71);
+            button2.Location = new System.Drawing.Point(796, 88);
             button2.Margin = new Padding(4);
             button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(185, 68);
+            button2.Size = new System.Drawing.Size(185, 57);
             button2.TabIndex = 0;
             button2.Text = "选择颜色按钮";
-            button2.UseVisualStyleBackColor = true;
+            button2.UseVisualStyleBackColor = false;
             button2.Click += button2_Click;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(432, 74);
+            label1.Location = new System.Drawing.Point(577, 110);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(84, 20);
@@ -392,17 +414,29 @@ namespace GTKWinFormsApp
             maskedTextBox1.TabIndex = 4;
             maskedTextBox1.ValidatingType = typeof(DateTime);
             // 
+            // button7
+            // 
+            button7.BackColor = System.Drawing.Color.LightCoral;
+            button7.Location = new System.Drawing.Point(273, 21);
+            button7.Name = "button7";
+            button7.Size = new System.Drawing.Size(154, 51);
+            button7.TabIndex = 14;
+            button7.Text = "listview演示";
+            button7.UseVisualStyleBackColor = false;
+            button7.Click += button7_Click;
+            // 
             // tabControl1
             // 
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
+            tabControl1.Controls.Add(tabPage3);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.ItemSize = new System.Drawing.Size(181, 25);
             tabControl1.Location = new System.Drawing.Point(0, 0);
             tabControl1.Margin = new Padding(4);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new System.Drawing.Size(1339, 310);
+            tabControl1.Size = new System.Drawing.Size(1339, 354);
             tabControl1.TabIndex = 4;
             tabControl1.DrawItem += tabControl1_DrawItem;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
@@ -414,7 +448,7 @@ namespace GTKWinFormsApp
             tabPage1.Margin = new Padding(4);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(4);
-            tabPage1.Size = new System.Drawing.Size(1331, 277);
+            tabPage1.Size = new System.Drawing.Size(1331, 321);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "数据表格";
             tabPage1.UseVisualStyleBackColor = true;
@@ -432,7 +466,7 @@ namespace GTKWinFormsApp
             tabPage2.Margin = new Padding(4);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(4);
-            tabPage2.Size = new System.Drawing.Size(1331, 277);
+            tabPage2.Size = new System.Drawing.Size(1331, 321);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "容器类表格";
             tabPage2.UseVisualStyleBackColor = true;
@@ -586,9 +620,19 @@ namespace GTKWinFormsApp
             button3.Text = "button3";
             button3.UseVisualStyleBackColor = true;
             // 
+            // tabPage3
+            // 
+            tabPage3.Location = new System.Drawing.Point(4, 29);
+            tabPage3.Name = "tabPage3";
+            tabPage3.Padding = new Padding(3);
+            tabPage3.Size = new System.Drawing.Size(1331, 321);
+            tabPage3.TabIndex = 2;
+            tabPage3.Text = "tabPage3";
+            tabPage3.UseVisualStyleBackColor = true;
+            // 
             // treeView1
             // 
-            treeView1.Location = new System.Drawing.Point(127, 66);
+            treeView1.Location = new System.Drawing.Point(35, 21);
             treeView1.Margin = new Padding(4);
             treeView1.Name = "treeView1";
             treeNode1.Name = "";
@@ -604,7 +648,7 @@ namespace GTKWinFormsApp
             treeNode6.Name = "Node1";
             treeNode6.Text = "Node1";
             treeView1.Nodes.AddRange(new TreeNode[] { treeNode5, treeNode6 });
-            treeView1.Size = new System.Drawing.Size(154, 113);
+            treeView1.Size = new System.Drawing.Size(154, 132);
             treeView1.TabIndex = 4;
             treeView1.AfterCollapse += treeView1_AfterCollapse;
             treeView1.AfterExpand += treeView1_AfterExpand;
@@ -710,28 +754,6 @@ namespace GTKWinFormsApp
             二级菜单1ToolStripMenuItem.Size = new System.Drawing.Size(161, 26);
             二级菜单1ToolStripMenuItem.Text = "二级菜单1";
             // 
-            // dateTimePicker1
-            // 
-            dateTimePicker1.CustomFormat = "yyyy年MM年dd HH时mm分ss秒";
-            dateTimePicker1.Format = DateTimePickerFormat.Custom;
-            dateTimePicker1.Location = new System.Drawing.Point(26, 21);
-            dateTimePicker1.Margin = new Padding(4);
-            dateTimePicker1.MaxDate = new DateTime(2029, 5, 17, 15, 58, 47, 534);
-            dateTimePicker1.MinDate = new DateTime(2024, 3, 17, 15, 58, 47, 535);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new System.Drawing.Size(256, 27);
-            dateTimePicker1.TabIndex = 8;
-            dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged;
-            // 
-            // numericUpDown1
-            // 
-            numericUpDown1.Location = new System.Drawing.Point(317, 29);
-            numericUpDown1.Margin = new Padding(4);
-            numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new System.Drawing.Size(154, 27);
-            numericUpDown1.TabIndex = 9;
-            numericUpDown1.ValueChanged += numericUpDown1_ValueChanged;
-            // 
             // checkedListBox1
             // 
             checkedListBox1.CheckOnClick = true;
@@ -742,7 +764,7 @@ namespace GTKWinFormsApp
             checkedListBox1.Margin = new Padding(4);
             checkedListBox1.MultiColumn = true;
             checkedListBox1.Name = "checkedListBox1";
-            checkedListBox1.Size = new System.Drawing.Size(241, 92);
+            checkedListBox1.Size = new System.Drawing.Size(241, 136);
             checkedListBox1.TabIndex = 13;
             checkedListBox1.ItemCheck += checkedListBox1_ItemCheck;
             checkedListBox1.SelectedValueChanged += checkedListBox1_SelectedValueChanged;
@@ -750,7 +772,7 @@ namespace GTKWinFormsApp
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Bottom;
-            splitContainer1.Location = new System.Drawing.Point(0, 196);
+            splitContainer1.Location = new System.Drawing.Point(0, 206);
             splitContainer1.Margin = new Padding(4);
             splitContainer1.Name = "splitContainer1";
             splitContainer1.Orientation = Orientation.Horizontal;
@@ -758,20 +780,19 @@ namespace GTKWinFormsApp
             // splitContainer1.Panel1
             // 
             splitContainer1.Panel1.AutoScroll = true;
+            splitContainer1.Panel1.Controls.Add(button7);
             splitContainer1.Panel1.Controls.Add(pictureBox2);
             splitContainer1.Panel1.Controls.Add(treeView1);
             splitContainer1.Panel1.Controls.Add(checkedListBox1);
             splitContainer1.Panel1.Controls.Add(pictureBox1);
-            splitContainer1.Panel1.Controls.Add(dateTimePicker1);
             splitContainer1.Panel1.Controls.Add(button1);
-            splitContainer1.Panel1.Controls.Add(numericUpDown1);
             // 
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.AutoScroll = true;
             splitContainer1.Panel2.Controls.Add(tabControl1);
             splitContainer1.Size = new System.Drawing.Size(1339, 565);
-            splitContainer1.SplitterDistance = 250;
+            splitContainer1.SplitterDistance = 206;
             splitContainer1.SplitterWidth = 5;
             splitContainer1.TabIndex = 14;
             // 
@@ -789,9 +810,6 @@ namespace GTKWinFormsApp
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
-            BackColor = System.Drawing.Color.AliceBlue;
-            BackgroundImage = Properties.Resources.timg;
-            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new System.Drawing.Size(1360, 743);
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(groupBox1);
@@ -801,10 +819,11 @@ namespace GTKWinFormsApp
             Margin = new Padding(4);
             MinimizeBox = false;
             Name = "Form1";
-            Text = "C# winform gtk效果";
+            Text = "默认风格界面";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage2.ResumeLayout(false);
@@ -817,7 +836,6 @@ namespace GTKWinFormsApp
             contextMenuStrip1.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
@@ -888,6 +906,7 @@ namespace GTKWinFormsApp
         private DataGridViewComboBoxColumn CreateDate;
         private DataGridViewButtonColumn Operate;
         private DataGridViewImageColumn PIC;
+        private TabPage tabPage3;
     }
 }
 

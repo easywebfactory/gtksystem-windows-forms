@@ -1,10 +1,11 @@
-﻿using Cairo;
-using Gdk;
+﻿using Gdk;
 using GLib;
 using Gtk;
 using System;
 using System.Diagnostics.CodeAnalysis;
- 
+using System.IO;
+using System.Reflection;
+
 namespace System.Windows.Forms.GtkRender
 {
     public class CellRendererValue : CellRendererText
@@ -23,7 +24,7 @@ namespace System.Windows.Forms.GtkRender
                     this.Text = value.Text;
                     if (value.Background.Name != "0" && value.Background.Name != "transparent")
                     {
-                        this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = Math.Min(0.6, value.Background.A), Blue = value.Background.B, Green = value.Background.G, Red = value.Background.R };
+                        this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = value.Background.A / 255, Blue = value.Background.B / 255, Green = value.Background.G / 255, Red = value.Background.R / 255 };
                     }
                 }
             }
@@ -45,7 +46,7 @@ namespace System.Windows.Forms.GtkRender
                     this.Active = (value.Text == "1" || value.Text.ToLower() == "true") ? true : false;
                     if (value.Background.Name != "0" && value.Background.Name != "transparent")
                     {
-                        this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = Math.Min(0.6, value.Background.A), Blue = value.Background.B, Green = value.Background.G, Red = value.Background.R };
+                        this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = value.Background.A / 255, Blue = value.Background.B / 255, Green = value.Background.G / 255, Red = value.Background.R / 255 };
                     }
                 }
             }
@@ -67,7 +68,7 @@ namespace System.Windows.Forms.GtkRender
                     this.Text = value.Text;
                     if (value.Background.Name != "0" && value.Background.Name != "transparent")
                     {
-                        this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = Math.Min(0.6, value.Background.A), Blue = value.Background.B, Green = value.Background.G, Red = value.Background.R };
+                        this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = value.Background.A / 255, Blue = value.Background.B / 255, Green = value.Background.G / 255, Red = value.Background.R / 255 };
                     }
                 }
             }
@@ -75,6 +76,13 @@ namespace System.Windows.Forms.GtkRender
     }
     public class CellRendererPixbufValue : CellRendererPixbuf
     {
+        DataGridView GridView;
+        DataGridViewColumn Column;
+        public CellRendererPixbufValue(DataGridViewColumn view)
+        {
+            Column = view;
+            GridView = view.DataGridView;
+        }
         [Property("cellvalue")]
         public CellValue CellValue
         {
@@ -84,21 +92,61 @@ namespace System.Windows.Forms.GtkRender
                 {
                     if (value.Background.Name != "0" && value.Background.Name != "transparent")
                     {
-                        this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = Math.Min(0.6, value.Background.A), Blue = value.Background.B, Green = value.Background.G, Red = value.Background.R };
+                        this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = value.Background.A / 255, Blue = value.Background.B / 255, Green = value.Background.G / 255, Red = value.Background.R / 255 };
                     }
-                    if (string.IsNullOrEmpty(value.Text) == false && value.Text.Contains("."))
+                    if (string.IsNullOrEmpty(value.Text))
                     {
-                        try
-                        {
-                            this.Pixbuf = new Gdk.Pixbuf(value.Text);
-                        }
-                        catch {
-                            this.IconName = "image-missing";
-                        }
+                        this.IconName = "";
                     }
                     else
                     {
-                        this.IconName = value.Text;
+                        try
+                        {
+                            if (this.Data[value.Text] == null)
+                            {
+                                if (Uri.TryCreate(value.Text, UriKind.Absolute, out Uri result))
+                                {
+                                    System.Threading.Tasks.Task.Factory.StartNew(o =>
+                                    {
+                                        CellRendererPixbufValue cell = (CellRendererPixbufValue)o;
+                                        try
+                                        {
+                                            GLib.IFile file = GLib.FileFactory.NewForUri(result);
+                                            GLib.FileInputStream stream = file.Read(new GLib.Cancellable());
+                                            Gdk.Pixbuf nbuf = new Gdk.Pixbuf(stream, Column.Width, GridView.RowTemplate.Height, true, null);
+                                            cell.Data.Add(value.Text, nbuf);
+                                            Gtk.Application.Invoke((o, s) =>
+                                            {
+                                                cell.Pixbuf = nbuf;
+                                                GridView.self.GridView.IsFocus = true;
+                                                GridView.self.GridView.ScrollToPoint(10, cell.Data.Count + 1);
+                                            });
+                                        }
+                                        catch (Exception ex)
+                                        {
+
+                                        }
+                                    },this);
+                                }
+                                else if (value.Text.Contains("."))
+                                {
+                                    this.Data.Add(value.Text, new Gdk.Pixbuf(value.Text.Replace("\\\\", "/").Replace("\\", "/")));
+                                    this.Pixbuf = this.Data[value.Text] as Gdk.Pixbuf;
+                                }
+                                else
+                                {
+                                    this.IconName = value.Text;
+                                }
+                            }
+                            else
+                            {
+                                this.Pixbuf = this.Data[value.Text] as Gdk.Pixbuf;
+                            }
+                        }
+                        catch
+                        {
+                            this.IconName = "image-missing";
+                        }
                     }
                 }
             }
@@ -126,7 +174,7 @@ namespace System.Windows.Forms.GtkRender
                     this.Text = value.Text;
                     if (value.Background.Name != "transparent" && value.Background.Name != "0")
                     {
-                        this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = Math.Min(0.6, value.Background.A), Blue = value.Background.B, Green = value.Background.G, Red = value.Background.R };
+                        this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = value.Background.A / 255, Blue = value.Background.B / 255, Green = value.Background.G / 255, Red = value.Background.R / 255 };
                     }
                 }
             }
@@ -144,7 +192,8 @@ namespace System.Windows.Forms.GtkRender
                 y = y + (cell_area.Height - 36) / 2;
                 height = 36;
             }
-            widget.StyleContext.RenderHandle(cr, cell_area.X + 3, y, cell_area.Width - 6, height);
+            widget.StyleContext.RenderFrame(cr, cell_area.X + 3, y, cell_area.Width - 6, height);
+            widget.StyleContext.RenderBackground(cr, cell_area.X + 3, y, cell_area.Width - 6, height);
             widget.StyleContext.Restore();
             var textExt = cr.TextExtents(this.Text ?? string.Empty);
             int space = (int)(Math.Max(6f, cell_area.Width - textExt.Width) / 2 - 6);

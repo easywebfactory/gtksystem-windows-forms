@@ -1,9 +1,8 @@
 /*
  * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
  * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://github.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
- * date: 2024/1/3
  */
 using GLib;
 using Gtk;
@@ -25,19 +24,34 @@ namespace System.Windows.Forms
 	[DefaultBindingProperty("SelectedValue")]
 	public partial class ListBox : ListControl
     {
+        protected Gtk.Viewport viewport = new Gtk.Viewport();
+        public override object GtkControl => viewport;
         public readonly ListBoxBase self = new ListBoxBase();
-        public override object GtkControl => self;
+        public override IControlGtk ISelf { get => self; }
+        protected override void UpdateStyle()
+        {
+            if(self.IsMapped) 
+                SetStyle(self);
+        }
+
         private ControlBindingsCollection _collect;
         private ObjectCollection _items;
 
-        internal Gtk.ListBox ListBoxView { get { return self.ListBox; } }
-
         public ListBox():base()
 		{
+            self.Halign = Gtk.Align.Fill;
+            self.Valign = Gtk.Align.Fill;
+            self.Hexpand = true;
+            self.Vexpand = true;
+            Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
+            scrolledWindow.Add(self);
+            viewport.BorderWidth = 0;
+            viewport.Child = scrolledWindow;
+
             _collect = new ControlBindingsCollection(this);
             _items = new ObjectCollection(this);
             self.Realized += Self_Realized;
-            ListBoxView.SelectedRowsChanged += ListBox_SelectedRowsChanged;
+            self.SelectedRowsChanged += ListBox_SelectedRowsChanged;
         }
         private void ListBox_SelectedRowsChanged(object sender, EventArgs e)
         {
@@ -51,9 +65,10 @@ namespace System.Windows.Forms
 
         private void Self_Realized(object sender, EventArgs e)
         {
+            SetStyle(self);
             OnSetDataSource();
             foreach (Binding binding in DataBindings)
-                ListBoxView.AddNotification(binding.PropertyName, propertyNotity);
+                self.AddNotification(binding.PropertyName, propertyNotity);
         }
         private void propertyNotity(object o, NotifyArgs args)
         {
@@ -120,7 +135,7 @@ namespace System.Windows.Forms
 
         public override int SelectedIndex
         {
-            get => ListBoxView.SelectedRow == null ? -1 : ListBoxView.SelectedRow.Index; set => SelectedItems.SetSelected(value, true);
+            get => self.SelectedRow == null ? -1 : self.SelectedRow.Index; set => SelectedItems.SetSelected(value, true);
         }
 
         [DefaultValue(null)]
@@ -169,10 +184,10 @@ namespace System.Windows.Forms
             Gtk.ListBoxRow row = new Gtk.ListBoxRow();
             row.HeightRequest = ItemHeight > 0 ? ItemHeight : DefaultItemHeight;
             row.Add(new Gtk.Label(item.ToString()) { Valign = Align.Center, Halign = Align.Start, Expand = true });
-            ListBoxView.Insert(row, index);
+            self.Insert(row, index);
             if (self.IsVisible && !IsUpdateing)
             {
-                ListBoxView.ShowAll();
+                self.ShowAll();
             }
         }
         protected void NativeAdd(object item)
@@ -180,34 +195,34 @@ namespace System.Windows.Forms
             Gtk.ListBoxRow row = new Gtk.ListBoxRow();
             row.HeightRequest = ItemHeight > 0 ? ItemHeight : DefaultItemHeight;
             row.Add(new Gtk.Label(item.ToString()) { Valign = Align.Center, Halign = Align.Start, Expand = true });
-            ListBoxView.Add(row);
+            self.Add(row);
             if (self.IsVisible && !IsUpdateing)
             {
-                ListBoxView.ShowAll();
+                self.ShowAll();
             }
         }
         protected void NativeClear()
         {
-            int count = ListBoxView.Children.Length;
+            int count = self.Children.Length;
             while (count > 0)
             {
-                ListBoxView.Remove(ListBoxView.GetRowAtIndex(count - 1));
+                self.Remove(self.GetRowAtIndex(count - 1));
                 count--;
                 //System.Threading.Thread.Sleep(3);
             }
         }
         protected void NativeRemoveAt(int index)
         {
-            ListBoxView.Remove(ListBoxView.GetRowAtIndex(index));
+            self.Remove(self.GetRowAtIndex(index));
         }
         protected string NativeGetItemText(int index)
         {
-            Gtk.Label row = ListBoxView.GetRowAtIndex(index).Child as Gtk.Label;
+            Gtk.Label row = self.GetRowAtIndex(index).Child as Gtk.Label;
             return row?.Text;
         }
         protected void OnSelectedIndexChanged(EventArgs e) {
-            if (ListBoxView.SelectedRow != null)
-                ListBoxView.SelectRow(ListBoxView.SelectedRow);
+            if (self.SelectedRow != null)
+                self.SelectRow(self.SelectedRow);
         }
         #endregion
         public override ControlBindingsCollection DataBindings { get => _collect; }
@@ -332,19 +347,19 @@ namespace System.Windows.Forms
             set {
                 if (value == SelectionMode.None)
                 {
-                    ListBoxView.SelectionMode = Gtk.SelectionMode.None;
+                    self.SelectionMode = Gtk.SelectionMode.None;
                 }
                 else if (value == SelectionMode.One)
                 {
-                    ListBoxView.SelectionMode = Gtk.SelectionMode.Single;
+                    self.SelectionMode = Gtk.SelectionMode.Single;
                 }
                 else if (value == SelectionMode.MultiSimple)
                 {
-                    ListBoxView.SelectionMode = Gtk.SelectionMode.Multiple;
+                    self.SelectionMode = Gtk.SelectionMode.Multiple;
                 }
                 else if (value == SelectionMode.MultiExtended)
                 {
-                    ListBoxView.SelectionMode = Gtk.SelectionMode.Multiple;
+                    self.SelectionMode = Gtk.SelectionMode.Multiple;
                 }
             }
         }
@@ -390,7 +405,7 @@ namespace System.Windows.Forms
 		}
         public void ClearSelected()
         {
-            ListBoxView.UnselectAll();
+            self.UnselectAll();
         }
         internal bool IsUpdateing = false;
         public void BeginUpdate()
@@ -401,7 +416,7 @@ namespace System.Windows.Forms
 		public void EndUpdate()
 		{
             IsUpdateing = false;
-            ListBoxView.ShowAll();
+            self.ShowAll();
         }
 
 		public int FindString(string s)
@@ -435,7 +450,7 @@ namespace System.Windows.Forms
 		}
 		public bool GetSelected(int index)
 		{
-            return ListBoxView.GetRowAtIndex(index).IsSelected;
+            return self.GetRowAtIndex(index).IsSelected;
         }
 
 		public int IndexFromPoint(Drawing.Point p)
@@ -466,9 +481,9 @@ namespace System.Windows.Forms
 		public void SetSelected(int index, bool value)
 		{
             if (value == true)
-                ListBoxView.SelectRow(ListBoxView.GetRowAtIndex(index));
+                self.SelectRow(self.GetRowAtIndex(index));
             else
-                ListBoxView.UnselectRow(ListBoxView.GetRowAtIndex(index));
+                self.UnselectRow(self.GetRowAtIndex(index));
         }
         public class ListBoxItem: Gtk.Label
         {

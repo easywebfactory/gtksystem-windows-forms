@@ -20,7 +20,17 @@ namespace System.Windows.Forms
         public ToolStripComboBox() : base("ToolStripComboBox",null)
         {
             __itemsData = new ObjectCollection(this.comboBox);
+            this.comboBox.Changed += ComboBox_Changed;
         }
+
+        private void ComboBox_Changed(object sender, EventArgs e)
+        {
+            if(SelectedIndexChanged != null)
+                SelectedIndexChanged(this, e);
+            if (SelectedValueChanged != null)
+                SelectedValueChanged(this, e);
+        }
+
         public override Size Size { get => base.Size; set { this.comboBox.WidthRequest = value.Width; this.comboBox.HeightRequest = value.Height; base.Size = value; } }
 
         public bool FormattingEnabled { get; set; }
@@ -29,16 +39,8 @@ namespace System.Windows.Forms
         public int SelectedIndex { get { return base.comboBox.Active; } }
         public new ObjectCollection Items { get { return __itemsData; } }
 
-        public event EventHandler SelectedIndexChanged
-        {
-            add { base.comboBox.Changed += (object sender, EventArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
-            remove { base.comboBox.Changed -= (object sender, EventArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
-        }
-        public event EventHandler SelectedValueChanged
-        {
-            add { base.comboBox.Changed += (object sender, EventArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
-            remove { base.comboBox.Changed -= (object sender, EventArgs e) => { if (base.Control.IsRealized) { value.Invoke(this, e); } }; }
-        }
+        public event EventHandler SelectedIndexChanged;
+        public event EventHandler SelectedValueChanged;
 
         [ListBindable(false)]
         public class ObjectCollection : ArrayList

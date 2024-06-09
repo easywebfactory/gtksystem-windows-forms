@@ -1,16 +1,8 @@
-﻿using Cairo;
-using GLib;
-using Gtk;
-using System;
+﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
-using System.IO;
-using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading;
-using System.Windows.Forms;
-using System.Xml;
+
 
 namespace GTKSystem.ComponentModel
 {

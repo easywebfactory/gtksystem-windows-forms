@@ -37,18 +37,14 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             foreach (string cssClass in cssList)
             {
-                container.StyleContext.RemoveClass(cssClass);
+                if(container.StyleContext.HasClass(cssClass))
+                    container.StyleContext.RemoveClass(cssClass);
                 container.StyleContext.AddClass(cssClass);
             }
             ClearNativeBackground();
         }
         public void ClearNativeBackground()
         {
-            if (BackgroundImage != null || BackColor.HasValue || Image != null)
-            {
-                container.StyleContext.RemoveClass("BGTransparent");
-                container.StyleContext.AddClass("BGTransparent");
-            }
         }
         private Gdk.Pixbuf backgroundPixbuf;
         public void DrawnBackColor(Cairo.Context cr, Gdk.Rectangle area)

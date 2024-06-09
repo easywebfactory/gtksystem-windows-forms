@@ -8,7 +8,7 @@
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("CheckedListBox");
             this.Override.BackColor = System.Drawing.Color.White;
-
+            this.BorderWidth = 1;
         }
         protected override void OnShown()
         {
@@ -19,7 +19,6 @@
         protected override bool OnDrawn(Cairo.Context cr)
         {
             Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnDrawnBackground(cr, rec);
             Override.OnPaint(cr, rec);
             return base.OnDrawn(cr);
         }

@@ -42,10 +42,11 @@ namespace GTKWinFormsApp
             data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "Resources\\BindingNavigator.Delete.ico" });
             data.Add(new TestEntity() { ID = 4, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC = "" });
 
-            data.Add(new TestEntity() { ID = 5, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "Resources\\BindingNavigator.Delete.ico" });
+            data.Add(new TestEntity() { ID = 5, Title = "网络图片异步加载", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "https://gitlab.gnome.org/uploads/-/system/project/avatar/13319/gi-docgen.png?width=48" });
             data.Add(new TestEntity() { ID = 6, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC = "" });
-
-             this.dataGridView1.DataSource = data;
+            for(int i=0;i<10;i++)
+                data.Add(new TestEntity() { ID = i+7, Title = "网络图片异步加载"+i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString() });
+            this.dataGridView1.DataSource = data;
             //var s=this.dataGridView1.Rows[0].Cells[0];
 
             //2、datatable数据源
@@ -68,7 +69,7 @@ namespace GTKWinFormsApp
             //}
         }
 
-        public class TestEntity:INotifyPropertyChanged
+        public class TestEntity : INotifyPropertyChanged
         {
             public int ID { get; set; }
             public string title;
@@ -82,7 +83,7 @@ namespace GTKWinFormsApp
             public event PropertyChangedEventHandler? PropertyChanged;
             protected void OnPropertyChangedEventHandler([CallerMemberName] string propertyName = null)
             {
-                if(PropertyChanged != null)
+                if (PropertyChanged != null)
                     PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
@@ -228,7 +229,7 @@ namespace GTKWinFormsApp
         {
             //7
             Console.WriteLine("dataGridView1_CellValidated");
-        
+
             Console.WriteLine(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
         }
 
@@ -266,14 +267,14 @@ namespace GTKWinFormsApp
 
         private void treeView1_BeforeSelect(object sender, TreeViewCancelEventArgs e)
         {
-            
-            Console.WriteLine("treeView1_BeforeSelect："+ e.Node?.Text);
+
+            Console.WriteLine("treeView1_BeforeSelect：" + e.Node?.Text);
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
             Console.WriteLine("treeView1_AfterSelect：" + treeView1.SelectedValuePath);
-            Console.WriteLine("treeView1_AfterSelect："+ e.Node?.Text);
+            Console.WriteLine("treeView1_AfterSelect：" + e.Node?.Text);
         }
 
         private void treeView1_AfterCollapse(object sender, TreeViewEventArgs e)
@@ -330,12 +331,15 @@ namespace GTKWinFormsApp
             var g = e.Graphics;
             g.Clear(Color.White);
 
-
-            using (MemoryStream mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6))
+            if (GTKWinFormsApp.Properties.Resources.timg6 != null)
             {
-                //g.DrawImage(new Bitmap(mem), new Point(0, 0));
-                g.DrawImage(new Bitmap(mem), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
+                using (MemoryStream mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6))
+                {
+                    //g.DrawImage(new Bitmap(mem), new Point(0, 0));
+                    g.DrawImage(new Bitmap(mem), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
+                }
             }
+
             g.FillRectangle(new SolidBrush(Color.AliceBlue), new Rectangle(0, 0, 100, 50));
             // g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new Point(10, 10), new Point(50, 30));
             List<PointF> Rps = new List<PointF>();
@@ -360,10 +364,10 @@ namespace GTKWinFormsApp
             }
 
             g.DrawString("这是Paint Graphics示例效果", new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 60);
-            g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2), new Rectangle(pictureBox2.Width/2, pictureBox2.Height/2, pictureBox2.Width, pictureBox2.Height), 0, 270);
+            g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2), new Rectangle(pictureBox2.Width / 2, pictureBox2.Height / 2, pictureBox2.Width, pictureBox2.Height), 0, 270);
 
-            g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(50, 60), new PointF(100, 80), new PointF(75, 100)});
-            g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(75, 100), new PointF(100, 120), new PointF(120, 100)});
+            g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(50, 60), new PointF(100, 80), new PointF(75, 100) });
+            g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(75, 100), new PointF(100, 120), new PointF(120, 100) });
 
         }
 
@@ -378,7 +382,7 @@ namespace GTKWinFormsApp
             DialogResult result = form.ShowDialog(this);
             if (result == DialogResult.None || result == DialogResult.Cancel)
             {
-               // MessageBox.Show("关闭窗口返回");
+                // MessageBox.Show("关闭窗口返回");
             }
             //form.Show();
         }
@@ -390,12 +394,27 @@ namespace GTKWinFormsApp
             e.Graphics.FillRectangle(new SolidBrush(Color.DarkBlue), e.Bounds);
             var font = new Font(FontFamily.GenericSansSerif, 12);
             e.Graphics.DrawString($"tab组{e.Index}", font, new SolidBrush(Color.Red), new PointF(0, 0));
-            e.Graphics.DrawImage(Image.FromFile("Resources\\BindingNavigator.Delete.ico"),new Point(e.Bounds.Width-16, 0));
+            e.Graphics.DrawImage(Image.FromFile("Resources\\BindingNavigator.Delete.ico"), new Point(e.Bounds.Width-16, 0));
         }
 
         private void button1_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            Console.WriteLine("textBox1_KeyDown");
+        }
+
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Console.WriteLine("textBox1_KeyPress");
+        }
+
+        private void textBox1_KeyUp(object sender, KeyEventArgs e)
+        {
+            Console.WriteLine("textBox1_KeyUp");
         }
     }
 

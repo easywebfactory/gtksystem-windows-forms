@@ -10,7 +10,7 @@ namespace System.Windows.Forms
     {
         public ToolStripProgressBar() : base("ToolStripProgressBar", null)
         {
-            base.Control.Realized += Control_Realized;
+            base.MenuItem.Realized += Control_Realized;
         }
 
         private void Control_Realized(object sender, EventArgs e)

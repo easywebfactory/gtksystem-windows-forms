@@ -7,7 +7,7 @@
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Panel");
-            this.ShadowType = Gtk.ShadowType.In;
+            this.ShadowType = Gtk.ShadowType.None;
             this.BorderWidth = 0;
         }
         protected override void OnShown()

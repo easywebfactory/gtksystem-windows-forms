@@ -1,9 +1,8 @@
 ﻿/*
  * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
  * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://github.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
- * date: 2024/1/3
  */
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
@@ -28,6 +27,7 @@ namespace System.Windows.Forms
             _controls = new ControlCollection(this);
             _tabPageControls = new TabPageCollection(this);
             self.Realized += Control_Realized;
+            self.SwitchPage += Self_SwitchPage;
         }
 
         private void Control_Realized(object sender, EventArgs e)
@@ -40,6 +40,12 @@ namespace System.Windows.Forms
                     page._tabLabel.HeightRequest = this.ItemSize.Height;
                 }
             }
+        }
+
+        private void Self_SwitchPage(object o, SwitchPageArgs args)
+        {
+            if (SelectedIndexChanged != null && self.IsMapped)
+                SelectedIndexChanged(this, new EventArgs());
         }
 
         public int SelectedIndex { get { return self.CurrentPage; } set { self.CurrentPage = value; } }
@@ -65,11 +71,7 @@ namespace System.Windows.Forms
         }
 
         public new TabControl.ControlCollection Controls => _controls;
-        public event EventHandler SelectedIndexChanged
-        {
-            add { self.SwitchPage += (object sender, Gtk.SwitchPageArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
-            remove { self.SwitchPage -= (object sender, Gtk.SwitchPageArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
-        }
+        public event EventHandler SelectedIndexChanged;
 
         public event DrawItemEventHandler DrawItem;
 
@@ -96,7 +98,6 @@ namespace System.Windows.Forms
                         args.Cr.ResetClip();
                         int width = allocation.Width + 24;
                         int height = allocation.Height + 2;
-                       // _owner.DrawItem(this, new DrawItemEventArgs(new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height)), _owner.Font, new Rectangle(-12, -2, width, height), Convert.ToInt32(tab.Name), DrawItemState.Default));
                         _owner.DrawItem(this, new DrawItemEventArgs(new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height)) { diff_left=-12, diff_top=-2 }, _owner.Font, new Rectangle(0, 0, width, height), Convert.ToInt32(tab.Name), DrawItemState.Default));
 
                     }

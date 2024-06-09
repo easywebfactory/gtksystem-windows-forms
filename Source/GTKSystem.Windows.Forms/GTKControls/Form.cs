@@ -1,18 +1,15 @@
 ﻿/*
  * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
  * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://github.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
- * date: 2024/1/3
  */
 
-using Cairo;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
-
 
 namespace System.Windows.Forms
 {
@@ -23,7 +20,7 @@ namespace System.Windows.Forms
     {
         private Gtk.Application app = Application.Init();
         public FormBase self = new FormBase();
-        public override object GtkControl { get => self.ContentView; }
+        public override object GtkControl { get => self; }
         private Gtk.Fixed _body = new Gtk.Fixed();
         private ObjectCollection _ObjectCollection;
         public override event EventHandler SizeChanged;
@@ -39,7 +36,8 @@ namespace System.Windows.Forms
 
         public Form(string title, Window parent) : base()
         {
-
+            self.Title = title;
+            Init();
         }
         private void Init()
         {
@@ -48,12 +46,11 @@ namespace System.Windows.Forms
             _body.Expand = true;
             _body.Hexpand = true;
             _body.Vexpand = true;
-            self.ContentView.Child = _body;
+            self.ScrollView.Child = _body;
             _ObjectCollection = new ObjectCollection(this, _body);
 
-            self.ResizeChecked += Form_ResizeChecked;
             self.ButtonReleaseEvent += Body_ButtonReleaseEvent;
-
+            self.ResizeChecked += Form_ResizeChecked;
             self.Shown += Control_Shown;
             self.DeleteEvent += Self_DeleteEvent;
         }
@@ -92,32 +89,31 @@ namespace System.Windows.Forms
         {
             if (base.ContextMenuStrip != null)
             {
-                base.ContextMenuStrip.self.ShowAll();
+                base.ContextMenuStrip.Widget.ShowAll();
                 if (args.Event.Button == 3)
-                    PresentMenu(base.ContextMenuStrip.self, args.Event.Button, args.Event.Time);
+                    PresentMenu((Gtk.Menu)base.ContextMenuStrip.Widget, args.Event.Button, args.Event.Time);
             }
         }
         int resizeWidth= 0;
         int resizeHeight= 0;
         private void Form_ResizeChecked(object sender, EventArgs e)
         {
-            if (self.Resizable == true)
+            if (self.Resizable == true && _body.IsMapped && self.IsRealized)
             {
-                if (_body.IsMapped && (resizeWidth != self.AllocatedWidth || resizeHeight != self.AllocatedHeight))
+                if (resizeWidth != self.ContentArea.AllocatedWidth || resizeHeight != self.ContentArea.AllocatedHeight)
                 {
-                    resizeWidth = self.AllocatedWidth;
-                    resizeHeight = self.AllocatedHeight;
-                    _body.WidthRequest = self.AllocatedWidth - (AutoScroll ? 6 : 0); //留出滚动条位置
-                    _body.HeightRequest = self.AllocatedHeight - (AutoScroll ? 6 : 0);
-                    int widthIncrement = self.AllocatedWidth - self.DefaultSize.Width;
-                    int heightIncrement = self.AllocatedHeight - self.DefaultSize.Height;
+                    
+                    resizeWidth = self.ContentArea.AllocatedWidth;
+                    resizeHeight = self.ContentArea.AllocatedHeight;
+                    _body.WidthRequest = resizeWidth - (AutoScroll ? self.ScrollArrowVlength : 0); //留出滚动条位置
+                    _body.HeightRequest = resizeHeight - (AutoScroll ? self.ScrollArrowHlength : 0);
+                    int widthIncrement = resizeHeight - self.DefaultSize.Width;
+                    int heightIncrement = resizeHeight - self.DefaultSize.Height;
                     ResizeControls(widthIncrement, heightIncrement, _body, false, null);
                 }
-
             }
             if (SizeChanged != null)
                 SizeChanged(this, e);
-
         }
 
         private void ResizeControls(int widthIncrement, int heightIncrement, Gtk.Container parent, bool isPaned, Gtk.Paned gtkPaned)
@@ -145,40 +141,46 @@ namespace System.Windows.Forms
                         {
                             control.Valign = Gtk.Align.Start;
                             control.Hexpand = true;
-                            if (control.WidthRequest > -1 && width > -1)
+                            if (control.WidthRequest > -1 && width > 0)
                                 control.WidthRequest = width;
                         }
                         else if (dockStyle == DockStyle.Bottom.ToString())
                         {
                             control.Valign = Gtk.Align.End;
                             control.Halign = Gtk.Align.Fill;
-                            control.Hexpand = true;
-                            control.MarginTop = heightIncrement;
-                            if (control.WidthRequest > -1 && width > -1)
+                            control.Expand = true;
+                            control.MarginTop = Math.Max(0, heightIncrement);
+                            if (control.WidthRequest > -1 && width > 0)
                                 control.WidthRequest = width;
                         }
                         else if (dockStyle == DockStyle.Left.ToString())
                         {
                             control.Halign = Gtk.Align.Start;
                             control.Vexpand = true;
-                            if (control.HeightRequest > -1 && height > -1)
+                            if (control.HeightRequest > -1 && height > 0)
                                 control.HeightRequest = height;
                         }
                         else if (dockStyle == DockStyle.Right.ToString())
                         {
                             control.Halign = Gtk.Align.End;
-                            control.Vexpand = true;
-                            if (control.HeightRequest > -1 && height > -1)
+                           if(parent[control] is Gtk.Layout.LayoutChild lc)
+                            {
+                                lc.X = parent.WidthRequest - control.WidthRequest - 6;
+                            }
+                            else if (parent[control] is Gtk.Fixed.FixedChild fc)
+                            {
+                                fc.X = parent.WidthRequest - control.WidthRequest - 6;
+                            }
+                            if (control.HeightRequest > -1 && height > 0)
                                 control.HeightRequest = height;
-                            control.MarginStart = widthIncrement;
                         }
                         else if (dockStyle == DockStyle.Fill.ToString())
                         {
                             control.Hexpand = true;
                             control.Vexpand = true;
-                            if (control.HeightRequest > -1 && height > -1)
+                            if (control.HeightRequest > -1 && height > 0)
                                 control.HeightRequest = height;
-                            if (control.WidthRequest > -1 && width > -1)
+                            if (control.WidthRequest > -1 && width > 0)
                                 control.WidthRequest = width;
                         }
                         if (control is Gtk.MenuBar menuba)
@@ -449,7 +451,12 @@ namespace System.Windows.Forms
 
         public bool ActivateControl(object active)
         {
-            return true;
+            if (active is Gtk.Widget wg)
+            {
+                wg.SetStateFlags(StateFlags.Active, false);
+                return true;
+            }
+            return false;
         }
 
         public MenuStrip MainMenuStrip { get; set; }

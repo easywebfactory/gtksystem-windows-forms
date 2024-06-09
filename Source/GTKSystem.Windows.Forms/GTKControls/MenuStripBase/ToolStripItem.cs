@@ -11,8 +11,9 @@ namespace System.Windows.Forms
     public class ToolStripItem : Component, IDropTarget, ISupportOleDropSource, IArrangedElement, IComponent, IDisposable, IKeyboardToolTip
     {
         public virtual string unique_key { get; protected set; }
-        public virtual Gtk.Widget Widget { get; set; }
+        public virtual Gtk.Widget Widget { get; }
         public virtual Gtk.MenuItem MenuItem { get; set; }
+        public virtual bool Created { get; set; }
         public virtual bool Checked { get; set; }
         public virtual CheckState CheckState { get; set; }
         internal Gtk.Image DefaultImage = new Gtk.Image("image-missing", Gtk.IconSize.Menu);
@@ -36,7 +37,7 @@ namespace System.Windows.Forms
             if (onClick != null)
                 Click += onClick;
         }
-        public virtual void CreateControl(object widget, string stripType, string text, System.Drawing.Image image, EventHandler onClick, string name, params object[] args) { }
+        public virtual void CreateControl() { }
         public virtual ToolStripItemCollection Items
         {
             get
@@ -133,7 +134,29 @@ namespace System.Windows.Forms
             get;
             set;
         }
+        public virtual void ResumeLayout()
+        {
+            
+        }
 
+        public virtual void ResumeLayout(bool performLayout)
+        {
+             
+        }
+        public virtual void SuspendLayout()
+        {
+            
+        }
+
+        public virtual void PerformLayout()
+        {
+            
+        }
+
+        public virtual void PerformLayout(Control affectedControl, string affectedProperty)
+        {
+            
+        }
         public virtual bool UseWaitCursor { get; set; }
         public virtual int Width { get; set; }
         public virtual event EventHandler Click;

@@ -1,9 +1,8 @@
 ﻿/*
  * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
  * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://github.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
- * date: 2024/1/3
  */
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
@@ -34,6 +33,10 @@ namespace System.Windows.Forms
         }
         private void ToolStripItem_Activated(object sender, ActivateCurrentArgs e)
         {
+            if (DropDownItemClicked != null)
+            {
+                DropDownItemClicked(this, new ToolStripItemClickedEventArgs(new ToolStripItem()));
+            }
             if (Click != null)
             {
                 Click(sender, e);
@@ -45,10 +48,6 @@ namespace System.Windows.Forms
             if (CheckStateChanged != null)
             {
                 CheckStateChanged(this, e);
-            }
-            if (DropDownItemClicked != null)
-            {
-                DropDownItemClicked(this, new ToolStripItemClickedEventArgs(new ToolStripItem()));
             }
         }
         public override Size Size { get => base.Size; set => base.Size = new Size(value.Width, 30); }

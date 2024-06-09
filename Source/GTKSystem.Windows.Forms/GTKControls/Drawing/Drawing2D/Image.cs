@@ -17,9 +17,8 @@ namespace System.Drawing
             PixbufData = pixbuf;
         }
         public byte[] PixbufData { get; set; }
-		[NonSerialized()]
-		private Gdk.Pixbuf pixbuf;
-        public Gdk.Pixbuf Pixbuf { get => pixbuf; set => pixbuf = value; }
+
+        public Gdk.Pixbuf Pixbuf { get; set; }
         public string FileName { get; set; }
         #endregion
 
@@ -64,27 +63,17 @@ namespace System.Drawing
 		/// <summary>Gets the width and height, in pixels, of this image.</summary>
 		/// <returns>A <see cref="T:System.Drawing.Size" /> structure that represents the width and height, in pixels, of this image.</returns>
 		public Size Size => new Size(Width, Height);
-
-		/// <summary>Gets the width, in pixels, of this <see cref="T:System.Drawing.Image" />.</summary>
-		/// <returns>The width, in pixels, of this <see cref="T:System.Drawing.Image" />.</returns>
-		[DefaultValue(false)]
-		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		private int _width;
 		public int Width
 		{
-			get;
-			internal set;
-		}
-
-		/// <summary>Gets the height, in pixels, of this <see cref="T:System.Drawing.Image" />.</summary>
-		/// <returns>The height, in pixels, of this <see cref="T:System.Drawing.Image" />.</returns>
-		[DefaultValue(false)]
-		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+            get => Pixbuf == null ? _width : Pixbuf.Width;
+            internal set { _width = value; }
+        }
+		private int _height;
 		public int Height
         {
-            get;
-            internal set;
+            get => Pixbuf == null ? _height : Pixbuf.Height;
+            internal set { _height = value; }
         }
 
         /// <summary>Gets the horizontal resolution, in pixels per inch, of this <see cref="T:System.Drawing.Image" />.</summary>
@@ -173,11 +162,11 @@ namespace System.Drawing
             internal set;
         }
 
-		private protected Image()
+        protected Image()
 		{
 		}
 
-		private protected Image(SerializationInfo info, StreamingContext context)
+		protected Image(SerializationInfo info, StreamingContext context)
 		{
 			byte[] buffer = (byte[])info.GetValue("Data", typeof(byte[]));
 			try
@@ -297,16 +286,7 @@ namespace System.Drawing
 			return IntPtr.Zero;
 		}
 
-		//private unsafe static IntPtr LoadGdipImageFromStream(GPStream stream, bool useEmbeddedColorManagement)
-		//{
-
-		//		IntPtr zero = IntPtr.Zero;
-
-		//		return zero;
-
-		//}
-
-		internal Image(IntPtr nativeImage)
+        internal Image(IntPtr nativeImage)
 		{
 			SetNativeImage(nativeImage);
 		}
@@ -328,8 +308,8 @@ namespace System.Drawing
 		/// <returns>The <see cref="T:System.Drawing.Image" /> this method creates, cast as an object.</returns>
 		public object Clone()
 		{
-			return new Bitmap(this.PixbufData);
-		}
+			return new Bitmap(this.PixbufData) { Width = this.Width, Height = this.Height };
+        }
 
 		/// <summary>Releases the unmanaged resources used by the <see cref="T:System.Drawing.Image" /> and optionally releases the managed resources.</summary>
 		/// <param name="disposing">
@@ -378,7 +358,7 @@ namespace System.Drawing
 		public void Save(string filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
 		{
 			Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(PixbufData);
-			pixbuf.Save(filename, "image");
+			pixbuf.Save(filename, encoder.MimeType ?? "bmp");
             
         }
 

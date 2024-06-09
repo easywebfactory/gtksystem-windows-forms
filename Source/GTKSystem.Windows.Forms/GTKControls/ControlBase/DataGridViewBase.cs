@@ -10,10 +10,12 @@
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("DataGridView");
             this.Override.BackColor = System.Drawing.Color.White;
-
+            this.BorderWidth = 0;
+            this.ShadowType = Gtk.ShadowType.Out;
             GridView.Valign = Gtk.Align.Fill;
             GridView.Halign = Gtk.Align.Fill;
             GridView.Expand = true;
+            GridView.BorderWidth = 0;
             scroll.Child = GridView;
             this.Child = scroll;
         }
@@ -25,7 +27,6 @@
         protected override bool OnDrawn(Cairo.Context cr)
         {
             Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnDrawnBackground(cr, rec);
             Override.OnPaint(cr, rec);
             return base.OnDrawn(cr);
         }

@@ -1,9 +1,8 @@
 ﻿/*
  * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
  * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://github.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
- * date: 2024/1/3
  */
 
 using Gtk;
@@ -48,6 +47,12 @@ namespace System.Windows.Forms
             todaybtn.Clicked += Todaybtn_Clicked;
             popbody.Add(todaybtn);
             popver.Add(popbody);
+            self.Changed += Self_Changed;
+        }
+        private void Self_Changed(object sender, EventArgs e)
+        {
+            if (ValueChanged != null && self.IsMapped)
+                ValueChanged(this, e);
         }
 
         private void Calendar_NextMonth(object sender, EventArgs e)
@@ -205,10 +210,6 @@ namespace System.Windows.Forms
         public Color CalendarTitleForeColor { get; set; }
         public Color CalendarTrailingForeColor { get; set; }
 
-        public event EventHandler ValueChanged
-        {
-            add { self.Changed += (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
-            remove { self.Changed -= (object sender, EventArgs e) => { if (self.IsRealized) { value.Invoke(this, e); } }; }
-        }
+        public event EventHandler ValueChanged;
     }
 }

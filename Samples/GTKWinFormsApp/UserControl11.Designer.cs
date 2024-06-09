@@ -49,7 +49,7 @@ namespace GTKWinFormsApp
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(button1);
             Name = "UserControl11";
-            Size = new System.Drawing.Size(190, 81);
+            Size = new System.Drawing.Size(190, 103);
             Load += UserControl11_Load;
             Paint += UserControl11_Paint;
             ParentChanged += UserControl11_ParentChanged;

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Cairo;
+using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -348,7 +349,7 @@ namespace System.Drawing
         public Bitmap Clone(Rectangle rect, PixelFormat format)
         {
 
-            return new Bitmap(rect.Width, rect.Height);
+            return new Bitmap(rect.Width, rect.Height, format) { PixbufData = this.PixbufData };
         }
     }
 }

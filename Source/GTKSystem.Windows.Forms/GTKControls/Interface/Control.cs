@@ -1,9 +1,10 @@
-﻿using GLib;
+﻿
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms.Design;
@@ -13,8 +14,6 @@ namespace System.Windows.Forms
     [DefaultEvent("Click")]
     [DefaultProperty("Text")]
     [Designer(typeof(ControlDesigner))]
-    //[Designer("System.Windows.Forms.Design.ControlDesigner, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
-    //[DesignerSerializer("System.Windows.Forms.Design.ControlCodeDomSerializer, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", "System.ComponentModel.Design.Serialization.CodeDomSerializer, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     [ToolboxItemFilter("System.Windows.Forms")]
     public partial class Control : Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize
     {
@@ -23,12 +22,12 @@ namespace System.Windows.Forms
 
         public virtual Gtk.Widget Widget { get => GtkControl as Gtk.Widget; }
         public virtual Gtk.Container GtkContainer { get => GtkControl as Gtk.Container; }
-        public IControlGtk ISelf { get => (IControlGtk)GtkControl; }
+        public virtual IControlGtk ISelf { get => GtkControl as IControlGtk; }
         public virtual object GtkControl { get; set; }
-        CssProvider provider = new CssProvider();
+
         public Control()
         {
-            this.unique_key = Guid.NewGuid().ToString();
+            this.unique_key = Guid.NewGuid().ToString().ToLower();
 
             if (this.Widget != null)
             {
@@ -39,48 +38,23 @@ namespace System.Windows.Forms
                 widget.ButtonPressEvent += Widget_ButtonPressEvent;
                 widget.ButtonReleaseEvent += Widget_ButtonReleaseEvent;
                 widget.EnterNotifyEvent += Widget_EnterNotifyEvent;
+                widget.MotionNotifyEvent += Widget_MotionNotifyEvent;
+                widget.LeaveNotifyEvent += Widget_LeaveNotifyEvent;
                 widget.FocusInEvent += Widget_FocusInEvent;
                 widget.FocusOutEvent += Widget_FocusOutEvent;
                 widget.KeyPressEvent += Widget_KeyPressEvent;
                 widget.KeyReleaseEvent += Widget_KeyReleaseEvent;
-                widget.LeaveNotifyEvent += Widget_LeaveNotifyEvent;
-                widget.MotionNotifyEvent += Widget_MotionNotifyEvent;
-                widget.GrabNotify += Widget_GrabNotify;
                 widget.Realized += Widget_Realized;
-                widget.WidgetEventAfter += Widget_WidgetEventAfter;
+            }
+        }
 
-                this.Widget.StyleContext.AddProvider(provider, 900);
-                this.Widget.StyleContext.AddClass("forestyle");
-            }
-        }
         #region events
-        private void Widget_WidgetEventAfter(object o, WidgetEventAfterArgs args)
-        {
-            if (args.Event.Type == Gdk.EventType.KeyPress)
-            {
-                if (KeyDown != null)
-                {
-                    if (args.Event is Gdk.EventKey eventkey)
-                    {
-                        Keys keys = (Keys)eventkey.HardwareKeycode;
-                        KeyDown(this, new KeyEventArgs(keys));
-                    }
-                }
-            }
-        }
 
         private void Widget_Realized(object sender, EventArgs e)
         {
-            UpdateForeStyle();
+            SetStyle((Gtk.Widget)sender);
             if (Load != null)
                 Load(this, e);
-        }
-        private void Widget_GrabNotify(object o, GrabNotifyArgs args)
-        {
-            if (Validating != null && args.WasGrabbed == false)
-                Validating(this, cancelEventArgs);
-            if (Validated != null && args.WasGrabbed == true)
-                Validated(this, cancelEventArgs);
         }
 
         private void Widget_ButtonPressEvent(object o, ButtonPressEventArgs args)
@@ -97,64 +71,8 @@ namespace System.Windows.Forms
                 MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0));
             }
         }
-        private void Widget_FocusOutEvent(object o, FocusOutEventArgs args)
-        {
-            if (LostFocus != null)
-                LostFocus(this, args);
-        }
-
-        private void Widget_MotionNotifyEvent(object o, MotionNotifyEventArgs args)
-        {
-            if (Move != null)
-                Move(this, args);
-            if (MouseMove != null)
-                MouseMove(this, new MouseEventArgs(MouseButtons.None, 1, (int)args.Event.X, (int)args.Event.Y, 0));
-        }
-
-        private void Widget_LeaveNotifyEvent(object o, LeaveNotifyEventArgs args)
-        {
-            if (Leave != null)
-                Leave(this, args);
-            if (MouseHover != null)
-                MouseHover(this, args);
-        }
-
-        private void Widget_KeyReleaseEvent(object o, KeyReleaseEventArgs args)
-        {
-            if (KeyUp != null)
-            {
-                Keys keys = (Keys)args.Event.HardwareKeycode;
-                KeyUp(this, new KeyEventArgs(keys));
-            }
-        }
-
-        private void Widget_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
-        {
-            if (KeyPress != null)
-            {
-                Keys keys = (Keys)args.Event.HardwareKeycode;
-                KeyPress(this, new KeyPressEventArgs(Convert.ToChar(keys)));
-            }
-        }
-
-        private void Widget_FocusInEvent(object o, FocusInEventArgs args)
-        {
-            if (GotFocus != null)
-                GotFocus(this, args);
-        }
-
-        private void Widget_EnterNotifyEvent(object o, EnterNotifyEventArgs args)
-        {
-            if (Enter != null)
-                Enter(this, args);
-            if (MouseEnter != null)
-                MouseEnter(this, args);
-        }
-
         private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
         {
-            //Console.WriteLine($"Widget_ButtonReleaseEvent：{args.Event.Type.ToString()},{args.Event.Device.Name}");
-
             if (MouseUp != null)
             {
                 MouseButtons result = MouseButtons.None;
@@ -168,92 +86,286 @@ namespace System.Windows.Forms
                 MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0));
             }
         }
+        private void Widget_FocusInEvent(object o, FocusInEventArgs args)
+        {
+            if (GotFocus != null)
+                GotFocus(this, args);
+        }
+        private void Widget_FocusOutEvent(object o, FocusOutEventArgs args)
+        {
+            if (LostFocus != null)
+                LostFocus(this, args);
+
+            if (Validating != null)
+                Validating(this, cancelEventArgs);
+            if (Validated != null && cancelEventArgs.Cancel == false)
+                Validated(this, cancelEventArgs);
+        }
+        private void Widget_EnterNotifyEvent(object o, EnterNotifyEventArgs args)
+        {
+            if (Enter != null)
+                Enter(this, args);
+            if (MouseEnter != null)
+                MouseEnter(this, args);
+
+            if (MouseHover != null)
+                MouseHover(this, args);
+        }
+        private void Widget_MotionNotifyEvent(object o, MotionNotifyEventArgs args)
+        {
+            if (Move != null)
+                Move(this, args);
+            if (MouseMove != null)
+                MouseMove(this, new MouseEventArgs(MouseButtons.None, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+
+        }
+        private void Widget_LeaveNotifyEvent(object o, LeaveNotifyEventArgs args)
+        {
+            if (Leave != null)
+                Leave(this, args);
+            if (MouseLeave != null)
+                MouseLeave(this, args);
+        }
+        private void Widget_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
+        {
+            if (KeyDown != null)
+            {
+                if (args.Event is Gdk.EventKey eventkey)
+                {
+                    Keys keys = (Keys)eventkey.HardwareKeycode;
+                    KeyDown(this, new KeyEventArgs(keys));
+                }
+            }
+        }
+        private void Widget_KeyReleaseEvent(object o, KeyReleaseEventArgs args)
+        {
+            if (KeyUp != null)
+            {
+                Keys keys = (Keys)args.Event.HardwareKeycode;
+                KeyUp(this, new KeyEventArgs(keys));
+            }
+            if (KeyPress != null)
+            {
+                Keys keys = (Keys)args.Event.HardwareKeycode;
+                KeyPress(this, new KeyPressEventArgs(Convert.ToChar(keys)));
+            }
+        }
+
         #endregion
 
         //===================
 
-        protected virtual void UpdateForeStyle()
+        protected virtual void UpdateStyle()
         {
-            if (this.Widget != null && this.Widget.IsRealized)
+            if (this.Widget != null && this.Widget.IsMapped)
                 SetStyle(this.Widget);
         }
         protected virtual void UpdateBackgroundStyle()
         {
-            if (this.Widget != null && this.Widget.IsRealized)
+            if (this.Widget != null && this.Widget.IsMapped)
                 ISelf.Override.OnAddClass();
         }
         protected virtual void SetStyle(Gtk.Widget widget)
         {
-            Pango.AttrList attributes = new Pango.AttrList();
-            string stylename = $"forestyle";
             StringBuilder style = new StringBuilder();
-            if (this.ForeColor.Name != "0")
+            if (widget is Gtk.Image) { }
+            else
             {
-                string color = $"rgba({this.ForeColor.R},{this.ForeColor.G},{this.ForeColor.B},{this.ForeColor.A})";
-                style.AppendFormat("color:{0};", color);
-                attributes.Insert(new Pango.AttrBackground(Convert.ToUInt16(this.ForeColor.R * 257), Convert.ToUInt16(this.ForeColor.G * 257), Convert.ToUInt16(this.ForeColor.B * 257)));
-            }
-            if (this.Font != null)
-            {
-                float textSize = this.Font.Size;
-                if (this.Font.Unit == GraphicsUnit.Point)
-                    textSize = this.Font.Size / 72 * 96;
-                else if (this.Font.Unit == GraphicsUnit.Inch)
-                    textSize = this.Font.Size * 96;
-
-                style.AppendFormat("font-size:{0}px;", (int)textSize);
-                if (string.IsNullOrWhiteSpace(Font.FontFamily.Name) == false)
+                if (this.Image != null && this.Image.PixbufData != null)
                 {
-                    style.AppendFormat("font-family:\"{0}\";", Font.FontFamily.Name);
-                    attributes.Insert(new Pango.AttrFontDesc(new Pango.FontDescription() { Family = Font.FontFamily.Name, Size = (int)(textSize * Pango.Scale.PangoScale * 0.7) }));
+                    string imguri = $"Resources/{widget.WidgetPath.IterGetName(0)}${widget.Name}_img.png";
+                    if (!File.Exists(imguri))
+                    {
+                        Gdk.Pixbuf imagepixbuf = new Gdk.Pixbuf(this.Image.PixbufData);
+                        imagepixbuf.Save(imguri, "png");
+                    }
+                    style.AppendFormat("background:url(\"{0}\")", imguri);
+                    style.Append(" no-repeat");
+                    if (this.ImageAlign == ContentAlignment.TopLeft)
+                    {
+                        style.Append(" top left");
+                    }
+                    else if (this.ImageAlign == ContentAlignment.TopCenter)
+                    {
+                        style.Append(" top center");
+                    }
+                    else if (this.ImageAlign == ContentAlignment.TopRight)
+                    {
+                        style.Append(" top right");
+                    }
+                    else if (this.ImageAlign == ContentAlignment.MiddleLeft)
+                    {
+                        style.Append(" center left");
+                    }
+                    else if (this.ImageAlign == ContentAlignment.MiddleCenter)
+                    {
+                        style.Append(" center center");
+                    }
+                    else if (this.ImageAlign == ContentAlignment.MiddleRight)
+                    {
+                        style.Append(" center right");
+                    }
+                    else if (this.ImageAlign == ContentAlignment.BottomLeft)
+                    {
+                        style.Append(" bottom left");
+                    }
+                    else if (this.ImageAlign == ContentAlignment.BottomCenter)
+                    {
+                        style.Append(" bottom center");
+                    }
+                    else if (this.ImageAlign == ContentAlignment.BottomRight)
+                    {
+                        style.Append(" bottom right");
+                    }
+                    else
+                    {
+                        style.Append(" center center");
+                    }
+
+                    if (this.BackgroundImage != null && this.BackgroundImage.PixbufData != null)
+                    {
+                        string bgimguri = $"Resources/{widget.WidgetPath.IterGetName(0)}${widget.Name}_bg.png";
+                        if (!File.Exists(bgimguri))
+                        {
+                            Gdk.Pixbuf bgpixbuf = new Gdk.Pixbuf(this.BackgroundImage.PixbufData);
+                            bgpixbuf.Save(bgimguri, "png");
+                        }
+
+                        style.AppendFormat(",url(\"Resources/{0}_bg.png\") repeat", widget.Name);
+                    }
+                    style.Append(";");
+                    style.Append("background-origin: padding-box;");
+                    style.Append("background-clip: padding-box;");
+                }
+                else if (this.BackgroundImage != null && this.BackgroundImage.PixbufData != null)
+                {
+                    Gdk.Pixbuf bgpixbuf = new Gdk.Pixbuf(this.BackgroundImage.PixbufData);
+                    string bgimguri = $"Resources/{widget.WidgetPath.IterGetName(0)}${widget.Name}_bg.png";
+                    if (!File.Exists(bgimguri))
+                    {
+                        bgpixbuf.Save(bgimguri, "png");
+                    }
+                    style.AppendFormat("background-image:url(\"{0}\");", bgimguri);
+                    if (this.BackgroundImageLayout == ImageLayout.Tile)
+                    {
+                        style.Append("background-repeat:repeat;");
+                    }
+                    else if (this.BackgroundImageLayout == ImageLayout.Zoom)
+                    {
+                        style.Append("background-repeat:no-repeat;");
+                        style.Append("background-size: contain;");
+                        style.Append("background-position:center;");
+                    }
+                    else if (this.BackgroundImageLayout == ImageLayout.Stretch)
+                    {
+                        style.Append("background-repeat:no-repeat;");
+                        style.Append("background-size: cover;");
+                        style.Append("background-position:center;");
+                    }
+                    else if (this.BackgroundImageLayout == ImageLayout.Center)
+                    {
+                        style.Append("background-repeat:no-repeat;");
+                        if (widget.HeightRequest < bgpixbuf.Height)
+                            style.Append("background-position:top,center;");
+                        else
+                            style.Append("background-position:center,center;");
+
+                    }
+                    else
+                    {
+                        style.Append("background-repeat:no-repeat;");
+                    }
+                    style.Append("background-origin: padding-box;");
+                    style.Append("background-clip: padding-box;");
+                    if (this.BackColor.Name != "0")
+                    {
+                        string color = $"rgba({this.BackColor.R},{this.BackColor.G},{this.BackColor.B},{this.BackColor.A})";
+                        style.AppendFormat("background-color:{0};", color);
+                    }
+                }
+                else if (this.BackColor.Name != "0")
+                {
+                    string color = $"rgba({this.BackColor.R},{this.BackColor.G},{this.BackColor.B},{this.BackColor.A})";
+                    style.AppendFormat("background-color:{0};background:{0};", color);
                 }
 
-                string[] fontstyle = Font.Style.ToString().ToLower().Split(new char[] { ',', ' ' });
-                foreach (string sty in fontstyle)
+                if (this.ForeColor.Name != "0")
                 {
-                    if (sty == "bold")
-                    {
-                        style.Append("font-weight:bold;");
-                        attributes.Insert(new Pango.AttrWeight(Pango.Weight.Bold));
-                    }
-                    else if (sty == "italic")
-                    {
-                        style.Append("font-style:italic;");
-                        attributes.Insert(new Pango.AttrStyle(Pango.Style.Italic));
-                    }
-                    else if (sty == "underline")
-                    {
-                        style.Append("text-decoration:underline;");
-                        attributes.Insert(new Pango.AttrUnderline(Pango.Underline.Low));
-                    }
-                    else if (sty == "strikeout")
-                    {
-                        style.Append("text-decoration:line-through;");
-                        attributes.Insert(new Pango.AttrStrikethrough(true));
-                    }
+                    string color = $"rgba({this.ForeColor.R},{this.ForeColor.G},{this.ForeColor.B},{this.ForeColor.A})";
+                    style.AppendFormat("color:{0};", color);
                 }
-                if (widget is Gtk.Label gtklabel)
+                if (this.Font != null)
                 {
-                    gtklabel.Attributes = attributes;
-                }
-            }
+                    if (this.Font.Unit == GraphicsUnit.Pixel)
+                        style.AppendFormat("font-size:{0}px;", this.Font.Size);
+                    else if (this.Font.Unit == GraphicsUnit.Inch)
+                        style.AppendFormat("font-size:{0}in;", this.Font.Size);
+                    else if (this.Font.Unit == GraphicsUnit.Point)
+                        style.AppendFormat("font-size:{0}pt;", this.Font.Size);
+                    else if (this.Font.Unit == GraphicsUnit.Millimeter)
+                        style.AppendFormat("font-size:{0}mm;", this.Font.Size);
+                    else if (this.Font.Unit == GraphicsUnit.Document)
+                        style.AppendFormat("font-size:{0}cm;", this.Font.Size);
+                    else if (this.Font.Unit == GraphicsUnit.Display)
+                        style.AppendFormat("font-size:{0}pc;", this.Font.Size);
+                    else
+                        style.AppendFormat("font-size:{0}pt;", this.Font.Size);
 
-            StringBuilder css = new StringBuilder();
-            css.AppendLine($".{stylename}{{{style.ToString()}}}");
-            if (widget is Gtk.TextView)
-            {
-                css.AppendLine($".{stylename} text{{{style.ToString()}}}");
-                css.AppendLine($".{stylename} .view{{{style.ToString()}}}");
+                    if (string.IsNullOrWhiteSpace(Font.FontFamily.Name) == false)
+                    {
+                        style.AppendFormat("font-family:\"{0}\";", Font.FontFamily.Name);
+                    }
+
+                    string[] fontstyle = Font.Style.ToString().ToLower().Split(new char[] { ',', ' ' });
+                    foreach (string sty in fontstyle)
+                    {
+                        if (sty == "bold")
+                        {
+                            style.Append("font-weight:bold;");
+                        }
+                        else if (sty == "italic")
+                        {
+                            style.Append("font-style:italic;");
+                        }
+                        else if (sty == "underline")
+                        {
+                            style.Append("text-decoration:underline;");
+                        }
+                        else if (sty == "strikeout")
+                        {
+                            style.Append("text-decoration:line-through;");
+                        }
+                    }
+                }
+                if (style.Length > 10)
+                {
+                    string styleClassName = $"s{unique_key}";
+                    StringBuilder css = new StringBuilder();
+                    css.AppendLine($".{styleClassName}{{{style.ToString()}}}");
+                    if (widget is Gtk.TextView)
+                    {
+                        css.AppendLine($".{styleClassName} text{{{style.ToString()}}}");
+                        css.AppendLine($".{styleClassName} .view{{{style.ToString()}}}");
+                    }
+                    CssProvider provider = new CssProvider();
+                    if (provider.LoadFromData(css.ToString()))
+                    {
+                        if (widget.StyleContext.HasClass(styleClassName))
+                            widget.StyleContext.RemoveProvider(provider);
+                        widget.StyleContext.AddProvider(provider, 900);
+                        widget.StyleContext.AddClass(styleClassName);
+                    }
+                }
             }
-            css.AppendLine(".BGTransparent{background:transparent;background-color:transparent;}");
-            provider.LoadFromData(css.ToString());
         }
         protected virtual void SetStyle(ControlStyles styles, bool value)
         {
-            
         }
 
         #region 背景
+        public virtual System.Drawing.Image Image { get; set; }
+        public virtual System.Drawing.ContentAlignment ImageAlign { get; set; }
+
         public virtual bool UseVisualStyleBackColor { get; set; } = true;
         public virtual Color VisualStyleBackColor { get; }
         public virtual ImageLayout BackgroundImageLayout { get => ISelf == null ? ImageLayout.None : ISelf.Override.BackgroundImageLayout; set { if (ISelf != null) { ISelf.Override.BackgroundImageLayout = value; } } }
@@ -272,7 +384,7 @@ namespace System.Windows.Forms
             set {
                 ISelf.Override.BackColor = value;
                 ISelf.Override.OnAddClass();
-                Invalidate();
+                Refresh();
             }
         }
         public virtual event PaintEventHandler Paint
@@ -342,12 +454,23 @@ namespace System.Windows.Forms
 
         public virtual bool Focused { get { return Widget.IsFocus; } }
         private Font _Font;
-        public virtual Font Font { get => _Font; 
-            set { _Font = value; UpdateForeStyle();} 
+        public virtual Font Font {
+            get
+            {
+                if (_Font == null)
+                {
+                    var fontdes = Widget.PangoContext.FontDescription;
+                    int size = Convert.ToInt32(fontdes.Size / Pango.Scale.PangoScale);
+                    return new Drawing.Font(new Drawing.FontFamily(fontdes.Family), size);
+                }
+                else
+                    return _Font;
+            }
+            set { _Font = value; UpdateStyle(); }
         }
         private Color _ForeColor;
         public virtual Color ForeColor { get => _ForeColor; 
-            set { _ForeColor = value; UpdateForeStyle(); } 
+            set { _ForeColor = value; UpdateStyle(); } 
         }
 
         public virtual bool HasChildren { get; }

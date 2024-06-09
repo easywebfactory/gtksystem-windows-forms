@@ -13,6 +13,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.MarginStart = 0;
             this.MarginTop = 0;
             this.BorderWidth = 0;
+            this.ShadowType = ShadowType.None;
             this.Halign = Align.Start;
             this.Valign = Align.Start;
             this.Expand = false;
@@ -31,7 +32,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         protected override bool OnDrawn(Cairo.Context cr)
         {
             Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnDrawnBackground(cr, rec);
             Override.OnPaint(cr, rec);
             return base.OnDrawn(cr);
         }

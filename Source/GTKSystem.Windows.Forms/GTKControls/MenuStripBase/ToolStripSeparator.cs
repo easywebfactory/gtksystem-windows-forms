@@ -9,11 +9,11 @@ namespace System.Windows.Forms
     {
         public ToolStripSeparator() : base("ToolStripSeparator")
         {
-            this.Widget.Hexpand = false;
-            this.Widget.Vexpand = false;
-            this.Widget.Halign=Gtk.Align.Center;
-            this.Widget.Valign=Gtk.Align.Center;
-            this.Widget.StyleContext.AddClass("ToolStripSeparator");
+            this.MenuItem.Hexpand = false;
+            this.MenuItem.Vexpand = false;
+            this.MenuItem.Halign=Gtk.Align.Center;
+            this.MenuItem.Valign=Gtk.Align.Center;
+            this.MenuItem.StyleContext.AddClass("ToolStripSeparator");
         }
         public override Size Size { get => base.Size;
             set {

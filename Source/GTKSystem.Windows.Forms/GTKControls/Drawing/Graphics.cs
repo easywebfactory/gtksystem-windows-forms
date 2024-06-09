@@ -520,12 +520,12 @@ namespace System.Drawing
 
 		public void DrawImage(Image image, Point point)
 		{
-            DrawImageScaledCore(image, new Rectangle(0, 0, image.Width, image.Height), point.X, point.Y, image.Width, image.Height, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
+            DrawImageScaledCore(image, new Rectangle(point.X, point.Y, image.Width, image.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
         }
 
 		public void DrawImage(Image image, PointF point)
 		{
-            DrawImageScaledCore(image, new Rectangle(0, 0, image.Width, image.Height), point.X, point.Y, image.Width, image.Height, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
+            DrawImageScaledCore(image, new Rectangle((int)point.X, (int)point.Y, image.Width, image.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
         }
 
 		public void DrawImage(Image image, PointF[] destPoints)
@@ -545,7 +545,7 @@ namespace System.Drawing
 				img.CopyArea(x, y, width, height, newimg, 0, 0);
 				this.context.Save();
 				this.SetTranslateWithDifference(x, y);
-				Gdk.CairoHelper.SetSourcePixbuf(this.context, newimg, x, y);
+				Gdk.CairoHelper.SetSourcePixbuf(this.context, newimg, 0, 0);
 
 				using (var p = this.context.GetSource())
 				{
@@ -716,7 +716,7 @@ namespace System.Drawing
 
 		public void DrawImage(Image image, int x, int y)
 		{
-            DrawImageScaledCore(image, new Rectangle(0, 0, image.Width, image.Height), x, y, image.Width, image.Height, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
+            DrawImageScaledCore(image, new Rectangle(x, y, image.Width, image.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
 		}
 
 		public void DrawImage(Image image, int x, int y, Rectangle srcRect, GraphicsUnit srcUnit)
@@ -726,12 +726,12 @@ namespace System.Drawing
 
         public void DrawImage(Image image, int x, int y, int width, int height)
 		{
-            DrawImageScaledCore(image, new Rectangle(0, 0, image.Width, image.Height), x, y, width, height, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
+            DrawImageScaledCore(image, new Rectangle(x, y, width, height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
         }
 
 		public void DrawImage(Image image, float x, float y)
 		{
-            DrawImageScaledCore(image, new Rectangle(0, 0, image.Width, image.Height), x, y, image.Width, image.Height, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
+            DrawImageScaledCore(image, new Rectangle((int)x, (int)y, image.Width, image.Height), x, y, image.Width, image.Height, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
         }
 
 		public void DrawImage(Image image, float x, float y, RectangleF srcRect, GraphicsUnit srcUnit)
@@ -741,7 +741,7 @@ namespace System.Drawing
 
 		public void DrawImage(Image image, float x, float y, float width, float height)
         {
-            DrawImageScaledCore(image, new Rectangle(0, 0, image.Width, image.Height), x, y, width, height, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
+            DrawImageScaledCore(image, new Rectangle((int)x, (int)y, (int)width, (int)height), 0, 0, width, height, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
         }
 
 		public void DrawImageUnscaled(Image image, Point point)

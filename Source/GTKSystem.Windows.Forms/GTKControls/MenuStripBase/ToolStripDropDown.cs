@@ -1,4 +1,5 @@
-﻿using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+﻿using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,10 +7,11 @@ using System.Text;
 
 namespace System.Windows.Forms
 {
-    public class ToolStripDropDown : Control
+    public class ToolStripDropDown : ToolStripItem
     {
-        public readonly ToolStripDropDownBase self = new ToolStripDropDownBase();
-        public override object GtkControl => self;
+        //public readonly ToolStripDropDownBase self = new ToolStripDropDownBase();
+        public readonly Gtk.Menu self = new Gtk.Menu();
+        public override Widget Widget => self;
         public ToolStripItemCollection toolStripItemCollection;
         public ToolStripDropDown():base()
         {

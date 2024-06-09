@@ -31,6 +31,7 @@ namespace System.Windows.Forms
             var renderer = new CellRendererToggleValue();
             renderer.Activatable = this.ReadOnly == false;
             renderer.Mode = CellRendererMode.Activatable;
+            renderer.Height = RowHeight;
             renderer.Toggled += CellName_Toggled;
 
             base.PackStart(renderer, true);
@@ -78,6 +79,7 @@ namespace System.Windows.Forms
             renderer.Activatable = this.ReadOnly == false;
             renderer.Mode = CellRendererMode.Activatable;
             renderer.Radio = true;
+            renderer.Height = RowHeight;
             renderer.Toggled += CellName_Toggled;
 
             base.PackStart(renderer, true);
@@ -124,9 +126,8 @@ namespace System.Windows.Forms
             CellRendererComboValue renderer = new CellRendererComboValue();
             renderer.Editable = this.ReadOnly == false;
             renderer.Edited += Renderer_Edited;
-            //renderer.Changed += Renderer_Changed;
-            //renderer.WidthChars = 10;
             renderer.TextColumn = 0;
+            renderer.Height = RowHeight;
             Gtk.ListStore model = new Gtk.ListStore(typeof(string));
             foreach(var item in _items)
             {
@@ -140,15 +141,6 @@ namespace System.Windows.Forms
             base.Sizing = TreeViewColumnSizing.GrowOnly;
             if (this.SortMode != DataGridViewColumnSortMode.NotSortable)
                 base.SortColumnId = this.DisplayIndex;
-        }
-
-        private void Renderer_Changed(object o, ChangedArgs args)
-        {
-            CellRendererCombo combo = (CellRendererCombo)o;
-            TreePath path = new TreePath(args.Args[0].ToString());
-            TreeIter iter = (TreeIter)args.Args[1];
-            object val = combo.Model.GetValue(iter, 0);
-            _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], new CellValue() { Text = val?.ToString() });
         }
 
         private void Renderer_Edited(object o, EditedArgs args)
@@ -211,6 +203,7 @@ namespace System.Windows.Forms
         {
             var renderer = new CellRendererButtonValue();
             renderer.Editable = false;
+            renderer.Height = RowHeight;
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
@@ -232,14 +225,16 @@ namespace System.Windows.Forms
         }
         public override void Renderer()
         {
-            var renderer = new CellRendererPixbufValue();
+            var renderer = new CellRendererPixbufValue(this);
             renderer.IconName = "face-smile";
+            renderer.Height = RowHeight;
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
             if (this.SortMode != DataGridViewColumnSortMode.NotSortable)
                 base.SortColumnId = this.DisplayIndex;
         }
+
     }
     public class DataGridViewLinkColumn : DataGridViewColumn
     {
@@ -258,6 +253,9 @@ namespace System.Windows.Forms
         internal DataGridViewCell _cellTemplate;
         internal Gtk.TreeView _treeView;
         internal DataGridView _gridview;
+        public DataGridViewColumn(IntPtr intPtr) : base(intPtr)
+        {
+        }
         public DataGridViewColumn() : this(0, null, null)
         {
         }
@@ -293,8 +291,7 @@ namespace System.Windows.Forms
             renderer.PlaceholderText = "---";
             renderer.Markup = this.Markup;
             renderer.Alignment=Pango.Alignment.Center;
-            //renderer.Xalign = 0f;
-            //base.Alignment = 0;
+            renderer.Height = RowHeight;
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
@@ -320,7 +317,30 @@ namespace System.Windows.Forms
             }
 
         }
-
+        private int DefaultHeight
+        {
+            get
+            {
+                if (_treeView !=null)
+                {
+                    double size = _treeView.PangoContext.FontDescription.Size / Pango.Scale.PangoScale;
+                    return (int)size + 16;
+                }
+                return 28;
+            }
+        }
+        public int RowHeight
+        {
+            get
+            {
+                if (_gridview != null)
+                {
+                    double size = _treeView.PangoContext.FontDescription.Size / Pango.Scale.PangoScale;
+                    return _gridview.RowTemplate.Height;
+                }
+                return DefaultHeight;
+            }
+        }
         public DataGridView DataGridView { get { return _gridview; } set { _gridview = value; _treeView = value.GridView; } }
         public string Markup { get; set; }
         public DataGridViewElementStates State { get { return DataGridViewElementStates.None; } internal set { } }

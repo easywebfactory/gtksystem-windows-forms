@@ -18,33 +18,30 @@ namespace System.Windows.Forms
             set
             {
                 base.CheckState = value;
-                if (this.Widget is Gtk.CheckMenuItem checkMenuItem)
-                {
-                    if (value == CheckState.Indeterminate)
-                    {
-                        checkMenuItem.DrawAsRadio = true;
-                    }
-                    else if (value == CheckState.Checked)
-                    {
-                        checkMenuItem.DrawAsRadio = false;
-                    }
-                }
             }
         }
         public override bool Checked {
             get
             {
-                if (this.Widget is Gtk.CheckMenuItem checkMenuItem)
+                if (this.flagBox.Child is Gtk.CheckButton checkbutton)
                 {
-                   return checkMenuItem.Active;
+                   return checkbutton.Active;
+                }
+                else if (this.flagBox.Child is Gtk.RadioButton radiobutton)
+                {
+                    return radiobutton.Active;
                 }
                 return base.Checked; 
             }
             set { 
                 base.Checked = value;
-                if (this.Widget is Gtk.CheckMenuItem checkMenuItem)
+                if (this.flagBox.Child is Gtk.CheckButton checkbutton)
                 {
-                    checkMenuItem.Active = value;
+                    checkbutton.Active = value;
+                }
+                else if (this.flagBox.Child is Gtk.RadioButton radiobutton)
+                {
+                    radiobutton.Active = value;
                 }
             } }
     }

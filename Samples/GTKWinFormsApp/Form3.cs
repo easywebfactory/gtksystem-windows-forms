@@ -1,4 +1,5 @@
 ﻿using GLib;
+using Gtk;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,6 +21,7 @@ namespace GTKWinFormsApp
             //目前自定义控件无法在窗体设计器中可视化，建议使用程序添加，如下示例：
             UserControl11 userControl11 = new UserControl11();
             panel5.Controls.Add(userControl11);
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -42,9 +44,9 @@ namespace GTKWinFormsApp
                 System.Threading.Thread.Sleep(3000);
                 for (int i = 0; i < 100; i++)
                 {
-                    trackBar1.Invoke(() =>
+                    progressBar1.Invoke(() =>
                     {
-                        trackBar1.Value = i;
+                        progressBar1.Value = i;
                     });
                     System.Threading.Thread.Sleep(20);
                 }

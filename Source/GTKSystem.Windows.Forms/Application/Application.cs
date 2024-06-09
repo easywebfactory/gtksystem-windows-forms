@@ -1,10 +1,11 @@
-﻿using System.ComponentModel;
+﻿using Gtk;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
@@ -82,11 +83,7 @@ namespace System.Windows.Forms
         {
             if (App == null)
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    Environment.SetEnvironmentVariable("GTK_EXE_PREFIX", Directory.GetCurrentDirectory());
-                    Environment.SetEnvironmentVariable("GTK_DATA_PREFIX", Directory.GetCurrentDirectory());
-                }
+                Environment.SetEnvironmentVariable("GTK_CSD", "1");
                 Gtk.Application.Init();
                 //App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.IsLauncher);
                 App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
@@ -97,136 +94,109 @@ namespace System.Windows.Forms
                 App.AddAction(quitAction);
 
                 Gtk.CssProvider css = new Gtk.CssProvider();
-                //粉红色主题
-                //.DefaultThemeStyle{border:solid 1px #ddaaaa;border-radius:0px;box-shadow: none;color:#993333;}
-                //.DefaultThemeStyle.background{background-color:#ffeeee;}
-                //.DefaultThemeStyle.titlebar{background-color:#996666;}
-                //.DefaultThemeStyle border{border:solid 1px #ddaaaa;}
-                //.DefaultThemeStyle button{color:#993333;border-radius:0px;}
-                //.DefaultThemeStyle entry{border-radius:0px;}
-                //.DefaultThemeStyle label{color:#993333;}
-                //.DefaultThemeStyle>button{border:solid 1px #cccccc;}
-                //.DefaultThemeStyle>entry{border:solid 1px #cccccc;}
-                //.DefaultThemeStyle header.top{background-color:#ffcccc;} 
-                //.DefaultThemeStyle header.top tab:hover{background-color:#ffeeee;} 
-                //.DefaultThemeStyle stack{background-color:#ffeeee;padding:0px;margin:0px;} 
-                //.DefaultThemeStyle .view button{background-color:#ffcccc;}
-                //.DefaultThemeStyle:focus{border-color:#000099;}
-                //.DefaultThemeStyle:active{border-color:#000099;}
-                css.LoadFromData(@"
-.DefaultThemeStyle{border-radius:0px;border:solid 1px #cccccc;box-shadow: none;color:#000000;}
-.DefaultThemeStyle button{padding:0px;border-radius:0px;}
-.DefaultThemeStyle border{border:solid 1px #cccccc;}
-.DefaultThemeStyle entry{background-color:#ffffff; padding: 0px 6px;border-radius:0px;}
 
-/*
-.DefaultThemeStyle .background{background-color:#F6F5F4;}
-.DefaultThemeStyle .titlebar{background-color:#666655;}
-.DefaultThemeStyle .view{background:#ffffff}
-.DefaultThemeStyle label{color:#000000;}
-.DefaultThemeStyle header.top{background-color:#CFCFCF;} 
-.DefaultThemeStyle header.top tab{background-color:#C7C7C7;} 
-.DefaultThemeStyle header.top tab:hover{background-color:#EFEFEF;} 
+                string defaulttheme = "theme/default/style.css";
+                string styletheme = "";
+                if(File.Exists(defaulttheme))
+                    styletheme = $"@import url(\"{defaulttheme}\");\n";
 
-.DefaultThemeStyle stack{background-color:#ffffff;padding:0px;margin:0px;} 
-.DefaultThemeStyle .view button{background:linear-gradient(#f6f6f6,#f9f9f9)}
-.DefaultThemeStyle:focus{border-color:#eeeeee;}
-.DefaultThemeStyle:active{border-color:#cccccc;}
-*/
+                styletheme += @"
+                @define-color frame_color #C6C6C6;
+                @define-color line_color #E9E9E9;
+                @define-color separator_color1 #C6C5C4;
+                @define-color separator_color2 #D6D7D8;
 
+                .DefaultThemeStyle{border-color:@frame_color;}
+                .DefaultThemeStyle button{}
+                .DefaultThemeStyle border{border:solid 1px @frame_color;}
+                .DefaultThemeStyle entry{background-color:#ffffff; padding: 0px 6px;}
+                .DefaultThemeStyle entry.flat{border:solid 1px @frame_color;padding: 4px 4px;}
+                .DefaultThemeStyle entry.flat:focus{border:solid 1px @frame_color;padding: 4px 4px;}
+                .DefaultThemeStyle .frame{border-width:0px;border-color:@frame_color;border-style:solid; box-shadow:0px 0px 0px 1px @frame_color;}
+                 
+                .Form {border-width:0px;margin:0px;}
+                .UserControl{ }
 
-.Form {border-width:0px;margin:0px;box-shadow: none;}
-.ScrollForm {border-right:solid 6px #e6e5e4;}
-.UserControl{border-width:0px;}
+                .MessageBox{}
+                .MessageBox button{margin:10px;}
+                .MessageBox-BarTitle{font-size:20px;padding-bottom:10px;}
 
-.MessageBox{}
-.MessageBox button{margin:10px;}
-.MessageBox-BarTitle{font-size:20px;padding-bottom:10px;}
-.TabControl{} 
-.TabControl header.top{background-color:#e7e5e3;} 
-.TabControl header.top tab:hover{background-color:#EFEFEF;} 
-.TabControl header.top tab:checked{background-color:#f9f9f9;} 
+                .TabControl{margin-top:3px;} 
+                .TabControl tab{margin-left:0px;margin-right:0px;margin-top:3px;padding-top:5px;padding-bottom:5px;} 
 
-.DataGridView{margin:0px;}
-.DataGridView treeview.view{background-color:#ffffff;margin:0px;border-bottom:solid 1px #dddddd;border-left-width:0px;border-top-width:0px;;border-right-width:0px;}
-.DataGridView treeview.view:hover{background-color:#ffff88;}
-.DataGridView treeview.view:selected{background-color:#5555ff;color:#ffffff;}
-.DataGridView treeview.view header{background-color:#EFEFEF;}
-.DataGridView treeview.view header button{background-color:#f9f9f9; padding-top:6px;padding-bottom:6px;border-radius:0px;}
-.DataGridView treeview.view header button:hover{background-color:#cccccc;}
+                .DataGridView {border-width:1px;margin:-3px;}
+                .DataGridView button{} 
+                .DataGridView treeview.view{margin:0px; border-bottom:solid 1px @line_color;border-left-width:0px;border-top-width:0px;border-right-width:0px;}
+                .GridViewCell-Button{ font-size:12px; background:linear-gradient(#e9e9e9,#e0e0e0);}
+                .GridViewCell-Button:hover{background:linear-gradient(#eeeeee,#efefef);}
+                .GridViewCell-Button:selected{ color:blue}
+ 
+                .TreeView .frame{}
+                .TextBox{caret-color:#999999;box-shadow:none; } 
 
-.DataGridView button{} 
-.GridViewCell-Button{ font-size:12px; border:solid 1px #aaaaaa; background:linear-gradient(#e9e9e9,#e0e0e0);}
-.GridViewCell-Button:hover{  border:solid 1px #aaaaaa;background:linear-gradient(#eeeeee,#efefef);}
-.GridViewCell-Button:selected{ color:blue}
-.TreeView{border-bottom-width:0px;border-left-width:0px;border-top-width:1px;;border-right-width:0px;}
-.TreeView button{border-left-width:0px;border-right-width:0px;}
-.TreeView:selected{ color:blue}
+                .RichTextBox text{background-color:transparent;background:transparent;}
+                .RichTextBox .view{background-color:transparent;background:transparent;}
 
-.Button{padding:0px;} 
+                .CheckBox {border-width:0px;} 
+                .CheckedListBox {background-color:#ffffff;} 
+                .RadioButton {border-width:0px;} 
+                .Button{padding:0px;} 
+                .Label{border-width:0px; border-style:none;} 
+                .LinkLabel{border-width:0px;} 
 
-.TextBox{caret-color:#999999;} 
-.RichTextBox {border-width:1px;caret-color:#999999;background-color:#FFFFFF;background:#FFFFFF;}
-.RichTextBox border.top{border-width:1px;}
-.RichTextBox border.left{border-width:1px;}
-.RichTextBox border.right{border-width:1px;}
-.RichTextBox border.bottom{border-width:1px;}
-.RichTextBox text{background-color:transparent;background:transparent;}
-.RichTextBox .view{background-color:transparent;background:transparent;}
+                .NumericUpDown{border-width:1px;padding:2px; min-height:6px;min-width:6px;}
+                .NumericUpDown button.up{border-width:0px;padding:0px;font-size:6px;min-height:6px;min-width:6px;}
+                .NumericUpDown button.down{border-width:0px;padding:0px;font-size:6px;min-height:6px;min-width:6px;}
+                .NumericUpDown.horizontal entry{border-width:0px;padding:2px;min-height:6px;min-width:6px;} 
+                .NumericUpDown.vertical entry{border-width:0px;padding:2px;min-height:6px;min-width:6px;} 
 
+                .ComboBox{border-width:0px;}
+                .ComboBox button{padding:0px 5px 0px 5px;}
+                .ComboBox entry{padding:0px 5px;}
 
-.CheckBox {border-width:0px;} 
-.CheckedListBox {background-color:#ffffff;} 
-.RadioButton {border-width:0px;} 
+                .DropDownList button{padding:3px;box-shadow:none;}
+                .DropDownList button.frame{box-shadow:none;}
+                .DropDownList entry{padding:0px 5px;background:linear-gradient(#F6F5F3,#F1F0EE,#ECEBE7);border-right-width:0px;box-shadow:none;}
+                .DropDownList entry.flat{border-right-width:0px;box-shadow:none;}
+                .DropDownList entry:hover{background:linear-gradient(#F6F5F3,#F6F5F3);}
 
-.Label{border-width:0px;background-color:#F6F5F4;} 
-.LinkLabel{border-width:0px;} 
-.NumericUpDown{min-height:6px;min-width:6px;caret-color:#999999;}
-.NumericUpDown button.up{border-width:0px;padding:0px;font-size:6px;min-height:6px;min-width:6px;}
-.NumericUpDown button.down{border-width:0px;padding:0px;font-size:6px;min-height:6px;min-width:6px;}
-.NumericUpDown entry{border-width:0px;padding:0px 0px 0px 3px;min-height:6px;min-width:6px;} 
-.NumericUpDown entry:focus{border-width:0px;}
+                .Panel{border-width:0px;} 
+                .SplitContainer {border:solid 1px @frame_color;}
+                .SplitContainer > separator {border-top:solid 4px @separator_color1;border-bottom:solid 1px @separator_color2;}
 
-.ComboBox{border-width:0px;}
-.ComboBox button{padding:0px 5px 0px 5px; border-width:1px 0px 1px 0px;border-color:#c9c9c9;}
-.ComboBox entry{padding:0px 5px;border:solid 1px #c9c9c9;}
+                .GroupBox{} 
+                .TableLayoutPanel {box-shadow: 1px 1px 1px 0px #C6C6C6;}
+                .TableLayoutPanel viewport.frame {box-shadow: inset 1px 1px 1px 0 @frame_color;}
+                .FlowLayoutPanel{}
 
-.DropDownList button{padding:0px; border-width:1px 0px 1px 0px;border-color:#c9c9c9;}
-.DropDownList entry{padding:0px 5px;background:linear-gradient(#F6F5F3,#F1F0EE,#ECEBE7);border:solid 1px #c9c9c9;}
-.DropDownList entry:hover{background:linear-gradient(#F6F5F3,#F6F5F3);}
+                .MenuStrip{padding:0px;border-width:0px;}
+                .MenuStrip .frame{border-width:0px;}
+                .ToolStrip{padding:0px;border-width:0px;} 
+                .ToolStrip button{padding:0px 5px 0px 5px;}
+                .ToolStrip entry{padding:0px 5px;}
+                .ToolStrip .frame{border-width:0px;}
+                 menu .MenuItem{padding:0px;margin-left:-23px;}
+                 menu menuitem .MenuCheck{padding:0px;margin:0px;}
+                .ToolStripSeparator{border-bottom: 1px inset rgba(250, 250, 250, 1);border-right: 1px inset rgba(250, 250, 250, 1);}
+                .StatusStrip{padding:0px;border-width:0px;}
+                .StatusStrip .frame{border-width:0px;}
 
+                .ListBox {}
+                .ListView{}
+                .ListView checkbutton {padding:0px;}
+                .ListView .Label{background-color:transparent;} 
+                .ListViewHeader {background-color:#EFEEEE; opacity:0.88; }
+                .ListView .Group{background-image:linear-gradient(#ffffff 12px,#3333bb 3px,#ffffff 14px);}
+                .ListView .GroupLine{border-top:inset 1px #6677bb;}
+                .ListView .Title{padding-left:5px;padding-right:5px; }
+                .ListView .SubTitle{padding-left:5px;padding-right:5px; }
+                ";
+                string customstyle = "theme/default.css";
+                if (File.Exists(customstyle))
+                    styletheme += $"\n@import url(\"{customstyle}\");\n";
 
-.Panel{border-width:0px;} 
-.SplitContainer.horizontal{border-width:1px;}
-.GroupBox{border-color:#DCDCDC;} 
-.TableLayoutPanel viewport{border:solid 1px #eeeeee;}
-.FlowLayoutPanel{}
-
-.MenuStrip{padding:0px;background-color:#F6F5F4;background-image:none;border-width:0px;}
-.MenuStrip viewport{border-width:0px;} 
-.ToolStrip{padding:0px;background:linear-gradient(#fefefd,#efefef);border-width:0px;background-color:#F6F5F4;} 
-.ToolStrip viewport{border-width:0px;} 
-.ToolStripMenuItemNoChecked check{color:transparent;opacity:0;} 
-.ToolStripSeparator{background-color:#C9C9C9;border-bottom: 1px inset rgba(250, 250, 250, 1);border-right: 1px inset rgba(250, 250, 250, 1);}
-
-.StatusStrip{padding:0px;background-image:linear-gradient(#ECECEC,#e7e5e3,#e7e5e3); border-width:0px; border-top:solid 1px #c6c6c6;}
-.StatusStrip viewport{border-width:0px;} 
-
-
-.ListBox{border-width:1px;background-color:#FFFFFF;}
-.ListBox list{background-color:transparent;background:transparent; }
-
-.ListView{background-color:#ffffff; }
-.ListView .Label{background-color:transparent;} 
-.ListViewHeader {background-color:#EFEEEE; border:solid 1px #BBBBBB; opacity:0.88; }
-.ListView .Group{background-image:linear-gradient(#ffffff 12px,#3333bb 3px,#ffffff 14px);}
-.ListView .GroupLine{border-top:inset 1px #6677bb;}
-.ListView .Title{padding-left:5px;padding-right:5px; color:#3333bb;}
-.ListView .SubTitle{padding-left:5px;padding-right:5px;color:#333366;  }
-
-");
-
-                Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, 800);
+                css.LoadFromData(styletheme);
+                Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, 600);
             }
             return App;
         }
