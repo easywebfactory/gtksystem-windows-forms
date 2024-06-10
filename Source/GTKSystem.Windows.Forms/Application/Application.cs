@@ -83,7 +83,6 @@ namespace System.Windows.Forms
         {
             if (App == null)
             {
-                Environment.SetEnvironmentVariable("GTK_CSD", "1");
                 Gtk.Application.Init();
                 //App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.IsLauncher);
                 App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
@@ -95,7 +94,7 @@ namespace System.Windows.Forms
 
                 Gtk.CssProvider css = new Gtk.CssProvider();
 
-                string defaulttheme = "theme/default/style.css";
+                string defaulttheme = "theme/default/style/style.css";
                 string styletheme = "";
                 if(File.Exists(defaulttheme))
                     styletheme = $"@import url(\"{defaulttheme}\");\n";
