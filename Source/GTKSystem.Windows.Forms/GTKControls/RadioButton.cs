@@ -15,7 +15,13 @@ namespace System.Windows.Forms
         public readonly RadioButtonBase self = new RadioButtonBase();
         public override object GtkControl => self;
         public RadioButton():base() {
-            self.Realized += Control_Realized; ;
+            self.Realized += Control_Realized;
+        }
+
+        private void Self_Toggled(object sender, EventArgs e)
+        {
+            if (CheckedChanged != null && self.IsMapped)
+                CheckedChanged(this, e);
         }
 
         private void Control_Realized(object sender, EventArgs e)
@@ -31,14 +37,9 @@ namespace System.Windows.Forms
                 }
             }
             self.Active = _Checked;
-            isLoaded = true;
+            self.Toggled += Self_Toggled;
         }
-        bool isLoaded = false;
-        public event EventHandler CheckedChanged
-        {
-            add { self.Toggled += (object sender, EventArgs e) => { if (isLoaded) { value.Invoke(this, e); } }; }
-            remove { self.Toggled -= (object sender, EventArgs e) => { if (isLoaded) { value.Invoke(this, e); } }; }
-        }
+        public event EventHandler CheckedChanged;
 
         public override string Text { get { return self.Label; } set { self.Label = value;} }
         public bool Checked { get { return self.Active; } set { _Checked = true; self.Active = true; } }

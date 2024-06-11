@@ -13,7 +13,6 @@ namespace System.Windows.Forms
     {
         public MenuStrip() : base("MenuStrip")
         {
-            this.self.StyleContext.RemoveClass("ToolStrip");
             this.self.StyleContext.AddClass("MenuStrip");
             this.Dock = DockStyle.Top;
         }

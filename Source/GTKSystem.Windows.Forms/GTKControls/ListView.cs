@@ -31,8 +31,6 @@ namespace System.Windows.Forms
 		private ColumnHeaderCollection _columns;
         internal Gtk.Box flowBoxContainer = new Gtk.Box(Gtk.Orientation.Vertical, 0);
         internal Gtk.StackSwitcher header = new Gtk.StackSwitcher();
-        Gdk.Pixbuf godownpixbuf;
-        Gdk.Pixbuf gouppixbuf;
         public ListView():base()
         {
 			_items = new ListViewItemCollection(this);
@@ -56,10 +54,6 @@ namespace System.Windows.Forms
             scrolledWindow.VscrollbarPolicy = PolicyType.Always;
             scrolledWindow.Add(flowBoxContainer);
             self.PackStart(scrolledWindow, true, true, 1);
-
-            Gtk.IconTheme theme = new Gtk.IconTheme();
-            godownpixbuf = theme.LoadIcon("go-down-symbolic", 16, IconLookupFlags.ForceSize);
-            gouppixbuf = theme.LoadIcon("go-up-symbolic", 16, IconLookupFlags.ForceSize);
         }
 
         private void Control_Realized(object sender, EventArgs e)
@@ -71,7 +65,7 @@ namespace System.Windows.Forms
                 header.ShowAll();
                 foreach (ColumnHeader col in Columns)
                 {
-                    LabelBase label = new LabelBase(col.Text) { WidthRequest = col.Width, MaxWidthChars = 0, Valign = Gtk.Align.Center, Ellipsize = Pango.EllipsizeMode.End};
+                    LabelBase label = new LabelBase(col.Text) { WidthRequest = col.Width, MaxWidthChars = 0, Valign = Gtk.Align.End, Ellipsize = Pango.EllipsizeMode.End};
                     label.TooltipText = col.Text;
                     label.Markup = col.Text;
                     label.Data.Add("ColumnIndex", col.DisplayIndex);
@@ -149,12 +143,30 @@ namespace System.Windows.Forms
             Cairo.Rectangle rec = args.Cr.ClipExtents();
             if (rec.Width > 10 && SortingColumnIndex > -1)
             {
-                if (((Gtk.Label)o).Data["ColumnIndex"].ToString() == SortingColumnIndex.ToString())
+                LabelBase ws = (LabelBase)o;
+                if (ws.Data["ColumnIndex"].ToString() == SortingColumnIndex.ToString())
                 {
-                    if (Sorting == SortOrder.Descending)
-                        ImageUtility.DrawBackgroundImage(args.Cr, godownpixbuf, new Gdk.Rectangle((int)rec.Width / 2 - 16, -8, 16, 16));
-                    else if (Sorting == SortOrder.Ascending)
-                        ImageUtility.DrawBackgroundImage(args.Cr, gouppixbuf, new Gdk.Rectangle((int)rec.Width / 2 - 16, -8, 16, 16));
+                    if (Sorting != SortOrder.None)
+                    {
+                        Cairo.Context ctx = args.Cr;
+                        ctx.Save();
+                        ctx.ResetClip();
+                        ctx.Rectangle(rec.X, rec.Y - 4, rec.Width, rec.Height + 4);
+                        ctx.Clip();
+                        ctx.Translate((int)rec.Width / 2 - 16, rec.Y - 5);
+                        ctx.Rotate(0.5 * Math.PI);
+                        Gdk.RGBA color = ws.StyleContext.GetColor(StateFlags.Normal);
+                        ctx.SetSourceRGBA(color.Red, color.Green, color.Blue, color.Alpha);
+                        //Serif,Impact,Sylfaen,Arial Black,Cambria,Candara,Arial
+                        ctx.SelectFontFace("Serif", Cairo.FontSlant.Normal, Cairo.FontWeight.Bold);
+                        ctx.SetFontSize(13);
+                        if (Sorting == SortOrder.Descending)
+                            ctx.ShowText("<");
+                        else if (Sorting == SortOrder.Ascending)
+                            ctx.ShowText(">");
+                        ctx.Stroke();
+                        ctx.Restore();
+                    }
                 }
             }
         }
@@ -524,7 +536,7 @@ namespace System.Windows.Forms
             Gtk.Box hBox = new Gtk.Box(Gtk.Orientation.Vertical, 0);
             hBox.Valign = Gtk.Align.Start;
             hBox.Halign = Gtk.Align.Fill;
-            hBox.Expand = false;
+            hBox.Expand = true;
             if (ShowGroups == true && this.View != View.List && this.View != View.Tile)
             {
                 _flow = group.FlowBox;
@@ -532,12 +544,13 @@ namespace System.Windows.Forms
                     return;
 
                 Gtk.Box groupbox=new Box(Gtk.Orientation.Horizontal, 0);
-                var title = new Gtk.Label(group.Header) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
-                title.MarginStart = 3;
-                title.StyleContext.AddClass("Title");
+                groupbox.StyleContext.AddClass("GroupTitle");
+                groupbox.MarginStart = 3;
+                var title = new Gtk.Label(group.Header) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Center, Ellipsize = Pango.EllipsizeMode.End };
                 groupbox.PackStart(title, false, false, 0);
                 Gtk.Viewport groupline = new Gtk.Viewport();
                 groupline.StyleContext.AddClass("GroupLine");
+                groupline.HeightRequest = 1;
                 groupline.Halign = Gtk.Align.Fill;
                 groupline.Valign = Gtk.Align.Center;
                 groupline.Vexpand = false;
@@ -545,9 +558,9 @@ namespace System.Windows.Forms
                 hBox.PackStart(groupbox, false, false, 0);
                 if (!string.IsNullOrEmpty(group.Subtitle))
                 {
-                    var subtitle = new Gtk.Label(group.Subtitle) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
+                    var subtitle = new Gtk.Label(group.Subtitle) { Xalign = 0, Halign = Gtk.Align.Fill, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
                     subtitle.MarginStart = 3;
-                    subtitle.StyleContext.AddClass("SubTitle");
+                    subtitle.StyleContext.AddClass("GroupSubTitle");
                     hBox.PackStart(subtitle, false, false, 0);
                 }
             }
@@ -577,21 +590,23 @@ namespace System.Windows.Forms
             });
             _flow.ChildActivated += _flow_ChildActivated;
             hBox.PackStart(_flow, true, true, 0);
+
+            if (ShowGroups == true && this.View != View.List && this.View != View.Tile)
+            {
+                if (!string.IsNullOrEmpty(group.Footer))
+                {
+                    var footer = new Gtk.Label(group.Footer) { Xalign = 0, Halign = Gtk.Align.Fill, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
+                    footer.MarginStart = 3;
+                    footer.StyleContext.AddClass("GroupSubTitle");
+                    hBox.PackEnd(footer, false, false, 0);
+                }
+            }
             flowBoxContainer.PackStart(hBox, true, true, 0);
             if (position > -1)
             {
                 flowBoxContainer.ReorderChild(hBox, position);
             }
-            if (ShowGroups == true && this.View != View.List && this.View != View.Tile)
-            {
-                if (!string.IsNullOrEmpty(group.Footer))
-                {
-                    var footer = new Gtk.Label(group.Footer) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
-                    footer.MarginStart = 3;
-                    footer.StyleContext.AddClass("SubTitle");
-                    hBox.PackEnd(footer, false, false, 0);
-                }
-            }
+
         }
         private void _flow_ChildActivated(object o, Gtk.ChildActivatedArgs args)
         {

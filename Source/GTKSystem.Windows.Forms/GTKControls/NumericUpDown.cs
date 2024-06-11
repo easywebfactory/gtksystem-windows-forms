@@ -16,14 +16,16 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         public NumericUpDown() : base()
         {
+            self.ValueChanged += Self_ValueChanged;
         }
 
-        public event EventHandler ValueChanged
+        private void Self_ValueChanged(object sender, EventArgs e)
         {
-            add { self.ValueChanged += (object sender, EventArgs e) => { value.Invoke(this, e); }; }
-            remove { self.ValueChanged -= (object sender, EventArgs e) => { value.Invoke(this, e); }; }
+            if (ValueChanged != null && self.IsMapped)
+                ValueChanged(this, e);
         }
 
+        public event EventHandler ValueChanged;
         public int DecimalPlaces { get => Convert.ToInt32(self.Digits); set => self.Digits = Convert.ToUInt32(value); }
         public decimal Increment
         {

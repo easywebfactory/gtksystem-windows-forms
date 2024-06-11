@@ -94,21 +94,20 @@ namespace System.Windows.Forms
 
                 Gtk.CssProvider css = new Gtk.CssProvider();
 
-                string defaulttheme = "theme/default/style/style.css";
-                string styletheme = "";
-                if(File.Exists(defaulttheme))
-                    styletheme = $"@import url(\"{defaulttheme}\");\n";
+                string css_style = @"
+                @define-color frame_color rgba(169,169,169,0.6);
+                @define-color line_color #ECECEC;
+                @define-color toolstrip_frame_color rgba(169,169,169,0.3);
 
-                styletheme += @"
-                @define-color frame_color #C6C6C6;
-                @define-color line_color #E9E9E9;
                 @define-color separator_color1 #C6C5C4;
                 @define-color separator_color2 #D6D7D8;
+                @define-color fg_color @theme_fg_color;
+                @define-color bg_color @theme_bg_color;
 
                 .DefaultThemeStyle{border-color:@frame_color;}
-                .DefaultThemeStyle button{}
+                .DefaultThemeStyle button{color:@theme_fg_color;}
                 .DefaultThemeStyle border{border:solid 1px @frame_color;}
-                .DefaultThemeStyle entry{background-color:#ffffff; padding: 0px 6px;}
+                .DefaultThemeStyle entry{padding: 0px 6px;}
                 .DefaultThemeStyle entry.flat{border:solid 1px @frame_color;padding: 4px 4px;}
                 .DefaultThemeStyle entry.flat:focus{border:solid 1px @frame_color;padding: 4px 4px;}
                 .DefaultThemeStyle .frame{border-width:0px;border-color:@frame_color;border-style:solid; box-shadow:0px 0px 0px 1px @frame_color;}
@@ -131,13 +130,9 @@ namespace System.Windows.Forms
                 .GridViewCell-Button:selected{ color:blue}
  
                 .TreeView .frame{}
-                .TextBox{caret-color:#999999;box-shadow:none; } 
-
-                .RichTextBox text{background-color:transparent;background:transparent;}
-                .RichTextBox .view{background-color:transparent;background:transparent;}
-
+                .TextBox{box-shadow:none; } 
                 .CheckBox {border-width:0px;} 
-                .CheckedListBox {background-color:#ffffff;} 
+                .CheckedListBox checkbutton{padding:0px;} 
                 .RadioButton {border-width:0px;} 
                 .Button{padding:0px;} 
                 .Label{border-width:0px; border-style:none;} 
@@ -149,14 +144,14 @@ namespace System.Windows.Forms
                 .NumericUpDown.horizontal entry{border-width:0px;padding:2px;min-height:6px;min-width:6px;} 
                 .NumericUpDown.vertical entry{border-width:0px;padding:2px;min-height:6px;min-width:6px;} 
 
-                .ComboBox{border-width:0px;}
-                .ComboBox button{padding:0px 5px 0px 5px;}
-                .ComboBox entry{padding:0px 5px;}
+                .ComboBox {border-width:0px;box-shadow:0px 0px 0px 1px @frame_color;}    
+                .ComboBox button{padding:0px 5px 0px 5px;border-width:0px;}
+                .ComboBox button.frame{box-shadow:none;border-width:0px;}
+                .ComboBox entry{padding:0px 5px;box-shadow:none;border-width:0px;}
+                .ComboBox entry.flat{border-right-width:0px;box-shadow:none;border-width:0px;}
 
                 .DropDownList button{padding:3px;box-shadow:none;}
-                .DropDownList button.frame{box-shadow:none;}
                 .DropDownList entry{padding:0px 5px;background:linear-gradient(#F6F5F3,#F1F0EE,#ECEBE7);border-right-width:0px;box-shadow:none;}
-                .DropDownList entry.flat{border-right-width:0px;box-shadow:none;}
                 .DropDownList entry:hover{background:linear-gradient(#F6F5F3,#F6F5F3);}
 
                 .Panel{border-width:0px;} 
@@ -168,12 +163,14 @@ namespace System.Windows.Forms
                 .TableLayoutPanel viewport.frame {box-shadow: inset 1px 1px 1px 0 @frame_color;}
                 .FlowLayoutPanel{}
 
-                .MenuStrip{padding:0px;border-width:0px;}
-                .MenuStrip .frame{border-width:0px;}
                 .ToolStrip{padding:0px;border-width:0px;} 
                 .ToolStrip button{padding:0px 5px 0px 5px;}
-                .ToolStrip entry{padding:0px 5px;}
-                .ToolStrip .frame{border-width:0px;}
+                .ToolStrip entry.flat{padding:0px 5px; border:solid 1px @toolstrip_frame_color;box-shadow:none; }
+                .ToolStrip .frame{border-width:0px;box-shadow:none;}
+
+                .MenuStrip{padding:0px;border-width:0px;}
+                .MenuStrip button{padding:0px 5px 0px 5px;}
+
                  menu .MenuItem{padding:0px;margin-left:-23px;}
                  menu menuitem .MenuCheck{padding:0px;margin:0px;}
                 .ToolStripSeparator{border-bottom: 1px inset rgba(250, 250, 250, 1);border-right: 1px inset rgba(250, 250, 250, 1);}
@@ -184,17 +181,22 @@ namespace System.Windows.Forms
                 .ListView{}
                 .ListView checkbutton {padding:0px;}
                 .ListView .Label{background-color:transparent;} 
-                .ListViewHeader {background-color:#EFEEEE; opacity:0.88; }
-                .ListView .Group{background-image:linear-gradient(#ffffff 12px,#3333bb 3px,#ffffff 14px);}
+
+                .ListViewHeader {background-color:@theme_bg_color; opacity:0.88; }
                 .ListView .GroupLine{border-top:inset 1px #6677bb;}
-                .ListView .Title{padding-left:5px;padding-right:5px; }
-                .ListView .SubTitle{padding-left:5px;padding-right:5px; }
+                .ListView .GroupTitle{padding-left:5px;padding-right:5px; }
+                .ListView .GroupSubTitle{padding-left:5px;padding-right:5px; }
                 ";
+
+                string defaulttheme = "theme/default/style/style.css";
+                if (File.Exists(defaulttheme))
+                    css_style = $"@import url(\"{defaulttheme}\");\n";
+
                 string customstyle = "theme/default.css";
                 if (File.Exists(customstyle))
-                    styletheme += $"\n@import url(\"{customstyle}\");\n";
+                    css_style += $"\n@import url(\"{customstyle}\");\n";
 
-                css.LoadFromData(styletheme);
+                css.LoadFromData(css_style);
                 Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, 600);
             }
             return App;
@@ -217,7 +219,6 @@ namespace System.Windows.Forms
         public static void SetCompatibleTextRenderingDefault(bool defaultValue) {
             
         }
-
         public static void Run(Form mainForm)
         {
             mainForm.Widget.Destroyed += Control_Destroyed;

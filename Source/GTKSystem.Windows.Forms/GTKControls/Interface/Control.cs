@@ -279,44 +279,48 @@ namespace System.Windows.Forms
                     style.Append("background-clip: padding-box;");
                     if (this.BackColor.Name != "0")
                     {
-                        string color = $"rgba({this.BackColor.R},{this.BackColor.G},{this.BackColor.B},{this.BackColor.A})";
+                        Color backColor = this.BackColor;
+                        string color = $"rgba({backColor.R},{backColor.G},{backColor.B},{backColor.A})";
                         style.AppendFormat("background-color:{0};", color);
                     }
                 }
                 else if (this.BackColor.Name != "0")
                 {
-                    string color = $"rgba({this.BackColor.R},{this.BackColor.G},{this.BackColor.B},{this.BackColor.A})";
+                    Color backColor = this.BackColor;
+                    string color = $"rgba({backColor.R},{backColor.G},{backColor.B},{backColor.A})";
                     style.AppendFormat("background-color:{0};background:{0};", color);
                 }
-
+                
                 if (this.ForeColor.Name != "0")
                 {
-                    string color = $"rgba({this.ForeColor.R},{this.ForeColor.G},{this.ForeColor.B},{this.ForeColor.A})";
+                    Color foreColor = this.ForeColor;
+                    string color = $"rgba({foreColor.R},{foreColor.G},{foreColor.B},{foreColor.A})";
                     style.AppendFormat("color:{0};", color);
                 }
                 if (this.Font != null)
                 {
-                    if (this.Font.Unit == GraphicsUnit.Pixel)
-                        style.AppendFormat("font-size:{0}px;", this.Font.Size);
-                    else if (this.Font.Unit == GraphicsUnit.Inch)
-                        style.AppendFormat("font-size:{0}in;", this.Font.Size);
-                    else if (this.Font.Unit == GraphicsUnit.Point)
-                        style.AppendFormat("font-size:{0}pt;", this.Font.Size);
-                    else if (this.Font.Unit == GraphicsUnit.Millimeter)
-                        style.AppendFormat("font-size:{0}mm;", this.Font.Size);
-                    else if (this.Font.Unit == GraphicsUnit.Document)
-                        style.AppendFormat("font-size:{0}cm;", this.Font.Size);
-                    else if (this.Font.Unit == GraphicsUnit.Display)
-                        style.AppendFormat("font-size:{0}pc;", this.Font.Size);
+                    Font font = this.Font;
+                    if (font.Unit == GraphicsUnit.Pixel)
+                        style.AppendFormat("font-size:{0}px;", font.Size);
+                    else if (font.Unit == GraphicsUnit.Inch)
+                        style.AppendFormat("font-size:{0}in;", font.Size);
+                    else if (font.Unit == GraphicsUnit.Point)
+                        style.AppendFormat("font-size:{0}pt;", font.Size);
+                    else if (font.Unit == GraphicsUnit.Millimeter)
+                        style.AppendFormat("font-size:{0}mm;", font.Size);
+                    else if (font.Unit == GraphicsUnit.Document)
+                        style.AppendFormat("font-size:{0}cm;", font.Size);
+                    else if (font.Unit == GraphicsUnit.Display)
+                        style.AppendFormat("font-size:{0}pc;", font.Size);
                     else
-                        style.AppendFormat("font-size:{0}pt;", this.Font.Size);
+                        style.AppendFormat("font-size:{0}pt;", font.Size);
 
-                    if (string.IsNullOrWhiteSpace(Font.FontFamily.Name) == false)
+                    if (string.IsNullOrWhiteSpace(font.FontFamily.Name) == false)
                     {
-                        style.AppendFormat("font-family:\"{0}\";", Font.FontFamily.Name);
+                        style.AppendFormat("font-family:\"{0}\";", font.FontFamily.Name);
                     }
 
-                    string[] fontstyle = Font.Style.ToString().ToLower().Split(new char[] { ',', ' ' });
+                    string[] fontstyle = font.Style.ToString().ToLower().Split(new char[] { ',', ' ' });
                     foreach (string sty in fontstyle)
                     {
                         if (sty == "bold")
@@ -376,14 +380,17 @@ namespace System.Windows.Forms
             {
                 if (ISelf.Override.BackColor.HasValue)
                     return ISelf.Override.BackColor.Value;
-                else if (UseVisualStyleBackColor)
-                    return Color.FromName("0");
+                //else if (UseVisualStyleBackColor)
+                //    return Color.FromName("0");
+                //else
+                //    return Color.Transparent; 
                 else
-                    return Color.Transparent; 
+                    return Color.FromName("0");
             }
             set {
                 ISelf.Override.BackColor = value;
                 ISelf.Override.OnAddClass();
+                UpdateStyle();
                 Refresh();
             }
         }
@@ -469,7 +476,8 @@ namespace System.Windows.Forms
             set { _Font = value; UpdateStyle(); }
         }
         private Color _ForeColor;
-        public virtual Color ForeColor { get => _ForeColor; 
+        public virtual Color ForeColor { 
+            get { return _ForeColor; }
             set { _ForeColor = value; UpdateStyle(); } 
         }
 

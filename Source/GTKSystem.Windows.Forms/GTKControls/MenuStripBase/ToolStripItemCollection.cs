@@ -43,6 +43,11 @@ namespace System.Windows.Forms
         public ToolStripItemCollection(ToolStripItem owner)
         {
             this.owner = owner;
+            if(owner.Widget is Gtk.Menu gmenu)
+            {
+                this.menu = gmenu;
+                isToolStripDropDown = true;
+            }
         }
         internal ToolStripItemCollection(ToolStripItem owner, bool itemsCollection)
             : this(owner, itemsCollection, isReadOnly: false)

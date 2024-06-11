@@ -74,8 +74,15 @@ namespace System.Windows.Forms
             Pango.Context pangocontext = ws.PangoContext;
             string family = pangocontext.FontDescription.Family;
             args.Cr.SelectFontFace(family, Cairo.FontSlant.Normal, Cairo.FontWeight.Normal);
-
-            args.Cr.SetSourceRGBA(this.ForeColor.R / 255, this.ForeColor.G / 255, this.ForeColor.B / 255, 0.78);
+            if (this.ForeColor.Name == "0")
+            {
+                Gdk.RGBA color = ws.StyleContext.GetColor(StateFlags.Normal);
+                args.Cr.SetSourceRGBA(color.Red, color.Green, color.Blue, color.Alpha);
+            }
+            else
+            {
+                args.Cr.SetSourceRGBA(this.ForeColor.R / 255, this.ForeColor.G / 255, this.ForeColor.B / 255, this.ForeColor.A / 255);
+            }
 
             double fontsize = pangocontext.FontDescription.Size / Pango.Scale.PangoScale * 1.5;
             args.Cr.Save();
@@ -85,6 +92,7 @@ namespace System.Windows.Forms
             string text = self.Entry.Text;
             while (text.Length > 1 && args.Cr.TextExtents(text).Width > ws.AllocatedWidth - 40)
                 text = text.Substring(0, text.Length - 1);
+
             args.Cr.ShowText(text);
             args.Cr.Restore();
         }
@@ -96,19 +104,13 @@ namespace System.Windows.Forms
                 _DropDownStyle = value;
                 if (value == ComboBoxStyle.DropDown)
                 {
-                    self.StyleContext.AddClass("DropDown");
+                    self.StyleContext.RemoveClass("DropDownList");
                 }
                 else if (value == ComboBoxStyle.DropDownList)
                 {
-                    self.StyleContext.RemoveClass("DropDown");
                     self.StyleContext.AddClass("DropDownList");
                     self.Entry.IsEditable = false;
                     self.Entry.CanFocus = false;
-                }
-                else
-                {
-                    self.StyleContext.RemoveClass("DropDown");
-                    self.StyleContext.RemoveClass("DropDownList");
                 }
             }
         }

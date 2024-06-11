@@ -7,7 +7,6 @@
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("CheckedListBox");
-            this.Override.BackColor = System.Drawing.Color.White;
             this.BorderWidth = 1;
         }
         protected override void OnShown()
