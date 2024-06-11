@@ -45,7 +45,8 @@ namespace System.Windows.Forms
             self.Vexpand = true;
             Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
             scrolledWindow.Add(self);
-            viewport.BorderWidth = 0;
+            viewport.BorderWidth = 1;
+            viewport.ShadowType = ShadowType.None;
             viewport.Child = scrolledWindow;
 
             _collect = new ControlBindingsCollection(this);
