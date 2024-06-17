@@ -9,8 +9,18 @@ namespace System.Drawing
 	public sealed class Icon : MarshalByRefObject, ICloneable, IDisposable, ISerializable
 	{
         #region 只取图像byte[]数据 
-        public byte[] PixbufData { get; set; }
-        public Gdk.Pixbuf Pixbuf { get; set; }
+        private byte[] _PixbufData;
+        public byte[] PixbufData
+        {
+            get { if (_PixbufData == null && _Pixbuf != null) { _PixbufData = _Pixbuf.SaveToBuffer("bmp"); } return _PixbufData; }
+            set { _PixbufData = value; _Pixbuf = new Gdk.Pixbuf((byte[])value.Clone()); }
+        }
+        private Gdk.Pixbuf _Pixbuf;
+        public Gdk.Pixbuf Pixbuf
+        {
+            get { if (_Pixbuf == null && _PixbufData != null) { _Pixbuf = new Gdk.Pixbuf((byte[])_PixbufData.Clone()); } return _Pixbuf; }
+            set { _Pixbuf = value; _PixbufData = value.SaveToBuffer("bmp"); }
+        }
         public string FileName { get; set; }
         #endregion
 
@@ -46,12 +56,21 @@ namespace System.Drawing
 			get;
 			private set;
 		}
-
-		/// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Icon" /> class and attempts to find a version of the icon that matches the requested size.</summary>
-		/// <param name="original">The <see cref="T:System.Drawing.Icon" /> from which to load the newly sized icon.</param>
-		/// <param name="size">A <see cref="T:System.Drawing.Size" /> structure that specifies the height and width of the new <see cref="T:System.Drawing.Icon" />.</param>
-		/// <exception cref="T:System.ArgumentException">The <paramref name="original" /> parameter is <see langword="null" />.</exception>
-		public Icon(Icon original, Size size)
+        public Icon(byte[] bytes)
+        {
+            if (bytes!=null)
+            {
+                this.PixbufData = bytes;
+                this.Pixbuf = new Gdk.Pixbuf(bytes);
+                this.Width = this.Pixbuf.Width;
+                this.Height = this.Pixbuf.Height;
+            }
+        }
+        /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Icon" /> class and attempts to find a version of the icon that matches the requested size.</summary>
+        /// <param name="original">The <see cref="T:System.Drawing.Icon" /> from which to load the newly sized icon.</param>
+        /// <param name="size">A <see cref="T:System.Drawing.Size" /> structure that specifies the height and width of the new <see cref="T:System.Drawing.Icon" />.</param>
+        /// <exception cref="T:System.ArgumentException">The <paramref name="original" /> parameter is <see langword="null" />.</exception>
+        public Icon(Icon original, Size size)
 		{
 		}
 
@@ -127,6 +146,16 @@ namespace System.Drawing
             if (System.IO.File.Exists(fileName))
             {
                 byte[] bytes = System.IO.File.ReadAllBytes(fileName);
+                this.PixbufData = bytes;
+                this.Pixbuf = new Gdk.Pixbuf(bytes);
+                if (width < 1)
+                    this.Width = this.Pixbuf.Width;
+                if (height < 1)
+                    this.Height = this.Pixbuf.Height;
+            }
+            else if (System.IO.File.Exists($"Resources\\{fileName}.ico"))
+            {
+                byte[] bytes = System.IO.File.ReadAllBytes($"Resources\\{fileName}.ico");
                 this.PixbufData = bytes;
                 this.Pixbuf = new Gdk.Pixbuf(bytes);
                 if (width < 1)

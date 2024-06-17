@@ -176,7 +176,7 @@ namespace GTKWinFormsApp
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.RowTemplate.Height = 36;
-            dataGridView1.Size = new System.Drawing.Size(1323, 313);
+            dataGridView1.Size = new System.Drawing.Size(1323, 272);
             dataGridView1.TabIndex = 2;
             dataGridView1.MultiSelectChanged += dataGridView1_MultiSelectChanged;
             dataGridView1.CellClick += dataGridView1_CellClick;
@@ -257,7 +257,6 @@ namespace GTKWinFormsApp
             groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(maskedTextBox1);
             groupBox1.Controls.Add(textBox1);
-            groupBox1.Dock = DockStyle.Top;
             groupBox1.Location = new System.Drawing.Point(0, 29);
             groupBox1.Margin = new Padding(4);
             groupBox1.Name = "groupBox1";
@@ -434,7 +433,7 @@ namespace GTKWinFormsApp
             tabControl1.Margin = new Padding(4);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new System.Drawing.Size(1339, 354);
+            tabControl1.Size = new System.Drawing.Size(1339, 313);
             tabControl1.TabIndex = 4;
             tabControl1.DrawItem += tabControl1_DrawItem;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
@@ -446,7 +445,7 @@ namespace GTKWinFormsApp
             tabPage1.Margin = new Padding(4);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(4);
-            tabPage1.Size = new System.Drawing.Size(1331, 321);
+            tabPage1.Size = new System.Drawing.Size(1331, 280);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "数据表格";
             tabPage1.UseVisualStyleBackColor = true;
@@ -464,7 +463,7 @@ namespace GTKWinFormsApp
             tabPage2.Margin = new Padding(4);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(4);
-            tabPage2.Size = new System.Drawing.Size(1331, 321);
+            tabPage2.Size = new System.Drawing.Size(1331, 280);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "容器类表格";
             tabPage2.UseVisualStyleBackColor = true;
@@ -623,7 +622,7 @@ namespace GTKWinFormsApp
             tabPage3.Location = new System.Drawing.Point(4, 29);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new System.Drawing.Size(1331, 321);
+            tabPage3.Size = new System.Drawing.Size(1331, 280);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "tabPage3";
             tabPage3.UseVisualStyleBackColor = true;
@@ -656,7 +655,7 @@ namespace GTKWinFormsApp
             // pictureBox1
             // 
             pictureBox1.BackgroundImage = Properties.Resources.timg;
-            pictureBox1.Image = (System.Drawing.Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox1.Location = new System.Drawing.Point(1016, 35);
             pictureBox1.Margin = new Padding(4);
             pictureBox1.MaximumSize = new System.Drawing.Size(200, 130);
@@ -789,16 +788,18 @@ namespace GTKWinFormsApp
             // 
             splitContainer1.Panel2.AutoScroll = true;
             splitContainer1.Panel2.Controls.Add(tabControl1);
-            splitContainer1.Size = new System.Drawing.Size(1339, 565);
-            splitContainer1.SplitterDistance = 206;
+            splitContainer1.Size = new System.Drawing.Size(1339, 499);
+            splitContainer1.SplitterDistance = 181;
             splitContainer1.SplitterWidth = 5;
             splitContainer1.TabIndex = 14;
             // 
             // pictureBox2
             // 
+            pictureBox2.ImageLocation = "";
             pictureBox2.Location = new System.Drawing.Point(753, 29);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new System.Drawing.Size(228, 140);
+            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox2.TabIndex = 14;
             pictureBox2.TabStop = false;
             pictureBox2.Paint += pictureBox2_Paint;
@@ -808,11 +809,12 @@ namespace GTKWinFormsApp
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
-            ClientSize = new System.Drawing.Size(1360, 743);
+            ClientSize = new System.Drawing.Size(1360, 689);
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(groupBox1);
             Controls.Add(splitContainer1);
             Controls.Add(menuStrip1);
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
             Margin = new Padding(4);
             MinimizeBox = false;

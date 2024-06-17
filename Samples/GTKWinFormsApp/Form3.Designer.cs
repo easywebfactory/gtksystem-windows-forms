@@ -243,6 +243,7 @@ namespace GTKWinFormsApp
             // 
             // button1
             // 
+            button1.Cursor = Cursors.Hand;
             button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, 0);
             button1.Location = new System.Drawing.Point(638, 102);
             button1.Name = "button1";
@@ -403,6 +404,7 @@ namespace GTKWinFormsApp
             // 
             // panel3
             // 
+            panel3.Cursor = Cursors.AppStarting;
             panel3.Location = new System.Drawing.Point(29, 102);
             panel3.Name = "panel3";
             panel3.Size = new System.Drawing.Size(250, 135);
@@ -428,9 +430,10 @@ namespace GTKWinFormsApp
             // 
             // progressBar1
             // 
-            progressBar1.Location = new System.Drawing.Point(516, 364);
+            progressBar1.Cursor = Cursors.WaitCursor;
+            progressBar1.Location = new System.Drawing.Point(485, 400);
             progressBar1.Name = "progressBar1";
-            progressBar1.Size = new System.Drawing.Size(397, 29);
+            progressBar1.Size = new System.Drawing.Size(443, 29);
             progressBar1.Step = 1;
             progressBar1.TabIndex = 11;
             progressBar1.Value = 10;

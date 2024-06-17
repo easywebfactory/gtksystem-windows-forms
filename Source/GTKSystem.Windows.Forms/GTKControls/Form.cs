@@ -9,6 +9,7 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace System.Windows.Forms
@@ -98,13 +99,12 @@ namespace System.Windows.Forms
         int resizeHeight= 0;
         private void Form_ResizeChecked(object sender, EventArgs e)
         {
-            if (self.Resizable == true && _body.IsMapped && self.IsRealized)
+            if (self.Resizable == true && _body.IsMapped && self.IsMapped)
             {
-                if (resizeWidth != self.ContentArea.AllocatedWidth || resizeHeight != self.ContentArea.AllocatedHeight)
+                if (resizeWidth != self.ContentArea.AllocatedWidth || resizeHeight != self.ContentArea.AllocatedHeight - self.StatusBar.AllocatedHeight)
                 {
-                    
                     resizeWidth = self.ContentArea.AllocatedWidth;
-                    resizeHeight = self.ContentArea.AllocatedHeight;
+                    resizeHeight = self.ContentArea.AllocatedHeight - self.StatusBar.AllocatedHeight;
                     _body.WidthRequest = resizeWidth - (AutoScroll ? self.ScrollArrowVlength : 0); //留出滚动条位置
                     _body.HeightRequest = resizeHeight - (AutoScroll ? self.ScrollArrowHlength : 0);
                     int widthIncrement = resizeHeight - self.DefaultSize.Width;
@@ -149,7 +149,14 @@ namespace System.Windows.Forms
                             control.Valign = Gtk.Align.End;
                             control.Halign = Gtk.Align.Fill;
                             control.Expand = true;
-                            control.MarginTop = Math.Max(0, heightIncrement);
+                            if (parent[control] is Gtk.Layout.LayoutChild lc)
+                            {
+                                lc.Y = parent.HeightRequest - control.HeightRequest;
+                            }
+                            else if (parent[control] is Gtk.Fixed.FixedChild fc)
+                            {
+                                fc.Y = parent.HeightRequest - control.HeightRequest;
+                            }
                             if (control.WidthRequest > -1 && width > 0)
                                 control.WidthRequest = width;
                         }

@@ -151,6 +151,19 @@ namespace GTKSystem.Windows.Forms.Utility
         public static void ScaleImageByPictureBoxSizeMode(byte[] srcImageBytes, int width, int height, out Gdk.Pixbuf destImage, PictureBoxSizeMode sizeMode)
         {
             Gdk.Pixbuf srcPixbuf = new Gdk.Pixbuf(srcImageBytes);
+            ScaleImageByPictureBoxSizeMode(srcPixbuf, width, height, out destImage, sizeMode);
+
+        }
+        /// <summary>
+        /// PictureBox图像显示模式
+        /// </summary>
+        /// <param name="srcPixbuf"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="destImage"></param>
+        /// <param name="sizeMode"></param>
+        public static void ScaleImageByPictureBoxSizeMode(Gdk.Pixbuf srcPixbuf, int width, int height, out Gdk.Pixbuf destImage, PictureBoxSizeMode sizeMode)
+        {
             using (var surface = new Cairo.ImageSurface(Cairo.Format.ARGB32, width, height))
             {
                 destImage = new Gdk.Pixbuf(surface, 0, 0, width, height);
@@ -167,8 +180,8 @@ namespace GTKSystem.Windows.Forms.Utility
                 else if (sizeMode == PictureBoxSizeMode.CenterImage)
                 {
                     //取原图中间
-                    int offsetx = (destImage.Width- srcPixbuf.Width) / 2;
-                    int offsety = (destImage.Height- srcPixbuf.Height) / 2;
+                    int offsetx = (destImage.Width - srcPixbuf.Width) / 2;
+                    int offsety = (destImage.Height - srcPixbuf.Height) / 2;
                     srcPixbuf.Scale(destImage, 0, 0, destImage.Width, destImage.Height, offsetx, offsety, 1, 1, Gdk.InterpType.Tiles);
                 }
                 else if (sizeMode == PictureBoxSizeMode.Zoom)
@@ -184,7 +197,7 @@ namespace GTKSystem.Windows.Forms.Utility
                     int offsetx = (destImage.Width - (int)srcWidth) / 2;
                     int offsety = (destImage.Height - (int)srcHeight) / 2;
 
-                    srcPixbuf.Scale(destImage, offsetx > 0 ? offsetx: 0, offsety > 0 ? offsety : 0, (int)Math.Min(destImage.Width, srcWidth), Math.Min(destImage.Height, (int)srcHeight), offsetx > 0 ? offsetx : 0, offsety > 0 ? offsety : 0, scaleR, scaleR, Gdk.InterpType.Tiles);
+                    srcPixbuf.Scale(destImage, offsetx > 0 ? offsetx : 0, offsety > 0 ? offsety : 0, (int)Math.Min(destImage.Width, srcWidth), Math.Min(destImage.Height, (int)srcHeight), offsetx > 0 ? offsetx : 0, offsety > 0 ? offsety : 0, scaleR, scaleR, Gdk.InterpType.Tiles);
                 }
                 else if (sizeMode == PictureBoxSizeMode.AutoSize)
                 {
@@ -206,6 +219,19 @@ namespace GTKSystem.Windows.Forms.Utility
         public static void ScaleImageByImageLayout(byte[] srcImageBytes, int width, int height, out Gdk.Pixbuf destImage, ImageLayout layoutMode)
         {
             Gdk.Pixbuf srcPixbuf = new Gdk.Pixbuf(srcImageBytes);
+            ScaleImageByImageLayout(srcPixbuf, width, height, out destImage, layoutMode);
+        }
+
+        /// <summary>
+        /// 背景图像显示模式
+        /// </summary>
+        /// <param name="srcPixbuf"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="destImage"></param>
+        /// <param name="layoutMode"></param>
+        public static void ScaleImageByImageLayout(Gdk.Pixbuf srcPixbuf, int width, int height, out Gdk.Pixbuf destImage, ImageLayout layoutMode)
+        {
             using (var surface = new Cairo.ImageSurface(Cairo.Format.ARGB32, width, height))
             {
                 destImage = new Gdk.Pixbuf(surface, 0, 0, width, height);

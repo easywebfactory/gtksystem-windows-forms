@@ -103,6 +103,17 @@ namespace System.Windows.Forms
         }
         private void Widget_EnterNotifyEvent(object o, EnterNotifyEventArgs args)
         {
+            if (Cursor != null)
+            {
+                if (Cursor.CursorType == Gdk.CursorType.CursorIsPixmap)
+                {
+                    Widget.Window.Cursor = new Gdk.Cursor(((Gtk.Widget)o).Display, Cursor.CursorPixbuf, Cursor.CursorsXY.X, Cursor.CursorsXY.Y);
+                }
+                else
+                {
+                    Widget.Window.Cursor = new Gdk.Cursor(((Gtk.Widget)o).Display, Cursor.CursorType);
+                }
+            }
             if (Enter != null)
                 Enter(this, args);
             if (MouseEnter != null)
@@ -121,10 +132,16 @@ namespace System.Windows.Forms
         }
         private void Widget_LeaveNotifyEvent(object o, LeaveNotifyEventArgs args)
         {
+            if (Cursor != null)
+            {
+                Widget.Window.Cursor = null;
+            }
             if (Leave != null)
                 Leave(this, args);
             if (MouseLeave != null)
                 MouseLeave(this, args);
+
+
         }
         private void Widget_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
         {

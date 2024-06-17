@@ -91,7 +91,7 @@ namespace System.Windows.Forms
                 var quitAction = new GLib.SimpleAction("quit", null);
                 quitAction.Activated += QuitActivated;
                 App.AddAction(quitAction);
-
+                
                 Gtk.CssProvider css = new Gtk.CssProvider();
                 string css_style = @"
 /* 定义控件样式 */
@@ -127,6 +127,7 @@ namespace System.Windows.Forms
 .ListView .GroupLine{border-top:inset 1px #6677bb;}
 .ListView .GroupTitle{padding-left:5px;padding-right:5px; }
 .ListView .GroupSubTitle{padding-left:5px;padding-right:5px; }
+.StatusStrip{border-top:solid 1px @frame_color;box-shadow:inset 0px 0px 0px 1px @frame_color;}
                 ";
 
                 string defaulttheme = "theme/default/style/style.css";

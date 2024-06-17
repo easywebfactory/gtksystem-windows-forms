@@ -10,6 +10,7 @@ using System.Resources;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Linq;
 using static System.Windows.Forms.ImageList;
 
 namespace GTKSystem.Resources
@@ -52,9 +53,9 @@ namespace GTKSystem.Resources
 
         }
 
-        public virtual string BaseName { get; }
+        public virtual string BaseName { get => _baseName; }
         public virtual bool IgnoreCase { get; set; }
-        public virtual System.Type ResourceSetType { get; }
+        public virtual System.Type ResourceSetType { get=> _resourceSource; }
         protected UltimateResourceFallbackLocation FallbackLocation { get; set; }
 
         public static ResourceManager CreateFileBasedResourceManager(string baseName, string resourceDir, System.Type usingResourceSet)
@@ -193,65 +194,53 @@ namespace GTKSystem.Resources
         public virtual object GetObject(string name)
         {
             GetResourceInfo.ResourceName = name;
-            //if (name.EndsWith(".ImageStream"))
-            //{
-            //    //图片组不能读取
-            //    try
-            //    {
-            //        return new ImageListStreamer(new MemoryStream(GetResourceInfo.ImageBytes)) { ResourceInfo = GetResourceInfo };
-            //    }
-            //    catch
-            //    {
-            //        SerializationInfo info = new SerializationInfo(typeof(ImageListStreamer), new FormatterConverter());
-            //        return new ImageListStreamer(new ImageList()) { ResourceInfo = GetResourceInfo };
-            //    }
-            //}
-            //else
-            if (name.EndsWith(".Icon")) {
-                return new System.Drawing.Icon(name.Substring(0,name.Length-1));
-            }
-            else
+            object obj = ReadResourceData(name);
+            if (obj == null)
             {
-                object obj = ReadResourceData(name);
-                if (obj == null)
+                if (name.EndsWith(".ImageStream"))
                 {
-                    if (name.EndsWith(".ImageStream"))
-                    {
-                        return new ImageListStreamer(new ImageList()) { ResourceInfo = GetResourceInfo };
-                    }
-                    else
-                    {
-                        byte[] filebytes = ReadResourceFile(name);
-                        if (name.EndsWith(".BackgroundImage"))
-                        {
-                            System.Drawing.Bitmap img = new System.Drawing.Bitmap(filebytes);
-                            img.FileName = name;
-                            return img;
-                        }
-                        else if(name.EndsWith(".Image"))
-                        {
-                            System.Drawing.Bitmap img = new System.Drawing.Bitmap(filebytes);
-                            img.FileName = name;
-                            return img;
-                        }
-                        else if (filebytes == null)
-                        {
-                            System.Drawing.Bitmap img = new System.Drawing.Bitmap(0,0);
-                            img.FileName = name;
-                            return img;
-                        }
-                        else
-                        {
-                            System.Drawing.Bitmap img = new System.Drawing.Bitmap(filebytes);
-                            img.FileName = name;
-                            return img;
-                        }
-                    }
+                    return new ImageListStreamer(new ImageList()) { ResourceInfo = GetResourceInfo };
                 }
                 else
                 {
-                    return obj;
+                    string fileName = name;
+                    byte[] filebytes = ReadResourceFile(name);
+                    if (filebytes == null)
+                    {
+                        string fName = Path.GetExtension(this.BaseName).TrimStart('.') + name;
+                        string[] files = Directory.GetFiles("Resources", $"{fName}.*", SearchOption.AllDirectories);
+                        if (files != null && files.Length > 0)
+                        {
+                            fileName = files[0];
+                            filebytes = File.ReadAllBytes(files[0]);
+                        }
+
+                    }
+                    if (name.EndsWith(".BackgroundImage"))
+                    {
+                        return new System.Drawing.Bitmap(filebytes) { FileName = fileName }; 
+                    }
+                    else if (name.EndsWith(".Image"))
+                    {
+                        return new System.Drawing.Bitmap(filebytes) { FileName = fileName }; 
+                    }
+                    else if (name.EndsWith(".Icon"))
+                    {
+                        return new System.Drawing.Icon(filebytes) { FileName = fileName };
+                    }
+                    else if (filebytes == null)
+                    {
+                        return new System.Drawing.Bitmap(0, 0);
+                    }
+                    else
+                    {
+                        return new System.Drawing.Bitmap(filebytes) { FileName = fileName };
+                    }
                 }
+            }
+            else
+            {
+                return obj;
             }
         }
         public virtual ResourceSet GetResourceSet(CultureInfo culture, bool createIfNotExists, bool tryParents)

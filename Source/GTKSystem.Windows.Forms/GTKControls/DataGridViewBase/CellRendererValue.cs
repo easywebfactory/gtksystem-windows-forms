@@ -94,7 +94,7 @@ namespace System.Windows.Forms.GtkRender
                     {
                         this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = value.Background.A / 255, Blue = value.Background.B / 255, Green = value.Background.G / 255, Red = value.Background.R / 255 };
                     }
-                    if (string.IsNullOrEmpty(value.Text))
+                    if (string.IsNullOrWhiteSpace(value.Text))
                     {
                         this.IconName = "";
                     }
@@ -104,7 +104,7 @@ namespace System.Windows.Forms.GtkRender
                         {
                             if (this.Data[value.Text] == null)
                             {
-                                if (Uri.TryCreate(value.Text, UriKind.Absolute, out Uri result))
+                                if (value.Text.Contains("://") && Uri.TryCreate(value.Text, UriKind.Absolute, out Uri result))
                                 {
                                     System.Threading.Tasks.Task.Factory.StartNew(o =>
                                     {

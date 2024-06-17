@@ -55,6 +55,7 @@ namespace System.Windows.Forms
         public TabSizeMode SizeMode { get; set; }
         public TabDrawMode DrawMode { get; set; }
         public bool ShowToolTips { get; set; }
+        public bool ShowTabs { get => self.ShowTabs; set => self.ShowTabs = value; }
         public Size ItemSize { get; set; }
         public int TabCount { get => self.NPages; }
         public TabPageCollection TabPages { get { return _tabPageControls; } }

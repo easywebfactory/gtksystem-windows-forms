@@ -33,9 +33,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             StatusBar.Valign = Gtk.Align.Fill;
             StatusBar.NoShowAll = true;
             StatusBar.Visible = false;
-            StatusBarView.StyleContext.AddClass("StatusStrip");
-            StatusBarView.Child = StatusBar;
-            this.ContentArea.PackEnd(StatusBarView, false, true, 0);
+            StatusBar.BorderWidth = 1;
+            StatusBar.StyleContext.AddClass("StatusStrip");
+            //StatusBarView.StyleContext.AddClass("StatusStrip");
+            //StatusBarView.Child = StatusBar;
+            this.ContentArea.PackEnd(StatusBar, false, true, 0);
             //this.Decorated = false; //删除工具栏
         }
 

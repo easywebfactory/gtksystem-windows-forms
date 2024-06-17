@@ -4,13 +4,13 @@
  * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://github.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
  */
-using GLib;
-using Gtk;
+
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using GTKSystem.Windows.Forms.Utility;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 
 namespace System.Windows.Forms
 {
@@ -26,7 +26,6 @@ namespace System.Windows.Forms
 
         private void Self_Shown(object sender, EventArgs e)
         {
-            //UpdateStyle();
             int width = Width;
             int height = Height;
             if (this.MaximumSize.Width > 0)
@@ -45,15 +44,14 @@ namespace System.Windows.Forms
             {
                 height = Math.Min(this.MinimumSize.Height, height);
             }
-
-            if (_image != null && _image.PixbufData != null)
+            if (_image != null && _image.Pixbuf != null)
             {
-                ImageUtility.ScaleImageByPictureBoxSizeMode(_image.PixbufData, width, height, out Gdk.Pixbuf newImagePixbuf, SizeMode);
+                ImageUtility.ScaleImageByPictureBoxSizeMode(_image.Pixbuf, width, height, out Gdk.Pixbuf newImagePixbuf, SizeMode);
                 self.Pixbuf = newImagePixbuf;
             }
-            else if (InitialImage != null && InitialImage.PixbufData != null)
+            else if (InitialImage != null && InitialImage.Pixbuf != null)
             {
-                ImageUtility.ScaleImageByPictureBoxSizeMode(InitialImage.PixbufData, width, height, out Gdk.Pixbuf newImagePixbuf, SizeMode);
+                ImageUtility.ScaleImageByPictureBoxSizeMode(InitialImage.Pixbuf, width, height, out Gdk.Pixbuf newImagePixbuf, SizeMode);
                 self.Pixbuf = newImagePixbuf;
             }
         }
@@ -62,8 +60,8 @@ namespace System.Windows.Forms
         public PictureBoxSizeMode SizeMode { get; set; }
 
         public System.Drawing.Image InitialImage { get; set; }
-
-        public string ImageLocation { get; set; }
+        private string _ImageLocation;
+        public string ImageLocation { get { return _ImageLocation; } set { _ImageLocation = value; Load(value); } }
 
         private System.Drawing.Image _image;
         public override System.Drawing.Image Image { 
@@ -84,57 +82,47 @@ namespace System.Windows.Forms
 
         public void CancelAsync() { }
         public new void Load(string url) {
-            if (Uri.TryCreate(url, UriKind.Absolute, out Uri result)){
+            if(string.IsNullOrWhiteSpace(url))
+            { return; }
+            else if (url.Contains("://") && Uri.TryCreate(url, UriKind.Absolute, out Uri result)){
                 GLib.IFile file = GLib.FileFactory.NewForUri(result);
                 GLib.FileInputStream stream = file.Read(new GLib.Cancellable());
                 Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(stream, new GLib.Cancellable());
-                Gdk.Rectangle rec = Widget.Allocation;
-                byte[] bytedata = pixbuf.PixelBytes.Data;
-                _image = new Bitmap(bytedata);
-                ImageUtility.ScaleImageByImageLayout(bytedata, rec.Width, rec.Height, out Gdk.Pixbuf newImagePixbuf, BackgroundImageLayout);
-                self.Pixbuf = newImagePixbuf;
+                _image = new Bitmap(0, 0);
+                _image.Pixbuf = pixbuf;
             }
             else
             {
                 Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(url.Replace("\\\\", "/").Replace("\\", "/"));
-                Gdk.Rectangle rec = Widget.Allocation;
-                byte[] bytedata = pixbuf.PixelBytes.Data;
-                _image = new Bitmap(bytedata);
-                ImageUtility.ScaleImageByImageLayout(bytedata, rec.Width, rec.Height, out Gdk.Pixbuf newImagePixbuf, BackgroundImageLayout);
-                self.Pixbuf = newImagePixbuf;
+                _image = new Bitmap(0, 0);
+                _image.Pixbuf = pixbuf;
             }
-            //GLib.FileInputStream stream = file.Read(new GLib.Cancellable());
-            //if (stream != null)
-            //{
-            //    byte[] buffer = new byte[1024];
-            //    using (MemoryStream memoryStream = new MemoryStream())
-            //    {
-            //        GLib.Cancellable cancelback = new GLib.Cancellable();
-            //        while (stream.ReadAll(buffer, 1024, out ulong bytes_read, cancelback))
-            //        {
-            //            if (bytes_read < 1024)
-            //            {
-            //                for (ulong i = 0; i < bytes_read; i++)
-            //                    memoryStream.WriteByte(buffer[i]);
-
-            //                // cancelback.Cancel();
-            //                break;
-            //            }
-            //            else
-            //                memoryStream.Write(buffer);
-            //        }
-            //        Gdk.Rectangle rec = Widget.Allocation;
-            //        byte[] bytedata = memoryStream.GetBuffer();
-            //        _image = new Bitmap(bytedata);
-
-            //        ImageUtility.ScaleImageByImageLayout(_image.PixbufData, rec.Width, rec.Height, out Gdk.Pixbuf newImagePixbuf, BackgroundImageLayout);
-            //        self.Pixbuf = newImagePixbuf;
-            //    }
-            //}
+            if(self.IsMapped && self.IsVisible)
+            {
+                Self_Shown(null, null);
+            }
         }
-        public new void Load() { if (System.IO.File.Exists(ImageLocation)) { self.File = ImageLocation; } }
-        public void LoadAsync() { if (System.IO.File.Exists(ImageLocation)) { self.File = ImageLocation; } }
-        public void LoadAsync(string url) { Threading.Tasks.Task.Run(() => Load(url)); }
+        public new void Load()
+        {
+            try
+            {
+                if (System.IO.File.Exists(ImageLocation))
+                {
+                    Load(ImageLocation);
+                }
+            }
+            catch { }
+        }
+        public void LoadAsync() { 
+            if (System.IO.File.Exists(ImageLocation)) { 
+                LoadAsync(ImageLocation);
+            } 
+        }
+        public void LoadAsync(string url) {
+            Threading.Tasks.Task.Run(() => Gtk.Application.Invoke(new EventHandler((o, e) => { 
+                Load(url);
+            })));
+        }
   
         public override void EndInit()
         {

@@ -1,3 +1,5 @@
+using Atk;
+using GLib;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing.Imaging;
@@ -16,9 +18,18 @@ namespace System.Drawing
 		{
             PixbufData = pixbuf;
         }
-        public byte[] PixbufData { get; set; }
-
-        public Gdk.Pixbuf Pixbuf { get; set; }
+        private byte[] _PixbufData;
+        public byte[] PixbufData
+        {
+            get { if (_PixbufData == null && _Pixbuf != null) { _PixbufData = _Pixbuf.SaveToBuffer("bmp"); } return _PixbufData; }
+            set { _PixbufData = value; _Pixbuf = new Gdk.Pixbuf((byte[])value.Clone()); }
+        }
+        private Gdk.Pixbuf _Pixbuf;
+        public Gdk.Pixbuf Pixbuf
+        {
+            get { if (_Pixbuf == null && _PixbufData != null) { _Pixbuf = new Gdk.Pixbuf((byte[])_PixbufData.Clone()); } return _Pixbuf; }
+            set { _Pixbuf = value; _PixbufData = value.SaveToBuffer("bmp"); }
+        }
         public string FileName { get; set; }
         #endregion
 
