@@ -7,7 +7,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
     {
         public readonly Gtk.ScrolledWindow ScrollView = new Gtk.ScrolledWindow();
         public readonly Gtk.Layout StatusBar = new Gtk.Layout(new Gtk.Adjustment(1, 1, 100, 1, 0, 1), new Gtk.Adjustment(1, 1, 100, 1, 0, 1));
-        private readonly Gtk.Viewport StatusBarView = new Gtk.Viewport();
         public GtkControlOverride Override { get; set; }
         public FormBase() : base()
         {
@@ -35,8 +34,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             StatusBar.Visible = false;
             StatusBar.BorderWidth = 1;
             StatusBar.StyleContext.AddClass("StatusStrip");
-            //StatusBarView.StyleContext.AddClass("StatusStrip");
-            //StatusBarView.Child = StatusBar;
             this.ContentArea.PackEnd(StatusBar, false, true, 0);
             //this.Decorated = false; //删除工具栏
         }
