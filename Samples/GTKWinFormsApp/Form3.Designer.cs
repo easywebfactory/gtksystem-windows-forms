@@ -109,7 +109,7 @@ namespace GTKWinFormsApp
             ddddToolStripMenuItem.Checked = true;
             ddddToolStripMenuItem.CheckState = CheckState.Indeterminate;
             ddddToolStripMenuItem.Name = "ddddToolStripMenuItem";
-            ddddToolStripMenuItem.Size = new System.Drawing.Size(132, 26);
+            ddddToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             ddddToolStripMenuItem.Text = "a菜单";
             // 
             // ssssToolStripMenuItem
@@ -117,7 +117,7 @@ namespace GTKWinFormsApp
             ssssToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { bb菜单ToolStripMenuItem, bb菜单2ToolStripMenuItem });
             ssssToolStripMenuItem.Image = (System.Drawing.Image)resources.GetObject("ssssToolStripMenuItem.Image");
             ssssToolStripMenuItem.Name = "ssssToolStripMenuItem";
-            ssssToolStripMenuItem.Size = new System.Drawing.Size(132, 26);
+            ssssToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             ssssToolStripMenuItem.Text = "b菜单";
             // 
             // bb菜单ToolStripMenuItem
@@ -135,14 +135,14 @@ namespace GTKWinFormsApp
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new System.Drawing.Size(129, 6);
+            toolStripSeparator3.Size = new System.Drawing.Size(221, 6);
             // 
             // c菜单ToolStripMenuItem
             // 
             c菜单ToolStripMenuItem.Checked = true;
             c菜单ToolStripMenuItem.CheckState = CheckState.Indeterminate;
             c菜单ToolStripMenuItem.Name = "c菜单ToolStripMenuItem";
-            c菜单ToolStripMenuItem.Size = new System.Drawing.Size(132, 26);
+            c菜单ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             c菜单ToolStripMenuItem.Text = "c菜单";
             // 
             // ssssToolStripMenuItem1
@@ -150,6 +150,7 @@ namespace GTKWinFormsApp
             ssssToolStripMenuItem1.Name = "ssssToolStripMenuItem1";
             ssssToolStripMenuItem1.Size = new System.Drawing.Size(62, 24);
             ssssToolStripMenuItem1.Text = "菜单2";
+            ssssToolStripMenuItem1.Click += ssssToolStripMenuItem1_Click;
             // 
             // toolStrip2
             // 

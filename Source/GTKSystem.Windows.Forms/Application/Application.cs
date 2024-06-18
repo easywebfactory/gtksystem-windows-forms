@@ -1,11 +1,9 @@
-﻿using Gtk;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
@@ -84,7 +82,6 @@ namespace System.Windows.Forms
             if (App == null)
             {
                 Gtk.Application.Init();
-                //App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.IsLauncher);
                 App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
                 App.Register(GLib.Cancellable.Current);
                 App.Shutdown += App_Shutdown;
@@ -127,7 +124,8 @@ namespace System.Windows.Forms
 .ListView .GroupLine{border-top:inset 1px #6677bb;}
 .ListView .GroupTitle{padding-left:5px;padding-right:5px; }
 .ListView .GroupSubTitle{padding-left:5px;padding-right:5px; }
-.StatusStrip{border-top:solid 1px @frame_color;box-shadow:inset 0px 0px 0px 1px @frame_color;}
+.StatusStrip{padding:0px; border-width:1px 0px 0px 0px; border-top:solid 1px @frame_color;}
+.ToolStrip button{padding:0px;}
                 ";
 
                 string defaulttheme = "theme/default/style/style.css";

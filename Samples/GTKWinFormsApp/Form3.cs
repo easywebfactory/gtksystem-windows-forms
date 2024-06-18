@@ -21,7 +21,12 @@ namespace GTKWinFormsApp
             //目前自定义控件无法在窗体设计器中可视化，建议使用程序添加，如下示例：
             UserControl11 userControl11 = new UserControl11();
             panel5.Controls.Add(userControl11);
+            this.SizeChanged += Form3_SizeChanged;
+        }
 
+        private void Form3_SizeChanged(object? sender, EventArgs e)
+        {
+            Console.WriteLine(Width);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -29,12 +34,12 @@ namespace GTKWinFormsApp
             //button1.ForeColor=Color.Red;
             //button1.BackColor=Color.Green;
             Form1 f = new Form1();
-            f.Show();
+            f.ShowDialog();
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-             label1.Text = trackBar1.Value.ToString();
+            label1.Text = trackBar1.Value.ToString();
         }
 
         private void Form3_Load(object sender, EventArgs e)
@@ -68,7 +73,7 @@ namespace GTKWinFormsApp
             path.CloseFigure();
 
             path.StartFigure();
-           
+
             path.AddLine(new Point(20, 40), new Point(60, 30));
             path.AddPie(-10, 20, 60, 60, 10, 100);
             //path.StartFigure();
@@ -92,6 +97,12 @@ namespace GTKWinFormsApp
             //g.DrawPath(new Pen(gradientBrush, 2), path);
 
             //g.FillPath(brush, path);
+        }
+
+        private void ssssToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Form2 f = new Form2();
+            f.ShowDialog();
         }
     }
 }

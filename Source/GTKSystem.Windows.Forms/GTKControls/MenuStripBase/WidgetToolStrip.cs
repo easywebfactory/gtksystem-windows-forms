@@ -23,8 +23,8 @@ namespace System.Windows.Forms
         internal Gtk.Label label = new Gtk.Label();
         internal Gtk.Button button = new Gtk.Button();
         internal Gtk.Entry entry = new Gtk.Entry();
-        internal Gtk.ComboBoxText comboBox = new Gtk.ComboBoxText();
-       // internal Gtk.ProgressBar progressBar = new Gtk.ProgressBar();
+        internal Gtk.ComboBoxText comboBox = new Gtk.ComboBoxText() { HasFrame=false };
+        // internal Gtk.ProgressBar progressBar = new Gtk.ProgressBar();
         internal Gtk.LevelBar progressBar = new Gtk.LevelBar();
         internal Gtk.Viewport flagBox = new Gtk.Viewport();
         Gtk.CssProvider provider = new Gtk.CssProvider();

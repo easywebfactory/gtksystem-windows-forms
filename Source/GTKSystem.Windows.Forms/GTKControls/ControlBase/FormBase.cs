@@ -7,6 +7,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
     {
         public readonly Gtk.ScrolledWindow ScrollView = new Gtk.ScrolledWindow();
         public readonly Gtk.Layout StatusBar = new Gtk.Layout(new Gtk.Adjustment(1, 1, 100, 1, 0, 1), new Gtk.Adjustment(1, 1, 100, 1, 0, 1));
+        private readonly Gtk.Viewport StatusBarView = new Gtk.Viewport();
         public GtkControlOverride Override { get; set; }
         public FormBase() : base()
         {
@@ -19,6 +20,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.SetDefaultSize(100, 100);
             this.TypeHint = Gdk.WindowTypeHint.Normal;
             this.AppPaintable = false;
+            this.Deletable = true;
             this.Response += FormBase_Response;
             ScrollView.BorderWidth = 0;
             ScrollView.Valign = Gtk.Align.Fill;
@@ -26,15 +28,17 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             ScrollView.HscrollbarPolicy = PolicyType.Always;
             ScrollView.VscrollbarPolicy = PolicyType.Always;
             this.ContentArea.PackStart(ScrollView, true, true, 0);
-            StatusBar.Hexpand = true;
+            StatusBar.Hexpand = false;
             StatusBar.Vexpand = false;
             StatusBar.Halign = Gtk.Align.Fill;
             StatusBar.Valign = Gtk.Align.Fill;
             StatusBar.NoShowAll = true;
             StatusBar.Visible = false;
-            StatusBar.BorderWidth = 1;
-            StatusBar.StyleContext.AddClass("StatusStrip");
-            this.ContentArea.PackEnd(StatusBar, false, true, 0);
+            StatusBar.BorderWidth = 0;
+            StatusBarView.BorderWidth = 0;
+            StatusBarView.StyleContext.AddClass("StatusStrip");
+            StatusBarView.Child = StatusBar;
+            this.ContentArea.PackEnd(StatusBarView, false, true, 0);
             //this.Decorated = false; //删除工具栏
         }
 
@@ -52,8 +56,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             //Console.WriteLine(args.ResponseId);
             if (args.ResponseId == ResponseType.DeleteEvent)
-                if (this.IsActive)
-                    this.OnClose();
+                this.Dispose();
         }
         protected override bool OnDrawn(Cairo.Context cr)
         {

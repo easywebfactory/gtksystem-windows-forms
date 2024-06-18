@@ -500,7 +500,7 @@ namespace System.Windows.Forms
 
         public virtual bool HasChildren { get; }
 
-        public virtual int Height { get { return Widget.HeightRequest; } set { Widget.HeightRequest = value; } }
+        public virtual int Height { get { return Widget.AllocatedHeight; } set { Widget.HeightRequest = value; } }
         public virtual ImeMode ImeMode { get; set; }
 
         public virtual bool InvokeRequired { get; }
@@ -548,7 +548,7 @@ namespace System.Windows.Forms
         {
             get
             {
-                return new Size(Widget.WidthRequest, Widget.HeightRequest);
+                return new Size(Widget.AllocatedWidth, Widget.AllocatedHeight);
             }
             set
             {
@@ -564,7 +564,7 @@ namespace System.Windows.Forms
 
         public virtual bool UseWaitCursor { get; set; }
         public virtual bool Visible { get { return Widget.Visible; } set { Widget.Visible = value; Widget.NoShowAll = value == false; } }
-        public virtual int Width { get { return Widget.WidthRequest; } set { Widget.WidthRequest = value; } }
+        public virtual int Width { get { return Widget.AllocatedWidth; } set { Widget.WidthRequest = value; } }
         public virtual IWindowTarget WindowTarget { get; set; }
         public virtual event EventHandler AutoSizeChanged;
         public virtual event EventHandler BackColorChanged;
@@ -1016,9 +1016,9 @@ namespace System.Windows.Forms
                 this.Widget.SetClip(rect);
             }
         }
-        public virtual Rectangle ClientRectangle { get { if (Widget == null) { return new Rectangle(); } else { Widget.GetAllocatedSize(out Gdk.Rectangle allocation, out int baseline); return new Rectangle(allocation.X, allocation.Y, allocation.Width, allocation.Height); } } }
+        public virtual Rectangle ClientRectangle { get { Widget.GetAllocatedSize(out Gdk.Rectangle allocation, out int baseline); return new Rectangle(allocation.X, allocation.Y, allocation.Width, allocation.Height); } }
 
-        public virtual Size ClientSize { get { Widget.GetSizeRequest(out int width,out int height); return new Size(width, height); } set { if (Widget != null) { Widget.SetSizeRequest(value.Width, value.Height); } } }
+        public virtual Size ClientSize { get { return new Size(Widget.AllocatedWidth, Widget.AllocatedHeight); } set { Widget.SetSizeRequest(value.Width, value.Height); } }
 
         public virtual IntPtr Handle { get => this.Widget == null ? IntPtr.Zero : this.Widget.Handle; }
 

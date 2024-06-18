@@ -23,13 +23,13 @@ namespace System.Windows.Forms
         }
         public ToolStrip(string owner) : base()
         {
-            self.StyleContext.AddClass("ToolStrip");
             self.Hexpand = false;
             self.Vexpand = false;
             self.Valign = Gtk.Align.Start;
             self.Halign = Gtk.Align.Start;
             toolStripItemCollection = new ToolStripItemCollection(this, owner);
             self.ActivateCurrent += ToolStripItem_Activated;
+            Dock = DockStyle.Top;
         }
         private void ToolStripItem_Activated(object sender, ActivateCurrentArgs e)
         {
