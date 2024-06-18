@@ -10,7 +10,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("RichTextBox");
-            this.TextView.BorderWidth = 1;
+            this.TextView.BorderWidth = 0;
+            this.TextView.Margin = 0;
             this.TextView.WrapMode = Gtk.WrapMode.Char;
             this.TextView.Halign = Gtk.Align.Fill;
             this.TextView.Valign = Gtk.Align.Fill;
@@ -18,6 +19,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.TextView.Vexpand = true;
             Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
             scrolledWindow.Child = this.TextView;
+            this.BorderWidth = 1;
+            this.ShadowType = Gtk.ShadowType.In;
             this.Child = scrolledWindow;
         }
         public void AddClass(string cssClass)

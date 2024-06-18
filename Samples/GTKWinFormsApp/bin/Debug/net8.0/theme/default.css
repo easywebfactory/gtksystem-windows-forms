@@ -8,7 +8,7 @@
 @define-color separator_color2 #D6D7D8;
 @define-color bg_color #ffffff;
 
-.DefaultThemeStyle{padding: 0px 2px;}
+.DefaultThemeStyle{padding: 0px 2px;border-color:@frame_color; border-style:solid;}
 .DefaultThemeStyle entry{padding: 0px 2px;}
 .DefaultThemeStyle entry.flat{padding: 0px 2px;border:solid 1px @frame_color;background:@bg_color;}
 .DefaultThemeStyle button{padding:2px 2px;}
@@ -18,10 +18,10 @@
 .GridViewCell-Button:hover{background:linear-gradient(#eeeeee,#efefef);}
 .GridViewCell-Button:selected{ color:blue}
 
-.TreeView {box-shadow:0px 0px 0px 1px @frame_color; }
+.LinkLabel{border-style:none;}
 .TextBox{background:@bg_color; } 
 .ListBox{box-shadow:inset 0px 0px 0px 1px @frame_color; }
-.RichTextBox{box-shadow:0px 0px 0px 1px @frame_color; }
+.RichTextBox{}
 .SplitContainer > separator {border-top:solid 2px @separator_color1;}
 
 .TableLayoutPanel {box-shadow: 1px 1px 1px 0px @frame_color;}
@@ -32,4 +32,6 @@
 .ListView .GroupLine{border-top:inset 1px #6677bb;}
 .ListView .GroupTitle{padding-left:5px;padding-right:5px; }
 .ListView .GroupSubTitle{padding-left:5px;padding-right:5px; }
+.StatusStrip{padding:0px; border-width:1px 0px 0px 0px; border-top:solid 1px @frame_color;}
+.ToolStrip button{padding:0px;}
                 

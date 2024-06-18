@@ -132,8 +132,8 @@ namespace System.Windows.Forms
             if (this.MultiColumn && this.ColumnWidth > 0)
             {
                 boxitem.WidthRequest = this.ColumnWidth;
-                this._flow.MinChildrenPerLine = Convert.ToUInt32(this.Width / this.ColumnWidth);
-                this._flow.MaxChildrenPerLine = Convert.ToUInt32(this.Width / this.ColumnWidth);
+                this._flow.MinChildrenPerLine = Convert.ToUInt32(self.WidthRequest / this.ColumnWidth);
+                this._flow.MaxChildrenPerLine = Convert.ToUInt32(Math.Max(1, self.WidthRequest / this.ColumnWidth));
             }
             boxitem.Valign = Gtk.Align.Fill;
             boxitem.Halign = Gtk.Align.Start;

@@ -7,7 +7,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
     {
         public readonly Gtk.ScrolledWindow ScrollView = new Gtk.ScrolledWindow();
         public readonly Gtk.Layout StatusBar = new Gtk.Layout(new Gtk.Adjustment(1, 1, 100, 1, 0, 1), new Gtk.Adjustment(1, 1, 100, 1, 0, 1));
-        private readonly Gtk.Viewport StatusBarView = new Gtk.Viewport();
+        public readonly Gtk.Viewport StatusBarView = new Gtk.Viewport();
         public GtkControlOverride Override { get; set; }
         public FormBase() : base()
         {

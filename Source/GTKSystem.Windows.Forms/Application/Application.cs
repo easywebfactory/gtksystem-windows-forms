@@ -100,20 +100,19 @@ namespace System.Windows.Forms
 @define-color separator_color2 #D6D7D8;
 @define-color bg_color #ffffff;
 
-.DefaultThemeStyle{padding: 0px 2px;}
+.DefaultThemeStyle{padding: 0px 2px;border-color:@frame_color; border-style:solid;}
 .DefaultThemeStyle entry{padding: 0px 2px;}
 .DefaultThemeStyle entry.flat{padding: 0px 2px;border:solid 1px @frame_color;background:@bg_color;}
-.DefaultThemeStyle button{padding:2px 2px;}
+.DefaultThemeStyle button{padding:1px 1px;}
 
 .DataGridView {border-width:1px;margin:-3px;}
 .GridViewCell-Button{ border:solid 1px #cccccc; font-size:12px; background:linear-gradient(#e9e9e9,#e0e0e0);}
 .GridViewCell-Button:hover{background:linear-gradient(#eeeeee,#efefef);}
 .GridViewCell-Button:selected{ color:blue}
 
-.TreeView {box-shadow:0px 0px 0px 1px @frame_color; }
+.LinkLabel{border-style:none;}
 .TextBox{background:@bg_color; } 
 .ListBox{box-shadow:inset 0px 0px 0px 1px @frame_color; }
-.RichTextBox{box-shadow:0px 0px 0px 1px @frame_color; }
 .SplitContainer > separator {border-top:solid 2px @separator_color1;}
 
 .TableLayoutPanel {box-shadow: 1px 1px 1px 0px @frame_color;}
@@ -126,6 +125,13 @@ namespace System.Windows.Forms
 .ListView .GroupSubTitle{padding-left:5px;padding-right:5px; }
 .StatusStrip{padding:0px; border-width:1px 0px 0px 0px; border-top:solid 1px @frame_color;}
 .ToolStrip button{padding:0px;}
+
+.NumericUpDown{border-width:1px;padding:1px; min-height:6px;min-width:6px;}
+.NumericUpDown button.up{border-width:0px;padding:0px;min-height:6px;min-width:6px;}
+.NumericUpDown button.down{border-width:0px;padding:0px;min-height:6px;min-width:6px;}
+.NumericUpDown.horizontal entry{border-width:0px;padding:1px;min-height:6px;min-width:6px;} 
+.NumericUpDown.vertical entry{border-width:0px;padding:1px;min-height:6px;min-width:6px;} 
+
                 ";
 
                 string defaulttheme = "theme/default/style/style.css";
@@ -137,7 +143,7 @@ namespace System.Windows.Forms
                     css_style += $"\n@import url(\"{customstyle}\");\n";
                 else
                 {
-                    if(!Directory.Exists("theme"))
+                    if (!Directory.Exists("theme"))
                         Directory.CreateDirectory("theme");
                     File.WriteAllText(customstyle, css_style);
                 }

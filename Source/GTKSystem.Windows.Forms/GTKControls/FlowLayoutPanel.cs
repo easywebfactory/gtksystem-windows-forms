@@ -28,15 +28,7 @@ namespace System.Windows.Forms
             self.MaxChildrenPerLine = 999;
             self.ColumnSpacing = 0;
             self.BorderWidth = 0;
-
-            self.ChildActivated += Control_ChildActivated;
             _controls = new ObjectCollection(this);
-
-        }
-
-        private void Control_ChildActivated(object o, ChildActivatedArgs args)
-        {
-            var c = args.Child;
         }
 
         private FlowDirection _FlowDirection;

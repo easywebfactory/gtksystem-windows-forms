@@ -7,6 +7,7 @@
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("LinkLabel");
+            this.BorderWidth = 0;
         }
         protected override void OnShown()
         {

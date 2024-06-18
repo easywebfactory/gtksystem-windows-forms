@@ -109,7 +109,7 @@ namespace GTKWinFormsApp
             ddddToolStripMenuItem.Checked = true;
             ddddToolStripMenuItem.CheckState = CheckState.Indeterminate;
             ddddToolStripMenuItem.Name = "ddddToolStripMenuItem";
-            ddddToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            ddddToolStripMenuItem.Size = new System.Drawing.Size(132, 26);
             ddddToolStripMenuItem.Text = "a菜单";
             // 
             // ssssToolStripMenuItem
@@ -117,7 +117,7 @@ namespace GTKWinFormsApp
             ssssToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { bb菜单ToolStripMenuItem, bb菜单2ToolStripMenuItem });
             ssssToolStripMenuItem.Image = (System.Drawing.Image)resources.GetObject("ssssToolStripMenuItem.Image");
             ssssToolStripMenuItem.Name = "ssssToolStripMenuItem";
-            ssssToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            ssssToolStripMenuItem.Size = new System.Drawing.Size(132, 26);
             ssssToolStripMenuItem.Text = "b菜单";
             // 
             // bb菜单ToolStripMenuItem
@@ -135,14 +135,14 @@ namespace GTKWinFormsApp
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new System.Drawing.Size(221, 6);
+            toolStripSeparator3.Size = new System.Drawing.Size(129, 6);
             // 
             // c菜单ToolStripMenuItem
             // 
             c菜单ToolStripMenuItem.Checked = true;
             c菜单ToolStripMenuItem.CheckState = CheckState.Indeterminate;
             c菜单ToolStripMenuItem.Name = "c菜单ToolStripMenuItem";
-            c菜单ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            c菜单ToolStripMenuItem.Size = new System.Drawing.Size(132, 26);
             c菜单ToolStripMenuItem.Text = "c菜单";
             // 
             // ssssToolStripMenuItem1
@@ -377,7 +377,10 @@ namespace GTKWinFormsApp
             // 
             // panel1
             // 
+            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel1.AutoScroll = true;
+            panel1.BackColor = System.Drawing.Color.MistyRose;
+            panel1.BorderStyle = BorderStyle.Fixed3D;
             panel1.Controls.Add(button3);
             panel1.Controls.Add(button2);
             panel1.Location = new System.Drawing.Point(638, 184);
@@ -402,10 +405,11 @@ namespace GTKWinFormsApp
             button2.TabIndex = 0;
             button2.Text = "button2";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // panel3
             // 
-            panel3.Cursor = Cursors.AppStarting;
+            panel3.BorderStyle = BorderStyle.Fixed3D;
             panel3.Location = new System.Drawing.Point(29, 102);
             panel3.Name = "panel3";
             panel3.Size = new System.Drawing.Size(250, 135);

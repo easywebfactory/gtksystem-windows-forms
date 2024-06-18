@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
@@ -101,144 +102,166 @@ namespace System.Windows.Forms
         {
             if (self.Resizable == true && _body.IsMapped && self.IsMapped)
             {
-                if (resizeWidth != self.ContentArea.AllocatedWidth || resizeHeight != self.ContentArea.AllocatedHeight - self.StatusBar.AllocatedHeight)
+                if (resizeWidth < 1)
                 {
                     resizeWidth = self.ContentArea.AllocatedWidth;
-                    resizeHeight = self.ContentArea.AllocatedHeight - self.StatusBar.AllocatedHeight;
-                    _body.WidthRequest = resizeWidth - (AutoScroll ? self.ScrollArrowVlength : 0); //留出滚动条位置
-                    _body.HeightRequest = resizeHeight - (AutoScroll ? self.ScrollArrowHlength : 0);
-                    int widthIncrement = resizeHeight - self.DefaultSize.Width;
-                    int heightIncrement = resizeHeight - self.DefaultSize.Height;
-                    ResizeControls(widthIncrement, heightIncrement, _body, false, null);
+                    resizeHeight = self.ContentArea.AllocatedHeight;
                 }
+                else if (resizeWidth != self.ContentArea.AllocatedWidth || resizeHeight != self.ContentArea.AllocatedHeight)
+                {
+                    try
+                    {
+                        int widthIncrement = self.ContentArea.AllocatedWidth - resizeWidth;
+                        int heightIncrement = self.ContentArea.AllocatedHeight - resizeHeight;
+                        if (widthIncrement != 0 || heightIncrement != 0)
+                        {
+                            resizeWidth = self.ContentArea.AllocatedWidth;
+                            resizeHeight = self.ContentArea.AllocatedHeight;
+                            _body.WidthRequest = resizeWidth - (AutoScroll ? self.ScrollArrowVlength : 0); //留出滚动条位置
+                            _body.HeightRequest = resizeHeight - self.StatusBarView.AllocatedHeight - (AutoScroll ? self.ScrollArrowHlength : 0);
+                            ResizeControls(widthIncrement, heightIncrement, _body);
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                    if (SizeChanged != null)
+                        SizeChanged(this, e);
+                }
+
             }
-            if (SizeChanged != null)
-                SizeChanged(this, e);
+
         }
 
-        private void ResizeControls(int widthIncrement, int heightIncrement, Gtk.Container parent, bool isPaned, Gtk.Paned gtkPaned)
+        private void ResizeControls(int widthIncrement, int heightIncrement, Gtk.Container parent)
         {
             foreach (Gtk.Widget control in parent.Children)
             {
                 if (control != null)
                 {
-                    object dock = control.Data["Dock"];
-                    if (dock != null)
+                    bool checksizing = false;
+                    if (control.Data["Control"] != null)
                     {
-                        string dockStyle = dock.ToString();
-                        if (gtkPaned != null)
+                        Control con = (Control)control.Data["Control"];
+                        DockStyle dock = con.Dock;
+                        if(dock == DockStyle.None)
                         {
-                            if (gtkPaned.Orientation == Gtk.Orientation.Vertical)
-                                heightIncrement = gtkPaned.Child1.AllocatedHeight - gtkPaned.Child1.HeightRequest;
-                            else
-                                widthIncrement = gtkPaned.Child1.AllocatedWidth - gtkPaned.Child1.WidthRequest;
-                        }
-
-                        Gtk.Widget sizeParent = getSizeParent(control);
-                        int width = sizeParent.WidthRequest;
-                        int height = sizeParent.HeightRequest;
-                        if (dockStyle == DockStyle.Top.ToString())
-                        {
-                            control.Valign = Gtk.Align.Start;
-                            control.Hexpand = true;
-                            if (control.WidthRequest > -1 && width > 0)
-                                control.WidthRequest = width;
-                        }
-                        else if (dockStyle == DockStyle.Bottom.ToString())
-                        {
-                            control.Valign = Gtk.Align.End;
-                            control.Halign = Gtk.Align.Fill;
-                            control.Expand = true;
-                            if (parent[control] is Gtk.Layout.LayoutChild lc)
+                            AnchorStyles anchor = con.Anchor;
+                            if (anchor != AnchorStyles.None)
                             {
-                                lc.Y = parent.HeightRequest - control.HeightRequest;
+                                checksizing = true;
+                                if ((anchor & AnchorStyles.Right) != 0)
+                                {
+                                    if ((anchor & AnchorStyles.Left) != 0)
+                                    {
+                                        control.WidthRequest = control.WidthRequest + widthIncrement;
+                                    }
+                                    else
+                                    {
+                                        if (parent[control] is Gtk.Layout.LayoutChild lc)
+                                        {
+                                            lc.X = lc.X + widthIncrement;
+                                        }
+                                        else if (parent[control] is Gtk.Fixed.FixedChild fc)
+                                        {
+                                            fc.X = fc.X + widthIncrement;
+                                        }
+                                    }
+                                }
+                                if ((anchor & AnchorStyles.Bottom) != 0)
+                                {
+                                    if ((anchor & AnchorStyles.Top) != 0)
+                                    {
+                                        control.HeightRequest = control.HeightRequest + heightIncrement;
+                                    }
+                                    else
+                                    {
+                                        if (parent[control] is Gtk.Layout.LayoutChild lc)
+                                        {
+                                            lc.Y = lc.Y + heightIncrement;
+                                        }
+                                        else if (parent[control] is Gtk.Fixed.FixedChild fc)
+                                        {
+                                            fc.Y = fc.Y + heightIncrement;
+                                        }
+                                    }
+                                }
                             }
-                            else if (parent[control] is Gtk.Fixed.FixedChild fc)
+                        }
+                        else
+                        {
+                            checksizing = true;
+                            string dockStyle = dock.ToString();
+                            if (dockStyle == DockStyle.Top.ToString())
                             {
-                                fc.Y = parent.HeightRequest - control.HeightRequest;
+                                control.Valign = Gtk.Align.Start;
+                                control.Hexpand = true;
+                                if (control.WidthRequest > -1)
+                                    control.WidthRequest = control.WidthRequest + widthIncrement;
                             }
-                            if (control.WidthRequest > -1 && width > 0)
-                                control.WidthRequest = width;
-                        }
-                        else if (dockStyle == DockStyle.Left.ToString())
-                        {
-                            control.Halign = Gtk.Align.Start;
-                            control.Vexpand = true;
-                            if (control.HeightRequest > -1 && height > 0)
-                                control.HeightRequest = height;
-                        }
-                        else if (dockStyle == DockStyle.Right.ToString())
-                        {
-                            control.Halign = Gtk.Align.End;
-                           if(parent[control] is Gtk.Layout.LayoutChild lc)
+                            else if (dockStyle == DockStyle.Bottom.ToString())
                             {
-                                lc.X = parent.WidthRequest - control.WidthRequest - 6;
+                                control.Valign = Gtk.Align.End;
+                                control.Halign = Gtk.Align.Fill;
+                                control.Expand = true;
+                                if (parent[control] is Gtk.Layout.LayoutChild lc)
+                                {
+                                    lc.Y = parent.HeightRequest - control.HeightRequest;
+                                }
+                                else if (parent[control] is Gtk.Fixed.FixedChild fc)
+                                {
+                                    fc.Y = parent.HeightRequest - control.HeightRequest;
+                                }
+                                if (control.WidthRequest > -1)
+                                    control.WidthRequest = control.WidthRequest + widthIncrement;
                             }
-                            else if (parent[control] is Gtk.Fixed.FixedChild fc)
+                            else if (dockStyle == DockStyle.Left.ToString())
                             {
-                                fc.X = parent.WidthRequest - control.WidthRequest - 6;
+                                control.Halign = Gtk.Align.Start;
+                                control.Vexpand = true;
+                                if (control.HeightRequest > -1)
+                                    control.HeightRequest = control.HeightRequest + heightIncrement;
                             }
-                            if (control.HeightRequest > -1 && height > 0)
-                                control.HeightRequest = height;
-                        }
-                        else if (dockStyle == DockStyle.Fill.ToString())
-                        {
-                            control.Hexpand = true;
-                            control.Vexpand = true;
-                            if (control.HeightRequest > -1 && height > 0)
-                                control.HeightRequest = height;
-                            if (control.WidthRequest > -1 && width > 0)
-                                control.WidthRequest = width;
-                        }
-                        if (control is Gtk.MenuBar menuba)
-                        {
-                            //菜单不用处理
-                        }
-                        else if (control is Gtk.TreeView)
-                        {
-                            //树目录不用处理
-                        }
-                        else if (control is Gtk.Paned paned)
-                        {
-                            ResizeControls(widthIncrement, heightIncrement, paned, true, paned);
-                        }
-                        else if (control is Gtk.Container container)
-                        {
-                            ResizeControls(widthIncrement, heightIncrement, container, isPaned, gtkPaned);
+                            else if (dockStyle == DockStyle.Right.ToString())
+                            {
+                                control.Halign = Gtk.Align.End;
+                                if (parent[control] is Gtk.Layout.LayoutChild lc)
+                                {
+                                    lc.X = parent.WidthRequest - control.WidthRequest - 6;
+                                }
+                                else if (parent[control] is Gtk.Fixed.FixedChild fc)
+                                {
+                                    fc.X = parent.WidthRequest - control.WidthRequest - 6;
+                                }
+                                if (control.HeightRequest > -1)
+                                    control.HeightRequest = control.HeightRequest + heightIncrement;
+                            }
+                            else if (dockStyle == DockStyle.Fill.ToString())
+                            {
+                                control.Hexpand = true;
+                                control.Vexpand = true;
+                                if (control.HeightRequest > -1)
+                                    control.HeightRequest = control.HeightRequest + heightIncrement;
+                                if (control.WidthRequest > -1)
+                                    control.WidthRequest = control.WidthRequest + widthIncrement;
+                            }
                         }
                     }
-                    else
+                    if (control is Gtk.MenuBar menuba)
                     {
-                        if (control is Gtk.MenuBar)
-                        {
-
-                        }
-                        else if (control is Gtk.TreeView)
-                        {
-                        }
-                        else if (control is Gtk.Paned paned)
-                        {
-                            ResizeControls(widthIncrement, heightIncrement, paned, true, paned);
-                        }
-                        else if (control is Gtk.Container container)
-                        {
-                            ResizeControls(widthIncrement, heightIncrement, container, isPaned, gtkPaned);
-                        }
+                        //菜单不用处理
+                    }
+                    else if (control is Gtk.TreeView)
+                    {
+                        //树目录不用处理
+                    }
+                    else if(checksizing || control is Gtk.Viewport || control is Gtk.ScrolledWindow || control is Gtk.Fixed || control is Gtk.Layout || control is Gtk.Box)
+                    {
+                        ResizeControls(widthIncrement, heightIncrement, (Gtk.Container)control);
                     }
                 }
             }
-        }
-
-        private Gtk.Widget getSizeParent(Gtk.Widget control)
-        {
-            while (control.Parent != null)
-            {
-                if (control.Parent.WidthRequest > -1)
-                    return control.Parent;
-                else
-                    return getSizeParent(control.Parent);
-            }
-            return control.Parent;
         }
 
         private void OnLoad()

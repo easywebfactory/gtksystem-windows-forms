@@ -38,7 +38,6 @@ namespace System.Windows.Forms
             scrolledwindow.BorderWidth = 0;
             self.Child = scrolledwindow;
         }
-        public override BorderStyle BorderStyle { get { return self.ShadowType == Gtk.ShadowType.None ? BorderStyle.None : BorderStyle.FixedSingle; } set { self.BorderWidth = 1; self.ShadowType = Gtk.ShadowType.In; } }
         public override ControlCollection Controls => _controls;
         public override bool AutoScroll { 
             get => base.AutoScroll; 

@@ -14,7 +14,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             this.container = container;
         }
-
         public event DrawnHandler DrawnBackground;
         public event PaintEventHandler Paint;
         public System.Drawing.Color? BackColor { get; set; }

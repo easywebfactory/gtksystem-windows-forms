@@ -34,6 +34,7 @@ namespace System.Windows.Forms
             Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
             scrolledWindow.Add(self);
             viewport.BorderWidth = 1;
+            viewport.ShadowType = ShadowType.Out;
             viewport.Child = scrolledWindow;
             viewport.StyleContext.AddClass("TreeView");
 

@@ -179,7 +179,7 @@ namespace System.Windows.Forms
 		public int[] GetColumnWidths()
 		{
 			List<int> list = new List<int>();
-			float gridWidth = this.Width;
+			float gridWidth = self.WidthRequest;
 			float absoluteWidth = 0;
 			
 			int col= 0;
@@ -223,7 +223,7 @@ namespace System.Windows.Forms
 		public int[] GetRowHeights()
 		{
             List<int> list = new List<int>();
-            float gridHeight = this.Height;
+            float gridHeight = self.HeightRequest;
             float absoluteHeight = 0;
             int row = 0;
             int col = 0;

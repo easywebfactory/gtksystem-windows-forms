@@ -28,13 +28,12 @@ namespace System.Windows.Forms
         public Control()
         {
             this.unique_key = Guid.NewGuid().ToString().ToLower();
-
-            if (this.Widget != null)
+            Gtk.Widget widget = this.Widget;
+            if (widget != null)
             {
                 this.Dock = DockStyle.None;
-                this.Widget.StyleContext.AddClass("DefaultThemeStyle");
-                Gtk.Widget widget = this.Widget;
-
+                widget.Data["Control"] = this;
+                widget.StyleContext.AddClass("DefaultThemeStyle");
                 widget.ButtonPressEvent += Widget_ButtonPressEvent;
                 widget.ButtonReleaseEvent += Widget_ButtonReleaseEvent;
                 widget.EnterNotifyEvent += Widget_EnterNotifyEvent;
@@ -428,9 +427,6 @@ namespace System.Windows.Forms
         public virtual Point AutoScrollOffset { get; set; }
         public virtual bool AutoSize { get; set; }
         public virtual BindingContext BindingContext { get; set; }
-
-        public virtual int Bottom { get; }
-
         public virtual Rectangle Bounds { get; set; }
 
         public virtual bool CanFocus { get { return Widget.CanFocus; } }
@@ -500,7 +496,6 @@ namespace System.Windows.Forms
 
         public virtual bool HasChildren { get; }
 
-        public virtual int Height { get { return Widget.AllocatedHeight; } set { Widget.HeightRequest = value; } }
         public virtual ImeMode ImeMode { get; set; }
 
         public virtual bool InvokeRequired { get; }
@@ -514,9 +509,54 @@ namespace System.Windows.Forms
         public virtual bool IsMirrored { get; }
 
         public virtual LayoutEngine LayoutEngine { get; }
-
-        public virtual int Left { get; set; }
-
+        private int _top;
+        public virtual int Top
+        {
+            get => Widget.IsRealized ? Widget.Allocation.Top : _top;
+            set
+            {
+                _top = value;
+                if (Widget.Parent != null && Widget.Parent.IsMapped)
+                {
+                    if (Widget.Parent is Gtk.Container parent)
+                    {
+                        if (parent[Widget] is Gtk.Layout.LayoutChild lc)
+                        {
+                            lc.Y = value;
+                        }
+                        else if (parent[Widget] is Gtk.Fixed.FixedChild fc)
+                        {
+                            fc.Y = value;
+                        }
+                    }
+                }
+            }
+        }
+        private int _left;
+        public virtual int Left
+        {
+            get => Widget.IsRealized ? Widget.Allocation.Left : _left;
+            set
+            {
+                _left = value;
+                if (Widget.Parent != null && Widget.Parent.IsMapped)
+                {
+                    if (Widget.Parent is Gtk.Container parent)
+                    {
+                        if (parent[Widget] is Gtk.Layout.LayoutChild lc)
+                        {
+                            lc.X = value;
+                        }
+                        else if (parent[Widget] is Gtk.Fixed.FixedChild fc)
+                        {
+                            fc.X = value;
+                        }
+                    }
+                }
+            }
+        }
+        public virtual int Right { get => Widget.Allocation.Right; }
+        public virtual int Bottom { get => Widget.Allocation.Bottom; }
         public virtual Point Location
         {
             get
@@ -540,31 +580,29 @@ namespace System.Windows.Forms
         public virtual string ProductVersion { get; }
         public virtual bool RecreatingHandle { get; }
         public virtual Drawing.Region Region { get; set; }
-        public virtual int Right { get; }
 
         public virtual RightToLeft RightToLeft { get; set; }
-        //public override ISite Site { get => base.Site; set => base.Site = value; }
         public virtual Size Size
         {
             get
             {
-                return new Size(Widget.AllocatedWidth, Widget.AllocatedHeight);
+                return new Size(Width, Height);
             }
             set
             {
                 Widget.SetSizeRequest(value.Width, value.Height);
             }
         }
+        public virtual int Height { get { return Widget.HeightRequest > Widget.HeightRequest ? Widget.WidthRequest : Widget.AllocatedHeight; } set { Widget.HeightRequest = value; } }
+        public virtual int Width { get { return Widget.WidthRequest > Widget.AllocatedWidth ? Widget.WidthRequest : Widget.AllocatedWidth; } set { Widget.WidthRequest = value; } }
         public virtual int TabIndex { get; set; }
         public virtual bool TabStop { get; set; }
         public virtual object Tag { get; set; }
         public virtual string Text { get; set; }
-        public virtual int Top { get; set; }
         public virtual Control TopLevelControl { get; }
 
         public virtual bool UseWaitCursor { get; set; }
         public virtual bool Visible { get { return Widget.Visible; } set { Widget.Visible = value; Widget.NoShowAll = value == false; } }
-        public virtual int Width { get { return Widget.AllocatedWidth; } set { Widget.WidthRequest = value; } }
         public virtual IWindowTarget WindowTarget { get; set; }
         public virtual event EventHandler AutoSizeChanged;
         public virtual event EventHandler BackColorChanged;
@@ -1025,7 +1063,16 @@ namespace System.Windows.Forms
         public virtual Padding Margin { get; set; }
         public virtual Size MaximumSize { get; set; }
         public virtual Size MinimumSize { get; set; }
-        public virtual BorderStyle BorderStyle { get; set; }
+        private BorderStyle _BorderStyle;
+        public virtual BorderStyle BorderStyle
+        {
+            get { return _BorderStyle; }
+            set {
+                _BorderStyle = value;
+                if (GtkControl is Gtk.Viewport view) { view.BorderWidth = Convert.ToUInt32((int)value); view.ShadowType = ShadowType.Out; }
+                //if (GtkControl is Gtk.Container container) { container.BorderWidth = Convert.ToUInt32((int)value); }
+            }
+        }
 
         public virtual void Hide()
         {

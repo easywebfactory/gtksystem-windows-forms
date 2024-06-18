@@ -51,7 +51,7 @@ namespace GTKWinFormsApp
                 {
                     progressBar1.Invoke(() =>
                     {
-                        progressBar1.Value = i;
+                        // progressBar1.Value = i;
                     });
                     System.Threading.Thread.Sleep(20);
                 }
@@ -103,6 +103,11 @@ namespace GTKWinFormsApp
         {
             Form2 f = new Form2();
             f.ShowDialog();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
