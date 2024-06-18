@@ -51,7 +51,7 @@ namespace GTKWinFormsApp
                 {
                     progressBar1.Invoke(() =>
                     {
-                        // progressBar1.Value = i;
+                         progressBar1.Value = i;
                     });
                     System.Threading.Thread.Sleep(20);
                 }
