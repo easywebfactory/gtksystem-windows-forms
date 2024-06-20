@@ -60,7 +60,7 @@ namespace GTKWinFormsApp
 
         private void UserControl11_MouseMove(object sender, MouseEventArgs e)
         {
-            Console.WriteLine("UserControl11_MouseMove");
+            //Console.WriteLine("UserControl11_MouseMove");
         }
 
         private void UserControl11_MouseUp(object sender, MouseEventArgs e)

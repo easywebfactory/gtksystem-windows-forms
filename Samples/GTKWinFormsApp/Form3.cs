@@ -26,7 +26,7 @@ namespace GTKWinFormsApp
 
         private void Form3_SizeChanged(object? sender, EventArgs e)
         {
-            Console.WriteLine(Width);
+            //Console.WriteLine(Width);
         }
 
         private void button1_Click(object sender, EventArgs e)

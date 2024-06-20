@@ -117,8 +117,8 @@ namespace System.Windows.Forms
                 {
                     try
                     {
-                        resizeWidth = self.AllocatedWidth;
-                        resizeHeight = self.AllocatedHeight;
+                        resizeWidth = self.ContentArea.AllocatedWidth;
+                        resizeHeight = self.ContentArea.AllocatedHeight;
                         int widthIncrement = resizeWidth - self.DefaultWidth;
                         int heightIncrement = resizeHeight - self.DefaultHeight;
 

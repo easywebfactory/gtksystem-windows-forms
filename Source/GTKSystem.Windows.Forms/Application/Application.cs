@@ -80,7 +80,7 @@ namespace System.Windows.Forms
         public static Gtk.Application Init()
         {
             if (App == null)
-            {     
+            {
                 Gtk.Application.Init();
                 App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
                 App.Register(GLib.Cancellable.Current);
