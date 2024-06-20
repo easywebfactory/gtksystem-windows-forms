@@ -36,7 +36,7 @@ namespace GTKWinFormsApp
             // 
             // button1
             // 
-            button1.Location = new System.Drawing.Point(3, 44);
+            button1.Location = new System.Drawing.Point(3, 42);
             button1.Name = "button1";
             button1.Size = new System.Drawing.Size(153, 34);
             button1.TabIndex = 0;
@@ -47,11 +47,14 @@ namespace GTKWinFormsApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = System.Drawing.Color.LightGreen;
             Controls.Add(button1);
             Name = "UserControl11";
             Size = new System.Drawing.Size(190, 103);
             Load += UserControl11_Load;
             Paint += UserControl11_Paint;
+            MouseEnter += UserControl11_MouseEnter;
+            MouseLeave += UserControl11_MouseLeave;
             ParentChanged += UserControl11_ParentChanged;
             ResumeLayout(false);
         }

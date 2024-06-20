@@ -8,6 +8,7 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
+using System.Xml.Linq;
 
 
 namespace System.Windows.Forms
@@ -34,16 +35,26 @@ namespace System.Windows.Forms
             contaner.Vexpand = true;
             _controls = new ControlCollection(this, contaner);
             self.Child = contaner;
+            self.Override.Paint += Override_Paint;
+            self.ParentSet += Self_ParentSet;
         }
+        private void Self_ParentSet(object o, ParentSetArgs args)
+        {
+            OnParentChanged(EventArgs.Empty);
+        }
+
+        private void Override_Paint(object sender, PaintEventArgs e)
+        {
+            OnPaint(e);
+        }
+
         public override event EventHandler Load;
         public System.Drawing.SizeF AutoScaleDimensions { get; set; }
         public System.Windows.Forms.AutoScaleMode AutoScaleMode { get; set; }
-        public override BorderStyle BorderStyle { get { return self.ShadowType == Gtk.ShadowType.None ? BorderStyle.None : BorderStyle.FixedSingle; } set { self.BorderWidth = 1; self.ShadowType = Gtk.ShadowType.In; } }
         public override ControlCollection Controls => _controls;
 
         protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
         {
-            base.OnPaint(e);
         }
         protected override void OnParentChanged(EventArgs e)
         {

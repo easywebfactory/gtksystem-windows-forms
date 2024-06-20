@@ -42,8 +42,8 @@ namespace GTKWinFormsApp
             listBox1.DisplayMember = "CreateDate";
             listBox1.DataSource = dt;
 
-            //this.FormClosing += Form2_FormClosing;
-            //this.FormClosed += Form2_FormClosed;
+            this.FormClosing += Form2_FormClosing;
+            this.FormClosed += Form2_FormClosed;
         }
 
         private void TimersTimer_Elapsed(object? sender, ElapsedEventArgs e)

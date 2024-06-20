@@ -798,7 +798,7 @@ namespace System.Drawing
 
 		public void DrawLine(Pen pen, int x1, int y1, int x2, int y2)
 		{
-            DrawLine(pen, x1, y1, x2, y2);
+            DrawLinesCore(pen, new PointF[] { new PointF(x1, y1), new PointF(x2, y2) });
         }
 
 		public void DrawLine(Pen pen, float x1, float y1, float x2, float y2)

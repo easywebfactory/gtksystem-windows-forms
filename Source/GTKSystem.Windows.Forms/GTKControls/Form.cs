@@ -7,6 +7,7 @@
 
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
@@ -55,20 +56,25 @@ namespace System.Windows.Forms
             self.ResizeChecked += Form_ResizeChecked;
             self.Shown += Control_Shown;
             self.DeleteEvent += Self_DeleteEvent;
+            self.CloseWindowEvent += Self_CloseWindowEvent;
         }
 
-        private void Self_DeleteEvent(object o, DeleteEventArgs args)
+        private bool Self_CloseWindowEvent(object sender, EventArgs e)
         {
             FormClosingEventArgs closing = new FormClosingEventArgs(CloseReason.UserClosing, false);
             if (FormClosing != null)
                 FormClosing(this, closing);
 
-            args.RetVal = closing.Cancel == true;
             if (closing.Cancel == false)
             {
                 if (FormClosed != null)
                     FormClosed(this, new FormClosedEventArgs(CloseReason.UserClosing));
             }
+            return closing.Cancel == false;
+        }
+        private void Self_DeleteEvent(object o, DeleteEventArgs args)
+        {
+            args.RetVal = true;
         }
 
         private void Control_Shown(object sender, EventArgs e)
@@ -100,170 +106,39 @@ namespace System.Windows.Forms
         int resizeHeight= 0;
         private void Form_ResizeChecked(object sender, EventArgs e)
         {
-            if (self.Resizable == true && _body.IsMapped && self.IsMapped)
+            if (self.Resizable == true && self.IsMapped)
             {
                 if (resizeWidth < 1)
                 {
                     resizeWidth = self.ContentArea.AllocatedWidth;
                     resizeHeight = self.ContentArea.AllocatedHeight;
                 }
-                else if (resizeWidth != self.ContentArea.AllocatedWidth || resizeHeight != self.ContentArea.AllocatedHeight)
+                else if (self.ContentArea.AllocatedWidth != self.DefaultWidth || self.ContentArea.AllocatedHeight != self.DefaultHeight)
                 {
                     try
                     {
-                        int widthIncrement = self.ContentArea.AllocatedWidth - resizeWidth;
-                        int heightIncrement = self.ContentArea.AllocatedHeight - resizeHeight;
-                        if (widthIncrement != 0 || heightIncrement != 0)
-                        {
-                            resizeWidth = self.ContentArea.AllocatedWidth;
-                            resizeHeight = self.ContentArea.AllocatedHeight;
-                            _body.WidthRequest = resizeWidth - (AutoScroll ? self.ScrollArrowVlength : 0); //留出滚动条位置
-                            _body.HeightRequest = resizeHeight - self.StatusBarView.AllocatedHeight - (AutoScroll ? self.ScrollArrowHlength : 0);
-                            ResizeControls(widthIncrement, heightIncrement, _body);
-                        }
-                    }
-                    catch
-                    {
+                        resizeWidth = self.ContentArea.AllocatedWidth;
+                        resizeHeight = self.ContentArea.AllocatedHeight;
+                        int widthIncrement = resizeWidth - self.DefaultWidth;
+                        int heightIncrement = resizeHeight - self.DefaultHeight;
 
+                        _body.WidthRequest = resizeWidth - (AutoScroll ? self.ScrollArrowVlength : 0); //留出滚动条位置
+                        _body.HeightRequest = resizeHeight - self.StatusBarView.AllocatedHeight - (AutoScroll ? self.ScrollArrowHlength : 0);
+                        Gtk.Application.Invoke(new EventHandler((o, e) =>
+                        {
+                            self.ResizeControls(widthIncrement, heightIncrement, _body);
+                        }));
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("form resize:" + ex.Message);
                     }
                     if (SizeChanged != null)
                         SizeChanged(this, e);
                 }
-
-            }
-
-        }
-
-        private void ResizeControls(int widthIncrement, int heightIncrement, Gtk.Container parent)
-        {
-            foreach (Gtk.Widget control in parent.Children)
-            {
-                if (control != null)
-                {
-                    bool checksizing = false;
-                    if (control.Data["Control"] != null)
-                    {
-                        Control con = (Control)control.Data["Control"];
-                        DockStyle dock = con.Dock;
-                        if(dock == DockStyle.None)
-                        {
-                            AnchorStyles anchor = con.Anchor;
-                            if (anchor != AnchorStyles.None)
-                            {
-                                checksizing = true;
-                                if ((anchor & AnchorStyles.Right) != 0)
-                                {
-                                    if ((anchor & AnchorStyles.Left) != 0)
-                                    {
-                                        control.WidthRequest = control.WidthRequest + widthIncrement;
-                                    }
-                                    else
-                                    {
-                                        if (parent[control] is Gtk.Layout.LayoutChild lc)
-                                        {
-                                            lc.X = lc.X + widthIncrement;
-                                        }
-                                        else if (parent[control] is Gtk.Fixed.FixedChild fc)
-                                        {
-                                            fc.X = fc.X + widthIncrement;
-                                        }
-                                    }
-                                }
-                                if ((anchor & AnchorStyles.Bottom) != 0)
-                                {
-                                    if ((anchor & AnchorStyles.Top) != 0)
-                                    {
-                                        control.HeightRequest = control.HeightRequest + heightIncrement;
-                                    }
-                                    else
-                                    {
-                                        if (parent[control] is Gtk.Layout.LayoutChild lc)
-                                        {
-                                            lc.Y = lc.Y + heightIncrement;
-                                        }
-                                        else if (parent[control] is Gtk.Fixed.FixedChild fc)
-                                        {
-                                            fc.Y = fc.Y + heightIncrement;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            checksizing = true;
-                            string dockStyle = dock.ToString();
-                            if (dockStyle == DockStyle.Top.ToString())
-                            {
-                                control.Valign = Gtk.Align.Start;
-                                control.Hexpand = true;
-                                if (control.WidthRequest > -1)
-                                    control.WidthRequest = control.WidthRequest + widthIncrement;
-                            }
-                            else if (dockStyle == DockStyle.Bottom.ToString())
-                            {
-                                control.Valign = Gtk.Align.End;
-                                control.Halign = Gtk.Align.Fill;
-                                control.Expand = true;
-                                if (parent[control] is Gtk.Layout.LayoutChild lc)
-                                {
-                                    lc.Y = parent.HeightRequest - control.HeightRequest;
-                                }
-                                else if (parent[control] is Gtk.Fixed.FixedChild fc)
-                                {
-                                    fc.Y = parent.HeightRequest - control.HeightRequest;
-                                }
-                                if (control.WidthRequest > -1)
-                                    control.WidthRequest = control.WidthRequest + widthIncrement;
-                            }
-                            else if (dockStyle == DockStyle.Left.ToString())
-                            {
-                                control.Halign = Gtk.Align.Start;
-                                control.Vexpand = true;
-                                if (control.HeightRequest > -1)
-                                    control.HeightRequest = control.HeightRequest + heightIncrement;
-                            }
-                            else if (dockStyle == DockStyle.Right.ToString())
-                            {
-                                control.Halign = Gtk.Align.End;
-                                if (parent[control] is Gtk.Layout.LayoutChild lc)
-                                {
-                                    lc.X = parent.WidthRequest - control.WidthRequest - 6;
-                                }
-                                else if (parent[control] is Gtk.Fixed.FixedChild fc)
-                                {
-                                    fc.X = parent.WidthRequest - control.WidthRequest - 6;
-                                }
-                                if (control.HeightRequest > -1)
-                                    control.HeightRequest = control.HeightRequest + heightIncrement;
-                            }
-                            else if (dockStyle == DockStyle.Fill.ToString())
-                            {
-                                control.Hexpand = true;
-                                control.Vexpand = true;
-                                if (control.HeightRequest > -1)
-                                    control.HeightRequest = control.HeightRequest + heightIncrement;
-                                if (control.WidthRequest > -1)
-                                    control.WidthRequest = control.WidthRequest + widthIncrement;
-                            }
-                        }
-                    }
-                    if (control is Gtk.MenuBar menuba)
-                    {
-                        //菜单不用处理
-                    }
-                    else if (control is Gtk.TreeView)
-                    {
-                        //树目录不用处理
-                    }
-                    else if(checksizing || control is Gtk.Viewport || control is Gtk.ScrolledWindow || control is Gtk.Fixed || control is Gtk.Layout || control is Gtk.Box)
-                    {
-                        ResizeControls(widthIncrement, heightIncrement, (Gtk.Container)control);
-                    }
-                }
             }
         }
-
+ 
         private void OnLoad()
         {
             if (Load != null)
@@ -320,8 +195,8 @@ namespace System.Windows.Forms
 
                 if (self.Resizable == false)
                 {
-                    self.WidthRequest = self.DefaultSize.Width;
-                    self.HeightRequest = self.DefaultSize.Height;
+                    self.WidthRequest = self.DefaultWidth;
+                    self.HeightRequest = self.DefaultHeight;
                 }
 
                 if (this.WindowState == FormWindowState.Maximized)
@@ -332,7 +207,6 @@ namespace System.Windows.Forms
                 {
                     self.Iconify();
                 }
-
                 try
                 {
                     if (this.ShowIcon)
@@ -440,7 +314,27 @@ namespace System.Windows.Forms
                 }
             }
         }
-        public FormWindowState WindowState { get; set; } = FormWindowState.Normal;
+        private FormWindowState _WindowState = FormWindowState.Normal;
+        public FormWindowState WindowState {
+            get { 
+                return _WindowState;
+            } 
+            set
+            {
+                _WindowState = value;
+                if (self.IsMapped)
+                {
+                    if (value == FormWindowState.Maximized)
+                    {
+                        self.Maximize();
+                    }
+                    else if (value == FormWindowState.Minimized)
+                    {
+                        self.Iconify();
+                    }
+                }
+            } 
+        }
         public DialogResult DialogResult { get; set; }
         public void Close() {
             if (self != null)

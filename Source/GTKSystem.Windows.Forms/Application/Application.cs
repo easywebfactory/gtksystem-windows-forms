@@ -80,7 +80,7 @@ namespace System.Windows.Forms
         public static Gtk.Application Init()
         {
             if (App == null)
-            {
+            {     
                 Gtk.Application.Init();
                 App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
                 App.Register(GLib.Cancellable.Current);
@@ -131,7 +131,6 @@ namespace System.Windows.Forms
 .NumericUpDown button.down{border-width:0px;padding:0px;min-height:6px;min-width:6px;}
 .NumericUpDown.horizontal entry{border-width:0px;padding:1px;min-height:6px;min-width:6px;} 
 .NumericUpDown.vertical entry{border-width:0px;padding:1px;min-height:6px;min-width:6px;} 
-
                 ";
 
                 string defaulttheme = "theme/default/style/style.css";

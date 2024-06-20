@@ -1,4 +1,5 @@
 ﻿
+using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
@@ -33,6 +34,10 @@ namespace System.Windows.Forms
             {
                 this.Dock = DockStyle.None;
                 widget.Data["Control"] = this;
+                Widget.Data["Top"] = widget.Allocation.Top;
+                Widget.Data["Left"] = widget.Allocation.Left;
+                widget.Data["Width"] = widget.WidthRequest;
+                widget.Data["Height"] = widget.HeightRequest;
                 widget.StyleContext.AddClass("DefaultThemeStyle");
                 widget.ButtonPressEvent += Widget_ButtonPressEvent;
                 widget.ButtonReleaseEvent += Widget_ButtonReleaseEvent;
@@ -516,6 +521,7 @@ namespace System.Windows.Forms
             set
             {
                 _top = value;
+                Widget.Data["Top"] = value;
                 if (Widget.Parent != null && Widget.Parent.IsMapped)
                 {
                     if (Widget.Parent is Gtk.Container parent)
@@ -539,6 +545,8 @@ namespace System.Windows.Forms
             set
             {
                 _left = value;
+                Widget.Data["Left"] = value;
+
                 if (Widget.Parent != null && Widget.Parent.IsMapped)
                 {
                     if (Widget.Parent is Gtk.Container parent)
@@ -590,11 +598,24 @@ namespace System.Windows.Forms
             }
             set
             {
-                Widget.SetSizeRequest(value.Width, value.Height);
+                //if(Widget is Gtk.Button)
+                //    Widget.SetSizeRequest(value.Width, value.Height);
+                //else
+                //Widget.SetSizeRequest(value.Width, value.Height);
+                if (Widget is Gtk.Button)
+                {
+                    Width = value.Width - 6;
+                    Height = value.Height - 6;
+                }
+                else
+                {
+                    Width = value.Width;
+                    Height = value.Height;
+                }
             }
         }
-        public virtual int Height { get { return Widget.HeightRequest > Widget.HeightRequest ? Widget.WidthRequest : Widget.AllocatedHeight; } set { Widget.HeightRequest = value; } }
-        public virtual int Width { get { return Widget.WidthRequest > Widget.AllocatedWidth ? Widget.WidthRequest : Widget.AllocatedWidth; } set { Widget.WidthRequest = value; } }
+        public virtual int Height { get { return Widget.HeightRequest > Widget.HeightRequest ? Widget.WidthRequest : Widget.AllocatedHeight; } set { Widget.HeightRequest = value; Widget.Data["Height"] = value; } }
+        public virtual int Width { get { return Widget.WidthRequest > Widget.AllocatedWidth ? Widget.WidthRequest : Widget.AllocatedWidth; } set { Widget.WidthRequest = value; Widget.Data["Width"] = value; } }
         public virtual int TabIndex { get; set; }
         public virtual bool TabStop { get; set; }
         public virtual object Tag { get; set; }

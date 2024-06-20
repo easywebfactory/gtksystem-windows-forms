@@ -3,7 +3,7 @@
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class UserControlBase : Gtk.Viewport, IControlGtk
+    public sealed class UserControlBase : Gtk.EventBox, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
         internal UserControlBase() : base()
@@ -13,7 +13,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.MarginStart = 0;
             this.MarginTop = 0;
             this.BorderWidth = 0;
-            this.ShadowType = ShadowType.None;
+            //this.ShadowType = ShadowType.None;
             this.Halign = Align.Start;
             this.Valign = Align.Start;
             this.Expand = false;

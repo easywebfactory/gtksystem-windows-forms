@@ -7,7 +7,6 @@
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
-using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
@@ -16,8 +15,7 @@ namespace System.Windows.Forms
     {
         public readonly PanelBase self = new PanelBase();
         public override object GtkControl => self;
-
-        private Gtk.Fixed contaner = new Gtk.Fixed();
+        public Gtk.Fixed contaner = new Gtk.Fixed();
         private Gtk.ScrolledWindow scrolledwindow = new Gtk.ScrolledWindow();
         private ControlCollection _controls;
 

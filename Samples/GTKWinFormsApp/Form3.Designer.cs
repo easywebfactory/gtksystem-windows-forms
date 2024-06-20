@@ -401,9 +401,9 @@ namespace GTKWinFormsApp
             // 
             button2.Location = new System.Drawing.Point(43, 18);
             button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(94, 29);
+            button2.Size = new System.Drawing.Size(130, 29);
             button2.TabIndex = 0;
-            button2.Text = "button2";
+            button2.Text = "测试分割容器";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 

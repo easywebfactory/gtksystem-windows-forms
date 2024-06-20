@@ -18,9 +18,10 @@ namespace System.Windows.Forms
         public SplitterPanel(SplitContainer owner) : base()
         {
             Owner = owner;
-            self.BorderWidth = 0;
-            self.ShadowType = Gtk.ShadowType.None;
+            self.BorderWidth = 1;
+            self.ShadowType = Gtk.ShadowType.In;
             self.Margin = 0;
+            this.Dock = DockStyle.Fill;
         }
 
         public override DockStyle Dock { get; set; } = DockStyle.Fill;
