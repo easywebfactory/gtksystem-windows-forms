@@ -1297,7 +1297,9 @@ namespace System.Drawing
                     if (pangoFamily != null)
 						family = pangoFamily.Name;
 				}
-				this.context.SelectFontFace(family, Cairo.FontSlant.Normal, Cairo.FontWeight.Normal);
+                
+
+                this.context.SelectFontFace(family, (font.Style & FontStyle.Italic) != 0 ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, (font.Style & FontStyle.Bold) != 0 ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
 				this.context.SetFontSize(textSize);
 				this.context.ShowText(s);
                 this.context.Stroke();

@@ -336,30 +336,25 @@ namespace System.Windows.Forms
                     else
                         style.AppendFormat("font-size:{0}pt;", font.Size);
 
-                    if (string.IsNullOrWhiteSpace(font.FontFamily.Name) == false)
+                    if (string.IsNullOrWhiteSpace(font.FontFamily?.Name) == false)
                     {
                         style.AppendFormat("font-family:\"{0}\";", font.FontFamily.Name);
                     }
-
-                    string[] fontstyle = font.Style.ToString().ToLower().Split(new char[] { ',', ' ' });
-                    foreach (string sty in fontstyle)
+                    if ((font.Style & FontStyle.Bold) != 0)
                     {
-                        if (sty == "bold")
-                        {
-                            style.Append("font-weight:bold;");
-                        }
-                        else if (sty == "italic")
-                        {
-                            style.Append("font-style:italic;");
-                        }
-                        else if (sty == "underline")
-                        {
-                            style.Append("text-decoration:underline;");
-                        }
-                        else if (sty == "strikeout")
-                        {
-                            style.Append("text-decoration:line-through;");
-                        }
+                        style.Append("font-weight:bold;");
+                    }
+                    if ((font.Style & FontStyle.Italic) != 0)
+                    {
+                        style.Append("font-style:italic;");
+                    }
+                    if ((font.Style & FontStyle.Underline) != 0)
+                    {
+                        style.Append("text-decoration:underline;");
+                    }
+                    if ((font.Style & FontStyle.Strikeout) != 0)
+                    {
+                        style.Append("text-decoration:line-through;");
                     }
                 }
                 if (style.Length > 10)

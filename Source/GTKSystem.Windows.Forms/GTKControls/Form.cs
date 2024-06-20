@@ -110,24 +110,26 @@ namespace System.Windows.Forms
             {
                 if (resizeWidth < 1)
                 {
-                    resizeWidth = self.ContentArea.AllocatedWidth;
-                    resizeHeight = self.ContentArea.AllocatedHeight;
+                    resizeWidth = self.AllocatedWidth;
+                    resizeHeight = self.AllocatedHeight;
                 }
-                else if (self.ContentArea.AllocatedWidth != self.DefaultWidth || self.ContentArea.AllocatedHeight != self.DefaultHeight)
+                else if (self.ContentArea.AllocatedWidth != resizeWidth || self.ContentArea.AllocatedHeight != resizeHeight)
                 {
                     try
                     {
-                        resizeWidth = self.ContentArea.AllocatedWidth;
-                        resizeHeight = self.ContentArea.AllocatedHeight;
+                        resizeWidth = self.AllocatedWidth;
+                        resizeHeight = self.AllocatedHeight;
                         int widthIncrement = resizeWidth - self.DefaultWidth;
                         int heightIncrement = resizeHeight - self.DefaultHeight;
 
                         _body.WidthRequest = resizeWidth - (AutoScroll ? self.ScrollArrowVlength : 0); //留出滚动条位置
                         _body.HeightRequest = resizeHeight - self.StatusBarView.AllocatedHeight - (AutoScroll ? self.ScrollArrowHlength : 0);
+
                         Gtk.Application.Invoke(new EventHandler((o, e) =>
                         {
                             self.ResizeControls(widthIncrement, heightIncrement, _body);
                         }));
+
                     }
                     catch (Exception ex)
                     {

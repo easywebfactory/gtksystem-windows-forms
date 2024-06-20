@@ -2170,7 +2170,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "GTKSystem.Windows.Forms >= 1.3.24.35",
+      "GTKSystem.Windows.Forms >= 1.3.24.36",
       "GTKSystem.Windows.FormsDesigner >= 1.0.0.4",
       "GtkSharp >= 3.24.24.95"
     ]
@@ -2225,7 +2225,7 @@
         "dependencies": {
           "GTKSystem.Windows.Forms": {
             "target": "Package",
-            "version": "[1.3.24.35, )"
+            "version": "[1.3.24.36, )"
           },
           "GTKSystem.Windows.FormsDesigner": {
             "target": "Package",
@@ -2260,7 +2260,7 @@
     {
       "code": "NU1102",
       "level": "Error",
-      "message": "找不到版本为 (>= 1.3.24.35) 的包 GTKSystem.Windows.Forms\r\n  - 在 Package source 中找到 32 个版本[ 最接近版本: 1.3.24.34 ]\r\n  - 在 nuget.org 中找到 32 个版本[ 最接近版本: 1.3.24.34 ]\r\n  - 在 Package Local 中找到 14 个版本[ 最接近版本: 1.3.24.34 ]\r\n  - 在 Microsoft Visual Studio Offline Packages 中找到 0 个版本",
+      "message": "找不到版本为 (>= 1.3.24.36) 的包 GTKSystem.Windows.Forms\r\n  - 在 Package source 中找到 33 个版本[ 最接近版本: 1.3.24.35 ]\r\n  - 在 nuget.org 中找到 33 个版本[ 最接近版本: 1.3.24.35 ]\r\n  - 在 Package Local 中找到 15 个版本[ 最接近版本: 1.3.24.35 ]\r\n  - 在 Microsoft Visual Studio Offline Packages 中找到 0 个版本",
       "libraryId": "GTKSystem.Windows.Forms",
       "targetGraphs": [
         "net8.0"

@@ -246,9 +246,9 @@ namespace GTKWinFormsApp
             // 
             button1.Cursor = Cursors.Hand;
             button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, 0);
-            button1.Location = new System.Drawing.Point(638, 102);
+            button1.Location = new System.Drawing.Point(582, 102);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(275, 66);
+            button1.Size = new System.Drawing.Size(346, 58);
             button1.TabIndex = 3;
             button1.Text = "打开主窗口";
             button1.UseVisualStyleBackColor = true;
@@ -381,11 +381,11 @@ namespace GTKWinFormsApp
             panel1.AutoScroll = true;
             panel1.BackColor = System.Drawing.Color.MistyRose;
             panel1.BorderStyle = BorderStyle.Fixed3D;
-            panel1.Controls.Add(button3);
             panel1.Controls.Add(button2);
-            panel1.Location = new System.Drawing.Point(638, 184);
+            panel1.Controls.Add(button3);
+            panel1.Location = new System.Drawing.Point(582, 211);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(216, 144);
+            panel1.Size = new System.Drawing.Size(346, 144);
             panel1.TabIndex = 8;
             // 
             // button3
@@ -399,11 +399,11 @@ namespace GTKWinFormsApp
             // 
             // button2
             // 
-            button2.Location = new System.Drawing.Point(43, 18);
+            button2.Location = new System.Drawing.Point(13, 10);
             button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(130, 29);
+            button2.Size = new System.Drawing.Size(162, 58);
             button2.TabIndex = 0;
-            button2.Text = "测试分割容器";
+            button2.Text = "分割容器布局";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 

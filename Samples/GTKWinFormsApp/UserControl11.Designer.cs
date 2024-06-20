@@ -55,6 +55,9 @@ namespace GTKWinFormsApp
             Paint += UserControl11_Paint;
             MouseEnter += UserControl11_MouseEnter;
             MouseLeave += UserControl11_MouseLeave;
+            MouseHover += UserControl11_MouseHover;
+            MouseMove += UserControl11_MouseMove;
+            MouseUp += UserControl11_MouseUp;
             ParentChanged += UserControl11_ParentChanged;
             ResumeLayout(false);
         }

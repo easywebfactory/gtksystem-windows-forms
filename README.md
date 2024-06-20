@@ -140,10 +140,6 @@ GTKWinFormsApp.runtimeconfig.json
 ![macOS风格界面](/pic/macOS-1.png)
 
 #### 支持GTKSystem，获取技术服务
- ![支持GTKSystem](/pic/love_reward_qrcode_.png)
-
-#### 添加GTKSystem微信，更多服务帮助
- ![联系GTKSystem](/pic/contact_weixin.png)
 
 | ￥299基础服务一   | ￥2999套餐服务二    | ￥9999套餐服务三     |
 | :---               |    :----           |          :---   |
@@ -151,6 +147,9 @@ GTKWinFormsApp.runtimeconfig.json
 | 运行环境gtk\dotnet安装 | 提供二次开发技术支持  |   提供二次开发技术支持    |
 | 上手开发疑难解答       | 为用户开发协商指定的功能或接口至少3项 | 为用户开发功能或接口不少于9项  |
 | 帮助解决程序异常      | 提供一套定制的主题风格界面样式和跨平台webview控件    |  提供至少三套定制的主题风格界面样式和跨平台webview控件                              |
+
+ ![支持GTKSystem](/pic/love_reward_qrcode_.png)
+ ![联系GTKSystem](/pic/contact_weixin.png)
 
 #### 交流/合作/商务/赞助
 QQ群：236066073

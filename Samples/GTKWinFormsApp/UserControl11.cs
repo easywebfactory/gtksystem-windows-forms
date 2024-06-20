@@ -35,7 +35,7 @@ namespace GTKWinFormsApp
 
         private void UserControl11_Load(object sender, EventArgs e)
         {
-            Invalidate();
+          
         }
 
         protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
@@ -50,12 +50,27 @@ namespace GTKWinFormsApp
 
         private void UserControl11_MouseEnter(object sender, EventArgs e)
         {
-            Console.Write("UserControl11_MouseEnter");
+            Console.WriteLine("UserControl11_MouseEnter");
         }
 
         private void UserControl11_MouseLeave(object sender, EventArgs e)
         {
-            Console.Write("UserControl11_MouseLeave");
+            Console.WriteLine("UserControl11_MouseLeave");
+        }
+
+        private void UserControl11_MouseMove(object sender, MouseEventArgs e)
+        {
+            Console.WriteLine("UserControl11_MouseMove");
+        }
+
+        private void UserControl11_MouseUp(object sender, MouseEventArgs e)
+        {
+            Console.WriteLine("UserControl11_MouseUp");
+        }
+
+        private void UserControl11_MouseHover(object sender, EventArgs e)
+        {
+            Console.WriteLine("UserControl11_MouseHover");
         }
     }
 }

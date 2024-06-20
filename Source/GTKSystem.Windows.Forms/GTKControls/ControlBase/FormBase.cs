@@ -45,20 +45,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.ContentArea.PackEnd(StatusBarView, false, true, 0);
             //this.Decorated = false; //删除工具栏
         }
-
-        public FormBase(string title, Gtk.Window parent, DialogFlags flags, params object[] button_data) : base(title, parent, flags, button_data)
-        {
-            this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("Form");
-            this.WindowPosition = Gtk.WindowPosition.Center;
-            this.BorderWidth = 0;
-            this.SetDefaultSize(100, 100);
-            this.TypeHint = Gdk.WindowTypeHint.Normal;
-            this.Response += FormBase_Response;
-        }
         private void FormBase_Response(object o, ResponseArgs args)
         {
-           // Console.WriteLine(args.ResponseId);
             if (args.ResponseId == ResponseType.DeleteEvent)
             {
                 if (CloseWindowEvent(this, EventArgs.Empty))
@@ -87,13 +75,13 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                                 checksizing = true;
                                 if ((anchor & AnchorStyles.Right) != 0)
                                 {
-                                    if (control is Gtk.Container || widthIncrement > 0)
+                                    if ((anchor & AnchorStyles.Left) != 0)
                                     {
-                                        if ((anchor & AnchorStyles.Left) != 0)
-                                        {
-                                            control.WidthRequest = Math.Max(0, (int)control.Data["Width"] + widthIncrement);
-                                        }
-                                        else
+                                        control.WidthRequest = Math.Max(0, (int)control.Data["Width"] + widthIncrement);
+                                    }
+                                    else
+                                    {
+                                        if (widthIncrement > 0)
                                         {
                                             if (parent[control] is Gtk.Layout.LayoutChild lc)
                                             {
@@ -108,13 +96,13 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                                 }
                                 if ((anchor & AnchorStyles.Bottom) != 0)
                                 {
-                                    if (control is Gtk.Container || heightIncrement > 0)
+                                    if ((anchor & AnchorStyles.Top) != 0)
                                     {
-                                        if ((anchor & AnchorStyles.Top) != 0)
-                                        {
-                                            control.HeightRequest = Math.Max(0, (int)control.Data["Height"] + heightIncrement);
-                                        }
-                                        else 
+                                        control.HeightRequest = Math.Max(0, (int)control.Data["Height"] + heightIncrement);
+                                    }
+                                    else
+                                    {
+                                        if (heightIncrement > 0)
                                         {
                                             if (parent[control] is Gtk.Layout.LayoutChild lc)
                                             {
@@ -199,9 +187,13 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                     {//内部处理
                         paned.CheckResize();
                     }
-                    else if (checksizing || control is Gtk.Viewport || control is Gtk.ScrolledWindow || control is Gtk.Fixed || control is Gtk.Layout || control is Gtk.Box)
+                    else if (control is Gtk.Viewport || control is Gtk.ScrolledWindow || control is Gtk.Fixed || control is Gtk.Layout || control is Gtk.Box)
                     {
                         ResizeControls(widthIncrement, heightIncrement, (Gtk.Container)control);
+                    }
+                    else if (checksizing && control is Gtk.Container container)
+                    {
+                        ResizeControls(widthIncrement, heightIncrement, container);
                     }
                 }
             }

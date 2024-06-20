@@ -41,6 +41,7 @@
             panel1 = new System.Windows.Forms.Panel();
             button4 = new System.Windows.Forms.Button();
             button3 = new System.Windows.Forms.Button();
+            label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -51,7 +52,8 @@
             // splitContainer1
             // 
             splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            splitContainer1.Location = new System.Drawing.Point(0, 0);
+            splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            splitContainer1.Location = new System.Drawing.Point(0, 51);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -66,16 +68,16 @@
             splitContainer1.Panel2.Controls.Add(button5);
             splitContainer1.Panel2.Controls.Add(panel1);
             splitContainer1.Panel2.Controls.Add(button3);
-            splitContainer1.Size = new System.Drawing.Size(800, 450);
-            splitContainer1.SplitterDistance = 169;
+            splitContainer1.Size = new System.Drawing.Size(895, 441);
+            splitContainer1.SplitterDistance = 165;
             splitContainer1.TabIndex = 0;
             // 
             // button2
             // 
             button2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            button2.Location = new System.Drawing.Point(24, 396);
+            button2.Location = new System.Drawing.Point(24, 222);
             button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(119, 29);
+            button2.Size = new System.Drawing.Size(120, 29);
             button2.TabIndex = 1;
             button2.Text = "button2";
             button2.UseVisualStyleBackColor = true;
@@ -85,7 +87,7 @@
             button1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             button1.Location = new System.Drawing.Point(24, 46);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(119, 310);
+            button1.Size = new System.Drawing.Size(120, 153);
             button1.TabIndex = 0;
             button1.Text = "button1";
             button1.UseVisualStyleBackColor = true;
@@ -113,18 +115,19 @@
             button5.Dock = System.Windows.Forms.DockStyle.Top;
             button5.Location = new System.Drawing.Point(0, 0);
             button5.Name = "button5";
-            button5.Size = new System.Drawing.Size(627, 29);
+            button5.Size = new System.Drawing.Size(726, 50);
             button5.TabIndex = 2;
             button5.Text = "button5";
             button5.UseVisualStyleBackColor = true;
             // 
             // panel1
             // 
+            panel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             panel1.Controls.Add(button4);
             panel1.Location = new System.Drawing.Point(298, 177);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(250, 125);
+            panel1.Size = new System.Drawing.Size(286, 118);
             panel1.TabIndex = 1;
             // 
             // button4
@@ -146,12 +149,23 @@
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
+            // label1
+            // 
+            label1.Dock = System.Windows.Forms.DockStyle.Top;
+            label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 18F);
+            label1.Location = new System.Drawing.Point(0, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(895, 51);
+            label1.TabIndex = 1;
+            label1.Text = "横幅栏";
+            // 
             // Form4
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(800, 450);
+            ClientSize = new System.Drawing.Size(895, 492);
             Controls.Add(splitContainer1);
+            Controls.Add(label1);
             Name = "Form4";
             Text = "Form4";
             splitContainer1.Panel1.ResumeLayout(false);
@@ -172,5 +186,6 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.Label label1;
     }
 }
