@@ -72,8 +72,8 @@ namespace GTKWinFormsApp
             linkLabel1 = new LinkLabel();
             trackBar1 = new TrackBar();
             panel1 = new Panel();
-            button3 = new Button();
             button2 = new Button();
+            button3 = new Button();
             panel3 = new Panel();
             panel5 = new Panel();
             label2 = new Label();
@@ -388,15 +388,6 @@ namespace GTKWinFormsApp
             panel1.Size = new System.Drawing.Size(346, 144);
             panel1.TabIndex = 8;
             // 
-            // button3
-            // 
-            button3.Location = new System.Drawing.Point(94, 126);
-            button3.Name = "button3";
-            button3.Size = new System.Drawing.Size(94, 29);
-            button3.TabIndex = 1;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
-            // 
             // button2
             // 
             button2.Location = new System.Drawing.Point(13, 10);
@@ -406,6 +397,15 @@ namespace GTKWinFormsApp
             button2.Text = "分割容器布局";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
+            // 
+            // button3
+            // 
+            button3.Location = new System.Drawing.Point(94, 126);
+            button3.Name = "button3";
+            button3.Size = new System.Drawing.Size(94, 29);
+            button3.TabIndex = 1;
+            button3.Text = "button3";
+            button3.UseVisualStyleBackColor = true;
             // 
             // panel3
             // 
@@ -418,11 +418,13 @@ namespace GTKWinFormsApp
             // 
             // panel5
             // 
+            panel5.AutoScroll = true;
             panel5.Controls.Add(label2);
             panel5.Location = new System.Drawing.Point(29, 268);
             panel5.Name = "panel5";
-            panel5.Size = new System.Drawing.Size(180, 161);
+            panel5.Size = new System.Drawing.Size(180, 77);
             panel5.TabIndex = 10;
+            panel5.Scroll += panel5_Scroll;
             // 
             // label2
             // 

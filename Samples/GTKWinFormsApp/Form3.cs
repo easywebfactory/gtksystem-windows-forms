@@ -51,7 +51,7 @@ namespace GTKWinFormsApp
                 {
                     progressBar1.Invoke(() =>
                     {
-                         progressBar1.Value = i;
+                        progressBar1.Value = i;
                     });
                     System.Threading.Thread.Sleep(20);
                 }
@@ -109,6 +109,11 @@ namespace GTKWinFormsApp
         {
             Form4 f = new Form4();
             f.ShowDialog();
+        }
+
+        private void panel5_Scroll(object sender, System.Windows.Forms.ScrollEventArgs e)
+        {
+            Console.WriteLine($"panel5_Scroll:{e.OldValue},{e.NewValue};{e.ScrollOrientation}");
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -112,7 +113,6 @@ namespace System.Windows.Forms
 
 .LinkLabel{border-style:none;}
 .TextBox{background:@bg_color; } 
-.ListBox{box-shadow:inset 0px 0px 0px 1px @frame_color; }
 .SplitContainer > separator {border-top:solid 2px @separator_color1;}
 
 .TableLayoutPanel {box-shadow: 1px 1px 1px 0px @frame_color;}
@@ -136,8 +136,8 @@ namespace System.Windows.Forms
                 string defaulttheme = "theme/default/style/style.css";
                 if (File.Exists(defaulttheme))
                     css_style = $"@import url(\"{defaulttheme}\");\n";
-
-                string customstyle = "theme/default.css";
+                
+                string customstyle = $"theme/style_{typeof(Application).Assembly.GetName().Version}.css";
                 if (File.Exists(customstyle))
                     css_style += $"\n@import url(\"{customstyle}\");\n";
                 else

@@ -5,14 +5,37 @@ using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class FormBase : Gtk.Dialog, IControlGtk
+    public sealed class FormBase : Gtk.Dialog, IControlGtk, IScrollableBoxBase
     {
         public readonly Gtk.ScrolledWindow ScrollView = new Gtk.ScrolledWindow();
         public readonly Gtk.Layout StatusBar = new Gtk.Layout(new Gtk.Adjustment(1, 1, 100, 1, 0, 1), new Gtk.Adjustment(1, 1, 100, 1, 0, 1));
         public readonly Gtk.Viewport StatusBarView = new Gtk.Viewport();
         public GtkControlOverride Override { get; set; }
+        public bool AutoScroll
+        {
+            get => ScrollView.VscrollbarPolicy == Gtk.PolicyType.Automatic;
+            set
+            {
+                if (value == true)
+                {
+                    if (VScroll)
+                        ScrollView.VscrollbarPolicy = Gtk.PolicyType.Automatic;
+                    if (HScroll)
+                        ScrollView.HscrollbarPolicy = Gtk.PolicyType.Automatic;
+                }
+                else
+                {
+                    ScrollView.VscrollbarPolicy = Gtk.PolicyType.Never;
+                    ScrollView.HscrollbarPolicy = Gtk.PolicyType.Never;
+                }
+            }
+        }
+        public bool VScroll { get; set; } = true;
+        public bool HScroll { get; set; } = true;
+
         public delegate bool CloseWindowHandler(object sender, EventArgs e);
         public event CloseWindowHandler CloseWindowEvent;
+        public event System.Windows.Forms.ScrollEventHandler Scroll;
         public FormBase() : base()
         {
             this.Override = new GtkControlOverride(this);
@@ -31,6 +54,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             ScrollView.Halign = Gtk.Align.Fill;
             ScrollView.HscrollbarPolicy = PolicyType.Always;
             ScrollView.VscrollbarPolicy = PolicyType.Always;
+            ScrollView.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
+            ScrollView.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
             this.ContentArea.PackStart(ScrollView, true, true, 0);
             StatusBar.Hexpand = false;
             StatusBar.Vexpand = false;
@@ -55,7 +80,23 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                     this.Run();
             }
         }
+        private void Vadjustment_ValueChanged(object sender, EventArgs e)
+        {
+            if (Scroll != null)
+            {
+                Gtk.Adjustment adj = (Gtk.Adjustment)sender;
+                Scroll(this, new System.Windows.Forms.ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj.Value > adj.StepIncrement ? (adj.Value - adj.StepIncrement) : adj.Value), (int)adj.Value, ScrollOrientation.VerticalScroll));
+            }
+        }
 
+        private void Hadjustment_ValueChanged(object sender, EventArgs e)
+        {
+            if (Scroll != null)
+            {
+                Gtk.Adjustment adj = (Gtk.Adjustment)sender;
+                Scroll(this, new System.Windows.Forms.ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj.Value > adj.StepIncrement ? (adj.Value - adj.StepIncrement) : adj.Value), (int)adj.Value, ScrollOrientation.HorizontalScroll));
+            }
+        }
         public void ResizeControls(int widthIncrement, int heightIncrement, Gtk.Container parent)
         {
             foreach (Gtk.Widget control in parent.Children)
@@ -208,6 +249,23 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public void CloseWindow()
         {
             this.Destroy();
+        }
+
+        public void AddClass(string cssClass)
+        {
+            this.Override.AddClass(cssClass);
+        }
+        public new void Add(Gtk.Widget child)
+        {
+            ScrollView.Child = child;
+        }
+        public void Pack(Widget child, Align align, bool expand)
+        {
+            ScrollView.Halign = align;
+            ScrollView.Valign = align;
+            ScrollView.Hexpand = expand;
+            ScrollView.Vexpand = expand;
+            ScrollView.Child = child;
         }
     }
 }

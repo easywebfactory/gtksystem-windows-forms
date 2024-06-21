@@ -21,7 +21,7 @@ using System.Windows.Forms.GtkRender;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class DataGridView : Control
+    public partial class DataGridView : ScrollableControl
     {
         public readonly DataGridViewBase self = new DataGridViewBase();
         public override object GtkControl => self;
@@ -255,7 +255,6 @@ namespace System.Windows.Forms
             }
         }
         public DataGridViewRowCollection Rows { get { return _rows; } }
-
         public override void BeginInit()
         {
 

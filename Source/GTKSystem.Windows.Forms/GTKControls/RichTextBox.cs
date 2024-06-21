@@ -11,7 +11,7 @@ using System.ComponentModel;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class RichTextBox : Control
+    public partial class RichTextBox : ScrollableControl
     {
         public readonly RichTextBoxBase self = new RichTextBoxBase();
         public override object GtkControl => self;

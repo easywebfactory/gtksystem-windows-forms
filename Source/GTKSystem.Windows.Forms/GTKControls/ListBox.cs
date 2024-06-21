@@ -24,39 +24,30 @@ namespace System.Windows.Forms
 	[DefaultBindingProperty("SelectedValue")]
 	public partial class ListBox : ListControl
     {
-        protected Gtk.Viewport viewport = new Gtk.Viewport();
-        public override object GtkControl => viewport;
         public readonly ListBoxBase self = new ListBoxBase();
+        public override object GtkControl => self;
         public override IControlGtk ISelf { get => self; }
-        protected override void UpdateStyle()
+        protected override void SetStyle(Widget widget)
         {
-            if(self.IsMapped) 
-                SetStyle(self);
+            base.SetStyle(self.ListBox);
         }
-
         private ControlBindingsCollection _collect;
         private ObjectCollection _items;
 
         public ListBox():base()
 		{
-            self.Halign = Gtk.Align.Fill;
-            self.Valign = Gtk.Align.Fill;
-            self.Hexpand = true;
-            self.Vexpand = true;
-            Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
-            scrolledWindow.Add(self);
-            viewport.BorderWidth = 1;
-            viewport.ShadowType = ShadowType.None;
-            viewport.Child = scrolledWindow;
-
+            self.ListBox.Halign = Gtk.Align.Fill;
+            self.ListBox.Valign = Gtk.Align.Fill;
+            self.ListBox.Hexpand = true;
+            self.ListBox.Vexpand = true;
             _collect = new ControlBindingsCollection(this);
             _items = new ObjectCollection(this);
-            self.Realized += Self_Realized;
-            self.SelectedRowsChanged += ListBox_SelectedRowsChanged;
+            self.ListBox.Realized += Self_Realized;
+            self.ListBox.SelectedRowsChanged += ListBox_SelectedRowsChanged;
         }
         private void ListBox_SelectedRowsChanged(object sender, EventArgs e)
         {
-            if (self.IsVisible)
+            if (self.ListBox.IsVisible)
             {
                 ((EventHandler)Events["SelectedIndexChanged"])?.Invoke(this, e);
                 ((EventHandler)Events["SelectedValueChanged"])?.Invoke(this, e);
@@ -66,10 +57,9 @@ namespace System.Windows.Forms
 
         private void Self_Realized(object sender, EventArgs e)
         {
-            SetStyle(self);
             OnSetDataSource();
             foreach (Binding binding in DataBindings)
-                self.AddNotification(binding.PropertyName, propertyNotity);
+                self.ListBox.AddNotification(binding.PropertyName, propertyNotity);
         }
         private void propertyNotity(object o, NotifyArgs args)
         {
@@ -83,7 +73,7 @@ namespace System.Windows.Forms
             get => _DataSource;
             set {
                 _DataSource = value;
-                if (self.IsVisible)
+                if (self.ListBox.IsVisible)
                 {
                     OnSetDataSource();
                 }
@@ -136,7 +126,7 @@ namespace System.Windows.Forms
 
         public override int SelectedIndex
         {
-            get => self.SelectedRow == null ? -1 : self.SelectedRow.Index; set => SelectedItems.SetSelected(value, true);
+            get => self.ListBox.SelectedRow == null ? -1 : self.ListBox.SelectedRow.Index; set => SelectedItems.SetSelected(value, true);
         }
 
         [DefaultValue(null)]
@@ -185,10 +175,10 @@ namespace System.Windows.Forms
             Gtk.ListBoxRow row = new Gtk.ListBoxRow();
             row.HeightRequest = ItemHeight > 0 ? ItemHeight : DefaultItemHeight;
             row.Add(new Gtk.Label(item.ToString()) { Valign = Align.Center, Halign = Align.Start, Expand = true });
-            self.Insert(row, index);
-            if (self.IsVisible && !IsUpdateing)
+            self.ListBox.Insert(row, index);
+            if (self.ListBox.IsVisible && !IsUpdateing)
             {
-                self.ShowAll();
+                self.ListBox.ShowAll();
             }
         }
         protected void NativeAdd(object item)
@@ -196,34 +186,34 @@ namespace System.Windows.Forms
             Gtk.ListBoxRow row = new Gtk.ListBoxRow();
             row.HeightRequest = ItemHeight > 0 ? ItemHeight : DefaultItemHeight;
             row.Add(new Gtk.Label(item.ToString()) { Valign = Align.Center, Halign = Align.Start, Expand = true });
-            self.Add(row);
-            if (self.IsVisible && !IsUpdateing)
+            self.ListBox.Add(row);
+            if (self.ListBox.IsVisible && !IsUpdateing)
             {
-                self.ShowAll();
+                self.ListBox.ShowAll();
             }
         }
         protected void NativeClear()
         {
-            int count = self.Children.Length;
+            int count = self.ListBox.Children.Length;
             while (count > 0)
             {
-                self.Remove(self.GetRowAtIndex(count - 1));
+                self.ListBox.Remove(self.ListBox.GetRowAtIndex(count - 1));
                 count--;
                 //System.Threading.Thread.Sleep(3);
             }
         }
         protected void NativeRemoveAt(int index)
         {
-            self.Remove(self.GetRowAtIndex(index));
+            self.ListBox.Remove(self.ListBox.GetRowAtIndex(index));
         }
         protected string NativeGetItemText(int index)
         {
-            Gtk.Label row = self.GetRowAtIndex(index).Child as Gtk.Label;
+            Gtk.Label row = self.ListBox.GetRowAtIndex(index).Child as Gtk.Label;
             return row?.Text;
         }
         protected void OnSelectedIndexChanged(EventArgs e) {
-            if (self.SelectedRow != null)
-                self.SelectRow(self.SelectedRow);
+            if (self.ListBox.SelectedRow != null)
+                self.ListBox.SelectRow(self.ListBox.SelectedRow);
         }
         #endregion
         public override ControlBindingsCollection DataBindings { get => _collect; }
@@ -348,19 +338,19 @@ namespace System.Windows.Forms
             set {
                 if (value == SelectionMode.None)
                 {
-                    self.SelectionMode = Gtk.SelectionMode.None;
+                    self.ListBox.SelectionMode = Gtk.SelectionMode.None;
                 }
                 else if (value == SelectionMode.One)
                 {
-                    self.SelectionMode = Gtk.SelectionMode.Single;
+                    self.ListBox.SelectionMode = Gtk.SelectionMode.Single;
                 }
                 else if (value == SelectionMode.MultiSimple)
                 {
-                    self.SelectionMode = Gtk.SelectionMode.Multiple;
+                    self.ListBox.SelectionMode = Gtk.SelectionMode.Multiple;
                 }
                 else if (value == SelectionMode.MultiExtended)
                 {
-                    self.SelectionMode = Gtk.SelectionMode.Multiple;
+                    self.ListBox.SelectionMode = Gtk.SelectionMode.Multiple;
                 }
             }
         }
@@ -406,7 +396,7 @@ namespace System.Windows.Forms
 		}
         public void ClearSelected()
         {
-            self.UnselectAll();
+            self.ListBox.UnselectAll();
         }
         internal bool IsUpdateing = false;
         public void BeginUpdate()
@@ -417,7 +407,7 @@ namespace System.Windows.Forms
 		public void EndUpdate()
 		{
             IsUpdateing = false;
-            self.ShowAll();
+            self.ListBox.ShowAll();
         }
 
 		public int FindString(string s)
@@ -451,7 +441,7 @@ namespace System.Windows.Forms
 		}
 		public bool GetSelected(int index)
 		{
-            return self.GetRowAtIndex(index).IsSelected;
+            return self.ListBox.GetRowAtIndex(index).IsSelected;
         }
 
 		public int IndexFromPoint(Drawing.Point p)
@@ -466,7 +456,7 @@ namespace System.Windows.Forms
 
 		public override void Refresh()
 		{
-			self.ShowAll();
+			self.ListBox.ShowAll();
 		}
 
 		public override void ResetBackColor()
@@ -482,9 +472,9 @@ namespace System.Windows.Forms
 		public void SetSelected(int index, bool value)
 		{
             if (value == true)
-                self.SelectRow(self.GetRowAtIndex(index));
+                self.ListBox.SelectRow(self.ListBox.GetRowAtIndex(index));
             else
-                self.UnselectRow(self.GetRowAtIndex(index));
+                self.ListBox.UnselectRow(self.ListBox.GetRowAtIndex(index));
         }
         public class ListBoxItem: Gtk.Label
         {

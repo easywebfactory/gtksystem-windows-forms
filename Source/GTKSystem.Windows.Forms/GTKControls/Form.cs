@@ -44,6 +44,7 @@ namespace System.Windows.Forms
         }
         private void Init()
         {
+            this.SetScrolledWindow((IScrollableBoxBase)self);
             _body.Valign = Gtk.Align.Fill;
             _body.Halign = Gtk.Align.Fill;
             _body.Expand = true;
@@ -140,7 +141,11 @@ namespace System.Windows.Forms
                 }
             }
         }
- 
+        public override event ScrollEventHandler Scroll
+        {
+            add { self.Scroll += value; }
+            remove { self.Scroll += value; }
+        }
         private void OnLoad()
         {
             if (Load != null)

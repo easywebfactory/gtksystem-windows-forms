@@ -14,30 +14,21 @@ using System.Linq;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class TreeView : Control
+    public partial class TreeView : ScrollableControl
     {
-        protected Gtk.Viewport viewport = new Gtk.Viewport();
-        public override object GtkControl => viewport;
         public readonly TreeViewBase self = new TreeViewBase();
-        public override IControlGtk ISelf { get => self; }
+        public override object GtkControl => self;
         private Gtk.TreeStore _store;
         internal TreeNode root;
         internal Gtk.TreeStore Store { get { return _store; } }
         private Gtk.TreeViewColumn textcolumn;
         private Gtk.TreeViewColumn checkboxcolumn;
+        protected override void SetStyle(Widget widget)
+        {
+            base.SetStyle(self.TreeView);
+        }
         public TreeView() : base()
         {
-            self.Halign = Gtk.Align.Fill;
-            self.Valign = Gtk.Align.Fill;
-            self.Hexpand = true;
-            self.Vexpand = true;
-            Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
-            scrolledWindow.Add(self);
-            viewport.BorderWidth = 1;
-            viewport.ShadowType = ShadowType.Out;
-            viewport.Child = scrolledWindow;
-            viewport.StyleContext.AddClass("TreeView");
-
             root = new TreeNode(this);
             root.Name = "root";
 
@@ -53,8 +44,8 @@ namespace System.Windows.Forms
             checkboxcolumn = new Gtk.TreeViewColumn("", renderercheckbox, "active", 1);
             
             _store = new Gtk.TreeStore(typeof(string), typeof(bool));
-            self.Model = _store;
-            self.Realized += Control_Realized;
+            self.TreeView.Model = _store;
+            self.TreeView.Realized += Control_Realized;
         }
         public void Clear()
         {
@@ -62,9 +53,9 @@ namespace System.Windows.Forms
         }
         private void Control_Realized(object sender, EventArgs e)
         {
-            self.AppendColumn(textcolumn);
+            self.TreeView.AppendColumn(textcolumn);
             if (CheckBoxes == true)
-                self.AppendColumn(checkboxcolumn);
+                self.TreeView.AppendColumn(checkboxcolumn);
         }
 
         private void CellName_Toggled(object o, ToggledArgs args)
@@ -95,7 +86,6 @@ namespace System.Windows.Forms
                 return root.Nodes;
             }
         }
-       
         public bool CheckBoxes { get; set; }
         public bool ShowLines { get; set; } = true;
         public bool ShowNodeToolsTips { get; set; }
@@ -121,9 +111,9 @@ namespace System.Windows.Forms
             get
             {
                 string nodePath = string.Empty;
-                if (self.Selection.GetSelected(out TreeIter iter))
+                if (self.TreeView.Selection.GetSelected(out TreeIter iter))
                 {
-                    TreePath[] paths = self.Selection.GetSelectedRows();
+                    TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
                     List<string> nodeNames = new List<string>();
                     GetNodePath(root, paths[0].Indices, 0, ref nodeNames);
                     nodePath = string.Join(PathSeparator, nodeNames);
@@ -142,8 +132,8 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (self.Selection.GetSelected(out TreeIter iter)) {
-                    TreePath[] paths = self.Selection.GetSelectedRows();
+                if (self.TreeView.Selection.GetSelected(out TreeIter iter)) {
+                    TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
                     TreeNode result = new TreeNode();
                     GetNodeChild(root, paths[0].Indices, ref result);
                     return result;
@@ -152,7 +142,7 @@ namespace System.Windows.Forms
             }
             set
             {
-                self.Selection.SelectIter(value.TreeIter);
+                self.TreeView.Selection.SelectIter(value.TreeIter);
             }
         }
         public TreeNode TopNode
@@ -171,13 +161,13 @@ namespace System.Windows.Forms
         {
             add
             {
-                self.Selection.Changed += (object sender, EventArgs e) =>
+                self.TreeView.Selection.Changed += (object sender, EventArgs e) =>
                 {
-                    if (self.IsRealized)
+                    if (self.TreeView.IsRealized)
                     {
-                        if (self.Selection.GetSelected(out TreeIter iter))
+                        if (self.TreeView.Selection.GetSelected(out TreeIter iter))
                         {
-                            TreePath[] paths = self.Selection.GetSelectedRows();
+                            TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
                             TreeNode result = new TreeNode();
                              GetNodeChild(root, paths[0].Indices, ref result);
                             cancelEventArgs = new TreeViewCancelEventArgs(result, false, TreeViewAction.ByMouse);
@@ -188,13 +178,13 @@ namespace System.Windows.Forms
             }
             remove
             {
-                self.Selection.Changed -= (object sender, EventArgs e) =>
+                self.TreeView.Selection.Changed -= (object sender, EventArgs e) =>
                 {
-                    if (self.IsRealized)
+                    if (self.TreeView.IsRealized)
                     {
-                        if (self.Selection.GetSelected(out TreeIter iter))
+                        if (self.TreeView.Selection.GetSelected(out TreeIter iter))
                         {
-                            TreePath[] paths = self.Selection.GetSelectedRows();
+                            TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
                             TreeNode result = new TreeNode();
                             GetNodeChild(root, paths[0].Indices, ref result);
                             cancelEventArgs = new TreeViewCancelEventArgs(result, false, TreeViewAction.ByMouse);
@@ -208,9 +198,9 @@ namespace System.Windows.Forms
         {
             add
             {
-                self.RowActivated += (object sender, Gtk.RowActivatedArgs e) =>
+                self.TreeView.RowActivated += (object sender, Gtk.RowActivatedArgs e) =>
                 {
-                    if (self.IsRealized)
+                    if (self.TreeView.IsRealized)
                     {
                         if (cancelEventArgs == null || cancelEventArgs.Cancel == false)
                         {
@@ -223,9 +213,9 @@ namespace System.Windows.Forms
             }
             remove
             {
-                self.RowActivated -= (object sender, Gtk.RowActivatedArgs e) =>
+                self.TreeView.RowActivated -= (object sender, Gtk.RowActivatedArgs e) =>
                 {
-                    if (self.IsRealized)
+                    if (self.TreeView.IsRealized)
                     {
                         if (cancelEventArgs == null || cancelEventArgs.Cancel == false)
                         {
@@ -242,9 +232,9 @@ namespace System.Windows.Forms
         {
             add
             {
-                self.RowCollapsed += (object sender, Gtk.RowCollapsedArgs e) =>
+                self.TreeView.RowCollapsed += (object sender, Gtk.RowCollapsedArgs e) =>
                 {
-                    if (self.IsRealized)
+                    if (self.TreeView.IsRealized)
                     {
                         TreeNode result = new TreeNode();
                         GetNodeChild(root, e.Path.Indices, ref result);
@@ -254,9 +244,9 @@ namespace System.Windows.Forms
             }
             remove
             {
-                self.RowCollapsed -= (object sender, Gtk.RowCollapsedArgs e) =>
+                self.TreeView.RowCollapsed -= (object sender, Gtk.RowCollapsedArgs e) =>
                 {
-                    if (self.IsRealized)
+                    if (self.TreeView.IsRealized)
                     {
                         TreeNode result = new TreeNode();
                         GetNodeChild(root, e.Path.Indices, ref result);
@@ -270,9 +260,9 @@ namespace System.Windows.Forms
         {
             add
             {
-                self.RowExpanded += (object sender, Gtk.RowExpandedArgs e) =>
+                self.TreeView.RowExpanded += (object sender, Gtk.RowExpandedArgs e) =>
                 {
-                    if (self.IsRealized)
+                    if (self.TreeView.IsRealized)
                     {
                         TreeNode result = new TreeNode();
                         GetNodeChild(root, e.Path.Indices, ref result);
@@ -282,9 +272,9 @@ namespace System.Windows.Forms
             }
             remove
             {
-                self.RowExpanded -= (object sender, Gtk.RowExpandedArgs e) =>
+                self.TreeView.RowExpanded -= (object sender, Gtk.RowExpandedArgs e) =>
                 {
-                    if (self.IsRealized)
+                    if (self.TreeView.IsRealized)
                     {
                         TreeNode result = new TreeNode();
                         GetNodeChild(root, e.Path.Indices, ref result);

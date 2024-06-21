@@ -1,4 +1,5 @@
-﻿using Gtk;
+﻿using GLib;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
 
@@ -18,6 +19,15 @@ namespace System.Windows.Forms
 
         protected const int ScrollStateFullDrag = 16;
 
+        private IScrollableBoxBase scrollbase;
+        public ScrollableControl():base()
+        {
+            scrollbase = GtkControl as IScrollableBoxBase;
+        }
+        public void SetScrolledWindow(IScrollableBoxBase scrolledwindow)
+        {
+            scrollbase = scrolledwindow;
+        }
         public override Rectangle DisplayRectangle { get; }
 
         [Localizable(true)]
@@ -29,7 +39,17 @@ namespace System.Windows.Forms
         public Size AutoScrollMargin { get; set; }
         [DefaultValue(false)]
         [Localizable(true)]
-        public virtual bool AutoScroll { get; set; } = false;
+        //public virtual bool AutoScroll { get; set; } = false;
+        private bool _AutoScroll;
+        public virtual bool AutoScroll
+        {
+            get => _AutoScroll;
+            set
+            {
+                _AutoScroll = value;
+                if(scrollbase != null) { scrollbase.AutoScroll = value; }
+            }
+        }
         //[Browsable(false)]
         //[EditorBrowsable(EditorBrowsableState.Always)]
         //public VScrollProperties VerticalScroll { get; }
@@ -40,11 +60,13 @@ namespace System.Windows.Forms
         //[Browsable(false)]
         //[EditorBrowsable(EditorBrowsableState.Always)]
         //public HScrollProperties HorizontalScroll { get; }
-        protected bool VScroll { get; set; }
-        protected bool HScroll { get; set; }
+        protected bool VScroll { get => scrollbase.VScroll; set => scrollbase.VScroll = value; }
+        protected bool HScroll { get => scrollbase.HScroll; set => scrollbase.HScroll = value; }
 
-        //protected override CreateParams CreateParams { get; }
-
-        public event ScrollEventHandler Scroll;
+        public virtual event ScrollEventHandler Scroll
+        {
+            add { scrollbase.Scroll += value; }
+            remove { scrollbase.Scroll += value; }
+        }
     }
 }

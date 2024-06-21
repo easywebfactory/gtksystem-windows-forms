@@ -8,15 +8,22 @@ using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class GroupBoxBase : Gtk.Frame, IControlGtk
+    public sealed class GroupBoxBase : Gtk.Frame, IControlGtk, IScrollableBoxBase
     {
         public GtkControlOverride Override { get; set; }
+        public bool AutoScroll { get; set; }
+        public bool HScroll { get; set; } = false;
+        public bool VScroll { get; set; } = false;
+
         internal GroupBoxBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("GroupBox");
             this.LabelXalign = 0.03f;
         }
+
+        public event System.Windows.Forms.ScrollEventHandler Scroll;
+
         protected override void OnShown()
         {
             Override.OnAddClass();
@@ -27,6 +34,19 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
             Override.OnPaint(cr, rec);
             return base.OnDrawn(cr);
+        }
+
+        public void AddClass(string cssClass)
+        {
+            this.Override.AddClass(cssClass);
+        }
+
+        public void Pack(Widget child, Align align, bool expand)
+        {
+            child.Valign = align;
+            child.Halign = align;
+            child.Expand = expand;
+            base.Add(child);
         }
     }
 }

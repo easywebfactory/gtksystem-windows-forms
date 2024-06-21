@@ -48,12 +48,7 @@ namespace System.Windows.Forms
             header.Visible = false;
             header.Hide();
             flowBoxContainer.PackStart(header, false, false, 0);
-
-            Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
-            scrolledWindow.HscrollbarPolicy = PolicyType.Always;
-            scrolledWindow.VscrollbarPolicy = PolicyType.Always;
-            scrolledWindow.Add(flowBoxContainer);
-            self.PackStart(scrolledWindow, true, true, 1);
+            self.Add(flowBoxContainer);
         }
 
         private void Control_Realized(object sender, EventArgs e)

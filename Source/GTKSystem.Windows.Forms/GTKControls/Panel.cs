@@ -4,9 +4,11 @@
  * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://github.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
  */
+using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
+using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
@@ -16,7 +18,6 @@ namespace System.Windows.Forms
         public readonly PanelBase self = new PanelBase();
         public override object GtkControl => self;
         public Gtk.Fixed contaner = new Gtk.Fixed();
-        private Gtk.ScrolledWindow scrolledwindow = new Gtk.ScrolledWindow();
         private ControlCollection _controls;
 
         public Panel() : base()
@@ -27,26 +28,9 @@ namespace System.Windows.Forms
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
             contaner.BorderWidth = 0;
+            self.Add(contaner);
+        }
 
-            scrolledwindow.Halign = Align.Fill;
-            scrolledwindow.Valign = Align.Fill;
-            scrolledwindow.VscrollbarPolicy = PolicyType.Never;
-            scrolledwindow.HscrollbarPolicy = PolicyType.Never;
-            scrolledwindow.Child = contaner;
-            scrolledwindow.BorderWidth = 0;
-            self.Child = scrolledwindow;
-        }
         public override ControlCollection Controls => _controls;
-        public override bool AutoScroll { 
-            get => base.AutoScroll; 
-            set { 
-                base.AutoScroll = value;
-                if (value == true)
-                {
-                    scrolledwindow.VscrollbarPolicy = PolicyType.Automatic;
-                    scrolledwindow.HscrollbarPolicy = PolicyType.Automatic;
-                }
-            } 
-        }
     }
 }

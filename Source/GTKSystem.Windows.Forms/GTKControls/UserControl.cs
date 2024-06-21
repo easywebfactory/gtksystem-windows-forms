@@ -34,7 +34,7 @@ namespace System.Windows.Forms
             contaner.Hexpand = true;
             contaner.Vexpand = true;
             _controls = new ControlCollection(this, contaner);
-            self.Child = contaner;
+            self.Add(contaner);
             self.Override.Paint += Override_Paint;
             self.ParentSet += Self_ParentSet;
         }

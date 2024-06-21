@@ -1,5 +1,4 @@
 ﻿
-using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
@@ -44,6 +43,7 @@ namespace System.Windows.Forms
                 widget.EnterNotifyEvent += Widget_EnterNotifyEvent;
                 widget.MotionNotifyEvent += Widget_MotionNotifyEvent;
                 widget.LeaveNotifyEvent += Widget_LeaveNotifyEvent;
+                widget.ScrollEvent += Widget_ScrollEvent;
                 widget.FocusInEvent += Widget_FocusInEvent;
                 widget.FocusOutEvent += Widget_FocusOutEvent;
                 widget.KeyPressEvent += Widget_KeyPressEvent;
@@ -56,24 +56,41 @@ namespace System.Windows.Forms
 
         private void Widget_Realized(object sender, EventArgs e)
         {
-            SetStyle((Gtk.Widget)sender);
+            InitStyle((Gtk.Widget)sender);
             if (Load != null)
                 Load(this, e);
         }
 
         private void Widget_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
+            //Console.WriteLine("Widget_ButtonPressEvent1");
+            MouseButtons result = MouseButtons.None;
+            if (args.Event.Button == 1)
+                result = MouseButtons.Left;
+            else if (args.Event.Button == 2)
+                result = MouseButtons.Middle;
+            else if (args.Event.Button == 3)
+                result = MouseButtons.Right;
+
             if (MouseDown != null)
             {
-                MouseButtons result = MouseButtons.None;
-                if (args.Event.Button == 1)
-                    result = MouseButtons.Left;
-                else if (args.Event.Button == 3)
-                    result = MouseButtons.Right;
-                else if (args.Event.Button == 2)
-                    result = MouseButtons.Middle;
-                MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+                MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot, (int)args.Event.YRoot, 0));
             }
+            if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
+            {
+                if (MouseDoubleClick != null)
+                    MouseDoubleClick(this, new MouseEventArgs(result, 2, (int)args.Event.XRoot, (int)args.Event.YRoot, 0));
+                if (DoubleClick != null)
+                    DoubleClick(this, EventArgs.Empty);
+            }
+            else
+            {
+                if (Click != null)
+                    Click(this, EventArgs.Empty);
+                if (MouseClick != null)
+                    MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot, (int)args.Event.YRoot, 0));
+            }
+            
         }
         private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
         {
@@ -82,29 +99,15 @@ namespace System.Windows.Forms
                 MouseButtons result = MouseButtons.None;
                 if (args.Event.Button == 1)
                     result = MouseButtons.Left;
-                else if (args.Event.Button == 3)
-                    result = MouseButtons.Right;
                 else if (args.Event.Button == 2)
                     result = MouseButtons.Middle;
+                else if (args.Event.Button == 3)
+                    result = MouseButtons.Right;
 
-                MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+                MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot, (int)args.Event.YRoot, 0));
             }
         }
-        private void Widget_FocusInEvent(object o, FocusInEventArgs args)
-        {
-            if (GotFocus != null)
-                GotFocus(this, args);
-        }
-        private void Widget_FocusOutEvent(object o, FocusOutEventArgs args)
-        {
-            if (LostFocus != null)
-                LostFocus(this, args);
 
-            if (Validating != null)
-                Validating(this, cancelEventArgs);
-            if (Validated != null && cancelEventArgs.Cancel == false)
-                Validated(this, cancelEventArgs);
-        }
         private void Widget_EnterNotifyEvent(object o, EnterNotifyEventArgs args)
         {
             if (Cursor != null)
@@ -147,6 +150,26 @@ namespace System.Windows.Forms
 
 
         }
+        private void Widget_ScrollEvent(object o, Gtk.ScrollEventArgs args)
+        {
+            if (MouseWheel != null)
+                MouseWheel(this, new MouseEventArgs(MouseButtons.None, 0, (int)args.Event.X, (int)args.Event.Y, (int)args.Event.DeltaY));
+        }
+        private void Widget_FocusInEvent(object o, FocusInEventArgs args)
+        {
+            if (GotFocus != null)
+                GotFocus(this, args);
+        }
+        private void Widget_FocusOutEvent(object o, FocusOutEventArgs args)
+        {
+            if (LostFocus != null)
+                LostFocus(this, args);
+
+            if (Validating != null)
+                Validating(this, cancelEventArgs);
+            if (Validated != null && cancelEventArgs.Cancel == false)
+                Validated(this, cancelEventArgs);
+        }
         private void Widget_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
         {
             if (KeyDown != null)
@@ -175,7 +198,10 @@ namespace System.Windows.Forms
         #endregion
 
         //===================
-
+        protected virtual void InitStyle(Gtk.Widget widget)
+        {
+             SetStyle(widget);
+        }
         protected virtual void UpdateStyle()
         {
             if (this.Widget != null && this.Widget.IsMapped)
@@ -693,7 +719,6 @@ namespace System.Windows.Forms
         public virtual event EventHandler VisibleChanged;
         //public event EventHandler Disposed;
         public virtual event EventHandler Load;
-
         public virtual IAsyncResult BeginInvoke(Delegate method, params object[] args)
         {
             System.Threading.Tasks.Task task = System.Threading.Tasks.Task.Factory.StartNew(state =>

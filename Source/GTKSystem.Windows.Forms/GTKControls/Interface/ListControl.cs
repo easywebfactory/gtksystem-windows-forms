@@ -4,8 +4,8 @@ using System.ComponentModel;
 namespace System.Windows.Forms
 {
 	[LookupBindingProperties("DataSource", "DisplayMember", "ValueMember", "SelectedValue")]
-	public abstract class ListControl : Control
-	{
+	public abstract class ListControl : ScrollableControl
+    {
 		[DefaultValue(null)]
 		[RefreshProperties(RefreshProperties.Repaint)]
 		[AttributeProvider(typeof(IListSource))]

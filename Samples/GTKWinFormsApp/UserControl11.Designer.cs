@@ -38,7 +38,7 @@ namespace GTKWinFormsApp
             // 
             button1.Location = new System.Drawing.Point(3, 42);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(153, 34);
+            button1.Size = new System.Drawing.Size(153, 71);
             button1.TabIndex = 0;
             button1.Text = "这是自定义控件";
             button1.UseVisualStyleBackColor = true;
@@ -50,9 +50,15 @@ namespace GTKWinFormsApp
             BackColor = System.Drawing.Color.LightGreen;
             Controls.Add(button1);
             Name = "UserControl11";
-            Size = new System.Drawing.Size(190, 103);
+            Size = new System.Drawing.Size(186, 143);
             Load += UserControl11_Load;
+            Scroll += UserControl11_Scroll;
+            Click += UserControl11_Click;
             Paint += UserControl11_Paint;
+            DoubleClick += UserControl11_DoubleClick;
+            MouseClick += UserControl11_MouseClick;
+            MouseDoubleClick += UserControl11_MouseDoubleClick;
+            MouseDown += UserControl11_MouseDown;
             MouseEnter += UserControl11_MouseEnter;
             MouseLeave += UserControl11_MouseLeave;
             MouseHover += UserControl11_MouseHover;

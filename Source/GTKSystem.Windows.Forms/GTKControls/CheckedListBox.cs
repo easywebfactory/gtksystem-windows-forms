@@ -29,15 +29,9 @@ namespace System.Windows.Forms
             _items = new ObjectCollection(_flow);
             _flow.ChildActivated += Control_ChildActivated;
             _flow.Realized += _flow_Realized;
-            Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
-            scrolledWindow.Halign = Gtk.Align.Fill;
-            scrolledWindow.Valign = Gtk.Align.Fill;
-            scrolledWindow.Hexpand = true;
-            scrolledWindow.Vexpand = true;
-            scrolledWindow.Child = _flow;
-            self.Child = scrolledWindow;
+            self.AutoScroll = true;
+            self.Add(_flow);
         }
-
         private void _flow_Realized(object sender, EventArgs e)
         {
             foreach (var item in _items)
