@@ -49,9 +49,15 @@ namespace System.Windows.Forms
                 widget.KeyPressEvent += Widget_KeyPressEvent;
                 widget.KeyReleaseEvent += Widget_KeyReleaseEvent;
                 widget.Realized += Widget_Realized;
+                widget.ConfigureEvent += Widget_ConfigureEvent;
             }
         }
 
+        private void Widget_ConfigureEvent(object o, ConfigureEventArgs args)
+        {
+            if (Move != null)
+                Move(this, args);
+        }
         #region events
 
         private void Widget_Realized(object sender, EventArgs e)
@@ -131,11 +137,8 @@ namespace System.Windows.Forms
         }
         private void Widget_MotionNotifyEvent(object o, MotionNotifyEventArgs args)
         {
-            if (Move != null)
-                Move(this, args);
             if (MouseMove != null)
                 MouseMove(this, new MouseEventArgs(MouseButtons.None, 1, (int)args.Event.X, (int)args.Event.Y, 0));
-
         }
         private void Widget_LeaveNotifyEvent(object o, LeaveNotifyEventArgs args)
         {

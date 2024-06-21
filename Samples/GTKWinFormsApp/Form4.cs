@@ -19,8 +19,8 @@ namespace GTKWinFormsApp
 
         private void button3_Click(object sender, EventArgs e)
         {
-         //  var nodes = treeView1.Nodes;
-
+            //  var nodes = treeView1.Nodes;
+            //button4.Location = new Point(button4.Location.X-2, button4.Location.Y-2);
             Console.WriteLine("button3_Click");
         }
     }
