@@ -172,7 +172,9 @@ QQ群：236066073
 2. https://github.com/easywebfactory
 
 #### 更新日志
-
+ ## 2024/6/22
+   1. 修改一些bug
+   2. 修改优化窗口和控件的resize功能
  ## 2024/6/20
    1. 修改一些bug
    2. 修改优化窗口和控件的resize功能
