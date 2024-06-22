@@ -148,7 +148,7 @@ namespace System.Windows.Forms
 
         public override void Insert(int index, object item) { __ownerControl.Add((Widget)item); base.Insert(index, item); }
 
-        public override void Remove(object value) { __ownerControl.Remove((Widget)value); base.Remove(value); }
-        public override void RemoveAt(int index) { __ownerControl.Remove(__ownerControl.Children[index]); base.RemoveAt(index); }
+        public override void Remove(object value) { base.Remove(((Control)value).Widget); __ownerControl.Remove(((Control)value).Widget); }
+        public override void RemoveAt(int index) { base.RemoveAt(index); __ownerControl.Remove(__ownerControl.Children[index]); }
     }
 }
