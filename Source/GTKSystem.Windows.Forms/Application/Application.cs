@@ -82,6 +82,10 @@ namespace System.Windows.Forms
         {
             if (App == null)
             {
+                if (!Directory.Exists("Resources"))
+                {
+                    Directory.CreateDirectory("Resources");
+                }
                 Gtk.Application.Init();
                 App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
                 App.Register(GLib.Cancellable.Current);

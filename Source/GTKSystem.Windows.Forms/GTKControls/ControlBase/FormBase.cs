@@ -122,16 +122,13 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                                     }
                                     else
                                     {
-                                        if (widthIncrement > 0)
+                                        if (parent[control] is Gtk.Layout.LayoutChild lc)
                                         {
-                                            if (parent[control] is Gtk.Layout.LayoutChild lc)
-                                            {
-                                                lc.X = (int)control.Data["Left"] + widthIncrement;
-                                            }
-                                            else if (parent[control] is Gtk.Fixed.FixedChild fc)
-                                            {
-                                                fc.X = (int)control.Data["Left"] + widthIncrement;
-                                            }
+                                            lc.X = (int)control.Data["Left"] + widthIncrement;
+                                        }
+                                        else if (parent[control] is Gtk.Fixed.FixedChild fc)
+                                        {
+                                            fc.X = (int)control.Data["Left"] + widthIncrement;
                                         }
                                     }
                                 }
@@ -143,16 +140,13 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                                     }
                                     else
                                     {
-                                        if (heightIncrement > 0)
+                                        if (parent[control] is Gtk.Layout.LayoutChild lc)
                                         {
-                                            if (parent[control] is Gtk.Layout.LayoutChild lc)
-                                            {
-                                                lc.Y = (int)control.Data["Top"] + heightIncrement;
-                                            }
-                                            else if (parent[control] is Gtk.Fixed.FixedChild fc)
-                                            {
-                                                fc.Y = (int)control.Data["Top"] + heightIncrement;
-                                            }
+                                            lc.Y = (int)control.Data["Top"] + heightIncrement;
+                                        }
+                                        else if (parent[control] is Gtk.Fixed.FixedChild fc)
+                                        {
+                                            fc.Y = (int)control.Data["Top"] + heightIncrement;
                                         }
                                     }
                                 }

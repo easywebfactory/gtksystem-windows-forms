@@ -69,7 +69,7 @@ namespace System.Windows.Forms
 
         private void Widget_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
-            //Console.WriteLine("Widget_ButtonPressEvent1");
+            //Console.WriteLine($"Widget_ButtonPressEvent1:{args.Event.XRoot},{args.Event.YRoot};{args.Event.X},{args.Event.Y}");
             MouseButtons result = MouseButtons.None;
             if (args.Event.Button == 1)
                 result = MouseButtons.Left;
@@ -80,12 +80,12 @@ namespace System.Windows.Forms
 
             if (MouseDown != null)
             {
-                MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot, (int)args.Event.YRoot, 0));
+                MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0));
             }
             if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
             {
                 if (MouseDoubleClick != null)
-                    MouseDoubleClick(this, new MouseEventArgs(result, 2, (int)args.Event.XRoot, (int)args.Event.YRoot, 0));
+                    MouseDoubleClick(this, new MouseEventArgs(result, 2, (int)args.Event.X, (int)args.Event.Y, 0));
                 if (DoubleClick != null)
                     DoubleClick(this, EventArgs.Empty);
             }
@@ -94,7 +94,7 @@ namespace System.Windows.Forms
                 if (Click != null)
                     Click(this, EventArgs.Empty);
                 if (MouseClick != null)
-                    MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot, (int)args.Event.YRoot, 0));
+                    MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0));
             }
             
         }
@@ -110,7 +110,7 @@ namespace System.Windows.Forms
                 else if (args.Event.Button == 3)
                     result = MouseButtons.Right;
 
-                MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot, (int)args.Event.YRoot, 0));
+                MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0));
             }
         }
 
@@ -587,8 +587,27 @@ namespace System.Windows.Forms
                 }
             }
         }
-        public virtual int Right { get => Widget.Allocation.Right; }
-        public virtual int Bottom { get => Widget.Allocation.Bottom; }
+        public virtual int Right {
+            get
+            {
+                if (Widget.IsMapped == false && Widget is Gtk.Window wnd)
+                {
+                    return Widget.WidthRequest == -1 ? wnd.Allocation.Left + wnd.DefaultWidth : Widget.Allocation.Right;
+                }
+                return Widget.Allocation.Right;
+            }
+        }
+        public virtual int Bottom
+        {
+            get
+            {
+                if (Widget.IsMapped == false && Widget is Gtk.Window wnd)
+                {
+                    return Widget.HeightRequest == -1 ? wnd.Allocation.Top + wnd.DefaultHeight : Widget.Allocation.Bottom;
+                }
+                return Widget.Allocation.Bottom;
+            }
+        }
         public virtual Point Location
         {
             get
@@ -622,14 +641,10 @@ namespace System.Windows.Forms
             }
             set
             {
-                //if(Widget is Gtk.Button)
-                //    Widget.SetSizeRequest(value.Width, value.Height);
-                //else
-                //Widget.SetSizeRequest(value.Width, value.Height);
                 if (Widget is Gtk.Button)
                 {
-                    Width = value.Width - 6;
-                    Height = value.Height - 6;
+                    Width = value.Width > 6 ? value.Width - 6 : value.Width;
+                    Height = value.Height > 6 ? value.Height - 6 : value.Height;
                 }
                 else
                 {
@@ -638,8 +653,31 @@ namespace System.Windows.Forms
                 }
             }
         }
-        public virtual int Height { get { return Widget.HeightRequest > Widget.HeightRequest ? Widget.WidthRequest : Widget.AllocatedHeight; } set { Widget.HeightRequest = value; Widget.Data["Height"] = value; } }
-        public virtual int Width { get { return Widget.WidthRequest > Widget.AllocatedWidth ? Widget.WidthRequest : Widget.AllocatedWidth; } set { Widget.WidthRequest = value; Widget.Data["Width"] = value; } }
+        public virtual int Height
+        {
+            get
+            {
+                if (Widget.IsMapped == false && Widget is Gtk.Window wnd)
+                {
+                    return wnd.HeightRequest == -1 ? wnd.DefaultHeight : wnd.HeightRequest;
+                }
+                return Widget.HeightRequest > Widget.AllocatedHeight ? Widget.HeightRequest : Widget.AllocatedHeight;
+            }
+            set { Widget.HeightRequest = Math.Max(0, value); Widget.Data["Height"] = Widget.HeightRequest; }
+        }
+
+        public virtual int Width
+        {
+            get
+            {
+                if (Widget.IsMapped == false && Widget is Gtk.Window wnd)
+                {
+                    return wnd.WidthRequest == -1 ? wnd.DefaultWidth : wnd.WidthRequest;
+                }
+                return Widget.WidthRequest > Widget.AllocatedWidth ? Widget.WidthRequest : Widget.AllocatedWidth;
+            }
+            set { Widget.WidthRequest = Math.Max(0, value); Widget.Data["Width"] = Widget.WidthRequest; }
+        }
         public virtual int TabIndex { get; set; }
         public virtual bool TabStop { get; set; }
         public virtual object Tag { get; set; }

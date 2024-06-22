@@ -202,8 +202,10 @@ namespace System.Windows.Forms
 
                 if (self.Resizable == false)
                 {
-                    self.WidthRequest = self.DefaultWidth;
-                    self.HeightRequest = self.DefaultHeight;
+                    if (self.WidthRequest == -1)
+                        self.WidthRequest = self.DefaultWidth;
+                    if (self.HeightRequest == -1)
+                        self.HeightRequest = self.DefaultHeight;
                 }
 
                 if (this.WindowState == FormWindowState.Maximized)
@@ -286,8 +288,8 @@ namespace System.Windows.Forms
             }
             set
             {
-                self.WidthRequest = 100;
-                self.HeightRequest = 60;
+                self.WidthRequest = -1;
+                self.HeightRequest = -1;
                 self.SetDefaultSize(value.Width, value.Height);
             }
         }
