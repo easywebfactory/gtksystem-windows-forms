@@ -15,6 +15,12 @@ namespace GTKSystemWinFormsApp11
         public Form1()
         {
             InitializeComponent();
+            this.SizeChanged += Form1_SizeChanged;
+        }
+
+        private void Form1_SizeChanged(object? sender, EventArgs e)
+        {
+            Console.WriteLine($"{this.Width},{this.Height}");
         }
 
         private void button1_Click(object sender, EventArgs e)
