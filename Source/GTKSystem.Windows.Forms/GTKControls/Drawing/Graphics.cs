@@ -191,7 +191,7 @@ namespace System.Drawing
 		{
             if (pen.Brush is SolidBrush sbrush)
             {
-                this.context.SetSourceRGBA(sbrush.Color.R / 255f, sbrush.Color.G / 255f, sbrush.Color.B / 255f, 1);
+                this.context.SetSourceRGBA(sbrush.Color.R / 255f, sbrush.Color.G / 255f, sbrush.Color.B / 255f, sbrush.Color.A / 255f);
             }
             else if (pen.Brush is LinearGradientBrush lbrush)
             {
@@ -200,7 +200,7 @@ namespace System.Drawing
 				int linearcount = lbrush.LinearColors.Length;
 				int idx = 0;
 				foreach (Color color in lbrush.LinearColors)
-					gradient.AddColorStop((++idx) / linearcount, new Cairo.Color(color.R / 255f, color.G / 255f, color.B / 255f, color.A));
+					gradient.AddColorStop((++idx) / linearcount, new Cairo.Color(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f));
 
 				Cairo.Matrix matrix = new Cairo.Matrix(1, 0, 0, 1, 0, 0);
 				matrix.Rotate(Math.PI * 45 / 180);//»¡¶È
@@ -210,7 +210,7 @@ namespace System.Drawing
 			}
 			else if (pen.Brush is HatchBrush hbrush)
             {
-                this.context.SetSourceRGBA(hbrush.ForegroundColor.R / 255f, hbrush.ForegroundColor.G / 255f, hbrush.ForegroundColor.B / 255f, 1);
+                this.context.SetSourceRGBA(hbrush.ForegroundColor.R / 255f, hbrush.ForegroundColor.G / 255f, hbrush.ForegroundColor.B / 255f, hbrush.ForegroundColor.A / 255f);
             }
             else if (pen.Brush is PathGradientBrush pbrush)
             {
@@ -222,9 +222,9 @@ namespace System.Drawing
 				foreach (Color color in pbrush.SurroundColors)
 				{
 					if(idx == centeridx)
-                        gradient.AddColorStop((++idx) / linearcount, new Cairo.Color(pbrush.CenterColor.R / 255f, pbrush.CenterColor.G / 255f, pbrush.CenterColor.B / 255f, pbrush.CenterColor.A));
+                        gradient.AddColorStop((++idx) / linearcount, new Cairo.Color(pbrush.CenterColor.R / 255f, pbrush.CenterColor.G / 255f, pbrush.CenterColor.B / 255f, pbrush.CenterColor.A / 255f));
 					else
-						gradient.AddColorStop((++idx) / linearcount, new Cairo.Color(color.R / 255f, color.G / 255f, color.B / 255f, color.A));
+						gradient.AddColorStop((++idx) / linearcount, new Cairo.Color(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f));
 				}
                 Cairo.Matrix matrix = new Cairo.Matrix(1, 0, 0, 1, 0, 0);
                 matrix.Rotate(Math.PI * 45 / 180);//»¡¶È
@@ -240,7 +240,7 @@ namespace System.Drawing
             this.SetTranslateWithDifference(0, 0);
             this.context.Rectangle(this.rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
 			this.context.Fill();
-			this.context.Paint();
+			//this.context.Paint();
 			this.context.Restore();
 		}
 
