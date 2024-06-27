@@ -1158,6 +1158,10 @@ namespace System.Windows.Forms
                 {
                     Widget.StyleContext.AddClass("BorderFixed3D");
                 }
+                else
+                {
+                    Widget.StyleContext.AddClass("BorderNone");
+                }
             }
         }
 

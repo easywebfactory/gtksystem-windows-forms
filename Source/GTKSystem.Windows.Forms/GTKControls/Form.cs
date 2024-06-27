@@ -284,7 +284,7 @@ namespace System.Windows.Forms
         {
             get
             {
-                return new Size(self.WidthRequest, self.HeightRequest);
+                return new Size(self.AllocatedWidth, self.AllocatedHeight);
             }
             set
             {

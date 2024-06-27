@@ -600,7 +600,7 @@ namespace System.Windows.Forms
             flowBoxContainer.PackStart(hBox, true, true, 0);
             if (position > -1)
             {
-                flowBoxContainer.ReorderChild(hBox, position);
+                flowBoxContainer.ReorderChild(hBox, position + 1);
             }
 
         }

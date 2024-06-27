@@ -110,7 +110,7 @@ namespace System.Windows.Forms
 .DefaultThemeStyle entry{padding: 0px 2px;}
 .DefaultThemeStyle entry.flat{padding: 0px 2px;border:solid 1px @frame_color;background:@bg_color;}
 .DefaultThemeStyle button{padding:1px 1px;}
-
+.BorderNone{border-width:0px;border-style:none;box-shadow:none;}
 .BorderFixedSingle{border-width:0px;border-style:none;box-shadow: inset 0px 0px 0px 1px @frame_color;}
 .BorderFixed3D{border-width:0px;border-style:none;box-shadow: inset 1px 1px 1px 2px @frame3d_color;}
 
