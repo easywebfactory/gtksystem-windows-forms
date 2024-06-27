@@ -455,7 +455,7 @@ namespace System.Windows.Forms
         public virtual Point AutoScrollOffset { get; set; }
         public virtual bool AutoSize { get; set; }
         public virtual BindingContext BindingContext { get; set; }
-        public virtual Rectangle Bounds { get; set; }
+        public virtual Rectangle Bounds { get=> new Rectangle(Widget.Clip.X, Widget.Clip.Y, Widget.Clip.Width, Widget.Clip.Height); set { SetBounds(value.X, value.Y, value.Width, value.Height); } }
 
         public virtual bool CanFocus { get { return Widget.CanFocus; } }
 
@@ -660,7 +660,7 @@ namespace System.Windows.Forms
                 {
                     return wnd.HeightRequest == -1 ? wnd.DefaultHeight : wnd.HeightRequest;
                 }
-                return Widget.HeightRequest > Widget.AllocatedHeight ? Widget.HeightRequest : Widget.AllocatedHeight;
+                return Widget.HeightRequest == -1 ? Widget.AllocatedHeight : Widget.HeightRequest;
             }
             set { Widget.HeightRequest = Math.Max(0, value); Widget.Data["Height"] = Widget.HeightRequest; }
         }
@@ -673,7 +673,7 @@ namespace System.Windows.Forms
                 {
                     return wnd.WidthRequest == -1 ? wnd.DefaultWidth : wnd.WidthRequest;
                 }
-                return Widget.WidthRequest > Widget.AllocatedWidth ? Widget.WidthRequest : Widget.AllocatedWidth;
+                return Widget.WidthRequest == -1 ? Widget.AllocatedWidth : Widget.WidthRequest;
             }
             set { Widget.WidthRequest = Math.Max(0, value); Widget.Data["Width"] = Widget.WidthRequest; }
         }

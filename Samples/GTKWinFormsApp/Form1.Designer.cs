@@ -167,16 +167,16 @@ namespace GTKWinFormsApp
             // 
             // dataGridView1
             // 
+            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.ColumnHeadersHeight = 29;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { ID, State, Title, CreateDate, Operate, PIC });
             dataGridView1.DataMember = "ID,State,Title";
-            dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.Location = new System.Drawing.Point(4, 4);
             dataGridView1.Margin = new Padding(4);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.RowTemplate.Height = 36;
-            dataGridView1.Size = new System.Drawing.Size(1323, 272);
+            dataGridView1.Size = new System.Drawing.Size(1323, 270);
             dataGridView1.TabIndex = 2;
             dataGridView1.MultiSelectChanged += dataGridView1_MultiSelectChanged;
             dataGridView1.CellClick += dataGridView1_CellClick;
@@ -424,16 +424,16 @@ namespace GTKWinFormsApp
             // 
             // tabControl1
             // 
+            tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
-            tabControl1.Dock = DockStyle.Fill;
             tabControl1.ItemSize = new System.Drawing.Size(181, 25);
             tabControl1.Location = new System.Drawing.Point(0, 0);
             tabControl1.Margin = new Padding(4);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new System.Drawing.Size(1339, 313);
+            tabControl1.Size = new System.Drawing.Size(1339, 310);
             tabControl1.TabIndex = 4;
             tabControl1.DrawItem += tabControl1_DrawItem;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
@@ -445,7 +445,7 @@ namespace GTKWinFormsApp
             tabPage1.Margin = new Padding(4);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(4);
-            tabPage1.Size = new System.Drawing.Size(1331, 280);
+            tabPage1.Size = new System.Drawing.Size(1331, 277);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "数据表格";
             tabPage1.UseVisualStyleBackColor = true;
@@ -463,10 +463,11 @@ namespace GTKWinFormsApp
             tabPage2.Margin = new Padding(4);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(4);
-            tabPage2.Size = new System.Drawing.Size(1331, 280);
+            tabPage2.Size = new System.Drawing.Size(1331, 277);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "容器类表格";
             tabPage2.UseVisualStyleBackColor = true;
+            tabPage2.Click += tabPage2_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -515,7 +516,7 @@ namespace GTKWinFormsApp
             // 
             // richTextBox1
             // 
-            richTextBox1.Location = new System.Drawing.Point(636, 154);
+            richTextBox1.Location = new System.Drawing.Point(633, 206);
             richTextBox1.Name = "richTextBox1";
             richTextBox1.Size = new System.Drawing.Size(125, 120);
             richTextBox1.TabIndex = 6;
@@ -581,7 +582,7 @@ namespace GTKWinFormsApp
             listBox1.Name = "listBox1";
             listBox1.ScrollAlwaysVisible = true;
             listBox1.SelectionMode = SelectionMode.MultiSimple;
-            listBox1.Size = new System.Drawing.Size(150, 104);
+            listBox1.Size = new System.Drawing.Size(150, 84);
             listBox1.Sorted = true;
             listBox1.TabIndex = 4;
             listBox1.ValueMember = "Title";
@@ -622,7 +623,7 @@ namespace GTKWinFormsApp
             tabPage3.Location = new System.Drawing.Point(4, 29);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new System.Drawing.Size(1331, 280);
+            tabPage3.Size = new System.Drawing.Size(1331, 277);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "tabPage3";
             tabPage3.UseVisualStyleBackColor = true;
@@ -786,7 +787,6 @@ namespace GTKWinFormsApp
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.AutoScroll = true;
             splitContainer1.Panel2.Controls.Add(tabControl1);
             splitContainer1.Size = new System.Drawing.Size(1339, 499);
             splitContainer1.SplitterDistance = 181;
@@ -806,8 +806,7 @@ namespace GTKWinFormsApp
             // 
             // Form1
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.None;
             AutoScroll = true;
             ClientSize = new System.Drawing.Size(1360, 689);
             ContextMenuStrip = contextMenuStrip1;

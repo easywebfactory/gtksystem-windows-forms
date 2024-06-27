@@ -44,8 +44,8 @@ namespace GTKWinFormsApp
 
             data.Add(new TestEntity() { ID = 5, Title = "网络图片异步加载", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "https://gitlab.gnome.org/uploads/-/system/project/avatar/13319/gi-docgen.png?width=48" });
             data.Add(new TestEntity() { ID = 6, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC = "" });
-            for(int i=0;i<10;i++)
-                data.Add(new TestEntity() { ID = i+7, Title = "网络图片异步加载"+i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString() });
+            for (int i = 0; i < 10; i++)
+                data.Add(new TestEntity() { ID = i + 7, Title = "网络图片异步加载" + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString() });
             this.dataGridView1.DataSource = data;
             //var s=this.dataGridView1.Rows[0].Cells[0];
 
@@ -394,7 +394,7 @@ namespace GTKWinFormsApp
             e.Graphics.FillRectangle(new SolidBrush(Color.DarkBlue), e.Bounds);
             var font = new Font(FontFamily.GenericSansSerif, 12);
             e.Graphics.DrawString($"tab组{e.Index}", font, new SolidBrush(Color.Red), new PointF(0, 0));
-            e.Graphics.DrawImage(Image.FromFile("Resources\\BindingNavigator.Delete.ico"), new Point(e.Bounds.Width-16, 0));
+            e.Graphics.DrawImage(Image.FromFile("Resources\\BindingNavigator.Delete.ico"), new Point(e.Bounds.Width - 16, 0));
         }
 
         private void button1_Paint(object sender, PaintEventArgs e)
@@ -415,6 +415,11 @@ namespace GTKWinFormsApp
         private void textBox1_KeyUp(object sender, KeyEventArgs e)
         {
             Console.WriteLine("textBox1_KeyUp");
+        }
+
+        private void tabPage2_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("ffsssssss");
         }
     }
 

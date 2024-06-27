@@ -409,7 +409,7 @@ namespace GTKWinFormsApp
             // 
             // panel3
             // 
-            panel3.BorderStyle = BorderStyle.Fixed3D;
+            panel3.BorderStyle = BorderStyle.FixedSingle;
             panel3.Location = new System.Drawing.Point(29, 102);
             panel3.Name = "panel3";
             panel3.Size = new System.Drawing.Size(250, 135);
