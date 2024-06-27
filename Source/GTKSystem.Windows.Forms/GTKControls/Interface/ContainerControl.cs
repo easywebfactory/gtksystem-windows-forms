@@ -5,7 +5,9 @@ namespace System.Windows.Forms
     {
         private Control _ActiveControl;
         public Control ActiveControl { get => _ActiveControl; set { ActivateControl(value); } }
-
+        public ContainerControl() : base()
+        {
+        }
         public bool ActivateControl(Control active)
         {
             _ActiveControl = active;

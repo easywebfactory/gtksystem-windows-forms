@@ -8,8 +8,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         internal RichTextBoxBase() : base()
         {
             this.Override.AddClass("RichTextBox");
-            this.TextView.BorderWidth = 0;
-            this.TextView.Margin = 0;
+            this.TextView.BorderWidth = 1;
+            this.TextView.MarginTop = 3;
+            this.TextView.MarginStart = 1;
+            this.TextView.MarginEnd = 1;
+            this.TextView.MarginBottom = 1;
             this.TextView.WrapMode = Gtk.WrapMode.Char;
             this.TextView.Halign = Gtk.Align.Fill;
             this.TextView.Valign = Gtk.Align.Fill;

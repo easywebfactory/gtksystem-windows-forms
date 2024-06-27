@@ -49,6 +49,7 @@ namespace System.Windows.Forms
             header.Hide();
             flowBoxContainer.PackStart(header, false, false, 0);
             self.Add(flowBoxContainer);
+            this.BorderStyle = BorderStyle.Fixed3D;
         }
 
         private void Control_Realized(object sender, EventArgs e)

@@ -98,6 +98,7 @@ namespace System.Windows.Forms
                 string css_style = @"
 /* 定义控件样式 */
 @define-color frame_color rgba(169,169,169,0.6);
+@define-color frame3d_color rgba(139,139,139,0.6);
 @define-color line_color #ECECEC;
 @define-color toolstrip_frame_color rgba(169,169,169,0.3);
 
@@ -109,6 +110,9 @@ namespace System.Windows.Forms
 .DefaultThemeStyle entry{padding: 0px 2px;}
 .DefaultThemeStyle entry.flat{padding: 0px 2px;border:solid 1px @frame_color;background:@bg_color;}
 .DefaultThemeStyle button{padding:1px 1px;}
+
+.BorderFixedSingle{border-width:0px;border-style:none;box-shadow: inset 0px 0px 0px 1px @frame_color;}
+.BorderFixed3D{border-width:0px;border-style:none;box-shadow: inset 1px 1px 1px 2px @frame3d_color;}
 
 .DataGridView {border-width:1px;margin:-3px;}
 .GridViewCell-Button{ border:solid 1px #cccccc; font-size:12px; background:linear-gradient(#e9e9e9,#e0e0e0);}

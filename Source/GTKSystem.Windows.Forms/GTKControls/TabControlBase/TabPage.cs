@@ -5,7 +5,6 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
-using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
 using System.Collections.Generic;
@@ -22,15 +21,13 @@ namespace System.Windows.Forms
         private ControlCollection _controls;
         public TabPage() : base()
         {
-            _controls = new ControlCollection(this, self);
-
+            _controls = new ControlCollection(this, self.Content);
             self.Data["Dock"] = DockStyle.Fill;
         }
 
-        public TabPage(string text)
+        public TabPage(string text):this()
         {
             _tabLabel.Text = text;
-            _controls = new ControlCollection(this, self);
         }
 
         public override Point Location

@@ -46,6 +46,7 @@ namespace System.Windows.Forms
             _store = new Gtk.TreeStore(typeof(string), typeof(bool));
             self.TreeView.Model = _store;
             self.TreeView.Realized += Control_Realized;
+            this.BorderStyle = BorderStyle.Fixed3D;
         }
         public void Clear()
         {

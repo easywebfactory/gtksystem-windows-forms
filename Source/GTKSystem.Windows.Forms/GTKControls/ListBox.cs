@@ -44,6 +44,7 @@ namespace System.Windows.Forms
             _items = new ObjectCollection(this);
             self.ListBox.Realized += Self_Realized;
             self.ListBox.SelectedRowsChanged += ListBox_SelectedRowsChanged;
+            this.BorderStyle = BorderStyle.Fixed3D;
         }
         private void ListBox_SelectedRowsChanged(object sender, EventArgs e)
         {
@@ -223,13 +224,6 @@ namespace System.Windows.Forms
         public const int NoMatches = -1;
 
 		public const int DefaultItemHeight = 13;
-
-        [DefaultValue(BorderStyle.Fixed3D)]
-		[DispId(-504)]
-		public override BorderStyle BorderStyle
-        {
-            get; set;
-        }
 
         [Localizable(true)]
 		[DefaultValue(0)]

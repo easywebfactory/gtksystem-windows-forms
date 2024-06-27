@@ -5,6 +5,7 @@
         internal ListViewBase() : base()
         {
             this.Override.AddClass("ListView");
+            base.BorderWidth = 1;
             base.AutoScroll = true;
         }
     }

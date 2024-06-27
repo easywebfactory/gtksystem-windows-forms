@@ -22,6 +22,7 @@ namespace System.Windows.Forms
         public RichTextBox():base()
         {
             self.TextView.Buffer.Changed += Buffer_Changed;
+            this.BorderStyle = BorderStyle.Fixed3D;
         }
         private void Buffer_Changed(object sender, EventArgs e)
         {

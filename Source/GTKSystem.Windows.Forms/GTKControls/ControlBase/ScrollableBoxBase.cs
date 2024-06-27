@@ -6,26 +6,24 @@ using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public abstract class ScrollableBoxBase : Gtk.Viewport, IControlGtk, IScrollableBoxBase
+    public abstract class ScrollableBoxBase : Gtk.ScrolledWindow, IControlGtk, IScrollableBoxBase
     {
-        Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
         public event ScrollEventHandler Scroll;
         public GtkControlOverride Override { get; set; }
         internal ScrollableBoxBase() : base()
         {
             this.Override = new GtkControlOverride(this);
-            this.ShadowType = Gtk.ShadowType.In;
+            this.ShadowType = Gtk.ShadowType.None;
             this.BorderWidth = 1;
-
-            scrolledWindow.Halign = Gtk.Align.Fill;
-            scrolledWindow.Valign = Gtk.Align.Fill;
-            scrolledWindow.Hexpand = true;
-            scrolledWindow.Vexpand = true;
-            scrolledWindow.VscrollbarPolicy = Gtk.PolicyType.Never;
-            scrolledWindow.HscrollbarPolicy = Gtk.PolicyType.Never;
-            scrolledWindow.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
-            scrolledWindow.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
-            base.Child = scrolledWindow;
+            this.Events = Gdk.EventMask.AllEventsMask;
+            base.Halign = Gtk.Align.Fill;
+            base.Valign = Gtk.Align.Fill;
+            base.Hexpand = false;
+            base.Vexpand = false;
+            base.VscrollbarPolicy = Gtk.PolicyType.Never;
+            base.HscrollbarPolicy = Gtk.PolicyType.Never;
+            base.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
+            base.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
         }
         private void Vadjustment_ValueChanged(object sender, EventArgs e)
         {
@@ -45,41 +43,28 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             }
         }
 
-        public new Gtk.Widget Child { get => scrolledWindow.Child; }
         public void AddClass(string cssClass)
         {
             this.Override.AddClass(cssClass);
-        }
-        public new void Add(Gtk.Widget child)
-        {
-            scrolledWindow.Child = child;
-        }
-        public void Pack(Gtk.Widget child, Gtk.Align align, bool expand)
-        {
-            scrolledWindow.Halign = align;
-            scrolledWindow.Valign = align;
-            scrolledWindow.Hexpand = expand;
-            scrolledWindow.Vexpand = expand;
-            scrolledWindow.Child = child;
         }
         public bool VScroll { get; set; } = true;
         public bool HScroll { get; set; } = true;
         public virtual bool AutoScroll
         {
-            get => scrolledWindow.VscrollbarPolicy == Gtk.PolicyType.Automatic;
+            get => base.VscrollbarPolicy == Gtk.PolicyType.Automatic;
             set
             {
                 if (value == true)
                 {
                     if (VScroll)
-                        scrolledWindow.VscrollbarPolicy = Gtk.PolicyType.Automatic;
+                        base.VscrollbarPolicy = Gtk.PolicyType.Automatic;
                     if (HScroll)
-                        scrolledWindow.HscrollbarPolicy = Gtk.PolicyType.Automatic;
+                        base.HscrollbarPolicy = Gtk.PolicyType.Automatic;
                 }
                 else
                 {
-                    scrolledWindow.VscrollbarPolicy = Gtk.PolicyType.Never;
-                    scrolledWindow.HscrollbarPolicy = Gtk.PolicyType.Never;
+                    base.VscrollbarPolicy = Gtk.PolicyType.Never;
+                    base.HscrollbarPolicy = Gtk.PolicyType.Never;
                 }
             }
         }

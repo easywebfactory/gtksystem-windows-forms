@@ -31,6 +31,7 @@ namespace System.Windows.Forms
             _flow.Realized += _flow_Realized;
             self.AutoScroll = true;
             self.Add(_flow);
+            this.BorderStyle = BorderStyle.Fixed3D;
         }
         private void _flow_Realized(object sender, EventArgs e)
         {

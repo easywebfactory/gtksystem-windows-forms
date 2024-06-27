@@ -24,7 +24,6 @@ namespace System.Windows.Forms
         public virtual Gtk.Container GtkContainer { get => GtkControl as Gtk.Container; }
         public virtual IControlGtk ISelf { get => GtkControl as IControlGtk; }
         public virtual object GtkControl { get; set; }
-
         public Control()
         {
             this.unique_key = Guid.NewGuid().ToString().ToLower();
@@ -1151,8 +1150,14 @@ namespace System.Windows.Forms
             get { return _BorderStyle; }
             set {
                 _BorderStyle = value;
-                if (GtkControl is Gtk.Viewport view) { view.BorderWidth = Convert.ToUInt32((int)value); view.ShadowType = ShadowType.Out; }
-                //if (GtkControl is Gtk.Container container) { container.BorderWidth = Convert.ToUInt32((int)value); }
+                if(value==BorderStyle.FixedSingle)
+                {
+                    Widget.StyleContext.AddClass("BorderFixedSingle");
+                }
+                else if (value == BorderStyle.Fixed3D)
+                {
+                    Widget.StyleContext.AddClass("BorderFixed3D");
+                }
             }
         }
 

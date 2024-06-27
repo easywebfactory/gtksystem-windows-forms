@@ -19,7 +19,6 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         public Gtk.Fixed contaner = new Gtk.Fixed();
         private ControlCollection _controls;
-
         public Panel() : base()
         {
             _controls = new ControlCollection(this, contaner);
