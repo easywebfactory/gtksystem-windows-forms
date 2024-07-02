@@ -15,6 +15,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.TreeView.MarginStart = 1;
             this.TreeView.MarginEnd = 1;
             this.TreeView.MarginBottom = 1;
+            this.TreeView.EnableGridLines = Gtk.TreeViewGridLines.Horizontal;
+            this.TreeView.EnableTreeLines = true;
             this.TreeView.HeadersVisible = false;
             this.TreeView.ActivateOnSingleClick = true;
             this.TreeView.BorderWidth = 1;

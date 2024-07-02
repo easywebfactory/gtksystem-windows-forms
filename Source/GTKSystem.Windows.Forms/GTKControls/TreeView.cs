@@ -21,8 +21,6 @@ namespace System.Windows.Forms
         private Gtk.TreeStore _store;
         internal TreeNode root;
         internal Gtk.TreeStore Store { get { return _store; } }
-        private Gtk.TreeViewColumn textcolumn;
-        private Gtk.TreeViewColumn checkboxcolumn;
         protected override void SetStyle(Widget widget)
         {
             base.SetStyle(self.TreeView);
@@ -31,18 +29,6 @@ namespace System.Windows.Forms
         {
             root = new TreeNode(this);
             root.Name = "root";
-
-            Gtk.CellRendererText renderertext = new Gtk.CellRendererText();
-            renderertext.IsExpanded = true;
-            renderertext.PlaceholderText = "---";
-            textcolumn = new Gtk.TreeViewColumn(" 菜单列表", renderertext, "text", 0);
-
-            CellRendererToggle renderercheckbox = new CellRendererToggle();
-            renderercheckbox.Activatable = true;
-            renderercheckbox.IsExpanded = true;
-            renderercheckbox.Toggled += CellName_Toggled;
-            checkboxcolumn = new Gtk.TreeViewColumn("", renderercheckbox, "active", 1);
-            
             _store = new Gtk.TreeStore(typeof(string), typeof(bool));
             self.TreeView.Model = _store;
             self.TreeView.Realized += Control_Realized;
@@ -54,9 +40,25 @@ namespace System.Windows.Forms
         }
         private void Control_Realized(object sender, EventArgs e)
         {
-            self.TreeView.AppendColumn(textcolumn);
+            CellRendererToggle renderercheckbox = new CellRendererToggle();
+            renderercheckbox.Activatable = true;
+            renderercheckbox.IsExpanded = true;
+            renderercheckbox.Toggled += CellName_Toggled;
+
+            Gtk.CellRendererText renderertext = new Gtk.CellRendererText();
+            renderertext.IsExpanded = true;
+            renderertext.PlaceholderText = "---";
+
+            Gtk.TreeViewColumn column = new Gtk.TreeViewColumn();
+            column.Title = "树目录";
             if (CheckBoxes == true)
-                self.TreeView.AppendColumn(checkboxcolumn);
+            {
+                column.PackStart(renderercheckbox, false);
+                column.AddAttribute(renderercheckbox, "active", 1);
+            }
+            column.PackStart(renderertext, false);
+            column.SetAttributes(renderertext, new object[] { "text", 0 });
+            self.TreeView.AppendColumn(column);
         }
 
         private void CellName_Toggled(object o, ToggledArgs args)
@@ -88,7 +90,7 @@ namespace System.Windows.Forms
             }
         }
         public bool CheckBoxes { get; set; }
-        public bool ShowLines { get; set; } = true;
+        public bool ShowLines { get=> self.TreeView.EnableTreeLines; set { self.TreeView.EnableTreeLines = true; self.TreeView.EnableGridLines = Gtk.TreeViewGridLines.Horizontal; } }
         public bool ShowNodeToolsTips { get; set; }
         public bool ShowPlusMinus { get; set; } = true;
         public bool ShowRootLines { get; set; } = true;

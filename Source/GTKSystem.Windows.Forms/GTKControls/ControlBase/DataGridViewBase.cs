@@ -14,6 +14,8 @@
             GridView.Halign = Gtk.Align.Fill;
             GridView.Expand = true;
             GridView.BorderWidth = 0;
+            GridView.EnableGridLines = Gtk.TreeViewGridLines.Both;
+            GridView.EnableTreeLines = true;
             this.AutoScroll = true;
             this.Add(GridView);
         }
