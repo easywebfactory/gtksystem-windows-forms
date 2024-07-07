@@ -11,15 +11,13 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Override.AddClass("TreeView");
             this.TreeView.Valign = Align.Fill;
             this.TreeView.Halign = Align.Fill;
-            this.TreeView.MarginTop = 3;
-            this.TreeView.MarginStart = 1;
-            this.TreeView.MarginEnd = 1;
-            this.TreeView.MarginBottom = 1;
-            this.TreeView.EnableGridLines = Gtk.TreeViewGridLines.Horizontal;
+            this.TreeView.BorderWidth = 1;
+            this.TreeView.Margin = 0;
+            this.TreeView.EnableGridLines = Gtk.TreeViewGridLines.None;
             this.TreeView.EnableTreeLines = true;
             this.TreeView.HeadersVisible = false;
             this.TreeView.ActivateOnSingleClick = true;
-            this.TreeView.BorderWidth = 1;
+            
             this.AutoScroll = true;
             this.Add(this.TreeView);
         }

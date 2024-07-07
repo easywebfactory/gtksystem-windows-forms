@@ -138,6 +138,8 @@ GTKWinFormsApp.runtimeconfig.json
 ![windows7风格界面](/pic/windows7-0.png)
 #### 主题风格，macOS风格界面
 ![macOS风格界面](/pic/macOS-1.png)
+#### 主题风格，window10黑色风格界面
+![mwindow10黑色风格界面](/pic/Windows-10-Dark.png)
 
 #### 支持GTKSystem，获取技术服务
 
@@ -172,6 +174,8 @@ QQ群：236066073
 2. https://github.com/easywebfactory
 
 #### 更新日志
+ ## 2024/7/7
+   1. 修改一些控件样式
  ## 2024/6/28
    1. 修改一些边框样式、控件鼠标事件
    2. 修改一些控件的属性值\错误

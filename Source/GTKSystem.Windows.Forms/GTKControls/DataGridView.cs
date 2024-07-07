@@ -32,6 +32,10 @@ namespace System.Windows.Forms
         internal Gtk.TreeView GridView { get { return self.GridView; } }
         public DataGridView():base()
         {
+            this.BorderStyle = BorderStyle.FixedSingle;
+            GridView.Margin = 0;
+            GridView.MarginStart = 0;
+            GridView.MarginEnd = 0;
             GridView.Selection.Mode = Gtk.SelectionMode.Multiple;
             GridView.HeadersClickable = true;
             GridView.HeadersVisible = true;
