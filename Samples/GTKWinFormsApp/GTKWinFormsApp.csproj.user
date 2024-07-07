@@ -3,6 +3,10 @@
   <PropertyGroup>
     <_LastSelectedProfileId>F:\我的项目\GTK\gtksystem-windows-forms\Samples\GTKWinFormsApp\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
     <ShowAllFiles>false</ShowAllFiles>
+    <ActiveDebugProfile>GTKWinFormsApp</ActiveDebugProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="Form1.cs">

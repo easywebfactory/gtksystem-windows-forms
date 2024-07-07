@@ -17,15 +17,12 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         public TextBox() : base()
         {
-            if (Gtk.Settings.Default.ThemeName == "Adwaita" || Gtk.Settings.Default.ThemeName == "Default")
-            {
-                self.HasFrame = false;
-                //self.StyleContext.AddClass("TextBoxFrame");
-            }
-            self.ShadowType = Gtk.ShadowType.None;
-            self.HasDefault = false;
+            //self.HasFrame = false;
+            self.ShadowType = Gtk.ShadowType.In;
+            //self.HasDefault = false;
             self.MaxWidthChars = 1;
             self.WidthChars = 0;
+
             self.Valign = Gtk.Align.Start;
             self.Halign = Gtk.Align.Start;
         }

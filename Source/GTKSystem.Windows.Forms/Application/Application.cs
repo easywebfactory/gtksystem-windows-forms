@@ -93,48 +93,47 @@ namespace System.Windows.Forms
                 var quitAction = new GLib.SimpleAction("quit", null);
                 quitAction.Activated += QuitActivated;
                 App.AddAction(quitAction);
-
+                Gtk.Settings.Default.ThemeName = "Windows-10";
+                Gtk.Settings.Default.SplitCursor = true;
                 Gtk.CssProvider css = new Gtk.CssProvider();
                 string css_style = @"
-/* 定义控件样式 rgba(139,139,139,0.6) shade(@bg_color,0.9); */
 
-@define-color bg_color #ffffff;
-@define-color fg_color #4c4c4c;
-@define-color base_color #ffffff;
-@define-color text_color #cecece;
+/* 定义控件样式*/
 
-@define-color entry_frame_color rgba(160,160,160,0.7);
-@define-color frame_color  rgba(160,160,160,0.5);
-@define-color frame3d_color  rgba(160,160,160,0.5);
+@define-color frame_color  alpha(@theme_fg_color, 0.2);
+@define-color frame3d_color  alpha(@theme_fg_color, 0.2);
 
 @define-color line_color #ECECEC;
-@define-color toolstrip_frame_color rgba(169,169,169,0.3);
 @define-color separator_color1 #C6C5C4;
 @define-color separator_color2 #D6D7D8;
 
 .DefaultThemeStyle{padding: 0px 2px; border-style:solid;}
-.DefaultThemeStyle entry{padding: 4px 2px;}
-.DefaultThemeStyle entry.flat{padding: 4px 2px;box-shadow: 0px 0px 1px 1px @entry_frame_color;background:@bg_color;}
-.DefaultThemeStyle button{padding:1px 1px;}
+.DefaultThemeStyle entry{
+   padding: 0px 4px; border-width: 1px; border-style: solid; 
+   background-color: @theme_base_color; color: @theme_text_color;
+}
+.DefaultThemeStyle entry.flat{
+    border-width: 1px; border-style: solid; border-color:@frame_color;
+}
+.DefaultThemeStyle button{padding:4px 3px;}
 .BorderNone{border-width:0px;border-style:none;box-shadow:none;}
+
 .BorderFixedSingle{border-width:0px;border-style:none;padding:1px;box-shadow: inset 0px 0px 0px 1px @frame_color;}
 .BorderFixed3D{border-width:0px;border-style:none; padding:2px; box-shadow: inset 1px 1px 1px 2px @frame3d_color;}
 
 .DataGridView {border-width:1px;margin:-3px;}
-.GridViewCell-Button{ border:solid 1px #cccccc; font-size:12px; background:linear-gradient(#e9e9e9,#e0e0e0);}
-.GridViewCell-Button:hover{background:linear-gradient(#eeeeee,#efefef);}
+.GridViewCell-Button{ color:@theme_text_color; border:solid 1px @frame_color; background-color: shade(@theme_bg_color, 0.7);}
+.GridViewCell-Button:hover{background-color: shade(@theme_bg_color, 0.8);}
 .GridViewCell-Button:selected{ color:blue}
 
 .LinkLabel{border-style:none;}
-.TextBox{padding: 4px 2px;}
-.TextBoxFrame{box-shadow: 0px 0px 1px 1px @entry_frame_color;background:@bg_color;}
-.DropDownList button{padding:4px;}
-
+.TextBox{}
+.DropDownList button{padding:3px;}
 .SplitContainer1 > separator {border-style:solid;border-width:2px;}
 
 .TableLayoutPanel {box-shadow: 1px 1px 1px 0px @frame_color;}
 .TableLayoutPanel viewport.frame {box-shadow: inset 1px 1px 1px 0 @frame_color;}
-.ListView{background-color:@bg_color;}
+.ListView{}
 .ListView checkbutton {padding:0px;}
 .ListView .Label{background-color:transparent;} 
 .ListViewHeader {background-color:@theme_bg_color; opacity:0.88; }
@@ -149,6 +148,7 @@ namespace System.Windows.Forms
 .NumericUpDown button.down{border-width:0px;padding:0px;min-height:6px;min-width:6px;}
 .NumericUpDown.horizontal entry{border-width:0px;padding:1px;min-height:6px;min-width:6px;} 
 .NumericUpDown.vertical entry{border-width:0px;padding:1px;min-height:6px;min-width:6px;} 
+
                 ";
 
                 string defaulttheme = "theme/default/style/style.css";

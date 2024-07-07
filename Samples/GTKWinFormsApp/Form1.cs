@@ -419,7 +419,7 @@ namespace GTKWinFormsApp
 
         private void tabPage2_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("ffsssssss");
+           // MessageBox.Show("ffsssssss");
         }
     }
 
