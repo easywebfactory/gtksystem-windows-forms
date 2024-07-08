@@ -93,7 +93,6 @@ namespace System.Windows.Forms
                 var quitAction = new GLib.SimpleAction("quit", null);
                 quitAction.Activated += QuitActivated;
                 App.AddAction(quitAction);
-                Gtk.Settings.Default.ThemeName = "Windows-10";
                 Gtk.Settings.Default.SplitCursor = true;
                 Gtk.CssProvider css = new Gtk.CssProvider();
                 string css_style = @"
