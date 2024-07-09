@@ -1,5 +1,7 @@
 ﻿
+using Gdk;
 using System.Drawing.Text;
+using System.Linq;
 
 namespace System.Drawing
 {
@@ -61,14 +63,14 @@ namespace System.Drawing
         //
         // 返回结果:
         //     A System.Drawing.FontFamily object that represents a generic sans serif font.
-        public static FontFamily GenericSansSerif { get; }
+        public static FontFamily GenericSansSerif { get => new FontFamily(GenericFontFamilies.SansSerif); }
         //
         // 摘要:
         //     Gets a generic monospace System.Drawing.FontFamily.
         //
         // 返回结果:
         //     A System.Drawing.FontFamily that represents a generic monospace font.
-        public static FontFamily GenericMonospace { get; }
+        public static FontFamily GenericMonospace { get => new FontFamily(GenericFontFamilies.Monospace); }
         //
         // 摘要:
         //     Returns an array that contains all the System.Drawing.FontFamily objects associated
@@ -77,14 +79,15 @@ namespace System.Drawing
         // 返回结果:
         //     An array of System.Drawing.FontFamily objects associated with the current graphics
         //     context.
-        public static FontFamily[] Families { get; }
+        public static FontFamily[] Families { get => Array.ConvertAll(PangoHelper.ContextGet().Families, o => new FontFamily(o.Name)); }
+
         //
         // 摘要:
         //     Gets a generic serif System.Drawing.FontFamily.
         //
         // 返回结果:
         //     A System.Drawing.FontFamily that represents a generic serif font.
-        public static FontFamily GenericSerif { get; }
+        public static FontFamily GenericSerif { get => new FontFamily(GenericFontFamilies.Serif); }
         //
         // 摘要:
         //     Gets the name of this System.Drawing.FontFamily.

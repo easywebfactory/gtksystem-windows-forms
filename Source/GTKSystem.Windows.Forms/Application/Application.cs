@@ -88,11 +88,11 @@ namespace System.Windows.Forms
                 }
                 Gtk.Application.Init();
                 App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
-                App.Register(GLib.Cancellable.Current);
-                App.Shutdown += App_Shutdown;
-                var quitAction = new GLib.SimpleAction("quit", null);
-                quitAction.Activated += QuitActivated;
-                App.AddAction(quitAction);
+                //App.Register(GLib.Cancellable.Current);
+                //App.Shutdown += App_Shutdown;
+                //var quitAction = new GLib.SimpleAction("quit", null);
+                //quitAction.Activated += QuitActivated;
+                //App.AddAction(quitAction);
                 Gtk.Settings.Default.SplitCursor = true;
                 Gtk.CssProvider css = new Gtk.CssProvider();
                 string css_style = @"

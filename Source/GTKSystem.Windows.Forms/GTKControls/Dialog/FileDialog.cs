@@ -3,27 +3,20 @@
  * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
  * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
- * date: 2024/1/3
  */
+using Gtk;
 using System.ComponentModel;
 using System.Text;
 
 namespace System.Windows.Forms
 {
-    public abstract class FileDialog : Gtk.FileChooserDialog
+    public abstract class FileDialog : CommonDialog
     {
-       // public Gtk.FileChooserDialog Dialog;
+        public Gtk.FileChooserDialog fileDialog;
         public FileDialog()
         {
-           // Dialog = new Gtk.FileChooserDialog("",new Gtk.Window(Gtk.WindowType.Toplevel) { WindowPosition=Gtk.WindowPosition.Center },new Gtk.FileChooserAction());
-            base.AddButton("确定", Gtk.ResponseType.Ok);
-            base.AddButton("取消", Gtk.ResponseType.Cancel);
-        }
- 
-        //[Browsable(false)]
-        //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        //public FileDialogCustomPlacesCollection CustomPlaces { get; }
 
+        }
 
         public bool ValidateNames { get; set; }
 
@@ -36,11 +29,14 @@ namespace System.Windows.Forms
         public bool RestoreDirectory { get; set; }
 
         public string InitialDirectory { get; set; }
+        public string Description { get; set; }
+
+        public string SelectedPath { get; set; }
 
         public int FilterIndex { get; set; }
 
         private string filter;
-        public new string Filter
+        public string Filter
         {
             get
             {
@@ -55,20 +51,20 @@ namespace System.Windows.Forms
                 {
                     throw new ArgumentException("FileDialog Invalid Filter");
                 }
-                base.Filter = new Gtk.FileFilter();
-                for (int i = 0; i < array.Length; i += 2)
-                {
-                    base.Filter.AddMimeType(array[i]);
-                    base.Filter.AddPattern(array[i + 1]);
-                }
+                //base.Filter = new Gtk.FileFilter();
+                //for (int i = 0; i < array.Length; i += 2)
+                //{
+                //    base.Filter.AddMimeType(array[i]);
+                //    base.Filter.AddPattern(array[i + 1]);
+                //}
             }
         }
 
         public bool AutoUpgradeEnabled { get; set; }
 
-        public string FileName { get { return base.Filename; } set { } }
-        public string[] FileNames { get { return base.Filenames; } }
-
+        public string FileName { get; set; }
+        public string[] FileNames { get { return fileDialog?.Filenames; } }
+        public bool Multiselect { get; set; }
         public bool DereferenceLinks { get; set; }
 
         public string DefaultExt { get; set; }
@@ -80,34 +76,53 @@ namespace System.Windows.Forms
         public bool AddExtension { get; set; }
 
         public event CancelEventHandler FileOk;
-        public virtual void Reset() { }
-
-        public DialogResult ShowDialog()
+        public override void Reset() { }
+        protected override bool RunDialog(IWin32Window owner)
         {
-            int res = base.Run();
-            base.HideOnDelete();
-            Gtk.ResponseType resp = Enum.Parse<Gtk.ResponseType>(res.ToString());
-            if (resp == Gtk.ResponseType.Yes)
-                return DialogResult.Yes;
-            else if (resp == Gtk.ResponseType.No)
-                return DialogResult.No;
-            else if (resp == Gtk.ResponseType.Ok)
-                return DialogResult.OK;
-            else if (resp == Gtk.ResponseType.Cancel)
-                return DialogResult.Cancel;
-            else if (resp == Gtk.ResponseType.Reject)
-                return DialogResult.Abort;
-            else if (resp == Gtk.ResponseType.Help)
-                return DialogResult.Retry;
-            else if (resp == Gtk.ResponseType.Close)
-                return DialogResult.Ignore;
-            else if (resp == Gtk.ResponseType.None)
-                return DialogResult.None;
-            else if (resp == Gtk.ResponseType.DeleteEvent)
-                return DialogResult.None;
+            if (owner != null && owner is Form ownerform)
+            {
+                fileDialog = new Gtk.FileChooserDialog("", ownerform.self, Gtk.FileChooserAction.SelectFolder);
+                fileDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
+            }
             else
-                return DialogResult.None;
+            {
+                fileDialog = new Gtk.FileChooserDialog("", null, Gtk.FileChooserAction.SelectFolder);
+                fileDialog.WindowPosition = Gtk.WindowPosition.Center;
+            }
+
+            //Dialog.AddButton("确定", Gtk.ResponseType.Ok);
+            //Dialog.AddButton("取消", Gtk.ResponseType.Cancel);
+            fileDialog.SelectMultiple = this.Multiselect;
+            fileDialog.Title = this.Description;
+            if(!string.IsNullOrWhiteSpace(this.SelectedPath))
+                fileDialog.SetCurrentFolder(this.SelectedPath);
+            fileDialog.Filter = new Gtk.FileFilter();
+            string[] array = this.Filter.Split('|');
+
+            if (array == null || array.Length % 2 != 0)
+            {
+                throw new ArgumentException("FileDialog Invalid Filter");
+            }
+            for (int i = 0; i < array.Length; i += 2)
+            {
+                fileDialog.Filter.AddMimeType(array[i]);
+                fileDialog.Filter.AddPattern(array[i + 1]);
+            }
+            
+            int response = fileDialog.Run();
+            this.FileName = fileDialog.Filename;
+            fileDialog.HideOnDelete();
+            return response == -5;
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (fileDialog != null)
+            {
+                fileDialog.Dispose();
+                fileDialog = null;
+            }
+            base.Dispose(disposing);
+        }
     }
 }

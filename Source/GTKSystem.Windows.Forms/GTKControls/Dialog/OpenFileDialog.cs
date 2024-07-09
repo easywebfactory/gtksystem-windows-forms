@@ -14,10 +14,8 @@ namespace System.Windows.Forms
     {
         public OpenFileDialog()
         {
-            base.Action = Gtk.FileChooserAction.Open;
+            
         }
-
-        public bool Multiselect { get { return base.SelectMultiple; } set { base.SelectMultiple = value; } }
 
         public bool ReadOnlyChecked { get; set; }
 
@@ -36,6 +34,10 @@ namespace System.Windows.Forms
 
         }
 
-        public override void Reset() { }
+        public override DialogResult ShowDialog(IWin32Window owner)
+        {
+            fileDialog.Action = Gtk.FileChooserAction.Open;
+            return base.ShowDialog(owner);
+        }
     }
 }

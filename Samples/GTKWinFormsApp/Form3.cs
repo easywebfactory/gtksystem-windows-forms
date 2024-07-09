@@ -82,7 +82,7 @@ namespace GTKWinFormsApp
             //path.CloseFigure();
 
 
-            path.AddString("test文本", new FontFamily(GenericFontFamilies.Serif), (int)FontStyle.Italic, 16, new Point(10, 10), new StringFormat(StringFormatFlags.NoWrap));
+            path.AddString("test文本", new FontFamily(GenericFontFamilies.Serif), (int)FontStyle.Italic, 16, new Point(1, 1), new StringFormat(StringFormatFlags.NoWrap));
 
             //path.CloseAllFigures();
 
@@ -114,6 +114,28 @@ namespace GTKWinFormsApp
         private void panel5_Scroll(object sender, System.Windows.Forms.ScrollEventArgs e)
         {
             Console.WriteLine($"panel5_Scroll:{e.OldValue},{e.NewValue};{e.ScrollOrientation}");
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var doc = new System.Drawing.Printing.PrintDocument();
+            doc.PrintPage += Doc_PrintPage;
+
+            PageSetupDialog pageSetupDialog = new PageSetupDialog();
+            pageSetupDialog.Document = doc;
+            pageSetupDialog.ShowDialog();
+
+            PrintDialog printDialog = new PrintDialog();
+            printDialog.Document = doc;
+            printDialog.ShowDialog();
+        }
+
+        private void Doc_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            e.Graphics.DrawString("ddddd", new Font(FontFamily.GenericSerif, 30), new SolidBrush(Color.Red), new PointF(0, 0));
+
+            e.Graphics.DrawRectangle(new Pen(new SolidBrush(Color.Blue), 1), new Rectangle(e.PageBounds.X, e.PageBounds.Y, e.PageBounds.Width, e.PageBounds.Height));
+        
         }
     }
 }

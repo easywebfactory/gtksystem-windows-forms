@@ -1,5 +1,7 @@
 using Cairo;
+using Gdk;
 using Gtk;
+using Pango;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,8 +32,13 @@ namespace System.Drawing
 			this.rectangle = rectangle;
 			this.Clip = new Region(new Rectangle(this.rectangle.X, this.rectangle.Y, this.rectangle.Width, this.rectangle.Height));
 		}
-
-		public delegate bool DrawImageAbort(IntPtr callbackdata);
+        internal Graphics(Cairo.Context context, Gdk.Rectangle rectangle)
+        {
+            this.context = context;
+            this.rectangle = rectangle;
+            this.Clip = new Region(new Rectangle(this.rectangle.X, this.rectangle.Y, this.rectangle.Width, this.rectangle.Height));
+        }
+        public delegate bool DrawImageAbort(IntPtr callbackdata);
 
 		public delegate bool EnumerateMetafileProc(EmfPlusRecordType recordType, int flags, int dataSize, IntPtr data, PlayRecordCallback callbackData);
 
@@ -940,17 +947,20 @@ namespace System.Drawing
                     }
                     float textSize = str.emSize < 1 ? 14f : str.emSize;
                     FontFamily font = str.family;
-                    Pango.Context pangocontext = this.widget.PangoContext;
-                    string family = pangocontext.FontDescription.Family;
-                    if (string.IsNullOrWhiteSpace(font.Name) == false)
+                    string family = font?.Name;
+                    if (this.widget != null)
                     {
+                        Pango.Context pangocontext = this.widget.PangoContext;
+                        family = this.widget.PangoContext.FontDescription.Family;
                         var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
-                        if (pangoFamily != null)
-                            family = pangoFamily.Name;
+                        if (pangoFamily == null)
+                            family = pangocontext.FontDescription.Family;
                     }
-                    this.context.MoveTo(str.layoutRect.X, str.layoutRect.Y + textSize);
+                    
                     this.context.SelectFontFace(family, str.style == 2 ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, str.style == 1 ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
                     this.context.SetFontSize(textSize);
+                    TextExtents textext = this.context.TextExtents(text);
+                    this.context.MoveTo(str.layoutRect.X, str.layoutRect.Y + textext.Height);
                     this.context.ShowText(text);
                 }
                 else if (o is GraphicsPath.PathMode addpath)
@@ -1094,17 +1104,20 @@ namespace System.Drawing
                     }
                     float textSize = str.emSize < 1 ? 14f : str.emSize;
                     FontFamily font = str.family;
-                    Pango.Context pangocontext = this.widget.PangoContext;
-                    string family = pangocontext.FontDescription.Family;
-                    if (string.IsNullOrWhiteSpace(font.Name) == false)
+                    string family = font?.Name;
+                    if (this.widget != null)
                     {
+                        Pango.Context pangocontext = this.widget.PangoContext;
+                        family = this.widget.PangoContext.FontDescription.Family;
                         var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
-                        if (pangoFamily != null)
-                            family = pangoFamily.Name;
+                        if (pangoFamily == null)
+                            family = pangocontext.FontDescription.Family;
                     }
-                    this.context.MoveTo(str.layoutRect.X, str.layoutRect.Y + textSize);
+                    
                     this.context.SelectFontFace(family, str.style == 2 ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, str.style == 1 ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
                     this.context.SetFontSize(textSize);
+                    TextExtents textext = this.context.TextExtents(text);
+                    this.context.MoveTo(str.layoutRect.X, str.layoutRect.Y + textext.Height);
                     this.context.ShowText(text);
                 }
                 else if (o is GraphicsPath.PathMode addpath)
@@ -1259,12 +1272,12 @@ namespace System.Drawing
 
 		public void DrawString(string s, Font font, Brush brush, PointF point)
 		{
-			DrawString(s, font, brush, new RectangleF(point.X, point.Y, this.widget.AllocatedWidth, this.widget.AllocatedHeight), new StringFormat());
+			DrawString(s, font, brush, new RectangleF(point.X + this.rectangle.X, point.Y + this.rectangle.Y, this.rectangle.Width, this.rectangle.Height), new StringFormat());
 		}
 
 		public void DrawString(string s, Font font, Brush brush, PointF point, StringFormat format)
 		{
-			DrawString(s, font, brush, new RectangleF(point.X, point.Y, this.widget.AllocatedWidth, this.widget.AllocatedHeight), format);
+			DrawString(s, font, brush, new RectangleF(point.X + this.rectangle.X, point.Y + this.rectangle.Y, this.rectangle.Width, this.rectangle.Height), format);
 		}
 
 		public void DrawString(string s, Font font, Brush brush, RectangleF layoutRectangle)
@@ -1272,9 +1285,9 @@ namespace System.Drawing
 			DrawString(s, font, brush, layoutRectangle, new StringFormat());
 		}
 
-		public void DrawString(string s, Font font, Brush brush, RectangleF layoutRectangle, StringFormat format)
+		public void DrawString(string text, Font font, Brush brush, RectangleF layoutRectangle, StringFormat format)
 		{
-			if (string.IsNullOrEmpty(s) == false)
+			if (string.IsNullOrEmpty(text) == false)
 			{
 				this.context.Save();
                 
@@ -1287,34 +1300,34 @@ namespace System.Drawing
 					if (font.Unit == GraphicsUnit.Inch)
 						textSize = font.Size * 96;
 				}
-                this.SetTranslateWithDifference(layoutRectangle.X, layoutRectangle.Y + textSize);
-                this.SetSourceColor(new Pen(brush,1));
-                Pango.Context pangocontext = this.widget.PangoContext;
-				string family = pangocontext.FontDescription.Family;
-				if (string.IsNullOrWhiteSpace(font.Name) == false)
-				{
-                    var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
-                    if (pangoFamily != null)
-						family = pangoFamily.Name;
-				}
                 
-
+                string family = font?.Name;
+                if (this.widget != null)
+                {
+                    Pango.Context pangocontext = this.widget.PangoContext;
+                    family = this.widget.PangoContext.FontDescription.Family;
+                    var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
+                    if (pangoFamily == null)
+                        family = pangocontext.FontDescription.Family;
+                }
+                this.context.SetFontSize(textSize);
                 this.context.SelectFontFace(family, (font.Style & FontStyle.Italic) != 0 ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, (font.Style & FontStyle.Bold) != 0 ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
-				this.context.SetFontSize(textSize);
-				this.context.ShowText(s);
+                TextExtents textext = this.context.TextExtents(text);
+                this.SetTranslateWithDifference(layoutRectangle.X, layoutRectangle.Y + textext.Height);
+                this.SetSourceColor(new Pen(brush, 1));
+				this.context.ShowText(text);
                 this.context.Stroke();
 				this.context.Restore();
 			}
 		}
 
 		public void DrawString(string s, Font font, Brush brush, float x, float y)
-		{
-			DrawString(s, font, brush, new RectangleF(x, y, this.widget.AllocatedWidth, this.widget.AllocatedHeight), new StringFormat());
-		}
-
-		public void DrawString(string s, Font font, Brush brush, float x, float y, StringFormat format)
-		{
-			DrawString(s, font, brush, new RectangleF(x, y, this.widget.AllocatedWidth, this.widget.AllocatedHeight), format);
+        {
+            DrawString(s, font, brush, new RectangleF(x + this.rectangle.X, y + this.rectangle.Y, this.rectangle.Width, this.rectangle.Height), new StringFormat());
+        }
+        public void DrawString(string s, Font font, Brush brush, float x, float y, StringFormat format)
+        {
+			DrawString(s, font, brush, new RectangleF(x + this.rectangle.X, y + this.rectangle.Y, this.rectangle.Width, this.rectangle.Height), format);
 		}
 
 		public void EndContainer(GraphicsContainer container)
@@ -1765,17 +1778,17 @@ namespace System.Drawing
                 if (font.Unit == GraphicsUnit.Inch)
                     textSize = font.Size * 96;
             }
-            Pango.Context pangocontext = this.widget.PangoContext;
-            string family = pangocontext.FontDescription.Family;
-            if (string.IsNullOrWhiteSpace(font.FontFamily.Name) == false)
+            string family = font?.Name;
+            if (this.widget != null)
             {
-                var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.FontFamily.Name);
-                if (pangoFamily != null)
-                    family = pangoFamily.Name;
+                Pango.Context pangocontext = this.widget.PangoContext;
+                family = this.widget.PangoContext.FontDescription.Family;
+                var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
+                if (pangoFamily == null)
+                    family = pangocontext.FontDescription.Family;
             }
             this.context.SelectFontFace(family, font.Italic ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, font.Bold ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
             this.context.SetFontSize(textSize);
-           
             var extents = this.context.TextExtents(text);
 			return new SizeF((float)Math.Max(width,extents.Width), (float)extents.Height);
         }

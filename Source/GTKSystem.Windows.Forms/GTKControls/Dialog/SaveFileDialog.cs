@@ -13,7 +13,11 @@ namespace System.Windows.Forms
     {
         public SaveFileDialog()
         {
-            base.Action=Gtk.FileChooserAction.Save;
+        }
+        public override DialogResult ShowDialog(IWin32Window owner)
+        {
+            fileDialog.Action = Gtk.FileChooserAction.Save;
+            return base.ShowDialog(owner);
         }
     }
 }
