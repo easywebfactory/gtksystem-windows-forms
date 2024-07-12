@@ -400,11 +400,11 @@ namespace GTKWinFormsApp
             // 
             // button3
             // 
-            button3.Location = new System.Drawing.Point(94, 126);
+            button3.Location = new System.Drawing.Point(13, 89);
             button3.Name = "button3";
             button3.Size = new System.Drawing.Size(94, 29);
             button3.TabIndex = 1;
-            button3.Text = "button3";
+            button3.Text = "打印";
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 

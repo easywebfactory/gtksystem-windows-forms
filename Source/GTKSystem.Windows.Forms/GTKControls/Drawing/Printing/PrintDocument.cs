@@ -4,6 +4,7 @@
 
 using Gtk;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace System.Drawing.Printing
 {
@@ -26,7 +27,11 @@ namespace System.Drawing.Printing
         private bool _originAtMargins;
         private bool _userSetPageSettings;
 
-        public PrintDocument() => _defaultPageSettings = new PageSettings(_printerSettings);
+        public PrintDocument() 
+        { 
+            _defaultPageSettings = new PageSettings(_printerSettings);
+            _pageSetup = new PageSetup();
+        }
         private PageSetup _pageSetup;
         public PageSetup PageSetup { 
             get=> _pageSetup; 
@@ -34,8 +39,8 @@ namespace System.Drawing.Printing
                 _pageSetup = value;
                 PageSettings pageSettings = DefaultPageSettings;
                 pageSettings.Landscape = value.Orientation == Gtk.PageOrientation.Landscape || value.Orientation == Gtk.PageOrientation.ReverseLandscape;
-                pageSettings.Margins = new Margins((int)value.GetLeftMargin(Unit.Mm), (int)value.GetTopMargin(Unit.Mm), (int)value.GetRightMargin(Unit.Mm), (int)value.GetBottomMargin(Unit.Mm));
-                pageSettings.PaperSize = new System.Drawing.Printing.PaperSize(Enum.Parse<PaperKind>(value.PaperSize.DisplayName), value.PaperSize.Name, (int)value.PaperSize.GetWidth(Unit.Mm), (int)value.PaperSize.GetHeight(Unit.Mm));
+                pageSettings.Margins = new Margins((int)value.GetLeftMargin(Unit.Points), (int)value.GetTopMargin(Unit.Points), (int)value.GetRightMargin(Unit.Points), (int)value.GetBottomMargin(Unit.Points));
+                pageSettings.PaperSize = new System.Drawing.Printing.PaperSize(Enum.Parse<PaperKind>(value.PaperSize.DisplayName), value.PaperSize.Name, (int)value.PaperSize.GetWidth(Unit.Points), (int)value.PaperSize.GetHeight(Unit.Points));
                 _userSetPageSettings = true;
             }
         }
@@ -126,7 +131,12 @@ namespace System.Drawing.Printing
 
         public void Print()
         {
-
+            PrintDialog printDialog = new PrintDialog();
+            printDialog.Document = this;
+            printDialog.AllowPrintToFile = false;
+            printDialog.PrintToFile = false;
+            printDialog.Document.DocumentName = "PrintDoument";
+            printDialog.RunPrint(null, true);
         }
 
         public override string ToString() => $"[PrintDocument {DocumentName}]";

@@ -29,7 +29,7 @@ namespace System.Windows.Forms
         public string PlaceholderText { get { return self.PlaceholderText; } set { self.PlaceholderText = value ?? ""; } }
         public override string Text { get { return self.Text; } set { self.Text = value ?? ""; } }
         public virtual char PasswordChar { get => self.InvisibleChar; set { self.InvisibleChar = value; self.Visibility = false; } }
-        public virtual bool ReadOnly { get { return self.IsEditable; } set { self.IsEditable = value;  } }
+        public virtual bool ReadOnly { get { return self.IsEditable == false; } set { self.IsEditable = value == false;  } }
         public override event EventHandler TextChanged
         {
             add { self.Changed += (object sender, EventArgs e) => { value.Invoke(this, e); }; }

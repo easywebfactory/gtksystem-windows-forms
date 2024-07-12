@@ -1,27 +1,111 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.Reflection.Metadata;
 
 namespace System.Windows.Forms
 {
 
     [DesignTimeVisible(true)]
-    [DefaultProperty(nameof(Document))]
+    //[DefaultProperty(nameof(Document))]
     [ToolboxItemFilter("System.Windows.Forms.Control.TopLevel")]
     [ToolboxItem(true)]
-    public partial class PrintPreviewDialog : Form
+    public partial class PrintPreviewDialog : ScrollableControl
     {
-        private readonly PrintPreviewControl _previewControl;
-        public PrintPreviewDialog()
+        public ViewportBase self = new ViewportBase();
+        public override object GtkControl { get => self; }
+        private PrintPreviewControl _previewControl;
+        private Form previewForm;
+        private Gtk.Box box;
+        public PrintPreviewDialog():base()
         {
-
+            
+        }
+        private void Printbutton_ButtonPressEvent(object o, Gtk.ButtonPressEventArgs args)
+        {
+            PrintDialog printDialog = new PrintDialog();
+            printDialog.Document = _previewControl.Document;
+            printDialog.AllowPrintToFile = false;
+            printDialog.PrintToFile = false;
+            printDialog.Document.DocumentName = "PrintDoument";
+            printDialog.ShowDialog(previewForm);
+        }
+        private void Init()
+        {
+            previewForm = new Form();
+            previewForm.ClientSize = new Size(1000, 600);
+            previewForm.AutoScroll = true;
+ 
             _previewControl = new PrintPreviewControl();
+            //document size(794,1123)px
+            _previewControl.Width = 900;
+            _previewControl.Height = 1200;
+            _previewControl.self.MarginBottom = 20;
+            _previewControl.Zoom = 1;
+            _previewControl.AutoZoom = true;
+            _previewControl.Document = Document;
+
+            box = new Gtk.Box(Gtk.Orientation.Vertical, 15);
+            Gtk.Box header = new Gtk.Box(Gtk.Orientation.Horizontal, 20);
+            header.PackStart(new Gtk.Label("打印预览"), false, false, 0);
+            Gtk.Button printbutton = new Gtk.Button("打印") { WidthRequest = 200 };
+            printbutton.ButtonReleaseEvent += Printbutton_ButtonReleaseEvent;
+            header.PackEnd(printbutton, false, false, 0);
+            box.PackStart(header, false, true, 0);
+            box.PackStart(_previewControl.Widget, true, true, 0);
+            box.MarginStart = 50;
+            box.MarginTop = 20;
+            previewForm.Controls.Add(box);
+            previewForm.SizeChanged += PreviewForm_SizeChanged;
         }
 
-                  
+        private void Printbutton_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
+        {
+            PrintDialog printDialog = new PrintDialog();
+            printDialog.Document = _previewControl.Document;
+            printDialog.AllowPrintToFile = false;
+            printDialog.PrintToFile = false;
+            printDialog.Document.DocumentName = "PrintDoument";
+            printDialog.ShowDialog(previewForm);
+        }
+
+        private void PreviewForm_SizeChanged(object sender, EventArgs e)
+        {
+            box.MarginStart = (previewForm.Width - 900) / 2;
+        }
+
+        public override void Show()
+        {
+            this.Show(null);
+        }
+        public void Show(IWin32Window owner)
+        {
+            if (owner == this)
+            {
+                throw new InvalidOperationException("OwnsSelfOrOwner");
+            }
+            Init();
+            previewForm.Show(owner);
+        }
+        public DialogResult ShowDialog(IWin32Window owner)
+        {
+            Init();
+            return previewForm.ShowDialog(owner);
+        }
+        public DialogResult ShowDialog()
+        {
+            return ShowDialog(null);
+        }
+        public System.Drawing.Icon Icon
+        {
+            get;
+            set;
+        }
         public IButtonControl AcceptButton
         {
             get;

@@ -112,9 +112,9 @@ namespace System.Windows.Forms
                 _printDocument.PageSetup = pageSetup;
                 return true;
             }
-            finally
+            catch
             {
-
+                return false;
             }
         }
     }

@@ -147,7 +147,8 @@ namespace System.Windows.Forms
 .NumericUpDown button.down{border-width:0px;padding:0px;min-height:6px;min-width:6px;}
 .NumericUpDown.horizontal entry{border-width:0px;padding:1px;min-height:6px;min-width:6px;} 
 .NumericUpDown.vertical entry{border-width:0px;padding:1px;min-height:6px;min-width:6px;} 
-
+.PrintPreviewBack{background-color:#cccccc; border-radius:0px;}
+.Paper{box-shadow: 0px 0px 3px 1px #999999;background:#ffffff; border-radius:0px;}
                 ";
 
                 string defaulttheme = "theme/default/style/style.css";

@@ -46,12 +46,6 @@ namespace GTKWinFormsApp
             comboBox1 = new ComboBox();
             textBox1 = new TextBox();
             dataGridView1 = new DataGridView();
-            ID = new DataGridViewTextBoxColumn();
-            State = new DataGridViewCheckBoxColumn();
-            Title = new DataGridViewTextBoxColumn();
-            CreateDate = new DataGridViewComboBoxColumn();
-            Operate = new DataGridViewButtonColumn();
-            PIC = new DataGridViewImageColumn();
             groupBox1 = new GroupBox();
             checkBox2 = new CheckBox();
             maskedTextBox2 = new MaskedTextBox();
@@ -100,6 +94,12 @@ namespace GTKWinFormsApp
             checkedListBox1 = new CheckedListBox();
             splitContainer1 = new SplitContainer();
             pictureBox2 = new PictureBox();
+            ID = new DataGridViewTextBoxColumn();
+            State = new DataGridViewCheckBoxColumn();
+            Title = new DataGridViewTextBoxColumn();
+            CreateDate = new DataGridViewComboBoxColumn();
+            Operate = new DataGridViewButtonColumn();
+            PIC = new DataGridViewImageColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
@@ -138,7 +138,6 @@ namespace GTKWinFormsApp
             // 
             // comboBox1
             // 
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.FormattingEnabled = true;
             comboBox1.Items.AddRange(new object[] { "test1", "test2", "test3333333333333333333", "这是下拉列表控件数据测试" });
             comboBox1.Location = new System.Drawing.Point(355, 31);
@@ -176,7 +175,7 @@ namespace GTKWinFormsApp
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.RowTemplate.Height = 36;
-            dataGridView1.Size = new System.Drawing.Size(1323, 270);
+            dataGridView1.Size = new System.Drawing.Size(1323, 266);
             dataGridView1.TabIndex = 2;
             dataGridView1.MultiSelectChanged += dataGridView1_MultiSelectChanged;
             dataGridView1.CellClick += dataGridView1_CellClick;
@@ -188,57 +187,6 @@ namespace GTKWinFormsApp
             dataGridView1.RowEnter += dataGridView1_RowEnter;
             dataGridView1.RowLeave += dataGridView1_RowLeave;
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
-            // 
-            // ID
-            // 
-            ID.HeaderText = "ID";
-            ID.MinimumWidth = 6;
-            ID.Name = "ID";
-            ID.ReadOnly = true;
-            ID.SortMode = DataGridViewColumnSortMode.NotSortable;
-            ID.Width = 125;
-            // 
-            // State
-            // 
-            State.HeaderText = "State";
-            State.MinimumWidth = 6;
-            State.Name = "State";
-            State.Resizable = DataGridViewTriState.False;
-            State.Width = 125;
-            // 
-            // Title
-            // 
-            Title.HeaderText = "Title";
-            Title.MinimumWidth = 6;
-            Title.Name = "Title";
-            Title.Resizable = DataGridViewTriState.True;
-            Title.Width = 125;
-            // 
-            // CreateDate
-            // 
-            CreateDate.HeaderText = "CreateDate";
-            CreateDate.Items.AddRange(new object[] { "2012-09-12 12:32:11", "2012-09-13 12:32:22", "2012-09-14 12:32:33" });
-            CreateDate.MinimumWidth = 6;
-            CreateDate.Name = "CreateDate";
-            CreateDate.Resizable = DataGridViewTriState.True;
-            CreateDate.SortMode = DataGridViewColumnSortMode.Automatic;
-            CreateDate.Width = 125;
-            // 
-            // Operate
-            // 
-            Operate.HeaderText = "Operate";
-            Operate.MinimumWidth = 6;
-            Operate.Name = "Operate";
-            Operate.ReadOnly = true;
-            Operate.Width = 125;
-            // 
-            // PIC
-            // 
-            PIC.HeaderText = "PIC";
-            PIC.MinimumWidth = 6;
-            PIC.Name = "PIC";
-            PIC.ReadOnly = true;
-            PIC.Width = 125;
             // 
             // groupBox1
             // 
@@ -433,7 +381,7 @@ namespace GTKWinFormsApp
             tabControl1.Margin = new Padding(4);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new System.Drawing.Size(1339, 310);
+            tabControl1.Size = new System.Drawing.Size(1339, 306);
             tabControl1.TabIndex = 4;
             tabControl1.DrawItem += tabControl1_DrawItem;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
@@ -445,7 +393,7 @@ namespace GTKWinFormsApp
             tabPage1.Margin = new Padding(4);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(4);
-            tabPage1.Size = new System.Drawing.Size(1331, 277);
+            tabPage1.Size = new System.Drawing.Size(1331, 273);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "数据表格";
             tabPage1.UseVisualStyleBackColor = true;
@@ -463,7 +411,7 @@ namespace GTKWinFormsApp
             tabPage2.Margin = new Padding(4);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(4);
-            tabPage2.Size = new System.Drawing.Size(1331, 277);
+            tabPage2.Size = new System.Drawing.Size(1331, 273);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "容器类表格";
             tabPage2.UseVisualStyleBackColor = true;
@@ -623,7 +571,7 @@ namespace GTKWinFormsApp
             tabPage3.Location = new System.Drawing.Point(4, 29);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new System.Drawing.Size(1331, 277);
+            tabPage3.Size = new System.Drawing.Size(1331, 273);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "tabPage3";
             tabPage3.UseVisualStyleBackColor = true;
@@ -804,6 +752,54 @@ namespace GTKWinFormsApp
             pictureBox2.TabStop = false;
             pictureBox2.Paint += pictureBox2_Paint;
             // 
+            // ID
+            // 
+            ID.HeaderText = "ID";
+            ID.MinimumWidth = 6;
+            ID.Name = "ID";
+            ID.SortMode = DataGridViewColumnSortMode.NotSortable;
+            ID.Width = 125;
+            // 
+            // State
+            // 
+            State.HeaderText = "State";
+            State.MinimumWidth = 6;
+            State.Name = "State";
+            State.Resizable = DataGridViewTriState.False;
+            State.Width = 125;
+            // 
+            // Title
+            // 
+            Title.HeaderText = "Title";
+            Title.MinimumWidth = 6;
+            Title.Name = "Title";
+            Title.Resizable = DataGridViewTriState.True;
+            Title.Width = 125;
+            // 
+            // CreateDate
+            // 
+            CreateDate.HeaderText = "CreateDate";
+            CreateDate.Items.AddRange(new object[] { "2012-09-12 12:32:11", "2012-09-13 12:32:22", "2012-09-14 12:32:33" });
+            CreateDate.MinimumWidth = 6;
+            CreateDate.Name = "CreateDate";
+            CreateDate.Resizable = DataGridViewTriState.True;
+            CreateDate.SortMode = DataGridViewColumnSortMode.Automatic;
+            CreateDate.Width = 125;
+            // 
+            // Operate
+            // 
+            Operate.HeaderText = "Operate";
+            Operate.MinimumWidth = 6;
+            Operate.Name = "Operate";
+            Operate.Width = 125;
+            // 
+            // PIC
+            // 
+            PIC.HeaderText = "PIC";
+            PIC.MinimumWidth = 6;
+            PIC.Name = "PIC";
+            PIC.Width = 125;
+            // 
             // Form1
             // 
             AutoScaleMode = AutoScaleMode.None;
@@ -899,13 +895,13 @@ namespace GTKWinFormsApp
         private Button button6;
         private Label label6;
         private Button button7;
+        private TabPage tabPage3;
         private DataGridViewTextBoxColumn ID;
         private DataGridViewCheckBoxColumn State;
         private DataGridViewTextBoxColumn Title;
         private DataGridViewComboBoxColumn CreateDate;
         private DataGridViewButtonColumn Operate;
         private DataGridViewImageColumn PIC;
-        private TabPage tabPage3;
     }
 }
 

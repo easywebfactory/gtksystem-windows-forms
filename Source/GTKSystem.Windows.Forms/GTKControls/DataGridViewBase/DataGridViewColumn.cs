@@ -124,7 +124,7 @@ namespace System.Windows.Forms
         public override void Renderer()
         {
             CellRendererComboValue renderer = new CellRendererComboValue();
-            renderer.Editable = this.ReadOnly == false;
+            renderer.Editable = this.ReadOnly == false && _gridview.ReadOnly == false;
             renderer.Edited += Renderer_Edited;
             renderer.TextColumn = 0;
             renderer.Height = RowHeight;
@@ -285,7 +285,7 @@ namespace System.Windows.Forms
         public virtual void Renderer()
         {
             var renderer = new CellRendererValue();
-            renderer.Editable = this.ReadOnly == false;
+            renderer.Editable = this.ReadOnly == false && _gridview.ReadOnly == false;
             renderer.Edited += Renderer_Edited;
             renderer.Mode = CellRendererMode.Editable;
             renderer.PlaceholderText = "---";

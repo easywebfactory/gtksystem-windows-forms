@@ -1,6 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Printing;
@@ -11,42 +13,72 @@ namespace System.Windows.Forms
     [DefaultProperty(nameof(Document))]
     public partial class PrintPreviewControl : Control
     {
+        public readonly ViewportBase self = new ViewportBase();
+        public override object GtkControl => self;
         private const int ScrollSmallChange = 5;
         private const double DefaultZoom = .3;
 
         // Spacing per page, in mm
         private const int Border = 10;
-
         private static readonly object s_startPageChangedEvent = new object();
-
         private PrintDocument _document;
         private int _startPage;  // 0-based
         private int _rows = 1;
         private int _columns = 1;
         private bool _autoZoom = true;
-        private Size _virtualSize = new Size(1, 1);
-        private Point _position = new Point(0, 0);
-
-        private bool _scrollLayoutPending;
-
-        // The following are all computed by ComputeLayout
-        private bool _layoutOk;
-
-        // 100ths of an inch, not pixels
-        private Size _imageSize = Size.Empty;
-        private Point _screenDPI = Point.Empty;
         private double _zoom = DefaultZoom;
-        private bool _pageInfoCalcPending;
-        private bool _exceptionPrinting;
-
+        private Gtk.ScrolledWindow scroll;
+        private ViewportBase paper;
+        private const double pxscale = 0.75;
         public PrintPreviewControl()
         {
+            Size = new Size(600, 500);
+            self.StyleContext.AddClass("PrintPreviewBack");
+            
+            paper = new ViewportBase();
+            paper.Valign = Align.Center;
+            paper.Halign = Align.Center;
+            paper.StyleContext.AddClass("Paper");
+            paper.Drawn += paper_Drawn;
+            scroll = new Gtk.ScrolledWindow();
+            scroll.Child = paper;
+            self.Add(scroll);
+            self.Realized += Self_Shown;
+
             ResetBackColor();
             ResetForeColor();
-            Size = new Size(100, 100);
-            SetStyle(ControlStyles.ResizeRedraw, false);
-            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer, true);
-            TabStop = false;
+        }
+
+        private void Self_Shown(object sender, EventArgs e)
+        {
+            if (AutoZoom == false)
+            {
+                paper.WidthRequest = (int)Math.Round(_document.PageSetup.GetPaperWidth(Unit.Points) * _zoom / 0.75, 0);
+                paper.HeightRequest = (int)Math.Round(_document.PageSetup.GetPaperHeight(Unit.Points) * _zoom / 0.75, 0);
+            }
+        }
+        private void paper_Drawn(object o, Gtk.DrawnArgs args)
+        {
+            if (_document != null)
+            {
+                PageSetup setup = _document.PageSetup;
+                _document.OnBeginPrint(new PrintEventArgs());
+                var cr = args.Cr;
+                int top = (int)Math.Round(setup.GetTopMargin(Unit.Points) / pxscale, 0);
+                int left = (int)Math.Round(setup.GetLeftMargin(Unit.Points) / pxscale, 0);
+                int right = (int)Math.Round(setup.GetRightMargin(Unit.Points) / pxscale, 0);
+                int bottom = (int)Math.Round(setup.GetBottomMargin(Unit.Points) / pxscale, 0);
+                int width = (int)Math.Round(setup.GetPaperWidth(Unit.Points) / pxscale, 0); //page<paper
+                int height = (int)Math.Round(setup.GetPaperHeight(Unit.Points) / pxscale, 0);
+                cr.Translate(0, 0);
+                if (AutoZoom == false)
+                    cr.Scale(_zoom, _zoom);
+                cr.Rectangle(0, 0, width, height);
+                cr.SetSourceRGBA(ForeColor.R / 255, ForeColor.G / 255, ForeColor.B / 255, ForeColor.A / 255);
+                cr.Fill();
+                _document.OnPrintPage(new PrintPageEventArgs(new Drawing.Graphics((Gtk.Widget)o, cr, new Gdk.Rectangle(0, 0, width, height)), new Drawing.Rectangle(left, top, width - left - right, height - top - bottom), new Drawing.Rectangle(0, 0, width, height), _document.DefaultPageSettings));
+                _document.OnEndPrint(new PrintEventArgs());
+            }
         }
 
         [DefaultValue(false)]
@@ -64,7 +96,6 @@ namespace System.Windows.Forms
                 if (_autoZoom != value)
                 {
                     _autoZoom = value;
-                   // InvalidateLayout();
                 }
             }
         }
@@ -77,7 +108,6 @@ namespace System.Windows.Forms
             {
                 _autoZoom = false;
                 _zoom = value;
-                //InvalidateLayout();
             }
         }
 
@@ -88,6 +118,8 @@ namespace System.Windows.Forms
             set
             {
                 _document = value;
+                paper.WidthRequest = (int)Math.Round(_document.PageSetup.GetPaperWidth(Unit.Points) / pxscale, 0);
+                paper.HeightRequest = (int)Math.Round(_document.PageSetup.GetPaperHeight(Unit.Points) / pxscale, 0);
                 InvalidatePreview();
             }
         }
@@ -194,11 +226,7 @@ namespace System.Windows.Forms
          
         public void InvalidatePreview()
         {
-            if (!IsHandleCreated)
-            {
-                return;
-            }
-            _exceptionPrinting = false;
+            paper.QueueDraw();
         }
     }
 }

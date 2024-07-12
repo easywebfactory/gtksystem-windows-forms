@@ -162,7 +162,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\Printing\PrintPreviewDialog.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\ProgressBar.cs">
       <SubType>Component</SubType>

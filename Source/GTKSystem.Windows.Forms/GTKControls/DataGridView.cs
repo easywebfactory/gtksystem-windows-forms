@@ -93,7 +93,7 @@ namespace System.Windows.Forms
         public bool MultiSelect { get => !GridView.ActivateOnSingleClick; set { GridView.ActivateOnSingleClick = !value; } }
         public DataGridViewSelectionMode SelectionMode { get; set; }
         public string Markup { get; set; } = "...";
-       
+        public bool ReadOnly { get; set; }
         public int RowHeadersWidth { get; set; }
         public int ColumnHeadersHeight { get; set; }
 

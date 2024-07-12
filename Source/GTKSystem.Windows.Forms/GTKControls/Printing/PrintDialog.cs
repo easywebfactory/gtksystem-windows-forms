@@ -102,31 +102,72 @@ namespace System.Windows.Forms
 
         protected override bool RunDialog(IWin32Window owner)
         {
-            Gtk.PrintOperation printOperation = new Gtk.PrintOperation();
-            printOperation.DefaultPageSetup = Document.PageSetup;
-            printOperation.Unit = Unit.Mm;
-            printOperation.ShowProgress = true;
-            printOperation.DrawPage += PrintOperation_DrawPage;
-            printOperation.BeginPrint += PrintOperation_BeginPrint;
-            printOperation.EndPrint += PrintOperation_EndPrint;
-            printOperation.Done += PrintOperation_Done;
+            return RunPrint(owner, true);
+        }
+        public bool RunPrint(IWin32Window owner, bool showDialog)
+        {
+            try
+            {
+                Gtk.PrintOperation printOperation = new Gtk.PrintOperation();
+                printOperation.DefaultPageSetup = Document.PageSetup;
+                printOperation.Unit = Unit.Points;
+                printOperation.ShowProgress = true;
+                printOperation.UseFullPage = true;
+                printOperation.RequestPageSetup += PrintOperation_RequestPageSetup;
+                printOperation.DrawPage += PrintOperation_DrawPage;
+                printOperation.BeginPrint += PrintOperation_BeginPrint;
+                printOperation.EndPrint += PrintOperation_EndPrint;
+                if (PrintToFile && AllowPrintToFile)
+                {
+                    string exportFileName = _printerSettings.PrintFileName;
+                    if (string.IsNullOrWhiteSpace(exportFileName))
+                        exportFileName = $"print_{DateTime.Now.ToString("yyyyMMddHHmmss")}.pdf";
+                    else if (System.IO.Path.GetExtension(exportFileName).ToLower() != ".pdf")
+                        exportFileName += ".pdf";
 
-            Gtk.PrintOperationResult result = printOperation.Run(PrintOperationAction.PrintDialog, owner == null ? null : ((Form)owner).self);
-            return true;
+                    printOperation.ExportFilename = exportFileName;
+                    Gtk.PrintOperationResult result = printOperation.Run(PrintOperationAction.Export, owner == null ? null : ((Form)owner).self);
+                    return result != Gtk.PrintOperationResult.Cancel && result != Gtk.PrintOperationResult.Error;
+                }
+                else
+                {
+                    Gtk.PrintOperationResult result = printOperation.Run(PrintOperationAction.PrintDialog, owner == null ? null : ((Form)owner).self);
+                    return result != Gtk.PrintOperationResult.Cancel && result != Gtk.PrintOperationResult.Error;
+                }
+            }catch(Exception ex)
+            {
+                Gtk.MessageDialog messageDialog = new MessageDialog(owner == null ? null : ((Form)owner).self, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "");
+                messageDialog.WindowPosition = owner == null ? WindowPosition.Center : WindowPosition.CenterOnParent;
+                if (ex.Message.ToLower().Contains("doc"))
+                    messageDialog.Text = "文件正在使用，无法覆盖写入";
+                else
+                    messageDialog.Text = ex.Message;
+                messageDialog.Response += MessageDialog_Response;
+                messageDialog.ShowAll();
+                return false;
+            }
         }
 
-        private void PrintOperation_Done(object o, DoneArgs args)
+        private void MessageDialog_Response(object o, ResponseArgs args)
         {
-            Console.WriteLine("PrintOperation_Done");
+            Gtk.MessageDialog messageDialog = (Gtk.MessageDialog)o;
+            messageDialog.Destroy();
+        }
+
+        private void PrintOperation_RequestPageSetup(object o, RequestPageSetupArgs args)
+        {
+            _printDocument?.OnQueryPageSettings(new QueryPageSettingsEventArgs(PageSettings));
         }
 
         private void PrintOperation_EndPrint(object o, EndPrintArgs args)
         {
-            Console.WriteLine($"PrintOperation_EndPrint:{args.Context.Width},{args.Context.Height}");
+            _printDocument?.OnEndPrint(new PrintEventArgs());
+            //Console.WriteLine($"PrintOperation_EndPrint:{args.Context.Width},{args.Context.Height}");
         }
 
         private void PrintOperation_BeginPrint(object o, BeginPrintArgs args)
         {
+            _printDocument?.OnBeginPrint(new PrintEventArgs());
             Gtk.PrintOperation oper = (Gtk.PrintOperation)o;
             oper.RenderPage(0);
             //Console.WriteLine($"PrintOperation_BeginPrint:{args.Context.Width},{args.Context.Height}");
@@ -136,21 +177,19 @@ namespace System.Windows.Forms
         {
             Gtk.PrintOperation oper = (Gtk.PrintOperation)o;
             PageSetup setup = args.Context.PageSetup;
- 
-            //Console.WriteLine($"PrintOperation_DrawPage:left{setup.GetLeftMargin(oper.Unit)},top:{setup.GetTopMargin(oper.Unit)},right:{setup.GetRightMargin(oper.Unit)},bottom:{setup.GetBottomMargin(oper.Unit)}");
-            //Console.WriteLine($"PrintOperation_DrawPage:PageWidth{setup.GetPageWidth(oper.Unit)},PaperWidth:{setup.GetPaperWidth(oper.Unit)}");
-            //Console.WriteLine($"PrintOperation_DrawPage:PageNr{args.PageNr},{args.Context.Width},{args.Context.Height}");
             using (var cr = args.Context.CairoContext)
             {
-                cr.Save();
-                int top = (int)setup.GetTopMargin(oper.Unit);
-                int left = (int)setup.GetLeftMargin(oper.Unit);
-                int right = (int)setup.GetRightMargin(oper.Unit);
-                int bottom = (int)setup.GetBottomMargin(oper.Unit);
-                int width = (int)setup.GetPageWidth(oper.Unit); //page<paper
-                int height = (int)setup.GetPageHeight(oper.Unit);
-
-                Document?.OnPrintPage(new PrintPageEventArgs(new Drawing.Graphics(cr, new Gdk.Rectangle(left, top, width - left - right, height - top - bottom)), new Drawing.Rectangle(0, 0, width, height), new Drawing.Rectangle(left, top, width - left - right, height - top - bottom), PageSettings));
+                //document size(794,1123)px
+                double pxscale = 0.75;
+                int top = (int)Math.Round(setup.GetTopMargin(oper.Unit) / pxscale, 0);
+                int left = (int)Math.Round(setup.GetLeftMargin(oper.Unit) / pxscale, 0);
+                int right = (int)Math.Round(setup.GetRightMargin(oper.Unit) / pxscale, 0);
+                int bottom = (int)Math.Round(setup.GetBottomMargin(oper.Unit) / pxscale, 0);
+                int width = (int)Math.Round(setup.GetPaperWidth(oper.Unit) / pxscale, 0); //page<paper
+                int height = (int)Math.Round(setup.GetPaperHeight(oper.Unit) / pxscale, 0);
+                cr.Scale(pxscale, pxscale);
+                cr.Translate(0, 0);
+                _printDocument?.OnPrintPage(new PrintPageEventArgs(new Drawing.Graphics(cr, new Gdk.Rectangle(0, 0, width, height)), new Drawing.Rectangle(left, top, width - left - right, height - top - bottom), new Drawing.Rectangle(0, 0, width, height), PageSettings));
             }
         }
     }

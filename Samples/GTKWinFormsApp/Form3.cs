@@ -1,6 +1,4 @@
-﻿using GLib;
-using Gtk;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -102,13 +100,13 @@ namespace GTKWinFormsApp
         private void ssssToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Form2 f = new Form2();
-            f.ShowDialog();
+            f.Show();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             Form4 f = new Form4();
-            f.ShowDialog();
+            f.Show();
         }
 
         private void panel5_Scroll(object sender, System.Windows.Forms.ScrollEventArgs e)
@@ -118,24 +116,7 @@ namespace GTKWinFormsApp
 
         private void button3_Click(object sender, EventArgs e)
         {
-            var doc = new System.Drawing.Printing.PrintDocument();
-            doc.PrintPage += Doc_PrintPage;
 
-            PageSetupDialog pageSetupDialog = new PageSetupDialog();
-            pageSetupDialog.Document = doc;
-            pageSetupDialog.ShowDialog();
-
-            PrintDialog printDialog = new PrintDialog();
-            printDialog.Document = doc;
-            printDialog.ShowDialog();
-        }
-
-        private void Doc_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
-        {
-            e.Graphics.DrawString("ddddd", new Font(FontFamily.GenericSerif, 30), new SolidBrush(Color.Red), new PointF(0, 0));
-
-            e.Graphics.DrawRectangle(new Pen(new SolidBrush(Color.Blue), 1), new Rectangle(e.PageBounds.X, e.PageBounds.Y, e.PageBounds.Width, e.PageBounds.Height));
-        
         }
     }
 }
