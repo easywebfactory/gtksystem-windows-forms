@@ -23,7 +23,7 @@ namespace System.Windows.Forms
         }
         protected virtual void OnHelpRequest(EventArgs e)
         {
-            EventHandler? handler = (EventHandler?)Events[s_helpRequestEvent];
+            EventHandler handler = (EventHandler)Events[s_helpRequestEvent];
             handler?.Invoke(this, e);
         }
         public abstract void Reset();

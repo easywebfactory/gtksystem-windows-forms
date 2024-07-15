@@ -117,6 +117,7 @@ namespace System.Windows.Forms
                 printOperation.DrawPage += PrintOperation_DrawPage;
                 printOperation.BeginPrint += PrintOperation_BeginPrint;
                 printOperation.EndPrint += PrintOperation_EndPrint;
+                printOperation.Preview += PrintOperation_Preview;
                 if (PrintToFile && AllowPrintToFile)
                 {
                     string exportFileName = _printerSettings.PrintFileName;
@@ -146,6 +147,11 @@ namespace System.Windows.Forms
                 messageDialog.ShowAll();
                 return false;
             }
+        }
+
+        private void PrintOperation_Preview(object o, PreviewArgs args)
+        {
+            args.Preview.RenderPage(0);
         }
 
         private void MessageDialog_Response(object o, ResponseArgs args)

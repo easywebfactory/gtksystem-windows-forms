@@ -6,6 +6,7 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 便于开发跨平台winform软件，便于将C#升级为跨平台软件。
 
 作者博客请看 [https://www.cnblogs.com/easywebfactory/p/17803567.html](https://www.cnblogs.com/easywebfactory/p/17803567.html)
+   [https://blog.csdn.net/auto_toyota](https://blog.csdn.net/auto_toyota)
 
 目前功能持续更新中，将优先完善常用功能。
 
@@ -21,11 +22,10 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 5.  linux和macos上执行命令：dotnet demo_app.dll
 6.  编译工程，执行本项目的开发插件菜单“修复窗体设计器”，或者手动在obj目录下创建.designer.runtimeconfig.json，请看下面第5点。
 
-注意：安装GtkSharp后，编译你的工程项目时，会自动下载$(LOCALAPPDATA)\Gtk\3.24.24\gtk.zip配置Gtk环境，目前国内网络限制，可能会出现无法下载的错误，可以尝试安装fastgithub软件解决，或者其它vpn软件。
+注意：安装GtkSharp后，编译你的工程项目时，会自动下载$(LOCALAPPDATA)\Gtk\3.24.24\gtk.zip配置Gtk环境，目前国内网络限制，可能会出现无法下载的错误。
 如果无法自动下载，本项目提供下载 [/Dependencies/gtk-3.24.24.zip](/Dependencies/gtk-3.24.24.zip)。
 也可以下载[https://github.com/GtkSharp/Dependencies](https://github.com/GtkSharp/Dependencies)，把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24\gtk.zip目录即可。
-
-ps:$(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData\Local\Gtk\3.24.24
+  ps: $(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData\Local\Gtk\3.24.24
 
 linux安装gtk环境：
 ```
@@ -148,7 +148,7 @@ GTKWinFormsApp.runtimeconfig.json
 | 帮助开发环境安装       | 包括套餐一服务        |   包含所有套餐服务  |
 | 运行环境gtk\dotnet安装 | 提供二次开发技术支持  |   提供二次开发技术支持    |
 | 上手开发疑难解答       | 为用户开发协商指定的功能或接口至少3项 | 为用户开发功能或接口不少于9项  |
-| 帮助解决程序异常      | 提供一套定制的主题风格界面样式和跨平台webview控件、一些常用扩展控件    |  提供至少三套定制的主题风格界面样式和跨平台webview控件、一些常用扩展控件                           |
+| 帮助解决程序异常      | 提供定制的主题风格界面样式和一些常用扩展控件    |  提供定制的主题风格界面样式和一些常用扩展控件                           |
 
  ![支持GTKSystem](/pic/love_reward_qrcode_.png)
  ![联系GTKSystem](/pic/contact_weixin.png)
@@ -157,23 +157,24 @@ GTKWinFormsApp.runtimeconfig.json
 QQ群：236066073
 邮箱：438865652@qq.com <br/>
 #### 常见问题
-1、为什么Form窗体设计器打不开？
-答：检查runtimeconfig的确保配置正确，NuGet安装GTKSystem.Windows.FormsDesigner，然后按以下流程操作：
+  1、为什么Form窗体设计器打不开？
+  答：检查runtimeconfig的确保配置正确，NuGet安装GTKSystem.Windows.FormsDesigner，然后按以下流程操作：
     1、编译一下
     3、打开Form窗体
     （如果不能打开窗体，执行下面流程）
     4、关闭Form窗体，编译一下
     5、重启vs
     6、打开Form窗体设计器
-
-
-
+ 
 #### 参与贡献
 
 1. https://gitee.com/easywebfactory
 2. https://github.com/easywebfactory
+3. https://blog.csdn.net/auto_toyota
 
 #### 更新日志
+ ## 2024/7/16
+   1. 修正打开文件对话窗、消息弹窗
  ## 2024/7/12
    1. 增加打印组件
    2. 修复一些问题

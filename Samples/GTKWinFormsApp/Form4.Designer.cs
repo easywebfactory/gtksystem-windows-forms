@@ -36,6 +36,10 @@
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             button2 = new System.Windows.Forms.Button();
             button1 = new System.Windows.Forms.Button();
+            button9 = new System.Windows.Forms.Button();
+            button8 = new System.Windows.Forms.Button();
+            button7 = new System.Windows.Forms.Button();
+            button6 = new System.Windows.Forms.Button();
             treeView1 = new System.Windows.Forms.TreeView();
             button5 = new System.Windows.Forms.Button();
             panel1 = new System.Windows.Forms.Panel();
@@ -64,6 +68,10 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(button9);
+            splitContainer1.Panel2.Controls.Add(button8);
+            splitContainer1.Panel2.Controls.Add(button7);
+            splitContainer1.Panel2.Controls.Add(button6);
             splitContainer1.Panel2.Controls.Add(treeView1);
             splitContainer1.Panel2.Controls.Add(button5);
             splitContainer1.Panel2.Controls.Add(panel1);
@@ -91,6 +99,46 @@
             button1.TabIndex = 0;
             button1.Text = "button1";
             button1.UseVisualStyleBackColor = true;
+            // 
+            // button9
+            // 
+            button9.Location = new System.Drawing.Point(596, 85);
+            button9.Name = "button9";
+            button9.Size = new System.Drawing.Size(94, 29);
+            button9.TabIndex = 6;
+            button9.Text = "警告消息";
+            button9.UseVisualStyleBackColor = true;
+            button9.Click += button9_Click;
+            // 
+            // button8
+            // 
+            button8.Location = new System.Drawing.Point(461, 85);
+            button8.Name = "button8";
+            button8.Size = new System.Drawing.Size(94, 29);
+            button8.TabIndex = 5;
+            button8.Text = "选择颜色";
+            button8.UseVisualStyleBackColor = true;
+            button8.Click += button8_Click;
+            // 
+            // button7
+            // 
+            button7.Location = new System.Drawing.Point(320, 85);
+            button7.Name = "button7";
+            button7.Size = new System.Drawing.Size(94, 29);
+            button7.TabIndex = 4;
+            button7.Text = "浏览文件夹";
+            button7.UseVisualStyleBackColor = true;
+            button7.Click += button7_Click;
+            // 
+            // button6
+            // 
+            button6.Location = new System.Drawing.Point(189, 85);
+            button6.Name = "button6";
+            button6.Size = new System.Drawing.Size(94, 29);
+            button6.TabIndex = 3;
+            button6.Text = "保存文件";
+            button6.UseVisualStyleBackColor = true;
+            button6.Click += button6_Click;
             // 
             // treeView1
             // 
@@ -141,11 +189,11 @@
             // 
             // button3
             // 
-            button3.Location = new System.Drawing.Point(153, 115);
+            button3.Location = new System.Drawing.Point(63, 85);
             button3.Name = "button3";
             button3.Size = new System.Drawing.Size(94, 29);
             button3.TabIndex = 0;
-            button3.Text = "button3";
+            button3.Text = "打开文件";
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
@@ -187,5 +235,9 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button9;
     }
 }

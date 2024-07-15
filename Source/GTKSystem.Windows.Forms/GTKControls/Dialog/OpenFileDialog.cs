@@ -18,13 +18,29 @@ namespace System.Windows.Forms
         }
 
         public bool ReadOnlyChecked { get; set; }
-
         public bool ShowReadOnly { get; set; }
+        public new bool Multiselect { get => base.Multiselect; set => base.Multiselect = value; }
+        public string SafeFileName => Path.GetFileName(FileName) ?? string.Empty;
 
-        public string SafeFileName { get; }
+        public string[] SafeFileNames
+        {
+            get
+            {
+                string[] fullPaths = FileNames;
+                if (fullPaths is null || fullPaths.Length == 0)
+                {
+                    return Array.Empty<string>();
+                }
 
+                string[] safePaths = new string[fullPaths.Length];
+                for (int i = 0; i < safePaths.Length; ++i)
+                {
+                    safePaths[i] = Path.GetFileName(fullPaths[i]);
+                }
 
-        public string[] SafeFileNames { get; }
+                return safePaths;
+            }
+        }
 
         public Stream OpenFile() {
             if (System.IO.File.Exists(base.FileName))
@@ -36,7 +52,7 @@ namespace System.Windows.Forms
 
         public override DialogResult ShowDialog(IWin32Window owner)
         {
-            fileDialog.Action = Gtk.FileChooserAction.Open;
+            ActionType = Gtk.FileChooserAction.Open;
             return base.ShowDialog(owner);
         }
     }

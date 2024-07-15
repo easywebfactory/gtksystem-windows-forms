@@ -79,19 +79,6 @@
           "build/GtkSharp.targets": {}
         }
       },
-      "GTKSystem.Windows.Forms/1.3.24.41": {
-        "type": "package",
-        "dependencies": {
-          "GtkSharp": "3.24.24.95",
-          "System.Resources.Extensions": "8.0.0"
-        },
-        "compile": {
-          "lib/net8.0/GTKSystem.Windows.Forms.dll": {}
-        },
-        "runtime": {
-          "lib/net8.0/GTKSystem.Windows.Forms.dll": {}
-        }
-      },
       "GTKSystem.Windows.FormsDesigner/1.0.0.4": {
         "type": "package",
         "dependencies": {
@@ -376,22 +363,6 @@
           "ref/netstandard1.0/_._": {
             "related": ".xml"
           }
-        }
-      },
-      "System.Resources.Extensions/8.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/System.Resources.Extensions.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/System.Resources.Extensions.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
         }
       },
       "System.Resources.ResourceManager/4.3.0": {
@@ -731,23 +702,6 @@
         "gtksharp.nuspec",
         "lib/net6.0/GtkSharp.dll",
         "lib/netstandard2.0/GtkSharp.dll"
-      ]
-    },
-    "GTKSystem.Windows.Forms/1.3.24.41": {
-      "sha512": "cgOU1I9zMCAkYzod3EptI5gDPbmKIGvHLSkfBz9hqCcFRbPa8gk0A/c+8b7/gDO2sTI2FS1NEuHWETGJYnHi7Q==",
-      "type": "package",
-      "path": "gtksystem.windows.forms/1.3.24.41",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.txt",
-        "README.md",
-        "gtksystem.windows.forms.1.3.24.41.nupkg.sha512",
-        "gtksystem.windows.forms.nuspec",
-        "lib/net6.0/GTKSystem.Windows.Forms.dll",
-        "lib/net7.0/GTKSystem.Windows.Forms.dll",
-        "lib/net8.0/GTKSystem.Windows.Forms.dll",
-        "lib/netcoreapp3.1/GTKSystem.Windows.Forms.dll"
       ]
     },
     "GTKSystem.Windows.FormsDesigner/1.0.0.4": {
@@ -1386,35 +1340,6 @@
         "ref/xamarinwatchos10/_._",
         "system.reflection.primitives.4.3.0.nupkg.sha512",
         "system.reflection.primitives.nuspec"
-      ]
-    },
-    "System.Resources.Extensions/8.0.0": {
-      "sha512": "psnQ6GRQOvt+evda5C4nD5EuV49mz2Tv0DD2JDVDEbE/TKoMukxSkGJcsBJ0pajpPuFRr67syFYlkJ4Wj6A5Zw==",
-      "type": "package",
-      "path": "system.resources.extensions/8.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/net461/System.Resources.Extensions.targets",
-        "buildTransitive/net462/System.Resources.Extensions.targets",
-        "buildTransitive/net6.0/_._",
-        "buildTransitive/netcoreapp2.0/System.Resources.Extensions.targets",
-        "lib/net462/System.Resources.Extensions.dll",
-        "lib/net462/System.Resources.Extensions.xml",
-        "lib/net6.0/System.Resources.Extensions.dll",
-        "lib/net6.0/System.Resources.Extensions.xml",
-        "lib/net7.0/System.Resources.Extensions.dll",
-        "lib/net7.0/System.Resources.Extensions.xml",
-        "lib/net8.0/System.Resources.Extensions.dll",
-        "lib/net8.0/System.Resources.Extensions.xml",
-        "lib/netstandard2.0/System.Resources.Extensions.dll",
-        "lib/netstandard2.0/System.Resources.Extensions.xml",
-        "system.resources.extensions.8.0.0.nupkg.sha512",
-        "system.resources.extensions.nuspec",
-        "useSharedDesignerContext.txt"
       ]
     },
     "System.Resources.ResourceManager/4.3.0": {
@@ -2245,7 +2170,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "GTKSystem.Windows.Forms >= 1.3.24.41",
+      "GTKSystem.Windows.Forms >= 1.3.24.44",
       "GTKSystem.Windows.FormsDesigner >= 1.0.0.4",
       "GtkSharp >= 3.24.24.95"
     ]
@@ -2300,7 +2225,7 @@
         "dependencies": {
           "GTKSystem.Windows.Forms": {
             "target": "Package",
-            "version": "[1.3.24.41, )"
+            "version": "[1.3.24.44, )"
           },
           "GTKSystem.Windows.FormsDesigner": {
             "target": "Package",
@@ -2330,5 +2255,16 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1102",
+      "level": "Error",
+      "message": "找不到版本为 (>= 1.3.24.44) 的包 GTKSystem.Windows.Forms\r\n  - 在 Package source 中找到 41 个版本[ 最接近版本: 1.3.24.43 ]\r\n  - 在 nuget.org 中找到 41 个版本[ 最接近版本: 1.3.24.43 ]\r\n  - 在 Package Local 中找到 20 个版本[ 最接近版本: 1.3.24.41 ]\r\n  - 在 Microsoft Visual Studio Offline Packages 中找到 0 个版本",
+      "libraryId": "GTKSystem.Windows.Forms",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }

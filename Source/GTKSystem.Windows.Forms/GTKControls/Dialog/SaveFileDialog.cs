@@ -7,6 +7,9 @@
  */
 
 
+using GTKSystem.Resources.Extensions;
+using System.IO;
+
 namespace System.Windows.Forms
 {
     public sealed class SaveFileDialog : FileDialog
@@ -14,9 +17,23 @@ namespace System.Windows.Forms
         public SaveFileDialog()
         {
         }
+        public bool CheckWriteAccess
+        {
+            get => true;
+            set { }
+        }
+        public Stream OpenFile()
+        {
+            string filename = FileName;
+            if(string.IsNullOrEmpty(filename))
+            {
+                throw new ArgumentNullException("filename");
+            }
+            return new FileStream(filename, FileMode.Create, FileAccess.ReadWrite);
+        }
         public override DialogResult ShowDialog(IWin32Window owner)
         {
-            fileDialog.Action = Gtk.FileChooserAction.Save;
+            ActionType = Gtk.FileChooserAction.Save;
             return base.ShowDialog(owner);
         }
     }

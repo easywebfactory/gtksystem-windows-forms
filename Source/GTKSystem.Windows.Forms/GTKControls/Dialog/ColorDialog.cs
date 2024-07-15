@@ -5,10 +5,11 @@
  * author:chenhongjin
  */
 
-using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 
 namespace System.Windows.Forms
 {
@@ -48,6 +49,7 @@ namespace System.Windows.Forms
         {
             Color = Color.Black;
         }
+        private static Gtk.Window ActiveWindow = null;
         protected override bool RunDialog(IWin32Window owner)
         {
             if (owner != null && owner is Form ownerform)
@@ -57,8 +59,13 @@ namespace System.Windows.Forms
             }
             else
             {
-                colorChooserDialog = new Gtk.ColorChooserDialog("选择颜色", null);
-                colorChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
+                Gtk.Window window = Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive);
+                if (window != null)
+                {
+                    ActiveWindow = window;
+                }
+                colorChooserDialog = new Gtk.ColorChooserDialog("选择颜色", ActiveWindow);
+                colorChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
             }
             colorChooserDialog.TypeHint = Gdk.WindowTypeHint.Dialog;
             if (Color.Name != "0")

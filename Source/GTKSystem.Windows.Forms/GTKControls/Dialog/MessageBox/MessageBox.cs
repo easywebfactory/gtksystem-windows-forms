@@ -6,14 +6,16 @@
  * date: 2024/1/3
  */
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace System.Windows.Forms
 {
     public class MessageBox
     {
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //START WHIDBEY ADDS                                                                                           //
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         ///  Displays a message box with specified text, caption, and style with Help Button.
         /// </summary>
@@ -214,7 +216,7 @@ namespace System.Windows.Forms
             }
             return result;
         }
-
+        private static Gtk.Window ActiveWindow = null;
         private static DialogResult ShowCore(IWin32Window owner, string text, string caption,
                                              MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defaultButton,
                                              MessageBoxOptions options, bool showHelp)
@@ -227,8 +229,13 @@ namespace System.Windows.Forms
             }
             else
             {
-                //irun = ShowMessageDialogCore(new Gtk.Window(Gtk.WindowType.Toplevel), Gtk.WindowPosition.Center, text, caption, buttons, icon, defaultButton, options, showHelp);
-                irun = ShowCore(new Gtk.Window(Gtk.WindowType.Toplevel), Gtk.WindowPosition.Center, text, caption, buttons, icon);
+                Gtk.Window window = Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive);
+                if(window != null)
+                {
+                    ActiveWindow = window;
+                }
+                //irun = ShowMessageDialogCore(null, Gtk.WindowPosition.Center, text, caption, buttons, icon, defaultButton, options, showHelp);
+                irun = ShowCore(ActiveWindow, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon);
             }
 
             Gtk.ResponseType resp = Enum.Parse<Gtk.ResponseType>(irun.ToString());
@@ -268,7 +275,7 @@ namespace System.Windows.Forms
             else if (buttons == MessageBoxButtons.AbortRetryIgnore)
                 buttonsType = Gtk.ButtonsType.OkCancel;
             else if (buttons == MessageBoxButtons.RetryCancel)
-                buttonsType = Gtk.ButtonsType.Cancel;
+                buttonsType = Gtk.ButtonsType.OkCancel;
 
 
             Gtk.MessageDialog dia = new Gtk.MessageDialog(owner, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Info, buttonsType, text);
@@ -283,7 +290,7 @@ namespace System.Windows.Forms
             return dia.Run();
         }
 
-        private static int ShowCore(Gtk.Window owner, Gtk.WindowPosition position, string text, string caption, MessageBoxButtons buttons, params object[] icon)
+        private static int ShowCore(Gtk.Window owner, Gtk.WindowPosition position, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon, params object[] args)
         {
             Gtk.Dialog dia = new Gtk.Dialog(caption, owner, Gtk.DialogFlags.DestroyWithParent);
             dia.KeepAbove = true;
@@ -293,14 +300,22 @@ namespace System.Windows.Forms
             dia.StyleContext.AddClass("DefaultThemeStyle");
             dia.StyleContext.AddClass("MessageBox");
             // dia.SetSizeRequest(300, 160);
-            dia.BorderWidth = 10;
-            
             dia.Response += Dia_Response;
-
+            dia.ContentArea.Spacing = 20;
+            dia.BorderWidth = 20;
+            Gtk.Box msgbox = new Box(Gtk.Orientation.Horizontal, 10);
+            if (icon == MessageBoxIcon.Question)
+                msgbox.PackStart(Gtk.Image.NewFromIconName("dialog-question", IconSize.Dialog), false, false, 5);
+            else if (icon == MessageBoxIcon.Warning || icon == MessageBoxIcon.Exclamation)
+                msgbox.PackStart(Gtk.Image.NewFromIconName("dialog-warning", IconSize.Dialog), false, false, 5);
+            else if (icon == MessageBoxIcon.Information || icon == MessageBoxIcon.Asterisk)
+                msgbox.PackStart(Gtk.Image.NewFromIconName("dialog-information", IconSize.Dialog), false, false, 5);
+            else if (icon == MessageBoxIcon.Error || icon == MessageBoxIcon.Stop || icon == MessageBoxIcon.Hand)
+                msgbox.PackStart(Gtk.Image.NewFromIconName("dialog-error", IconSize.Dialog), false, false, 5);
             var content = new Gtk.Label(text);
-            content.MarginBottom = 20;
-            dia.ContentArea.Add(content);
-            
+            msgbox.PackStart(content, true, true, 5);
+            dia.ContentArea.Add(msgbox);
+
             if (buttons == MessageBoxButtons.OK)
             {
                 dia.AddButton("确定", Gtk.ResponseType.Ok);

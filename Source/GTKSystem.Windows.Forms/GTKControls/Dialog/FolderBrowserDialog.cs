@@ -6,6 +6,9 @@
  * date: 2024/1/3
  */
 
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+
 namespace System.Windows.Forms
 {
     public sealed class FolderBrowserDialog : FileDialog
@@ -22,14 +25,20 @@ namespace System.Windows.Forms
             SelectedPathNeedsCheck = false;
             ShowNewFolderButton = true;
         }
+        public new bool Multiselect { get => base.Multiselect; set => base.Multiselect = value; }
         public Environment.SpecialFolder RootFolder { get; set; } = Environment.SpecialFolder.Desktop;
+        public new string SelectedPath
+        {
+            get => base.SelectedPath;
+            set => base.SelectedPath = value;
+        }
+        public new  string[] SelectedPaths => base.SelectedPaths;
 
         public bool ShowNewFolderButton { get; set; }
-
         public bool SelectedPathNeedsCheck { get; set; }
         public override DialogResult ShowDialog(IWin32Window owner)
         {
-            fileDialog.Action = Gtk.FileChooserAction.SelectFolder;
+            ActionType = Gtk.FileChooserAction.SelectFolder;
             return base.ShowDialog(owner);
         }
     }

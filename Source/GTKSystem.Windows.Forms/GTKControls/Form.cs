@@ -176,6 +176,7 @@ namespace System.Windows.Forms
             if (owner != null && owner is Form parent)
             {
                 this.Parent = parent;
+                self.WindowPosition = Gtk.WindowPosition.CenterOnParent;
             }
             if (self.IsVisible == false)
             {
