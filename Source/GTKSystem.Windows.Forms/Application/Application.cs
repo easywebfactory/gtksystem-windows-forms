@@ -89,10 +89,10 @@ namespace System.Windows.Forms
                 Gtk.Application.Init();
                 App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
                 //App.Register(GLib.Cancellable.Current);
-                //App.Shutdown += App_Shutdown;
-                //var quitAction = new GLib.SimpleAction("quit", null);
-                //quitAction.Activated += QuitActivated;
-                //App.AddAction(quitAction);
+                App.Shutdown += App_Shutdown;
+                var quitAction = new GLib.SimpleAction("quit", null);
+                quitAction.Activated += QuitActivated;
+                App.AddAction(quitAction);
                 Gtk.Settings.Default.SplitCursor = true;
                 Gtk.CssProvider css = new Gtk.CssProvider();
                 string css_style = @"
@@ -115,7 +115,7 @@ namespace System.Windows.Forms
     border-width: 1px; border-style: solid; border-color:@frame_color;
 }
 .DefaultThemeStyle button{padding:4px 3px;}
-.BorderNone{border-width:0px;border-style:none;box-shadow:none;}
+.BorderNone{border-style:none;box-shadow:none;}
 
 .BorderFixedSingle{border-width:0px;border-style:none;padding:1px;box-shadow: inset 0px 0px 0px 1px @frame_color;}
 .BorderFixed3D{border-width:0px;border-style:none; padding:2px; box-shadow: inset 1px 1px 1px 2px @frame3d_color;}
@@ -127,9 +127,10 @@ namespace System.Windows.Forms
 
 .LinkLabel{border-style:none;}
 .TextBox{}
+.ComboBox entry.flat{border-right-width:0px;}
 .DropDownList button{padding:3px;}
-.SplitContainer1 > separator {border-style:solid;border-width:2px;}
 
+.SplitContainer1 > separator {border-style:solid;border-width:2px;}
 .TableLayoutPanel {box-shadow: 1px 1px 1px 0px @frame_color;}
 .TableLayoutPanel viewport.frame {box-shadow: inset 1px 1px 1px 0 @frame_color;}
 .ListView{}

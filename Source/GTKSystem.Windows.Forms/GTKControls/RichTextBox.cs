@@ -26,7 +26,7 @@ namespace System.Windows.Forms
         }
         private void Buffer_Changed(object sender, EventArgs e)
         {
-            if (TextChanged != null && self.IsMapped)
+            if (TextChanged != null && self.IsVisible)
             {
                 TextChanged(this, e);
             }

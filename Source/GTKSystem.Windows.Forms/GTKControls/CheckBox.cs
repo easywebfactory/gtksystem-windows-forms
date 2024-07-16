@@ -14,32 +14,22 @@ namespace System.Windows.Forms
     {
         public readonly CheckBoxBase self = new CheckBoxBase();
         public override object GtkControl => self;
-        private EventHandlerList handerlist = new EventHandlerList();
         public CheckBox() {
             self.Toggled += Self_Toggled;
         }
 
         private void Self_Toggled(object sender, EventArgs e)
         {
-            if(handerlist["CheckedChanged"]!=null)
-                handerlist["CheckedChanged"].DynamicInvoke(this, e);
-            if (handerlist["CheckStateChanged"] != null)
-                handerlist["CheckStateChanged"].DynamicInvoke(this, e);
+            if(CheckedChanged!= null && self.IsVisible)
+                CheckedChanged(this, EventArgs.Empty);
+            if (CheckStateChanged != null && self.IsVisible)
+                CheckStateChanged(this, EventArgs.Empty);
         }
 
         public override string Text { get { return self.Label; } set { self.Label = value; } }
         public  bool Checked { get { return self.Active; } set { self.Active = value; } }
         public CheckState CheckState { get { return self.Active ? CheckState.Checked : CheckState.Unchecked; } set { self.Active = value != CheckState.Unchecked; } }
-        public event EventHandler CheckedChanged
-        {
-            add { handerlist.AddHandler("CheckedChanged", value); }
-            remove { handerlist.RemoveHandler("CheckedChanged", value); }
-        }
-
-        public virtual event EventHandler CheckStateChanged
-        {
-            add { handerlist.AddHandler("CheckStateChanged", value); }
-            remove { handerlist.RemoveHandler("CheckStateChanged", value); }
-        }
+        public event EventHandler CheckedChanged;
+        public virtual event EventHandler CheckStateChanged;
     }
 }

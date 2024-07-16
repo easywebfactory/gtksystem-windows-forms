@@ -178,6 +178,7 @@ namespace System.Windows.Forms
                 this.Parent = parent;
                 self.WindowPosition = Gtk.WindowPosition.CenterOnParent;
             }
+
             if (self.IsVisible == false)
             {
                 if (AutoScroll == true)
@@ -324,6 +325,7 @@ namespace System.Windows.Forms
                 }
             }
         }
+        public FormStartPosition StartPosition { get; set; }
         private FormWindowState _WindowState = FormWindowState.Normal;
         public FormWindowState WindowState {
             get { 

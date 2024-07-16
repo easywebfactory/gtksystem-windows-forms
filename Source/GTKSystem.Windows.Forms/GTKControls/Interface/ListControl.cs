@@ -87,10 +87,10 @@ namespace System.Windows.Forms
             add { Events.AddHandler("SelectedValueChanged", value); }
             remove { Events.RemoveHandler("SelectedValueChanged", value); }
         }
-        public event EventHandler SelectedIndexChanged 
-        { 
-            add { Events.AddHandler("SelectedIndexChanged", value);}
-            remove { Events.RemoveHandler("SelectedIndexChanged", value);}
+        public event EventHandler SelectedIndexChanged
+        {
+            add { Events.AddHandler("SelectedIndexChanged", value); }
+            remove { Events.RemoveHandler("SelectedIndexChanged", value); }
         }
         public virtual string GetItemText(object item)
 		{

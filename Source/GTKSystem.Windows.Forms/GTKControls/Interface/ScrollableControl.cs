@@ -1,5 +1,4 @@
-﻿using GLib;
-using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+﻿using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
 
@@ -29,17 +28,9 @@ namespace System.Windows.Forms
             scrollbase = scrolledwindow;
         }
         public override Rectangle DisplayRectangle { get; }
-
-        [Localizable(true)]
         public Size AutoScrollMinSize { get; set; }
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Point AutoScrollPosition { get; set; }
-        [Localizable(true)]
         public Size AutoScrollMargin { get; set; }
-        [DefaultValue(false)]
-        [Localizable(true)]
-        //public virtual bool AutoScroll { get; set; } = false;
         private bool _AutoScroll;
         public virtual bool AutoScroll
         {
@@ -50,23 +41,16 @@ namespace System.Windows.Forms
                 if(scrollbase != null) { scrollbase.AutoScroll = value; }
             }
         }
-        //[Browsable(false)]
-        //[EditorBrowsable(EditorBrowsableState.Always)]
         //public VScrollProperties VerticalScroll { get; }
-        //[Browsable(false)]
-        //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        //[EditorBrowsable(EditorBrowsableState.Never)]
         //public DockPaddingEdges DockPadding { get; }
-        //[Browsable(false)]
-        //[EditorBrowsable(EditorBrowsableState.Always)]
         //public HScrollProperties HorizontalScroll { get; }
         protected bool VScroll { get => scrollbase.VScroll; set => scrollbase.VScroll = value; }
         protected bool HScroll { get => scrollbase.HScroll; set => scrollbase.HScroll = value; }
 
         public virtual event ScrollEventHandler Scroll
         {
-            add { scrollbase.Scroll += value; }
-            remove { scrollbase.Scroll += value; }
+            add { if (scrollbase != null) { scrollbase.Scroll += value; } }
+            remove { if (scrollbase != null) { scrollbase.Scroll -= value; } }
         }
     }
 }

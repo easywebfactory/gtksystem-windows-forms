@@ -21,7 +21,7 @@ namespace System.Windows.Forms
 
         private void Self_ValueChanged(object sender, EventArgs e)
         {
-            if (ValueChanged != null && self.IsMapped)
+            if (ValueChanged != null && self.IsVisible)
                 ValueChanged(this, e);
         }
 

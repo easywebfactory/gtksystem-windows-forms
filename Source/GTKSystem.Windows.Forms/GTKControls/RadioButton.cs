@@ -20,7 +20,7 @@ namespace System.Windows.Forms
 
         private void Self_Toggled(object sender, EventArgs e)
         {
-            if (CheckedChanged != null && self.IsMapped)
+            if (CheckedChanged != null && self.IsVisible)
                 CheckedChanged(this, e);
         }
 

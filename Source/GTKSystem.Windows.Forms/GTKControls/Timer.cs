@@ -15,13 +15,18 @@ namespace System.Windows.Forms
     public class Timer : Component
     {
         readonly System.Timers.Timer TimersTimer = new Timers.Timer();
-        private const string TICK_EVENT_KEY = "Form_Timer_Tick";
         public Timer()
         {
+            TimersTimer.Elapsed += TimersTimer_Elapsed;
         }
 
         public Timer(IContainer container) : this()
         {
+        }
+        private void TimersTimer_Elapsed(object sender, Timers.ElapsedEventArgs e)
+        {
+            if (Tick != null)
+                Gtk.Application.Invoke(Tick);
         }
 
         [Bindable(true)]
@@ -36,27 +41,7 @@ namespace System.Windows.Forms
         [DefaultValue(100)]
         public int Interval { get => (int)TimersTimer.Interval; set => TimersTimer.Interval = value; }
 
-        public event EventHandler Tick
-        {
-            add
-            {
-                Events.AddHandler(TICK_EVENT_KEY, value);
-                TimersTimer.Elapsed += TimersTimer_Elapsed;
-            }
-            remove
-            {
-                if (Events[TICK_EVENT_KEY] != null)
-                    Events.RemoveHandler(TICK_EVENT_KEY, value);
-                TimersTimer.Elapsed -= TimersTimer_Elapsed;
-            }
-        }
-
-        private void TimersTimer_Elapsed(object sender, Timers.ElapsedEventArgs e)
-        {
-            if (Events[TICK_EVENT_KEY] != null)
-                Gtk.Application.Invoke((EventHandler)Events[TICK_EVENT_KEY]);
-        }
-
+        public event EventHandler Tick;
         public void Start()
         {
             TimersTimer.Start();

@@ -21,10 +21,10 @@ namespace System.Windows.Forms
 
         private void MonthCalendar_DaySelected(object sender, EventArgs e)
         {
-            if (DateChanged != null)
+            if (DateChanged != null && self.IsVisible)
                 DateChanged(this, new DateRangeEventArgs(SelectionRange.Start, SelectionRange.End));
 
-            if (DateSelected != null)
+            if (DateSelected != null && self.IsVisible)
                 DateSelected(this, new DateRangeEventArgs(SelectionRange.Start, SelectionRange.End));
         }
       

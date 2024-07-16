@@ -5,6 +5,8 @@
  * author:chenhongjin
  */
 
+using Gdk;
+using GLib;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
@@ -18,14 +20,16 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         public Button() : base()
         {
-
+            self.Clicked += Self_Clicked;
         }
+
+        private void Self_Clicked(object sender, EventArgs e)
+        {
+            if(Click!= null && self.IsVisible) { Click(this, EventArgs.Empty); }
+        }
+
         public override string Text { get => self.Label; set => self.Label = value; }
 
-        public override event EventHandler Click
-        {
-            add { self.Clicked += value; }
-            remove { self.Clicked -= value; }
-        }
+        public override event EventHandler Click;
     }
 }

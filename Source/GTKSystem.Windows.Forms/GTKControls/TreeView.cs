@@ -4,6 +4,8 @@
  * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://github.com/easywebfactory, https://www.cnblogs.com/easywebfactory
  * author:chenhongjin
  */
+using Atk;
+using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections.Generic;
@@ -32,8 +34,61 @@ namespace System.Windows.Forms
             _store = new Gtk.TreeStore(typeof(string), typeof(bool));
             self.TreeView.Model = _store;
             self.TreeView.Realized += Control_Realized;
+            self.TreeView.Selection.Changed += Selection_Changed;
+            self.TreeView.RowActivated += TreeView_RowActivated;
+            self.TreeView.RowCollapsed += TreeView_RowCollapsed;
+            self.TreeView.RowExpanded += TreeView_RowExpanded;
             this.BorderStyle = BorderStyle.Fixed3D;
         }
+
+        private void TreeView_RowExpanded(object o, RowExpandedArgs args)
+        {
+            if (AfterExpand != null && ((Gtk.TreeView)o).IsVisible)
+            {
+                TreeNode result = new TreeNode();
+                GetNodeChild(root, args.Path.Indices, ref result);
+                AfterExpand(this, new TreeViewEventArgs(result, TreeViewAction.Expand));
+            }
+        }
+
+        private void TreeView_RowCollapsed(object o, RowCollapsedArgs args)
+        {
+            if (AfterCollapse != null && ((Gtk.TreeView)o).IsVisible)
+            {
+                TreeNode result = new TreeNode();
+                GetNodeChild(root, args.Path.Indices, ref result);
+                AfterCollapse(this, new TreeViewEventArgs(result, TreeViewAction.Collapse));
+            }
+        }
+
+        private void TreeView_RowActivated(object o, RowActivatedArgs args)
+        {
+            if (AfterSelect != null && ((Gtk.TreeView)o).IsVisible)
+            {
+                if (cancelEventArgs == null || cancelEventArgs.Cancel == false)
+                {
+                    TreeNode result = new TreeNode();
+                    GetNodeChild(root, args.Path.Indices, ref result);
+                    AfterSelect(this, new TreeViewEventArgs(result));
+                }
+            }
+        }
+        private TreeViewCancelEventArgs cancelEventArgs = null;
+        private void Selection_Changed(object sender, EventArgs e)
+        {
+            if (BeforeSelect != null)
+            {
+                if (self.TreeView.Selection.GetSelected(out TreeIter iter))
+                {
+                    TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
+                    TreeNode result = new TreeNode();
+                    GetNodeChild(root, paths[0].Indices, ref result);
+                    cancelEventArgs = new TreeViewCancelEventArgs(result, false, TreeViewAction.ByMouse);
+                    BeforeSelect(this, cancelEventArgs);
+                }
+            }
+        }
+
         public void Clear()
         {
             Store.Clear();
@@ -98,7 +153,6 @@ namespace System.Windows.Forms
         {
             get
             {
-                //TreeViewItem item = new TreeViewItem(this);
                 return SelectedNode.Text;
             }
         }
@@ -159,133 +213,11 @@ namespace System.Windows.Forms
                
             }
         }
-        TreeViewCancelEventArgs cancelEventArgs = null;
-        public event TreeViewCancelEventHandler BeforeSelect
-        {
-            add
-            {
-                self.TreeView.Selection.Changed += (object sender, EventArgs e) =>
-                {
-                    if (self.TreeView.IsRealized)
-                    {
-                        if (self.TreeView.Selection.GetSelected(out TreeIter iter))
-                        {
-                            TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
-                            TreeNode result = new TreeNode();
-                             GetNodeChild(root, paths[0].Indices, ref result);
-                            cancelEventArgs = new TreeViewCancelEventArgs(result, false, TreeViewAction.ByMouse);
-                            value.Invoke(sender, cancelEventArgs);
-                        }
-                    }
-                };
-            }
-            remove
-            {
-                self.TreeView.Selection.Changed -= (object sender, EventArgs e) =>
-                {
-                    if (self.TreeView.IsRealized)
-                    {
-                        if (self.TreeView.Selection.GetSelected(out TreeIter iter))
-                        {
-                            TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
-                            TreeNode result = new TreeNode();
-                            GetNodeChild(root, paths[0].Indices, ref result);
-                            cancelEventArgs = new TreeViewCancelEventArgs(result, false, TreeViewAction.ByMouse);
-                            value.Invoke(sender, cancelEventArgs);
-                        }
-                    }
-                };
-            }
-        }
-        public event TreeViewEventHandler AfterSelect
-        {
-            add
-            {
-                self.TreeView.RowActivated += (object sender, Gtk.RowActivatedArgs e) =>
-                {
-                    if (self.TreeView.IsRealized)
-                    {
-                        if (cancelEventArgs == null || cancelEventArgs.Cancel == false)
-                        {
-                            TreeNode result = new TreeNode();
-                            GetNodeChild(root, e.Path.Indices, ref result);
-                            value.Invoke(this, new TreeViewEventArgs(result));
-                        }
-                    }
-                };
-            }
-            remove
-            {
-                self.TreeView.RowActivated -= (object sender, Gtk.RowActivatedArgs e) =>
-                {
-                    if (self.TreeView.IsRealized)
-                    {
-                        if (cancelEventArgs == null || cancelEventArgs.Cancel == false)
-                        {
-                            TreeNode result = new TreeNode();
-                            GetNodeChild(root, e.Path.Indices, ref result);
-                            value.Invoke(this, new TreeViewEventArgs(result));
-                        }
-                    }
-                };
-            }
-        }
-
-        public event TreeViewEventHandler AfterCollapse
-        {
-            add
-            {
-                self.TreeView.RowCollapsed += (object sender, Gtk.RowCollapsedArgs e) =>
-                {
-                    if (self.TreeView.IsRealized)
-                    {
-                        TreeNode result = new TreeNode();
-                        GetNodeChild(root, e.Path.Indices, ref result);
-                        value.Invoke(this, new TreeViewEventArgs(result, TreeViewAction.Collapse));
-                    }
-                };
-            }
-            remove
-            {
-                self.TreeView.RowCollapsed -= (object sender, Gtk.RowCollapsedArgs e) =>
-                {
-                    if (self.TreeView.IsRealized)
-                    {
-                        TreeNode result = new TreeNode();
-                        GetNodeChild(root, e.Path.Indices, ref result);
-                        value.Invoke(this, new TreeViewEventArgs(result, TreeViewAction.Collapse));
-                    }
-                };
-            }
-        }
-
-        public event TreeViewEventHandler AfterExpand
-        {
-            add
-            {
-                self.TreeView.RowExpanded += (object sender, Gtk.RowExpandedArgs e) =>
-                {
-                    if (self.TreeView.IsRealized)
-                    {
-                        TreeNode result = new TreeNode();
-                        GetNodeChild(root, e.Path.Indices, ref result);
-                        value.Invoke(this, new TreeViewEventArgs(result, TreeViewAction.Expand));
-                    }
-                };
-            }
-            remove
-            {
-                self.TreeView.RowExpanded -= (object sender, Gtk.RowExpandedArgs e) =>
-                {
-                    if (self.TreeView.IsRealized)
-                    {
-                        TreeNode result = new TreeNode();
-                        GetNodeChild(root, e.Path.Indices, ref result);
-                        value.Invoke(this, new TreeViewEventArgs(result, TreeViewAction.Expand));
-                    }
-                };
-            }
-        }
+        
+        public event TreeViewCancelEventHandler BeforeSelect;
+        public event TreeViewEventHandler AfterSelect;
+        public event TreeViewEventHandler AfterCollapse;
+        public event TreeViewEventHandler AfterExpand;
         private void GetNodeChild(TreeNode node, int[] indices, ref TreeNode result)
         {
             string nodeIndex= string.Join(",", indices);
@@ -302,7 +234,6 @@ namespace System.Windows.Forms
                 }
             }
         }
-
         private void GetNodeChilds(TreeNode node, int[] indices, int depth, ref TreeNode result, ref TreeNode lastNode)
         {
             TreeNode treeNode = new TreeNode();

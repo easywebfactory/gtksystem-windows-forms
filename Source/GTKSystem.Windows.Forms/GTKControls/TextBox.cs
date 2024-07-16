@@ -19,22 +19,24 @@ namespace System.Windows.Forms
         {
             //self.HasFrame = false;
             self.ShadowType = Gtk.ShadowType.In;
-            //self.HasDefault = false;
             self.MaxWidthChars = 1;
             self.WidthChars = 0;
 
             self.Valign = Gtk.Align.Start;
             self.Halign = Gtk.Align.Start;
+            self.Changed += Self_Changed;
         }
+
+        private void Self_Changed(object sender, EventArgs e)
+        {
+            if (TextChanged != null && self.IsVisible) { TextChanged(this, EventArgs.Empty); }
+        }
+
         public string PlaceholderText { get { return self.PlaceholderText; } set { self.PlaceholderText = value ?? ""; } }
         public override string Text { get { return self.Text; } set { self.Text = value ?? ""; } }
         public virtual char PasswordChar { get => self.InvisibleChar; set { self.InvisibleChar = value; self.Visibility = false; } }
         public virtual bool ReadOnly { get { return self.IsEditable == false; } set { self.IsEditable = value == false;  } }
-        public override event EventHandler TextChanged
-        {
-            add { self.Changed += (object sender, EventArgs e) => { value.Invoke(this, e); }; }
-            remove { self.Changed -= (object sender, EventArgs e) => { value.Invoke(this, e); }; }
-        }
+        public override event EventHandler TextChanged;
         public bool Multiline { get; set; }
     }
 }

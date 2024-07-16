@@ -54,11 +54,28 @@
 
     public enum FormStartPosition
     {
-        WindowsDefaultLocation
+        WindowsDefaultLocation,
+        CenterScreen,
+        Manual,
+        CenterParent,
+        WindowsDefaultBounds
     }
     public enum SizeGripStyle
     {
-        Auto
+        /// <summary>
+        ///  The size grip is automatically display when needed.
+        /// </summary>
+        Auto = 0,
+
+        /// <summary>
+        ///  The sizing grip is always shown on the form.
+        /// </summary>
+        Show = 1,
+
+        /// <summary>
+        ///  The sizing grip is hidden.
+        /// </summary>
+        Hide = 2,
     }
     public enum Column
     {

@@ -298,8 +298,6 @@ namespace System.Windows.Forms
         //[Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
         //public event EventHandler SelectionChanged;
         [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
-        public event ScrollEventHandler Scroll;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
         public event EventHandler AllowUserToOrderColumnsChanged;
         //[Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
         //public event EventHandler StyleChanged;

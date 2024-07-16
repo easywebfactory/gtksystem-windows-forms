@@ -138,6 +138,7 @@ namespace GTKWinFormsApp
             // 
             // comboBox1
             // 
+           // comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.FormattingEnabled = true;
             comboBox1.Items.AddRange(new object[] { "test1", "test2", "test3333333333333333333", "这是下拉列表控件数据测试" });
             comboBox1.Location = new System.Drawing.Point(355, 31);

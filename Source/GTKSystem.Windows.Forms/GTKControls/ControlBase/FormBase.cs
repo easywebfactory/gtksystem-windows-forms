@@ -37,7 +37,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public delegate bool CloseWindowHandler(object sender, EventArgs e);
         public event CloseWindowHandler CloseWindowEvent;
         public event System.Windows.Forms.ScrollEventHandler Scroll;
-        public FormBase() : base("title", Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive), DialogFlags.Modal)
+        public FormBase() : base("title", Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive), DialogFlags.DestroyWithParent)
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Form");
@@ -252,14 +252,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         }
         public new void Add(Gtk.Widget child)
         {
-            ScrollView.Child = child;
-        }
-        public void Pack(Widget child, Align align, bool expand)
-        {
-            ScrollView.Halign = align;
-            ScrollView.Valign = align;
-            ScrollView.Hexpand = expand;
-            ScrollView.Vexpand = expand;
             ScrollView.Child = child;
         }
     }
