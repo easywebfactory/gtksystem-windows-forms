@@ -1,6 +1,6 @@
 # GTKSystem.Windows.Forms
 
-## 介绍
+### 介绍
 **Visual Studio原生开发，无需学习，一次编译，跨平台运行**.
 C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，基于GTK组件开发，该组件的核心优势是使用C#的原生winform表单控件窗体设计器，相同的属性方法，C#原生开发即可，无需学习。一次编译，跨平台运行。
 便于开发跨平台winform软件，便于将C#升级为跨平台软件。
@@ -10,11 +10,11 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 
 目前功能持续更新中，将优先完善常用功能。
 
-## 软件架构
+### 软件架构
 
 使用GTK3.24.24.95作为表单UI重写C#的System.Windows.Forms组件，在应用时，兼容原生C#程序组件。
 
-## 安装教程
+### 安装教程
 1.  项目工程框架选择“window应用程序”改配置UseWindowsForms为false或“控制台应用程序”，框架.netcore3.1或.net6及以上版本
 2.  NulGet安装GtkSharp(3.24.24.95)、GTKSystem.Windows.Forms、GTKSystem.Windows.FormsDesigner
 3.  检查form表单是否有使用图像资源，如使用需新建System.Resources.ResourceManager和System.ComponentModel.ComponentResourceManager，具体请看下面内容。
@@ -37,7 +37,7 @@ linux安装dotnet环境：
 ```
   安装方法可以查看微软官网教程：https://learn.microsoft.com/zh-cn/dotnet/core/install/linux-scripted-manual
 ```
-## VisualStudio插件安装
+### VisualStudio插件安装
 
 工具一、从NuGet上安装GTKSystem.Windows.FormsDesigner类库，此类库可以在编译工程时修正窗体设计器。
 
@@ -51,7 +51,7 @@ linux安装dotnet环境：
 
 ![输入图片说明](pic/vs_vsix.jpeg)
 
-## 开发教程及说明
+### 开发教程及说明
 
 以下配置在你的项目工程里操作：
 
@@ -122,19 +122,19 @@ GTKWinFormsApp.runtimeconfig.json
 }
 ```
 
-## Resources资源的使用
-[查看Resources资源的使用教程](Readme_Resources.md)
+### Resources资源的使用
+* [查看Resources资源的使用教程>>](Readme_Resources.md)
 
-## 默认风格效果
+### 默认风格效果
 ![demo效果](/pic/native-2.png)
 
-## 默认风格工具栏菜单
+### 默认风格工具栏菜单
 ![工具栏菜单](/pic/native-1.png)
 
-## 图文窗口
-![图文窗口](/pic/listview.png)
+### 图文窗口
+![图文窗口](/pic/native-3.png)
 
-## 支持各种主题风格界面（windows xp、vista、7、8、10，macOS系列，等等）
+### 支持各种主题风格界面（windows xp、vista、7、8、10，macOS系列，等等）
 
 #### 主题风格，windows7风格界面
 ![windows7风格界面](/pic/windows7-1.png)
@@ -144,7 +144,7 @@ GTKWinFormsApp.runtimeconfig.json
 #### 主题风格，window10黑色风格界面
 ![mwindow10黑色风格界面](/pic/Windows-10-Dark.png)
 
-## 支持GTKSystem，获取技术服务
+### 支持GTKSystem，获取技术服务
 
 | ￥299基础服务一   | ￥2999套餐服务二    | ￥9999套餐服务三     |
 | :----               |    :----           |          :----   |
@@ -156,25 +156,26 @@ GTKWinFormsApp.runtimeconfig.json
  ![支持GTKSystem](/pic/love_reward_qrcode_.png)
  ![联系GTKSystem](/pic/contact_weixin.png)
 
-## 交流/合作/商务/赞助
+### 交流/合作/商务/赞助
 QQ群：236066073
 邮箱：438865652@qq.com <br/>
 
-## 常见问题
-  1、为什么Form窗体设计器打不开？
+### 常见问题
+  为什么Form窗体设计器打不开？<br/>
+  ```
   答：检查runtimeconfig确保配置正确，通过NuGet安装GTKSystem.Windows.FormsDesigner，然后按以下流程操作：
-    1、编译一下<br/>
-    3、打开Form窗体
-    （如果不能打开窗体，执行下面流程）<br/>
-    4、关闭Form窗体，编译一下<br/>
-    5、重启Visual Studio<br/>
-    6、打开Form窗体设计器<br/>
- 
-#### 参与贡献
+    1、编译一下 
+    2、打开Form窗体
+    （如果不能打开窗体，执行下面流程） 
+    3、关闭Form窗体，编译一下 
+    4、重启Visual Studio 
+    5、打开Form窗体设计器 
+ ```
+### 参与贡献
 
 1. https://gitee.com/easywebfactory
 2. https://github.com/easywebfactory
 3. https://blog.csdn.net/auto_toyota
 
-## 更新记录
-[查看更新记录](UpdateHistory.md)
+### 更新记录
+* [查看更新记录>>](UpdateHistory.md)
