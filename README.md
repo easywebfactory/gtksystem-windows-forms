@@ -123,7 +123,7 @@ GTKWinFormsApp.runtimeconfig.json
 ```
 
 ## Resources资源的使用
-    [Readme_Resources.md](查看Resources资源的使用教程)
+[查看Resources资源的使用教程](Readme_Resources.md)
 
 ## 默认风格效果
 ![demo效果](/pic/native-2.png)
