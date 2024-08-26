@@ -65,7 +65,7 @@ namespace System.Windows.Forms
                     ActiveWindow = window;
                 }
                 colorChooserDialog = new Gtk.ColorChooserDialog("选择颜色", ActiveWindow);
-                colorChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
+                colorChooserDialog.WindowPosition = window == null ? Gtk.WindowPosition.Center : Gtk.WindowPosition.CenterOnParent;
             }
             colorChooserDialog.TypeHint = Gdk.WindowTypeHint.Dialog;
             if (Color.Name != "0")
