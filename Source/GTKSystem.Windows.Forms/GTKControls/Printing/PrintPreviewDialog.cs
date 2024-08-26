@@ -38,18 +38,17 @@ namespace System.Windows.Forms
         private void Init()
         {
             previewForm = new Form();
-            previewForm.ClientSize = new Size(1000, 600);
             previewForm.AutoScroll = true;
- 
+            previewForm.self.Resizable = true;
             _previewControl = new PrintPreviewControl();
             //document size(794,1123)px
-            _previewControl.Width = 900;
-            _previewControl.Height = 1200;
             _previewControl.self.MarginBottom = 20;
             _previewControl.Zoom = 1;
             _previewControl.AutoZoom = true;
             _previewControl.Document = Document;
-
+            int formwidth = _previewControl.Width + 100;
+            int formheight = _previewControl.Height + 100;
+            previewForm.ClientSize = new Size(formwidth, formheight);
             box = new Gtk.Box(Gtk.Orientation.Vertical, 15);
             Gtk.Box header = new Gtk.Box(Gtk.Orientation.Horizontal, 20);
             header.PackStart(new Gtk.Label("打印预览"), false, false, 0);
@@ -57,9 +56,9 @@ namespace System.Windows.Forms
             printbutton.ButtonReleaseEvent += Printbutton_ButtonReleaseEvent;
             header.PackEnd(printbutton, false, false, 0);
             box.PackStart(header, false, true, 0);
-            box.PackStart(_previewControl.Widget, true, true, 0);
-            box.MarginStart = 50;
+            box.PackStart(_previewControl.Widget, false, true, 0);
             box.MarginTop = 20;
+            box.MarginStart = (previewForm.Width - _previewControl.Width) / 2;
             previewForm.Controls.Add(box);
             previewForm.SizeChanged += PreviewForm_SizeChanged;
         }
@@ -76,7 +75,7 @@ namespace System.Windows.Forms
 
         private void PreviewForm_SizeChanged(object sender, EventArgs e)
         {
-            box.MarginStart = (previewForm.Width - 900) / 2;
+            box.MarginStart = (previewForm.Width - _previewControl.Width) / 2;
         }
 
         public override void Show()

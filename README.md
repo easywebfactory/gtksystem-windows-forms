@@ -1,6 +1,6 @@
 # GTKSystem.Windows.Forms
 
-#### 介绍
+## 介绍
 **Visual Studio原生开发，无需学习，一次编译，跨平台运行**.
 C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，基于GTK组件开发，该组件的核心优势是使用C#的原生winform表单控件窗体设计器，相同的属性方法，C#原生开发即可，无需学习。一次编译，跨平台运行。
 便于开发跨平台winform软件，便于将C#升级为跨平台软件。
@@ -10,11 +10,11 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 
 目前功能持续更新中，将优先完善常用功能。
 
-#### 软件架构
+## 软件架构
 
 使用GTK3.24.24.95作为表单UI重写C#的System.Windows.Forms组件，在应用时，兼容原生C#程序组件。
 
-#### 安装教程
+## 安装教程
 1.  项目工程框架选择“window应用程序”改配置UseWindowsForms为false或“控制台应用程序”，框架.netcore3.1或.net6及以上版本
 2.  NulGet安装GtkSharp(3.24.24.95)、GTKSystem.Windows.Forms、GTKSystem.Windows.FormsDesigner
 3.  检查form表单是否有使用图像资源，如使用需新建System.Resources.ResourceManager和System.ComponentModel.ComponentResourceManager，具体请看下面内容。
@@ -37,7 +37,7 @@ linux安装dotnet环境：
 ```
   安装方法可以查看微软官网教程：https://learn.microsoft.com/zh-cn/dotnet/core/install/linux-scripted-manual
 ```
-#### VisualStudio插件安装
+## VisualStudio插件安装
 
 工具一、从NuGet上安装GTKSystem.Windows.FormsDesigner类库，此类库可以在编译工程时修正窗体设计器。
 
@@ -51,7 +51,7 @@ linux安装dotnet环境：
 
 ![输入图片说明](pic/vs_vsix.jpeg)
 
-#### 使用说明
+## 开发教程及说明
 
 以下配置在你的项目工程里操作：
 
@@ -122,16 +122,19 @@ GTKWinFormsApp.runtimeconfig.json
 }
 ```
 
-#### 默认风格效果
+## Resources资源的使用
+    [Readme_Resources.md](查看Resources资源的使用教程)
+
+## 默认风格效果
 ![demo效果](/pic/native-2.png)
 
-#### 默认风格工具栏菜单
+## 默认风格工具栏菜单
 ![工具栏菜单](/pic/native-1.png)
 
-#### 图文窗口
+## 图文窗口
 ![图文窗口](/pic/listview.png)
 
-### 支持各种主题风格界面（windows xp、vista、7、8、10，macOS系列，等等）
+## 支持各种主题风格界面（windows xp、vista、7、8、10，macOS系列，等等）
 
 #### 主题风格，windows7风格界面
 ![windows7风格界面](/pic/windows7-1.png)
@@ -141,7 +144,7 @@ GTKWinFormsApp.runtimeconfig.json
 #### 主题风格，window10黑色风格界面
 ![mwindow10黑色风格界面](/pic/Windows-10-Dark.png)
 
-#### 支持GTKSystem，获取技术服务
+## 支持GTKSystem，获取技术服务
 
 | ￥299基础服务一   | ￥2999套餐服务二    | ￥9999套餐服务三     |
 | :----               |    :----           |          :----   |
@@ -153,18 +156,19 @@ GTKWinFormsApp.runtimeconfig.json
  ![支持GTKSystem](/pic/love_reward_qrcode_.png)
  ![联系GTKSystem](/pic/contact_weixin.png)
 
-#### 交流/合作/商务/赞助
+## 交流/合作/商务/赞助
 QQ群：236066073
 邮箱：438865652@qq.com <br/>
-#### 常见问题
+
+## 常见问题
   1、为什么Form窗体设计器打不开？
-  答：检查runtimeconfig的确保配置正确，NuGet安装GTKSystem.Windows.FormsDesigner，然后按以下流程操作：
-    1、编译一下
+  答：检查runtimeconfig确保配置正确，通过NuGet安装GTKSystem.Windows.FormsDesigner，然后按以下流程操作：
+    1、编译一下<br/>
     3、打开Form窗体
-    （如果不能打开窗体，执行下面流程）
-    4、关闭Form窗体，编译一下
-    5、重启vs
-    6、打开Form窗体设计器
+    （如果不能打开窗体，执行下面流程）<br/>
+    4、关闭Form窗体，编译一下<br/>
+    5、重启Visual Studio<br/>
+    6、打开Form窗体设计器<br/>
  
 #### 参与贡献
 
@@ -172,89 +176,5 @@ QQ群：236066073
 2. https://github.com/easywebfactory
 3. https://blog.csdn.net/auto_toyota
 
-#### 更新日志
- ## 2024/7/16 V1.3.24.45
-   1. 修改优化控件事件程序
- ## 2024/7/16
-   1. 修正打开文件对话窗、消息弹窗
- ## 2024/7/12
-   1. 增加打印组件
-   2. 修复一些问题
- ## 2024/7/7
-   1. 修改一些控件样式
- ## 2024/6/28
-   1. 修改一些边框样式、控件鼠标事件
-   2. 修改一些控件的属性值\错误
-   3. 重构容器滚动窗体架构
- ## 2024/6/22
-   1. 修改一些bug
-   2. 修改优化窗口和控件的resize功能
- ## 2024/6/20
-   1. 修改一些bug
-   2. 修改优化窗口和控件的resize功能
-   3. usercontrol增加鼠标事件 
- ## 2024/6/19
-   1. 样式调整
-   2. 修改一些bug
-   3. 优化窗口和控件的resize功能
-   4. 实现控件的位置属性、大小可调
-   5. 实现部分控件鼠标样式属性
-
- ## 2024/6/10
-   1. 修改控件背景图显示方式，让大部分控件支持圆角和背景图圆角显示（重要）
-   2. 修改优化了很多控件的功能和性能
-   3. 修改优化了控件的样式显示程序，以支持风格主题换肤机制
-   4. 修正发现的一些功能或程序错误
-   5. DataGridView增加网址图片异步加载功能，优化DataGridView数据显示性能
- ## 2024/5/30
-   1. (重要)修正多线程界面更新的invoker同步方法，Timer执行与UI同步
-   2. ListBox、ListView、RichTextBox背景色修正
-   3. 增强项目功能演示案例，添加变化滚动数据演示
- ## 2024/5/28
-   1. 修正和增加了控件的一些方法
-   2. 添加GTK多线程UI更新程序
- ## 2024/5/21
-   1. combobox\listbox功能
-   2. ToolStripSeparator修正
- ## 2024/5/17
-   1. datetimepicker增加时间数据和format模式
- ## 2024/5/16
-   1. 修正form窗口有透明边线的问题
-   2. 增加了几个控件常用属性
-   3. combobox控件增加DropDown或DropDownList可选模式
-   4. 修改了VisualStudio开发插件的功能错误，提高了安装适配兼容性
- ## 2024/5/11
-   1. 修正form启动时窗口大小异常
-   2. button增加image属性图片
-   3. 修正控件背景位置
- ## 2024/5/6
-   1. 完善treeview、listview功能
-   2. 新增开发工具GTKSystem.Windows.FormsDesigner.dll(NuGet安装)，编译时自动检查并修正窗体设计器配置
-   3. 修正datagridview的取数错误
- ## 2024/5/1
-  1. 重大更新！重构控件的结构程序，优化了很多控件功能和性能，修正一些错误
-  2. 优化了绘图、控件背景功能程序，绘制背景图不再覆盖子控件
-  3. 特别优化Form界面程序和性能
-
- ## 2024/4/20
- 1. 修正graphic绘图的位置
- 2. 实现graphicpath绘图、渐变色
- 3. 实现控件的BeginInvoke和EndInvoke方法
- 4. 修改DataGridView、ListBox的数据加载程序，修正不能在窗口启动加载数据的问题
- ## 2024/3/27
- 1. 改正usercontrol在窗体设计器上打开出现异常的问题（还无法显示控件）
- 2. 实现graphics上的椭圆绘画
- ## 2024/3/19
- 1. panel内容溢出显示滚动条，窗口缩放程序优化
- ## 2024/3/14
- 1. 修正TreeView数据程序加载
- ## 2024/3/6
- 1. 修正一些窗口配置问题、binding
- ## 2024/3/2
- 1. 修正label文本的字体大小问题、增加对齐属性
- 2. 实现imagelist兼容使用窗体设计器
- ## 2024/2/29
- 1. grahpics增加曲线和多边形绘图，优化文字绘图程序
- 2. 修正一些隐性异常 
- ## 2024/2/23
- 1. 实现和修正DataGridView单元控件数据编辑、取数功能
+## 更新记录
+    [UpdateHistory.md](查看更新记录)

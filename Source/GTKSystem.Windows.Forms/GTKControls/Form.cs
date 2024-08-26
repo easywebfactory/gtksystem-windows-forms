@@ -5,6 +5,7 @@
  * author:chenhongjin
  */
 
+using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections.Generic;
@@ -56,7 +57,6 @@ namespace System.Windows.Forms
             self.ButtonReleaseEvent += Body_ButtonReleaseEvent;
             self.ResizeChecked += Form_ResizeChecked;
             self.Shown += Control_Shown;
-            self.DeleteEvent += Self_DeleteEvent;
             self.CloseWindowEvent += Self_CloseWindowEvent;
         }
 
@@ -73,34 +73,20 @@ namespace System.Windows.Forms
             }
             return closing.Cancel == false;
         }
-        private void Self_DeleteEvent(object o, DeleteEventArgs args)
-        {
-            args.RetVal = true;
-        }
-
         private void Control_Shown(object sender, EventArgs e)
         {
             if (Shown != null)
                 Shown(this, e);
         }
-
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        delegate void MenuPositionFuncNative(IntPtr menu, out int x, out int y, out bool push_in, IntPtr user_data);
-        static MenuPositionFuncNative StatusIconPositionMenuFunc = null;
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate void d_gtk_menu_popup(IntPtr menu, IntPtr parent_menu_shell, IntPtr parent_menu_item, MenuPositionFuncNative func, IntPtr data, uint button, uint activate_time);
-        private static d_gtk_menu_popup gtk_menu_popup = FuncLoader.LoadFunction<d_gtk_menu_popup>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "gtk_menu_popup"));
-        public void PresentMenu(Gtk.Menu menu, uint button, uint activate_time)
-        {
-            gtk_menu_popup(menu == null ? IntPtr.Zero : menu.Handle, IntPtr.Zero, IntPtr.Zero, StatusIconPositionMenuFunc, self.Handle, button, activate_time);
-        }
         private void Body_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
         {
             if (base.ContextMenuStrip != null)
             {
-                base.ContextMenuStrip.Widget.ShowAll();
                 if (args.Event.Button == 3)
-                    PresentMenu((Gtk.Menu)base.ContextMenuStrip.Widget, args.Event.Button, args.Event.Time);
+                {
+                    base.ContextMenuStrip.Widget.ShowAll();
+                    ((Gtk.Menu)base.ContextMenuStrip.Widget).PopupAtPointer(args.Event);
+                }
             }
         }
         int resizeWidth= 0;
@@ -109,12 +95,7 @@ namespace System.Windows.Forms
         {
             if (self.Resizable == true && self.IsMapped)
             {
-                if (resizeWidth < 1)
-                {
-                    resizeWidth = self.AllocatedWidth;
-                    resizeHeight = self.AllocatedHeight;
-                }
-                else if (self.ContentArea.AllocatedWidth != resizeWidth || self.ContentArea.AllocatedHeight != resizeHeight)
+                if (self.ContentArea.AllocatedWidth != resizeWidth || self.ContentArea.AllocatedHeight != resizeHeight)
                 {
                     try
                     {
@@ -176,7 +157,8 @@ namespace System.Windows.Forms
             if (owner != null && owner is Form parent)
             {
                 this.Parent = parent;
-                self.WindowPosition = Gtk.WindowPosition.CenterOnParent;
+                //self.ParentWindow = parent.self.Window;
+                //self.WindowPosition = Gtk.WindowPosition.CenterOnParent;
             }
 
             if (self.IsVisible == false)
@@ -201,14 +183,7 @@ namespace System.Windows.Forms
                 {
                     self.Resizable = false;
                 }
-
-                if (self.Resizable == false)
-                {
-                    if (self.WidthRequest == -1)
-                        self.WidthRequest = self.DefaultWidth;
-                    if (self.HeightRequest == -1)
-                        self.HeightRequest = self.DefaultHeight;
-                }
+                self.Resize(self.DefaultWidth, self.DefaultHeight);
 
                 if (this.WindowState == FormWindowState.Maximized)
                 {
@@ -248,7 +223,7 @@ namespace System.Windows.Forms
                 OnLoad();
             }
 
-            self.ShowAll();
+            self.ShowAll(); 
         }
 
         public DialogResult ShowDialog()
@@ -352,7 +327,6 @@ namespace System.Windows.Forms
             if (self != null)
             {
                 self.CloseWindow();
-                self.Dispose();
             }
         }
         public override void Hide()

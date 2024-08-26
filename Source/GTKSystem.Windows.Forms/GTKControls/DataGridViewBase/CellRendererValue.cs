@@ -1,31 +1,25 @@
-﻿using Gdk;
+﻿using Atk;
+using Gdk;
 using GLib;
 using Gtk;
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Reflection;
+using System.Net.Http;
 
 namespace System.Windows.Forms.GtkRender
 {
     public class CellRendererValue : CellRendererText
     {
+        public CellRendererValue()
+        {
+        }
         [Property("cellvalue")]
         public CellValue CellValue
         {
             set
             {
-                if (value == null)
+                if (value != null)
                 {
-                    this.Text = string.Empty;
-                }
-                else
-                {
-                    this.Text = value.Text;
-                    if (value.Background.Name != "0" && value.Background.Name != "transparent")
-                    {
-                        this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = value.Background.A / 255, Blue = value.Background.B / 255, Green = value.Background.G / 255, Red = value.Background.R / 255 };
-                    }
+                    value.SetTextWithStyle(this);
                 }
             }
         }
@@ -37,17 +31,10 @@ namespace System.Windows.Forms.GtkRender
         {
             set
             {
-                if (value == null)
+                if (value != null)
                 {
-                    this.Active = false;
-                }
-                else
-                {
-                    this.Active = (value.Text == "1" || value.Text.ToLower() == "true") ? true : false;
-                    if (value.Background.Name != "0" && value.Background.Name != "transparent")
-                    {
-                        this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = value.Background.A / 255, Blue = value.Background.B / 255, Green = value.Background.G / 255, Red = value.Background.R / 255 };
-                    }
+                    this.Active = (value.Text == "1" || value.Text?.ToLower() == "true");
+                    value.SetControlWithStyle(this);
                 }
             }
         }
@@ -59,17 +46,9 @@ namespace System.Windows.Forms.GtkRender
         {
             set
             {
-                if (value == null)
+                if (value != null)
                 {
-                    this.Text = string.Empty;
-                }
-                else
-                {
-                    this.Text = value.Text;
-                    if (value.Background.Name != "0" && value.Background.Name != "transparent")
-                    {
-                        this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = value.Background.A / 255, Blue = value.Background.B / 255, Green = value.Background.G / 255, Red = value.Background.R / 255 };
-                    }
+                    value.SetTextWithStyle(this);
                 }
             }
         }
@@ -90,62 +69,80 @@ namespace System.Windows.Forms.GtkRender
             {
                 if (value != null)
                 {
-                    if (value.Background.Name != "0" && value.Background.Name != "transparent")
+                    if (value.ValueType == typeof(byte[]))
                     {
-                        this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = value.Background.A / 255, Blue = value.Background.B / 255, Green = value.Background.G / 255, Red = value.Background.R / 255 };
-                    }
-                    if (string.IsNullOrWhiteSpace(value.Text))
-                    {
-                        this.IconName = "";
+                        value.SetControlWithStyle(this);
+                        this.Pixbuf = new Pixbuf((byte[])value.Value);
                     }
                     else
                     {
-                        try
+                        string text = value.Text;
+                        if (string.IsNullOrWhiteSpace(text) == false && this.Data.ContainsKey(text))
                         {
-                            if (this.Data[value.Text] == null)
+                            value.SetControlWithStyle(this);
+                            if (this.Data[text] is Gdk.Pixbuf pixbuf)
+                                this.Pixbuf = pixbuf;
+                            else
+                                this.IconName = text;
+                        }
+                        else
+                        {
+                            value.SetControlWithStyle(this);
+                            if (string.IsNullOrWhiteSpace(text))
                             {
-                                if (value.Text.Contains("://") && Uri.TryCreate(value.Text, UriKind.Absolute, out Uri result))
-                                {
-                                    System.Threading.Tasks.Task.Factory.StartNew(o =>
-                                    {
-                                        CellRendererPixbufValue cell = (CellRendererPixbufValue)o;
-                                        try
-                                        {
-                                            GLib.IFile file = GLib.FileFactory.NewForUri(result);
-                                            GLib.FileInputStream stream = file.Read(new GLib.Cancellable());
-                                            Gdk.Pixbuf nbuf = new Gdk.Pixbuf(stream, Column.Width, GridView.RowTemplate.Height, true, null);
-                                            cell.Data.Add(value.Text, nbuf);
-                                            Gtk.Application.Invoke((o, s) =>
-                                            {
-                                                cell.Pixbuf = nbuf;
-                                                GridView.self.GridView.IsFocus = true;
-                                                GridView.self.GridView.ScrollToPoint(10, cell.Data.Count + 1);
-                                            });
-                                        }
-                                        catch (Exception ex)
-                                        {
-
-                                        }
-                                    },this);
-                                }
-                                else if (value.Text.Contains("."))
-                                {
-                                    this.Data.Add(value.Text, new Gdk.Pixbuf(value.Text.Replace("\\\\", "/").Replace("\\", "/")));
-                                    this.Pixbuf = this.Data[value.Text] as Gdk.Pixbuf;
-                                }
-                                else
-                                {
-                                    this.IconName = value.Text;
-                                }
+                                this.IconName = "";
                             }
                             else
                             {
-                                this.Pixbuf = this.Data[value.Text] as Gdk.Pixbuf;
+                                try
+                                {
+                                    if (text.Contains("://"))
+                                    {
+                                        HttpClient httpClient = new HttpClient();
+                                        httpClient.GetStreamAsync(text).ContinueWith((x, o) =>
+                                        {
+                                            string key = o.ToString();
+                                            try
+                                            {
+                                                Gdk.Pixbuf nbuf = new Gdk.Pixbuf(x.Result).ScaleSimple(Column.Width, GridView.RowTemplate.Height, Gdk.InterpType.Tiles);
+                                                if (this.Data.ContainsKey(key) == false)
+                                                    this.Data.Add(key, nbuf);
+                                                Gtk.Application.Invoke((o, s) =>
+                                                {
+                                                    this.Pixbuf = nbuf;
+                                                });
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                //Console.WriteLine(text + ", " + ex.ToString());
+                                                if (this.Data.ContainsKey(key) == false)
+                                                    this.Data.Add(key, "image-missing");
+                                                Gtk.Application.Invoke((o, s) =>
+                                                {
+                                                    this.IconName = "image-missing";
+                                                });
+                                            }
+                                        }, text);
+
+                                    }
+                                    else if (text.Contains("."))
+                                    {
+                                        Gdk.Pixbuf nbuf = new Gdk.Pixbuf(text.Replace("\\\\", "//").Replace("\\", "/"));
+                                        this.Data.Add(text, nbuf);
+                                        this.Pixbuf = nbuf;
+                                    }
+                                    else
+                                    {
+                                        this.Data.Add(text, text);
+                                        this.IconName = text;
+                                    }
+                                }
+                                catch
+                                {
+                                    this.Data.Add(text, "image-missing");
+                                    this.IconName = "image-missing";
+                                }
                             }
-                        }
-                        catch
-                        {
-                            this.IconName = "image-missing";
                         }
                     }
                 }
@@ -156,35 +153,25 @@ namespace System.Windows.Forms.GtkRender
     {
         public CellRendererButtonValue()
         {
-            this.Alignment=Pango.Alignment.Center;
+            this.SetAlignment(0.5f, 0.5f);
             this.Ellipsize = Pango.EllipsizeMode.End;
-            this.WrapMode = Pango.WrapMode.Char;
         }
         [Property("cellvalue")]
         public CellValue CellValue
         {
             set
             {
-                if (value == null)
+                if (value != null)
                 {
-                    this.Text = string.Empty;
-                }
-                else
-                {
-                    this.Text = value.Text;
-                    if (value.Background.Name != "transparent" && value.Background.Name != "0")
-                    {
-                        this.CellBackgroundRgba = new Gdk.RGBA() { Alpha = value.Background.A / 255, Blue = value.Background.B / 255, Green = value.Background.G / 255, Red = value.Background.R / 255 };
-                    }
+                    value.SetTextWithStyle(this);
                 }
             }
         }
         protected override void OnRender(Cairo.Context cr, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
         {
-            widget.StyleContext.Save();
             widget.StyleContext.AddClass("button");
             widget.StyleContext.AddClass("GridViewCell-Button");
-
+            widget.StyleContext.Save();
             int height = cell_area.Height;
             int y = cell_area.Y;
             if (height > 36)
@@ -195,36 +182,110 @@ namespace System.Windows.Forms.GtkRender
             widget.StyleContext.RenderFrame(cr, cell_area.X + 3, y, cell_area.Width - 6, height);
             widget.StyleContext.RenderBackground(cr, cell_area.X + 3, y, cell_area.Width - 6, height);
             widget.StyleContext.Restore();
-            var textExt = cr.TextExtents(this.Text ?? string.Empty);
-            int space = (int)(Math.Max(6f, cell_area.Width - textExt.Width) / 2 - 6);
-            base.OnRender(cr, widget, new Gdk.Rectangle(background_area.X, background_area.Y, background_area.Width, background_area.Height), new Gdk.Rectangle(cell_area.X + space, cell_area.Y, cell_area.Width - space, cell_area.Height), flags);
+            base.OnRender(cr, widget, new Gdk.Rectangle(background_area.X, background_area.Y, background_area.Width, background_area.Height), new Gdk.Rectangle(cell_area.X, cell_area.Y, cell_area.Width, cell_area.Height), flags);
         }
 
     }
     public class CellValue : IComparable, IComparable<CellValue>, IEquatable<CellValue>
     {
-        public Drawing.Color Background { get; set; }// = Drawing.Color.Transparent;
+        private DataGridViewCellStyle _style;
+        public DataGridViewCellStyle Style { get => _style; set => _style = value; }
+        public Type ValueType { get; set; }
+        private object _value;
+        public object Value { get=> _value; set { _value = value; ValueType = value?.GetType(); } }
+        public string Text { get => _value?.ToString(); }
+        internal void SetControlWithStyle(CellRenderer cell) {
+            if (_style != null)
+            {
+                if (_style.BackColor.Name != "0")
+                    cell.CellBackgroundRgba = new Gdk.RGBA() { Alpha = _style.BackColor.A / 255f, Blue = _style.BackColor.B / 255f, Green = _style.BackColor.G / 255f, Red = _style.BackColor.R / 255f };
+                if (_style.Alignment == DataGridViewContentAlignment.TopLeft)
+                    cell.SetAlignment(0, 0);
+                else if (_style.Alignment == DataGridViewContentAlignment.TopCenter)
+                    cell.SetAlignment(0.5f, 0);
+                else if (_style.Alignment == DataGridViewContentAlignment.TopRight)
+                    cell.SetAlignment(1.0f, 0);
+                else if (_style.Alignment == DataGridViewContentAlignment.MiddleLeft)
+                    cell.SetAlignment(0, 0.5f);
+                else if (_style.Alignment == DataGridViewContentAlignment.MiddleCenter)
+                    cell.SetAlignment(0.5f, 0.5f);
+                else if (_style.Alignment == DataGridViewContentAlignment.MiddleRight)
+                    cell.SetAlignment(1.0f, 0.5f);
+                else if (_style.Alignment == DataGridViewContentAlignment.BottomLeft)
+                    cell.SetAlignment(0, 1f);
+                else if (_style.Alignment == DataGridViewContentAlignment.BottomCenter)
+                    cell.SetAlignment(0.5f, 1f);
+                else if (_style.Alignment == DataGridViewContentAlignment.BottomRight)
+                    cell.SetAlignment(1.0f, 1f);
+            }
+        }
+        internal void SetTextWithStyle(CellRendererText cell)
+        {
+            if (_style != null)
+            {
+                if (_style.ForeColor.Name != "0")
+                    cell.ForegroundRgba = new Gdk.RGBA() { Alpha = _style.ForeColor.A / 255f, Blue = _style.ForeColor.B / 255f, Green = _style.ForeColor.G / 255f, Red = _style.ForeColor.R / 255f };
+                if (_style.BackColor.Name != "0")
+                    cell.CellBackgroundRgba = new Gdk.RGBA() { Alpha = _style.BackColor.A / 255f, Blue = _style.BackColor.B / 255f, Green = _style.BackColor.G / 255f, Red = _style.BackColor.R / 255f };
+                if (_style.Alignment == DataGridViewContentAlignment.TopLeft)
+                    cell.SetAlignment(0, 0);
+                else if (_style.Alignment == DataGridViewContentAlignment.TopCenter)
+                    cell.SetAlignment(0.5f, 0);
+                else if (_style.Alignment == DataGridViewContentAlignment.TopRight)
+                    cell.SetAlignment(1.0f, 0);
+                else if (_style.Alignment == DataGridViewContentAlignment.MiddleLeft)
+                    cell.SetAlignment(0, 0.5f);
+                else if (_style.Alignment == DataGridViewContentAlignment.MiddleCenter)
+                    cell.SetAlignment(0.5f, 0.5f);
+                else if (_style.Alignment == DataGridViewContentAlignment.MiddleRight)
+                    cell.SetAlignment(1.0f, 0.5f);
+                else if (_style.Alignment == DataGridViewContentAlignment.BottomLeft)
+                    cell.SetAlignment(0, 1f);
+                else if (_style.Alignment == DataGridViewContentAlignment.BottomCenter)
+                    cell.SetAlignment(0.5f, 1f);
+                else if (_style.Alignment == DataGridViewContentAlignment.BottomRight)
+                    cell.SetAlignment(1.0f, 1f);
 
-        public string Text { get; set; } = string.Empty;
-
+                if (_style.WrapMode != DataGridViewTriState.NotSet)
+                    cell.WrapMode = _style.WrapMode == DataGridViewTriState.True ? Pango.WrapMode.WordChar : Pango.WrapMode.Word;
+            }
+            cell.Text = GetFormatText(_value);
+        }
+        internal string GetFormatText(object text)
+        {
+            if (text == null && _style != null)
+                text = Convert.ToString(_style.NullValue) ?? string.Empty;
+            if (_style != null && string.IsNullOrWhiteSpace(_style.Format) == false)
+                return string.Format(_style.Format, text);
+            else
+                return text?.ToString();
+        }
         public int CompareTo(object obj)
         {
-            return this.GetHashCode().CompareTo(obj.GetHashCode());
+            if (obj is CellValue cell)
+                return CompareTo(cell);
+            else
+                return -1;
         }
 
         public int CompareTo([AllowNull] CellValue other)
         {
-            return this.Text.CompareTo(other.Text);
+            if(other != null)
+            {
+                if (this._value == other.Value && this._style != null && other.Style != null)
+                    return this._style.GetHashCode().CompareTo(other.Style.GetHashCode());
+            }
+            return -1;
         }
 
         public bool Equals([AllowNull] CellValue other)
         {
-            return this.Text == other.Text;
+            return CompareTo(other) == 0;
         }
 
         public override string ToString()
         {
-            return Text;
+            return _value?.ToString();
         }
 
     }

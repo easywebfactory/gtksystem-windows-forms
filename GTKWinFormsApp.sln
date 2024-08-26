@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readme", "readme", "{7674FD
 	ProjectSection(SolutionItems) = preProject
 		README.en.md = README.en.md
 		README.md = README.md
+		Readme_Resources.md = Readme_Resources.md
+		UpdateHistory.md = UpdateHistory.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{56631C54-2CE5-44E4-A931-4788557760B4}"

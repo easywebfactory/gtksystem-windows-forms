@@ -1,7 +1,9 @@
 ﻿
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing.Printing;
+using System.Linq;
 
 namespace System.Windows.Forms
 {
@@ -118,6 +120,7 @@ namespace System.Windows.Forms
                 printOperation.BeginPrint += PrintOperation_BeginPrint;
                 printOperation.EndPrint += PrintOperation_EndPrint;
                 printOperation.Preview += PrintOperation_Preview;
+                Gtk.Window window = Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive);
                 if (PrintToFile && AllowPrintToFile)
                 {
                     string exportFileName = _printerSettings.PrintFileName;
@@ -127,12 +130,12 @@ namespace System.Windows.Forms
                         exportFileName += ".pdf";
 
                     printOperation.ExportFilename = exportFileName;
-                    Gtk.PrintOperationResult result = printOperation.Run(PrintOperationAction.Export, owner == null ? null : ((Form)owner).self);
+                    Gtk.PrintOperationResult result = printOperation.Run(PrintOperationAction.Export, owner == null ? window : ((Form)owner).self);
                     return result != Gtk.PrintOperationResult.Cancel && result != Gtk.PrintOperationResult.Error;
                 }
                 else
                 {
-                    Gtk.PrintOperationResult result = printOperation.Run(PrintOperationAction.PrintDialog, owner == null ? null : ((Form)owner).self);
+                    Gtk.PrintOperationResult result = printOperation.Run(PrintOperationAction.PrintDialog, owner == null ? window : ((Form)owner).self);
                     return result != Gtk.PrintOperationResult.Cancel && result != Gtk.PrintOperationResult.Error;
                 }
             }catch(Exception ex)
@@ -193,6 +196,7 @@ namespace System.Windows.Forms
                 int bottom = (int)Math.Round(setup.GetBottomMargin(oper.Unit) / pxscale, 0);
                 int width = (int)Math.Round(setup.GetPaperWidth(oper.Unit) / pxscale, 0); //page<paper
                 int height = (int)Math.Round(setup.GetPaperHeight(oper.Unit) / pxscale, 0);
+
                 cr.Scale(pxscale, pxscale);
                 cr.Translate(0, 0);
                 _printDocument?.OnPrintPage(new PrintPageEventArgs(new Drawing.Graphics(cr, new Gdk.Rectangle(0, 0, width, height)), new Drawing.Rectangle(left, top, width - left - right, height - top - bottom), new Drawing.Rectangle(0, 0, width, height), PageSettings));

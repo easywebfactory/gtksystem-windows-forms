@@ -1,6 +1,8 @@
 ﻿using Gtk;
 using System.Collections;
 using System.ComponentModel;
+using System.Data.Common;
+using System.Linq;
 using System.Windows.Forms.GtkRender;
 
 namespace System.Windows.Forms
@@ -49,14 +51,10 @@ namespace System.Windows.Forms
             object cell = model.GetValue(iter, this.DisplayIndex);
             if (cell is CellValue val)
             {
-                Boolean.TryParse(val.Text, out bool result);
-                val.Text = result == true ? "False" : "True";
+                CellRendererToggleValue tggle = (CellRendererToggleValue)o;
+                val.Value = tggle.Active == false;
                 model.SetValue(iter, this.DisplayIndex, val);
-                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], val);
-            }
-            else
-            {
-                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], new CellValue() { Text = cell?.ToString() });
+                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices.Last(), val);
             }
         }
     }
@@ -97,14 +95,10 @@ namespace System.Windows.Forms
             object cell = model.GetValue(iter, this.DisplayIndex);
             if (cell is CellValue val)
             {
-                Boolean.TryParse(val.Text, out bool result);
-                val.Text = result == true ? "False" : "True";
+                CellRendererToggleValue tggle = (CellRendererToggleValue)o;
+                val.Value = tggle.Active == false;
                 model.SetValue(iter, this.DisplayIndex, val);
-                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], val);
-            }
-            else
-            {
-                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], new CellValue() { Text = cell?.ToString() });
+                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices.Last(), val);
             }
         }
     }
@@ -151,13 +145,9 @@ namespace System.Windows.Forms
             object cell = model.GetValue(iter, this.DisplayIndex);
             if (cell is CellValue val)
             {
-                val.Text = args.NewText;
+                val.Value = args.NewText;
                 model.SetValue(iter, this.DisplayIndex, val);
-                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], val);
-            }
-            else
-            {
-                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], new CellValue() { Text = cell?.ToString() });
+                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices.Last(), val);
             }
         }
         public ObjectCollection Items => _items;
@@ -186,19 +176,6 @@ namespace System.Windows.Forms
         {
             this.SortMode = DataGridViewColumnSortMode.NotSortable;
         }
-
-        private void TreeView_RowActivated(object o, RowActivatedArgs args)
-        {
-            if (args.Column.Handle == this.Handle)
-            {
-                TreePath path = args.Path;
-                if(args.Column.Cells[0] is CellRendererText cell)
-                {
-                    _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], new CellValue() { Text = cell.Text?.ToString() });
-                }
-            }
-        }
-
         public override void Renderer()
         {
             var renderer = new CellRendererButtonValue();
@@ -212,6 +189,18 @@ namespace System.Windows.Forms
             if (this.DataGridView != null)
                 this.DataGridView.GridView.RowActivated += TreeView_RowActivated;
         }
+        private void TreeView_RowActivated(object o, RowActivatedArgs args)
+        {
+            if (args.Column.Handle == this.Handle)
+            {
+                if (args.Column.Cells[0] is CellRendererText cell)
+                {
+                    TreePath path = args.Path;
+                    _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices.Last(), new CellValue() { Value = cell.Text });
+                }
+            }
+        }
+
     }
     public class DataGridViewImageColumn : DataGridViewColumn
     {
@@ -226,7 +215,7 @@ namespace System.Windows.Forms
         public override void Renderer()
         {
             var renderer = new CellRendererPixbufValue(this);
-            renderer.IconName = "face-smile";
+            //renderer.IconName = "face-smile";
             renderer.Height = RowHeight;
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
@@ -290,7 +279,6 @@ namespace System.Windows.Forms
             renderer.Mode = CellRendererMode.Editable;
             renderer.PlaceholderText = "---";
             renderer.Markup = this.Markup;
-            renderer.Alignment=Pango.Alignment.Center;
             renderer.Height = RowHeight;
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
@@ -307,15 +295,10 @@ namespace System.Windows.Forms
             object cell = model.GetValue(iter, this.DisplayIndex);
             if (cell is CellValue val)
             {
-                val.Text = args.NewText;
+                val.Value = args.NewText;
                 model.SetValue(iter, this.DisplayIndex, val);
-                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], val);
+                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices.Last(), val);
             }
-            else
-            {
-                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices[0], new CellValue() { Text = cell?.ToString() });
-            }
-
         }
         private int DefaultHeight
         {

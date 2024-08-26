@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace System.Windows.Forms
@@ -32,7 +33,7 @@ namespace System.Windows.Forms
         public IFormatProvider FormatProvider { get; set; }
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public string Format { get; set; }
-
+        public Font Font { get; set; }
         public Color ForeColor { get; set; }
 
         [Browsable(false)]
@@ -49,7 +50,14 @@ namespace System.Windows.Forms
         public DataGridViewTriState WrapMode { get; set; }
 
         public virtual void ApplyStyle(DataGridViewCellStyle dataGridViewCellStyle) { }
-        public virtual DataGridViewCellStyle Clone() { return new DataGridViewCellStyle(); }
+        public virtual DataGridViewCellStyle Clone() {
+            IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf<DataGridViewCellStyle>());
+            Marshal.StructureToPtr(this, intPtr, fDeleteOld: false);
+            DataGridViewCellStyle newobj = Marshal.PtrToStructure<DataGridViewCellStyle>(intPtr);
+            Marshal.FreeHGlobal(intPtr);
+            return newobj;
+            // return new DataGridViewCellStyle();
+        }
         public override bool Equals(object o) { return false; }
         public override int GetHashCode()
         {

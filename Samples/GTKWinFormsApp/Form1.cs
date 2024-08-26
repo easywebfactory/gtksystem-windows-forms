@@ -46,6 +46,7 @@ namespace GTKWinFormsApp
             data.Add(new TestEntity() { ID = 6, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC = "" });
             for (int i = 0; i < 10; i++)
                 data.Add(new TestEntity() { ID = i + 7, Title = "网络图片异步加载" + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString() });
+
             this.dataGridView1.DataSource = data;
             //var s=this.dataGridView1.Rows[0].Cells[0];
 
@@ -60,13 +61,13 @@ namespace GTKWinFormsApp
             //this.dataGridView1.DataSource = dt;
 
             //3、通过dataviewrow添加数据
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    var cell = new DataGridViewRow();
-            //    cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString() }, new DataGridViewCheckBoxCell() { Value = true }, new DataGridViewTextBoxCell() { Value = "title" + i.ToString() }, new DataGridViewComboBoxCell() { Value = DateTime.Now } }.ToArray());
-            //    cell.DefaultCellStyle = new DataGridViewCellStyle() { BackColor = Color.Red };
-            //   this.dataGridView1.Rows.Add(cell);
-            //}
+            for (int i = 0; i < 10; i++)
+            {
+                var cell = new DataGridViewRow();
+                cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString(), Style= new DataGridViewCellStyle() { BackColor = i%3==0?Color.Red:Color.Transparent, ForeColor=Color.Green, Alignment=DataGridViewContentAlignment.MiddleCenter } }, new DataGridViewCheckBoxCell() { Value = true }, new DataGridViewTextBoxCell() { Value = "修改修改修改修改修\n改修改title" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleLeft } }, new DataGridViewComboBoxCell() { Value = DateTime.Now }, new DataGridViewCheckBoxCell() { Value = "修改修改", Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment=DataGridViewContentAlignment.MiddleCenter } } }.ToArray());
+                //cell.DefaultCellStyle = new DataGridViewCellStyle() { BackColor = Color.Red };
+                this.dataGridView1.Rows.Add(cell);
+            }
         }
 
         public class TestEntity : INotifyPropertyChanged
@@ -208,10 +209,13 @@ namespace GTKWinFormsApp
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             Console.WriteLine("dataGridView1_CellValueChanged");
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                Console.WriteLine(row.Cells[1].Value);
-            }
+            DataGridViewCell cell = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex];
+            Console.WriteLine($"{cell.Value},{cell.Selected}");
+
+            //foreach (DataGridViewRow row in dataGridView1.Rows)
+            //{
+            //    Console.WriteLine(row.Cells[1].Value);
+            //}
         }
 
         private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)

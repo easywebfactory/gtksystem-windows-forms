@@ -4,8 +4,6 @@ using System.ComponentModel;
 using System.Windows.Forms.GtkRender;
 using System.Linq;
 using Gtk;
-using System.Data;
-using GLib;
 
 
 namespace System.Windows.Forms
@@ -37,14 +35,17 @@ namespace System.Windows.Forms
             foreach (DataGridViewRow row in dataGridViewRows)
             {
                 row.DataGridView = dataGridView;
-                TreeIter iter = AddGtkStore(row.Cells.ConvertAll(c =>
+                int rowindex = GetRowCount(DataGridViewElementStates.None);
+                DataGridViewCellStyle _cellStyle = row.DefaultCellStyle;
+                if (dataGridView.RowsDefaultCellStyle != null)
+                    _cellStyle = dataGridView.RowsDefaultCellStyle;
+                if (rowindex % 2 != 0 && dataGridView.AlternatingRowsDefaultCellStyle != null)
+                    _cellStyle = dataGridView.AlternatingRowsDefaultCellStyle;
+
+                row.TreeIter = AddGtkStore(row.Cells.ConvertAll(c =>
                 {
-                    if (row.DefaultCellStyle != null && row.DefaultCellStyle.BackColor.Name != "0" && row.DefaultCellStyle.BackColor.Name != "")
-                        return new CellValue() { Text = Convert.ToString(c.Value), Background = row.DefaultCellStyle.BackColor };
-                    else
-                        return new CellValue() { Text = Convert.ToString(c.Value) };
+                    return new CellValue() { Value = Convert.ToString(c.Value), Style = c.Style ?? _cellStyle };
                 }));
-                row.Handler = iter.UserData;
             }
             if (this.dataGridView.Store.NColumns < this.dataGridView.GridView.Columns.Length)
                 this.dataGridView.Columns.Invalidate();
@@ -64,15 +65,19 @@ namespace System.Windows.Forms
             int idx = rowIndex;
             foreach (DataGridViewRow row in dataGridViewRows)
             {
+                int rowindex = GetRowCount(DataGridViewElementStates.None);
+                DataGridViewCellStyle _cellStyle = row.DefaultCellStyle;
+                if (dataGridView.RowsDefaultCellStyle != null)
+                    _cellStyle = dataGridView.RowsDefaultCellStyle;
+                if (rowindex % 2 != 0 && dataGridView.AlternatingRowsDefaultCellStyle != null)
+                    _cellStyle = dataGridView.AlternatingRowsDefaultCellStyle;
+
                 TreeIter iter = InsertGtkStore(idx, row.Cells.ConvertAll(c =>
                 {
-                    if (row.DefaultCellStyle != null && row.DefaultCellStyle.BackColor.Name != "0")
-                        return new CellValue() { Text = Convert.ToString(c.Value), Background = row.DefaultCellStyle.BackColor };
-                    else
-                        return new CellValue() { Text = Convert.ToString(c.Value) };
+                    return new CellValue() { Value = Convert.ToString(c.Value), Style = c.Style ?? _cellStyle };
                 }));
                 idx++;
-                row.Handler = iter.UserData;
+                row.TreeIter = iter;
             }
         }
         public DataGridViewRow this[int index]
@@ -263,29 +268,31 @@ namespace System.Windows.Forms
         }
         public int GetRowCount(DataGridViewElementStates includeFilter)
         {
-            if (((uint)includeFilter & 0xFFFFFF90u) != 0)
+            //if (((uint)includeFilter & 0xFFFFFF90u) != 0)
+            //{
+            //    throw new ArgumentException("DataGridView_InvalidDataGridViewElementStateCombination", "includeFilter");
+            //}
+            if (includeFilter == DataGridViewElementStates.None)
+                return items.Count;
+            else
             {
-                throw new ArgumentException("DataGridView_InvalidDataGridViewElementStateCombination", "includeFilter");
-            }
-
-            int num = 0;
-            for (int i = 0; i < items.Count; i++)
-            {
-                if ((GetRowState(i) & includeFilter) == includeFilter)
+                int num = 0;
+                for (int i = 0; i < items.Count; i++)
                 {
-                    num++;
+                    if ((GetRowState(i) & includeFilter) == includeFilter)
+                    {
+                        num++;
+                    }
                 }
+                return num;
             }
-
-            return num;
         }
         public int GetRowsHeight(DataGridViewElementStates includeFilter)
         {
-            if (((uint)includeFilter & 0xFFFFFF90u) != 0)
-            {
-                throw new ArgumentException("DataGridView_InvalidDataGridViewElementStateCombination", "includeFilter");
-            }
-
+            //if (((uint)includeFilter & 0xFFFFFF90u) != 0)
+            //{
+            //    throw new ArgumentException("DataGridView_InvalidDataGridViewElementStateCombination", "includeFilter");
+            //}
             int num = 0;
             for (int i = 0; i < items.Count; i++)
             {
@@ -356,7 +363,7 @@ namespace System.Windows.Forms
             {
                 foreach (DataGridViewRow item in items)
                 {
-                    if(item.Handler==iter.UserData)
+                    if(item.TreeIter.Equals(iter.UserData))
                         return item;
                 }
             }

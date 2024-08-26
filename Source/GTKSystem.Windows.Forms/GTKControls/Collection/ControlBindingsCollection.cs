@@ -10,7 +10,7 @@ namespace System.Windows.Forms
     public class ControlBindingsCollection : BindingsCollection
     {
         private Control _owner;
-        public ControlBindingsCollection(Control owner) : base(owner)
+        public ControlBindingsCollection(Control owner) : base()
         {
             _owner = owner;
         }

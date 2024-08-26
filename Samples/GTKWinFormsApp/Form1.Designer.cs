@@ -35,6 +35,11 @@ namespace GTKWinFormsApp
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             TreeNode treeNode1 = new TreeNode("Node21");
             TreeNode treeNode2 = new TreeNode("Node22");
@@ -46,6 +51,12 @@ namespace GTKWinFormsApp
             comboBox1 = new ComboBox();
             textBox1 = new TextBox();
             dataGridView1 = new DataGridView();
+            ID = new DataGridViewTextBoxColumn();
+            State = new DataGridViewCheckBoxColumn();
+            Title = new DataGridViewTextBoxColumn();
+            CreateDate = new DataGridViewComboBoxColumn();
+            Operate = new DataGridViewButtonColumn();
+            PIC = new DataGridViewImageColumn();
             groupBox1 = new GroupBox();
             checkBox2 = new CheckBox();
             maskedTextBox2 = new MaskedTextBox();
@@ -94,12 +105,6 @@ namespace GTKWinFormsApp
             checkedListBox1 = new CheckedListBox();
             splitContainer1 = new SplitContainer();
             pictureBox2 = new PictureBox();
-            ID = new DataGridViewTextBoxColumn();
-            State = new DataGridViewCheckBoxColumn();
-            Title = new DataGridViewTextBoxColumn();
-            CreateDate = new DataGridViewComboBoxColumn();
-            Operate = new DataGridViewButtonColumn();
-            PIC = new DataGridViewImageColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
@@ -138,7 +143,6 @@ namespace GTKWinFormsApp
             // 
             // comboBox1
             // 
-           // comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.FormattingEnabled = true;
             comboBox1.Items.AddRange(new object[] { "test1", "test2", "test3333333333333333333", "这是下拉列表控件数据测试" });
             comboBox1.Location = new System.Drawing.Point(355, 31);
@@ -167,16 +171,48 @@ namespace GTKWinFormsApp
             // 
             // dataGridView1
             // 
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Cyan;
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Red;
+            dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            //dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dataGridView1.ColumnHeadersHeight = 29;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { ID, State, Title, CreateDate, Operate, PIC });
             dataGridView1.DataMember = "ID,State,Title";
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.Info;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
+            dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
             dataGridView1.Location = new System.Drawing.Point(4, 4);
             dataGridView1.Margin = new Padding(4);
             dataGridView1.Name = "dataGridView1";
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.RowTemplate.Height = 36;
-            dataGridView1.Size = new System.Drawing.Size(1323, 266);
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(255, 128, 255);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(0, 0, 192);
+            dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridView1.RowTemplate.Height = 46;
+            dataGridView1.Size = new System.Drawing.Size(1323, 263);
             dataGridView1.TabIndex = 2;
             dataGridView1.MultiSelectChanged += dataGridView1_MultiSelectChanged;
             dataGridView1.CellClick += dataGridView1_CellClick;
@@ -188,6 +224,54 @@ namespace GTKWinFormsApp
             dataGridView1.RowEnter += dataGridView1_RowEnter;
             dataGridView1.RowLeave += dataGridView1_RowLeave;
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
+            // 
+            // ID
+            // 
+            ID.HeaderText = "ID";
+            ID.MinimumWidth = 6;
+            ID.Name = "ID";
+            ID.SortMode = DataGridViewColumnSortMode.NotSortable;
+            ID.Width = 125;
+            // 
+            // State
+            // 
+            State.HeaderText = "State";
+            State.MinimumWidth = 6;
+            State.Name = "State";
+            State.Resizable = DataGridViewTriState.False;
+            State.Width = 125;
+            // 
+            // Title
+            // 
+            Title.HeaderText = "Title";
+            Title.MinimumWidth = 6;
+            Title.Name = "Title";
+            Title.Resizable = DataGridViewTriState.True;
+            Title.Width = 125;
+            // 
+            // CreateDate
+            // 
+            CreateDate.HeaderText = "CreateDate";
+            CreateDate.Items.AddRange(new object[] { "2012-09-12 12:32:11", "2012-09-13 12:32:22", "2012-09-14 12:32:33" });
+            CreateDate.MinimumWidth = 6;
+            CreateDate.Name = "CreateDate";
+            CreateDate.Resizable = DataGridViewTriState.True;
+            CreateDate.SortMode = DataGridViewColumnSortMode.Automatic;
+            CreateDate.Width = 125;
+            // 
+            // Operate
+            // 
+            Operate.HeaderText = "Operate";
+            Operate.MinimumWidth = 6;
+            Operate.Name = "Operate";
+            Operate.Width = 125;
+            // 
+            // PIC
+            // 
+            PIC.HeaderText = "PIC";
+            PIC.MinimumWidth = 6;
+            PIC.Name = "PIC";
+            PIC.Width = 125;
             // 
             // groupBox1
             // 
@@ -382,7 +466,7 @@ namespace GTKWinFormsApp
             tabControl1.Margin = new Padding(4);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new System.Drawing.Size(1339, 306);
+            tabControl1.Size = new System.Drawing.Size(1339, 303);
             tabControl1.TabIndex = 4;
             tabControl1.DrawItem += tabControl1_DrawItem;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
@@ -394,7 +478,7 @@ namespace GTKWinFormsApp
             tabPage1.Margin = new Padding(4);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(4);
-            tabPage1.Size = new System.Drawing.Size(1331, 273);
+            tabPage1.Size = new System.Drawing.Size(1331, 270);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "数据表格";
             tabPage1.UseVisualStyleBackColor = true;
@@ -412,7 +496,7 @@ namespace GTKWinFormsApp
             tabPage2.Margin = new Padding(4);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(4);
-            tabPage2.Size = new System.Drawing.Size(1331, 273);
+            tabPage2.Size = new System.Drawing.Size(1331, 270);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "容器类表格";
             tabPage2.UseVisualStyleBackColor = true;
@@ -572,7 +656,7 @@ namespace GTKWinFormsApp
             tabPage3.Location = new System.Drawing.Point(4, 29);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new System.Drawing.Size(1331, 273);
+            tabPage3.Size = new System.Drawing.Size(1331, 270);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "tabPage3";
             tabPage3.UseVisualStyleBackColor = true;
@@ -753,54 +837,6 @@ namespace GTKWinFormsApp
             pictureBox2.TabStop = false;
             pictureBox2.Paint += pictureBox2_Paint;
             // 
-            // ID
-            // 
-            ID.HeaderText = "ID";
-            ID.MinimumWidth = 6;
-            ID.Name = "ID";
-            ID.SortMode = DataGridViewColumnSortMode.NotSortable;
-            ID.Width = 125;
-            // 
-            // State
-            // 
-            State.HeaderText = "State";
-            State.MinimumWidth = 6;
-            State.Name = "State";
-            State.Resizable = DataGridViewTriState.False;
-            State.Width = 125;
-            // 
-            // Title
-            // 
-            Title.HeaderText = "Title";
-            Title.MinimumWidth = 6;
-            Title.Name = "Title";
-            Title.Resizable = DataGridViewTriState.True;
-            Title.Width = 125;
-            // 
-            // CreateDate
-            // 
-            CreateDate.HeaderText = "CreateDate";
-            CreateDate.Items.AddRange(new object[] { "2012-09-12 12:32:11", "2012-09-13 12:32:22", "2012-09-14 12:32:33" });
-            CreateDate.MinimumWidth = 6;
-            CreateDate.Name = "CreateDate";
-            CreateDate.Resizable = DataGridViewTriState.True;
-            CreateDate.SortMode = DataGridViewColumnSortMode.Automatic;
-            CreateDate.Width = 125;
-            // 
-            // Operate
-            // 
-            Operate.HeaderText = "Operate";
-            Operate.MinimumWidth = 6;
-            Operate.Name = "Operate";
-            Operate.Width = 125;
-            // 
-            // PIC
-            // 
-            PIC.HeaderText = "PIC";
-            PIC.MinimumWidth = 6;
-            PIC.Name = "PIC";
-            PIC.Width = 125;
-            // 
             // Form1
             // 
             AutoScaleMode = AutoScaleMode.None;
@@ -816,6 +852,7 @@ namespace GTKWinFormsApp
             MinimizeBox = false;
             Name = "Form1";
             Text = "默认风格界面";
+            WindowState = FormWindowState.Normal;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();

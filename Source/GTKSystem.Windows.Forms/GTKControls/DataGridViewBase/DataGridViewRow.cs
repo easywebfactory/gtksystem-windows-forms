@@ -1,9 +1,11 @@
-﻿namespace System.Windows.Forms
+﻿using Gtk;
+
+namespace System.Windows.Forms
 {
     public class DataGridViewRow
     {
         public int Index { get; internal set; }
-        public IntPtr Handler { get; internal set; }
+        public TreeIter TreeIter { get; internal set; }
         public DataGridView DataGridView { get; set; }
         private DataGridViewCellCollection _cell;
         public DataGridViewRow()
@@ -11,13 +13,7 @@
             _cell = new DataGridViewCellCollection(this);
         }
         public DataGridViewCellCollection Cells { get { return _cell; } }
-        public bool SetValues(params object[] values) {
-            foreach (object o in values)
-                _cell.Add(new DataGridViewTextBoxCell() { Value = Convert.ToString(o), ValueType = typeof(object) });
-            return true;
-        }
         public object DataBoundItem { get; }
-
         public DataGridViewCellStyle DefaultCellStyle { get; set; }
 
         public bool Displayed { get; }
@@ -42,7 +38,8 @@
 
         public DataGridViewTriState Resizable { get; set; }
 
-        public bool Selected { get; set; }
+        public bool Selected { get => DataGridView.NativeRowGetSelected(Index); set => DataGridView.NativeRowSetSelected(Index, value); }
+        //public bool Selected { get; set; }
 
         public DataGridViewElementStates State { get { return DataGridViewElementStates.None; } }
 

@@ -70,9 +70,17 @@ namespace System.Windows.Forms
                 int bottom = (int)Math.Round(setup.GetBottomMargin(Unit.Points) / pxscale, 0);
                 int width = (int)Math.Round(setup.GetPaperWidth(Unit.Points) / pxscale, 0); //page<paper
                 int height = (int)Math.Round(setup.GetPaperHeight(Unit.Points) / pxscale, 0);
-                cr.Translate(0, 0);
+
                 if (AutoZoom == false)
+                {
+
+                    paper.WidthRequest = (int)Math.Round(width * _zoom, 0);
+                    paper.HeightRequest = (int)Math.Round(height * _zoom, 0);
+                    self.WidthRequest = paper.WidthRequest + 100;
+                    self.HeightRequest = paper.HeightRequest + 100;
                     cr.Scale(_zoom, _zoom);
+                }
+                cr.Translate(0, 0);
                 cr.Rectangle(0, 0, width, height);
                 cr.SetSourceRGBA(ForeColor.R / 255, ForeColor.G / 255, ForeColor.B / 255, ForeColor.A / 255);
                 cr.Fill();
@@ -120,6 +128,8 @@ namespace System.Windows.Forms
                 _document = value;
                 paper.WidthRequest = (int)Math.Round(_document.PageSetup.GetPaperWidth(Unit.Points) / pxscale, 0);
                 paper.HeightRequest = (int)Math.Round(_document.PageSetup.GetPaperHeight(Unit.Points) / pxscale, 0);
+                self.WidthRequest = paper.WidthRequest + 100;
+                self.HeightRequest = paper.HeightRequest + 100;
                 InvalidatePreview();
             }
         }

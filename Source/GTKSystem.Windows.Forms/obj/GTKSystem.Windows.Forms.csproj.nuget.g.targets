@@ -9,8 +9,4 @@
   <ImportGroup Condition=" '$(TargetFramework)' == 'net8.0' AND '$(ExcludeRestorePackageImports)' != 'true' ">
     <Import Project="$(NuGetPackageRoot)gtksharp\3.24.24.95\build\GtkSharp.targets" Condition="Exists('$(NuGetPackageRoot)gtksharp\3.24.24.95\build\GtkSharp.targets')" />
   </ImportGroup>
-  <ImportGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' AND '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)system.resources.extensions\8.0.0\buildTransitive\netcoreapp2.0\System.Resources.Extensions.targets" Condition="Exists('$(NuGetPackageRoot)system.resources.extensions\8.0.0\buildTransitive\netcoreapp2.0\System.Resources.Extensions.targets')" />
-    <Import Project="$(NuGetPackageRoot)gtksharp\3.24.24.95\build\GtkSharp.targets" Condition="Exists('$(NuGetPackageRoot)gtksharp\3.24.24.95\build\GtkSharp.targets')" />
-  </ImportGroup>
 </Project>

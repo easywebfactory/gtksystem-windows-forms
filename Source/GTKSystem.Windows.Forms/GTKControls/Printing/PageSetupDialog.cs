@@ -2,9 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing.Printing;
 using System.Globalization;
+using System.Linq;
 
 namespace System.Windows.Forms
 {
@@ -107,8 +109,9 @@ namespace System.Windows.Forms
         {
             try
             {
+                Gtk.Window window = Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive);
                 Gtk.PrintSettings printSettings = new Gtk.PrintSettings();
-                PageSetup pageSetup = Gtk.Print.RunPageSetupDialog(owner == null ? null : ((Form)owner).self, new Gtk.PageSetup(), printSettings);
+                PageSetup pageSetup = Gtk.Print.RunPageSetupDialog(owner == null ? window : ((Form)owner).self, _printDocument.PageSetup ?? new Gtk.PageSetup(), printSettings);
                 _printDocument.PageSetup = pageSetup;
                 return true;
             }

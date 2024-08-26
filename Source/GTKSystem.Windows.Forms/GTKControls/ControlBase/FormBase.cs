@@ -37,11 +37,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public delegate bool CloseWindowHandler(object sender, EventArgs e);
         public event CloseWindowHandler CloseWindowEvent;
         public event System.Windows.Forms.ScrollEventHandler Scroll;
-        public FormBase() : base("title", Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive), DialogFlags.DestroyWithParent)
+        public FormBase() : base("title", null, DialogFlags.UseHeaderBar)
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Form");
-            this.WindowPosition = Gtk.WindowPosition.CenterAlways;
+            this.WindowPosition = Gtk.WindowPosition.Center;
             this.BorderWidth = 0;
             this.ContentArea.BorderWidth = 0;
             this.ContentArea.Spacing = 0;
@@ -76,7 +76,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             if (args.ResponseId == ResponseType.DeleteEvent)
             {
                 if (CloseWindowEvent(this, EventArgs.Empty))
-                    this.Destroy();
+                    this.HideOnDelete();
                 else
                     this.Run();
             }
@@ -243,7 +243,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         }
         public void CloseWindow()
         {
-            this.Destroy();
+            this.HideOnDelete();
         }
 
         public void AddClass(string cssClass)

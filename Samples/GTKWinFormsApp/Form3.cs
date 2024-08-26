@@ -96,17 +96,17 @@ namespace GTKWinFormsApp
 
             //g.FillPath(brush, path);
         }
-
+        
         private void ssssToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Form2 f = new Form2();
-            f.Show();
+            Form2 f1 = new Form2();
+            f1.Show(this);
         }
-
+       
         private void button2_Click(object sender, EventArgs e)
         {
             Form4 f = new Form4();
-            f.Show();
+            f.ShowDialog();
         }
 
         private void panel5_Scroll(object sender, System.Windows.Forms.ScrollEventArgs e)

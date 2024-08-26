@@ -14,6 +14,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms.GtkRender;
+using static System.Windows.Forms.ImageList;
 
 namespace System.Windows.Forms
 {
@@ -45,10 +46,18 @@ namespace System.Windows.Forms
             GridView.RowActivated += GridView_RowActivated;
             GridView.Selection.Changed += Selection_Changed;
         }
- 
+        private List<int> _selectedBandIndexes = new List<int>();
         private void Selection_Changed(object sender, EventArgs e)
         {
-            if (SelectionChanged != null)
+            SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            _selectedBandIndexes.Clear();
+            TreePath[] treePaths = GridView.Selection.GetSelectedRows();
+            foreach (TreePath path in treePaths)
+            {
+                int idx = path.Indices.Last();
+                _selectedBandIndexes.Add(idx);
+            }
+            if (SelectionChanged != null && Created)
                 SelectionChanged(this, e);
         }
 
@@ -107,6 +116,11 @@ namespace System.Windows.Forms
             get { return _RowTemplate ??= new DataGridViewRow(); }
             set { _RowTemplate = value; }
         }
+        public DataGridViewCellStyle DefaultCellStyle { get; set; }
+        public DataGridViewCellStyle ColumnHeadersDefaultCellStyle { get; set; }
+        public DataGridViewCellStyle AlternatingRowsDefaultCellStyle { get; set; }
+        public DataGridViewCellStyle RowsDefaultCellStyle { get; set; }
+        public DataGridViewCellStyle RowHeadersDefaultCellStyle { get; set; }
         public override ControlBindingsCollection DataBindings { get => _collect; }
         private object _DataSource;
         public object DataSource
@@ -123,28 +137,27 @@ namespace System.Windows.Forms
         }
         private void OnSetDataSource()
         {
+            _Created = false;
+            Store.Clear();
             if (_DataSource != null)
             {
-                Store.Clear();
-                if (_DataSource != null)
+                Store = new Gtk.TreeStore(Array.ConvertAll(GridView.Columns, o => typeof(CellValue)));
+                GridView.Model = Store;
+                if (_DataSource is DataTable dtable)
                 {
-                    Store = new Gtk.TreeStore(Array.ConvertAll(GridView.Columns, o => typeof(CellValue)));
-                    GridView.Model = Store;
-                    if (_DataSource is DataTable dtable)
-                    {
-                        LoadDataTableSource(dtable);
-                    }
-                    else if (_DataSource is DataView dview)
-                    {
-                        LoadDataTableSource(dview.Table);
-                    }
-                    else
-                    {
-                        LoadListSource();
-                    }
-                    _columns.Invalidate();
+                    LoadDataTableSource(dtable);
                 }
+                else if (_DataSource is DataView dview)
+                {
+                    LoadDataTableSource(dview.Table);
+                }
+                else
+                {
+                    LoadListSource();
+                }
+                _columns.Invalidate();
             }
+            _Created = true;
         }
         public string DataMember { get; set; }
         private void LoadDataTableSource(DataTable dt)
@@ -256,14 +269,133 @@ namespace System.Windows.Forms
             }
         }
         public DataGridViewRowCollection Rows { get { return _rows; } }
+        [Browsable(false)]
+        public DataGridViewSelectedCellCollection SelectedCells
+        {
+            get
+            {
+                DataGridViewSelectedCellCollection stcc = new DataGridViewSelectedCellCollection();
+                switch (SelectionMode)
+                {
+                    case DataGridViewSelectionMode.CellSelect:
+                        {
+
+                            break;
+                        }
+
+                    case DataGridViewSelectionMode.FullColumnSelect:
+                    case DataGridViewSelectionMode.ColumnHeaderSelect:
+                        {
+                            foreach (int columnIndex in _selectedBandIndexes)
+                            {
+                                foreach (DataGridViewRow dataGridViewRow in Rows)   // unshares all rows!
+                                {
+                                    stcc.Add(dataGridViewRow.Cells[columnIndex]);
+                                }
+                            }
+                            break;
+                        }
+
+                    case DataGridViewSelectionMode.FullRowSelect:
+                    case DataGridViewSelectionMode.RowHeaderSelect:
+                        {
+                            foreach (int rowIndex in _selectedBandIndexes)
+                            {
+                                DataGridViewRow dataGridViewRow = (DataGridViewRow)Rows[rowIndex];
+                                foreach (DataGridViewCell dataGridViewCell in dataGridViewRow.Cells)
+                                {
+                                    stcc.Add(dataGridViewCell);
+                                }
+                            }
+                            break;
+                        }
+                }
+
+                return stcc;
+            }
+        }
+
+        [Browsable(false)]
+        public DataGridViewSelectedColumnCollection SelectedColumns
+        {
+            get
+            {
+                DataGridViewSelectedColumnCollection strc = new DataGridViewSelectedColumnCollection();
+                switch (SelectionMode)
+                {
+                    case DataGridViewSelectionMode.CellSelect:
+                    case DataGridViewSelectionMode.FullRowSelect:
+                    case DataGridViewSelectionMode.RowHeaderSelect:
+                        break;
+                    case DataGridViewSelectionMode.FullColumnSelect:
+                    case DataGridViewSelectionMode.ColumnHeaderSelect:
+                        foreach (int columnIndex in _selectedBandIndexes)
+                        {
+                            strc.Add(Columns[columnIndex]);
+                        }
+
+                        break;
+                }
+
+                return strc;
+            }
+        }
+
+        [Browsable(false)]
+        public DataGridViewSelectedRowCollection SelectedRows
+        {
+            get
+            {
+                DataGridViewSelectedRowCollection strc = new DataGridViewSelectedRowCollection();
+                switch (SelectionMode)
+                {
+                    case DataGridViewSelectionMode.CellSelect:
+                    case DataGridViewSelectionMode.FullColumnSelect:
+                    case DataGridViewSelectionMode.ColumnHeaderSelect:
+                        break;
+                    case DataGridViewSelectionMode.FullRowSelect:
+                    case DataGridViewSelectionMode.RowHeaderSelect:
+                        foreach (int rowIndex in _selectedBandIndexes)
+                        {
+                            strc.Add(Rows[rowIndex]);
+                        }
+                        break;
+                }
+
+                return strc;
+            }
+        }
+        public bool NativeRowGetSelected(int rowindex)
+        {
+            switch (SelectionMode)
+            {
+                case DataGridViewSelectionMode.FullRowSelect:
+                case DataGridViewSelectionMode.RowHeaderSelect:
+                    return _selectedBandIndexes.Any(i => i == rowindex);
+                    break;
+                default:
+                    return false;
+            }
+        }
+        public void NativeRowSetSelected(int rowindex,bool selected)
+        {
+            Gtk.Application.Invoke(delegate
+            {
+                if (selected)
+                    GridView.Selection.SelectIter(Rows[rowindex].TreeIter);
+                else
+                    GridView.Selection.UnselectIter(Rows[rowindex].TreeIter);
+            });
+        }
+
         public override void BeginInit()
         {
-
+            _Created = false;
         }
 
         public override void EndInit()
         {
-
+            _Created = true;
         }
 
 
@@ -520,122 +652,5 @@ namespace System.Windows.Forms
         [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
         public event DataGridViewRowEventHandler UserAddedRow;
 
-    }
-    public class DataGridViewColumnCollection : List<DataGridViewColumn>
-    {
-        private DataGridView __owner;
-        private Gtk.TreeView GridView;
-        public DataGridViewColumnCollection(DataGridView dataGridView)
-        {
-            __owner = dataGridView;
-            GridView = dataGridView.GridView;
-        }
-
-        public virtual DataGridViewColumn this[string columnName] { get { return base.Find(m => m.Name == columnName); } }
-
-        protected DataGridView DataGridView { get { return __owner; } }
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
-        public event CollectionChangeEventHandler CollectionChanged;
-
-        public void Add(string columnName, string headerText)
-        {
-            DataGridViewColumn column = new DataGridViewColumn() { Name = columnName, HeaderText = headerText };
-            Add(column);
-        }
-        public new void Add(DataGridViewColumn column)
-        {
-            column.DataGridView = __owner;
-            base.Add(column);
-            GridView.AppendColumn(column);
-        }
-        public new void AddRange(IEnumerable<DataGridViewColumn> columns)
-        {
-            foreach (DataGridViewColumn column in columns)
-            {
-                column.DataGridView = __owner;
-                GridView.AppendColumn(column);
-            }
-            base.AddRange(columns);
-        }
-        public new void Clear()
-        {
-            base.Clear();
-            foreach (var wik in GridView.Columns)
-                GridView.RemoveColumn(wik);
-
-        }
-        public void Invalidate()
-        {
-            if (__owner.GridView.Columns.Length > __owner.Store.NColumns)
-            {
-                CellValue[] columnTypes = new CellValue[__owner.GridView.Columns.Length];
-                __owner.Store.Clear();
-                __owner.Store = new TreeStore(Array.ConvertAll(columnTypes, o => typeof(CellValue)));
-                __owner.GridView.Model = __owner.Store;
-            }
-            else if (__owner.GridView.Model == null)
-            {
-                __owner.GridView.Model = __owner.Store;
-            }
-            if (__owner.GridView.Columns.Length <= __owner.Store.NColumns)
-            {
-                int idx = 0;
-                foreach (DataGridViewColumn column in this)
-                {
-                    column.Index = idx;
-                    column.DisplayIndex = column.Index;
-                    column.DataGridView = __owner;
-                    column.Clear();
-                    column.Renderer();
-
-                    __owner.Store.SetSortFunc(idx, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
-                    {
-                        __owner.Store.GetSortColumnId(out int sortid, out Gtk.SortType order);
-                        if (m.GetValue(t1, sortid) == null || m.GetValue(t2, sortid) == null)
-                            return 0;
-                        else
-                            return m.GetValue(t1, sortid).ToString().CompareTo(m.GetValue(t2, sortid).ToString());
-                    }));
-                    idx++;
-                }
-            }
-        }
-        public int GetColumnCount(DataGridViewElementStates includeFilter)
-        {
-            return FindAll(m => m.State == includeFilter).Count;
-        }
-
-        public int GetColumnsWidth(DataGridViewElementStates includeFilter)
-        {
-            DataGridViewColumn co = Find(m => m.State == includeFilter);
-            return co == null ? __owner.RowHeadersWidth : co.Width;
-        }
-
-        public DataGridViewColumn GetFirstColumn(DataGridViewElementStates includeFilter)
-        {
-            return Find(m => m.State == includeFilter);
-        }
-
-        public DataGridViewColumn GetFirstColumn(DataGridViewElementStates includeFilter, DataGridViewElementStates excludeFilter)
-        {
-            return Find(m => m.State == includeFilter && m.State == excludeFilter);
-        }
-
-        public DataGridViewColumn GetLastColumn(DataGridViewElementStates includeFilter, DataGridViewElementStates excludeFilter)
-        {
-            return FindLast(m => m.State == includeFilter && m.State == excludeFilter);
-        }
-
-        public DataGridViewColumn GetNextColumn(DataGridViewColumn dataGridViewColumnStart, DataGridViewElementStates includeFilter, DataGridViewElementStates excludeFilter)
-        {
-            int ix = FindIndex(m => m.Name == dataGridViewColumnStart.Name && m.State == includeFilter && m.State == excludeFilter);
-            return ix < Count ? base[ix] : null;
-        }
-
-        protected virtual void OnCollectionChanged(CollectionChangeEventArgs e)
-        {
-            if (CollectionChanged != null)
-                CollectionChanged(__owner, e);
-        }
     }
 }
