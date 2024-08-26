@@ -177,4 +177,4 @@ QQ群：236066073
 3. https://blog.csdn.net/auto_toyota
 
 ## 更新记录
-    [UpdateHistory.md](查看更新记录)
+    [https://gitee.com/easywebfactory/gtksystem-windows-forms/blob/master/UpdateHistory.md](查看更新记录)
