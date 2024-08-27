@@ -7,6 +7,7 @@
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
+using System.Linq;
 
 namespace System.Windows.Forms
 {
@@ -25,6 +26,36 @@ namespace System.Windows.Forms
             self.Valign = Gtk.Align.Start;
             self.Halign = Gtk.Align.Start;
             self.Changed += Self_Changed;
+            self.TextInserted += Self_TextInserted;
+            self.KeyPressEvent += Self_KeyPressEvent;
+        }
+
+        private void Self_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
+        {
+            if (KeyDown != null)
+            {
+                if (args.Event is Gdk.EventKey eventkey)
+                {
+                    Keys keys = (Keys)eventkey.HardwareKeycode;
+                    KeyDown(this, new KeyEventArgs(keys));
+                }
+            }
+        }
+
+        public override event KeyEventHandler KeyDown;
+        private void Self_TextInserted(object o, TextInsertedArgs args)
+        {
+            if (KeyDown != null && this.GetType().Name == "TextBox")
+            {
+                string keytext = args.NewText.ToUpper();
+                if (char.IsNumber(args.NewText[0]))
+                    keytext = "D" + keytext;
+                var keyv = Enum.GetValues<Keys>().Where(k=> {  
+                    return Enum.GetName(k) == keytext;
+                });
+                foreach(var key in keyv) 
+                    KeyDown(this, new KeyEventArgs(key));
+            }
         }
 
         private void Self_Changed(object sender, EventArgs e)

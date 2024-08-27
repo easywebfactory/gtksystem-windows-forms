@@ -1,11 +1,8 @@
-﻿
-using Gtk;
+﻿using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms.Design;
 
@@ -1170,7 +1167,6 @@ namespace System.Windows.Forms
             if (this.GtkControl is Misc con)
             {
                 con.Hide();
-                con.NoShowAll = true;
             }
         }
 

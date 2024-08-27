@@ -14,7 +14,6 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms.GtkRender;
-using static System.Windows.Forms.ImageList;
 
 namespace System.Windows.Forms
 {
@@ -401,255 +400,255 @@ namespace System.Windows.Forms
 
 
 
-        //[Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler BackgroundImageChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler BackgroundColorChanged;
-        //[Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler BackColorChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewAutoSizeModeEventHandler AutoSizeRowsModeChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewAutoSizeColumnsModeEventHandler AutoSizeColumnsModeChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler AutoGenerateColumnsChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler AlternatingRowsDefaultCellStyleChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler AllowUserToResizeRowsChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler AllowUserToResizeColumnsChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler AllowUserToDeleteRowsChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler AllowUserToAddRowsChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler Sorted;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewSortCompareEventHandler SortCompare;
-        //[Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler SelectionChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler AllowUserToOrderColumnsChanged;
-        //[Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler StyleChanged;
-        //[Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler BackgroundImageLayoutChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler CellBorderStyleChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewDataErrorEventHandler DataError;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewBindingCompleteEventHandler DataBindingComplete;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler CurrentCellDirtyStateChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler CurrentCellChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewColumnEventHandler ColumnWidthChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewColumnEventHandler ColumnToolTipTextChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewColumnStateChangedEventHandler ColumnStateChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewColumnEventHandler ColumnSortModeChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewColumnEventHandler ColumnRemoved;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewColumnEventHandler ColumnNameChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowEventHandler DefaultValuesNeeded;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewColumnEventHandler ColumnMinimumWidthChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellMouseEventHandler ColumnHeaderMouseDoubleClick;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellMouseEventHandler ColumnHeaderMouseClick;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewColumnEventHandler ColumnDividerWidthChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewColumnDividerDoubleClickEventHandler ColumnDividerDoubleClick;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewColumnEventHandler ColumnDisplayIndexChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewColumnEventHandler ColumnDefaultCellStyleChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewColumnEventHandler ColumnDataPropertyNameChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewColumnEventHandler ColumnContextMenuStripChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewColumnEventHandler ColumnAdded;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellValueEventHandler CellValuePushed;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewColumnEventHandler ColumnHeaderCellChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellValueEventHandler CellValueNeeded;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewEditingControlShowingEventHandler EditingControlShowing;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowEventHandler RowContextMenuStripChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowEventHandler RowUnshared;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowStateChangedEventHandler RowStateChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowsRemovedEventHandler RowsRemoved;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowsAddedEventHandler RowsAdded;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowPrePaintEventHandler RowPrePaint;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowPostPaintEventHandler RowPostPaint;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowEventHandler RowMinimumHeightChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellEventHandler RowLeave;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowHeightInfoPushedEventHandler RowHeightInfoPushed;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowHeightInfoNeededEventHandler RowHeightInfoNeeded;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowEventHandler NewRowNeeded;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowEventHandler RowHeightChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellMouseEventHandler RowHeaderMouseDoubleClick;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellMouseEventHandler RowHeaderMouseClick;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowErrorTextNeededEventHandler RowErrorTextNeeded;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowEventHandler RowErrorTextChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellEventHandler RowEnter;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowEventHandler RowDividerHeightChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowDividerDoubleClickEventHandler RowDividerDoubleClick;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event QuestionEventHandler RowDirtyStateNeeded;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowEventHandler RowDefaultCellStyleChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowContextMenuStripNeededEventHandler RowContextMenuStripNeeded;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowEventHandler RowHeaderCellChanged;
-        //[Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        //[Obsolete("此事件未实现，自行开发")]
         //public event DataGridViewCellEventHandler CellValueChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellValidatingEventHandler CellValidating;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellEventHandler CellValidated;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event QuestionEventHandler CancelRowEdit;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewAutoSizeColumnModeEventHandler AutoSizeColumnModeChanged;
-        //[Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler TextChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler RowsDefaultCellStyleChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewAutoSizeModeEventHandler RowHeadersWidthSizeModeChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler RowHeadersWidthChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler RowHeadersDefaultCellStyleChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler RowHeadersBorderStyleChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler ReadOnlyChanged;
-        //[Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler PaddingChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellCancelEventHandler CellBeginEdit;
-        [Obsolete("此事件未实现，此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，此事件未实现，自行开发")]
         public event EventHandler MultiSelectChanged;
-        //[Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler FontChanged;
-        //[Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler ForeColorChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler EditModeChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler DefaultCellStyleChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler DataSourceChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler DataMemberChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewAutoSizeModeEventHandler ColumnHeadersHeightSizeModeChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler ColumnHeadersHeightChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler ColumnHeadersDefaultCellStyleChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler ColumnHeadersBorderStyleChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler GridColorChanged;
-        //[Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        //[Obsolete("此事件未实现，自行开发")]
         //public event DataGridViewCellEventHandler CellClick;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellEventHandler CellContentClick;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellEventHandler CellContentDoubleClick;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellToolTipTextNeededEventHandler CellToolTipTextNeeded;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellEventHandler CellToolTipTextChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellStyleContentChangedEventHandler CellStyleContentChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellEventHandler CellStyleChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellStateChangedEventHandler CellStateChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellParsingEventHandler CellParsing;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellPaintingEventHandler CellPainting;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellMouseEventHandler CellMouseUp;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellMouseEventHandler CellMouseMove;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellEventHandler CellMouseLeave;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellEventHandler CellMouseEnter;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellMouseEventHandler CellMouseDown;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellMouseEventHandler CellMouseDoubleClick;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellMouseEventHandler CellMouseClick;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellEventHandler CellLeave;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellFormattingEventHandler CellFormatting;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellErrorTextNeededEventHandler CellErrorTextNeeded;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellEventHandler CellErrorTextChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellEventHandler CellEnter;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellEventHandler CellEndEdit;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellEventHandler CellDoubleClick;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellContextMenuStripNeededEventHandler CellContextMenuStripNeeded;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellEventHandler CellContextMenuStripChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event EventHandler BorderStyleChanged;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellEventHandler RowValidated;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellCancelEventHandler RowValidating;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowCancelEventHandler UserDeletingRow;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowEventHandler UserDeletedRow;
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
+        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowEventHandler UserAddedRow;
 
     }

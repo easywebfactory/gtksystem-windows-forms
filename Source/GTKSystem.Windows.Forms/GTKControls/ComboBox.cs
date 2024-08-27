@@ -43,16 +43,15 @@ namespace System.Windows.Forms
         private void Self_Realized(object sender, EventArgs e)
         {
             OnSetDataSource();
-
+            var ws = ((Gtk.Box)self.Children[0].Parent).Children[1] as Gtk.ToggleButton;
+            ws.Toggled += Ws_Toggled;
             if (DropDownStyle == ComboBoxStyle.DropDownList)
             {
                 self.Entry.IsEditable = false;
                 self.Entry.CanFocus = false;
                 self.Entry.NoShowAll = true;
                 self.Entry.WidthRequest = 1;
-                var ws = ((Gtk.Box)self.Children[0].Parent).Children[1] as Gtk.ToggleButton;
                 ws.WidthRequest = self.WidthRequest;
-
                 ws.Label = self.Entry.Text;
                 ws.Image = Gtk.Image.NewFromIconName("pan-down", Gtk.IconSize.Button);
                 ws.ImagePosition = Gtk.PositionType.Right;
@@ -64,6 +63,14 @@ namespace System.Windows.Forms
                 ws.Image.Halign = Gtk.Align.End;
                 ws.Image.Valign = Gtk.Align.Center;
                 ws.Drawn += Ws_Drawn;
+            }
+        }
+        public event EventHandler DropDown;
+        private void Ws_Toggled(object sender, EventArgs e)
+        {
+            if (DropDown != null)
+            {
+                DropDown(this, e);
             }
         }
         private void Ws_Drawn(object o, Gtk.DrawnArgs args)

@@ -104,8 +104,8 @@ namespace System.Windows.Forms
                         int widthIncrement = resizeWidth - self.DefaultWidth;
                         int heightIncrement = resizeHeight - self.DefaultHeight;
 
-                        _body.WidthRequest = resizeWidth - (AutoScroll ? self.ScrollArrowVlength : 0); //留出滚动条位置
-                        _body.HeightRequest = resizeHeight - self.StatusBarView.AllocatedHeight - (AutoScroll ? self.ScrollArrowHlength : 0);
+                        _body.WidthRequest = resizeWidth; //留出滚动条位置 - (AutoScroll ? self.ScrollArrowVlength : 0)
+                        _body.HeightRequest = resizeHeight - self.StatusBarView.AllocatedHeight;
 
                         Gtk.Application.Invoke(new EventHandler((o, e) =>
                         {

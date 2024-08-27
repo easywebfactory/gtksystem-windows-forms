@@ -39,7 +39,6 @@ namespace GTKWinFormsApp
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             TreeNode treeNode1 = new TreeNode("Node21");
             TreeNode treeNode2 = new TreeNode("Node22");
@@ -150,6 +149,7 @@ namespace GTKWinFormsApp
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new System.Drawing.Size(154, 28);
             comboBox1.TabIndex = 1;
+            comboBox1.DropDown += comboBox1_DropDown;
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             comboBox1.SelectedValueChanged += comboBox1_SelectedValueChanged;
             // 
@@ -176,43 +176,35 @@ namespace GTKWinFormsApp
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Red;
             dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Red;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            //dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dataGridView1.ColumnHeadersHeight = 29;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { ID, State, Title, CreateDate, Operate, PIC });
             dataGridView1.DataMember = "ID,State,Title";
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.Info;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.Info;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridView1.Location = new System.Drawing.Point(4, 4);
             dataGridView1.Margin = new Padding(4);
             dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dataGridView1.RowHeadersWidth = 51;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(255, 128, 255);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(0, 0, 192);
-            dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(255, 128, 255);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(0, 0, 192);
+            dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle4;
             dataGridView1.RowTemplate.Height = 46;
-            dataGridView1.Size = new System.Drawing.Size(1323, 263);
+            dataGridView1.Size = new System.Drawing.Size(1105, 228);
             dataGridView1.TabIndex = 2;
             dataGridView1.MultiSelectChanged += dataGridView1_MultiSelectChanged;
             dataGridView1.CellClick += dataGridView1_CellClick;
@@ -457,7 +449,7 @@ namespace GTKWinFormsApp
             // 
             // tabControl1
             // 
-            tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
@@ -466,7 +458,7 @@ namespace GTKWinFormsApp
             tabControl1.Margin = new Padding(4);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new System.Drawing.Size(1339, 303);
+            tabControl1.Size = new System.Drawing.Size(1117, 219);
             tabControl1.TabIndex = 4;
             tabControl1.DrawItem += tabControl1_DrawItem;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
@@ -478,7 +470,7 @@ namespace GTKWinFormsApp
             tabPage1.Margin = new Padding(4);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(4);
-            tabPage1.Size = new System.Drawing.Size(1331, 270);
+            tabPage1.Size = new System.Drawing.Size(1109, 186);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "数据表格";
             tabPage1.UseVisualStyleBackColor = true;
@@ -496,7 +488,7 @@ namespace GTKWinFormsApp
             tabPage2.Margin = new Padding(4);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(4);
-            tabPage2.Size = new System.Drawing.Size(1331, 270);
+            tabPage2.Size = new System.Drawing.Size(1109, 186);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "容器类表格";
             tabPage2.UseVisualStyleBackColor = true;
@@ -656,7 +648,7 @@ namespace GTKWinFormsApp
             tabPage3.Location = new System.Drawing.Point(4, 29);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new System.Drawing.Size(1331, 270);
+            tabPage3.Size = new System.Drawing.Size(1109, 186);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "tabPage3";
             tabPage3.UseVisualStyleBackColor = true;
@@ -734,7 +726,7 @@ namespace GTKWinFormsApp
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new Padding(8, 2, 0, 2);
-            menuStrip1.Size = new System.Drawing.Size(1339, 29);
+            menuStrip1.Size = new System.Drawing.Size(1360, 29);
             menuStrip1.TabIndex = 7;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -821,8 +813,8 @@ namespace GTKWinFormsApp
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(tabControl1);
-            splitContainer1.Size = new System.Drawing.Size(1339, 499);
-            splitContainer1.SplitterDistance = 181;
+            splitContainer1.Size = new System.Drawing.Size(1360, 483);
+            splitContainer1.SplitterDistance = 191;
             splitContainer1.SplitterWidth = 5;
             splitContainer1.TabIndex = 14;
             // 
@@ -852,7 +844,6 @@ namespace GTKWinFormsApp
             MinimizeBox = false;
             Name = "Form1";
             Text = "默认风格界面";
-            WindowState = FormWindowState.Normal;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();

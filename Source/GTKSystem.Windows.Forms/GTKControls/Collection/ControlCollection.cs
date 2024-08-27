@@ -58,6 +58,7 @@ namespace System.Windows.Forms
             }
             __ownerControl.ShowAll();
         }
+        internal Drawing.Point Offset = new Drawing.Point(0,0);
         private void AddToWidget(object item)
         {
             if (item is StatusStrip statusbar)
@@ -77,18 +78,18 @@ namespace System.Windows.Forms
             else if (item is Control control)
             {
                 if (fixedContainer != null)
-                    fixedContainer.Put(control.Widget, control.Left, control.Top);
+                    fixedContainer.Put(control.Widget, control.Left + Offset.X, control.Top + Offset.Y);
                 else if (layoutContainer != null)
-                    layoutContainer.Put(control.Widget, control.Left, control.Top);
+                    layoutContainer.Put(control.Widget, control.Left + Offset.X, control.Top + Offset.Y);
                 else
                     __ownerControl.Add(control.Widget);
             }
             else if (item is Gtk.Widget widget)
             {
                 if (fixedContainer != null)
-                    fixedContainer.Put(widget, widget.Allocation.X, widget.Allocation.Y);
+                    fixedContainer.Put(widget, widget.Allocation.X + Offset.X, widget.Allocation.Y + Offset.Y);
                 else if (layoutContainer != null)
-                    layoutContainer.Put(widget, widget.Allocation.X, widget.Allocation.Y);
+                    layoutContainer.Put(widget, widget.Allocation.X + Offset.X, widget.Allocation.Y + Offset.Y);
                 else
                     __ownerControl.Add(widget);
             }

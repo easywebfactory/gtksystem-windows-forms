@@ -64,7 +64,7 @@ namespace GTKWinFormsApp
             for (int i = 0; i < 10; i++)
             {
                 var cell = new DataGridViewRow();
-                cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString(), Style= new DataGridViewCellStyle() { BackColor = i%3==0?Color.Red:Color.Transparent, ForeColor=Color.Green, Alignment=DataGridViewContentAlignment.MiddleCenter } }, new DataGridViewCheckBoxCell() { Value = true }, new DataGridViewTextBoxCell() { Value = "修改修改修改修改修\n改修改title" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleLeft } }, new DataGridViewComboBoxCell() { Value = DateTime.Now }, new DataGridViewCheckBoxCell() { Value = "修改修改", Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment=DataGridViewContentAlignment.MiddleCenter } } }.ToArray());
+                cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleCenter } }, new DataGridViewCheckBoxCell() { Value = true }, new DataGridViewTextBoxCell() { Value = "修改修改修改修改修\n改修改title" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleLeft } }, new DataGridViewComboBoxCell() { Value = DateTime.Now }, new DataGridViewCheckBoxCell() { Value = "修改修改", Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleCenter } } }.ToArray());
                 //cell.DefaultCellStyle = new DataGridViewCellStyle() { BackColor = Color.Red };
                 this.dataGridView1.Rows.Add(cell);
             }
@@ -408,6 +408,7 @@ namespace GTKWinFormsApp
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
         {
+            
             Console.WriteLine("textBox1_KeyDown");
         }
 
@@ -423,7 +424,12 @@ namespace GTKWinFormsApp
 
         private void tabPage2_Click(object sender, EventArgs e)
         {
-           // MessageBox.Show("ffsssssss");
+            // MessageBox.Show("ffsssssss");
+        }
+
+        private void comboBox1_DropDown(object sender, EventArgs e)
+        {
+            Console.WriteLine("comboBox1_DropDown");
         }
     }
 

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GTKSystemWinFormsApp11")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dfc7424eeffba3c40e26f1988629aa8de0b0e5e5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6ed969ac60ed9f7fa5a39570e2bfc96c5bf29a1b")]
 [assembly: System.Reflection.AssemblyProductAttribute("GTKSystemWinFormsApp11")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GTKSystemWinFormsApp11")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

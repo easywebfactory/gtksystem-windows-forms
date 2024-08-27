@@ -19,9 +19,9 @@ namespace System.Windows.Forms
         public GroupBox() : base()
         {
             _controls = new ControlCollection(this, contaner);
+            _controls.Offset.Offset(0, -20);
             self.Child = contaner;
         }
-
         public override string Text { get { return self.Label; } set { self.Label = value; } }
         public override ControlCollection Controls => _controls;
 

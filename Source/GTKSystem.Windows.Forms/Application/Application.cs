@@ -127,11 +127,10 @@ namespace System.Windows.Forms
 .GridViewCell-Button:selected{ color:blue}
 
 .LinkLabel{border-style:none;}
-.TextBox{}
+.TextBox{padding:0px;}
 .ComboBox entry.flat{border-right-width:0px;}
 .DropDownList button{padding:3px;}
-
-.SplitContainer1 > separator {border-style:solid;border-width:2px;}
+.SplitContainer{padding:0px;}
 .TableLayoutPanel {box-shadow: 1px 1px 1px 0px @frame_color;}
 .TableLayoutPanel viewport.frame {box-shadow: inset 1px 1px 1px 0 @frame_color;}
 .ListView{}
@@ -151,20 +150,20 @@ namespace System.Windows.Forms
 .NumericUpDown.vertical entry{border-width:0px;padding:1px;min-height:6px;min-width:6px;} 
 .PrintPreviewBack{background-color:#cccccc; border-radius:0px;}
 .Paper{box-shadow: 0px 0px 3px 1px #999999;background:#ffffff; border-radius:0px;}
-                ";
 
-                string defaulttheme = "theme/default/style/style.css";
+";
+
+                string defaulttheme = "theme/style.css";
                 if (File.Exists(defaulttheme))
-                    css_style = $"@import url(\"{defaulttheme}\");\n";
-                
-                string customstyle = $"theme/style_{typeof(Application).Assembly.GetName().Version}.css";
-                if (File.Exists(customstyle))
-                    css.LoadFromPath(customstyle);
+                {
+                    css_style += File.ReadAllText(defaulttheme, Text.Encoding.UTF8);
+                    css.LoadFromData(css_style);
+                }
                 else
                 {
                     if (!Directory.Exists("theme"))
                         Directory.CreateDirectory("theme");
-                    File.WriteAllText(customstyle, css_style);
+                    File.WriteAllText(defaulttheme, "/* 自定义控件样式 */\r\n", Text.Encoding.UTF8);
                     css.LoadFromData(css_style);
                 }  
                 Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, 600);
