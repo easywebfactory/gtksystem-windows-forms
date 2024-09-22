@@ -188,6 +188,8 @@ namespace System.Windows.Forms
                     {
                         if (autotheme == "false" && nameValue.TryGetValue("DefaultThemeName", out string themename))
                             Gtk.Settings.Default.ThemeName = themename;
+                        else if (autotheme == "true")
+                            Gtk.Settings.Default.ThemeName = "Default";
                     }
                     if (nameValue.TryGetValue("UseCustomTheme", out string usetheme))
                     {
@@ -229,18 +231,27 @@ namespace System.Windows.Forms
 
                     StringBuilder setupthemecontent = new StringBuilder();
                     setupthemecontent.AppendLine("[setup]");
+                    setupthemecontent.AppendLine("/*是否默认跟随系统主题*/");
                     setupthemecontent.AppendLine("AutoTheme=false");
+                    setupthemecontent.AppendLine("/*是否应用内置样式*/");
                     setupthemecontent.AppendLine("UseDefaultStyle=true");
+                    setupthemecontent.AppendLine("/*指定主题，AutoTheme=false时有效*/");
                     setupthemecontent.AppendLine("DefaultThemeName=Default");
+                    setupthemecontent.AppendLine("/*是否使用自定义主师，对应[custom theme]*/");
                     setupthemecontent.AppendLine("UseCustomTheme=false");
+                    setupthemecontent.AppendLine("/*是否使用自定义样式，对应[custom style]*/");
                     setupthemecontent.AppendLine("UseCustomStyle=true");
 
                     setupthemecontent.AppendLine().AppendLine("[custom theme]");
+                    setupthemecontent.AppendLine("/* 自定义主题名称 */");
                     setupthemecontent.AppendLine("Name=mytheme");
+                    setupthemecontent.AppendLine("/* 主题文件所在文件夹，只能放在theme目录下 */");
                     setupthemecontent.AppendLine("ThemeFolder=window10-white");
+                    setupthemecontent.AppendLine("/* 主题css引用文件路径，只能放在theme目录下，相对路径 */");
                     setupthemecontent.AppendLine("ThemeCssPath=window10-white/theme.css");
 
                     setupthemecontent.AppendLine().AppendLine("[custom style]");
+                    setupthemecontent.AppendLine("/* 自由定义样式文件 */");
                     setupthemecontent.AppendLine("StylePath=style.css");
 
                     File.WriteAllText(themesetuppath, setupthemecontent.ToString(), Text.Encoding.UTF8);
