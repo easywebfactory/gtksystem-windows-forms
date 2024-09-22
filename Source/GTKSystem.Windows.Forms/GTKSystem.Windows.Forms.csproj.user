@@ -53,6 +53,9 @@
     <Compile Update="GTKControls\Drawing\Printing\PrintDocument.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\HScrollBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\ImageList\ImageList.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -265,6 +268,9 @@
     </Compile>
     <Compile Update="GTKControls\UserControl.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="GTKControls\VScrollBar.cs">
+      <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
 </Project>
