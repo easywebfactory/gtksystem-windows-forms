@@ -5,8 +5,9 @@
 C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，基于GTK组件开发，该组件的核心优势是使用C#的原生winform表单控件窗体设计器，相同的属性方法，C#原生开发即可，无需学习。一次编译，跨平台运行。
 便于开发跨平台winform软件，便于将C#升级为跨平台软件。
 
-作者博客请看 [https://www.cnblogs.com/easywebfactory/p/17803567.html](https://www.cnblogs.com/easywebfactory/p/17803567.html)
-   [https://blog.csdn.net/auto_toyota](https://blog.csdn.net/auto_toyota)
+项目官网：[https://www.gtkapp.com](https://www.gtkapp.com/)   
+博客：[https://www.cnblogs.com/easywebfactory](https://www.cnblogs.com/easywebfactory)
+
 
 目前功能持续更新中，将优先完善常用功能。
 
