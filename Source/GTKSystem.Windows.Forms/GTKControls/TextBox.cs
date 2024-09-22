@@ -1,7 +1,7 @@
 ﻿/*
  * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
  * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://gitee.com/easywebfactory, https://github.com/easywebfactory, https://www.cnblogs.com/easywebfactory
+ * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
 using Gtk;
@@ -18,8 +18,6 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         public TextBox() : base()
         {
-            //self.HasFrame = false;
-            self.ShadowType = Gtk.ShadowType.In;
             self.MaxWidthChars = 1;
             self.WidthChars = 0;
 

@@ -108,6 +108,15 @@ namespace System.Windows.Forms
 
                 MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0));
             }
+
+            if (ContextMenuStrip != null)
+            {
+                if (args.Event.Button == 3)
+                {
+                    ContextMenuStrip.Widget.ShowAll();
+                    ((Gtk.Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
+                }
+            }
         }
 
         private void Widget_EnterNotifyEvent(object o, EnterNotifyEventArgs args)
@@ -679,9 +688,34 @@ namespace System.Windows.Forms
         public virtual object Tag { get; set; }
         public virtual string Text { get; set; }
         public virtual Control TopLevelControl { get; }
-
         public virtual bool UseWaitCursor { get; set; }
         public virtual bool Visible { get { return Widget.Visible; } set { Widget.Visible = value; Widget.NoShowAll = value == false; } }
+
+        protected virtual Size DefaultSize { get; }
+        protected virtual Padding DefaultPadding { get; }
+        protected virtual Size DefaultMinimumSize { get; }
+        protected virtual Padding DefaultMargin { get; }
+        protected virtual Cursor DefaultCursor { get; }
+        protected override bool CanRaiseEvents { get; }
+        protected virtual bool DoubleBuffered { get; set; }
+        protected int FontHeight { get; set; }
+        protected virtual Size DefaultMaximumSize { get; }
+        protected virtual ImeMode ImeModeBase { get; set; }
+        protected virtual ImeMode DefaultImeMode { get; }
+        protected virtual bool CanEnableIme { get; }
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        protected virtual bool ScaleChildren { get; }
+        protected bool ResizeRedraw { get; set; }
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        protected internal virtual bool ShowFocusCues { get; }
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        protected internal virtual bool ShowKeyboardCues { get; }
+
+
         public virtual IWindowTarget WindowTarget { get; set; }
         public virtual event EventHandler AutoSizeChanged;
         public virtual event EventHandler BackColorChanged;
@@ -1238,7 +1272,6 @@ namespace System.Windows.Forms
             catch { }
             base.Dispose(disposing);
         }
-
 
         protected virtual CreateParams CreateParams
         {

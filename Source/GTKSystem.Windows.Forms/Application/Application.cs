@@ -1,9 +1,15 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading;
+using System.Web;
 using System.Windows.Forms;
 
 namespace System.Windows.Forms
@@ -82,20 +88,6 @@ namespace System.Windows.Forms
         {
             if (App == null)
             {
-                if (!Directory.Exists("Resources"))
-                {
-                    Directory.CreateDirectory("Resources");
-                }
-
-                Gtk.Application.Init();
-                App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
-                //App.Register(GLib.Cancellable.Current);
-                App.Shutdown += App_Shutdown;
-                var quitAction = new GLib.SimpleAction("quit", null);
-                quitAction.Activated += QuitActivated;
-                App.AddAction(quitAction);
-                Gtk.Settings.Default.SplitCursor = true;
-                Gtk.CssProvider css = new Gtk.CssProvider();
                 string css_style = @"
 
 /* 定义控件样式*/
@@ -107,13 +99,14 @@ namespace System.Windows.Forms
 @define-color separator_color1 #C6C5C4;
 @define-color separator_color2 #D6D7D8;
 
-.DefaultThemeStyle{padding: 0px 2px; border-style:solid;}
+.DefaultThemeStyle{padding: 0px 2px; border-style:solid;min-height:6px;min-width:6px;}
 .DefaultThemeStyle entry{
-   padding: 0px 4px; border-width: 1px; border-style: solid; 
+   border-width: 1px; border-style: solid; border-color:@frame_color;
    background-color: @theme_base_color; color: @theme_text_color;
 }
 .DefaultThemeStyle entry.flat{
-    border-width: 1px; border-style: solid; border-color:@frame_color;
+   padding: 0px 4px; border-width: 1px; border-style: solid; border-color:@frame_color;
+   background-color: @theme_base_color; color: @theme_text_color;
 }
 .DefaultThemeStyle button{padding:4px 3px;}
 .BorderNone{border-style:none;box-shadow:none;}
@@ -127,9 +120,12 @@ namespace System.Windows.Forms
 .GridViewCell-Button:selected{ color:blue}
 
 .LinkLabel{border-style:none;}
-.TextBox{padding:0px;}
-.ComboBox entry.flat{border-right-width:0px;}
-.DropDownList button{padding:3px;}
+.TextBox{padding:1px;}
+
+.ComboBox entry.flat{border-right-width:0px;padding:0px;}
+.ComboBox button{padding-top:0px;padding-bottom:0px;}
+
+.DropDownList button{padding:0px;}
 .SplitContainer{padding:0px;}
 .TableLayoutPanel {box-shadow: 1px 1px 1px 0px @frame_color;}
 .TableLayoutPanel viewport.frame {box-shadow: inset 1px 1px 1px 0 @frame_color;}
@@ -143,29 +139,114 @@ namespace System.Windows.Forms
 .StatusStrip{padding:0px; border-width:1px 0px 0px 0px; border-top:solid 1px @frame_color;}
 .ToolStrip button{padding:0px;}
 
-.NumericUpDown{border-width:1px;padding:3px; min-height:6px;min-width:6px;}
-.NumericUpDown button.up{border-width:0px;padding:0px;min-height:6px;min-width:6px;}
-.NumericUpDown button.down{border-width:0px;padding:0px;min-height:6px;min-width:6px;}
+.NumericUpDown{border-width:1px;padding:2px; }
+.NumericUpDown button.up{border-width:0px;padding:0px;}
+.NumericUpDown button.down{border-width:0px;padding:0px;}
 .NumericUpDown.horizontal entry{border-width:0px;padding:1px;min-height:6px;min-width:6px;} 
 .NumericUpDown.vertical entry{border-width:0px;padding:1px;min-height:6px;min-width:6px;} 
+
 .PrintPreviewBack{background-color:#cccccc; border-radius:0px;}
 .Paper{box-shadow: 0px 0px 3px 1px #999999;background:#ffffff; border-radius:0px;}
 
 ";
 
-                string defaulttheme = "theme/style.css";
-                if (File.Exists(defaulttheme))
+                string appdirectory = StartupPath;
+                if (!File.Exists($"{appdirectory}/GTKSystem.Windows.Forms.dll"))
                 {
-                    css_style += File.ReadAllText(defaulttheme, Text.Encoding.UTF8);
-                    css.LoadFromData(css_style);
+                    appdirectory = Path.GetDirectoryName(ExecutablePath);
+                }
+                string resourcepath = Path.Combine(appdirectory, "Resources");
+                string themepath = Path.Combine(appdirectory, "theme");
+                string themesetuppath = Path.Combine(themepath, "setup.theme");
+                if (!Directory.Exists(resourcepath))
+                {
+                    Directory.CreateDirectory(resourcepath);
+                }
+                if (!Directory.Exists(themepath))
+                {
+                    Directory.CreateDirectory(themepath);
+                }
+
+                Gtk.Application.Init();
+                App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
+                //App.Register(GLib.Cancellable.Current);
+                App.Shutdown += App_Shutdown;
+                var quitAction = new GLib.SimpleAction("quit", null);
+                quitAction.Activated += QuitActivated;
+                App.AddAction(quitAction);
+                Gtk.Settings.Default.SplitCursor = true;
+
+                Gtk.CssProvider css = new Gtk.CssProvider();
+                StringBuilder cssBuilder=new StringBuilder();
+
+                if (File.Exists(themesetuppath))
+                {
+                    string[] setuptheme = File.ReadAllLines(themesetuppath, Text.Encoding.UTF8);
+                    Dictionary<string,string> nameValue = setuptheme.Where(w=>w.Contains("=")).ToDictionary(k => k.Split('=')[0],v=>v.Split("=")[1]);
+                    
+                    if (nameValue.TryGetValue("AutoTheme",out string autotheme))
+                    {
+                        if (autotheme == "false" && nameValue.TryGetValue("DefaultThemeName", out string themename))
+                            Gtk.Settings.Default.ThemeName = themename;
+                    }
+                    if (nameValue.TryGetValue("UseCustomTheme", out string usetheme))
+                    {
+                        if (usetheme == "true" && nameValue.TryGetValue("ThemeCssPath", out string themecss))
+                        {
+                            //string themefolder = nameValue["ThemeFolder"];
+                            string themecsspath = "theme/" + themecss;
+                            if (File.Exists(themecsspath))
+                            {
+                                cssBuilder.AppendFormat("@import url(\"{0}\");", themecsspath).AppendLine();
+                            }
+                        }
+                    }
+                    if (nameValue.TryGetValue("UseDefaultStyle", out string usedef))
+                    {
+                        if (usedef != "false")
+                            cssBuilder.AppendLine(css_style);
+                    }
+                    if (nameValue.TryGetValue("UseCustomStyle", out string customstyle))
+                    {
+                        if (customstyle == "true" && nameValue.TryGetValue("StylePath", out string stylefile))
+                        {
+                            string stylepath = Path.Combine(themepath, stylefile);
+                            if (File.Exists(stylepath))
+                            {
+                                string styletext = File.ReadAllText(stylepath, Text.Encoding.UTF8);
+                                cssBuilder.AppendLine(styletext);
+                            }
+                            else
+                            {
+                                File.WriteAllText(stylepath, "/* 这里可以自定义或调整控件样式 */ ", Text.Encoding.UTF8);
+                            }
+                        }
+                    }
                 }
                 else
                 {
-                    if (!Directory.Exists("theme"))
-                        Directory.CreateDirectory("theme");
-                    File.WriteAllText(defaulttheme, "/* 自定义控件样式 */\r\n", Text.Encoding.UTF8);
-                    css.LoadFromData(css_style);
-                }  
+                    cssBuilder.AppendLine(css_style);
+
+                    StringBuilder setupthemecontent = new StringBuilder();
+                    setupthemecontent.AppendLine("[setup]");
+                    setupthemecontent.AppendLine("AutoTheme=false");
+                    setupthemecontent.AppendLine("UseDefaultStyle=true");
+                    setupthemecontent.AppendLine("DefaultThemeName=Default");
+                    setupthemecontent.AppendLine("UseCustomTheme=false");
+                    setupthemecontent.AppendLine("UseCustomStyle=true");
+
+                    setupthemecontent.AppendLine().AppendLine("[custom theme]");
+                    setupthemecontent.AppendLine("Name=mytheme");
+                    setupthemecontent.AppendLine("ThemeFolder=window10-white");
+                    setupthemecontent.AppendLine("ThemeCssPath=window10-white/theme.css");
+
+                    setupthemecontent.AppendLine().AppendLine("[custom style]");
+                    setupthemecontent.AppendLine("StylePath=style.css");
+
+                    File.WriteAllText(themesetuppath, setupthemecontent.ToString(), Text.Encoding.UTF8);
+                }
+               
+                css.LoadFromData(cssBuilder.ToString());
                 Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, 600);
             }
             return App;

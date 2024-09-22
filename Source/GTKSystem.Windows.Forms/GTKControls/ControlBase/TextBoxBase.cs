@@ -6,7 +6,6 @@
         internal TextBoxBase() : base()
         {
             this.Override = new GtkControlOverride(this);
-            this.StyleContext.AddClass("entry");
             this.Override.AddClass("TextBox");
         }
         public void AddClass(string cssClass)

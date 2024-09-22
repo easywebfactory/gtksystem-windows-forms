@@ -170,6 +170,18 @@
     <Compile Update="GTKControls\MenuStripBase\ToolStripProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\PropertyGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\PropertyGridBase\PropertyGrid.Flags.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\PropertyGridBase\PropertyGrid.PropertyTabCollection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\PropertyGridBase\PropertyGrid.TabInfo.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\StatusStrip.cs">
       <SubType>Component</SubType>
     </Compile>
