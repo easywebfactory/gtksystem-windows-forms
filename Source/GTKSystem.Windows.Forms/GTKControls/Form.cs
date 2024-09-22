@@ -53,8 +53,6 @@ namespace System.Windows.Forms
             _body.Vexpand = true;
             self.ScrollView.Child = _body;
             _ObjectCollection = new ObjectCollection(this, _body);
-
-            self.ButtonReleaseEvent += Body_ButtonReleaseEvent;
             self.ResizeChecked += Form_ResizeChecked;
             self.Shown += Control_Shown;
             self.CloseWindowEvent += Self_CloseWindowEvent;
@@ -78,17 +76,7 @@ namespace System.Windows.Forms
             if (Shown != null)
                 Shown(this, e);
         }
-        private void Body_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
-        {
-            if (base.ContextMenuStrip != null)
-            {
-                if (args.Event.Button == 3)
-                {
-                    base.ContextMenuStrip.Widget.ShowAll();
-                    ((Gtk.Menu)base.ContextMenuStrip.Widget).PopupAtPointer(args.Event);
-                }
-            }
-        }
+
         int resizeWidth= 0;
         int resizeHeight= 0;
         private void Form_ResizeChecked(object sender, EventArgs e)
