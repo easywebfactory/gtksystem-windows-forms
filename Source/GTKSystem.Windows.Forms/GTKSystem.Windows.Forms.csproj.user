@@ -44,6 +44,9 @@
     <Compile Update="GTKControls\Dialog\FolderBrowserDialog.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\Dialog\FontDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\Dialog\OpenFileDialog.cs">
       <SubType>Component</SubType>
     </Compile>
