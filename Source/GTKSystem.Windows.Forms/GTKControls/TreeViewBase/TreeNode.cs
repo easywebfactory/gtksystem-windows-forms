@@ -5,6 +5,7 @@
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
+using System.Collections;
 
 namespace System.Windows.Forms
 {

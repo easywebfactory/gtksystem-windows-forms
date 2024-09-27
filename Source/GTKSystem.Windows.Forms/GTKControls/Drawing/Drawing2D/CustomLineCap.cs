@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace System.Drawing.Drawing2D
 {
 	/// <summary>Encapsulates a custom user-defined line cap.</summary>
@@ -83,8 +85,8 @@ namespace System.Drawing.Drawing2D
 		/// <returns>The <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> this method creates, cast as an object.</returns>
 		public object Clone()
 		{
-			throw null;
-		}
+            return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+        }
 
 		/// <summary>Releases all resources used by this <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> object.</summary>
 		public void Dispose()

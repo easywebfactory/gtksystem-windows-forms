@@ -186,10 +186,7 @@ namespace System.Windows.Forms
 
         protected virtual void OnStartPageChanged(EventArgs e)
         {
-            if (Events[s_startPageChangedEvent] is EventHandler eh)
-            {
-                eh(this, e);
-            }
+            ((EventHandler)Events[s_startPageChangedEvent])?.Invoke(this, e);
         }
 
         [Localizable(true)]

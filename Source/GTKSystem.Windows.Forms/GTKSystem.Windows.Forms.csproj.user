@@ -44,6 +44,9 @@
     <Compile Update="GTKControls\Dialog\FolderBrowserDialog.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\Dialog\FontDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\Dialog\OpenFileDialog.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -51,6 +54,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\Drawing\Printing\PrintDocument.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\HScrollBar.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\ImageList\ImageList.cs">
@@ -182,6 +188,9 @@
     <Compile Update="GTKControls\PropertyGridBase\PropertyGrid.TabInfo.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\Scrolling\ScrollBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\StatusStrip.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -265,6 +274,9 @@
     </Compile>
     <Compile Update="GTKControls\UserControl.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="GTKControls\VScrollBar.cs">
+      <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
 </Project>
