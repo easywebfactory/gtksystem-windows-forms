@@ -835,8 +835,8 @@ namespace System.Windows.Forms
 
         public virtual Graphics CreateGraphics()
         {
-            Graphics g = new Graphics(this.Widget, new Cairo.Context(this.Widget.Handle, true), Widget.Allocation);
-            return g;
+            throw new Exception("请使用paint事件获取graphics");
+            return null;
         }
 
         public virtual DragDropEffects DoDragDrop(object data, DragDropEffects allowedEffects)
