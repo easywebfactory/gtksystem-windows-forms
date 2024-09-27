@@ -6,9 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System.Windows.Forms;
 
-namespace GTKSystem.Windows.Forms.GTKControls.Dialog
+namespace System.Windows.Forms
 {
     public class FontDialog : CommonDialog
     {

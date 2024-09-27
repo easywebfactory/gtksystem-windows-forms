@@ -69,3 +69,7 @@ $RECYCLE.BIN/
 /Samples/GTKWinFormsApp/obj/GTKWinFormsApp.csproj.nuget.g.props
 /Samples/GTKWinFormsApp/obj/project.assets.json
 /Samples/GTKWinFormsApp/obj/project.nuget.cache
+/Samples/GTKSystemWinFormsApp11/obj/GTKSystemWinFormsApp11.csproj.nuget.dgspec.json
+/Samples/GTKSystemWinFormsApp11/obj/GTKSystemWinFormsApp11.csproj.nuget.g.props
+/Samples/GTKSystemWinFormsApp11/obj/project.assets.json
+/Samples/GTKSystemWinFormsApp11/obj/project.nuget.cache
