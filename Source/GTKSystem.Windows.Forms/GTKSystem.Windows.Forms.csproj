@@ -37,10 +37,13 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="obj\**" />
     <Compile Remove="Resources\Forms_ico\**" />
     <Compile Remove="Resources\icons\**" />
+    <EmbeddedResource Remove="obj\**" />
     <EmbeddedResource Remove="Resources\Forms_ico\**" />
     <EmbeddedResource Remove="Resources\icons\**" />
+    <None Remove="obj\**" />
     <None Remove="Resources\Forms_ico\**" />
     <None Remove="Resources\icons\**" />
   </ItemGroup>
@@ -216,7 +219,6 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
 
   <ItemGroup>
     <Folder Include="GTKControls\Internal\" />
-    <Folder Include="obj\Debug\" />
   </ItemGroup>
 
 </Project>
