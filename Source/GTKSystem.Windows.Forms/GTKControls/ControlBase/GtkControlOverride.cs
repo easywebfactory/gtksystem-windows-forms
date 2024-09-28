@@ -1,12 +1,14 @@
 ﻿
 using Gtk;
 using GTKSystem.Windows.Forms.Utility;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
+    public delegate void PaintGraphicsEventHandler(Cairo.Context cr, Rectangle rec);
     public sealed class GtkControlOverride: IControlOverride
     {
         private Widget container;
@@ -93,8 +95,13 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 ImageUtility.DrawImage(cr, imagePixbuf, area, ImageAlign);
             }
         }
+        
+        public event PaintGraphicsEventHandler PaintGraphics;
         public void OnPaint(Cairo.Context cr, Gdk.Rectangle area)
         {
+            if (PaintGraphics != null) {
+                PaintGraphics(cr, new Rectangle(area.X, area.Y, area.Width, area.Height));
+            }
             if (Paint != null)
                 Paint(this.container, new PaintEventArgs(new Graphics(container, cr, area), new Rectangle(area.X, area.Y, area.Width, area.Height)));
         }

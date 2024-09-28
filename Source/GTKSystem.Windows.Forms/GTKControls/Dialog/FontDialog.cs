@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+using System.Windows.Forms;
+using Gtk;
 
 namespace System.Windows.Forms
 {
@@ -48,13 +50,8 @@ namespace System.Windows.Forms
             }
             else
             {
-                Gtk.Window window = Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive);
-                if (window != null)
-                {
-                    ActiveWindow = window;
-                }
-                fontChooserDialog = new Gtk.FontChooserDialog("选择字体", ActiveWindow);
-                fontChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
+                fontChooserDialog = new Gtk.FontChooserDialog("选择字体", null);
+                fontChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
             }
             fontChooserDialog.TypeHint = Gdk.WindowTypeHint.Dialog;
             if (null != _font)
@@ -62,15 +59,25 @@ namespace System.Windows.Forms
             if (FullOpen && AllowFullOpen)
                 fontChooserDialog.Fullscreen();
             int res = fontChooserDialog.Run();
-            fontChooserDialog.ParentWindow = null;
+            FontStyle fontStyle = FontStyle.Regular;
+            switch (fontChooserDialog.FontDesc.Weight)
+            {
+                case Pango.Weight.Bold:
+                case Pango.Weight.Ultrabold:
+                case Pango.Weight.Semibold:
+                    fontStyle |= FontStyle.Bold; 
+                    break;
+            }
+            switch (fontChooserDialog.FontDesc.Style)
+            {
+                case Pango.Style.Italic:
+                case Pango.Style.Oblique:
+                    fontStyle |= FontStyle.Italic;
+                    break;
+            }
+            _font = new Font(fontChooserDialog.FontDesc.Family, (int)(fontChooserDialog.FontDesc.Size / Pango.Scale.PangoScale), fontStyle);
+
             fontChooserDialog.HideOnDelete();
-
-            var sFont = fontChooserDialog.Font;// 格式为: 字体名称 SIZE
-            var sFontArray = sFont.Split(' ');
-            var sFontSize = sFontArray.LastOrDefault();
-            var sFontName = sFont.Substring(0, sFont.Length - sFontSize.Length).TrimEnd();
-            _font = new Font(sFontName, int.Parse(sFontSize));
-
             return res == -5;
         }
 

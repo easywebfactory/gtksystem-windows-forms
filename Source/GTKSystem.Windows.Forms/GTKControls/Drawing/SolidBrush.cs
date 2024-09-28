@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace System.Drawing
 {
 	/// <summary>Defines a brush of a single color. Brushes are used to fill graphics shapes, such as rectangles, ellipses, pies, polygons, and paths. This class cannot be inherited.</summary>
@@ -23,8 +25,8 @@ namespace System.Drawing
 		/// <returns>The <see cref="T:System.Drawing.SolidBrush" /> object that this method creates.</returns>
 		public override object Clone()
 		{
-			throw null;
-		}
+            return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+        }
 
 		protected override void Dispose(bool disposing)
 		{

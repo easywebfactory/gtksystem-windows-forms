@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 
 namespace System.Drawing.Drawing2D
@@ -129,8 +130,9 @@ namespace System.Drawing.Drawing2D
 		/// <returns>The <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> this method creates, cast as an object.</returns>
 		public override object Clone()
 		{
-			throw null;
-		}
+			return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+
+        }
 
 		/// <summary>Updates the brush's transformation matrix with the product of brush's transformation matrix multiplied by another matrix.</summary>
 		/// <param name="matrix">The <see cref="T:System.Drawing.Drawing2D.Matrix" /> that will be multiplied by the brush's current transformation matrix.</param>

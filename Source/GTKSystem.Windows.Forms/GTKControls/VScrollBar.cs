@@ -1,44 +1,23 @@
-﻿using System.ComponentModel;
+﻿/*
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * author:chenhongjin
+ */
+using System.ComponentModel;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public class VScrollBar : Control
+    public class VScrollBar : ScrollBar
     {
-        public readonly Gtk.VScrollbar self;
+        public ScrollbarBase self=new ScrollbarBase(Gtk.Orientation.Vertical);
         public override object GtkControl => self;
-        private Gtk.Adjustment adjustment = new Gtk.Adjustment(10, 0, 100, 1, 1, 0);
+        public override Gtk.Adjustment Adjustment { get => self.Adjustment; }
         public VScrollBar() : base()
         {
-            self = new Gtk.VScrollbar(adjustment);
-            self.Realized += Control_Realized;
-        }
 
-        private int _oldValue;
-        private void Control_Realized(object sender, EventArgs e)
-        {
-            adjustment.Lower = Minimum;
-            adjustment.Upper = Maximum;
-            adjustment.Value = 0;// Value;
-            adjustment.ValueChanged += Control_ValueChanged;
-            _oldValue = (int)adjustment.Value;
         }
-
-        private void Control_ValueChanged(object sender, EventArgs e)
-        {
-            var ea = new ScrollEventArgs(Value>_oldValue? ScrollEventType.SmallIncrement: ScrollEventType.SmallDecrement, _oldValue, Value);
-            Scroll?.Invoke(this, ea);
-            _oldValue = Value;
-        }
-
-        public int LargeChange { get; set; } = 5;
-        public int Maximum { get; set; } = 100;
-        public int Minimum { get; set; } = 0;
-        public int Value { get => (int)adjustment.Value; set { adjustment.Value = value; } }
-        //public System.Windows.Forms.Orientation Orientation { get; set; }
-        //public int TickFrequency { get; set; }
-        //public System.Windows.Forms.TickStyle TickStyle { get; set; }
-        public event EventHandler<ScrollEventArgs> Scroll;
     }
 }

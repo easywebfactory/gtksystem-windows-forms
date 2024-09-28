@@ -319,7 +319,7 @@ namespace System.Drawing
 		/// <returns>The <see cref="T:System.Drawing.Image" /> this method creates, cast as an object.</returns>
 		public object Clone()
 		{
-			return new Bitmap(this.PixbufData) { Width = this.Width, Height = this.Height };
+			return new Bitmap((byte[])this.PixbufData.Clone()) { Width = this.Width, Height = this.Height };
         }
 
 		/// <summary>Releases the unmanaged resources used by the <see cref="T:System.Drawing.Image" /> and optionally releases the managed resources.</summary>

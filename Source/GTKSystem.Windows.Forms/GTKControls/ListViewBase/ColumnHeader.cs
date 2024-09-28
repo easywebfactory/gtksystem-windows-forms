@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -116,8 +117,9 @@ namespace System.Windows.Forms
 
         public object Clone()
         {
-            string data = System.Text.Json.JsonSerializer.Serialize(this,typeof(ColumnHeader));
-            return System.Text.Json.JsonSerializer.Deserialize<ColumnHeader>(data);
+            return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+            //string data = System.Text.Json.JsonSerializer.Serialize(this,typeof(ColumnHeader));
+            //return System.Text.Json.JsonSerializer.Deserialize<ColumnHeader>(data);
         }
         protected override void Dispose(bool disposing)
         {
