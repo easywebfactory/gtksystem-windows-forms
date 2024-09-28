@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace System.Drawing.Drawing2D
 {
 	/// <summary>Encapsulates a <see cref="T:System.Drawing.Brush" /> with a linear gradient. This class cannot be inherited.</summary>
@@ -172,8 +174,8 @@ namespace System.Drawing.Drawing2D
 		/// <returns>The <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" /> this method creates, cast as an object.</returns>
 		public override object Clone()
 		{
-			throw null;
-		}
+            return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+        }
 
 		/// <summary>Multiplies the <see cref="T:System.Drawing.Drawing2D.Matrix" /> that represents the local geometric transform of this <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" /> by the specified <see cref="T:System.Drawing.Drawing2D.Matrix" /> by prepending the specified <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
 		/// <param name="matrix">The <see cref="T:System.Drawing.Drawing2D.Matrix" /> by which to multiply the geometric transform.</param>
