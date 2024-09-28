@@ -6,7 +6,8 @@ namespace System.Windows.Forms
 	[LookupBindingProperties("DataSource", "DisplayMember", "ValueMember", "SelectedValue")]
 	public abstract class ListControl : ScrollableControl
     {
-		[DefaultValue(null)]
+        protected new EventHandlerList Events = new EventHandlerList();
+        [DefaultValue(null)]
 		[RefreshProperties(RefreshProperties.Repaint)]
 		[AttributeProvider(typeof(IListSource))]
 		public virtual object DataSource

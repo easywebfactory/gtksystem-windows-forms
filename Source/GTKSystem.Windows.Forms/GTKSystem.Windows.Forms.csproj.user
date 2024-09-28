@@ -188,6 +188,9 @@
     <Compile Update="GTKControls\PropertyGridBase\PropertyGrid.TabInfo.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\Scrolling\ScrollBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\StatusStrip.cs">
       <SubType>Component</SubType>
     </Compile>

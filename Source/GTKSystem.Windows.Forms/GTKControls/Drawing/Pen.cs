@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Drawing.Drawing2D;
 
 namespace System.Drawing
@@ -204,8 +205,8 @@ namespace System.Drawing
 		/// <returns>An <see cref="T:System.Object" /> that can be cast to a <see cref="T:System.Drawing.Pen" />.</returns>
 		public object Clone()
 		{
-			throw null;
-		}
+            return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+        }
 
 		/// <summary>Releases all resources used by this <see cref="T:System.Drawing.Pen" />.</summary>
 		public void Dispose()

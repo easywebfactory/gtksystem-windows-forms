@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace System.Drawing
@@ -329,7 +330,7 @@ namespace System.Drawing
         // 返回结果:
         //     true to indicate this font has the italic style applied; otherwise, false.
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool Italic { get; }
+        public bool Italic { get => (Style & FontStyle.Italic) == 0; }
         //
         // 摘要:
         //     Gets a byte value that specifies the GDI character set that this System.Drawing.Font
@@ -443,7 +444,7 @@ namespace System.Drawing
         // 返回结果:
         //     true if this System.Drawing.Font is bold; otherwise, false.
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool Bold { get; }
+        public bool Bold { get=>(Style & FontStyle.Bold) == 0; }
         //
         // 摘要:
         //     Gets the unit of measure for this System.Drawing.Font.
@@ -458,7 +459,7 @@ namespace System.Drawing
         // 返回结果:
         //     true if this System.Drawing.Font is underlined; otherwise, false.
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool Underline { get; }
+        public bool Underline { get => (Style & FontStyle.Underline) == 0; }
 
         //
         // 摘要:
@@ -528,7 +529,7 @@ namespace System.Drawing
         //
         // 返回结果:
         //     The System.Drawing.Font this method creates, cast as an System.Object.
-        public object Clone() { return this; }
+        public object Clone() { return ((ArrayList)(new ArrayList() { this }).Clone())[0]; }
         //
         // 摘要:
         //     Releases all resources used by this System.Drawing.Font.

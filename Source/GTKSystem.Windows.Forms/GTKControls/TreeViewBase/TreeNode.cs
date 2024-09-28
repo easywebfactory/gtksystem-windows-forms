@@ -5,6 +5,8 @@
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
+using System.Collections;
+using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
@@ -79,7 +81,23 @@ namespace System.Windows.Forms
         }
         public bool Checked { get; set; }
 
-        public string FullPath { get; set; }
+        //public string FullPath { get; set; }
+        
+        public string FullPath
+        {
+            get
+            {
+                string path = string.Empty;
+                if (treeView != null)
+                {
+                    path = string.Format("{0}{1}{2}", Parent?.FullPath ?? "", treeView.PathSeparator, this.Text);
+                    if (path.StartsWith(PathSeparator))
+                        path = path.Substring(1);
+                }
+                return path;
+            }
+        }
+
         public bool IsSelected
         {
             get; set;
