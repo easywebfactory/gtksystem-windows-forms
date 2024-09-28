@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -51,12 +52,7 @@ namespace System.Windows.Forms
 
         public virtual void ApplyStyle(DataGridViewCellStyle dataGridViewCellStyle) { }
         public virtual DataGridViewCellStyle Clone() {
-            IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf<DataGridViewCellStyle>());
-            Marshal.StructureToPtr(this, intPtr, fDeleteOld: false);
-            DataGridViewCellStyle newobj = Marshal.PtrToStructure<DataGridViewCellStyle>(intPtr);
-            Marshal.FreeHGlobal(intPtr);
-            return newobj;
-            // return new DataGridViewCellStyle();
+            return ((ArrayList)(new ArrayList() { this }).Clone())[0] as DataGridViewCellStyle; ;
         }
         public override bool Equals(object o) { return false; }
         public override int GetHashCode()

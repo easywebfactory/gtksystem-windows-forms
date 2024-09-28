@@ -415,7 +415,7 @@ namespace System.Windows.Forms
 
         public object Clone()
         {
-            return this;
+            return ((ArrayList)(new ArrayList() { this }).Clone())[0]; 
         }
         public virtual int GetPreferredWidth(DataGridViewAutoSizeColumnMode autoSizeColumnMode, bool fixedHeight)
         {
