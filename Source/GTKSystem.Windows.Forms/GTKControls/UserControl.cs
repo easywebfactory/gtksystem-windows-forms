@@ -8,6 +8,7 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
+using System.Reflection;
 using System.Xml.Linq;
 
 
@@ -37,6 +38,11 @@ namespace System.Windows.Forms
             self.Add(contaner);
             self.Override.Paint += Override_Paint;
             self.ParentSet += Self_ParentSet;
+            self.Realized += (sender, e) =>
+            {
+                base.InitStyle((Gtk.Widget)sender);
+                OnLoad(EventArgs.Empty);
+            };
         }
         private void Self_ParentSet(object o, ParentSetArgs args)
         {
@@ -48,24 +54,31 @@ namespace System.Windows.Forms
             OnPaint(e);
         }
 
-        public override event EventHandler Load;
+        /// <summary>
+        /// 在控件第一次变为可见之前发生。
+        /// </summary>
+        public virtual event EventHandler Load;
+        protected virtual void OnLoad(EventArgs e) => Load?.Invoke(this, e);
+
         public System.Drawing.SizeF AutoScaleDimensions { get; set; }
         public System.Windows.Forms.AutoScaleMode AutoScaleMode { get; set; }
         public override ControlCollection Controls => _controls;
 
-        protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
+        protected override void OnPaint(PaintEventArgs e)
         {
+            base.OnPaint(e);
         }
         protected override void OnParentChanged(EventArgs e)
         {
+            base.OnParentChanged(e);
         }
         public override void SuspendLayout()
         {
-
+            base.SuspendLayout();
         }
         public override void ResumeLayout(bool performLayout)
         {
-
+            base.ResumeLayout(performLayout);
         }
         protected override void Dispose(bool disposing)
         {
