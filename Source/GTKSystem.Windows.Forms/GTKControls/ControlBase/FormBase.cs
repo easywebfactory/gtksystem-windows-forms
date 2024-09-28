@@ -70,7 +70,16 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             StatusBarView.Child = StatusBar;
             this.ContentArea.PackEnd(StatusBarView, false, true, 0);
             //this.Decorated = false; //删除工具栏
+
+            this.Drawn += FormBase_Drawn;
         }
+
+        private void FormBase_Drawn(object o, DrawnArgs args)
+        {
+            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
+            Override.OnPaint(args.Cr, rec);
+        }
+
         private void FormBase_Response(object o, ResponseArgs args)
         {
             if (args.ResponseId == ResponseType.DeleteEvent)
@@ -235,12 +244,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             }
         }
 
-        protected override bool OnDrawn(Cairo.Context cr)
-        {
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnPaint(cr, rec);
-            return base.OnDrawn(cr);
-        }
         public void CloseWindow()
         {
             this.HideOnDelete();

@@ -5,6 +5,7 @@
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
+using System.Collections;
 
 namespace System.Windows.Forms
 {
@@ -117,6 +118,38 @@ namespace System.Windows.Forms
         public bool Equals([AllowNull] TreeNode other)
         {
             return other.Index == this.Index && other.Text == this.Text && other.Level == this.Level;
+        }
+
+        public void Expand()
+        {
+            expand(false);
+        }
+
+        public void ExpandAll()
+        {
+            expand(true);
+        }
+
+        private void expand(bool open_all)
+        {
+            if (this.TreeView != null)
+            {
+                var store = this.TreeView.Store;
+                var iter = this.TreeIter;
+                Gtk.TreeView tree = this.TreeView.self.TreeView;
+                tree.ExpandRow(store.GetPath(iter), open_all);
+            }
+        }
+
+        public void Collapse()
+        {
+            if (this.TreeView != null)
+            {
+                var store = this.TreeView.Store;
+                var iter = this.TreeIter;
+                Gtk.TreeView tree = this.TreeView.self.TreeView;
+                tree.CollapseRow(store.GetPath(iter));
+            }
         }
     }
 }
