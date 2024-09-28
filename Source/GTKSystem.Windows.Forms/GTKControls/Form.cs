@@ -374,6 +374,29 @@ namespace System.Windows.Forms
         public class MdiLayout
         {
         }
+
+        private bool _fullscreen = false;
+        /// <summary>
+        /// 设置或返回是否无边框铺满整个屏幕，
+        /// 可替代 FormBorderStyle.None + WindowState.Maximized
+        /// </summary>
+        /// <remarks>在窗体Shown后设置有效</remarks>
+        [Browsable(false)]
+        public bool Fullscreen
+        {
+            get => _fullscreen;
+            set
+            {
+                if (self.IsMapped)
+                {
+                    _fullscreen = value;
+                    if (_fullscreen)
+                        self.Fullscreen();
+                    else
+                        self.Unfullscreen();
+                }
+            }
+        }
     }
 
     public class BindingContext : ContextBoundObject

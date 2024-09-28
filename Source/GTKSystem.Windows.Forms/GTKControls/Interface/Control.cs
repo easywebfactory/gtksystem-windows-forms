@@ -46,6 +46,8 @@ namespace System.Windows.Forms
                 widget.KeyReleaseEvent += Widget_KeyReleaseEvent;
                 widget.Realized += Widget_Realized;
                 widget.ConfigureEvent += Widget_ConfigureEvent;
+                ISelf.Override.PaintGraphics += Override_PaintGraphics;
+
             }
         }
 
@@ -832,11 +834,32 @@ namespace System.Windows.Forms
         {
 
         }
-
+        Cairo.ImageSurface image;
+        Cairo.Surface surface;
+        Cairo.Context context;
         public virtual Graphics CreateGraphics()
         {
-            Graphics g = new Graphics(this.Widget, new Cairo.Context(this.Widget.Handle, true), Widget.Allocation);
-            return g;
+            if(image == null)
+                image = new Cairo.ImageSurface(Cairo.Format.Argb32, this.Widget.AllocatedWidth, this.Widget.AllocatedHeight);
+        
+            surface?.Dispose();
+            surface = image.CreateSimilar(Cairo.Content.Alpha, this.Widget.AllocatedWidth, this.Widget.AllocatedHeight);
+            context?.Dispose();
+            context = new Cairo.Context(surface);
+
+            return new Drawing.Graphics(this.Widget, context, Widget.Allocation);
+        }
+
+        private void Override_PaintGraphics(Cairo.Context cr, Rectangle rec)
+        {
+            if (surface != null)
+            {
+                cr.Save();
+                cr.SetSourceSurface(surface, 0, 0);
+                cr.Paint();
+                cr.Restore();
+                Widget.QueueDraw();
+            }
         }
 
         public virtual DragDropEffects DoDragDrop(object data, DragDropEffects allowedEffects)
@@ -1263,6 +1286,13 @@ namespace System.Windows.Forms
         {
             try
             {
+                if (image != null)
+                    image.Dispose();
+                if(surface != null) 
+                    surface.Dispose();
+                if(context != null) 
+                    context.Dispose();
+
                 if (this.Widget != null)
                 {
                     this.Widget.Destroy();

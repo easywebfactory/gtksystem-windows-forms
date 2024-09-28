@@ -178,7 +178,7 @@ namespace System.Drawing
 		/// <returns>An object that can be cast to an <see cref="T:System.Drawing.Icon" />.</returns>
 		public object Clone()
 		{
-            return new Icon(this.FileName, this.Width, this.Height) { Pixbuf = this.Pixbuf, PixbufData = this.PixbufData };
+            return new Icon(this.FileName, this.Width, this.Height) { Pixbuf = this.Pixbuf, PixbufData = (byte[])this.PixbufData.Clone() };
         }
 
         /// <summary>Releases all resources used by this <see cref="T:System.Drawing.Icon" />.</summary>
