@@ -1,5 +1,9 @@
 
 ## 更新日志
+ #### 2024/9/28 V1.3.24.49
+   1. 修正窗体paint事件，creategraphics方法
+   2. 新增scrollbar、fontdailog控件
+   3. 修正selectindexchanged\selectvaluechanged\selectitemchanged事件
  #### 2024/8/28 V1.3.24.48
    1. 实现所有控件右键菜单
    2. 增加主题配置、样式配置功能

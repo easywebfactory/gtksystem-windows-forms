@@ -10,6 +10,7 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -373,6 +374,21 @@ namespace System.Windows.Forms
 
         public class MdiLayout
         {
+        }
+
+        private bool _topMost = false;
+        public bool TopMost
+        {
+            get => _topMost;
+            set
+            {
+                if (_topMost != value)
+                {
+                    var gtkWindow = Widget.Toplevel as Gtk.Window;
+                    _topMost = value;
+                    gtkWindow.KeepAbove = _topMost;
+                }
+            }
         }
     }
 
