@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GTKSystem.Windows.Forms.GTKControls.Dialog;
 
 namespace GTKWinFormsApp
 {
@@ -17,6 +17,10 @@ namespace GTKWinFormsApp
         public Form4()
         {
             InitializeComponent();
+            button5.Click += (_, _) => 
+            {
+                Debug.Print(Control.ModifierKeys.ToString()); 
+            };
         }
 
         private void button3_Click(object sender, EventArgs e)
