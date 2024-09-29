@@ -79,8 +79,16 @@ namespace GTKWinFormsApp
 
         private void button9_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("test message test message \ntest messagetest message", "疑问",MessageBoxButtons.RetryCancel,MessageBoxIcon.Question);
-            MessageBox.Show("test message test message \ntest messagetest message", "警告", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning); 
+            MessageBox.Show("test message test message \ntest messagetest message", "疑问", MessageBoxButtons.RetryCancel, MessageBoxIcon.Question);
+            MessageBox.Show("test message test message \ntest messagetest message", "警告", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning);
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            FontDialog fontDialog = new FontDialog();
+            fontDialog.Font = button10.Font;
+            if (fontDialog.ShowDialog() == DialogResult.OK)
+                button10.Font = fontDialog.Font;
         }
     }
 }

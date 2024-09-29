@@ -96,13 +96,13 @@ namespace GTKWinFormsApp
 
             //g.FillPath(brush, path);
         }
-        
+
         private void ssssToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Form2 f1 = new Form2();
             f1.Show(this);
         }
-       
+
         private void button2_Click(object sender, EventArgs e)
         {
             Form4 f = new Form4();
@@ -117,6 +117,16 @@ namespace GTKWinFormsApp
         private void button3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+            label1.Text = hScrollBar1.Value.ToString();
+        }
+
+        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+            label1.Text = vScrollBar1.Value.ToString();
         }
     }
 }

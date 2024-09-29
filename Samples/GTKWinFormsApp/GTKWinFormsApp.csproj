@@ -11,6 +11,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="obj\**" />
+	  <EmbeddedResource Remove="obj\**" />
+	  <None Remove="obj\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
 		<PackageReference Include="GTKSystem.Windows.FormsDesigner" Version="1.0.0.4" />
 	</ItemGroup>
@@ -41,10 +47,6 @@
 		<None Update="Resources\timg2.jpg">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="obj\Debug\net8.0\" />
 	</ItemGroup>
 
 	<ItemGroup>
