@@ -796,7 +796,10 @@ namespace System.Windows.Forms
         {
             System.Threading.Tasks.Task task = System.Threading.Tasks.Task.Factory.StartNew(state =>
             {
-                method.DynamicInvoke((object[])state);
+                GLib.Timeout.Add(0u, new GLib.TimeoutHandler(() => {
+                    method.DynamicInvoke((object[])state);
+                    return false;
+                }));
             }, args);
 
             return task;
@@ -972,22 +975,25 @@ namespace System.Windows.Forms
         public virtual object Invoke(Delegate method, params object[] args)
         {
             object result = null;
-            Gtk.Application.Invoke(delegate {
+            GLib.Idle.Add(() => {
                 result = method.DynamicInvoke(args);
+                return false;
             });
             return result;
         }
         public virtual void Invoke(Action method)
         {
-            Gtk.Application.Invoke(delegate {
+            GLib.Idle.Add(() => {
                 method.Invoke();
-            }); 
+                return false;
+            });
         }
         public virtual ENTRY Invoke<ENTRY>(Func<ENTRY> method)
         {
             ENTRY result = default(ENTRY);
-            Gtk.Application.Invoke(delegate {
+            GLib.Idle.Add(() => {
                 result = method.Invoke();
+                return false;
             });
             return result;
         }
