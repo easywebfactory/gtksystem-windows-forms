@@ -843,7 +843,7 @@ namespace System.Windows.Forms
                 image = new Cairo.ImageSurface(Cairo.Format.Argb32, this.Widget.AllocatedWidth, this.Widget.AllocatedHeight);
         
             surface?.Dispose();
-            surface = image.CreateSimilar(Cairo.Content.Alpha, this.Widget.AllocatedWidth, this.Widget.AllocatedHeight);
+            surface = image.CreateSimilar(Cairo.Content.ColorAlpha, this.Widget.AllocatedWidth, this.Widget.AllocatedHeight);
             context?.Dispose();
             context = new Cairo.Context(surface);
 

@@ -239,6 +239,10 @@ namespace System.Drawing
                 using Cairo.Pattern pattern = Cairo.Pattern.Lookup(gradient.Handle, false);
                 this.context.SetSource(pattern);
             }
+			else
+			{
+                this.context.SetSourceRGBA(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f, pen.Color.A / 255f);
+            }
         }
 		public void Clear(Color color)
 		{
