@@ -796,10 +796,7 @@ namespace System.Windows.Forms
         {
             System.Threading.Tasks.Task task = System.Threading.Tasks.Task.Factory.StartNew(state =>
             {
-                GLib.Timeout.Add(0u, new GLib.TimeoutHandler(() => {
-                    method.DynamicInvoke((object[])state);
-                    return false;
-                }));
+                method.DynamicInvoke((object[])state);
             }, args);
 
             return task;
