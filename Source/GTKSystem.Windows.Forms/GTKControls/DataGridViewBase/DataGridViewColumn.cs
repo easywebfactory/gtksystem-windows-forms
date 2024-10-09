@@ -34,6 +34,7 @@ namespace System.Windows.Forms
             renderer.Activatable = this.ReadOnly == false;
             renderer.Mode = CellRendererMode.Activatable;
             renderer.Height = RowHeight;
+            renderer.Width = Width;
             renderer.Toggled += CellName_Toggled;
 
             base.PackStart(renderer, true);
@@ -78,6 +79,7 @@ namespace System.Windows.Forms
             renderer.Mode = CellRendererMode.Activatable;
             renderer.Radio = true;
             renderer.Height = RowHeight;
+            renderer.Width = Width;
             renderer.Toggled += CellName_Toggled;
 
             base.PackStart(renderer, true);
@@ -122,6 +124,7 @@ namespace System.Windows.Forms
             renderer.Edited += Renderer_Edited;
             renderer.TextColumn = 0;
             renderer.Height = RowHeight;
+            renderer.Width = Width;
             Gtk.ListStore model = new Gtk.ListStore(typeof(string));
             foreach(var item in _items)
             {
@@ -181,6 +184,7 @@ namespace System.Windows.Forms
             var renderer = new CellRendererButtonValue();
             renderer.Editable = false;
             renderer.Height = RowHeight;
+            renderer.Width = Width;
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
@@ -217,6 +221,7 @@ namespace System.Windows.Forms
             var renderer = new CellRendererPixbufValue(this);
             //renderer.IconName = "face-smile";
             renderer.Height = RowHeight;
+            renderer.Width = Width;
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
@@ -279,10 +284,26 @@ namespace System.Windows.Forms
             renderer.Mode = CellRendererMode.Editable;
             renderer.PlaceholderText = "---";
             renderer.Markup = this.Markup;
-            renderer.Height = RowHeight;
+            renderer.Width = Width;
+            if (_gridview != null)
+            {
+                if (_gridview.DefaultCellStyle.WrapMode == DataGridViewTriState.True)
+                {
+                    renderer.WrapMode = Pango.WrapMode.WordChar;
+                    renderer.WrapWidth = 0;
+                    renderer.WidthChars = 0;
+                }
+                if (_gridview.AutoSizeRowsMode == DataGridViewAutoSizeRowsMode.AllCells || _gridview.AutoSizeRowsMode == DataGridViewAutoSizeRowsMode.DisplayedCells || _gridview.RowTemplate.Resizable == DataGridViewTriState.True)
+                {
+                }
+                else
+                {
+                    renderer.Height = RowHeight;
+                }
+            }
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
-            base.Sizing = TreeViewColumnSizing.GrowOnly;
+            base.Sizing = TreeViewColumnSizing.Fixed;
             if (this.SortMode != DataGridViewColumnSortMode.NotSortable)
                 base.SortColumnId = this.DisplayIndex;
         }
@@ -318,7 +339,6 @@ namespace System.Windows.Forms
             {
                 if (_gridview != null)
                 {
-                    double size = _treeView.PangoContext.FontDescription.Size / Pango.Scale.PangoScale;
                     return _gridview.RowTemplate.Height;
                 }
                 return DefaultHeight;
@@ -419,7 +439,7 @@ namespace System.Windows.Forms
         }
         public virtual int GetPreferredWidth(DataGridViewAutoSizeColumnMode autoSizeColumnMode, bool fixedHeight)
         {
-            return 10;
+            return RowHeight;
         }
         public override string ToString() { return this.GetType().Name; }
         //protected override void Dispose(bool disposing) {  }
