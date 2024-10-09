@@ -358,7 +358,7 @@ namespace System.Windows.Forms
             //reset id
             for (int i = 0; i < items.Count; i++)
             {
-                dataGridView.Rows[i].Index = i;
+                ((DataGridViewRow)items[i]).Index = i;
             }
         }
         public DataGridViewRow SharedRow(int rowIndex)
