@@ -4,7 +4,22 @@ namespace System.Windows.Forms
     public class ContainerControl : ScrollableControl, IContainerControl
     {
         private Control _ActiveControl;
-        public Control ActiveControl { get => _ActiveControl; set { ActivateControl(value); } }
+        public Control ActiveControl
+        {
+            get
+            {
+                foreach (object control in this.Controls)
+                {
+                    if (control is Control con)
+                    {
+                        if ((con.Widget.StateFlags & Gtk.StateFlags.Active) != 0 || con.Widget.IsFocus)
+                            return con;
+                    }
+                }
+                return _ActiveControl;
+            }
+            set { ActivateControl(value); } 
+        }
         public ContainerControl() : base()
         {
         }

@@ -876,15 +876,22 @@ namespace System.Windows.Forms
 
         public virtual Form FindForm()
         {
-            Control control = this.Parent;
-            while (control != null)
+            if (this.Widget.Toplevel.Data.ContainsKey("Control"))
             {
-                if (control is Form)
-                    break;
-                else
-                    control = this.Parent;
+                return this.Widget.Toplevel.Data["Control"] as Form;
             }
-            return control as Form;
+            else
+            {
+                Control control = this.Parent;
+                while (control != null)
+                {
+                    if (control is Form)
+                        break;
+                    else
+                        control = this.Parent;
+                }
+                return control as Form;
+            }
         }
 
         public virtual bool Focus()
@@ -911,12 +918,42 @@ namespace System.Windows.Forms
 
         public virtual IContainerControl GetContainerControl()
         {
-            return null;
+            return this as IContainerControl;
         }
 
         public virtual Control GetNextControl(Control ctl, bool forward)
         {
-            return ctl;
+            Control prev = null;
+            Control next= null;
+            bool finded = false;
+ 
+            foreach(var obj in this.Controls) 
+            {
+                if (obj is Control control)
+                {
+                    if (finded == true)
+                        next = control;
+
+                    if (control.Widget.Handle == ctl.Widget.Handle)
+                    {
+                        finded = true;
+                    } 
+                    if (finded == true)
+                    {
+                        if (forward == false && prev != null)
+                        {
+                            return prev;
+                        }
+                        else if (forward == true && next != null)
+                        {
+                            return next;
+                        }
+                    }
+                    prev = control;
+                }
+            }
+
+            return null;
         }
 
         public virtual Size GetPreferredSize(Size proposedSize)

@@ -20,7 +20,7 @@ namespace System.Windows.Forms
     [DesignerCategory("Form")]
     [DefaultEvent(nameof(Load)),
     InitializationEvent(nameof(Load))]
-    public partial class Form: ScrollableControl, IWin32Window
+    public partial class Form: ContainerControl, IWin32Window
     {
         private Gtk.Application app = Application.Init();
         public FormBase self = new FormBase();
@@ -339,16 +339,6 @@ namespace System.Windows.Forms
         public override void PerformLayout()
         {
             _Created = true;
-        }
-
-        public bool ActivateControl(object active)
-        {
-            if (active is Gtk.Widget wg)
-            {
-                wg.SetStateFlags(StateFlags.Active, false);
-                return true;
-            }
-            return false;
         }
         public bool Activate()
         {
