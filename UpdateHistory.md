@@ -1,5 +1,8 @@
 
 ## 更新日志
+ #### 2024/10/16 V1.3.24.50
+	1. 实现datagridview自动换行功能和属性
+	2. 增加Form置顶、激活、获取已开窗体的操作功能
  #### 2024/9/28 V1.3.24.49
    1. 修正窗体paint事件，creategraphics方法
    2. 新增scrollbar、fontdailog控件

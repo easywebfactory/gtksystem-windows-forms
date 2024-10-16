@@ -87,7 +87,7 @@ namespace System.Windows.Forms
             get
             {
                 FormCollection forms = new FormCollection();
-                Gtk.Window[] windows = Gtk.Window.ListToplevels();
+                var windows = Gtk.Window.ListToplevels().Where(w => w.IsVisible == true);
                 foreach (Gtk.Window w in windows)
                     if (w.Data.ContainsKey("Control") && w.Data["Control"] is Form form)
                         forms.Add(form);
