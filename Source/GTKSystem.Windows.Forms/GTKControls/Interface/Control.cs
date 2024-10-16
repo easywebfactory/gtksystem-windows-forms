@@ -60,9 +60,12 @@ namespace System.Windows.Forms
 
         private void Widget_Realized(object sender, EventArgs e)
         {
-            InitStyle((Gtk.Widget)sender);
-            if (Load != null)
-                Load(this, e);
+            if (this.Widget.IsVisible == false)
+            {
+                InitStyle((Gtk.Widget)sender);
+                if (Load != null)
+                    Load(this, e);
+            }
         }
 
         private void Widget_ButtonPressEvent(object o, ButtonPressEventArgs args)
