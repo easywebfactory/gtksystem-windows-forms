@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("节点3");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("节点2", new System.Windows.Forms.TreeNode[] { treeNode1 });
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("节点4");
@@ -36,12 +37,21 @@
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             button2 = new System.Windows.Forms.Button();
             button1 = new System.Windows.Forms.Button();
+           
+            hScrollBar1 = new System.Windows.Forms.HScrollBar();
+            vScrollBar1 = new System.Windows.Forms.VScrollBar();
             button9 = new System.Windows.Forms.Button();
             button8 = new System.Windows.Forms.Button();
             button7 = new System.Windows.Forms.Button();
             button6 = new System.Windows.Forms.Button();
             treeView1 = new System.Windows.Forms.TreeView();
             button5 = new System.Windows.Forms.Button();
+            contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
+            test1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            test12ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            test21ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            test22ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            test13ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             panel1 = new System.Windows.Forms.Panel();
             button4 = new System.Windows.Forms.Button();
             button3 = new System.Windows.Forms.Button();
@@ -50,6 +60,7 @@
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            contextMenuStrip1.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -68,6 +79,8 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(hScrollBar1);
+            splitContainer1.Panel2.Controls.Add(vScrollBar1);
             splitContainer1.Panel2.Controls.Add(button9);
             splitContainer1.Panel2.Controls.Add(button8);
             splitContainer1.Panel2.Controls.Add(button7);
@@ -99,6 +112,22 @@
             button1.TabIndex = 0;
             button1.Text = "button1";
             button1.UseVisualStyleBackColor = true;
+            // 
+            // hScrollBar1
+            // 
+            hScrollBar1.Location = new System.Drawing.Point(409, 343);
+            hScrollBar1.Name = "hScrollBar1";
+            hScrollBar1.Size = new System.Drawing.Size(260, 26);
+            hScrollBar1.TabIndex = 8;
+            hScrollBar1.ValueChanged += hScrollBar1_ValueChanged;
+            // 
+            // vScrollBar1
+            // 
+            vScrollBar1.Location = new System.Drawing.Point(239, 177);
+            vScrollBar1.Name = "vScrollBar1";
+            vScrollBar1.Size = new System.Drawing.Size(26, 216);
+            vScrollBar1.TabIndex = 7;
+            vScrollBar1.ValueChanged += vScrollBar1_ValueChanged;
             // 
             // button9
             // 
@@ -160,6 +189,7 @@
             // 
             // button5
             // 
+            button5.ContextMenuStrip = contextMenuStrip1;
             button5.Dock = System.Windows.Forms.DockStyle.Top;
             button5.Location = new System.Drawing.Point(0, 0);
             button5.Name = "button5";
@@ -167,6 +197,44 @@
             button5.TabIndex = 2;
             button5.Text = "button5";
             button5.UseVisualStyleBackColor = true;
+            // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { test1ToolStripMenuItem, test12ToolStripMenuItem, test13ToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new System.Drawing.Size(125, 76);
+            // 
+            // test1ToolStripMenuItem
+            // 
+            test1ToolStripMenuItem.Name = "test1ToolStripMenuItem";
+            test1ToolStripMenuItem.Size = new System.Drawing.Size(124, 24);
+            test1ToolStripMenuItem.Text = "test1";
+            // 
+            // test12ToolStripMenuItem
+            // 
+            test12ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { test21ToolStripMenuItem, test22ToolStripMenuItem });
+            test12ToolStripMenuItem.Name = "test12ToolStripMenuItem";
+            test12ToolStripMenuItem.Size = new System.Drawing.Size(124, 24);
+            test12ToolStripMenuItem.Text = "test12";
+            // 
+            // test21ToolStripMenuItem
+            // 
+            test21ToolStripMenuItem.Name = "test21ToolStripMenuItem";
+            test21ToolStripMenuItem.Size = new System.Drawing.Size(138, 26);
+            test21ToolStripMenuItem.Text = "test21";
+            // 
+            // test22ToolStripMenuItem
+            // 
+            test22ToolStripMenuItem.Name = "test22ToolStripMenuItem";
+            test22ToolStripMenuItem.Size = new System.Drawing.Size(138, 26);
+            test22ToolStripMenuItem.Text = "test22";
+            // 
+            // test13ToolStripMenuItem
+            // 
+            test13ToolStripMenuItem.Name = "test13ToolStripMenuItem";
+            test13ToolStripMenuItem.Size = new System.Drawing.Size(124, 24);
+            test13ToolStripMenuItem.Text = "test13";
             // 
             // panel1
             // 
@@ -220,6 +288,7 @@
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            contextMenuStrip1.ResumeLayout(false);
             panel1.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -239,5 +308,14 @@
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem test1ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem test12ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem test21ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem test22ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem test13ToolStripMenuItem;
+        
+        private System.Windows.Forms.VScrollBar vScrollBar1;
+        private System.Windows.Forms.HScrollBar hScrollBar1;
     }
 }

@@ -37,10 +37,14 @@ namespace System.Windows.Forms
 
             __ownerControl.Realized += OwnerContainer_Realized;
         }
-
+        private bool OwnerContainerRealized = false;
         private void OwnerContainer_Realized(object sender, EventArgs e)
         {
-            PerformLayout();
+            if (OwnerContainerRealized == false)
+            {
+                OwnerContainerRealized = true;
+                PerformLayout();
+            }
         }
 
         public ControlCollection(CheckedListBox owner, Type itemType)

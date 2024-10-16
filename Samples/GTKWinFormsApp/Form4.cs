@@ -73,14 +73,35 @@ namespace GTKWinFormsApp
 
         private void button8_Click(object sender, EventArgs e)
         {
-            ColorDialog colorDialog = new ColorDialog();
-            colorDialog.ShowDialog();
+            //ColorDialog colorDialog = new ColorDialog();
+            //colorDialog.ShowDialog();
+
+            //FontDialog fontDialog = new FontDialog();
+            //fontDialog.ShowDialog();
+
+            Graphics g = CreateGraphics();
+            // g.DrawString("ddddddddd", new Font(FontFamily.GenericSansSerif, 16), new SolidBrush(Color.Red), 0, 0);
+            g.DrawRectangle(new Pen(new SolidBrush(Color.Red),2), new Rectangle(110, 110, 200, 200));
+
+
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("test message test message \ntest messagetest message", "疑问",MessageBoxButtons.RetryCancel,MessageBoxIcon.Question);
-            MessageBox.Show("test message test message \ntest messagetest message", "警告", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning); 
+            MessageBox.Show("test message test message \ntest messagetest message", "疑问", MessageBoxButtons.RetryCancel, MessageBoxIcon.Question);
+            MessageBox.Show("test message test message \ntest messagetest message", "警告", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning);
+        }
+
+        private void vScrollBar1_ValueChanged(object sender, EventArgs e)
+        {
+            panel1.Widget.MarginTop = vScrollBar1.Value;
+
+
+        }
+
+        private void hScrollBar1_ValueChanged(object sender, EventArgs e)
+        {
+            panel1.Widget.MarginStart = hScrollBar1.Value;
         }
     }
 }

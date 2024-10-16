@@ -57,11 +57,12 @@ namespace System.Windows.Forms
                 Move(this, args);
         }
         #region events
-
+        private bool WidgetRealized = false;
         private void Widget_Realized(object sender, EventArgs e)
         {
-            if (this.Widget.IsVisible == false)
+            if (WidgetRealized == false)
             {
+                WidgetRealized = true;
                 InitStyle((Gtk.Widget)sender);
                 if (Load != null)
                     Load(this, e);
