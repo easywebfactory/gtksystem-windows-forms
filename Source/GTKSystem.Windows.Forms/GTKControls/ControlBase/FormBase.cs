@@ -37,7 +37,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public delegate bool CloseWindowHandler(object sender, EventArgs e);
         public event CloseWindowHandler CloseWindowEvent;
         public event System.Windows.Forms.ScrollEventHandler Scroll;
-        public FormBase() : base("title", null, DialogFlags.UseHeaderBar)
+        public FormBase(Gtk.Window parent = null) : base("title", parent, DialogFlags.UseHeaderBar)
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Form");

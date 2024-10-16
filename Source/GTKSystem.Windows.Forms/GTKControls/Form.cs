@@ -37,12 +37,6 @@ namespace System.Windows.Forms
         {
             self.Title = title;
         }
-
-        public Form(string title, Window parent) : base()
-        {
-            self.Title = title;
-            Init();
-        }
         private void Init()
         {
             this.SetScrolledWindow((IScrollableBoxBase)self);
@@ -145,8 +139,8 @@ namespace System.Windows.Forms
             if (owner != null && owner is Form parent)
             {
                 this.Parent = parent;
-                //self.ParentWindow = parent.self.Window;
-                //self.WindowPosition = Gtk.WindowPosition.CenterOnParent;
+                self.KeepAbove = true;
+                self.Activate();
             }
 
             if (self.IsVisible == false)
@@ -356,7 +350,10 @@ namespace System.Windows.Forms
             }
             return false;
         }
-
+        public bool Activate()
+        {
+            return self.Activate();
+        }
         public MenuStrip MainMenuStrip { get; set; }
 
         public override IntPtr Handle => self.Handle;
