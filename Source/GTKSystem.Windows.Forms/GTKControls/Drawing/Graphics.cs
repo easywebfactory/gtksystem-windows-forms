@@ -954,7 +954,7 @@ namespace System.Drawing
                     if (this.widget != null)
                     {
                         Pango.Context pangocontext = this.widget.PangoContext;
-                        family = this.widget.PangoContext.FontDescription.Family;
+                        family = pangocontext.FontDescription.Family;
                         var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
                         if (pangoFamily == null)
                             family = pangocontext.FontDescription.Family;
@@ -1152,7 +1152,7 @@ namespace System.Drawing
                 if (this.widget != null)
                 {
                     Pango.Context pangocontext = this.widget.PangoContext;
-                    family = this.widget.PangoContext.FontDescription.Family;
+                    family = pangocontext.FontDescription.Family;
                     var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
                     if (pangoFamily == null)
                         family = pangocontext.FontDescription.Family;
@@ -1629,7 +1629,7 @@ namespace System.Drawing
             if (this.widget != null)
             {
                 Pango.Context pangocontext = this.widget.PangoContext;
-                family = this.widget.PangoContext.FontDescription.Family;
+                family = pangocontext.FontDescription.Family;
                 var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
                 if (pangoFamily == null)
                     family = pangocontext.FontDescription.Family;

@@ -94,6 +94,11 @@ namespace System.Windows.Forms
                 return forms;
             }
         }
+        public static void DoEvents()
+        {
+            while(Gtk.Application.EventsPending())
+                Gtk.Application.RunIteration(false);
+        }
         public static Gtk.Application App { get; private set; }
         public static Gtk.Application Init()
         {
