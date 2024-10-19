@@ -16,6 +16,13 @@ namespace GTKWinFormsApp
         public Form4()
         {
             InitializeComponent();
+            this.Shown += Form4_Shown;
+        }
+        Point panel1Location = new Point();
+        private void Form4_Shown(object? sender, EventArgs e)
+        {
+            panel1Location.X = panel1.Widget.MarginStart;
+            panel1Location.Y = panel1.Widget.MarginTop;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -26,7 +33,7 @@ namespace GTKWinFormsApp
             ofd.Title = "测试打开文件";
             ofd.Description = "打开文件 decription";
 
-            DialogResult dialogResult = ofd.ShowDialog();
+            DialogResult dialogResult = ofd.ShowDialog(this);
             Console.WriteLine("dialogResult:" + dialogResult.ToString());
             Console.WriteLine("FileName:" + ofd.FileName);
             foreach (string file in ofd.FileNames)
@@ -73,15 +80,15 @@ namespace GTKWinFormsApp
 
         private void button8_Click(object sender, EventArgs e)
         {
-            //ColorDialog colorDialog = new ColorDialog();
-            //colorDialog.ShowDialog();
+            ColorDialog colorDialog = new ColorDialog();
+            colorDialog.ShowDialog();
 
             //FontDialog fontDialog = new FontDialog();
             //fontDialog.ShowDialog();
 
-            Graphics g = CreateGraphics();
-            // g.DrawString("ddddddddd", new Font(FontFamily.GenericSansSerif, 16), new SolidBrush(Color.Red), 0, 0);
-            g.DrawRectangle(new Pen(new SolidBrush(Color.Red),2), new Rectangle(110, 110, 200, 200));
+            //Graphics g = CreateGraphics();
+            //// g.DrawString("ddddddddd", new Font(FontFamily.GenericSansSerif, 16), new SolidBrush(Color.Red), 0, 0);
+            //g.DrawRectangle(new Pen(new SolidBrush(Color.Red),2), new Rectangle(110, 110, 200, 200));
 
 
         }
@@ -94,14 +101,15 @@ namespace GTKWinFormsApp
 
         private void vScrollBar1_ValueChanged(object sender, EventArgs e)
         {
-            panel1.Widget.MarginTop = vScrollBar1.Value;
+            panel1.Widget.MarginTop = panel1Location.Y + vScrollBar1.Value;
 
 
         }
 
         private void hScrollBar1_ValueChanged(object sender, EventArgs e)
         {
-            panel1.Widget.MarginStart = hScrollBar1.Value;
+
+            panel1.Widget.MarginStart = panel1Location.X + hScrollBar1.Value;
         }
     }
 }

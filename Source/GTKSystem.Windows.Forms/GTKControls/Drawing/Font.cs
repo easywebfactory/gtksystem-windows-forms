@@ -330,7 +330,7 @@ namespace System.Drawing
         // 返回结果:
         //     true to indicate this font has the italic style applied; otherwise, false.
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool Italic { get => (Style & FontStyle.Italic) == 0; }
+        public bool Italic { get => Style.HasFlag(FontStyle.Italic); }
         //
         // 摘要:
         //     Gets a byte value that specifies the GDI character set that this System.Drawing.Font
@@ -444,7 +444,7 @@ namespace System.Drawing
         // 返回结果:
         //     true if this System.Drawing.Font is bold; otherwise, false.
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool Bold { get=>(Style & FontStyle.Bold) == 0; }
+        public bool Bold { get=> Style.HasFlag(FontStyle.Bold); }
         //
         // 摘要:
         //     Gets the unit of measure for this System.Drawing.Font.
@@ -459,7 +459,7 @@ namespace System.Drawing
         // 返回结果:
         //     true if this System.Drawing.Font is underlined; otherwise, false.
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool Underline { get => (Style & FontStyle.Underline) == 0; }
+        public bool Underline { get => Style.HasFlag(FontStyle.Underline); }
 
         //
         // 摘要:

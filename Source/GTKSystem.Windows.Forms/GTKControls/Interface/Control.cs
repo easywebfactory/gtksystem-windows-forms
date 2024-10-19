@@ -27,10 +27,21 @@ namespace System.Windows.Forms
             Gtk.Widget widget = this.Widget;
             if (widget != null)
             {
-                this.Dock = DockStyle.None;
+                if (widget is Gtk.Window win)
+                {
+                    widget.Halign = Align.Fill;
+                    widget.Valign = Align.Fill;
+                    widget.Expand = true;
+                }
+                else
+                {
+                    widget.Halign = Align.Start;
+                    widget.Valign = Align.Start;
+                    widget.Expand = false;
+                }
                 widget.Data["Control"] = this;
-                Widget.Data["Top"] = widget.Allocation.Top;
-                Widget.Data["Left"] = widget.Allocation.Left;
+                Widget.Data["Top"] = widget.MarginTop;
+                Widget.Data["Left"] = widget.MarginStart;
                 widget.Data["Width"] = widget.WidthRequest;
                 widget.Data["Height"] = widget.HeightRequest;
                 widget.StyleContext.AddClass("DefaultThemeStyle");
@@ -47,7 +58,6 @@ namespace System.Windows.Forms
                 widget.Realized += Widget_Realized;
                 widget.ConfigureEvent += Widget_ConfigureEvent;
                 ISelf.Override.PaintGraphics += Override_PaintGraphics;
-
             }
         }
 
@@ -63,6 +73,14 @@ namespace System.Windows.Forms
             if (WidgetRealized == false)
             {
                 WidgetRealized = true;
+                if (Widget.Parent != null)
+                {
+                    if (Anchor.HasFlag(AnchorStyles.Right))
+                        Widget.MarginEnd = Math.Max(0, Widget.Parent.AllocatedWidth - Widget.MarginStart - Widget.WidthRequest);
+                    if (Anchor.HasFlag(AnchorStyles.Bottom))
+                        Widget.MarginBottom = Math.Max(0, Widget.Parent.AllocatedHeight - Widget.MarginTop - Widget.HeightRequest);
+                }
+
                 InitStyle((Gtk.Widget)sender);
                 if (Load != null)
                     Load(this, e);
@@ -463,7 +481,46 @@ namespace System.Windows.Forms
         public virtual string AccessibleName { get; set; }
         public virtual AccessibleRole AccessibleRole { get; set; }
         public virtual bool AllowDrop { get; set; }
-        public virtual AnchorStyles Anchor { get; set; }
+        private AnchorStyles _anchor;
+        public virtual AnchorStyles Anchor { 
+            get=> _anchor; 
+            set {
+                _anchor = value;
+                if (value.HasFlag(AnchorStyles.Left) && value.HasFlag(AnchorStyles.Right))
+                {
+                    Widget.Halign = Gtk.Align.Fill;
+                }
+                else if (value.HasFlag(AnchorStyles.Left))
+                {
+                    Widget.Halign = Gtk.Align.Start;
+                }
+                else if (value.HasFlag(AnchorStyles.Right))
+                {
+                    Widget.Halign = Gtk.Align.End;
+                }
+                else
+                {
+                    Widget.Halign = Gtk.Align.Start;
+                }
+
+                if (value.HasFlag(AnchorStyles.Top) && value.HasFlag(AnchorStyles.Bottom))
+                {
+                    Widget.Valign = Gtk.Align.Fill;
+                }
+                else if (value.HasFlag(AnchorStyles.Top))
+                {
+                    Widget.Valign = Gtk.Align.Start;
+                }
+                else if (value.HasFlag(AnchorStyles.Bottom))
+                {
+                    Widget.Valign = Gtk.Align.End;
+                }
+                else
+                {
+                    Widget.Valign = Gtk.Align.Start;
+                }
+            } 
+        }
         public virtual Point AutoScrollOffset { get; set; }
         public virtual bool AutoSize { get; set; }
         public virtual BindingContext BindingContext { get; set; }
@@ -508,6 +565,41 @@ namespace System.Windows.Forms
             set
             {
                 Widget.Data["Dock"] = value.ToString();
+                if (value == DockStyle.Fill)
+                {
+                    this.Widget.Halign = Align.Fill;
+                    this.Widget.Valign = Align.Fill;
+                    this.Widget.Hexpand = true;
+                    this.Widget.Vexpand = true;
+                }
+                else if (value == DockStyle.Left)
+                {
+                    this.Widget.Halign = Align.Start;
+                    this.Widget.Valign = Align.Fill;
+                    this.Widget.Hexpand = false;
+                    this.Widget.Vexpand = true;
+                }
+                else if (value == DockStyle.Top)
+                {
+                    this.Widget.Halign = Align.Fill;
+                    this.Widget.Valign = Align.Start;
+                    this.Widget.Hexpand = true;
+                    this.Widget.Vexpand = false;
+                }
+                else if (value == DockStyle.Right)
+                {
+                    this.Widget.Halign = Align.End;
+                    this.Widget.Valign = Align.Fill;
+                    this.Widget.Hexpand = false;
+                    this.Widget.Vexpand = true;
+                }
+                else if (value == DockStyle.Bottom)
+                {
+                    this.Widget.Halign = Align.Fill;
+                    this.Widget.Valign = Align.End;
+                    this.Widget.Hexpand = true;
+                    this.Widget.Vexpand = false;
+                }
             }
         }
         public virtual bool Enabled { get { return Widget.Sensitive; } set { Widget.Sensitive = value; } }
@@ -549,76 +641,34 @@ namespace System.Windows.Forms
         public virtual bool IsMirrored { get; }
 
         public virtual LayoutEngine LayoutEngine { get; }
-        private int _top;
         public virtual int Top
         {
-            get => Widget.IsRealized ? Widget.Allocation.Top : _top;
+            get => this.Widget.MarginTop;
             set
             {
-                _top = value;
                 Widget.Data["Top"] = value;
-                if (Widget.Parent != null && Widget.Parent.IsMapped)
-                {
-                    if (Widget.Parent is Gtk.Container parent)
-                    {
-                        if (parent[Widget] is Gtk.Layout.LayoutChild lc)
-                        {
-                            lc.Y = value;
-                        }
-                        else if (parent[Widget] is Gtk.Fixed.FixedChild fc)
-                        {
-                            fc.Y = value;
-                        }
-                    }
-                }
+                this.Widget.MarginTop = value;
             }
         }
-        private int _left;
         public virtual int Left
         {
-            get => Widget.IsRealized ? Widget.Allocation.Left : _left;
+            get => this.Widget.MarginStart;
             set
             {
-                _left = value;
                 Widget.Data["Left"] = value;
-
-                if (Widget.Parent != null && Widget.Parent.IsMapped)
-                {
-                    if (Widget.Parent is Gtk.Container parent)
-                    {
-                        if (parent[Widget] is Gtk.Layout.LayoutChild lc)
-                        {
-                            lc.X = value;
-                        }
-                        else if (parent[Widget] is Gtk.Fixed.FixedChild fc)
-                        {
-                            fc.X = value;
-                        }
-                    }
-                }
+                this.Widget.MarginStart = value;
             }
         }
         public virtual int Right {
-            get
-            {
-                if (Widget.IsMapped == false && Widget is Gtk.Window wnd)
-                {
-                    return Widget.WidthRequest == -1 ? wnd.Allocation.Left + wnd.DefaultWidth : Widget.Allocation.Right;
-                }
-                return Widget.Allocation.Right;
-            }
+            get => this.Widget.MarginEnd;
+            set => this.Widget.MarginEnd = value;
         }
         public virtual int Bottom
         {
-            get
-            {
-                if (Widget.IsMapped == false && Widget is Gtk.Window wnd)
-                {
-                    return Widget.HeightRequest == -1 ? wnd.Allocation.Top + wnd.DefaultHeight : Widget.Allocation.Bottom;
-                }
-                return Widget.Allocation.Bottom;
-            }
+            get => this.Widget.MarginBottom;
+            set => this.Widget.MarginBottom = value;
         }
+        internal bool LockLocation = false;//由于代码有顺序执行，特殊锁定
         public virtual Point Location
         {
             get
@@ -627,8 +677,11 @@ namespace System.Windows.Forms
             }
             set
             {
-                Left = value.X;
-                Top = value.Y;
+                if (LockLocation == false)
+                {
+                    Left = value.X;
+                    Top = value.Y;
+                }
             }
         }
         //public virtual Padding Margin { get; set; }
@@ -674,7 +727,7 @@ namespace System.Windows.Forms
                 }
                 return Widget.HeightRequest == -1 ? Widget.AllocatedHeight : Widget.HeightRequest;
             }
-            set { Widget.HeightRequest = Math.Max(0, value); Widget.Data["Height"] = Widget.HeightRequest; }
+            set { Widget.HeightRequest = Math.Max(-1, value); Widget.Data["Height"] = Widget.HeightRequest; }
         }
 
         public virtual int Width
@@ -687,7 +740,7 @@ namespace System.Windows.Forms
                 }
                 return Widget.WidthRequest == -1 ? Widget.AllocatedWidth : Widget.WidthRequest;
             }
-            set { Widget.WidthRequest = Math.Max(0, value); Widget.Data["Width"] = Widget.WidthRequest; }
+            set { Widget.WidthRequest = Math.Max(-1, value); Widget.Data["Width"] = Widget.WidthRequest; }
         }
         public virtual int TabIndex { get; set; }
         public virtual bool TabStop { get; set; }

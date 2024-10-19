@@ -51,40 +51,44 @@ namespace System.Windows.Forms
             self.Add(flowBoxContainer);
             this.BorderStyle = BorderStyle.Fixed3D;
         }
-
+        private bool ControlRealized = false;
         private void Control_Realized(object sender, EventArgs e)
         {
-            if (this.View == View.Details)
+            if (ControlRealized == false)
             {
-                header.NoShowAll = false;
-                header.Visible = true;
-                header.ShowAll();
-                foreach (ColumnHeader col in Columns)
+                ControlRealized = true;
+                if (this.View == View.Details)
                 {
-                    LabelBase label = new LabelBase(col.Text) { WidthRequest = col.Width, MaxWidthChars = 0, Valign = Gtk.Align.End, Ellipsize = Pango.EllipsizeMode.End};
-                    label.TooltipText = col.Text;
-                    label.Markup = col.Text;
-                    label.Data.Add("ColumnIndex", col.DisplayIndex);
-                    label.Override.DrawnBackground += Override_DrawnBackground;
-                    var columbt = new Gtk.Button(label) {  WidthRequest = col.Width, Halign = Gtk.Align.Fill, Valign = Gtk.Align.Fill };
-                    columbt.ActionTargetValue=new GLib.Variant(col.DisplayIndex);
-                    columbt.Data.Add("ColumnIndex", col.DisplayIndex);
-                    columbt.Clicked += Columbt_Clicked;
-                    header.Add(columbt);
+                    header.NoShowAll = false;
+                    header.Visible = true;
+                    header.ShowAll();
+                    foreach (ColumnHeader col in Columns)
+                    {
+                        LabelBase label = new LabelBase(col.Text) { WidthRequest = col.Width, MaxWidthChars = 0, Valign = Gtk.Align.End, Ellipsize = Pango.EllipsizeMode.End };
+                        label.TooltipText = col.Text;
+                        label.Markup = col.Text;
+                        label.Data.Add("ColumnIndex", col.DisplayIndex);
+                        label.Override.DrawnBackground += Override_DrawnBackground;
+                        var columbt = new Gtk.Button(label) { WidthRequest = col.Width, Halign = Gtk.Align.Fill, Valign = Gtk.Align.Fill };
+                        columbt.ActionTargetValue = new GLib.Variant(col.DisplayIndex);
+                        columbt.Data.Add("ColumnIndex", col.DisplayIndex);
+                        columbt.Clicked += Columbt_Clicked;
+                        header.Add(columbt);
+                    }
                 }
-            }
-            var group = Items.GroupBy(g => g.Group);
-            foreach (var g in group)
-            {
-                NativeGroupAdd(g.Key, -1);
-                foreach (ListViewItem item in g)
+                var group = Items.GroupBy(g => g.Group);
+                foreach (var g in group)
                 {
-                    NativeAdd(item, -1);
+                    NativeGroupAdd(g.Key, -1);
+                    foreach (ListViewItem item in g)
+                    {
+                        NativeAdd(item, -1);
+                    }
                 }
-            }
 
-            MultiSelect = MultiSelect == true;
-            self.ShowAll();
+                MultiSelect = MultiSelect == true;
+                self.ShowAll();
+            }
         }
 
         private void Columbt_Clicked(object sender, EventArgs e)
@@ -244,14 +248,6 @@ namespace System.Windows.Forms
         }
         protected void NativeAdd(ListViewItem item, int position)
         {
-            BoxBase hBox = new BoxBase(Gtk.Orientation.Horizontal, 4);
-            if (item.BackColor.HasValue)
-                hBox.Override.BackColor = item.BackColor.Value;
-            hBox.Valign = Gtk.Align.Fill;
-            hBox.Halign = Gtk.Align.Start;
-            hBox.BorderWidth = 0;
-            hBox.Homogeneous = false;
-
             Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
             boxitem.TooltipText = item.Text;
             boxitem.Data.Add("ItemId", item.Index);
@@ -260,6 +256,15 @@ namespace System.Windows.Forms
             boxitem.HeightRequest = FontSize + 12; 
             boxitem.BorderWidth = 0;
             boxitem.Margin = 0;
+
+            BoxBase hBox = new BoxBase(Gtk.Orientation.Horizontal, 4);
+            if (item.BackColor.HasValue)
+                hBox.Override.BackColor = item.BackColor.Value;
+            hBox.Valign = Gtk.Align.Fill;
+            hBox.Halign = Gtk.Align.Start;
+            hBox.BorderWidth = 0;
+            hBox.Homogeneous = false;
+
             foreach (ColumnHeader col in Columns)
             {
                 if (col.DisplayIndex == 0)
@@ -290,6 +295,7 @@ namespace System.Windows.Forms
             {
                 CheckBox checkBox = new CheckBox();
                 checkBox.self.Halign = Gtk.Align.Start;
+                checkBox.self.Valign = Gtk.Align.Center;
                 checkBox.Width = 25;
                 checkBox.self.BorderWidth = 0;
                 checkBox.Checked = item.Checked;
@@ -308,7 +314,7 @@ namespace System.Windows.Forms
                         ItemChecked(sender, new ItemCheckedEventArgs(thisitem));
                     }
                 };
-                hBox.PackStart(checkBox.self, false, false, 0);
+                hBox.PackStart(checkBox.self, false, true, 0);
             }
 
             if (this.View == View.Details)

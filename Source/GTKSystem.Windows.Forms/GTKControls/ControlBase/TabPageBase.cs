@@ -1,15 +1,20 @@
-﻿using System;
+﻿using Gtk;
+using System;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public sealed class TabPageBase : ScrollableBoxBase
     {
-        public Gtk.Fixed Content = new Gtk.Fixed();
+        public Gtk.Overlay Content = new Gtk.Overlay();
         internal TabPageBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("TabPage");
             this.BorderWidth = 0;
+            this.Content.MarginStart = 0;
+            this.Content.MarginTop = 0;
+            this.Content.Halign = Align.Fill;
+            this.Content.Valign = Align.Fill;
             base.Add(Content);
         }
         protected override void OnShown()

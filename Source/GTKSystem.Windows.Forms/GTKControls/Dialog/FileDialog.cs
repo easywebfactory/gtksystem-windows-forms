@@ -5,7 +5,10 @@
  * author:chenhongjin
  */
 
+using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 
 namespace System.Windows.Forms
@@ -103,14 +106,15 @@ namespace System.Windows.Forms
         {
             if (owner != null && owner is Form ownerform)
             {
-                fileDialog = new Gtk.FileChooserDialog("", ownerform.self, ActionType);
+                fileDialog = new Gtk.FileChooserDialog("选择文件", ownerform.self, ActionType);
                 fileDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
             }
             else
             {
-                fileDialog = new Gtk.FileChooserDialog("", null, ActionType);
+                fileDialog = new Gtk.FileChooserDialog("选择文件", null, ActionType);
                 fileDialog.WindowPosition = Gtk.WindowPosition.Center;
             }
+            fileDialog.KeepAbove = true;
             fileDialog.AddButton("确定", Gtk.ResponseType.Ok);
             fileDialog.AddButton("取消", Gtk.ResponseType.Cancel);
             fileDialog.SelectMultiple = this.Multiselect;

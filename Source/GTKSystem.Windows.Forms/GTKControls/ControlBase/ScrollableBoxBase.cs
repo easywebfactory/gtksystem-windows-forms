@@ -18,8 +18,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Events = Gdk.EventMask.AllEventsMask;
             base.Halign = Gtk.Align.Fill;
             base.Valign = Gtk.Align.Fill;
-            base.Hexpand = false;
-            base.Vexpand = false;
+            base.Hexpand = true;
+            base.Vexpand = true;
             base.VscrollbarPolicy = Gtk.PolicyType.Never;
             base.HscrollbarPolicy = Gtk.PolicyType.Never;
             base.Hadjustment.ValueChanged += Hadjustment_ValueChanged;

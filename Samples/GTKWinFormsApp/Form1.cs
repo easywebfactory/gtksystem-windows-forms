@@ -23,6 +23,8 @@ namespace GTKWinFormsApp
             b.ID = 1;
             b.Title = "test1";
             listBox1.DataBindings.Add(new Binding("SelectedItem", b, "Title"));
+
+         
         }
 
         TestEntity b = new TestEntity();
@@ -37,7 +39,7 @@ namespace GTKWinFormsApp
             //1、数据集列表数据源
             List<TestEntity> data = new List<TestEntity>();
             var createdate = DateTime.Now;
-            data.Add(new TestEntity() { ID = 0, Title = "test1", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC = "face-smile-big" });
+            data.Add(new TestEntity() { ID = 0, Title = "加载数据点yes加载数据\n点yes加载数据点yes加载数据点yes", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC = "face-smile-big" });
             data.Add(new TestEntity() { ID = 1, Title = "test2", Info = " 3234fdf", State = true, CreateDate = createdate, Operate = "编辑", PIC = "Resources\\timg2.jpg" });
             data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "Resources\\BindingNavigator.Delete.ico" });
             data.Add(new TestEntity() { ID = 4, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC = "" });
@@ -372,7 +374,7 @@ namespace GTKWinFormsApp
 
             g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(50, 60), new PointF(100, 80), new PointF(75, 100) });
             g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(75, 100), new PointF(100, 120), new PointF(120, 100) });
-
+            g.DrawRectangle(new Pen((Color)Color.Red), new Rectangle(10, 10, 20, 20));
         }
 
         private void button6_Click(object sender, EventArgs e)

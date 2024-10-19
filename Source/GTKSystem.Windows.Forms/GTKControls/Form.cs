@@ -25,7 +25,7 @@ namespace System.Windows.Forms
         private Gtk.Application app = Application.Init();
         public FormBase self = new FormBase();
         public override object GtkControl { get => self; }
-        private Gtk.Fixed _body = new Gtk.Fixed();
+        private Gtk.Overlay _body = new Gtk.Overlay();
         private ObjectCollection _ObjectCollection;
         public override event EventHandler SizeChanged;
 
@@ -42,12 +42,10 @@ namespace System.Windows.Forms
             this.SetScrolledWindow((IScrollableBoxBase)self);
             _body.Valign = Gtk.Align.Fill;
             _body.Halign = Gtk.Align.Fill;
-            _body.Expand = true;
             _body.Hexpand = true;
             _body.Vexpand = true;
             self.ScrollView.Child = _body;
             _ObjectCollection = new ObjectCollection(this, _body);
-            self.ResizeChecked += Form_ResizeChecked;
             self.Shown += Control_Shown;
             self.CloseWindowEvent += Self_CloseWindowEvent;
         }
@@ -69,40 +67,6 @@ namespace System.Windows.Forms
         {
             if (Shown != null)
                 Shown(this, e);
-        }
-
-        int resizeWidth= 0;
-        int resizeHeight= 0;
-        private void Form_ResizeChecked(object sender, EventArgs e)
-        {
-            if (self.Resizable == true && self.IsMapped)
-            {
-                if (self.ContentArea.AllocatedWidth != resizeWidth || self.ContentArea.AllocatedHeight != resizeHeight)
-                {
-                    try
-                    {
-                        resizeWidth = self.ContentArea.AllocatedWidth;
-                        resizeHeight = self.ContentArea.AllocatedHeight;
-                        int widthIncrement = resizeWidth - self.DefaultWidth;
-                        int heightIncrement = resizeHeight - self.DefaultHeight;
-
-                        _body.WidthRequest = resizeWidth; //留出滚动条位置 - (AutoScroll ? self.ScrollArrowVlength : 0)
-                        _body.HeightRequest = resizeHeight - self.StatusBarView.AllocatedHeight;
-
-                        Gtk.Application.Invoke(new EventHandler((o, e) =>
-                        {
-                            self.ResizeControls(widthIncrement, heightIncrement, _body);
-                        }));
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("form resize:" + ex.Message);
-                    }
-                    if (SizeChanged != null)
-                        SizeChanged(this, e);
-                }
-            }
         }
         public override event ScrollEventHandler Scroll
         {

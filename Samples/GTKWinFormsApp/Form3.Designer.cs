@@ -451,6 +451,7 @@ namespace GTKWinFormsApp
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(986, 500);
+            AutoScroll = false;
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(progressBar1);
             Controls.Add(panel5);

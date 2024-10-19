@@ -17,7 +17,7 @@ namespace System.Windows.Forms
     {
         public readonly PanelBase self = new PanelBase();
         public override object GtkControl => self;
-        public Gtk.Fixed contaner = new Gtk.Fixed();
+        public Gtk.Overlay contaner = new Gtk.Overlay();
         private ControlCollection _controls;
         public Panel() : base()
         {
@@ -26,6 +26,8 @@ namespace System.Windows.Forms
             contaner.MarginTop = 0;
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
+            contaner.Expand = false;
+            contaner.Expand = false;
             contaner.BorderWidth = 0;
             self.Add(contaner);
         }

@@ -1,4 +1,6 @@
-﻿namespace GTKWinFormsApp
+﻿using System.Windows.Forms;
+
+namespace GTKWinFormsApp
 {
     partial class Form4
     {
@@ -73,7 +75,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            splitContainer1.Panel1.BackColor = System.Drawing.Color.Transparent;
             splitContainer1.Panel1.Controls.Add(button2);
             splitContainer1.Panel1.Controls.Add(button1);
             // 
@@ -90,7 +92,7 @@
             splitContainer1.Panel2.Controls.Add(panel1);
             splitContainer1.Panel2.Controls.Add(button3);
             splitContainer1.Size = new System.Drawing.Size(895, 441);
-            splitContainer1.SplitterDistance = 165;
+            splitContainer1.SplitterDistance = 265;
             splitContainer1.TabIndex = 0;
             // 
             // button2
@@ -108,7 +110,7 @@
             button1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             button1.Location = new System.Drawing.Point(24, 46);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(120, 153);
+            button1.Size = new System.Drawing.Size(120, 53);
             button1.TabIndex = 0;
             button1.Text = "button1";
             button1.UseVisualStyleBackColor = true;

@@ -116,10 +116,14 @@ namespace GTKWinFormsApp
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Graphics g = CreateGraphics();
-            g.DrawString(DateTime.Now.ToString(), new Font(FontFamily.GenericSansSerif, 16), new SolidBrush(Color.Red), 200, 200);
-            g.DrawRectangle(new Pen((Color)Color.Red,5), new Rectangle(110, 110, 200, 200));
-            this.Refresh();
+
+            using (Graphics g = CreateGraphics())
+            {
+                g.DrawString(DateTime.Now.ToString(), new Font(FontFamily.GenericSansSerif, 16), new SolidBrush(Color.Red), 200, 200);
+                g.DrawRectangle(new Pen((Color)Color.Red, 5), new Rectangle(110, 110, 200, 200));
+                // g.Dispose();
+                this.Refresh();
+            }
         }
     }
 }
