@@ -1,9 +1,5 @@
 ﻿using Gtk;
-using Pango;
 using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Security.Cryptography;
 
 namespace System.Windows.Forms
 {
@@ -31,41 +27,6 @@ namespace System.Windows.Forms
             __itemType = itemType;
         }
         internal Drawing.Point Offset = new Drawing.Point(0,0);
-        //private void AddToWidget(object item)
-        //{
-        //    if (item is StatusStrip statusbar)
-        //    {
-        //        if (__owner is Form form)
-        //        {
-        //            statusbar.self.Halign = Gtk.Align.Fill;
-        //            statusbar.self.Valign = Gtk.Align.Fill;
-        //            statusbar.self.Expand = true;
-        //            form.self.StatusBar.NoShowAll = false;
-        //            form.self.StatusBar.Visible = true;
-        //            form.self.StatusBar.HeightRequest = 35;
-        //            form.self.StatusBar.Child = statusbar.self;
-        //            form.self.StatusBar.ShowAll();
-        //        }
-        //    }
-        //    else if (item is Control control)
-        //    {
-        //        if (fixedContainer != null)
-        //            fixedContainer.Put(control.Widget, control.Left + Offset.X, control.Top + Offset.Y);
-        //        else if (layoutContainer != null)
-        //            layoutContainer.Put(control.Widget, control.Left + Offset.X, control.Top + Offset.Y);
-        //        else
-        //            __ownerControl.Add(control.Widget);
-        //    }
-        //    else if (item is Gtk.Widget widget)
-        //    {
-        //        if (fixedContainer != null)
-        //            fixedContainer.Put(widget, widget.Allocation.X + Offset.X, widget.Allocation.Y + Offset.Y);
-        //        else if (layoutContainer != null)
-        //            layoutContainer.Put(widget, widget.Allocation.X + Offset.X, widget.Allocation.Y + Offset.Y);
-        //        else
-        //            __ownerControl.Add(widget);
-        //    }
-        //}
         public override int Add(object item)
         {
             if (item is Control control)
