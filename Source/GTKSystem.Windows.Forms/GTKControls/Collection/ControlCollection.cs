@@ -19,6 +19,21 @@ namespace System.Windows.Forms
         {
             __ownerControl = ownerContainer;
             __owner = owner;
+            __ownerControl.Shown += __ownerControl_Shown;
+        }
+
+        private void __ownerControl_Shown(object sender, EventArgs e)
+        {
+            foreach (object item in this)
+            {
+                if (item is Control control && control.Widget.Parent != null)
+                {
+                    if (control.Anchor.HasFlag(AnchorStyles.Right))
+                        control.Widget.MarginEnd = Math.Max(0, control.Widget.Parent.AllocatedWidth - control.Widget.MarginStart - control.Widget.WidthRequest);
+                    if (control.Anchor.HasFlag(AnchorStyles.Bottom))
+                        control.Widget.MarginBottom = Math.Max(0, control.Widget.Parent.AllocatedHeight - control.Widget.MarginTop - control.Widget.HeightRequest);
+                }
+            }
         }
 
         public ControlCollection(CheckedListBox owner, Type itemType)
@@ -56,7 +71,7 @@ namespace System.Windows.Forms
                 {
                     if (lay.Child is Fixed fix)
                     {
-                        if (con.Widget.Halign == Gtk.Align.Fill || con.Widget.Halign == Gtk.Align.Fill)
+                        if (con.Widget.Halign == Gtk.Align.Fill || con.Widget.Valign == Gtk.Align.Fill)
                             lay.AddOverlay(con.Widget);
                         else
                             fix.Put(con.Widget, 0, 0);
@@ -68,7 +83,7 @@ namespace System.Windows.Forms
                 {
                     if (lay.Child is Fixed fix)
                     {
-                        if (widget.Halign == Gtk.Align.Fill || widget.Halign == Gtk.Align.Fill)
+                        if (widget.Halign == Gtk.Align.Fill || widget.Valign == Gtk.Align.Fill)
                             lay.AddOverlay(widget);
                         else
                             fix.Put(widget, 0, 0);
@@ -101,7 +116,6 @@ namespace System.Windows.Forms
             }
 
                 __ownerControl.ShowAll();
-
                 return false;
             }));
             return base.Add(item);
