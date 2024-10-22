@@ -3,7 +3,7 @@
     public sealed class ToolStripBase : Gtk.MenuBar, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal ToolStripBase() : base()
+        public ToolStripBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("ToolStrip");

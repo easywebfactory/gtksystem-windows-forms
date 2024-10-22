@@ -29,6 +29,7 @@ namespace System.Windows.Forms
             contaner.Expand = false;
             contaner.Expand = false;
             contaner.BorderWidth = 0;
+            contaner.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             self.Add(contaner);
         }
 

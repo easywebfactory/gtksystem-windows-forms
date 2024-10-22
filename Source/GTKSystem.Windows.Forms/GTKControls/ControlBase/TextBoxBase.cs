@@ -3,10 +3,12 @@
     public sealed class TextBoxBase : Gtk.Entry, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal TextBoxBase() : base()
+        public TextBoxBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("TextBox");
+            base.Halign = Gtk.Align.Start;
+            base.Valign = Gtk.Align.Start;
         }
         public void AddClass(string cssClass)
         {

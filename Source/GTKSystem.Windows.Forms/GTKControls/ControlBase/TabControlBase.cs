@@ -5,11 +5,12 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
     public sealed class TabControlBase : Gtk.Notebook, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal TabControlBase() : base()
+        public TabControlBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("TabControl");
-            this.Scrollable = true;
+            base.Halign = Gtk.Align.Start;
+            base.Valign = Gtk.Align.Start;
         }
         public void AddClass(string cssClass)
         {

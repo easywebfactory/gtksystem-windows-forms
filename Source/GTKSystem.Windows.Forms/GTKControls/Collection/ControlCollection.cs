@@ -1,4 +1,5 @@
 ﻿using Gtk;
+using Pango;
 using System.Collections;
 
 namespace System.Windows.Forms
@@ -19,6 +20,7 @@ namespace System.Windows.Forms
             __ownerControl = ownerContainer;
             __owner = owner;
         }
+
         public ControlCollection(CheckedListBox owner, Type itemType)
         {
             __ownerControl = owner.self;
@@ -33,7 +35,7 @@ namespace System.Windows.Forms
             {
                 control.Parent = __owner;
             }
-
+            GLib.Timeout.Add(100, new GLib.TimeoutHandler(() => {
             if (__ownerControl is Gtk.Overlay lay)
             {
                 if (item is StatusStrip statusbar)
@@ -52,11 +54,27 @@ namespace System.Windows.Forms
                 }
                 else if (item is Control con)
                 {
-                    lay.AddOverlay(con.Widget);
+                    if (lay.Child is Fixed fix)
+                    {
+                        if (con.Widget.Halign == Gtk.Align.Fill || con.Widget.Halign == Gtk.Align.Fill)
+                            lay.AddOverlay(con.Widget);
+                        else
+                            fix.Put(con.Widget, 0, 0);
+                    }
+                    else
+                        lay.AddOverlay(con.Widget);
                 }
                 else if (item is Gtk.Widget widget)
                 {
-                    lay.AddOverlay(widget);
+                    if (lay.Child is Fixed fix)
+                    {
+                        if (widget.Halign == Gtk.Align.Fill || widget.Halign == Gtk.Align.Fill)
+                            lay.AddOverlay(widget);
+                        else
+                            fix.Put(widget, 0, 0);
+                    }
+                    else
+                        lay.AddOverlay(widget);
                 }
             }
             else if (__ownerControl is Gtk.Fixed lay2)
@@ -81,6 +99,11 @@ namespace System.Windows.Forms
                     lay3.Put(widget, Offset.X, Offset.Y);
                 }
             }
+
+                __ownerControl.ShowAll();
+
+                return false;
+            }));
             return base.Add(item);
         }
 

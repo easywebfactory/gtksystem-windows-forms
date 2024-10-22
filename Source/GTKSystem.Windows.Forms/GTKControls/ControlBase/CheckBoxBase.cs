@@ -3,10 +3,12 @@
     public sealed class CheckBoxBase : Gtk.CheckButton, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal CheckBoxBase() : base()
+        public CheckBoxBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("CheckBox");
+            base.Valign = Gtk.Align.Start;
+            base.Halign = Gtk.Align.Start;
         }
         protected override void OnShown()
         {

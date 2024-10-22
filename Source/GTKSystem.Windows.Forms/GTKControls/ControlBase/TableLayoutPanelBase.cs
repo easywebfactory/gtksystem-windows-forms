@@ -3,7 +3,7 @@
     public sealed class TableLayoutPanelBase : Gtk.Grid, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal TableLayoutPanelBase() : base()
+        public TableLayoutPanelBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("TableLayoutPanel");
@@ -13,6 +13,8 @@
             this.BaselineRow = 0;
             this.ColumnSpacing = 0;
             this.RowSpacing = 0;
+            base.Halign = Gtk.Align.Start;
+            base.Valign = Gtk.Align.Start;
         }
         public void AddClass(string cssClass)
         {

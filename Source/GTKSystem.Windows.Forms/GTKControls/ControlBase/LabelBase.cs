@@ -3,20 +3,24 @@
     public sealed class LabelBase : Gtk.Label, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal LabelBase() : base()
+        public LabelBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Label");
             this.Xalign = 0.0f;
             this.Yalign = 0.0f;
+            base.Valign = Gtk.Align.Start;
+            base.Halign = Gtk.Align.Start;
         }
 
-        internal LabelBase(string text) : base(text)
+        public LabelBase(string text) : base(text)
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Label");
             this.Xalign = 0.0f;
             this.Yalign = 0.0f;
+            base.Valign = Gtk.Align.Start;
+            base.Halign = Gtk.Align.Start;
         }
         protected override void OnShown()
         {

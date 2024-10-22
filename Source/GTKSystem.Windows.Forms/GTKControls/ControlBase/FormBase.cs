@@ -55,8 +55,10 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             ScrollView.Halign = Gtk.Align.Fill;
             ScrollView.Hexpand = true;
             ScrollView.Vexpand = true;
-            ScrollView.HscrollbarPolicy = PolicyType.Always;
-            ScrollView.VscrollbarPolicy = PolicyType.Always;
+            ScrollView.OverlayScrolling = true;
+            ScrollView.KineticScrolling = true;
+            ScrollView.HscrollbarPolicy = PolicyType.Automatic;
+            ScrollView.VscrollbarPolicy = PolicyType.Automatic;
             ScrollView.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
             ScrollView.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
             this.ContentArea.PackStart(ScrollView, true, true, 0);

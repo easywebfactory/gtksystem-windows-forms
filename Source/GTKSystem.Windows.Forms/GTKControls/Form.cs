@@ -44,10 +44,20 @@ namespace System.Windows.Forms
             _body.Halign = Gtk.Align.Fill;
             _body.Hexpand = true;
             _body.Vexpand = true;
+            _body.MarginBottom = 10;
+            _body.MarginEnd = 10;
+            _body.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             self.ScrollView.Child = _body;
             _ObjectCollection = new ObjectCollection(this, _body);
+            self.ResizeChecked += Self_ResizeChecked;
             self.Shown += Control_Shown;
             self.CloseWindowEvent += Self_CloseWindowEvent;
+        }
+
+        private void Self_ResizeChecked(object sender, EventArgs e)
+        {
+            if (SizeChanged != null)
+                SizeChanged(this, EventArgs.Empty);
         }
 
         private bool Self_CloseWindowEvent(object sender, EventArgs e)
@@ -111,13 +121,13 @@ namespace System.Windows.Forms
             {
                 if (AutoScroll == true)
                 {
-                    self.ScrollView.HscrollbarPolicy = PolicyType.Always;
-                    self.ScrollView.VscrollbarPolicy = PolicyType.Always;
+                    self.ScrollView.HscrollbarPolicy = PolicyType.Automatic;
+                    self.ScrollView.VscrollbarPolicy = PolicyType.Automatic;
                 }
                 else
                 {
-                    self.ScrollView.HscrollbarPolicy = PolicyType.External;
-                    self.ScrollView.VscrollbarPolicy = PolicyType.External;
+                    self.ScrollView.HscrollbarPolicy = PolicyType.Never;
+                    self.ScrollView.VscrollbarPolicy = PolicyType.Never;
                 }
 
                 this.FormBorderStyle = this.FormBorderStyle;

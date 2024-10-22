@@ -5,7 +5,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
     public sealed class ListBoxBase : ScrollableBoxBase
     {
         public Gtk.ListBox ListBox = new Gtk.ListBox();
-        internal ListBoxBase() : base()
+        public ListBoxBase() : base()
         {
             this.Override.AddClass("ListBox");
             ListBox.BorderWidth = 1;

@@ -26,6 +26,7 @@ namespace System.Windows.Forms
             contaner.MarginTop = 0;
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
+            contaner.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             self.Child = contaner;
         }
         public override string Text { get { return self.Label; } set { self.Label = value; } }

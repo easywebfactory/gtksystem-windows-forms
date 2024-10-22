@@ -3,10 +3,12 @@
     public sealed class ProgressBarBase : Gtk.LevelBar, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal ProgressBarBase() : base()
+        public ProgressBarBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("ProgressBar");
+            base.Valign = Gtk.Align.Start;
+            base.Halign = Gtk.Align.Start;
         }
         public void AddClass(string cssClass)
         {

@@ -896,15 +896,22 @@ namespace System.Windows.Forms
         Cairo.Context context;
         public virtual Graphics CreateGraphics()
         {
-            if(image == null)
-                image = new Cairo.ImageSurface(Cairo.Format.Argb32, this.Widget.AllocatedWidth, this.Widget.AllocatedHeight);
-        
-            surface?.Dispose();
-            surface = image.CreateSimilar(Cairo.Content.ColorAlpha, this.Widget.AllocatedWidth, this.Widget.AllocatedHeight);
-            context?.Dispose();
-            context = new Cairo.Context(surface);
+            try
+            {
+                if (image == null)
+                    image = new Cairo.ImageSurface(Cairo.Format.Argb32, this.Widget.AllocatedWidth, this.Widget.AllocatedHeight);
 
-            return new Drawing.Graphics(this.Widget, context, Widget.Allocation);
+                surface?.Dispose();
+                surface = image.CreateSimilar(Cairo.Content.ColorAlpha, this.Widget.AllocatedWidth, this.Widget.AllocatedHeight);
+                context?.Dispose();
+                context = new Cairo.Context(surface);
+
+                return new Drawing.Graphics(this.Widget, context, Widget.Allocation);
+            }
+            finally
+            {
+
+            }
         }
 
         private void Override_PaintGraphics(Cairo.Context cr, Rectangle rec)

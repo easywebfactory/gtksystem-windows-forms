@@ -3,11 +3,13 @@
     public sealed class LinkLabelBase : Gtk.LinkButton, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal LinkLabelBase() : base("")
+        public LinkLabelBase() : base("")
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("LinkLabel");
             this.BorderWidth = 0;
+            base.Valign = Gtk.Align.Start;
+            base.Halign = Gtk.Align.Start;
         }
         protected override void OnShown()
         {

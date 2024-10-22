@@ -20,21 +20,16 @@ namespace System.Windows.Forms
         public SplitterPanel(SplitContainer owner) : base()
         {
             Owner = owner;
-            self.BorderWidth = 1;
+            self.BorderWidth = 2;
             self.ShadowType = Gtk.ShadowType.In;
             self.Margin = 0;
             self.Halign = Gtk.Align.Fill;
             self.Valign = Gtk.Align.Fill;
-            self.Halign = Gtk.Align.Fill;
-            self.Valign = Gtk.Align.Fill;
             self.Hexpand = false;
             self.Vexpand = false;
-            this.contaner.Halign = Gtk.Align.Fill;
-            this.contaner.Valign = Gtk.Align.Fill;
         }
 
         public override DockStyle Dock { get; set; } = DockStyle.Fill;
         public override Size Size { get; set; }
-
     }
 }

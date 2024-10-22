@@ -15,11 +15,13 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public bool HScroll { get; set; } = false;
         public bool VScroll { get; set; } = false;
 
-        internal GroupBoxBase() : base()
+        public GroupBoxBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("GroupBox");
             this.LabelXalign = 0.03f;
+            base.Valign = Gtk.Align.Start;
+            base.Halign = Gtk.Align.Start;
         }
 
         public event System.Windows.Forms.ScrollEventHandler Scroll;

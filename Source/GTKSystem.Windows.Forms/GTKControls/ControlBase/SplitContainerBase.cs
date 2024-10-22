@@ -3,13 +3,15 @@
     public sealed class SplitContainerBase : Gtk.Paned, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal SplitContainerBase() : base(Gtk.Orientation.Vertical)
+        public SplitContainerBase() : base(Gtk.Orientation.Vertical)
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("SplitContainer");
-            this.BorderWidth = 1;
-            this.WideHandle = true;
+            this.BorderWidth = 0;
+            this.WideHandle = false;
             this.Orientation = Gtk.Orientation.Horizontal;
+            base.Halign = Gtk.Align.Start;
+            base.Valign = Gtk.Align.Start;
         }
 
         public void AddClass(string cssClass)

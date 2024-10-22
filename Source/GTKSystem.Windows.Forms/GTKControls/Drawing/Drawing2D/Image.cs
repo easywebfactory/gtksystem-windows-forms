@@ -11,8 +11,8 @@ using System.Runtime.Serialization;
 namespace System.Drawing
 {
     [Serializable]
-	public abstract class Image : MarshalByRefObject, IDisposable, ICloneable, ISerializable
-	{
+	public abstract class Image : Gtk.Widget, IDisposable, ICloneable, ISerializable//,MarshalByRefObject
+    {
         #region 只取图像byte[]数据 
         internal Image(byte[] pixbuf)
 		{
@@ -22,15 +22,25 @@ namespace System.Drawing
         public byte[] PixbufData
         {
             get { if (_PixbufData == null && _Pixbuf != null) { _PixbufData = _Pixbuf.SaveToBuffer("bmp"); } return _PixbufData; }
-            set { _PixbufData = value; _Pixbuf = new Gdk.Pixbuf((byte[])value.Clone()); }
+            set { _PixbufData = value; _Pixbuf = new Gdk.Pixbuf(value); }
         }
         private Gdk.Pixbuf _Pixbuf;
         public Gdk.Pixbuf Pixbuf
         {
-            get { if (_Pixbuf == null && _PixbufData != null) { _Pixbuf = new Gdk.Pixbuf((byte[])_PixbufData.Clone()); } return _Pixbuf; }
+            get {
+                if (_Pixbuf == null && _PixbufData != null) { _Pixbuf = new Gdk.Pixbuf(_PixbufData); }
+                //else if (_Pixbuf == null)
+                //{
+                //    int width = Math.Max(1, this.Width);
+                //    int height = Math.Max(1, this.Height);
+                //    _Pixbuf = new Gdk.Pixbuf(new Cairo.ImageSurface(Cairo.Format.Argb32, width, height), 0, 0, width, height);
+                //}
+                return _Pixbuf;
+            }
             set { _Pixbuf = value; _PixbufData = value.SaveToBuffer("bmp"); }
         }
-        public string FileName { get; set; }
+		private string _fileName;
+        public string FileName { get=> _fileName; set { _fileName = value; Pixbuf = new Gdk.Pixbuf(value); } }
         #endregion
 
         /// <summary>Provides a callback method for determining when the <see cref="M:System.Drawing.Image.GetThumbnailImage(System.Int32,System.Int32,System.Drawing.Image.GetThumbnailImageAbort,System.IntPtr)" /> method should prematurely cancel execution.</summary>
@@ -293,9 +303,9 @@ namespace System.Drawing
 
 		private IntPtr InitializeFromStream(Stream stream)
 		{
-			
-			return IntPtr.Zero;
-		}
+            Pixbuf = new Gdk.Pixbuf(stream);
+            return Pixbuf.Handle;
+        }
 
         internal Image(IntPtr nativeImage)
 		{
@@ -328,8 +338,11 @@ namespace System.Drawing
 		protected virtual void Dispose(bool disposing)
 		{
 
-
-		}
+            if (_Pixbuf != null)
+                _Pixbuf.Dispose();
+            if (_PixbufData != null)
+                _PixbufData = null;
+        }
 
 		/// <summary>Saves this <see cref="T:System.Drawing.Image" /> to the specified file or stream.</summary>
 		/// <param name="filename">A string that contains the name of the file to which to save this <see cref="T:System.Drawing.Image" />.</param>
@@ -368,9 +381,8 @@ namespace System.Drawing
 		/// The image was saved to the same file it was created from.</exception>
 		public void Save(string filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
 		{
-			Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(PixbufData);
-			pixbuf.Save(filename, encoder.MimeType ?? "bmp");
-            
+            if(Pixbuf != null)
+				Pixbuf.Save(filename, encoder.MimeType ?? "bmp");
         }
 
 		private void Save(MemoryStream stream)
@@ -561,15 +573,16 @@ namespace System.Drawing
 			return (pixfmt & PixelFormat.Canonical) != 0;
 		}
 
-		internal void SetNativeImage(IntPtr handle)
-		{
+        internal void SetNativeImage(IntPtr handle)
+        {
+            if (GLib.Object.TryGetObject(handle) is Gdk.Pixbuf pixbuf)
+                _Pixbuf = pixbuf;
+        }
 
-		}
-
-		/// <summary>Returns the color depth, in number of bits per pixel, of the specified pixel format.</summary>
-		/// <param name="pixfmt">The <see cref="T:System.Drawing.Imaging.PixelFormat" /> member that specifies the format for which to find the size.</param>
-		/// <returns>The color depth of the specified pixel format.</returns>
-		public static int GetPixelFormatSize(PixelFormat pixfmt)
+        /// <summary>Returns the color depth, in number of bits per pixel, of the specified pixel format.</summary>
+        /// <param name="pixfmt">The <see cref="T:System.Drawing.Imaging.PixelFormat" /> member that specifies the format for which to find the size.</param>
+        /// <returns>The color depth of the specified pixel format.</returns>
+        public static int GetPixelFormatSize(PixelFormat pixfmt)
 		{
 			return ((int)pixfmt >> 8) & 0xFF;
 		}
@@ -593,11 +606,11 @@ namespace System.Drawing
 			 
 		}
 
-		public void Dispose()
-		{
-			throw new NotImplementedException();
-		}
-	}
+        public void Dispose()
+        {
+			Dispose(true);
+        }
+    }
 
 
     public class GtkImageConverter : TypeConverter

@@ -6,7 +6,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
     {
         internal Gtk.TreeView TreeView = new Gtk.TreeView();
 
-        internal TreeViewBase() : base()
+        public TreeViewBase() : base()
         {
             this.Override.AddClass("TreeView");
             this.TreeView.Valign = Align.Fill;

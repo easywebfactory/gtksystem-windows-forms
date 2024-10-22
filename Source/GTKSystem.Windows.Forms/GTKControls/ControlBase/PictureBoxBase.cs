@@ -3,14 +3,12 @@
     public sealed class PictureBoxBase : Gtk.Image, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal PictureBoxBase() : base()
+        public PictureBoxBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("PictureBox");
-            this.Halign = Gtk.Align.Center;
-            this.Valign = Gtk.Align.Center;
-            this.Xalign = 0.5f;
-            this.Yalign = 0.5f;
+            base.Valign = Gtk.Align.Start;
+            base.Halign = Gtk.Align.Start;
         }
         protected override void OnShown()
         {
