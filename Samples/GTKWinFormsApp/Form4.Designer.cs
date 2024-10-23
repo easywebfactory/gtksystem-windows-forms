@@ -31,33 +31,32 @@ namespace GTKWinFormsApp
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("节点3");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("节点2", new System.Windows.Forms.TreeNode[] { treeNode1 });
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("节点4");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("节点0", new System.Windows.Forms.TreeNode[] { treeNode2, treeNode3 });
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("节点1");
-            splitContainer1 = new System.Windows.Forms.SplitContainer();
-            button2 = new System.Windows.Forms.Button();
-            button1 = new System.Windows.Forms.Button();
-           
-            hScrollBar1 = new System.Windows.Forms.HScrollBar();
-            vScrollBar1 = new System.Windows.Forms.VScrollBar();
-            button9 = new System.Windows.Forms.Button();
-            button8 = new System.Windows.Forms.Button();
-            button7 = new System.Windows.Forms.Button();
-            button6 = new System.Windows.Forms.Button();
-            treeView1 = new System.Windows.Forms.TreeView();
-            button5 = new System.Windows.Forms.Button();
-            contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
-            test1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            test12ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            test21ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            test22ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            test13ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            panel1 = new System.Windows.Forms.Panel();
-            button4 = new System.Windows.Forms.Button();
-            button3 = new System.Windows.Forms.Button();
-            label1 = new System.Windows.Forms.Label();
+            TreeNode treeNode1 = new TreeNode("节点3");
+            TreeNode treeNode2 = new TreeNode("节点2", new TreeNode[] { treeNode1 });
+            TreeNode treeNode3 = new TreeNode("节点4");
+            TreeNode treeNode4 = new TreeNode("节点0", new TreeNode[] { treeNode2, treeNode3 });
+            TreeNode treeNode5 = new TreeNode("节点1");
+            splitContainer1 = new SplitContainer();
+            button2 = new Button();
+            button1 = new Button();
+            hScrollBar1 = new HScrollBar();
+            vScrollBar1 = new VScrollBar();
+            button9 = new Button();
+            button8 = new Button();
+            button7 = new Button();
+            button6 = new Button();
+            treeView1 = new TreeView();
+            button5 = new Button();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            test1ToolStripMenuItem = new ToolStripMenuItem();
+            test12ToolStripMenuItem = new ToolStripMenuItem();
+            test21ToolStripMenuItem = new ToolStripMenuItem();
+            test22ToolStripMenuItem = new ToolStripMenuItem();
+            test13ToolStripMenuItem = new ToolStripMenuItem();
+            panel1 = new Panel();
+            button4 = new Button();
+            button3 = new Button();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -68,13 +67,14 @@ namespace GTKWinFormsApp
             // 
             // splitContainer1
             // 
-            splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.FixedPanel = FixedPanel.Panel1;
             splitContainer1.Location = new System.Drawing.Point(0, 51);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.AutoScroll = true;
             splitContainer1.Panel1.BackColor = System.Drawing.Color.Transparent;
             splitContainer1.Panel1.Controls.Add(button2);
             splitContainer1.Panel1.Controls.Add(button1);
@@ -97,7 +97,7 @@ namespace GTKWinFormsApp
             // 
             // button2
             // 
-            button2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             button2.Location = new System.Drawing.Point(24, 222);
             button2.Name = "button2";
             button2.Size = new System.Drawing.Size(120, 29);
@@ -107,7 +107,7 @@ namespace GTKWinFormsApp
             // 
             // button1
             // 
-            button1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            button1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right| AnchorStyles.Bottom;
             button1.Location = new System.Drawing.Point(24, 46);
             button1.Name = "button1";
             button1.Size = new System.Drawing.Size(120, 53);
@@ -185,17 +185,17 @@ namespace GTKWinFormsApp
             treeNode4.Text = "节点0";
             treeNode5.Name = "节点1";
             treeNode5.Text = "节点1";
-            treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode4, treeNode5 });
+            treeView1.Nodes.AddRange(new TreeNode[] { treeNode4, treeNode5 });
             treeView1.Size = new System.Drawing.Size(151, 121);
             treeView1.TabIndex = 2;
             // 
             // button5
             // 
             button5.ContextMenuStrip = contextMenuStrip1;
-            button5.Dock = System.Windows.Forms.DockStyle.Top;
+            button5.Dock = DockStyle.Top;
             button5.Location = new System.Drawing.Point(0, 0);
             button5.Name = "button5";
-            button5.Size = new System.Drawing.Size(726, 50);
+            button5.Size = new System.Drawing.Size(626, 50);
             button5.TabIndex = 2;
             button5.Text = "button5";
             button5.UseVisualStyleBackColor = true;
@@ -203,7 +203,7 @@ namespace GTKWinFormsApp
             // contextMenuStrip1
             // 
             contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { test1ToolStripMenuItem, test12ToolStripMenuItem, test13ToolStripMenuItem });
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { test1ToolStripMenuItem, test12ToolStripMenuItem, test13ToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new System.Drawing.Size(125, 76);
             // 
@@ -215,7 +215,7 @@ namespace GTKWinFormsApp
             // 
             // test12ToolStripMenuItem
             // 
-            test12ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { test21ToolStripMenuItem, test22ToolStripMenuItem });
+            test12ToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { test21ToolStripMenuItem, test22ToolStripMenuItem });
             test12ToolStripMenuItem.Name = "test12ToolStripMenuItem";
             test12ToolStripMenuItem.Size = new System.Drawing.Size(124, 24);
             test12ToolStripMenuItem.Text = "test12";
@@ -240,8 +240,8 @@ namespace GTKWinFormsApp
             // 
             // panel1
             // 
-            panel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel1.BorderStyle = BorderStyle.FixedSingle;
             panel1.Controls.Add(button4);
             panel1.Location = new System.Drawing.Point(298, 177);
             panel1.Name = "panel1";
@@ -269,7 +269,7 @@ namespace GTKWinFormsApp
             // 
             // label1
             // 
-            label1.Dock = System.Windows.Forms.DockStyle.Top;
+            label1.Dock = DockStyle.Top;
             label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 18F);
             label1.Location = new System.Drawing.Point(0, 0);
             label1.Name = "label1";
@@ -280,7 +280,7 @@ namespace GTKWinFormsApp
             // Form4
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(895, 492);
             Controls.Add(splitContainer1);
             Controls.Add(label1);

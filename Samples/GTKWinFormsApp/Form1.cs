@@ -49,7 +49,7 @@ namespace GTKWinFormsApp
             for (int i = 0; i < 10; i++)
                 data.Add(new TestEntity() { ID = i + 7, Title = "网络图片异步加载" + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString() });
 
-            this.dataGridView1.DataSource = data;
+            //this.dataGridView1.DataSource = data;
             //var s=this.dataGridView1.Rows[0].Cells[0];
 
             //2、datatable数据源
@@ -57,7 +57,7 @@ namespace GTKWinFormsApp
             dt.Columns.Add("ID", typeof(string));
             dt.Columns.Add("CreateDate", typeof(DateTime));
             dt.Columns.Add("State", typeof(bool));
-            dt.Rows.Add("test1", DateTime.Now, true);
+            dt.Rows.Add("test1dddd", DateTime.Now, true);
             dt.Rows.Add("test2", DateTime.Now.AddDays(5), false);
             //this.dataGridView1.Columns.Clear();
             //this.dataGridView1.DataSource = dt;
@@ -66,7 +66,7 @@ namespace GTKWinFormsApp
             for (int i = 0; i < 10; i++)
             {
                 var cell = new DataGridViewRow();
-                cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleCenter } }, new DataGridViewCheckBoxCell() { Value = true }, new DataGridViewTextBoxCell() { Value = "修改修改修改修改修\n改修改title" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleLeft } }, new DataGridViewComboBoxCell() { Value = DateTime.Now }, new DataGridViewCheckBoxCell() { Value = "修改修改", Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleCenter } } }.ToArray());
+                cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleCenter } }, new DataGridViewCheckBoxCell() { Value = true }, new DataGridViewTextBoxCell() { Value = "title" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleLeft } }, new DataGridViewComboBoxCell() { Value = DateTime.Now }, new DataGridViewCheckBoxCell() { Value = "修改修改", Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleCenter } } }.ToArray());
                 //cell.DefaultCellStyle = new DataGridViewCellStyle() { BackColor = Color.Red };
                 this.dataGridView1.Rows.Add(cell);
             }
@@ -339,11 +339,11 @@ namespace GTKWinFormsApp
 
             if (GTKWinFormsApp.Properties.Resources.timg6 != null)
             {
-                using (MemoryStream mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6))
-                {
+                MemoryStream mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6);
+                
                     //g.DrawImage(new Bitmap(mem), new Point(0, 0));
                     g.DrawImage(new Bitmap(mem), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
-                }
+                
             }
 
             g.FillRectangle(new SolidBrush(Color.AliceBlue), new Rectangle(0, 0, 100, 50));

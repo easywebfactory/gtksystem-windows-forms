@@ -800,6 +800,7 @@ namespace GTKWinFormsApp
             splitContainer1.Margin = new Padding(4);
             splitContainer1.Name = "splitContainer1";
             splitContainer1.Orientation = Orientation.Horizontal;
+            splitContainer1.FixedPanel = FixedPanel.Panel1;
             // 
             // splitContainer1.Panel1
             // 
