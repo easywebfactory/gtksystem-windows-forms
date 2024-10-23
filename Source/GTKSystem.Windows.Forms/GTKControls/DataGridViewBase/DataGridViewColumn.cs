@@ -278,10 +278,6 @@ namespace System.Windows.Forms
         }
         public virtual void Renderer()
         {
-            //var iocnrender = new Gtk.CellRendererPixbuf();
-            //iocnrender.IconName = "face-smile";
-            //base.PackStart(iocnrender, true);
-
             var renderer = new CellRendererValue();
             renderer.Editable = this.ReadOnly == false && _gridview.ReadOnly == false;
             renderer.Edited += Renderer_Edited;

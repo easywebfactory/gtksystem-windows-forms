@@ -1,10 +1,12 @@
-﻿using Gtk;
+﻿using GLib;
+using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms.Design;
+using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
@@ -40,10 +42,6 @@ namespace System.Windows.Forms
                     widget.Expand = false;
                 }
                 widget.Data["Control"] = this;
-                Widget.Data["Top"] = widget.MarginTop;
-                Widget.Data["Left"] = widget.MarginStart;
-                widget.Data["Width"] = widget.WidthRequest;
-                widget.Data["Height"] = widget.HeightRequest;
                 widget.StyleContext.AddClass("DefaultThemeStyle");
                 widget.ButtonPressEvent += Widget_ButtonPressEvent;
                 widget.ButtonReleaseEvent += Widget_ButtonReleaseEvent;
@@ -73,14 +71,6 @@ namespace System.Windows.Forms
             if (WidgetRealized == false)
             {
                 WidgetRealized = true;
-                if (Widget.Parent != null)
-                {
-                    if (Anchor.HasFlag(AnchorStyles.Right))
-                        Widget.MarginEnd = Math.Max(0, Widget.Parent.AllocatedWidth - Widget.MarginStart - Widget.WidthRequest);
-                    if (Anchor.HasFlag(AnchorStyles.Bottom))
-                        Widget.MarginBottom = Math.Max(0, Widget.Parent.AllocatedHeight - Widget.MarginTop - Widget.HeightRequest);
-                }
-
                 InitStyle((Gtk.Widget)sender);
                 if (Load != null)
                     Load(this, e);
@@ -486,40 +476,54 @@ namespace System.Windows.Forms
             get=> _anchor; 
             set {
                 _anchor = value;
-                if (value.HasFlag(AnchorStyles.Left) && value.HasFlag(AnchorStyles.Right))
-                {
-                    Widget.Halign = Gtk.Align.Fill;
-                }
-                else if (value.HasFlag(AnchorStyles.Left))
-                {
-                    Widget.Halign = Gtk.Align.Start;
-                }
-                else if (value.HasFlag(AnchorStyles.Right))
-                {
-                    Widget.Halign = Gtk.Align.End;
-                }
-                else
-                {
-                    Widget.Halign = Gtk.Align.Start;
-                }
-
-                if (value.HasFlag(AnchorStyles.Top) && value.HasFlag(AnchorStyles.Bottom))
-                {
-                    Widget.Valign = Gtk.Align.Fill;
-                }
-                else if (value.HasFlag(AnchorStyles.Top))
-                {
-                    Widget.Valign = Gtk.Align.Start;
-                }
-                else if (value.HasFlag(AnchorStyles.Bottom))
-                {
-                    Widget.Valign = Gtk.Align.End;
-                }
-                else
-                {
-                    Widget.Valign = Gtk.Align.Start;
-                }
+                SetAnchorStyles(Widget, _anchor);
             } 
+        }
+        private void SetAnchorStyles(Gtk.Widget widget, AnchorStyles anchorStyles)
+        {
+            if (anchorStyles.HasFlag(AnchorStyles.Left) && anchorStyles.HasFlag(AnchorStyles.Right))
+            {
+                widget.Halign = Gtk.Align.Fill;
+            }
+            else if (anchorStyles.HasFlag(AnchorStyles.Left))
+            {
+                widget.Halign = Gtk.Align.Start;
+            }
+            else if (anchorStyles.HasFlag(AnchorStyles.Right))
+            {
+                widget.Halign = Gtk.Align.End;
+            }
+            else
+            {
+                widget.Halign = Gtk.Align.Start;
+            }
+
+            if (anchorStyles.HasFlag(AnchorStyles.Top) && anchorStyles.HasFlag(AnchorStyles.Bottom))
+            {
+                widget.Valign = Gtk.Align.Fill;
+            }
+            else if (anchorStyles.HasFlag(AnchorStyles.Top))
+            {
+                widget.Valign = Gtk.Align.Start;
+            }
+            else if (anchorStyles.HasFlag(AnchorStyles.Bottom))
+            {
+                widget.Valign = Gtk.Align.End;
+            }
+            else
+            {
+                widget.Valign = Gtk.Align.Start;
+            }
+            //if (anchorStyles.HasFlag(AnchorStyles.Right))
+            //{
+            //    if (widget.Parent != null)
+            //        widget.MarginEnd = Math.Max(0, widget.Parent.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
+            //}
+            //if (anchorStyles.HasFlag(AnchorStyles.Bottom))
+            //{
+            //    if (widget.Parent != null)
+            //        widget.MarginBottom = Math.Max(0, widget.Parent.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
+            //}
         }
         public virtual Point AutoScrollOffset { get; set; }
         public virtual bool AutoSize { get; set; }
@@ -553,52 +557,53 @@ namespace System.Windows.Forms
 
         public virtual bool Disposing { get; }
 
+        private DockStyle _dock;
         public virtual DockStyle Dock
         {
             get
             {
-                if (Enum.TryParse(Widget.Data["Dock"].ToString(), false, out DockStyle result))
-                    return result;
-                else
-                    return DockStyle.None;
+                return _dock;
             }
             set
             {
-                Widget.Data["Dock"] = value.ToString();
+                _dock = value;
                 if (value == DockStyle.Fill)
                 {
                     this.Widget.Halign = Align.Fill;
                     this.Widget.Valign = Align.Fill;
-                    this.Widget.Hexpand = true;
-                    this.Widget.Vexpand = true;
+                    this.Top = 0;
+                    this.Bottom = 0;
+                    this.Left = 0;
+                    this.Right = 0;
                 }
                 else if (value == DockStyle.Left)
                 {
                     this.Widget.Halign = Align.Start;
                     this.Widget.Valign = Align.Fill;
-                    this.Widget.Hexpand = false;
-                    this.Widget.Vexpand = true;
+                    this.Top = 0;
+                    this.Bottom = 0;
                 }
                 else if (value == DockStyle.Top)
                 {
                     this.Widget.Halign = Align.Fill;
                     this.Widget.Valign = Align.Start;
-                    this.Widget.Hexpand = true;
-                    this.Widget.Vexpand = false;
+                    this.Top = 0;
+                    this.Left = 0;
+                    this.Right = 0;
                 }
                 else if (value == DockStyle.Right)
                 {
                     this.Widget.Halign = Align.End;
                     this.Widget.Valign = Align.Fill;
-                    this.Widget.Hexpand = false;
-                    this.Widget.Vexpand = true;
+                    this.Top = 0;
+                    this.Bottom = 0;
                 }
                 else if (value == DockStyle.Bottom)
                 {
                     this.Widget.Halign = Align.Fill;
                     this.Widget.Valign = Align.End;
-                    this.Widget.Hexpand = true;
-                    this.Widget.Vexpand = false;
+                    this.Left = 0;
+                    this.Right = 0;
                 }
             }
         }
@@ -644,20 +649,12 @@ namespace System.Windows.Forms
         public virtual int Top
         {
             get => this.Widget.MarginTop;
-            set
-            {
-                Widget.Data["Top"] = value;
-                this.Widget.MarginTop = value;
-            }
+            set => this.Widget.MarginTop = value;
         }
         public virtual int Left
         {
             get => this.Widget.MarginStart;
-            set
-            {
-                Widget.Data["Left"] = value;
-                this.Widget.MarginStart = value;
-            }
+            set => this.Widget.MarginStart = value;
         }
         public virtual int Right {
             get => this.Widget.MarginEnd;
@@ -705,7 +702,7 @@ namespace System.Windows.Forms
             }
             set
             {
-                if (Widget is Gtk.Button)
+                if (this.Widget is Gtk.Button)
                 {
                     Width = value.Width > 6 ? value.Width - 6 : value.Width;
                     Height = value.Height > 6 ? value.Height - 6 : value.Height;
@@ -721,26 +718,30 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (Widget.IsMapped == false && Widget is Gtk.Window wnd)
+                if (this.Widget.IsMapped == false && this.Widget is Gtk.Window wnd)
                 {
                     return wnd.HeightRequest == -1 ? wnd.DefaultHeight : wnd.HeightRequest;
                 }
-                return Widget.HeightRequest == -1 ? Widget.AllocatedHeight : Widget.HeightRequest;
+                return this.Widget.HeightRequest == -1 ? this.Widget.AllocatedHeight : this.Widget.HeightRequest;
             }
-            set { Widget.HeightRequest = Math.Max(-1, value); Widget.Data["Height"] = Widget.HeightRequest; }
+            set
+            {
+                this.Widget.HeightRequest = Math.Max(-1, value);
+            }
         }
-
         public virtual int Width
         {
             get
             {
-                if (Widget.IsMapped == false && Widget is Gtk.Window wnd)
+                if (this.Widget.IsMapped == false && this.Widget is Gtk.Window wnd)
                 {
                     return wnd.WidthRequest == -1 ? wnd.DefaultWidth : wnd.WidthRequest;
                 }
-                return Widget.WidthRequest == -1 ? Widget.AllocatedWidth : Widget.WidthRequest;
+                return this.Widget.WidthRequest == -1 ? this.Widget.AllocatedWidth : this.Widget.WidthRequest;
             }
-            set { Widget.WidthRequest = Math.Max(-1, value); Widget.Data["Width"] = Widget.WidthRequest; }
+            set {
+                this.Widget.WidthRequest = Math.Max(-1, value);
+            }
         }
         public virtual int TabIndex { get; set; }
         public virtual bool TabStop { get; set; }
@@ -1211,14 +1212,13 @@ namespace System.Windows.Forms
 
         public virtual void ResumeLayout()
         {
-            _Created = true;
+            ResumeLayout(false);
         }
 
         public virtual void ResumeLayout(bool performLayout)
         {
-            _Created = performLayout == false;
+            _Created = true; 
         }
-
         public virtual void Scale(float ratio)
         {
 

@@ -21,10 +21,13 @@ namespace System.Windows.Forms
         public SplitContainer() : base()
         {
             _panel1 = new SplitterPanel(this);
+            _panel1.contaner.Name = "Child1";
             _panel2 = new SplitterPanel(this);
+            _panel2.contaner.Name = "Child2";
             self.Pack1(_panel1.Widget, false, true);
             self.Pack2(_panel2.Widget, true, true);
         }
+
         private SplitterPanel _panel1;
         private SplitterPanel _panel2;
         public SplitterPanel Panel1

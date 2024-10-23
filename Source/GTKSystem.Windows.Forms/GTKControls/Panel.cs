@@ -26,8 +26,8 @@ namespace System.Windows.Forms
             contaner.MarginTop = 0;
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
-            contaner.Expand = false;
-            contaner.Expand = false;
+            contaner.Hexpand = false;
+            contaner.Vexpand = false;
             contaner.BorderWidth = 0;
             contaner.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             self.Add(contaner);

@@ -23,44 +23,6 @@ namespace System.Windows.Forms.GtkRender
                 }
             }
         }
-        private int rowindex = 0;
-        protected override void OnRender(Cairo.Context cr, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
-        {
-            Console.WriteLine($"{cell_area.Top}");
-            //widget.StyleContext.Save();
-
-            //widget.StyleContext.RenderFrame(cr, cell_area.X, cell_area.Y, 500, cell_area.Height);
-            //widget.StyleContext.RenderBackground(cr, cell_area.X, cell_area.Y, 500, cell_area.Height);
-            //widget.StyleContext.RenderArrow(cr, 0, cell_area.X + 100, cell_area.Y, 20);
-            //widget.StyleContext.Restore();
-            // if(widget.IsRealized==false)
-            rowindex += 1;
-            if (cell_area.Top % 2==0)
-            {
-
-                cr.Rectangle(1, cell_area.Y, 600, cell_area.Height);
-            //
-            cr.ResetClip();
-          
-                base.OnRender(cr, widget, new Gdk.Rectangle(5, background_area.Y, background_area.Width + 500, background_area.Height), new Gdk.Rectangle(5, cell_area.Y, 600, cell_area.Height), flags);
-                //else //if (cell_area.Top > 30)
-                //  base.OnRender(cr, widget, background_area, cell_area, flags);
-                cr.Save();
-            // cr.ResetClip();
-            //cr.Rectangle(cell_area.X, cell_area.Y, 500, cell_area.Height);
-            // cr.Clip();
-            cr.Translate(0, 16);
-                cr.SetFontSize(20);
-                cr.SetSourceRGB(0.5, 0.5, 0.9);
-                cr.ShowText("1234567890qwertyuiopasdfghjkl");
-                cr.Stroke();
-                cr.Restore();
-            }
-            else
-            {
-                base.OnRender(cr, widget, background_area, cell_area, flags);
-            }
-        }
     }
     public class CellRendererToggleValue : CellRendererToggle
     {
@@ -76,10 +38,6 @@ namespace System.Windows.Forms.GtkRender
                 }
             }
         }
-        protected override void OnRender(Cairo.Context cr, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
-        {
-
-        }
     }
     public class CellRendererComboValue : CellRendererCombo
     {
@@ -93,10 +51,6 @@ namespace System.Windows.Forms.GtkRender
                     value.SetTextWithStyle(this);
                 }
             }
-        }
-        protected override void OnRender(Cairo.Context cr, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
-        {
-
         }
     }
     public class CellRendererPixbufValue : CellRendererPixbuf
@@ -195,11 +149,6 @@ namespace System.Windows.Forms.GtkRender
                 }
             }
         }
-
-        protected override void OnRender(Cairo.Context cr, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
-        {
-
-        }
     }
     public class CellRendererButtonValue : CellRendererText
     {
@@ -219,26 +168,22 @@ namespace System.Windows.Forms.GtkRender
                 }
             }
         }
-        //protected override void OnRender(Cairo.Context cr, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
-        //{
-        //    widget.StyleContext.AddClass("button");
-        //    widget.StyleContext.AddClass("GridViewCell-Button");
-        //    widget.StyleContext.Save();
-        //    int height = cell_area.Height;
-        //    int y = cell_area.Y;
-        //    if (height > 36)
-        //    {
-        //        y = y + (cell_area.Height - 36) / 2;
-        //        height = 36;
-        //    }
-        //    widget.StyleContext.RenderFrame(cr, cell_area.X + 3, y, cell_area.Width - 6, height);
-        //    widget.StyleContext.RenderBackground(cr, cell_area.X + 3, y, cell_area.Width - 6, height);
-        //    widget.StyleContext.Restore();
-        //    base.OnRender(cr, widget, new Gdk.Rectangle(background_area.X, background_area.Y, background_area.Width, background_area.Height), new Gdk.Rectangle(cell_area.X, cell_area.Y, cell_area.Width, cell_area.Height), flags);
-        //}
         protected override void OnRender(Cairo.Context cr, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
         {
-
+            widget.StyleContext.AddClass("button");
+            widget.StyleContext.AddClass("GridViewCell-Button");
+            widget.StyleContext.Save();
+            int height = cell_area.Height;
+            int y = cell_area.Y;
+            if (height > 36)
+            {
+                y = y + (cell_area.Height - 36) / 2;
+                height = 36;
+            }
+            widget.StyleContext.RenderFrame(cr, cell_area.X + 3, y, cell_area.Width - 6, height);
+            widget.StyleContext.RenderBackground(cr, cell_area.X + 3, y, cell_area.Width - 6, height);
+            widget.StyleContext.Restore();
+            base.OnRender(cr, widget, new Gdk.Rectangle(background_area.X, background_area.Y, background_area.Width, background_area.Height), new Gdk.Rectangle(cell_area.X, cell_area.Y, cell_area.Width, cell_area.Height), flags);
         }
     }
     public class CellValue : IComparable, IComparable<CellValue>, IEquatable<CellValue>
