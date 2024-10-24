@@ -1,20 +1,9 @@
-﻿using Gtk;
-using System;
-
-
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public sealed class ButtonBase: Gtk.Button, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        public ButtonBase() : base()
-        {
-            this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("Button");
-            base.Valign = Gtk.Align.Start;
-            base.Halign = Gtk.Align.Start;
-        }
-        public ButtonBase(Widget widget) : base(widget)
+        public ButtonBase() : base(new Gtk.Label() { Wrap = true, SingleLineMode = false, LineWrap = true, LineWrapMode = Pango.WrapMode.WordChar })
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Button");

@@ -1,12 +1,11 @@
 ﻿using Gtk;
 using System;
-using System.Linq;
 using System.Windows.Forms;
 
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class FormBase : Gtk.Dialog, IControlGtk, IScrollableBoxBase
+    public sealed class FormBase : Gtk.Dialog, IControlGtk, IScrollableBoxBase, IWin32Window
     {
         public readonly Gtk.ScrolledWindow ScrollView = new Gtk.ScrolledWindow();
         public GtkControlOverride Override { get; set; }
@@ -44,7 +43,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.ContentArea.BorderWidth = 0;
             this.ContentArea.Spacing = 0;
             this.ContentArea.Homogeneous = false;
-          
+
             this.SetDefaultSize(100, 100);
             this.TypeHint = Gdk.WindowTypeHint.Normal;
             this.AppPaintable = false;
@@ -64,6 +63,20 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.ContentArea.PackStart(ScrollView, true, true, 0);
             //this.Decorated = false; //删除工具栏
             this.Drawn += FormBase_Drawn;
+            this.Close += FormBase_Close;
+        }
+
+        private void FormBase_Close(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(this, "你确定要关闭窗口吗？", "Esc热键操作提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                this.Respond(ResponseType.DeleteEvent);
+            }
+            else
+            {
+                Run();
+            }
         }
 
         private void FormBase_Drawn(object o, DrawnArgs args)

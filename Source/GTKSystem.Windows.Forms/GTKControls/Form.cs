@@ -39,13 +39,13 @@ namespace System.Windows.Forms
         }
         private void Init()
         {
-            this.SetScrolledWindow((IScrollableBoxBase)self);
+            this.SetScrolledWindow(self);
             _body.Valign = Gtk.Align.Fill;
             _body.Halign = Gtk.Align.Fill;
             _body.Hexpand = true;
             _body.Vexpand = true;
-            _body.MarginBottom = 10;
-            _body.MarginEnd = 10;
+            _body.MarginBottom = 0;
+            _body.MarginEnd = 0;
             _body.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             self.ScrollView.Child = _body;
             _ObjectCollection = new ObjectCollection(this, _body);
@@ -167,8 +167,7 @@ namespace System.Windows.Forms
                     }
                     else
                     {
-                        System.IO.Stream sm = typeof(System.Windows.Forms.Form).Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.view-more.png");
-                        self.Icon = new Gdk.Pixbuf(sm);
+                        self.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.view-more.png");
                     }
                 }
                 catch

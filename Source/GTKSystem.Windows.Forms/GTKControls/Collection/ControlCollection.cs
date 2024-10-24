@@ -35,10 +35,7 @@ namespace System.Windows.Forms
                     {
                         if (item is Control control)
                         {
-                            if (control.Anchor != AnchorStyles.None)
-                            {
-                                SetMarginEnd(lay, control.Widget);
-                            }
+                            SetMarginEnd(lay, control.Widget);
                         }
                         else if (item is Gtk.Widget widget)
                         {
@@ -66,7 +63,6 @@ namespace System.Windows.Forms
             }
             if (__ownerControl is Gtk.Overlay lay)
             {
-                Gtk.Fixed fixedContainer = lay.Child as Gtk.Fixed;
                 if (item is StatusStrip statusbar)
                 {
                     if (__owner is Form form)
@@ -84,18 +80,17 @@ namespace System.Windows.Forms
                 else if (item is Control control)
                 {
                     lay.AddOverlay(control.Widget);
-                    fixedContainer.WidthRequest = Math.Max(0, Math.Max(fixedContainer.WidthRequest, control.Widget.MarginStart + control.Widget.WidthRequest + control.Widget.MarginEnd));
-                    fixedContainer.HeightRequest = Math.Max(0, Math.Max(fixedContainer.HeightRequest, control.Widget.MarginTop + control.Widget.HeightRequest + control.Widget.MarginBottom));
-                    if (control.Anchor != AnchorStyles.None)
-                    {
-                        SetMarginEnd(lay, control.Widget);
-                    }
+                    lay.WidthRequest = Math.Max(0, Math.Max(lay.WidthRequest, control.Widget.MarginStart + control.Widget.WidthRequest + control.Widget.MarginEnd));
+                    lay.HeightRequest = Math.Max(0, Math.Max(lay.HeightRequest, control.Widget.MarginTop + control.Widget.HeightRequest + control.Widget.MarginBottom));
+                    SetMarginEnd(lay, control.Widget);
+                    control.DockChanged += Control_DockChanged;
+                    control.AnchorChanged += Control_AnchorChanged;
                 }
                 else if (item is Gtk.Widget widget)
                 {
                     lay.AddOverlay(widget);
-                    fixedContainer.WidthRequest = Math.Max(fixedContainer.WidthRequest, widget.MarginStart + widget.WidthRequest + widget.MarginEnd);
-                    fixedContainer.HeightRequest = Math.Max(fixedContainer.HeightRequest, widget.MarginTop + widget.HeightRequest + widget.MarginBottom);
+                    lay.WidthRequest = Math.Max(lay.WidthRequest, widget.MarginStart + widget.WidthRequest + widget.MarginEnd);
+                    lay.HeightRequest = Math.Max(lay.HeightRequest, widget.MarginTop + widget.HeightRequest + widget.MarginBottom);
                     SetMarginEnd(lay, widget);
                 }
             }
@@ -124,11 +119,33 @@ namespace System.Windows.Forms
 
             return base.Add(item);
         }
+
+        private void Control_AnchorChanged(object sender, EventArgs e)
+        {
+            Control control = sender as Control;
+            if (control.Widget.Parent is Gtk.Overlay lay)
+            {
+                SetMarginEnd(lay, control.Widget);
+            }
+        }
+
+        private void Control_DockChanged(object sender, EventArgs e)
+        {
+            Control control = sender as Control;
+            if (control.Widget.Parent is Gtk.Overlay lay)
+            {
+                SetMarginEnd(lay, control.Widget);
+            }
+        }
+
         private void SetMarginEnd(Gtk.Overlay lay, Gtk.Widget widget)
         {
-            if (widget.Halign == Align.End || widget.Halign == Align.Fill || widget.Valign == Align.End || widget.Valign == Align.Fill)
+            if (widget.Halign == Align.End || widget.Halign == Align.Fill)
             {
                 widget.MarginEnd = Math.Max(0, lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
+            }
+            if (widget.Valign == Align.End || widget.Valign == Align.Fill)
+            {
                 widget.MarginBottom = Math.Max(0, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
             }
         }

@@ -314,7 +314,9 @@ namespace System.Windows.Forms
             var content = new Gtk.Label(text);
             msgbox.PackStart(content, true, true, 5);
             dia.ContentArea.Add(msgbox);
-
+            IconTheme iconTheme = new IconTheme();
+            Gdk.Pixbuf pixbuf = iconTheme.LoadIcon("dialog-information", 16, IconLookupFlags.DirLtr);
+            dia.Icon = pixbuf;
             if (buttons == MessageBoxButtons.OK)
             {
                 dia.AddButton("确定", Gtk.ResponseType.Ok);
