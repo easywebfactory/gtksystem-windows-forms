@@ -49,7 +49,6 @@ namespace System.Windows.Forms
         {
             Color = Color.Black;
         }
-        private static Gtk.Window ActiveWindow = null;
         protected override bool RunDialog(IWin32Window owner)
         {
             if (owner != null && owner is Form ownerform)
@@ -59,15 +58,10 @@ namespace System.Windows.Forms
             }
             else
             {
-                Gtk.Window window = Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive);
-                if (window != null)
-                {
-                    ActiveWindow = window;
-                }
-                colorChooserDialog = new Gtk.ColorChooserDialog("选择颜色", ActiveWindow);
-                colorChooserDialog.WindowPosition = window == null ? Gtk.WindowPosition.Center : Gtk.WindowPosition.CenterOnParent;
+                colorChooserDialog = new Gtk.ColorChooserDialog("选择颜色", null);
+                colorChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
             }
-            colorChooserDialog.TypeHint = Gdk.WindowTypeHint.Dialog;
+            colorChooserDialog.KeepAbove = true;
             if (Color.Name != "0")
                 colorChooserDialog.Rgba = new Gdk.RGBA() { Alpha = (double)Color.A / 255, Red = (double)Color.R / 255, Green = (double)Color.G / 255, Blue = (double)Color.B / 255 };
             if (FullOpen && AllowFullOpen)

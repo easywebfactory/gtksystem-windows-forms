@@ -5,8 +5,10 @@
  * author:chenhongjin
  */
 
+using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
+using static Gtk.Paned;
 
 
 namespace System.Windows.Forms
@@ -19,97 +21,11 @@ namespace System.Windows.Forms
         public SplitContainer() : base()
         {
             _panel1 = new SplitterPanel(this);
+            _panel1.contaner.Name = "Child1";
             _panel2 = new SplitterPanel(this);
-            self.Realized += Control_Realized;
-            self.WidgetEvent += Self_WidgetEvent;
-            self.ResizeChecked += Self_ResizeChecked;
-        }
-        private void Self_ResizeChecked(object sender, EventArgs e)
-        {
-            ResizeControls();
-        }
-
-        int currposition = 0;
-        int resizewidth = 0;
-        int resizeheight = 0;
-        private void Self_WidgetEvent(object o, Gtk.WidgetEventArgs args)
-        {
-            if (self.IsRealized == true && self.IsMapped)
-            {
-                if (currposition < 1)
-                {
-                    currposition = self.Position;
-                }
-                else if (currposition != self.Position)
-                {
-                    ResizeControls();
-                }
-            }
-        }
-
-        private void ResizeControls()
-        {
-            if (currposition != self.Position || resizewidth != self.WidthRequest || resizeheight != self.HeightRequest)
-            {
-                resizewidth = self.WidthRequest;
-                resizeheight = self.HeightRequest;
-                currposition = self.Position;
-                Gtk.Application.Invoke(new EventHandler((o, e) =>
-                {
-                    if (self.IsRealized == true && self.IsMapped)
-                    {
-                        if (self.Toplevel is FormBase form)
-                        {
-                            try
-                            {
-                                int widthIncrement = 0;
-                                int heightIncrement = 0;
-                                int currposition = self.Position;
-                                if (self.Orientation == Gtk.Orientation.Horizontal)
-                                {
-                                    widthIncrement = currposition - _SplitterDistance;
-                                    heightIncrement = self.HeightRequest - (int)self.Data["Height"];
-                                    form.ResizeControls(widthIncrement, heightIncrement, _panel1.self);
-                                    widthIncrement -= self.WidthRequest - (int)self.Data["Width"];
-                                    form.ResizeControls(-widthIncrement, heightIncrement, _panel2.self);
-                                }
-                                else
-                                {
-                                    heightIncrement = currposition - _SplitterDistance;
-                                    widthIncrement -= self.WidthRequest - (int)self.Data["Width"];
-                                    form.ResizeControls(-widthIncrement, heightIncrement, _panel1.self);
-                                    heightIncrement -= self.HeightRequest - (int)self.Data["Height"];
-                                    form.ResizeControls(-widthIncrement, -heightIncrement, _panel2.self);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine("splitcontainer resize:" + ex.Message);
-                            }
-                        }
-                    }
-                }));
-            }
-        }
-        private void Control_Realized(object sender, EventArgs e)
-        {
-            self.Pack1(_panel1.Widget, this.FixedPanel != FixedPanel.Panel1, true);
-            self.Pack2(_panel2.Widget, this.FixedPanel != FixedPanel.Panel2, true);
-
-            if (self.Orientation == Gtk.Orientation.Horizontal)
-            {
-                _panel1.Width = self.Position;
-                _panel1.Height = self.HeightRequest;
-                _panel2.Width = self.WidthRequest - self.Position - 16;
-                _panel2.Height = self.HeightRequest;
-            }
-            else
-            {
-                _panel1.Height = self.Position;
-                _panel1.Width = self.WidthRequest;
-                _panel2.Height = self.HeightRequest - self.Position - 16;
-                _panel2.Width = self.WidthRequest;
-            }
+            _panel2.contaner.Name = "Child2";
+            self.Pack1(_panel1.Widget, false, true);
+            self.Pack2(_panel2.Widget, true, true);
         }
 
         private SplitterPanel _panel1;
@@ -146,7 +62,16 @@ namespace System.Windows.Forms
                 self.Orientation = value == Orientation.Horizontal ? Gtk.Orientation.Vertical : Gtk.Orientation.Horizontal;
             }
         }
-        public FixedPanel FixedPanel { get; set; } = FixedPanel.Panel1;
+        private FixedPanel _fixedPanel = FixedPanel.Panel1;
+        public FixedPanel FixedPanel {
+            get => _fixedPanel;
+            set {
+                _fixedPanel = value;
+                bool resize = value == FixedPanel.Panel2;
+                ((PanedChild)self[_panel1.Widget]).Resize = resize;
+                ((PanedChild)self[_panel2.Widget]).Resize = !resize;
+            } 
+        }
     }
 
 }

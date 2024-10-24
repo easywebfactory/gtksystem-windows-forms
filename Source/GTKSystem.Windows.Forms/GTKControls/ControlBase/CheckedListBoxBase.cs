@@ -2,7 +2,7 @@
 {
     public sealed class CheckedListBoxBase : ScrollableBoxBase
     {
-        internal CheckedListBoxBase() : base()
+        public CheckedListBoxBase() : base()
         {
             this.Override.AddClass("CheckedListBox");
             this.BorderWidth = 1;

@@ -38,14 +38,11 @@ namespace System.Windows.Forms
         }
 
         [Browsable(false)]
-		public override BorderStyle BorderStyle
-		{
-			get;
-			set;
-		}
+        public override BorderStyle BorderStyle { get => base.BorderStyle; set => base.BorderStyle = value; }
 
- 
-		[Localizable(true)]
+
+
+        [Localizable(true)]
 		public TableLayoutPanelCellBorderStyle CellBorderStyle
 		{
             get;

@@ -3,10 +3,12 @@
     public sealed class FlowLayoutPanelBase : Gtk.FlowBox, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal FlowLayoutPanelBase() : base()
+        public FlowLayoutPanelBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("FlowLayoutPanel");
+            base.Valign = Gtk.Align.Start;
+            base.Halign = Gtk.Align.Start;
         }
         protected override void OnShown()
         {

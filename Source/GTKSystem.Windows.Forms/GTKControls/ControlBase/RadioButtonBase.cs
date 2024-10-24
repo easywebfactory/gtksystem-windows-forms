@@ -3,15 +3,19 @@
     public sealed class RadioButtonBase : Gtk.RadioButton, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal RadioButtonBase() : base(new Gtk.RadioButton("baseradio"))
+        public RadioButtonBase() : base(new Gtk.RadioButton("baseradio"))
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("RadioButton");
+            base.Valign = Gtk.Align.Start;
+            base.Halign = Gtk.Align.Start;
         }
-        internal RadioButtonBase(Gtk.RadioButton radio_group_member) : base(radio_group_member)
+        public RadioButtonBase(Gtk.RadioButton radio_group_member) : base(radio_group_member)
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("RadioButton");
+            base.Valign = Gtk.Align.Start;
+            base.Halign = Gtk.Align.Start;
         }
         public void AddClass(string cssClass)
         {

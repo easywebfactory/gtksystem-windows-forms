@@ -1,4 +1,6 @@
 ﻿using Cairo;
+using Gdk;
+using Pango;
 using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.IO;
@@ -17,10 +19,6 @@ namespace System.Drawing
         {
             
         }
-        private Bitmap()
-        {
-        }
-
         internal Bitmap(IntPtr ptr)
         {
             SetNativeImage(ptr);
@@ -40,7 +38,7 @@ namespace System.Drawing
         ///   <see langword="true" /> to use color correction for this <see cref="T:System.Drawing.Bitmap" />; otherwise, <see langword="false" />.</param>
         public Bitmap(string filename, bool useIcm)
         {
-
+            this.FileName = filename;
         }
 
         /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Bitmap" /> class from the specified data stream.</summary>
@@ -65,11 +63,8 @@ namespace System.Drawing
         public Bitmap(Stream stream, bool useIcm)
         {
             stream.Position = 0;
-            byte[] bytes = new byte[stream.Length];
-            stream.Read(bytes, 0, bytes.Length);
-            stream.Seek(0, SeekOrigin.Begin);
-
-            PixbufData = bytes;
+            BinaryReader binaryReader = new BinaryReader(stream);
+            PixbufData = binaryReader.ReadBytes((int)stream.Length);
         }
 
         /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Bitmap" /> class from a specified resource.</summary>
@@ -130,7 +125,7 @@ namespace System.Drawing
         public Bitmap(int width, int height, PixelFormat format)
         {
             this.Width = width;
-            this.Height= height;
+            this.Height = height;
             this.PixelFormat = format;
         }
 
@@ -158,7 +153,7 @@ namespace System.Drawing
         public Bitmap(Image original, int width, int height)
             : this(width, height, PixelFormat.Format32bppArgb)
         {
-
+            this.PixbufData = original.PixbufData;
         }
 
         private Bitmap(SerializationInfo info, StreamingContext context)
@@ -236,7 +231,7 @@ namespace System.Drawing
         public Bitmap Clone(RectangleF rect, PixelFormat format)
         {
 
-            return new Bitmap((int)rect.Width, (int)rect.Height);
+            return new Bitmap((int)rect.Width, (int)rect.Height, format);
         }
 
         /// <summary>Makes the default transparent color transparent for this <see cref="T:System.Drawing.Bitmap" />.</summary>
@@ -349,7 +344,7 @@ namespace System.Drawing
         public Bitmap Clone(Rectangle rect, PixelFormat format)
         {
 
-            return new Bitmap(rect.Width, rect.Height, format) { PixbufData = this.PixbufData };
+            return new Bitmap(rect.Width, rect.Height, format) { PixbufData = (byte[])this.PixbufData.Clone() };
         }
     }
 }

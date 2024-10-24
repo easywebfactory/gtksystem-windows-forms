@@ -109,6 +109,7 @@ namespace System.Windows.Forms
         {
             get;set;
         }
+        public DataGridViewAutoSizeRowsMode AutoSizeRowsMode { get; set; }
         private DataGridViewRow _RowTemplate;
         public DataGridViewRow RowTemplate
         {

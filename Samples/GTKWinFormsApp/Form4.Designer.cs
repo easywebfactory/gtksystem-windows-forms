@@ -1,4 +1,6 @@
-﻿namespace GTKWinFormsApp
+﻿using System.Windows.Forms;
+
+namespace GTKWinFormsApp
 {
     partial class Form4
     {
@@ -28,48 +30,60 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("节点3");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("节点2", new System.Windows.Forms.TreeNode[] { treeNode1 });
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("节点4");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("节点0", new System.Windows.Forms.TreeNode[] { treeNode2, treeNode3 });
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("节点1");
-            splitContainer1 = new System.Windows.Forms.SplitContainer();
-            button2 = new System.Windows.Forms.Button();
-            button1 = new System.Windows.Forms.Button();
-            button10 = new System.Windows.Forms.Button();
-            button9 = new System.Windows.Forms.Button();
-            button8 = new System.Windows.Forms.Button();
-            button7 = new System.Windows.Forms.Button();
-            button6 = new System.Windows.Forms.Button();
-            treeView1 = new System.Windows.Forms.TreeView();
-            button5 = new System.Windows.Forms.Button();
-            panel1 = new System.Windows.Forms.Panel();
-            button4 = new System.Windows.Forms.Button();
-            button3 = new System.Windows.Forms.Button();
-            label1 = new System.Windows.Forms.Label();
+            components = new System.ComponentModel.Container();
+            TreeNode treeNode1 = new TreeNode("节点3");
+            TreeNode treeNode2 = new TreeNode("节点2", new TreeNode[] { treeNode1 });
+            TreeNode treeNode3 = new TreeNode("节点4");
+            TreeNode treeNode4 = new TreeNode("节点0", new TreeNode[] { treeNode2, treeNode3 });
+            TreeNode treeNode5 = new TreeNode("节点1");
+            splitContainer1 = new SplitContainer();
+            treeView1 = new TreeView();
+            hScrollBar1 = new HScrollBar();
+            vScrollBar1 = new VScrollBar();
+            button1 = new Button();
+            button2 = new Button();
+            button3 = new Button();
+            button4 = new Button();
+            button5 = new Button();
+            button6 = new Button();
+            button7 = new Button();
+            button8 = new Button();
+            button9 = new Button();
+            button10 = new Button();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            test1ToolStripMenuItem = new ToolStripMenuItem();
+            test12ToolStripMenuItem = new ToolStripMenuItem();
+            test21ToolStripMenuItem = new ToolStripMenuItem();
+            test22ToolStripMenuItem = new ToolStripMenuItem();
+            test13ToolStripMenuItem = new ToolStripMenuItem();
+            panel1 = new Panel();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            contextMenuStrip1.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
             // splitContainer1
             // 
-            splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            splitContainer1.Location = new System.Drawing.Point(0, 43);
-            splitContainer1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.FixedPanel = FixedPanel.Panel1;
+            splitContainer1.Location = new System.Drawing.Point(0, 51);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            splitContainer1.Panel1.AutoScroll = true;
+            splitContainer1.Panel1.BackColor = System.Drawing.Color.Transparent;
             splitContainer1.Panel1.Controls.Add(button2);
             splitContainer1.Panel1.Controls.Add(button1);
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(hScrollBar1);
+            splitContainer1.Panel2.Controls.Add(vScrollBar1);
             splitContainer1.Panel2.Controls.Add(button10);
             splitContainer1.Panel2.Controls.Add(button9);
             splitContainer1.Panel2.Controls.Add(button8);
@@ -79,16 +93,14 @@
             splitContainer1.Panel2.Controls.Add(button5);
             splitContainer1.Panel2.Controls.Add(panel1);
             splitContainer1.Panel2.Controls.Add(button3);
-            splitContainer1.Size = new System.Drawing.Size(696, 375);
-            splitContainer1.SplitterDistance = 128;
-            splitContainer1.SplitterWidth = 3;
+            splitContainer1.Size = new System.Drawing.Size(895, 441);
+            splitContainer1.SplitterDistance = 265;
             splitContainer1.TabIndex = 0;
             // 
             // button2
             // 
-            button2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            button2.Location = new System.Drawing.Point(19, 189);
-            button2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            button2.Location = new System.Drawing.Point(24, 222);
             button2.Name = "button2";
             button2.Size = new System.Drawing.Size(93, 25);
             button2.TabIndex = 1;
@@ -97,11 +109,10 @@
             // 
             // button1
             // 
-            button1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            button1.Location = new System.Drawing.Point(19, 39);
-            button1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            button1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right| AnchorStyles.Bottom;
+            button1.Location = new System.Drawing.Point(24, 46);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(93, 130);
+            button1.Size = new System.Drawing.Size(120, 53);
             button1.TabIndex = 0;
             button1.Text = "button1";
             button1.UseVisualStyleBackColor = true;
@@ -115,6 +126,22 @@
             button10.Text = "选择字体";
             button10.UseVisualStyleBackColor = true;
             button10.Click += button10_Click;
+            // 
+            // hScrollBar1
+            // 
+            hScrollBar1.Location = new System.Drawing.Point(409, 343);
+            hScrollBar1.Name = "hScrollBar1";
+            hScrollBar1.Size = new System.Drawing.Size(260, 26);
+            hScrollBar1.TabIndex = 8;
+            hScrollBar1.ValueChanged += hScrollBar1_ValueChanged;
+            // 
+            // vScrollBar1
+            // 
+            vScrollBar1.Location = new System.Drawing.Point(239, 177);
+            vScrollBar1.Name = "vScrollBar1";
+            vScrollBar1.Size = new System.Drawing.Size(26, 216);
+            vScrollBar1.TabIndex = 7;
+            vScrollBar1.ValueChanged += vScrollBar1_ValueChanged;
             // 
             // button9
             // 
@@ -175,25 +202,64 @@
             treeNode4.Text = "节点0";
             treeNode5.Name = "节点1";
             treeNode5.Text = "节点1";
-            treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode4, treeNode5 });
-            treeView1.Size = new System.Drawing.Size(118, 103);
+            treeView1.Nodes.AddRange(new TreeNode[] { treeNode4, treeNode5 });
+            treeView1.Size = new System.Drawing.Size(151, 121);
             treeView1.TabIndex = 2;
             // 
             // button5
             // 
-            button5.Dock = System.Windows.Forms.DockStyle.Top;
+            button5.ContextMenuStrip = contextMenuStrip1;
+            button5.Dock = DockStyle.Top;
             button5.Location = new System.Drawing.Point(0, 0);
             button5.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             button5.Name = "button5";
-            button5.Size = new System.Drawing.Size(565, 42);
+            button5.Size = new System.Drawing.Size(626, 50);
             button5.TabIndex = 2;
             button5.Text = "button5";
             button5.UseVisualStyleBackColor = true;
             // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { test1ToolStripMenuItem, test12ToolStripMenuItem, test13ToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new System.Drawing.Size(125, 76);
+            // 
+            // test1ToolStripMenuItem
+            // 
+            test1ToolStripMenuItem.Name = "test1ToolStripMenuItem";
+            test1ToolStripMenuItem.Size = new System.Drawing.Size(124, 24);
+            test1ToolStripMenuItem.Text = "test1";
+            // 
+            // test12ToolStripMenuItem
+            // 
+            test12ToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { test21ToolStripMenuItem, test22ToolStripMenuItem });
+            test12ToolStripMenuItem.Name = "test12ToolStripMenuItem";
+            test12ToolStripMenuItem.Size = new System.Drawing.Size(124, 24);
+            test12ToolStripMenuItem.Text = "test12";
+            // 
+            // test21ToolStripMenuItem
+            // 
+            test21ToolStripMenuItem.Name = "test21ToolStripMenuItem";
+            test21ToolStripMenuItem.Size = new System.Drawing.Size(138, 26);
+            test21ToolStripMenuItem.Text = "test21";
+            // 
+            // test22ToolStripMenuItem
+            // 
+            test22ToolStripMenuItem.Name = "test22ToolStripMenuItem";
+            test22ToolStripMenuItem.Size = new System.Drawing.Size(138, 26);
+            test22ToolStripMenuItem.Text = "test22";
+            // 
+            // test13ToolStripMenuItem
+            // 
+            test13ToolStripMenuItem.Name = "test13ToolStripMenuItem";
+            test13ToolStripMenuItem.Size = new System.Drawing.Size(124, 24);
+            test13ToolStripMenuItem.Text = "test13";
+            // 
             // panel1
             // 
-            panel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel1.BorderStyle = BorderStyle.FixedSingle;
             panel1.Controls.Add(button4);
             panel1.Location = new System.Drawing.Point(232, 150);
             panel1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -224,7 +290,7 @@
             // 
             // label1
             // 
-            label1.Dock = System.Windows.Forms.DockStyle.Top;
+            label1.Dock = DockStyle.Top;
             label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 18F);
             label1.Location = new System.Drawing.Point(0, 0);
             label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
@@ -235,9 +301,9 @@
             // 
             // Form4
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(696, 418);
+            AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(895, 492);
             Controls.Add(splitContainer1);
             Controls.Add(label1);
             Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -247,6 +313,7 @@
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            contextMenuStrip1.ResumeLayout(false);
             panel1.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -267,5 +334,14 @@
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem test1ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem test12ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem test21ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem test22ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem test13ToolStripMenuItem;
+        
+        private System.Windows.Forms.VScrollBar vScrollBar1;
+        private System.Windows.Forms.HScrollBar hScrollBar1;
     }
 }

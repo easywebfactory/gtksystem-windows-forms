@@ -19,7 +19,7 @@ namespace System.Windows.Forms
         {
             toolStripItemCollection = new ToolStripItemCollection(this);
             self.ActivateCurrent += ToolStripItem_Activated;
-            Dock = DockStyle.Top;
+            //Dock = DockStyle.Top;
         }
         public ToolStrip(string owner) : base()
         {
@@ -29,7 +29,7 @@ namespace System.Windows.Forms
             self.Halign = Gtk.Align.Start;
             toolStripItemCollection = new ToolStripItemCollection(this, owner);
             self.ActivateCurrent += ToolStripItem_Activated;
-            Dock = DockStyle.Top;
+            //Dock = DockStyle.Top;
         }
         private void ToolStripItem_Activated(object sender, ActivateCurrentArgs e)
         {

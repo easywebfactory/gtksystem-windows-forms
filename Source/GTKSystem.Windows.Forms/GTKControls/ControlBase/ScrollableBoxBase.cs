@@ -10,18 +10,19 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
     {
         public event ScrollEventHandler Scroll;
         public GtkControlOverride Override { get; set; }
-        internal ScrollableBoxBase() : base()
+        public ScrollableBoxBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.ShadowType = Gtk.ShadowType.None;
             this.BorderWidth = 1;
             this.Events = Gdk.EventMask.AllEventsMask;
-            base.Halign = Gtk.Align.Fill;
-            base.Valign = Gtk.Align.Fill;
-            base.Hexpand = false;
-            base.Vexpand = false;
+            base.Halign = Gtk.Align.Start;
+            base.Valign = Gtk.Align.Start;
+            base.Hexpand = true;
+            base.Vexpand = true;
             base.VscrollbarPolicy = Gtk.PolicyType.Never;
             base.HscrollbarPolicy = Gtk.PolicyType.Never;
+            base.OverlayScrolling = false;
             base.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
             base.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
         }

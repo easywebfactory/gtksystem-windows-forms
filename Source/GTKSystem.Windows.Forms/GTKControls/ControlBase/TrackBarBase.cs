@@ -3,10 +3,12 @@
     public sealed class TrackBarBase : Gtk.Viewport, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal TrackBarBase() : base()
+        public TrackBarBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("TrackBar");
+            base.Halign = Gtk.Align.Start;
+            base.Valign = Gtk.Align.Start;
         }
         public void AddClass(string cssClass)
         {

@@ -2,7 +2,7 @@
 {
     public sealed class ListViewBase : ScrollableBoxBase
     {
-        internal ListViewBase() : base()
+        public ListViewBase() : base()
         {
             this.StyleContext.AddClass("view");
             this.Override.AddClass("ListView");

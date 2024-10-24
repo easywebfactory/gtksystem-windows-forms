@@ -23,6 +23,8 @@ namespace GTKWinFormsApp
             b.ID = 1;
             b.Title = "test1";
             listBox1.DataBindings.Add(new Binding("SelectedItem", b, "Title"));
+
+         
         }
 
         TestEntity b = new TestEntity();
@@ -37,7 +39,7 @@ namespace GTKWinFormsApp
             //1、数据集列表数据源
             List<TestEntity> data = new List<TestEntity>();
             var createdate = DateTime.Now;
-            data.Add(new TestEntity() { ID = 0, Title = "test1", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC = "face-smile-big" });
+            data.Add(new TestEntity() { ID = 0, Title = "加载数据点yes加载数据\n点yes加载数据点yes加载数据点yes", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC = "face-smile-big" });
             data.Add(new TestEntity() { ID = 1, Title = "test2", Info = " 3234fdf", State = true, CreateDate = createdate, Operate = "编辑", PIC = "Resources\\timg2.jpg" });
             data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "Resources\\BindingNavigator.Delete.ico" });
             data.Add(new TestEntity() { ID = 4, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC = "" });
@@ -47,7 +49,7 @@ namespace GTKWinFormsApp
             for (int i = 0; i < 10; i++)
                 data.Add(new TestEntity() { ID = i + 7, Title = "网络图片异步加载" + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString() });
 
-            this.dataGridView1.DataSource = data;
+            //this.dataGridView1.DataSource = data;
             //var s=this.dataGridView1.Rows[0].Cells[0];
 
             //2、datatable数据源
@@ -55,7 +57,7 @@ namespace GTKWinFormsApp
             dt.Columns.Add("ID", typeof(string));
             dt.Columns.Add("CreateDate", typeof(DateTime));
             dt.Columns.Add("State", typeof(bool));
-            dt.Rows.Add("test1", DateTime.Now, true);
+            dt.Rows.Add("test1dddd", DateTime.Now, true);
             dt.Rows.Add("test2", DateTime.Now.AddDays(5), false);
             //this.dataGridView1.Columns.Clear();
             //this.dataGridView1.DataSource = dt;
@@ -64,7 +66,7 @@ namespace GTKWinFormsApp
             for (int i = 0; i < 10; i++)
             {
                 var cell = new DataGridViewRow();
-                cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleCenter } }, new DataGridViewCheckBoxCell() { Value = true }, new DataGridViewTextBoxCell() { Value = "修改修改修改修改修\n改修改title" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleLeft } }, new DataGridViewComboBoxCell() { Value = DateTime.Now }, new DataGridViewCheckBoxCell() { Value = "修改修改", Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleCenter } } }.ToArray());
+                cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleCenter } }, new DataGridViewCheckBoxCell() { Value = true }, new DataGridViewTextBoxCell() { Value = "title" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleLeft } }, new DataGridViewComboBoxCell() { Value = DateTime.Now }, new DataGridViewCheckBoxCell() { Value = "修改修改", Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleCenter } } }.ToArray());
                 //cell.DefaultCellStyle = new DataGridViewCellStyle() { BackColor = Color.Red };
                 this.dataGridView1.Rows.Add(cell);
             }
@@ -337,11 +339,11 @@ namespace GTKWinFormsApp
 
             if (GTKWinFormsApp.Properties.Resources.timg6 != null)
             {
-                using (MemoryStream mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6))
-                {
+                MemoryStream mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6);
+                
                     //g.DrawImage(new Bitmap(mem), new Point(0, 0));
                     g.DrawImage(new Bitmap(mem), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
-                }
+                
             }
 
             g.FillRectangle(new SolidBrush(Color.AliceBlue), new Rectangle(0, 0, 100, 50));
@@ -372,7 +374,7 @@ namespace GTKWinFormsApp
 
             g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(50, 60), new PointF(100, 80), new PointF(75, 100) });
             g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(75, 100), new PointF(100, 120), new PointF(120, 100) });
-
+            g.DrawRectangle(new Pen((Color)Color.Red), new Rectangle(10, 10, 20, 20));
         }
 
         private void button6_Click(object sender, EventArgs e)

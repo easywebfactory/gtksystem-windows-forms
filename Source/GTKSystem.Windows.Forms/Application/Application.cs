@@ -82,7 +82,23 @@ namespace System.Windows.Forms
                 InputLanguage.CurrentInputLanguage = value;
             }
         }
-
+        public static FormCollection OpenForms
+        {
+            get
+            {
+                FormCollection forms = new FormCollection();
+                var windows = Gtk.Window.ListToplevels().Where(w => w.IsVisible == true);
+                foreach (Gtk.Window w in windows)
+                    if (w.Data.ContainsKey("Control") && w.Data["Control"] is Form form)
+                        forms.Add(form);
+                return forms;
+            }
+        }
+        public static void DoEvents()
+        {
+            while(Gtk.Application.EventsPending())
+                Gtk.Application.RunIteration(false);
+        }
         public static Gtk.Application App { get; private set; }
         public static Gtk.Application Init()
         {

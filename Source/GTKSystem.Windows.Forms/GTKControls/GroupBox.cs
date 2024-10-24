@@ -4,6 +4,8 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+using Cairo;
+using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 
@@ -14,12 +16,17 @@ namespace System.Windows.Forms
     {
         public readonly GroupBoxBase self = new GroupBoxBase();
         public override object GtkControl => self;
-        private Gtk.Fixed contaner = new Gtk.Fixed();
+        private Gtk.Overlay contaner = new Gtk.Overlay();
         private ControlCollection _controls = null;
         public GroupBox() : base()
         {
             _controls = new ControlCollection(this, contaner);
             _controls.Offset.Offset(0, -20);
+            contaner.MarginStart = 0;
+            contaner.MarginTop = 0;
+            contaner.Halign = Align.Fill;
+            contaner.Valign = Align.Fill;
+            contaner.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             self.Child = contaner;
         }
         public override string Text { get { return self.Label; } set { self.Label = value; } }

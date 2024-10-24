@@ -20,12 +20,12 @@ namespace System.Windows.Forms
     [DesignerCategory("Form")]
     [DefaultEvent(nameof(Load)),
     InitializationEvent(nameof(Load))]
-    public partial class Form: ScrollableControl, IWin32Window
+    public partial class Form: ContainerControl, IWin32Window
     {
         private Gtk.Application app = Application.Init();
         public FormBase self = new FormBase();
         public override object GtkControl { get => self; }
-        private Gtk.Fixed _body = new Gtk.Fixed();
+        private Gtk.Overlay _body = new Gtk.Overlay();
         private ObjectCollection _ObjectCollection;
         public override event EventHandler SizeChanged;
 
@@ -37,25 +37,27 @@ namespace System.Windows.Forms
         {
             self.Title = title;
         }
-
-        public Form(string title, Window parent) : base()
-        {
-            self.Title = title;
-            Init();
-        }
         private void Init()
         {
             this.SetScrolledWindow((IScrollableBoxBase)self);
             _body.Valign = Gtk.Align.Fill;
             _body.Halign = Gtk.Align.Fill;
-            _body.Expand = true;
             _body.Hexpand = true;
             _body.Vexpand = true;
+            _body.MarginBottom = 10;
+            _body.MarginEnd = 10;
+            _body.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             self.ScrollView.Child = _body;
             _ObjectCollection = new ObjectCollection(this, _body);
-            self.ResizeChecked += Form_ResizeChecked;
+            self.ResizeChecked += Self_ResizeChecked;
             self.Shown += Control_Shown;
             self.CloseWindowEvent += Self_CloseWindowEvent;
+        }
+
+        private void Self_ResizeChecked(object sender, EventArgs e)
+        {
+            if (SizeChanged != null)
+                SizeChanged(this, EventArgs.Empty);
         }
 
         private bool Self_CloseWindowEvent(object sender, EventArgs e)
@@ -75,40 +77,6 @@ namespace System.Windows.Forms
         {
             if (Shown != null)
                 Shown(this, e);
-        }
-
-        int resizeWidth= 0;
-        int resizeHeight= 0;
-        private void Form_ResizeChecked(object sender, EventArgs e)
-        {
-            if (self.Resizable == true && self.IsMapped)
-            {
-                if (self.ContentArea.AllocatedWidth != resizeWidth || self.ContentArea.AllocatedHeight != resizeHeight)
-                {
-                    try
-                    {
-                        resizeWidth = self.ContentArea.AllocatedWidth;
-                        resizeHeight = self.ContentArea.AllocatedHeight;
-                        int widthIncrement = resizeWidth - self.DefaultWidth;
-                        int heightIncrement = resizeHeight - self.DefaultHeight;
-
-                        _body.WidthRequest = resizeWidth; //留出滚动条位置 - (AutoScroll ? self.ScrollArrowVlength : 0)
-                        _body.HeightRequest = resizeHeight - self.StatusBarView.AllocatedHeight;
-
-                        Gtk.Application.Invoke(new EventHandler((o, e) =>
-                        {
-                            self.ResizeControls(widthIncrement, heightIncrement, _body);
-                        }));
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("form resize:" + ex.Message);
-                    }
-                    if (SizeChanged != null)
-                        SizeChanged(this, e);
-                }
-            }
         }
         public override event ScrollEventHandler Scroll
         {
@@ -145,21 +113,21 @@ namespace System.Windows.Forms
             if (owner != null && owner is Form parent)
             {
                 this.Parent = parent;
-                //self.ParentWindow = parent.self.Window;
-                //self.WindowPosition = Gtk.WindowPosition.CenterOnParent;
+                self.KeepAbove = true;
+                self.Activate();
             }
 
             if (self.IsVisible == false)
             {
                 if (AutoScroll == true)
                 {
-                    self.ScrollView.HscrollbarPolicy = PolicyType.Always;
-                    self.ScrollView.VscrollbarPolicy = PolicyType.Always;
+                    self.ScrollView.HscrollbarPolicy = PolicyType.Automatic;
+                    self.ScrollView.VscrollbarPolicy = PolicyType.Automatic;
                 }
                 else
                 {
-                    self.ScrollView.HscrollbarPolicy = PolicyType.External;
-                    self.ScrollView.VscrollbarPolicy = PolicyType.External;
+                    self.ScrollView.HscrollbarPolicy = PolicyType.Never;
+                    self.ScrollView.VscrollbarPolicy = PolicyType.Never;
                 }
 
                 this.FormBorderStyle = this.FormBorderStyle;
@@ -346,17 +314,10 @@ namespace System.Windows.Forms
         {
             _Created = true;
         }
-
-        public bool ActivateControl(object active)
+        public bool Activate()
         {
-            if (active is Gtk.Widget wg)
-            {
-                wg.SetStateFlags(StateFlags.Active, false);
-                return true;
-            }
-            return false;
+            return self.Activate();
         }
-
         public MenuStrip MainMenuStrip { get; set; }
 
         public override IntPtr Handle => self.Handle;

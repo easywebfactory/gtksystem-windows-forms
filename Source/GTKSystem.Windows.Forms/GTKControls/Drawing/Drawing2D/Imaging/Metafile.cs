@@ -447,7 +447,7 @@ namespace System.Drawing.Imaging
 		/// <returns>The <see cref="T:System.Drawing.Imaging.MetafileHeader" /> associated with the specified <see cref="T:System.Drawing.Imaging.Metafile" />.</returns>
 		public static MetafileHeader GetMetafileHeader(string fileName)
 		{
-			Path.GetFullPath(fileName);
+			System.IO.Path.GetFullPath(fileName);
 			MetafileHeader metafileHeader = new MetafileHeader();
 			IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf<MetafileHeaderEmf>());
 			try

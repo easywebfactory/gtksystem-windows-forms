@@ -20,11 +20,40 @@ namespace GTKWinFormsApp
             UserControl11 userControl11 = new UserControl11();
             panel5.Controls.Add(userControl11);
             this.SizeChanged += Form3_SizeChanged;
+
+            this.Shown += Form3_Shown;
+        }
+
+        private void Form3_Shown(object? sender, EventArgs e)
+        {
+
+            Image m = new Bitmap(500, 300);
+            // Graphics g = Graphics.FromImage(m);
+            // g.Clear(Color.Red);
+            // g.DrawRectangle(new Pen(Color.Blue), new Rectangle(60, 60, 200, 100));
+            //// g.Dispose();
+            // panel1.Controls.Add(new Gtk.Image(m.Pixbuf));
+            //using (Graphics g = Graphics.FromImage(m))
+            //{
+            //   // m.Pixbuf = new Gdk.Pixbuf(Graphics.surface, 0, 0, 500, 300);
+            //    g.Clear(Color.White);
+            //    g.DrawString(DateTime.Now.ToString(), new Font(FontFamily.GenericSansSerif, 16), new SolidBrush(Color.Red), 200, 200);
+            //    g.DrawRectangle(new Pen((Color)Color.Red, 5), new Rectangle(0, 0, 200, 200));
+            //    // g.Dispose();
+
+                 
+            //   // panel1.Controls.Add(m);
+            //   // panel1.Show();
+            //    panel1.Refresh();
+            //}
         }
 
         private void Form3_SizeChanged(object? sender, EventArgs e)
         {
+            panel1.Refresh();
             //Console.WriteLine(Width);
+            // panel1.Refresh();
+            this.Refresh();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -117,6 +146,32 @@ namespace GTKWinFormsApp
         private void button3_Click(object sender, EventArgs e)
         {
 
+            //using (Graphics g = CreateGraphics())
+            //{
+            //    g.DrawString(DateTime.Now.ToString(), new Font(FontFamily.GenericSansSerif, 16), new SolidBrush(Color.Red), 200, 200);
+            //    g.DrawRectangle(new Pen((Color)Color.Red, 5), new Rectangle(110, 110, 200, 200));
+            //    // g.Dispose();
+            //    this.Refresh();
+            //}
+
+
+            Image m = new Bitmap(200, 200);
+            using (Graphics gg = Graphics.FromImage(m))
+            {
+                //gg.Clear(Color.White);
+                gg.DrawString(DateTime.Now.ToString(), new Font(FontFamily.GenericSansSerif, 16), new SolidBrush(Color.Red), 20, 120);
+                gg.DrawRectangle(new Pen((Color)Color.Red, 5), new Rectangle(10, 10, 100, 100));
+                gg.Flush();
+            }
+            PictureBox pic = new PictureBox();
+            pic.Location = new Point(20, 50);
+            pic.Width = 300;
+            pic.Height = 200;
+            pic.Image = m;
+            //pic.Dock = DockStyle.Right;
+            pic.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            panel1.Controls.Add(pic);
+            panel1.Show();
         }
 
         private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)

@@ -26,22 +26,8 @@ namespace System.Windows.Forms
         {
             _controls = new ControlCollection(this);
             _tabPageControls = new TabPageCollection(this);
-            self.Realized += Control_Realized;
             self.SwitchPage += Self_SwitchPage;
         }
-
-        private void Control_Realized(object sender, EventArgs e)
-        {
-             if(SizeMode == TabSizeMode.Fixed)
-            {
-                foreach(TabPage page in _tabPageControls)
-                {
-                    page._tabLabel.WidthRequest = this.ItemSize.Width;
-                    page._tabLabel.HeightRequest = this.ItemSize.Height;
-                }
-            }
-        }
-
         private void Self_SwitchPage(object o, SwitchPageArgs args)
         {
             if (SelectedIndexChanged != null && self.IsMapped)
@@ -89,6 +75,14 @@ namespace System.Windows.Forms
                 item.TabLabel.Name = base.Count.ToString();
                 item._tabLabel.WidthRequest = _owner.ItemSize.Width;
                 item._tabLabel.HeightRequest = _owner.ItemSize.Height;
+                if (_owner.SizeMode == TabSizeMode.Fixed)
+                {
+                    item._tabLabel.Ellipsize = Pango.EllipsizeMode.End;
+                }
+                else if (_owner.SizeMode == TabSizeMode.FillToRight)
+                {
+                    item._tabLabel.Halign = Align.End;
+                }
                 base.Add(item);
                 item.TabLabel.Drawn += (object sender, DrawnArgs args) =>
                 {

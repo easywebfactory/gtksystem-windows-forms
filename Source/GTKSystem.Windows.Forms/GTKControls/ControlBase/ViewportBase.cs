@@ -3,9 +3,11 @@
     public sealed class ViewportBase : Gtk.Viewport, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal ViewportBase() : base()
+        public ViewportBase() : base()
         {
             this.Override = new GtkControlOverride(this);
+            base.Halign = Gtk.Align.Start;
+            base.Valign = Gtk.Align.Start;
         }
         protected override bool OnDrawn(Cairo.Context cr)
         {

@@ -1,20 +1,16 @@
+
 using Cairo;
 using Gdk;
-using Gtk;
-using Pango;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
-using System.IO;
 using System.Linq;
-using static System.Drawing.Drawing2D.GraphicsPath;
 
 namespace System.Drawing
 {
-	public sealed class Graphics : MarshalByRefObject, IDeviceContext, IDisposable
+    public sealed class Graphics : MarshalByRefObject, IDeviceContext, IDisposable
 	{
 		private Cairo.Context context;
 		private Gdk.Rectangle rectangle;
@@ -238,6 +234,10 @@ namespace System.Drawing
                 gradient.Matrix = matrix;
                 using Cairo.Pattern pattern = Cairo.Pattern.Lookup(gradient.Handle, false);
                 this.context.SetSource(pattern);
+            }
+			else
+			{
+                this.context.SetSourceRGBA(pen.Color.R / 255f, pen.Color.G / 255f, pen.Color.B / 255f, pen.Color.A / 255f);
             }
         }
 		public void Clear(Color color)
@@ -950,7 +950,7 @@ namespace System.Drawing
                     if (this.widget != null)
                     {
                         Pango.Context pangocontext = this.widget.PangoContext;
-                        family = this.widget.PangoContext.FontDescription.Family;
+                        family = pangocontext.FontDescription.Family;
                         var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
                         if (pangoFamily == null)
                             family = pangocontext.FontDescription.Family;
@@ -1148,7 +1148,7 @@ namespace System.Drawing
                 if (this.widget != null)
                 {
                     Pango.Context pangocontext = this.widget.PangoContext;
-                    family = this.widget.PangoContext.FontDescription.Family;
+                    family = pangocontext.FontDescription.Family;
                     var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
                     if (pangoFamily == null)
                         family = pangocontext.FontDescription.Family;
@@ -1459,14 +1459,6 @@ namespace System.Drawing
 		{
 		}
 
-		public void Flush()
-		{
-		}
-
-		public void Flush(FlushIntention intention)
-		{
-		}
-
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		public static Graphics FromHdc(IntPtr hdc)
 		{
@@ -1496,16 +1488,57 @@ namespace System.Drawing
 		{
 			throw null;
 		}
+        private static Cairo.ImageSurface imagesurface;
+        private static Cairo.Surface simisurface;
+        private static Cairo.Context imagecontext;
+        /// <summary>
+        /// 使用此方法必须要执行Flush()方法输出Image
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static Graphics FromImage(Image image)
+        {
+            int _width = image.Width;
+            int _height = image.Height;
 
-		public static Graphics FromImage(Image image)
-		{
-			throw null;
-		}
+            if (_width < 1)
+                throw new ArgumentOutOfRangeException("Image.Width不能小于等于0");
+            if (_height < 1)
+                throw new ArgumentOutOfRangeException("Image.Height不能小于等于0");
 
-		[EditorBrowsable(EditorBrowsableState.Never)]
+            if (imagesurface == null)
+                imagesurface = new Cairo.ImageSurface(Cairo.Format.Argb32, _width, _height);
+
+            simisurface?.Dispose();
+            simisurface = imagesurface.CreateSimilar(Cairo.Content.ColorAlpha, _width, _height);
+            imagecontext?.Dispose();
+            imagecontext = new Cairo.Context(simisurface);
+            return new Drawing.Graphics(image, imagecontext, new Gdk.Rectangle(0, 0, _width, _height));
+        }
+
+        public void Flush()
+        {
+			Flush(FlushIntention.Flush);
+        }
+
+        public void Flush(FlushIntention intention)
+        {
+			try
+			{
+				if (this.widget is Image image && Graphics.simisurface != null && Graphics.simisurface.Status == Cairo.Status.Success)
+				{
+					image.Pixbuf = new Pixbuf(Graphics.simisurface, 0, 0, image.Width, image.Height);
+				}
+			}
+			finally { }
+        }
+
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
 		public object GetContextInfo()
 		{
-			throw null;
+			return	this.context;
 		}
 
 		public static IntPtr GetHalftonePalette()
@@ -1625,7 +1658,7 @@ namespace System.Drawing
             if (this.widget != null)
             {
                 Pango.Context pangocontext = this.widget.PangoContext;
-                family = this.widget.PangoContext.FontDescription.Family;
+                family = pangocontext.FontDescription.Family;
                 var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
                 if (pangoFamily == null)
                     family = pangocontext.FontDescription.Family;

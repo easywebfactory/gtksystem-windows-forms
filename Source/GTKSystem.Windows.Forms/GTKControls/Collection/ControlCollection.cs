@@ -1,9 +1,6 @@
 ﻿using Gtk;
-using Pango;
 using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Security.Cryptography;
 
 namespace System.Windows.Forms
 {
@@ -13,34 +10,43 @@ namespace System.Windows.Forms
         Control __owner;
         Type __itemType;
         CheckedListBox checkedListBox;
-        Gtk.Fixed fixedContainer;
-        Gtk.Layout layoutContainer;
         public ControlCollection(Control owner)
         {
             __ownerControl = owner.GtkControl as Gtk.Container;
             __owner = owner;
-            if (owner.GtkControl is Gtk.Fixed gtkfixed)
-                fixedContainer = gtkfixed;
-            if (owner.GtkControl is Gtk.Layout gtklayout)
-                layoutContainer = gtklayout;
-
-            __ownerControl.Realized += OwnerContainer_Realized;
+            __ownerControl.Realized += __ownerControl_Realized;
         }
         public ControlCollection(Control owner, Gtk.Container ownerContainer)
         {
             __ownerControl = ownerContainer;
             __owner = owner;
-            if (ownerContainer is Gtk.Fixed gtkfixed)
-                fixedContainer = gtkfixed;
-            if (ownerContainer is Gtk.Layout gtklayout)
-                layoutContainer = gtklayout;
-
-            __ownerControl.Realized += OwnerContainer_Realized;
+            __ownerControl.Realized += __ownerControl_Realized;
         }
-
-        private void OwnerContainer_Realized(object sender, EventArgs e)
+        bool __ownerControlRealized = false;
+        private void __ownerControl_Realized(object sender, EventArgs e)
         {
-            PerformLayout();
+            if (__ownerControlRealized == false)
+            {
+                __ownerControlRealized = true;
+                Gtk.Widget parent = (Gtk.Widget)sender;
+                if (__ownerControl is Gtk.Overlay lay)
+                {
+                    foreach (object item in this)
+                    {
+                        if (item is Control control)
+                        {
+                            if (control.Anchor != AnchorStyles.None)
+                            {
+                                SetMarginEnd(lay, control.Widget);
+                            }
+                        }
+                        else if (item is Gtk.Widget widget)
+                        {
+                            SetMarginEnd(lay, widget);
+                        }
+                    }
+                }
+            }
         }
 
         public ControlCollection(CheckedListBox owner, Type itemType)
@@ -50,72 +56,85 @@ namespace System.Windows.Forms
             __owner = owner;
             __itemType = itemType;
         }
-        public virtual void PerformLayout()
-        {
-            foreach (object item in this)
-            {
-                AddToWidget(item);
-            }
-            __ownerControl.ShowAll();
-        }
+
         internal Drawing.Point Offset = new Drawing.Point(0,0);
-        private void AddToWidget(object item)
-        {
-            if (item is StatusStrip statusbar)
-            {
-                if (__owner is Form form)
-                {
-                    statusbar.self.Halign = Gtk.Align.Fill;
-                    statusbar.self.Valign = Gtk.Align.Fill;
-                    statusbar.self.Expand = true;
-                    form.self.StatusBar.NoShowAll = false;
-                    form.self.StatusBar.Visible = true;
-                    form.self.StatusBar.HeightRequest = 35;
-                    form.self.StatusBar.Child = statusbar.self;
-                    form.self.StatusBar.ShowAll();
-                }
-            }
-            else if (item is Control control)
-            {
-                if (fixedContainer != null)
-                    fixedContainer.Put(control.Widget, control.Left + Offset.X, control.Top + Offset.Y);
-                else if (layoutContainer != null)
-                    layoutContainer.Put(control.Widget, control.Left + Offset.X, control.Top + Offset.Y);
-                else
-                    __ownerControl.Add(control.Widget);
-            }
-            else if (item is Gtk.Widget widget)
-            {
-                if (fixedContainer != null)
-                    fixedContainer.Put(widget, widget.Allocation.X + Offset.X, widget.Allocation.Y + Offset.Y);
-                else if (layoutContainer != null)
-                    layoutContainer.Put(widget, widget.Allocation.X + Offset.X, widget.Allocation.Y + Offset.Y);
-                else
-                    __ownerControl.Add(widget);
-            }
-        }
         public override int Add(object item)
         {
-            if (item is Control control)
+            if (item is Control icontrol)
             {
-                control.Parent = __owner;
+                icontrol.Parent = __owner;
             }
-            if (__ownerControl.IsRealized)
+            if (__ownerControl is Gtk.Overlay lay)
             {
-                AddToWidget(item);
-                __ownerControl.ShowAll();
+                Gtk.Fixed fixedContainer = lay.Child as Gtk.Fixed;
+                if (item is StatusStrip statusbar)
+                {
+                    if (__owner is Form form)
+                    {
+                        statusbar.self.Halign = Gtk.Align.Fill;
+                        statusbar.self.Valign = Gtk.Align.Start;
+                        statusbar.self.Expand = false;
+                        statusbar.self.MarginStart = 0;
+                        statusbar.self.MarginTop = 0;
+                        statusbar.self.MarginEnd = 0;
+                        statusbar.self.MarginBottom = 0;
+                        form.self.ContentArea.PackEnd(statusbar.self, false, true, 0);
+                    }
+                }
+                else if (item is Control control)
+                {
+                    lay.AddOverlay(control.Widget);
+                    fixedContainer.WidthRequest = Math.Max(0, Math.Max(fixedContainer.WidthRequest, control.Widget.MarginStart + control.Widget.WidthRequest + control.Widget.MarginEnd));
+                    fixedContainer.HeightRequest = Math.Max(0, Math.Max(fixedContainer.HeightRequest, control.Widget.MarginTop + control.Widget.HeightRequest + control.Widget.MarginBottom));
+                    if (control.Anchor != AnchorStyles.None)
+                    {
+                        SetMarginEnd(lay, control.Widget);
+                    }
+                }
+                else if (item is Gtk.Widget widget)
+                {
+                    lay.AddOverlay(widget);
+                    fixedContainer.WidthRequest = Math.Max(fixedContainer.WidthRequest, widget.MarginStart + widget.WidthRequest + widget.MarginEnd);
+                    fixedContainer.HeightRequest = Math.Max(fixedContainer.HeightRequest, widget.MarginTop + widget.HeightRequest + widget.MarginBottom);
+                    SetMarginEnd(lay, widget);
+                }
             }
+            else if (__ownerControl is Gtk.Fixed lay2)
+            {
+                if (item is Control con)
+                {
+                    lay2.Put(con.Widget, Offset.X, Offset.Y);
+                }
+                else if (item is Gtk.Widget widget)
+                {
+                    lay2.Put(widget, Offset.X, Offset.Y);
+                }
+            }
+            else if (__ownerControl is Gtk.Layout lay3)
+            {
+                if (item is Control con)
+                {
+                    lay3.Put(con.Widget, Offset.X, Offset.Y);
+                }
+                else if (item is Gtk.Widget widget)
+                {
+                    lay3.Put(widget, Offset.X, Offset.Y);
+                }
+            }
+
             return base.Add(item);
         }
-
+        private void SetMarginEnd(Gtk.Overlay lay, Gtk.Widget widget)
+        {
+            if (widget.Halign == Align.End || widget.Halign == Align.Fill || widget.Valign == Align.End || widget.Valign == Align.Fill)
+            {
+                widget.MarginEnd = Math.Max(0, lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
+                widget.MarginBottom = Math.Max(0, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
+            }
+        }
         public int AddWidget(Gtk.Widget item, Control control)
         {
             control.Parent = __owner;
-            if (__ownerControl.IsRealized)
-            {
-                AddToWidget(item);
-                __ownerControl.ShowAll();
-            }
             return base.Add(item);
         }
         public virtual void Add(Type itemType, object item)
@@ -149,7 +168,27 @@ namespace System.Windows.Forms
 
         public override void Insert(int index, object item) { __ownerControl.Add((Widget)item); base.Insert(index, item); }
 
-        public override void Remove(object value) { base.Remove(((Control)value).Widget); __ownerControl.Remove(((Control)value).Widget); }
-        public override void RemoveAt(int index) { base.RemoveAt(index); __ownerControl.Remove(__ownerControl.Children[index]); }
+        public override void Remove(object value) {
+            if(value is Control control)
+            {
+                control.Widget.Unparent();
+                control.Widget.Destroy();
+                control.Widget.Dispose();
+                control.Dispose();
+            }
+            if (value is Gtk.Widget widget)
+            {
+                widget.Unparent();
+                widget.Destroy();
+                widget.Dispose();
+            }
+            if(base.Contains(value))
+                base.Remove(value); ;
+        }
+        public override void RemoveAt(int index) {
+            base.RemoveAt(index);
+            if (__ownerControl.Children.Length > index)
+                __ownerControl.Remove(__ownerControl.Children[index]);
+        }
     }
 }

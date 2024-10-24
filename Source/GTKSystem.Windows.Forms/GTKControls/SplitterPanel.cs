@@ -5,6 +5,8 @@
  * author:chenhongjin
  */
 
+using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
 
@@ -18,14 +20,16 @@ namespace System.Windows.Forms
         public SplitterPanel(SplitContainer owner) : base()
         {
             Owner = owner;
-            self.BorderWidth = 1;
+            self.BorderWidth = 2;
             self.ShadowType = Gtk.ShadowType.In;
             self.Margin = 0;
-            this.Dock = DockStyle.Fill;
+            self.Halign = Gtk.Align.Fill;
+            self.Valign = Gtk.Align.Fill;
+            self.Hexpand = false;
+            self.Vexpand = false;
         }
 
         public override DockStyle Dock { get; set; } = DockStyle.Fill;
         public override Size Size { get; set; }
-
     }
 }

@@ -4,7 +4,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public sealed class PanelBase: ScrollableBoxBase
     {
-        internal PanelBase() : base()
+        public PanelBase() : base()
         {
             this.Override.AddClass("Panel");
             this.ShadowType = Gtk.ShadowType.None;

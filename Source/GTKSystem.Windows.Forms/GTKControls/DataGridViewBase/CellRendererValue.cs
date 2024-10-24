@@ -104,7 +104,8 @@ namespace System.Windows.Forms.GtkRender
                                             string key = o.ToString();
                                             try
                                             {
-                                                Gdk.Pixbuf nbuf = new Gdk.Pixbuf(x.Result).ScaleSimple(Column.Width, GridView.RowTemplate.Height, Gdk.InterpType.Tiles);
+                                                Gdk.Pixbuf obuf = new Gdk.Pixbuf(x.Result);
+                                                Gdk.Pixbuf nbuf = obuf.ScaleSimple(Column.Width < 1 ? obuf.Width : Column.Width, Column.RowHeight < 1 ? obuf.Height : Column.RowHeight, Gdk.InterpType.Tiles);
                                                 if (this.Data.ContainsKey(key) == false)
                                                     this.Data.Add(key, nbuf);
                                                 Gtk.Application.Invoke((o, s) =>
@@ -184,7 +185,6 @@ namespace System.Windows.Forms.GtkRender
             widget.StyleContext.Restore();
             base.OnRender(cr, widget, new Gdk.Rectangle(background_area.X, background_area.Y, background_area.Width, background_area.Height), new Gdk.Rectangle(cell_area.X, cell_area.Y, cell_area.Width, cell_area.Height), flags);
         }
-
     }
     public class CellValue : IComparable, IComparable<CellValue>, IEquatable<CellValue>
     {

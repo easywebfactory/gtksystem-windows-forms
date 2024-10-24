@@ -7,15 +7,19 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
     public sealed class ButtonBase: Gtk.Button, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal ButtonBase() : base()
+        public ButtonBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Button");
+            base.Valign = Gtk.Align.Start;
+            base.Halign = Gtk.Align.Start;
         }
-        internal ButtonBase(Widget widget) : base(widget)
+        public ButtonBase(Widget widget) : base(widget)
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Button");
+            base.Valign = Gtk.Align.Start;
+            base.Halign = Gtk.Align.Start;
         }
         protected override void OnShown()
         {

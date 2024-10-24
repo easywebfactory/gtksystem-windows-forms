@@ -355,6 +355,11 @@ namespace System.Windows.Forms
                 dataGridView.Store.Remove(ref iter);
             }
             items.RemoveAt(index);
+            //reset id
+            for (int i = 0; i < items.Count; i++)
+            {
+                ((DataGridViewRow)items[i]).Index = i;
+            }
         }
         public DataGridViewRow SharedRow(int rowIndex)
         {

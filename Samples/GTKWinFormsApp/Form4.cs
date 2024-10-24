@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GTKSystem.Windows.Forms.GTKControls.Dialog;
 
 namespace GTKWinFormsApp
 {
@@ -17,6 +16,13 @@ namespace GTKWinFormsApp
         public Form4()
         {
             InitializeComponent();
+            this.Shown += Form4_Shown;
+        }
+        Point panel1Location = new Point();
+        private void Form4_Shown(object? sender, EventArgs e)
+        {
+            panel1Location.X = panel1.Widget.MarginStart;
+            panel1Location.Y = panel1.Widget.MarginTop;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -27,7 +33,7 @@ namespace GTKWinFormsApp
             ofd.Title = "测试打开文件";
             ofd.Description = "打开文件 decription";
 
-            DialogResult dialogResult = ofd.ShowDialog();
+            DialogResult dialogResult = ofd.ShowDialog(this);
             Console.WriteLine("dialogResult:" + dialogResult.ToString());
             Console.WriteLine("FileName:" + ofd.FileName);
             foreach (string file in ofd.FileNames)
@@ -76,6 +82,15 @@ namespace GTKWinFormsApp
         {
             ColorDialog colorDialog = new ColorDialog();
             colorDialog.ShowDialog();
+
+            //FontDialog fontDialog = new FontDialog();
+            //fontDialog.ShowDialog();
+
+            //Graphics g = CreateGraphics();
+            //// g.DrawString("ddddddddd", new Font(FontFamily.GenericSansSerif, 16), new SolidBrush(Color.Red), 0, 0);
+            //g.DrawRectangle(new Pen(new SolidBrush(Color.Red),2), new Rectangle(110, 110, 200, 200));
+
+
         }
 
         private void button9_Click(object sender, EventArgs e)
@@ -90,6 +105,19 @@ namespace GTKWinFormsApp
             fontDialog.Font = button10.Font;
             if (fontDialog.ShowDialog() == DialogResult.OK)
                 button10.Font = fontDialog.Font;
+        }
+
+        private void vScrollBar1_ValueChanged(object sender, EventArgs e)
+        {
+            panel1.Widget.MarginTop = panel1Location.Y + vScrollBar1.Value;
+
+
+        }
+
+        private void hScrollBar1_ValueChanged(object sender, EventArgs e)
+        {
+
+            panel1.Widget.MarginStart = panel1Location.X + hScrollBar1.Value;
         }
     }
 }

@@ -3,10 +3,12 @@
     public sealed class MonthCalendarBase : Gtk.Calendar, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal MonthCalendarBase() : base()
+        public MonthCalendarBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("MonthCalendar");
+            base.Valign = Gtk.Align.Start;
+            base.Halign = Gtk.Align.Start;
         }
         public void AddClass(string cssClass)
         {

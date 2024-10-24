@@ -53,7 +53,7 @@ namespace System.Windows.Forms
                 fontChooserDialog = new Gtk.FontChooserDialog("选择字体", null);
                 fontChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
             }
-            fontChooserDialog.TypeHint = Gdk.WindowTypeHint.Dialog;
+            fontChooserDialog.KeepAbove = true;
             if (null != _font)
                 fontChooserDialog.Font = _font.Name + " " + (int)_font.Size;
             if (FullOpen && AllowFullOpen)

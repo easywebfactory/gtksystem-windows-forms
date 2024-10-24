@@ -3,15 +3,19 @@
     public sealed class ComboBoxBase : Gtk.ComboBoxText, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        internal ComboBoxBase() : base(true)
+        public ComboBoxBase() : base(true)
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("ComboBox");
+            base.Valign = Gtk.Align.Start;
+            base.Halign = Gtk.Align.Start;
         }
-        internal ComboBoxBase(bool hasEntry) : base(hasEntry)
+        public ComboBoxBase(bool hasEntry) : base(hasEntry)
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("ComboBox");
+            base.Valign = Gtk.Align.Start;
+            base.Halign = Gtk.Align.Start;
         }
         protected override void OnShown()
         {

@@ -19,12 +19,24 @@ namespace System.Windows.Forms
         public TableLayoutControlCollection(Control owner, Gtk.Container ownerContainer) : base(owner, ownerContainer)
         {
             Container = owner as TableLayoutPanel;
+            Container.self.Realized += Self_Realized;
         }
         public TableLayoutControlCollection(TableLayoutPanel container) : base(container)
         {
             Container = container;
+            Container.self.Realized += Self_Realized;
         }
-        public override void PerformLayout()
+        private bool SelfRealized = false;
+        private void Self_Realized(object sender, EventArgs e)
+        {
+            if (SelfRealized == false)
+            {
+                SelfRealized = true;
+                PerformLayout();
+            }
+        }
+
+        public void PerformLayout()
         {
             int[] colsWidth = Container.GetColumnWidths();
             int[] rowsHeight = Container.GetRowHeights();
