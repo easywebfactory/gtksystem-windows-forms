@@ -74,7 +74,10 @@ namespace System.Windows.Forms
                         statusbar.self.MarginTop = 0;
                         statusbar.self.MarginEnd = 0;
                         statusbar.self.MarginBottom = 0;
-                        form.self.ContentArea.PackEnd(statusbar.self, false, true, 0);
+                        Gtk.Overlay overlay = new Overlay();
+                        overlay.HeightRequest= statusbar.Height;
+                        overlay.AddOverlay(statusbar.self);
+                        form.self.ContentArea.PackEnd(overlay, false, false, 0);
                     }
                 }
                 else if (item is Control control)
