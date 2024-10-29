@@ -5,15 +5,10 @@
  * author:chenhongjin
  */
 
-using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
