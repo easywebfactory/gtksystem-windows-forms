@@ -1,5 +1,6 @@
 ﻿using Gtk;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 
@@ -34,8 +35,9 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public delegate bool CloseWindowHandler(object sender, EventArgs e);
         public event CloseWindowHandler CloseWindowEvent;
         public event System.Windows.Forms.ScrollEventHandler Scroll;
-        public FormBase(Gtk.Window parent = null) : base("title", parent, DialogFlags.UseHeaderBar)
+        public FormBase(Gtk.Window parent = null) : base("title", Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive), DialogFlags.UseHeaderBar)
         {
+            this.DestroyWithParent = true;
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Form");
             this.WindowPosition = Gtk.WindowPosition.Center;

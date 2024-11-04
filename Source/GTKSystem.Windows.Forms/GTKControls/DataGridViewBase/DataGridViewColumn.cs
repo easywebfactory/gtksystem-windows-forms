@@ -287,7 +287,7 @@ namespace System.Windows.Forms
             renderer.Width = Width;
             if (_gridview != null)
             {
-                if (_gridview.DefaultCellStyle.WrapMode == DataGridViewTriState.True)
+                if (_gridview.DefaultCellStyle?.WrapMode == DataGridViewTriState.True)
                 {
                     renderer.WrapMode = Pango.WrapMode.WordChar;
                     renderer.WrapWidth = 0;
