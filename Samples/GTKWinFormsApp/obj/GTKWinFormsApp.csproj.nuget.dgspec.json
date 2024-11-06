@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj": {}
+    "D:\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj": {}
   },
   "projects": {
-    "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj": {
+    "D:\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
+        "projectUniqueName": "D:\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
         "projectName": "GTKWinFormsApp",
-        "projectPath": "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
+        "projectPath": "D:\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
         "packagesPath": "C:\\Users\\auto_\\.nuget\\packages\\",
-        "outputPath": "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\obj\\",
+        "outputPath": "D:\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\auto_\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,8 +28,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {
-                "projectPath": "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj"
+              "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {
+                "projectPath": "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj"
               }
             }
           }
@@ -78,14 +78,14 @@
         }
       }
     },
-    "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {
-      "version": "1.3.24.47",
+    "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {
+      "version": "1.3.24.53",
       "restore": {
-        "projectUniqueName": "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
+        "projectUniqueName": "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
         "projectName": "GTKSystem.Windows.Forms",
-        "projectPath": "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
+        "projectPath": "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
         "packagesPath": "C:\\Users\\auto_\\.nuget\\packages\\",
-        "outputPath": "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\obj\\",
+        "outputPath": "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "configFilePaths": [

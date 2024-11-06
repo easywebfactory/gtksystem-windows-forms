@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2SGCCVvFkEc=",
+  "dgSpecHash": "5F8pfJZ3s44=",
   "success": true,
-  "projectFilePath": "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
+  "projectFilePath": "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\auto_\\.nuget\\packages\\atksharp\\3.24.24.95\\atksharp.3.24.24.95.nupkg.sha512",
     "C:\\Users\\auto_\\.nuget\\packages\\cairosharp\\3.24.24.95\\cairosharp.3.24.24.95.nupkg.sha512",

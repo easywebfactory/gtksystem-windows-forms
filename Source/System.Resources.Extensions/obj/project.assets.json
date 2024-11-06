@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj",
+      "projectUniqueName": "D:\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj",
       "projectName": "System.Resources.Extensions",
-      "projectPath": "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj",
+      "projectPath": "D:\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj",
       "packagesPath": "C:\\Users\\auto_\\.nuget\\packages\\",
-      "outputPath": "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\obj\\",
+      "outputPath": "D:\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\auto_\\AppData\\Roaming\\NuGet\\NuGet.Config",

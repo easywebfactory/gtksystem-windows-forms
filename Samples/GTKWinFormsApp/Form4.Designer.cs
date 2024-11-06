@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿
+using System.Windows.Forms;
 
 namespace GTKWinFormsApp
 {
@@ -36,6 +37,7 @@ namespace GTKWinFormsApp
             TreeNode treeNode3 = new TreeNode("节点4");
             TreeNode treeNode4 = new TreeNode("节点0", new TreeNode[] { treeNode2, treeNode3 });
             TreeNode treeNode5 = new TreeNode("节点1");
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form4));
             splitContainer1 = new SplitContainer();
             button2 = new Button();
             button1 = new Button();
@@ -46,6 +48,7 @@ namespace GTKWinFormsApp
             button7 = new Button();
             button6 = new Button();
             treeView1 = new TreeView();
+            imageList1 = new ImageList(components);
             button5 = new Button();
             contextMenuStrip1 = new ContextMenuStrip(components);
             test1ToolStripMenuItem = new ToolStripMenuItem();
@@ -107,12 +110,12 @@ namespace GTKWinFormsApp
             // 
             // button1
             // 
-            button1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right| AnchorStyles.Bottom;
+            button1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             button1.Location = new System.Drawing.Point(24, 46);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(120, 53);
+            button1.Size = new System.Drawing.Size(120, 153);
             button1.TabIndex = 0;
-            button1.Text = "button1";
+            button1.Text = "测试按钮1";
             button1.UseVisualStyleBackColor = true;
             // 
             // hScrollBar1
@@ -171,23 +174,37 @@ namespace GTKWinFormsApp
             button6.UseVisualStyleBackColor = true;
             button6.Click += button6_Click;
             // 
+            // imageList1
+            // 
+            imageList1.ColorDepth = ColorDepth.Depth32Bit;
+            imageList1.ImageStream = (ImageListStreamer)resources.GetObject("imageList1.ImageStream");
+            imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            imageList1.Images.SetKeyName(0, "img10.jpg");
+            imageList1.Images.SetKeyName(1, "img11.jpg");
+            // 
             // treeView1
             // 
+            treeView1.ImageKey = "img11.jpg";
+            treeView1.ImageList = imageList1;
             treeView1.Location = new System.Drawing.Point(63, 181);
             treeView1.Name = "treeView1";
             treeNode1.Name = "节点3";
             treeNode1.Text = "节点3";
+            treeNode2.ImageIndex = 1;
             treeNode2.Name = "节点2";
             treeNode2.Text = "节点2";
             treeNode3.Name = "节点4";
             treeNode3.Text = "节点4";
             treeNode4.Name = "节点0";
             treeNode4.Text = "节点0";
+            treeNode5.ImageIndex = 1;
             treeNode5.Name = "节点1";
             treeNode5.Text = "节点1";
             treeView1.Nodes.AddRange(new TreeNode[] { treeNode4, treeNode5 });
+            treeView1.SelectedImageIndex = 0;
             treeView1.Size = new System.Drawing.Size(151, 121);
             treeView1.TabIndex = 2;
+
             // 
             // button5
             // 
@@ -319,5 +336,6 @@ namespace GTKWinFormsApp
         
         private System.Windows.Forms.VScrollBar vScrollBar1;
         private System.Windows.Forms.HScrollBar hScrollBar1;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }

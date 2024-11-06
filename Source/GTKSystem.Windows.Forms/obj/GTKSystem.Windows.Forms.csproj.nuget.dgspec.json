@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {}
+    "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {}
   },
   "projects": {
-    "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {
-      "version": "1.3.24.51",
+    "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {
+      "version": "1.3.24.53",
       "restore": {
-        "projectUniqueName": "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
+        "projectUniqueName": "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
         "projectName": "GTKSystem.Windows.Forms",
-        "projectPath": "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
+        "projectPath": "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
         "packagesPath": "C:\\Users\\auto_\\.nuget\\packages\\",
-        "outputPath": "D:\\我的项目\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\obj\\",
+        "outputPath": "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "configFilePaths": [
