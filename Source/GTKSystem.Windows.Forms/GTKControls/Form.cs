@@ -231,7 +231,6 @@ namespace System.Windows.Forms
                 OnLoad();
             }
             self.ShowAll();
-
         }
 
         public DialogResult ShowDialog()

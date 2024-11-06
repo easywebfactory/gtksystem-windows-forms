@@ -631,11 +631,30 @@ namespace System.Windows.Forms
         public virtual int Left
         {
             get => this.Widget.MarginStart;
-            set => this.Widget.MarginStart = value;
+            set { 
+                this.Widget.MarginStart = value;
+                if (this.Widget.IsRealized)
+                {
+                    if (DockChanged != null)
+                        DockChanged(this, EventArgs.Empty);
+                    if (AnchorChanged != null)
+                        AnchorChanged(this, EventArgs.Empty);
+                }
+            }
         }
         public virtual int Right {
             get => this.Widget.MarginEnd;
-            set => this.Widget.MarginEnd = value;
+            set
+            {
+                this.Widget.MarginEnd = value;
+                if (this.Widget.IsRealized)
+                {
+                    if (DockChanged != null)
+                        DockChanged(this, EventArgs.Empty);
+                    if (AnchorChanged != null)
+                        AnchorChanged(this, EventArgs.Empty);
+                }
+            }
         }
         public virtual int Bottom
         {
@@ -701,6 +720,13 @@ namespace System.Windows.Forms
             set
             {
                 this.Widget.HeightRequest = Math.Max(-1, value);
+                if (this.Widget.IsRealized)
+                {
+                    if (DockChanged != null)
+                        DockChanged(this, EventArgs.Empty);
+                    if (AnchorChanged != null)
+                        AnchorChanged(this, EventArgs.Empty);
+                }
             }
         }
         public virtual int Width
@@ -715,6 +741,13 @@ namespace System.Windows.Forms
             }
             set {
                 this.Widget.WidthRequest = Math.Max(-1, value);
+                if (this.Widget.IsRealized)
+                {
+                    if (DockChanged != null)
+                        DockChanged(this, EventArgs.Empty);
+                    if (AnchorChanged != null)
+                        AnchorChanged(this, EventArgs.Empty);
+                }
             }
         }
         public virtual int TabIndex { get; set; }

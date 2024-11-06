@@ -222,7 +222,7 @@ namespace System.Windows.Forms
             //renderer.IconName = "face-smile";
             renderer.Height = RowHeight;
             renderer.Width = Width;
-            base.PackStart(renderer, true);
+            base.PackStart(renderer, false);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
             if (this.SortMode != DataGridViewColumnSortMode.NotSortable)

@@ -339,13 +339,13 @@ namespace System.Windows.Forms
                     this.SmallImageList.ImageSize = new Size(imgsize, imgsize);
                     if (!string.IsNullOrWhiteSpace(item.ImageKey))
                     {
-                        Drawing.Image img = this.SmallImageList.Images[item.ImageKey];
+                        Drawing.Image img = this.SmallImageList.GetBitmap(item.ImageKey);
                         fistcell.Put(new Gtk.Image(img.Pixbuf) { Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill }, x_position, padding + 2);
                         x_position += imgsize + 5;
                     }
                     else if (item.ImageIndex > -1)
                     {
-                        Drawing.Image img = this.SmallImageList.Images[item.ImageIndex];
+                        Drawing.Image img = this.SmallImageList.GetBitmap(item.ImageIndex);
                         fistcell.Put(new Gtk.Image(img.Pixbuf) { Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill }, x_position, padding + 2);
                         x_position += imgsize + 5;
                     }
@@ -426,12 +426,12 @@ namespace System.Windows.Forms
                     this.SmallImageList.ImageSize = new Size(16, 16);
                     if (!string.IsNullOrWhiteSpace(item.ImageKey))
                     {
-                        Drawing.Image img = this.SmallImageList.Images[item.ImageKey];
+                        Drawing.Image img = this.SmallImageList.GetBitmap(item.ImageKey);
                         hBox.PackStart(new Gtk.Image(img.Pixbuf), false, false, 0);
                     }
                     else if (item.ImageIndex > -1)
                     {
-                        Drawing.Image img = this.SmallImageList.Images[item.ImageIndex];
+                        Drawing.Image img = this.SmallImageList.GetBitmap(item.ImageIndex);
                         hBox.PackStart(new Gtk.Image(img.Pixbuf), false, false, 0);
                     }
 
@@ -468,7 +468,7 @@ namespace System.Windows.Forms
                     this.SmallImageList.ImageSize = new Size(100, 100);
                     if (!string.IsNullOrWhiteSpace(item.ImageKey))
                     {
-                        Drawing.Image img = this.LargeImageList.Images[item.ImageKey];
+                        Drawing.Image img = this.LargeImageList.GetBitmap(item.ImageKey);
                         int width = img.Pixbuf.Width;
                         int height = img.Pixbuf.Height;
 
@@ -476,7 +476,7 @@ namespace System.Windows.Forms
                     }
                     else if (item.ImageIndex > -1)
                     {
-                        Drawing.Image img = this.LargeImageList.Images[item.ImageIndex];
+                        Drawing.Image img = this.LargeImageList.GetBitmap(item.ImageIndex);
                         int width = img.Pixbuf.Width;
                         int height = img.Pixbuf.Height;
 

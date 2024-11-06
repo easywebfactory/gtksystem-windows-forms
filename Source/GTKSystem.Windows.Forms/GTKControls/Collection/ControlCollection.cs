@@ -1,6 +1,6 @@
 ﻿using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections;
-using System.Reflection;
 
 namespace System.Windows.Forms
 {
@@ -14,33 +14,34 @@ namespace System.Windows.Forms
         {
             __ownerControl = owner.GtkControl as Gtk.Container;
             __owner = owner;
-            __ownerControl.Realized += __ownerControl_Realized;
+            __ownerControl.Mapped += __ownerControl_Mapped;
         }
+
         public ControlCollection(Control owner, Gtk.Container ownerContainer)
         {
             __ownerControl = ownerContainer;
             __owner = owner;
-            __ownerControl.Realized += __ownerControl_Realized;
+            __ownerControl.Mapped += __ownerControl_Mapped;
         }
-        bool __ownerControlRealized = false;
-        private void __ownerControl_Realized(object sender, EventArgs e)
+
+        private void __ownerControl_Mapped(object sender, EventArgs e)
         {
-            if (__ownerControlRealized == false)
+            Gtk.Widget parent = (Gtk.Widget)sender;
+            if (__ownerControl is Gtk.Overlay lay)
             {
-                __ownerControlRealized = true;
-                Gtk.Widget parent = (Gtk.Widget)sender;
-                if (__ownerControl is Gtk.Overlay lay)
+                foreach (object item in this)
                 {
-                    foreach (object item in this)
+                    if (item is Control control)
                     {
-                        if (item is Control control)
-                        {
-                            SetMarginEnd(lay, control.Widget);
-                        }
-                        else if (item is Gtk.Widget widget)
-                        {
-                            SetMarginEnd(lay, widget);
-                        }
+                        control.Widget.MarginStart = Math.Max(0, control.Widget.MarginStart + Offset.X);
+                        control.Widget.MarginTop = Math.Max(0, control.Widget.MarginTop + Offset.Y);
+                        SetMarginEnd(lay, control.Widget);
+                    }
+                    else if (item is Gtk.Widget widget)
+                    {
+                        widget.MarginStart = Math.Max(0, widget.MarginStart + Offset.X);
+                        widget.MarginTop = Math.Max(0, widget.MarginTop + Offset.Y);
+                        SetMarginEnd(lay, widget);
                     }
                 }
             }
@@ -54,7 +55,7 @@ namespace System.Windows.Forms
             __itemType = itemType;
         }
 
-        internal Drawing.Point Offset = new Drawing.Point(0,0);
+        internal Drawing.Point Offset = new Drawing.Point(0, 0);
         public override int Add(object item)
         {
             if (item is Control icontrol)
@@ -75,7 +76,7 @@ namespace System.Windows.Forms
                         statusbar.self.MarginEnd = 0;
                         statusbar.self.MarginBottom = 0;
                         Gtk.Overlay overlay = new Overlay();
-                        overlay.HeightRequest= statusbar.Height;
+                        overlay.HeightRequest = statusbar.Height;
                         overlay.AddOverlay(statusbar.self);
                         form.self.ContentArea.PackEnd(overlay, false, false, 0);
                     }
@@ -83,8 +84,8 @@ namespace System.Windows.Forms
                 else if (item is Control control)
                 {
                     lay.AddOverlay(control.Widget);
-                    lay.WidthRequest = Math.Max(0, Math.Max(lay.WidthRequest, control.Widget.MarginStart + control.Widget.WidthRequest + control.Widget.MarginEnd));
-                    lay.HeightRequest = Math.Max(0, Math.Max(lay.HeightRequest, control.Widget.MarginTop + control.Widget.HeightRequest + control.Widget.MarginBottom));
+                    lay.WidthRequest = Math.Max(0, Math.Max(lay.AllocatedWidth, control.Widget.MarginStart + control.Widget.WidthRequest + control.Widget.MarginEnd));
+                    lay.HeightRequest = Math.Max(0, Math.Max(lay.AllocatedHeight, control.Widget.MarginTop + control.Widget.HeightRequest + control.Widget.MarginBottom));
                     SetMarginEnd(lay, control.Widget);
                     control.DockChanged += Control_DockChanged;
                     control.AnchorChanged += Control_AnchorChanged;
@@ -128,7 +129,7 @@ namespace System.Windows.Forms
             Control control = sender as Control;
             if (control.Widget.Parent is Gtk.Overlay lay)
             {
-                SetMarginEnd(lay, control.Widget);
+                 SetMarginEnd(lay, control.Widget);
             }
         }
 
@@ -140,16 +141,17 @@ namespace System.Windows.Forms
                 SetMarginEnd(lay, control.Widget);
             }
         }
-
         private void SetMarginEnd(Gtk.Overlay lay, Gtk.Widget widget)
         {
             if (widget.Halign == Align.End || widget.Halign == Align.Fill)
             {
-                widget.MarginEnd = Math.Max(0, lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
+                if (widget.WidthRequest > 0)
+                    widget.MarginEnd = Math.Max(0, lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
             }
             if (widget.Valign == Align.End || widget.Valign == Align.Fill)
             {
-                widget.MarginBottom = Math.Max(0, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
+                if (widget.HeightRequest > 0)
+                    widget.MarginBottom = Math.Max(0, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
             }
         }
         public int AddWidget(Gtk.Widget item, Control control)
@@ -188,8 +190,9 @@ namespace System.Windows.Forms
 
         public override void Insert(int index, object item) { __ownerControl.Add((Widget)item); base.Insert(index, item); }
 
-        public override void Remove(object value) {
-            if(value is Control control)
+        public override void Remove(object value)
+        {
+            if (value is Control control)
             {
                 control.Widget.Unparent();
                 control.Widget.Destroy();
@@ -202,10 +205,11 @@ namespace System.Windows.Forms
                 widget.Destroy();
                 widget.Dispose();
             }
-            if(base.Contains(value))
+            if (base.Contains(value))
                 base.Remove(value); ;
         }
-        public override void RemoveAt(int index) {
+        public override void RemoveAt(int index)
+        {
             base.RemoveAt(index);
             if (__ownerControl.Children.Length > index)
                 __ownerControl.Remove(__ownerControl.Children[index]);
