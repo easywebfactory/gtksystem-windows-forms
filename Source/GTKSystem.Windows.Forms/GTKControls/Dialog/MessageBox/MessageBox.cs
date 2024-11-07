@@ -319,7 +319,7 @@ namespace System.Windows.Forms
                 msgbox.PackStart(Gtk.Image.NewFromIconName("dialog-information", IconSize.Dialog), false, false, 5);
             else if (icon == MessageBoxIcon.Error || icon == MessageBoxIcon.Stop || icon == MessageBoxIcon.Hand)
                 msgbox.PackStart(Gtk.Image.NewFromIconName("dialog-error", IconSize.Dialog), false, false, 5);
-            var content = new Gtk.Label(text);
+            var content = new Gtk.Label(text) { MarginEnd = 30 };
             content.Halign = Align.Fill;
             content.Valign = Align.Start;
             int maxwidth = 300;
@@ -339,8 +339,6 @@ namespace System.Windows.Forms
                 content.LineWrapMode = Pango.WrapMode.Word;
             }
             msgbox.PackStart(content, false, true, 5);
-            msgbox.StyleContext.AddClass("test");
-            dia.ContentArea.StyleContext.AddClass("test2");
             dia.ContentArea.PackStart(msgbox, false, true, 0);
          
             IconTheme iconTheme = new IconTheme();

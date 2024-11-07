@@ -67,17 +67,18 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Drawn += FormBase_Drawn;
             this.Close += FormBase_Close;
         }
-
+        private bool IsNoEscFormClose = false;
         private void FormBase_Close(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show(this, "你确定要关闭窗口吗？", "Esc热键操作提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show(this, "你正在关闭该窗口，确定要关闭吗？", "Esc按键操作提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
+                IsNoEscFormClose = false;
                 this.Respond(ResponseType.DeleteEvent);
             }
             else
             {
-                Run();
+                IsNoEscFormClose = true;
             }
         }
 
@@ -89,7 +90,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 
         private void FormBase_Response(object o, ResponseArgs args)
         {
-            if (args.ResponseId == ResponseType.DeleteEvent)
+            if (IsNoEscFormClose)
+            {
+                IsNoEscFormClose = false;
+            }
+            else if (args.ResponseId == ResponseType.DeleteEvent)
             {
                 if (CloseWindowEvent(this, EventArgs.Empty))
                     this.HideOnDelete();
