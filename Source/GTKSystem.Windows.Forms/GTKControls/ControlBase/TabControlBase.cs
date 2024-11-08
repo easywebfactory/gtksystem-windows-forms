@@ -7,6 +7,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public GtkControlOverride Override { get; set; }
         public TabControlBase() : base()
         {
+            this.Scrollable = true;
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("TabControl");
             base.Halign = Gtk.Align.Start;

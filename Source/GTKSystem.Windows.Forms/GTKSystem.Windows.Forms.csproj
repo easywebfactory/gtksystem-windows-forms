@@ -6,7 +6,7 @@
 	  <Authors>chenhongjin</Authors>
 	  <Company>chenhongjin</Company>
 	  <Copyright>438865652@qq.com，chenhongjin</Copyright>
-	  <Version>1.3.24.51</Version>
+	  <Version>1.3.24.54</Version>
 	  <PackageProjectUrl>https://www.gtkapp.com</PackageProjectUrl>
 	  <PackageReleaseNotes>C#界面跨平台开发组件gtksystem-windows-forms</PackageReleaseNotes>
 	  <Title>GTK跨平台winform界面组件，一次编译，可运行于windows、linux、macos平台</Title>
@@ -24,7 +24,7 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
 	  <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 	  <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	  <SignAssembly>False</SignAssembly>
-	  <EnableUnsafeBinaryFormatterSerialization>True</EnableUnsafeBinaryFormatterSerialization>
+
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Resources;
@@ -173,9 +174,9 @@ namespace GTKSystem.Resources.Extensions
 
 		private bool _assumeBinaryFormatter;
 
-		private BinaryFormatter _formatter;
-
-		public DeserializingResourceReader(string fileName)
+		//private BinaryFormatter _formatter;
+        private DataContractSerializer _formatter;
+        public DeserializingResourceReader(string fileName)
 		{
 			_resCache = new Dictionary<string, ResourceLocator>(FastResourceComparer.Default);
 			_store = new BinaryReader(new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.RandomAccess), Encoding.UTF8);
@@ -903,14 +904,15 @@ namespace GTKSystem.Resources.Extensions
 			return false;
 		}
 
-		private object ReadBinaryFormattedObject()
+		private object? ReadBinaryFormattedObject()
 		{
 			if (_formatter == null)
 			{
-				_formatter = new BinaryFormatter();
-                _formatter.Binder = new ImageListSerializationBinder();
+                _formatter = new DataContractSerializer(typeof(Bitmap));
+     
+               // _formatter.Binder = new ImageListSerializationBinder();
             }
-			return _formatter.Deserialize(_store.BaseStream);
+			return _formatter.ReadObject(_store.BaseStream);
 			//return null;
 		}
 
@@ -937,11 +939,13 @@ namespace GTKSystem.Resources.Extensions
 							var bytedata = _store.ReadBytes(num2);
 							using MemoryStream mem = new MemoryStream(bytedata);
 
-							BinaryFormatter formatter = new BinaryFormatter();
-							formatter.AssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple;
-							formatter.Binder = new ImageListSerializationBinder();
-							obj = formatter.Deserialize(mem);
-						}
+                            //BinaryFormatter formatter = new BinaryFormatter();
+                            //formatter.AssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple;
+                            //formatter.Binder = new ImageListSerializationBinder();
+                            //obj = formatter.Deserialize(mem);
+                            DataContractSerializer formatter = new DataContractSerializer(typeof(Bitmap));
+                            obj = formatter.ReadObject(mem);
+                        }
 						else
 						{
 							obj = ReadBinaryFormattedObject();

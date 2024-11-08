@@ -215,7 +215,7 @@ namespace System.Windows.Forms
             }
             return result;
         }
-        private static Gtk.Window ActiveWindow = null;
+        private static Gtk.Window ActiveWindow = null; //有缓存意义
         private static DialogResult ShowCore(IWin32Window owner, string text, string caption,
                                              MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defaultButton,
                                              MessageBoxOptions options, bool showHelp)
@@ -298,11 +298,19 @@ namespace System.Windows.Forms
             dia.SetPosition(position);
             dia.StyleContext.AddClass("DefaultThemeStyle");
             dia.StyleContext.AddClass("MessageBox");
-            // dia.SetSizeRequest(300, 160);
+            dia.SetSizeRequest(300, 100);
+            dia.SetDefaultSize(300, 100);
             dia.Response += Dia_Response;
-            dia.ContentArea.Spacing = 20;
+            dia.ContentArea.Spacing = 10;
+            dia.ContentArea.Expand = false;
+            dia.ContentArea.Halign = Align.Fill;
+            dia.ContentArea.Valign = Align.Start;
             dia.BorderWidth = 20;
+            dia.Valign = Align.Fill;
+            dia.Halign = Align.Fill;
             Gtk.Box msgbox = new Box(Gtk.Orientation.Horizontal, 10);
+            msgbox.Valign = Align.Start;
+            msgbox.Halign = Align.Fill;
             if (icon == MessageBoxIcon.Question)
                 msgbox.PackStart(Gtk.Image.NewFromIconName("dialog-question", IconSize.Dialog), false, false, 5);
             else if (icon == MessageBoxIcon.Warning || icon == MessageBoxIcon.Exclamation)
@@ -311,10 +319,31 @@ namespace System.Windows.Forms
                 msgbox.PackStart(Gtk.Image.NewFromIconName("dialog-information", IconSize.Dialog), false, false, 5);
             else if (icon == MessageBoxIcon.Error || icon == MessageBoxIcon.Stop || icon == MessageBoxIcon.Hand)
                 msgbox.PackStart(Gtk.Image.NewFromIconName("dialog-error", IconSize.Dialog), false, false, 5);
-            var content = new Gtk.Label(text);
-            msgbox.PackStart(content, true, true, 5);
-            dia.ContentArea.Add(msgbox);
-
+            var content = new Gtk.Label(text) { MarginEnd = 30 };
+            content.Halign = Align.Fill;
+            content.Valign = Align.Start;
+            int maxwidth = 300;
+            if (Gdk.Screen.Default.Display.NMonitors > 0)
+            {
+                Gdk.Rectangle rectangle = Gdk.Screen.Default.Display.GetMonitor(0).Workarea;
+                maxwidth = rectangle.Width / 2;
+            }
+            var pag = content.CreatePangoLayout(text);
+            pag.GetPixelSize(out int width, out int height);
+            if (width > maxwidth)
+            {
+                dia.SetSizeRequest(maxwidth, 100);
+                dia.SetDefaultSize(maxwidth, 100);
+                content.Wrap = true;
+                content.LineWrap = true;
+                content.LineWrapMode = Pango.WrapMode.Word;
+            }
+            msgbox.PackStart(content, false, true, 5);
+            dia.ContentArea.PackStart(msgbox, false, true, 0);
+         
+            IconTheme iconTheme = new IconTheme();
+            Gdk.Pixbuf pixbuf = iconTheme.LoadIcon("dialog-information", 16, IconLookupFlags.DirLtr);
+            dia.Icon = pixbuf;
             if (buttons == MessageBoxButtons.OK)
             {
                 dia.AddButton("确定", Gtk.ResponseType.Ok);

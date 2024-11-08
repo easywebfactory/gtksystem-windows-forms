@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,12 +25,26 @@ namespace GTKWinFormsApp
             b.Title = "test1";
             listBox1.DataBindings.Add(new Binding("SelectedItem", b, "Title"));
 
+            this.Load += Form1_Load;
          
+        }
+
+        private void Form1_Load(object? sender, EventArgs e)
+        {
+            treeView1.CheckBoxes = true;
+            treeView1.Nodes.Clear();
+            treeView1.Nodes.Add(new TreeNode("test1"));
+            treeView1.Nodes[0].Nodes.Add(new TreeNode("test21") { Checked = true });
+            treeView1.Nodes[0].Nodes.Add(new TreeNode("test22"));
+            treeView1.Nodes[0].Nodes.Add(new TreeNode("test23"));
+            treeView1.Nodes[0].Nodes.Add(new TreeNode("test24"));
+            treeView1.SelectedNode = treeView1.Nodes[0].Nodes[1];
         }
 
         TestEntity b = new TestEntity();
         private void button1_Click(object sender, EventArgs e)
         {
+            Console.WriteLine(treeView1.SelectedNode.Text);
             // b.Title = "test2";
             DialogResult result = MessageBox.Show("1、加载数据点yes \n2、不加载数据点no", "加载数据提示", MessageBoxButtons.YesNo);
             if (result == DialogResult.No)
@@ -49,27 +64,27 @@ namespace GTKWinFormsApp
             for (int i = 0; i < 10; i++)
                 data.Add(new TestEntity() { ID = i + 7, Title = "网络图片异步加载" + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString() });
 
-            //this.dataGridView1.DataSource = data;
+             this.dataGridView1.DataSource = data;
             //var s=this.dataGridView1.Rows[0].Cells[0];
 
             //2、datatable数据源
-            DataTable dt = new DataTable();
-            dt.Columns.Add("ID", typeof(string));
-            dt.Columns.Add("CreateDate", typeof(DateTime));
-            dt.Columns.Add("State", typeof(bool));
-            dt.Rows.Add("test1dddd", DateTime.Now, true);
-            dt.Rows.Add("test2", DateTime.Now.AddDays(5), false);
+            //DataTable dt = new DataTable();
+            //dt.Columns.Add("ID", typeof(string));
+            //dt.Columns.Add("CreateDate", typeof(DateTime));
+            //dt.Columns.Add("State", typeof(bool));
+            //dt.Rows.Add("test1dddd", DateTime.Now, true);
+            //dt.Rows.Add("test2", DateTime.Now.AddDays(5), false);
             //this.dataGridView1.Columns.Clear();
-            //this.dataGridView1.DataSource = dt;
+            // this.dataGridView1.DataSource = dt;
 
             //3、通过dataviewrow添加数据
-            for (int i = 0; i < 10; i++)
-            {
-                var cell = new DataGridViewRow();
-                cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleCenter } }, new DataGridViewCheckBoxCell() { Value = true }, new DataGridViewTextBoxCell() { Value = "title" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleLeft } }, new DataGridViewComboBoxCell() { Value = DateTime.Now }, new DataGridViewCheckBoxCell() { Value = "修改修改", Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleCenter } } }.ToArray());
-                //cell.DefaultCellStyle = new DataGridViewCellStyle() { BackColor = Color.Red };
-                this.dataGridView1.Rows.Add(cell);
-            }
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    var cell = new DataGridViewRow();
+            //    cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleCenter } }, new DataGridViewCheckBoxCell() { Value = true }, new DataGridViewTextBoxCell() { Value = "title" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleLeft } }, new DataGridViewComboBoxCell() { Value = DateTime.Now }, new DataGridViewCheckBoxCell() { Value = "修改修改", Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleCenter } } }.ToArray());
+            //    //cell.DefaultCellStyle = new DataGridViewCellStyle() { BackColor = Color.Red };
+            //    this.dataGridView1.Rows.Add(cell);
+            //}
         }
 
         public class TestEntity : INotifyPropertyChanged

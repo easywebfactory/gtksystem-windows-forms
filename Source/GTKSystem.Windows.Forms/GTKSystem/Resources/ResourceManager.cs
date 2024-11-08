@@ -2,6 +2,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -11,27 +12,18 @@ using System.Runtime.Serialization;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
-using static System.Windows.Forms.ImageList;
 
 namespace GTKSystem.Resources
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class ResourceManager
+    public class ResourceManager : System.Resources.ResourceManager
     {
-        public static readonly int HeaderVersionNumber = 1;
-        public static readonly int MagicNumber = -1091581234;
-
         internal const string ResFileExtension = ".resources";
-        //internal const int ResFileExtensionLength = 10;
-        //internal static readonly int DEBUG = 0;
-
-        protected Assembly MainAssembly;
-
         private System.Type _resourceSource;
         private Assembly _assembly;
         private string _baseName;
         public ResourceInfo GetResourceInfo = new ResourceInfo();
-        public ResourceManager(System.Type resourceSource) : this(null, null, resourceSource)
+        public ResourceManager([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) : this(null, null, usingResourceSet)
         {
 
         }
@@ -39,37 +31,20 @@ namespace GTKSystem.Resources
         {
 
         }
-        public ResourceManager(string baseName, Assembly assembly, System.Type resourceSource)
+        public ResourceManager(string baseName, Assembly assembly, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) : base(baseName, assembly, usingResourceSet)
         {
             this._baseName = baseName;
             this._assembly = assembly;
-            this._resourceSource = resourceSource;
+            this._resourceSource = usingResourceSet;
             GetResourceInfo.Assembly = assembly;
             GetResourceInfo.BaseName = baseName;
-            GetResourceInfo.SourceType = resourceSource;
+            GetResourceInfo.SourceType = usingResourceSet;
         }
         protected ResourceManager()
         {
 
         }
 
-        public virtual string BaseName { get => _baseName; }
-        public virtual bool IgnoreCase { get; set; }
-        public virtual System.Type ResourceSetType { get=> _resourceSource; }
-        protected UltimateResourceFallbackLocation FallbackLocation { get; set; }
-
-        public static ResourceManager CreateFileBasedResourceManager(string baseName, string resourceDir, System.Type usingResourceSet)
-        {
-            return new ResourceManager();
-        }
-        protected static CultureInfo GetNeutralResourcesLanguage(Assembly a)
-        {
-            return CultureInfo.CurrentCulture;
-        }
-        protected static System.Version GetSatelliteContractVersion(Assembly a)
-        {
-            return a.GetName().Version;
-        }
         private byte[] ReadResourceFile(string name)
         {
             byte[] result = null;
@@ -176,7 +151,7 @@ namespace GTKSystem.Resources
             }
             return null;
         }
-        public virtual object GetObject(string name, CultureInfo culture)
+        public override object GetObject(string name, CultureInfo culture)
         {
             object result = GetObject(name);
             var stack = new StackTrace(true);
@@ -191,7 +166,7 @@ namespace GTKSystem.Resources
             }
 
         }
-        public virtual object GetObject(string name)
+        public override object GetObject(string name)
         {
             GetResourceInfo.ResourceName = name;
             object obj = ReadResourceData(name);
@@ -243,52 +218,33 @@ namespace GTKSystem.Resources
                 return obj;
             }
         }
-        public virtual ResourceSet GetResourceSet(CultureInfo culture, bool createIfNotExists, bool tryParents)
-        {
-
-            return null;
-        }
-        public UnmanagedMemoryStream GetStream(string name)
-        {
-            return GetStream(name);
-        }
-        public UnmanagedMemoryStream GetStream(string name, CultureInfo culture)
-        {
-            byte[] data = ReadResourceFile(name);
-            if (data == null)
-                return null;
-            else
-            {
-                using (MemoryStream ms = new MemoryStream(data))
-                {
-                    BinaryReader br = new BinaryReader(ms);
-                    return br.BaseStream as UnmanagedMemoryStream;
-                }
-            }
-        }
-        public virtual string GetString(string name)
+      
+        //public  UnmanagedMemoryStream GetStream(string name)
+        //{
+        //    return GetStream(name);
+        //}
+        //public UnmanagedMemoryStream GetStream(string name, CultureInfo culture)
+        //{
+        //    byte[] data = ReadResourceFile(name);
+        //    if (data == null)
+        //        return null;
+        //    else
+        //    {
+        //        using (MemoryStream ms = new MemoryStream(data))
+        //        {
+        //            BinaryReader br = new BinaryReader(ms);
+        //            return br.BaseStream as UnmanagedMemoryStream;
+        //        }
+        //    }
+        //}
+        public override string GetString(string name)
         {
             return GetString(name, null);
         }
-        public virtual string GetString(string name, CultureInfo culture)
+        public override string GetString(string name, CultureInfo culture)
         {
             return ReadResourceText(name);
         }
-
-        public virtual void ReleaseAllResources()
-        {
-        }
-        protected virtual string GetResourceFileName(CultureInfo culture)
-        {
-
-            return null;
-        }
-        protected virtual ResourceSet InternalGetResourceSet(CultureInfo culture, bool createIfNotExists, bool tryParents)
-        {
-
-            return null;
-        }
-
         public class ResourceInfo
         {
             public string ResourceName { get; set; }

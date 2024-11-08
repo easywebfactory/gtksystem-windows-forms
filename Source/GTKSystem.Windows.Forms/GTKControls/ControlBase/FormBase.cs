@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class FormBase : Gtk.Dialog, IControlGtk, IScrollableBoxBase
+    public sealed class FormBase : Gtk.Dialog, IControlGtk, IScrollableBoxBase, IWin32Window
     {
         public readonly Gtk.ScrolledWindow ScrollView = new Gtk.ScrolledWindow();
         public GtkControlOverride Override { get; set; }
@@ -35,8 +35,9 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public delegate bool CloseWindowHandler(object sender, EventArgs e);
         public event CloseWindowHandler CloseWindowEvent;
         public event System.Windows.Forms.ScrollEventHandler Scroll;
-        public FormBase(Gtk.Window parent = null) : base("title", parent, DialogFlags.UseHeaderBar)
+        public FormBase(Gtk.Window parent = null) : base("title", Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive), DialogFlags.UseHeaderBar)
         {
+            this.DestroyWithParent = true;
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Form");
             this.WindowPosition = Gtk.WindowPosition.Center;
@@ -44,7 +45,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.ContentArea.BorderWidth = 0;
             this.ContentArea.Spacing = 0;
             this.ContentArea.Homogeneous = false;
-          
+
             this.SetDefaultSize(100, 100);
             this.TypeHint = Gdk.WindowTypeHint.Normal;
             this.AppPaintable = false;
@@ -64,6 +65,21 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.ContentArea.PackStart(ScrollView, true, true, 0);
             //this.Decorated = false; //删除工具栏
             this.Drawn += FormBase_Drawn;
+            this.Close += FormBase_Close;
+        }
+        private bool IsNoEscFormClose = false;
+        private void FormBase_Close(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(this, "你正在关闭该窗口，确定要关闭吗？", "Esc按键操作提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                IsNoEscFormClose = false;
+                this.Respond(ResponseType.DeleteEvent);
+            }
+            else
+            {
+                IsNoEscFormClose = true;
+            }
         }
 
         private void FormBase_Drawn(object o, DrawnArgs args)
@@ -74,7 +90,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 
         private void FormBase_Response(object o, ResponseArgs args)
         {
-            if (args.ResponseId == ResponseType.DeleteEvent)
+            if (IsNoEscFormClose)
+            {
+                IsNoEscFormClose = false;
+            }
+            else if (args.ResponseId == ResponseType.DeleteEvent)
             {
                 if (CloseWindowEvent(this, EventArgs.Empty))
                     this.HideOnDelete();

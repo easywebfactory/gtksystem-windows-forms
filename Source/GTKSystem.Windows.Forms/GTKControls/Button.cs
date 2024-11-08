@@ -5,11 +5,8 @@
  * author:chenhongjin
  */
 
-using Gdk;
-using GLib;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
-using System.Drawing;
 
 namespace System.Windows.Forms
 {
@@ -22,14 +19,69 @@ namespace System.Windows.Forms
         {
             self.Clicked += Self_Clicked;
         }
-
         private void Self_Clicked(object sender, EventArgs e)
         {
             if(Click!= null && self.IsVisible) { Click(this, EventArgs.Empty); }
         }
 
-        public override string Text { get => self.Label; set => self.Label = value; }
+        public override string Text { get => ((Gtk.Label)self.Child).Text; set => ((Gtk.Label)self.Child).Text = value; }
 
         public override event EventHandler Click;
+        public override RightToLeft RightToLeft { get { return self.Direction == Gtk.TextDirection.Rtl ? RightToLeft.Yes : RightToLeft.No; } set { self.Direction = value == RightToLeft.Yes ? Gtk.TextDirection.Rtl : Gtk.TextDirection.Ltr; } }
+        public System.Drawing.ContentAlignment TextAlign
+        {
+            get { return textAlign; }
+            set
+            {
+                textAlign = value;
+                if (value == System.Drawing.ContentAlignment.TopLeft)
+                {
+                    self.Xalign = 0.0f;
+                    self.Yalign = 0.0f;
+                }
+                else if (value == System.Drawing.ContentAlignment.TopCenter)
+                {
+                    self.Xalign = 0.5f;
+                    self.Yalign = 0.0f;
+                }
+                else if (value == System.Drawing.ContentAlignment.TopRight)
+                {
+                    self.Xalign = 1.0f;
+                    self.Yalign = 0.0f;
+                }
+                else if (value == System.Drawing.ContentAlignment.MiddleLeft)
+                {
+                    self.Xalign = 0.0f;
+                    self.Yalign = 0.5f;
+                }
+                else if (value == System.Drawing.ContentAlignment.MiddleCenter)
+                {
+                    self.Xalign = 0.5f;
+                    self.Yalign = 0.5f;
+                }
+                else if (value == System.Drawing.ContentAlignment.MiddleRight)
+                {
+                    self.Xalign = 1.0f;
+                    self.Yalign = 0.5f;
+                }
+                else if (value == System.Drawing.ContentAlignment.BottomLeft)
+                {
+                    self.Xalign = 0.0f;
+                    self.Yalign = 1.0f;
+                }
+                else if (value == System.Drawing.ContentAlignment.BottomCenter)
+                {
+                    self.Xalign = 0.5f;
+                    self.Yalign = 1.0f;
+                }
+                else if (value == System.Drawing.ContentAlignment.BottomRight)
+                {
+                    self.Xalign = 1.0f;
+                    self.Yalign = 1.0f;
+                }
+
+            }
+        }
+        private System.Drawing.ContentAlignment textAlign;
     }
 }

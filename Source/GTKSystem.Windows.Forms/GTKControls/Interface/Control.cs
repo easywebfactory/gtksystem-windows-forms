@@ -1,12 +1,10 @@
-﻿using GLib;
-using Gtk;
+﻿using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms.Design;
-using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
@@ -33,7 +31,6 @@ namespace System.Windows.Forms
                 {
                     widget.Halign = Align.Fill;
                     widget.Valign = Align.Fill;
-                    widget.Expand = true;
                 }
                 else
                 {
@@ -139,11 +136,11 @@ namespace System.Windows.Forms
             {
                 if (Cursor.CursorType == Gdk.CursorType.CursorIsPixmap)
                 {
-                    Widget.Window.Cursor = new Gdk.Cursor(((Gtk.Widget)o).Display, Cursor.CursorPixbuf, Cursor.CursorsXY.X, Cursor.CursorsXY.Y);
+                    this.Widget.Window.Cursor = new Gdk.Cursor(((Gtk.Widget)o).Display, Cursor.CursorPixbuf, Cursor.CursorsXY.X, Cursor.CursorsXY.Y);
                 }
                 else
                 {
-                    Widget.Window.Cursor = new Gdk.Cursor(((Gtk.Widget)o).Display, Cursor.CursorType);
+                    this.Widget.Window.Cursor = new Gdk.Cursor(((Gtk.Widget)o).Display, Cursor.CursorType);
                 }
             }
             if (Enter != null)
@@ -163,7 +160,7 @@ namespace System.Windows.Forms
         {
             if (Cursor != null)
             {
-                Widget.Window.Cursor = null;
+                this.Widget.Window.Cursor = null;
             }
             if (Leave != null)
                 Leave(this, args);
@@ -477,6 +474,8 @@ namespace System.Windows.Forms
             set {
                 _anchor = value;
                 SetAnchorStyles(Widget, _anchor);
+                if (AnchorChanged != null)
+                    AnchorChanged(this, EventArgs.Empty);
             } 
         }
         private void SetAnchorStyles(Gtk.Widget widget, AnchorStyles anchorStyles)
@@ -514,23 +513,13 @@ namespace System.Windows.Forms
             {
                 widget.Valign = Gtk.Align.Start;
             }
-            //if (anchorStyles.HasFlag(AnchorStyles.Right))
-            //{
-            //    if (widget.Parent != null)
-            //        widget.MarginEnd = Math.Max(0, widget.Parent.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
-            //}
-            //if (anchorStyles.HasFlag(AnchorStyles.Bottom))
-            //{
-            //    if (widget.Parent != null)
-            //        widget.MarginBottom = Math.Max(0, widget.Parent.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
-            //}
         }
         public virtual Point AutoScrollOffset { get; set; }
         public virtual bool AutoSize { get; set; }
         public virtual BindingContext BindingContext { get; set; }
-        public virtual Rectangle Bounds { get=> new Rectangle(Widget.Clip.X, Widget.Clip.Y, Widget.Clip.Width, Widget.Clip.Height); set { SetBounds(value.X, value.Y, value.Width, value.Height); } }
+        public virtual Rectangle Bounds { get=> new Rectangle(Widget.Clip.X, this.Widget.Clip.Y, this.Widget.Clip.Width, this.Widget.Clip.Height); set { SetBounds(value.X, value.Y, value.Width, value.Height); } }
 
-        public virtual bool CanFocus { get { return Widget.CanFocus; } }
+        public virtual bool CanFocus { get { return this.Widget.CanFocus; } }
 
         public virtual bool CanSelect { get; }
 
@@ -556,7 +545,6 @@ namespace System.Windows.Forms
         public virtual Rectangle DisplayRectangle { get; }
 
         public virtual bool Disposing { get; }
-
         private DockStyle _dock;
         public virtual DockStyle Dock
         {
@@ -571,52 +559,41 @@ namespace System.Windows.Forms
                 {
                     this.Widget.Halign = Align.Fill;
                     this.Widget.Valign = Align.Fill;
-                    this.Top = 0;
-                    this.Bottom = 0;
-                    this.Left = 0;
-                    this.Right = 0;
                 }
                 else if (value == DockStyle.Left)
                 {
                     this.Widget.Halign = Align.Start;
                     this.Widget.Valign = Align.Fill;
-                    this.Top = 0;
-                    this.Bottom = 0;
                 }
                 else if (value == DockStyle.Top)
                 {
                     this.Widget.Halign = Align.Fill;
                     this.Widget.Valign = Align.Start;
-                    this.Top = 0;
-                    this.Left = 0;
-                    this.Right = 0;
                 }
                 else if (value == DockStyle.Right)
                 {
                     this.Widget.Halign = Align.End;
                     this.Widget.Valign = Align.Fill;
-                    this.Top = 0;
-                    this.Bottom = 0;
                 }
                 else if (value == DockStyle.Bottom)
                 {
                     this.Widget.Halign = Align.Fill;
                     this.Widget.Valign = Align.End;
-                    this.Left = 0;
-                    this.Right = 0;
                 }
+                if (DockChanged != null)
+                    DockChanged(this, EventArgs.Empty);
             }
         }
-        public virtual bool Enabled { get { return Widget.Sensitive; } set { Widget.Sensitive = value; } }
+        public virtual bool Enabled { get { return this.Widget.Sensitive; } set { this.Widget.Sensitive = value; } }
 
-        public virtual bool Focused { get { return Widget.IsFocus; } }
+        public virtual bool Focused { get { return this.Widget.IsFocus; } }
         private Font _Font;
         public virtual Font Font {
             get
             {
                 if (_Font == null)
                 {
-                    var fontdes = Widget.PangoContext.FontDescription;
+                    var fontdes = this.Widget.PangoContext.FontDescription;
                     int size = Convert.ToInt32(fontdes.Size / Pango.Scale.PangoScale);
                     return new Drawing.Font(new Drawing.FontFamily(fontdes.Family), size);
                 }
@@ -654,11 +631,30 @@ namespace System.Windows.Forms
         public virtual int Left
         {
             get => this.Widget.MarginStart;
-            set => this.Widget.MarginStart = value;
+            set { 
+                this.Widget.MarginStart = value;
+                if (this.Widget.IsRealized)
+                {
+                    if (DockChanged != null)
+                        DockChanged(this, EventArgs.Empty);
+                    if (AnchorChanged != null)
+                        AnchorChanged(this, EventArgs.Empty);
+                }
+            }
         }
         public virtual int Right {
             get => this.Widget.MarginEnd;
-            set => this.Widget.MarginEnd = value;
+            set
+            {
+                this.Widget.MarginEnd = value;
+                if (this.Widget.IsRealized)
+                {
+                    if (DockChanged != null)
+                        DockChanged(this, EventArgs.Empty);
+                    if (AnchorChanged != null)
+                        AnchorChanged(this, EventArgs.Empty);
+                }
+            }
         }
         public virtual int Bottom
         {
@@ -681,10 +677,7 @@ namespace System.Windows.Forms
                 }
             }
         }
-        //public virtual Padding Margin { get; set; }
-        //public virtual Size MaximumSize { get; set; }
-        //public virtual Size MinimumSize { get; set; }
-        public virtual string Name { get { return Widget.Name; } set { Widget.Name = value; } }
+        public virtual string Name { get { return this.Widget.Name; } set { this.Widget.Name = value; } }
         public virtual Padding Padding { get; set; }
         public virtual Control Parent { get; set; }
         public virtual Size PreferredSize { get; }
@@ -727,6 +720,13 @@ namespace System.Windows.Forms
             set
             {
                 this.Widget.HeightRequest = Math.Max(-1, value);
+                if (this.Widget.IsRealized)
+                {
+                    if (DockChanged != null)
+                        DockChanged(this, EventArgs.Empty);
+                    if (AnchorChanged != null)
+                        AnchorChanged(this, EventArgs.Empty);
+                }
             }
         }
         public virtual int Width
@@ -741,6 +741,13 @@ namespace System.Windows.Forms
             }
             set {
                 this.Widget.WidthRequest = Math.Max(-1, value);
+                if (this.Widget.IsRealized)
+                {
+                    if (DockChanged != null)
+                        DockChanged(this, EventArgs.Empty);
+                    if (AnchorChanged != null)
+                        AnchorChanged(this, EventArgs.Empty);
+                }
             }
         }
         public virtual int TabIndex { get; set; }
@@ -749,7 +756,7 @@ namespace System.Windows.Forms
         public virtual string Text { get; set; }
         public virtual Control TopLevelControl { get; }
         public virtual bool UseWaitCursor { get; set; }
-        public virtual bool Visible { get { return Widget.Visible; } set { Widget.Visible = value; Widget.NoShowAll = value == false; } }
+        public virtual bool Visible { get { return this.Widget.Visible; } set { this.Widget.Visible = value; this.Widget.NoShowAll = value == false; } }
 
         protected virtual Size DefaultSize { get; }
         protected virtual Padding DefaultPadding { get; }
@@ -791,6 +798,7 @@ namespace System.Windows.Forms
         public virtual event ControlEventHandler ControlRemoved;
         public virtual event EventHandler CursorChanged;
         public virtual event EventHandler DockChanged;
+        public virtual event EventHandler AnchorChanged;
         public virtual event EventHandler DoubleClick;
         public virtual event EventHandler DpiChangedAfterParent;
         public virtual event EventHandler DpiChangedBeforeParent;
@@ -880,7 +888,8 @@ namespace System.Windows.Forms
 
         public virtual void BringToFront()
         {
-
+            if (this.Widget.Parent is Gtk.Overlay parent)
+                parent.ReorderOverlay(this.Widget, -1);
         }
 
         public virtual bool Contains(Control ctl)
@@ -907,7 +916,7 @@ namespace System.Windows.Forms
                 context?.Dispose();
                 context = new Cairo.Context(surface);
 
-                return new Drawing.Graphics(this.Widget, context, Widget.Allocation);
+                return new Drawing.Graphics(this.Widget, context, this.Widget.Allocation);
             }
             finally
             {
@@ -923,7 +932,7 @@ namespace System.Windows.Forms
                 cr.SetSourceSurface(surface, 0, 0);
                 cr.Paint();
                 cr.Restore();
-                Widget.QueueDraw();
+                this.Widget.QueueDraw();
             }
         }
 
@@ -1032,7 +1041,7 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null && this.Widget.IsVisible)
             {
-                Widget.Window.InvalidateRect(Widget.Allocation, invalidateChildren);
+                this.Widget.Window.InvalidateRect(Widget.Allocation, invalidateChildren);
             }
         }
 
@@ -1047,7 +1056,7 @@ namespace System.Windows.Forms
             {
                 if (ISelf != null)
                     ISelf.Override.OnAddClass();
-                Widget.Window.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
+                this.Widget.Window.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
             }
         }
 
@@ -1062,7 +1071,7 @@ namespace System.Windows.Forms
             {
                 if (ISelf != null)
                     ISelf.Override.OnAddClass();
-                Widget.Window.InvalidateRect(Widget.Allocation, invalidateChildren);
+                this.Widget.Window.InvalidateRect(Widget.Allocation, invalidateChildren);
             }
         }
 
@@ -1110,7 +1119,7 @@ namespace System.Windows.Forms
         {
             if (Widget != null)
             {
-                Widget.Window.GetPosition(out int x, out int y);
+                this.Widget.Window.GetPosition(out int x, out int y);
                 if (p.X > x && p.Y > y)
                     return new Point(p.X - x, p.Y - y);
             }
@@ -1121,7 +1130,7 @@ namespace System.Windows.Forms
         {
             if (Widget != null)
             {
-                Widget.Window.GetPosition(out int x, out int y);
+                this.Widget.Window.GetPosition(out int x, out int y);
                 if (p.X < x && p.Y < y)
                     return new Point(p.X + x, p.Y + y);
             }
@@ -1142,7 +1151,7 @@ namespace System.Windows.Forms
         {
             if (Widget != null)
             {
-                Widget.Window.GetPosition(out int x, out int y);
+                this.Widget.Window.GetPosition(out int x, out int y);
                 if (r.X > x && r.Y > y)
                     return new Rectangle(r.X - x, r.Y - y, r.Width, r.Height);
             }
@@ -1153,7 +1162,7 @@ namespace System.Windows.Forms
         {
             if (Widget != null)
             {
-                Widget.Window.GetPosition(out int x, out int y);
+                this.Widget.Window.GetPosition(out int x, out int y);
                 if (r.X < x && r.Y < y)
                     return new Rectangle(r.X + x, r.Y + y, r.Width, r.Height);
             }
@@ -1166,7 +1175,7 @@ namespace System.Windows.Forms
             {
                 if (ISelf != null)
                     ISelf.Override.ClearNativeBackground();
-                Widget.QueueDraw();
+                this.Widget.QueueDraw();
             }
         }
 
@@ -1252,7 +1261,8 @@ namespace System.Windows.Forms
 
         public virtual void SendToBack()
         {
-
+            if (this.Widget.Parent is Gtk.Overlay parent)
+                parent.ReorderOverlay(this.Widget, 0);
         }
 
         public virtual void SetBounds(int x, int y, int width, int height)
@@ -1293,12 +1303,11 @@ namespace System.Windows.Forms
                 this.Widget.SetClip(rect);
             }
         }
-        public virtual Rectangle ClientRectangle { get { Widget.GetAllocatedSize(out Gdk.Rectangle allocation, out int baseline); return new Rectangle(allocation.X, allocation.Y, allocation.Width, allocation.Height); } }
+        public virtual Rectangle ClientRectangle { get { this.Widget.GetAllocatedSize(out Gdk.Rectangle allocation, out int baseline); return new Rectangle(allocation.X, allocation.Y, allocation.Width, allocation.Height); } }
 
-        public virtual Size ClientSize { get { return new Size(Widget.AllocatedWidth, Widget.AllocatedHeight); } set { Widget.SetSizeRequest(value.Width, value.Height); } }
+        public virtual Size ClientSize { get { return new Size(Widget.AllocatedWidth, this.Widget.AllocatedHeight); } set { this.Widget.SetSizeRequest(value.Width, value.Height); } }
 
         public virtual IntPtr Handle { get => this.Widget == null ? IntPtr.Zero : this.Widget.Handle; }
-
         public virtual Padding Margin { get; set; }
         public virtual Size MaximumSize { get; set; }
         public virtual Size MinimumSize { get; set; }
@@ -1310,15 +1319,15 @@ namespace System.Windows.Forms
                 _BorderStyle = value;
                 if(value==BorderStyle.FixedSingle)
                 {
-                    Widget.StyleContext.AddClass("BorderFixedSingle");
+                    this.Widget.StyleContext.AddClass("BorderFixedSingle");
                 }
                 else if (value == BorderStyle.Fixed3D)
                 {
-                    Widget.StyleContext.AddClass("BorderFixed3D");
+                    this.Widget.StyleContext.AddClass("BorderFixed3D");
                 }
                 else
                 {
-                    Widget.StyleContext.AddClass("BorderNone");
+                    this.Widget.StyleContext.AddClass("BorderNone");
                 }
             }
         }
@@ -1335,7 +1344,7 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null)
             {
-                Widget.ShowAll();
+                this.Widget.ShowAll();
             }
         }
         protected virtual void OnPaint(System.Windows.Forms.PaintEventArgs e)

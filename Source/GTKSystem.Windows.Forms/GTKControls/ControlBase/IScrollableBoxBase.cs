@@ -4,6 +4,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public interface IScrollableBoxBase
     {
+        int WidthRequest { get; set; }
+        int HeightRequest { get; set; }
         bool AutoScroll { get; set; }
         Widget Child { get; }
         bool HScroll { get; set; }

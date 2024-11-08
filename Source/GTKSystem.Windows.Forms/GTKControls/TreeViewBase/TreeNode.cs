@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections;
+using GLib;
 
 namespace System.Windows.Forms
 {
@@ -78,12 +79,29 @@ namespace System.Windows.Forms
         {
             get; set;
         }
-        public bool Checked { get; set; }
+        private bool _IsChecked;
+        public bool Checked
+        {
+            get => _IsChecked; set { _IsChecked = value; if (this.treeView != null) { this.treeView.SetChecked(this, value); } }
+        }
 
         public string FullPath { get; set; }
+        private bool _IsSelected;
         public bool IsSelected
         {
-            get; set;
+            get=> _IsSelected; set { _IsSelected = value; if (this.treeView != null) { this.treeView.SetSelected(this, value); } }
+        }
+        public bool IsExpanded
+        {
+            get
+            {
+                if (this.treeView != null)
+                {
+                    return this.treeView.GetNodeExpanded(this);
+                }
+                else
+                    return false;
+            }
         }
 
         public int Level
@@ -97,6 +115,23 @@ namespace System.Windows.Forms
 
                 return Parent.Level + 1;
             }
+        }
+        public int ImageIndex { get; set; }
+        public string ImageKey { get; set; }
+        public int SelectedImageIndex { get; set; }
+        public string SelectedImageKey { get; set; }
+        public int StateImageIndex { get; set; }
+        public string StateImageKey { get; set; }
+        public void Expand(){
+            if (this.treeView != null) { this.treeView.SetExpandNode(this, false); }
+        }
+        public void ExpandAll()
+        {
+            if (this.treeView != null) { this.treeView.SetExpandNode(this, true); }
+        }
+        public void Collapse()
+        {
+            if (this.treeView != null) { this.treeView.SetCollapseNode(this); }
         }
         public object Clone()
         {

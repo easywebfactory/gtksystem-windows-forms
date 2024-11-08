@@ -31,5 +31,7 @@ namespace System.Windows.Forms
 
         public override DockStyle Dock { get; set; } = DockStyle.Fill;
         public override Size Size { get; set; }
+        public override int Width { get; set; }
+        public override int Height { get; set; }
     }
 }

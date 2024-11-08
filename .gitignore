@@ -74,3 +74,8 @@ $RECYCLE.BIN/
 /Samples/GTKSystemWinFormsApp11/obj/project.assets.json
 /Samples/GTKSystemWinFormsApp11/obj/project.nuget.cache
 /GtkWinForms.20241024.zip
+/Samples/GTKSystemWinFormsApp11/bin/Debug/net8.0/theme
+/Samples/GTKWinFormsApp/bin/Debug/net8.0/Resources
+/Source/GTKSystem.Windows.Forms/obj/GTKSystem.Windows.Forms.csproj.nuget.dgspec.json
+/Source/GTKSystem.Windows.Forms/obj/project.assets.json
+/Source/GTKSystem.Windows.Forms/obj/project.nuget.cache

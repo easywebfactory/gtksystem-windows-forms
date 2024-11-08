@@ -1,23 +1,14 @@
 ﻿[setup]
-/*是否默认跟随系统主题*/
 AutoTheme=false
-/*是否应用内置样式*/
 UseDefaultStyle=true
-/*指定主题，AutoTheme=false时有效*/
 DefaultThemeName=Default
-/*是否使用自定义主师，对应[custom theme]*/
 UseCustomTheme=false
-/*是否使用自定义样式，对应[custom style]*/
 UseCustomStyle=true
 
 [custom theme]
-/* 自定义主题名称 */
 Name=mytheme
-/* 主题文件所在文件夹，只能放在theme目录下 */
 ThemeFolder=window10-white
-/* 主题css引用文件路径，只能放在theme目录下，相对路径 */
 ThemeCssPath=window10-white/theme.css
 
 [custom style]
-/* 自由定义样式文件 */
 StylePath=style.css
