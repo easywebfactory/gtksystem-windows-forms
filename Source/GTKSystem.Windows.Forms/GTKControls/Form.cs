@@ -95,8 +95,8 @@ namespace System.Windows.Forms
                     }
                 }
             }
-            if (Shown != null)
-                Shown(this, e);
+            OnLoadHandler();
+            OnShownHandler();
         }
 
         private void Close_Clicked(object sender, EventArgs e)
@@ -131,12 +131,16 @@ namespace System.Windows.Forms
             add { self.Scroll += value; }
             remove { self.Scroll += value; }
         }
-        private void OnLoad()
+        private void OnLoadHandler()
         {
             if (Load != null)
-                Load(this, new EventArgs());
+                Load(this, EventArgs.Empty);
         }
-
+        private void OnShownHandler()
+        {
+            if (Shown != null)
+                Shown(this, EventArgs.Empty);
+        }
         public override void Show()
         {
             this.Show(null);
@@ -227,8 +231,6 @@ namespace System.Windows.Forms
                 {
 
                 }
-
-                OnLoad();
             }
             self.ShowAll();
         }

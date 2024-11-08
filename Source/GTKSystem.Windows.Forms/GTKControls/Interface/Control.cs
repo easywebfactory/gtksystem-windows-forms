@@ -626,7 +626,17 @@ namespace System.Windows.Forms
         public virtual int Top
         {
             get => this.Widget.MarginTop;
-            set => this.Widget.MarginTop = value;
+            set
+            {
+                this.Widget.MarginTop = value;
+                if (this.Widget.IsRealized)
+                {
+                    if (DockChanged != null)
+                        DockChanged(this, EventArgs.Empty);
+                    if (AnchorChanged != null)
+                        AnchorChanged(this, EventArgs.Empty);
+                }
+            }
         }
         public virtual int Left
         {
@@ -644,17 +654,7 @@ namespace System.Windows.Forms
         }
         public virtual int Right {
             get => this.Widget.MarginEnd;
-            set
-            {
-                this.Widget.MarginEnd = value;
-                if (this.Widget.IsRealized)
-                {
-                    if (DockChanged != null)
-                        DockChanged(this, EventArgs.Empty);
-                    if (AnchorChanged != null)
-                        AnchorChanged(this, EventArgs.Empty);
-                }
-            }
+            set => this.Widget.MarginEnd = value;
         }
         public virtual int Bottom
         {

@@ -8,6 +8,7 @@ using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -350,17 +351,31 @@ namespace System.Windows.Forms
 
         public Bitmap GetBitmap(int index)
         {
-            Bitmap bitmp = _originals[index]._image as Bitmap;
-            Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(bitmp.PixbufData);
-            int w = Math.Max(16, Math.Min(ImageSize.Width, 200));
-            int h = Math.Max(16, Math.Min(ImageSize.Height, 200));
-            Gdk.Pixbuf newpixbuf = pixbuf.ScaleSimple(w, h, Gdk.InterpType.Bilinear);
-            return new Bitmap(w, h) { Pixbuf = newpixbuf };
+            try
+            {
+                Bitmap bitmp = _originals[index]._image as Bitmap;
+                Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(bitmp.PixbufData);
+                int w = Math.Max(16, Math.Min(ImageSize.Width, 200));
+                int h = Math.Max(16, Math.Min(ImageSize.Height, 200));
+                Gdk.Pixbuf newpixbuf = pixbuf.ScaleSimple(w, h, Gdk.InterpType.Bilinear);
+                return new Bitmap(w, h) { Pixbuf = newpixbuf };
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                throw new IndexOutOfRangeException("索引超出范围，请检查序号是否在ImageList的数据范围内，把相关图片保存到Resources目录下。", ex);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
         public Bitmap GetBitmap(string name)
         {
             int index = _imageCollection.IndexOfKey(name);
-            Bitmap bitmp = _originals[index]._image as Bitmap;
+            if (index == -1)
+            {
+                throw new FileNotFoundException($"“{name}”未加载，请把相关图片保存到Resources目录下。", name);
+            }
             return GetBitmap(index);
         }
         /// <summary>
