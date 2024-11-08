@@ -4,7 +4,6 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
-using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
@@ -12,7 +11,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 
 namespace System.Windows.Forms
 {
@@ -49,7 +47,7 @@ namespace System.Windows.Forms
                     return TabAlignment.Top;
             }
             set {
-                if(value== TabAlignment.Left)
+                if(value == TabAlignment.Left)
                     self.TabPos = PositionType.Left;
                 else if (value == TabAlignment.Top)
                     self.TabPos = PositionType.Top;
@@ -59,6 +57,7 @@ namespace System.Windows.Forms
                     self.TabPos = PositionType.Bottom;
             }
         }
+        public bool Multiline { get; set; }
         public int SelectedIndex { get { return self.CurrentPage; } set { self.CurrentPage = value; } }
 
         public TabPage SelectedTab { get { return _controls[self.CurrentPage]; } set { } }
@@ -96,33 +95,40 @@ namespace System.Windows.Forms
             }
             public new int Add(TabPage item)
             {
-                item.Parent = _owner;
-                item.TabLabel.Name = base.Count.ToString();
-                item._tabLabel.WidthRequest = _owner.ItemSize.Width;
-                item._tabLabel.HeightRequest = _owner.ItemSize.Height;
-                if (_owner.SizeMode == TabSizeMode.Fixed)
+                try
                 {
-                    item._tabLabel.Ellipsize = Pango.EllipsizeMode.End;
-                }
-                else if (_owner.SizeMode == TabSizeMode.FillToRight)
-                {
-                    item._tabLabel.Halign = Align.End;
-                }
-                base.Add(item);
-                item.TabLabel.Drawn += (object sender, DrawnArgs args) =>
-                {
-                    if (_owner.DrawMode == TabDrawMode.OwnerDrawFixed && _owner.DrawItem != null)
+                    item.Parent = _owner;
+                    item.TabLabel.Name = base.Count.ToString();
+                    item._tabLabel.WidthRequest = _owner.ItemSize.Width;
+                    item._tabLabel.HeightRequest = _owner.ItemSize.Height;
+                    if (_owner.SizeMode == TabSizeMode.Fixed)
                     {
-                        Gtk.Label tab = (Gtk.Label)sender;
-                        tab.GetAllocatedSize(out Gdk.Rectangle allocation, out int baseline);
-                        args.Cr.ResetClip();
-                        int width = allocation.Width + 24;
-                        int height = allocation.Height + 2;
-                        _owner.DrawItem(this, new DrawItemEventArgs(new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height)) { diff_left=-12, diff_top=-2 }, _owner.Font, new Rectangle(0, 0, width, height), Convert.ToInt32(tab.Name), DrawItemState.Default));
-
+                        item._tabLabel.Ellipsize = Pango.EllipsizeMode.End;
                     }
-                };
-                return _owner.self.AppendPage(item.self, item.TabLabel);
+                    else if (_owner.SizeMode == TabSizeMode.FillToRight)
+                    {
+                        item._tabLabel.Halign = Align.End;
+                    }
+                    base.Add(item);
+                    item.TabLabel.Drawn += (object sender, DrawnArgs args) =>
+                    {
+                        if (_owner.DrawMode == TabDrawMode.OwnerDrawFixed && _owner.DrawItem != null)
+                        {
+                            Gtk.Label tab = (Gtk.Label)sender;
+                            tab.GetAllocatedSize(out Gdk.Rectangle allocation, out int baseline);
+                            args.Cr.ResetClip();
+                            int width = allocation.Width + 24;
+                            int height = allocation.Height + 2;
+                            _owner.DrawItem(this, new DrawItemEventArgs(new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height)) { diff_left = -12, diff_top = -2 }, _owner.Font, new Rectangle(0, 0, width, height), Convert.ToInt32(tab.Name), DrawItemState.Default));
+
+                        }
+                    };
+                    return _owner.self.AppendPage(item.self, item.TabLabel);
+                }
+                finally
+                {
+                    _owner.self.SetTabReorderable(item.self, true);
+                }
             }
             public new void RemoveAt(int index)
             {
@@ -202,7 +208,7 @@ namespace System.Windows.Forms
 
             bool IList.Contains(object value)
             {
-                return _owner.Controls.Contains(value);
+                throw new NotImplementedException();
             }
 
             void CopyTo(Array array, int index)
