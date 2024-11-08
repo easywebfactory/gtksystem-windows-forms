@@ -4,6 +4,7 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System;
@@ -33,7 +34,31 @@ namespace System.Windows.Forms
             if (SelectedIndexChanged != null && self.IsMapped)
                 SelectedIndexChanged(this, new EventArgs());
         }
-
+        public TabAlignment Alignment {
+            get
+            {
+                if (self.TabPos == PositionType.Left)
+                    return TabAlignment.Left;
+                else if (self.TabPos == PositionType.Top)
+                    return TabAlignment.Top;
+                else if (self.TabPos == PositionType.Right)
+                    return TabAlignment.Right;
+                else if (self.TabPos == PositionType.Bottom)
+                    return TabAlignment.Bottom;
+                else
+                    return TabAlignment.Top;
+            }
+            set {
+                if(value== TabAlignment.Left)
+                    self.TabPos = PositionType.Left;
+                else if (value == TabAlignment.Top)
+                    self.TabPos = PositionType.Top;
+                else if (value == TabAlignment.Right)
+                    self.TabPos = PositionType.Right;
+                else if (value == TabAlignment.Bottom)
+                    self.TabPos = PositionType.Bottom;
+            }
+        }
         public int SelectedIndex { get { return self.CurrentPage; } set { self.CurrentPage = value; } }
 
         public TabPage SelectedTab { get { return _controls[self.CurrentPage]; } set { } }
