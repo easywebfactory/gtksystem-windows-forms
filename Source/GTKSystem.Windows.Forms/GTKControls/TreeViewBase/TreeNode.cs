@@ -12,13 +12,21 @@ namespace System.Windows.Forms
 {
     public class TreeNode: ICloneable, ISerializable, IEquatable<TreeNode>
     {
-        //格式，各级索引并集：1,2,3....
+        //格式，各级索引并集：0,1,2,3....
         private string index = "";
-        internal string Index { get { return index; } set { index = value; } }
+        public string Index { get { return index; } internal set { index = value ?? ""; } }
         internal Gtk.TreeIter TreeIter = Gtk.TreeIter.Zero;
         private TreeNode parent;
         internal TreeView treeView;
-        internal TreeView TreeView { get { return treeView; } }
+        internal TreeView TreeView
+        {
+            get
+            {
+                if (treeView == null)
+                { treeView = this.parent?.TreeView; }
+                return treeView;
+            }
+        }
         private TreeNodeCollection nodes;
         public TreeNode()
         {
@@ -52,16 +60,7 @@ namespace System.Windows.Forms
 
         public TreeNode Parent
         {
-            get
-            {
-                TreeView treeView = TreeView;
-                if (treeView != null && parent == treeView.root)
-                {
-                    return null;
-                }
-
-                return parent;
-            }
+            get { return parent; }
             internal set { parent = value; }
         }
         public string Text
@@ -82,25 +81,20 @@ namespace System.Windows.Forms
         private bool _IsChecked;
         public bool Checked
         {
-            get => _IsChecked; set { _IsChecked = value; if (this.treeView != null) { this.treeView.SetChecked(this, value); } }
+            get => _IsChecked; set { _IsChecked = value; TreeView?.SetChecked(this, value); }
         }
 
         public string FullPath { get; set; }
         private bool _IsSelected;
         public bool IsSelected
         {
-            get=> _IsSelected; set { _IsSelected = value; if (this.treeView != null) { this.treeView.SetSelected(this, value); } }
+            get=> _IsSelected; set { _IsSelected = value; TreeView?.SetSelected(this, value); }
         }
         public bool IsExpanded
         {
             get
             {
-                if (this.treeView != null)
-                {
-                    return this.treeView.GetNodeExpanded(this);
-                }
-                else
-                    return false;
+                return TreeView?.GetNodeExpanded(this) == true;
             }
         }
 
@@ -108,12 +102,12 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (Parent == null)
-                {
+                if (parent == null)
                     return 0;
-                }
-
-                return Parent.Level + 1;
+                else if (TreeView != null && parent.Equals(TreeView.root))
+                    return 0;
+                else
+                    return parent.Level + 1;
             }
         }
         public int ImageIndex { get; set; }
@@ -123,26 +117,19 @@ namespace System.Windows.Forms
         public int StateImageIndex { get; set; }
         public string StateImageKey { get; set; }
         public void Expand(){
-            if (this.treeView != null) { this.treeView.SetExpandNode(this, false); }
+            TreeView?.SetExpandNode(this, false);
         }
         public void ExpandAll()
         {
-            if (this.treeView != null) { this.treeView.SetExpandNode(this, true); }
+            TreeView?.SetExpandNode(this, true);
         }
         public void Collapse()
         {
-            if (this.treeView != null) { this.treeView.SetCollapseNode(this); }
+            TreeView?.SetCollapseNode(this);
         }
         public object Clone()
         {
-            TreeNode newnode = new TreeNode(treeView);
-            Reflection.PropertyInfo[] props = newnode.GetType().GetProperties(Reflection.BindingFlags.Public | Reflection.BindingFlags.Instance);
-            foreach(var pro in props)
-            {
-                if (pro.GetSetMethod()!=null)
-                    pro.SetValue(newnode, pro.GetValue(this));
-            }
-            return newnode;
+            return ((ArrayList)(new ArrayList() { this }).Clone())[0];
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
@@ -152,7 +139,7 @@ namespace System.Windows.Forms
 
         public bool Equals([AllowNull] TreeNode other)
         {
-            return other.Index == this.Index && other.Text == this.Text && other.Level == this.Level;
+            return other != null && other.Index == this.Index && other.Name == this.Name && other.Text == this.Text && other.Level == this.Level;
         }
     }
 }

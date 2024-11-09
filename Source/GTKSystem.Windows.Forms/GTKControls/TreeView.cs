@@ -4,7 +4,6 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
-using Atk;
 using Gdk;
 using GLib;
 using Gtk;
@@ -31,7 +30,8 @@ namespace System.Windows.Forms
         public TreeView() : base()
         {
             root = new TreeNode(this);
-            root.Name = "root";
+            root.Index = "-1";
+            root.Name = "__root";
             _store = new Gtk.TreeStore(typeof(string), typeof(bool), typeof(Pixbuf));
             self.TreeView.Model = _store;
             self.TreeView.Realized += Control_Realized;
@@ -46,7 +46,7 @@ namespace System.Windows.Forms
         {
             if (AfterExpand != null && ((Gtk.TreeView)o).IsVisible)
             {
-                TreeNode result = new TreeNode();
+                TreeNode result = null;
                 GetNodeChild(root, args.Path.Indices, ref result);
                 AfterExpand(this, new TreeViewEventArgs(result, TreeViewAction.Expand));
             }
@@ -56,7 +56,7 @@ namespace System.Windows.Forms
         {
             if (AfterCollapse != null && ((Gtk.TreeView)o).IsVisible)
             {
-                TreeNode result = new TreeNode();
+                TreeNode result = null;
                 GetNodeChild(root, args.Path.Indices, ref result);
                 AfterCollapse(this, new TreeViewEventArgs(result, TreeViewAction.Collapse));
             }
@@ -68,7 +68,7 @@ namespace System.Windows.Forms
             {
                 if (cancelEventArgs == null || cancelEventArgs.Cancel == false)
                 {
-                    TreeNode result = new TreeNode();
+                    TreeNode result = null;
                     GetNodeChild(root, args.Path.Indices, ref result);
                     AfterSelect(this, new TreeViewEventArgs(result));
                 }
@@ -82,7 +82,7 @@ namespace System.Windows.Forms
                 if (self.TreeView.Selection.GetSelected(out TreeIter iter))
                 {
                     TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
-                    TreeNode result = new TreeNode();
+                    TreeNode result = null; 
                     GetNodeChild(root, paths[0].Indices, ref result);
                     cancelEventArgs = new TreeViewCancelEventArgs(result, false, TreeViewAction.ByMouse);
                     BeforeSelect(this, cancelEventArgs);
@@ -285,7 +285,7 @@ namespace System.Windows.Forms
             {
                 if (self.TreeView.Selection.GetSelected(out TreeIter iter)) {
                     TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
-                    TreeNode result = new TreeNode();
+                    TreeNode result = null;
                     GetNodeChild(root, paths[0].Indices, ref result);
                     return result;
                 }
@@ -334,23 +334,7 @@ namespace System.Windows.Forms
                 }
             }
         }
-        private void GetNodeChilds(TreeNode node, int[] indices, int depth, ref TreeNode result, ref TreeNode lastNode)
-        {
-            TreeNode treeNode = new TreeNode();
-            string nodeIndex = string.Join(",", indices.Take(depth + 1));
-            foreach (TreeNode child in node.Nodes)
-            {
-                if (child.Index == nodeIndex)
-                {
-                    treeNode = (TreeNode)child.Clone();
-                    result.Nodes.Add(treeNode);
-                    depth++;
-                    if (depth < indices.Length)
-                        GetNodeChilds(child, indices, depth, ref treeNode, ref lastNode);
-                }
-            }
-            lastNode = treeNode;
-        }
+
         private void GetNodePath(TreeNode node, int[] indices, int depth, ref List<string> nodePath)
         {
             string nodeIndex = string.Join(",", indices.Take(depth + 1));
