@@ -36,27 +36,22 @@ namespace GTKWinFormsApp
         {
             components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             TreeNode treeNode1 = new TreeNode("Node21");
             TreeNode treeNode2 = new TreeNode("Node22");
             TreeNode treeNode3 = new TreeNode("Node2", new TreeNode[] { treeNode1, treeNode2 });
             TreeNode treeNode4 = new TreeNode("Node3");
             TreeNode treeNode5 = new TreeNode("Node0", new TreeNode[] { treeNode3, treeNode4 });
             TreeNode treeNode6 = new TreeNode("Node1");
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             button1 = new Button();
             comboBox1 = new ComboBox();
             textBox1 = new TextBox();
             dataGridView1 = new DataGridView();
-            ID = new DataGridViewTextBoxColumn();
-            State = new DataGridViewCheckBoxColumn();
-            Title = new DataGridViewTextBoxColumn();
-            CreateDate = new DataGridViewComboBoxColumn();
-            Operate = new DataGridViewButtonColumn();
-            PIC = new DataGridViewImageColumn();
             groupBox1 = new GroupBox();
             checkBox2 = new CheckBox();
             linkLabel1 = new LinkLabel();
@@ -104,6 +99,12 @@ namespace GTKWinFormsApp
             toolStripMenuItem4 = new ToolStripMenuItem();
             二级菜单1ToolStripMenuItem = new ToolStripMenuItem();
             splitContainer2 = new SplitContainer();
+            ID = new DataGridViewTextBoxColumn();
+            State = new DataGridViewCheckBoxColumn();
+            Title = new DataGridViewTextBoxColumn();
+            CreateDate = new DataGridViewComboBoxColumn();
+            Operate = new DataGridViewButtonColumn();
+            PIC = new DataGridViewImageColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
@@ -176,34 +177,40 @@ namespace GTKWinFormsApp
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.LightCyan;
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Red;
             dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dataGridView1.ColumnHeadersHeight = 29;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { ID, State, Title, CreateDate, Operate, PIC });
             dataGridView1.DataMember = "ID,State,Title";
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Honeydew;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Honeydew;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dataGridView1.DefaultCellStyle = dataGridViewCellStyle4;
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.Location = new System.Drawing.Point(0, 0);
             dataGridView1.Margin = new Padding(4);
             dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
             dataGridView1.RowHeadersWidth = 51;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.LightGoldenrodYellow;
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(0, 0, 192);
-            dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.LightGoldenrodYellow;
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(0, 0, 192);
+            dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle6;
             dataGridView1.RowTemplate.Height = 46;
             dataGridView1.RowTemplate.Resizable = DataGridViewTriState.True;
             dataGridView1.Size = new System.Drawing.Size(1171, 333);
@@ -218,57 +225,6 @@ namespace GTKWinFormsApp
             dataGridView1.RowEnter += dataGridView1_RowEnter;
             dataGridView1.RowLeave += dataGridView1_RowLeave;
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
-            // 
-            // ID
-            // 
-            ID.HeaderText = "ID";
-            ID.MinimumWidth = 6;
-            ID.Name = "ID";
-            ID.SortMode = DataGridViewColumnSortMode.NotSortable;
-            ID.Width = 160;
-            // 
-            // State
-            // 
-            State.HeaderText = "State";
-            State.MinimumWidth = 6;
-            State.Name = "State";
-            State.Resizable = DataGridViewTriState.False;
-            State.Width = 125;
-            // 
-            // Title
-            // 
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            Title.DefaultCellStyle = dataGridViewCellStyle2;
-            Title.HeaderText = "Title";
-            Title.MinimumWidth = 6;
-            Title.Name = "Title";
-            Title.Resizable = DataGridViewTriState.True;
-            Title.Width = 250;
-            // 
-            // CreateDate
-            // 
-            CreateDate.HeaderText = "CreateDate";
-            CreateDate.Items.AddRange(new object[] { "2012-09-12 12:32:11", "2012-09-13 12:32:22", "2012-09-14 12:32:33" });
-            CreateDate.MinimumWidth = 6;
-            CreateDate.Name = "CreateDate";
-            CreateDate.Resizable = DataGridViewTriState.True;
-            CreateDate.SortMode = DataGridViewColumnSortMode.Automatic;
-            CreateDate.Width = 180;
-            // 
-            // Operate
-            // 
-            Operate.HeaderText = "Operate";
-            Operate.MinimumWidth = 6;
-            Operate.Name = "Operate";
-            Operate.Width = 160;
-            // 
-            // PIC
-            // 
-            PIC.HeaderText = "PIC";
-            PIC.MinimumWidth = 6;
-            PIC.Name = "PIC";
-            PIC.Width = 225;
             // 
             // groupBox1
             // 
@@ -300,9 +256,9 @@ namespace GTKWinFormsApp
             checkBox2.Location = new System.Drawing.Point(950, 114);
             checkBox2.Margin = new Padding(4);
             checkBox2.Name = "checkBox2";
-            checkBox2.Size = new System.Drawing.Size(109, 24);
+            checkBox2.Size = new System.Drawing.Size(91, 24);
             checkBox2.TabIndex = 6;
-            checkBox2.Text = "checkBox2";
+            checkBox2.Text = "全部勾选";
             checkBox2.UseVisualStyleBackColor = true;
             checkBox2.CheckedChanged += checkBox2_CheckedChanged;
             checkBox2.CheckStateChanged += checkBox2_CheckStateChanged;
@@ -351,7 +307,7 @@ namespace GTKWinFormsApp
             checkedListBox1.CheckOnClick = true;
             checkedListBox1.ColumnWidth = 100;
             checkedListBox1.FormattingEnabled = true;
-            checkedListBox1.Items.AddRange(new object[] { "3232", "dfdf", "ssss", "ssssssdddddddddddddd", "ffffff", "gggggggg", "gf333", "sssddd" });
+            checkedListBox1.Items.AddRange(new object[] { "北京市", "天津市", "河南省", "山西省", "内蒙古自治区", "辽宁省", "吉林省", "黑龙江省", "上海市", "江苏省", "浙江省", "安徽省", "福建省" });
             checkedListBox1.Location = new System.Drawing.Point(677, 22);
             checkedListBox1.Margin = new Padding(4);
             checkedListBox1.MultiColumn = true;
@@ -367,9 +323,9 @@ namespace GTKWinFormsApp
             radioButton3.Location = new System.Drawing.Point(950, 83);
             radioButton3.Margin = new Padding(4);
             radioButton3.Name = "radioButton3";
-            radioButton3.Size = new System.Drawing.Size(126, 24);
+            radioButton3.Size = new System.Drawing.Size(90, 24);
             radioButton3.TabIndex = 12;
-            radioButton3.Text = "radioButton3";
+            radioButton3.Text = "经济特区";
             radioButton3.UseVisualStyleBackColor = true;
             radioButton3.CheckedChanged += radioButton3_CheckedChanged;
             // 
@@ -393,10 +349,10 @@ namespace GTKWinFormsApp
             radioButton2.Location = new System.Drawing.Point(950, 52);
             radioButton2.Margin = new Padding(4);
             radioButton2.Name = "radioButton2";
-            radioButton2.Size = new System.Drawing.Size(126, 24);
+            radioButton2.Size = new System.Drawing.Size(75, 24);
             radioButton2.TabIndex = 11;
             radioButton2.TabStop = true;
-            radioButton2.Text = "radioButton2";
+            radioButton2.Text = "直辖市";
             radioButton2.UseVisualStyleBackColor = true;
             radioButton2.CheckedChanged += radioButton2_CheckedChanged;
             // 
@@ -416,9 +372,9 @@ namespace GTKWinFormsApp
             radioButton1.Location = new System.Drawing.Point(950, 21);
             radioButton1.Margin = new Padding(4);
             radioButton1.Name = "radioButton1";
-            radioButton1.Size = new System.Drawing.Size(126, 24);
+            radioButton1.Size = new System.Drawing.Size(60, 24);
             radioButton1.TabIndex = 10;
-            radioButton1.Text = "radioButton1";
+            radioButton1.Text = "全国";
             radioButton1.UseVisualStyleBackColor = true;
             radioButton1.CheckedChanged += radioButton1_CheckedChanged;
             // 
@@ -478,7 +434,7 @@ namespace GTKWinFormsApp
             tabPage1.Padding = new Padding(4);
             tabPage1.Size = new System.Drawing.Size(1179, 426);
             tabPage1.TabIndex = 0;
-            tabPage1.Text = "数据表格";
+            tabPage1.Text = "数据表格示例";
             tabPage1.UseVisualStyleBackColor = true;
             // 
             // splitContainer1
@@ -520,7 +476,7 @@ namespace GTKWinFormsApp
             tabPage2.Padding = new Padding(4);
             tabPage2.Size = new System.Drawing.Size(1179, 426);
             tabPage2.TabIndex = 1;
-            tabPage2.Text = "容器类表格";
+            tabPage2.Text = "容器类表格示例";
             tabPage2.UseVisualStyleBackColor = true;
             tabPage2.Click += tabPage2_Click;
             // 
@@ -666,7 +622,7 @@ namespace GTKWinFormsApp
             tabPage3.Padding = new Padding(3);
             tabPage3.Size = new System.Drawing.Size(1179, 426);
             tabPage3.TabIndex = 2;
-            tabPage3.Text = "绘图和图片";
+            tabPage3.Text = "绘图和图片示例";
             // 
             // button3
             // 
@@ -830,6 +786,59 @@ namespace GTKWinFormsApp
             splitContainer2.Size = new System.Drawing.Size(1409, 660);
             splitContainer2.SplitterDistance = 210;
             splitContainer2.TabIndex = 15;
+            // 
+            // ID
+            // 
+            ID.HeaderText = "序号";
+            ID.MinimumWidth = 6;
+            ID.Name = "ID";
+            ID.SortMode = DataGridViewColumnSortMode.NotSortable;
+            ID.Width = 160;
+            // 
+            // State
+            // 
+            State.HeaderText = "状态";
+            State.MinimumWidth = 6;
+            State.Name = "State";
+            State.Resizable = DataGridViewTriState.False;
+            State.Width = 125;
+            // 
+            // Title
+            // 
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(192, 255, 192);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(192, 0, 0);
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            Title.DefaultCellStyle = dataGridViewCellStyle3;
+            Title.HeaderText = "标题";
+            Title.MinimumWidth = 6;
+            Title.Name = "Title";
+            Title.Resizable = DataGridViewTriState.True;
+            Title.Width = 250;
+            // 
+            // CreateDate
+            // 
+            CreateDate.HeaderText = "日期时间";
+            CreateDate.Items.AddRange(new object[] { "2012-09-12 12:32:11", "2012-09-13 12:32:22", "2012-09-14 12:32:33" });
+            CreateDate.MinimumWidth = 6;
+            CreateDate.Name = "CreateDate";
+            CreateDate.Resizable = DataGridViewTriState.True;
+            CreateDate.SortMode = DataGridViewColumnSortMode.Automatic;
+            CreateDate.Width = 180;
+            // 
+            // Operate
+            // 
+            Operate.HeaderText = "操作";
+            Operate.MinimumWidth = 6;
+            Operate.Name = "Operate";
+            Operate.Width = 160;
+            // 
+            // PIC
+            // 
+            PIC.HeaderText = "图片";
+            PIC.MinimumWidth = 6;
+            PIC.Name = "PIC";
+            PIC.Width = 225;
             // 
             // Form1
             // 

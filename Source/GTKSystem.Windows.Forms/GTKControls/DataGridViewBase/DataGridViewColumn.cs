@@ -29,13 +29,12 @@ namespace System.Windows.Forms
         }
         public override void Renderer()
         {
-            var renderer = new CellRendererToggleValue();
+            var renderer = new CellRendererToggleValue(this);
             renderer.Activatable = this.ReadOnly == false;
             renderer.Mode = CellRendererMode.Activatable;
             renderer.Height = RowHeight;
             renderer.Width = Width;
             renderer.Toggled += CellName_Toggled;
-            SetDefaultStyle(renderer);
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
@@ -73,14 +72,13 @@ namespace System.Windows.Forms
         }
         public override void Renderer()
         {
-            var renderer = new CellRendererToggleValue();
+            var renderer = new CellRendererToggleValue(this);
             renderer.Activatable = this.ReadOnly == false;
             renderer.Mode = CellRendererMode.Activatable;
             renderer.Radio = true;
             renderer.Height = RowHeight;
             renderer.Width = Width;
             renderer.Toggled += CellName_Toggled;
-            SetDefaultStyle(renderer);
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
@@ -118,7 +116,7 @@ namespace System.Windows.Forms
         }
         public override void Renderer()
         {
-            CellRendererComboValue renderer = new CellRendererComboValue();
+            CellRendererComboValue renderer = new CellRendererComboValue(this);
             renderer.Editable = this.ReadOnly == false && _gridview.ReadOnly == false;
             renderer.Edited += Renderer_Edited;
             renderer.TextColumn = 0;
@@ -131,7 +129,6 @@ namespace System.Windows.Forms
             }
 
             renderer.Model = model;
-            SetDefaultStyle(renderer);
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             
@@ -181,11 +178,10 @@ namespace System.Windows.Forms
         }
         public override void Renderer()
         {
-            var renderer = new CellRendererButtonValue();
+            var renderer = new CellRendererButtonValue(this);
             renderer.Editable = false;
             renderer.Height = RowHeight;
             renderer.Width = Width;
-            SetDefaultStyle(renderer);
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
@@ -223,7 +219,6 @@ namespace System.Windows.Forms
             //renderer.IconName = "face-smile";
             renderer.Height = RowHeight;
             renderer.Width = Width;
-            SetDefaultStyle(renderer);
             base.PackStart(renderer, false);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
@@ -280,7 +275,7 @@ namespace System.Windows.Forms
         }
         public virtual void Renderer()
         {
-            var renderer = new CellRendererValue();
+            var renderer = new CellRendererValue(this);
             renderer.Editable = this.ReadOnly == false && _gridview.ReadOnly == false;
             renderer.Edited += Renderer_Edited;
             renderer.Mode = CellRendererMode.Editable;
@@ -304,14 +299,6 @@ namespace System.Windows.Forms
                     renderer.Height = RowHeight;
                 }
             }
-
-            SetDefaultStyle(renderer);
-            if (this.DefaultCellStyle?.WrapMode == DataGridViewTriState.True)
-            {
-                renderer.WrapMode = Pango.WrapMode.WordChar;
-                renderer.WrapWidth = 0;
-                renderer.WidthChars = 0;
-            }
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.Fixed;
@@ -330,45 +317,6 @@ namespace System.Windows.Forms
                 val.Value = args.NewText;
                 model.SetValue(iter, this.DisplayIndex, val);
                 _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices.Last(), val);
-            }
-        }
-        internal void SetDefaultStyle(CellRenderer renderer)
-        {
-            if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.TopLeft)
-            {
-                renderer.SetAlignment(0, 0);
-            }
-            else if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.TopCenter)
-            {
-                renderer.SetAlignment(0.5f, 0f);
-            }
-            else if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.TopRight)
-            {
-                renderer.SetAlignment(1f, 0f);
-            }
-            else if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.MiddleLeft)
-            {
-                renderer.SetAlignment(0f, 0.5f);
-            }
-            else if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.MiddleCenter)
-            {
-                renderer.SetAlignment(0.5f, 0.5f);
-            }
-            else if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.MiddleRight)
-            {
-                renderer.SetAlignment(1f, 0.5f);
-            }
-            else if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.BottomLeft)
-            {
-                renderer.SetAlignment(0f, 1f);
-            }
-            else if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.BottomCenter)
-            {
-                renderer.SetAlignment(0.5f, 1f);
-            }
-            else if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.BottomRight)
-            {
-                renderer.SetAlignment(1f, 1f);
             }
         }
         private int DefaultHeight

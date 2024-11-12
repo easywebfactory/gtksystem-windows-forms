@@ -9,8 +9,10 @@ namespace System.Windows.Forms.GtkRender
 {
     public class CellRendererValue : CellRendererText
     {
-        public CellRendererValue()
+        DataGridViewColumn Column;
+        public CellRendererValue(DataGridViewColumn view)
         {
+            Column = view;
         }
         [Property("cellvalue")]
         public CellValue CellValue
@@ -19,13 +21,18 @@ namespace System.Windows.Forms.GtkRender
             {
                 if (value != null)
                 {
-                    value.SetTextWithStyle(this);
+                    value.SetTextWithStyle(Column, this);
                 }
             }
         }
     }
     public class CellRendererToggleValue : CellRendererToggle
     {
+        DataGridViewColumn Column;
+        public CellRendererToggleValue(DataGridViewColumn view)
+        {
+            Column = view;
+        }
         [Property("cellvalue")]
         public CellValue CellValue
         {
@@ -34,13 +41,18 @@ namespace System.Windows.Forms.GtkRender
                 if (value != null)
                 {
                     this.Active = (value.Text == "1" || value.Text?.ToLower() == "true");
-                    value.SetControlWithStyle(this);
+                    value.SetControlWithStyle(Column, this);
                 }
             }
         }
     }
     public class CellRendererComboValue : CellRendererCombo
     {
+        DataGridViewColumn Column;
+        public CellRendererComboValue(DataGridViewColumn view)
+        {
+            Column = view;
+        }
         [Property("cellvalue")]
         public CellValue CellValue
         {
@@ -48,19 +60,17 @@ namespace System.Windows.Forms.GtkRender
             {
                 if (value != null)
                 {
-                    value.SetTextWithStyle(this);
+                    value.SetTextWithStyle(Column, this);
                 }
             }
         }
     }
     public class CellRendererPixbufValue : CellRendererPixbuf
     {
-        DataGridView GridView;
         DataGridViewColumn Column;
         public CellRendererPixbufValue(DataGridViewColumn view)
         {
             Column = view;
-            GridView = view.DataGridView;
         }
         [Property("cellvalue")]
         public CellValue CellValue
@@ -71,7 +81,7 @@ namespace System.Windows.Forms.GtkRender
                 {
                     if (value.ValueType == typeof(byte[]))
                     {
-                        value.SetControlWithStyle(this);
+                        value.SetControlWithStyle(Column, this);
                         this.Pixbuf = new Pixbuf((byte[])value.Value);
                     }
                     else
@@ -79,7 +89,7 @@ namespace System.Windows.Forms.GtkRender
                         string text = value.Text;
                         if (string.IsNullOrWhiteSpace(text) == false && this.Data.ContainsKey(text))
                         {
-                            value.SetControlWithStyle(this);
+                            value.SetControlWithStyle(Column, this);
                             if (this.Data[text] is Gdk.Pixbuf pixbuf)
                                 this.Pixbuf = pixbuf;
                             else
@@ -87,7 +97,7 @@ namespace System.Windows.Forms.GtkRender
                         }
                         else
                         {
-                            value.SetControlWithStyle(this);
+                            value.SetControlWithStyle(Column, this);
                             if (string.IsNullOrWhiteSpace(text))
                             {
                                 this.IconName = "";
@@ -152,8 +162,10 @@ namespace System.Windows.Forms.GtkRender
     }
     public class CellRendererButtonValue : CellRendererText
     {
-        public CellRendererButtonValue()
+        DataGridViewColumn Column;
+        public CellRendererButtonValue(DataGridViewColumn view)
         {
+            Column = view;
             this.SetAlignment(0.5f, 0.5f);
             this.Ellipsize = Pango.EllipsizeMode.End;
         }
@@ -164,7 +176,7 @@ namespace System.Windows.Forms.GtkRender
             {
                 if (value != null)
                 {
-                    value.SetTextWithStyle(this);
+                    value.SetTextWithStyle(Column, this);
                 }
             }
         }
@@ -194,7 +206,9 @@ namespace System.Windows.Forms.GtkRender
         private object _value;
         public object Value { get=> _value; set { _value = value; ValueType = value?.GetType(); } }
         public string Text { get => _value?.ToString(); }
-        internal void SetControlWithStyle(CellRenderer cell) {
+        internal void SetControlWithStyle(DataGridViewColumn Column, CellRenderer cell) {
+            if (Column.DefaultCellStyle != null)
+                _style = Column.DefaultCellStyle;
             if (_style != null)
             {
                 if (_style.BackColor.Name != "0")
@@ -219,8 +233,10 @@ namespace System.Windows.Forms.GtkRender
                     cell.SetAlignment(1.0f, 1f);
             }
         }
-        internal void SetTextWithStyle(CellRendererText cell)
+        internal void SetTextWithStyle(DataGridViewColumn Column, CellRendererText cell)
         {
+            if (Column.DefaultCellStyle != null)
+                _style = Column.DefaultCellStyle;
             if (_style != null)
             {
                 if (_style.ForeColor.Name != "0")

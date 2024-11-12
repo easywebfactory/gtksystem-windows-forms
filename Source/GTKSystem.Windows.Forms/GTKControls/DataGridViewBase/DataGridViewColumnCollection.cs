@@ -54,7 +54,7 @@ namespace System.Windows.Forms
                 {
                     Gtk.CssProvider css = new Gtk.CssProvider();
                     css.LoadFromData(style);
-                    header.StyleContext.AddProvider(css, 600);
+                    header.StyleContext.AddProvider(css, 800);
                 }
             }
             GridView.AppendColumn(column);
