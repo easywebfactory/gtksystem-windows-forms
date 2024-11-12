@@ -9,6 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Windows.Forms;
 
@@ -20,31 +21,55 @@ namespace GTKWinFormsApp
         {
 
             InitializeComponent();
-
-            b.ID = 1;
-            b.Title = "test1";
-            listBox1.DataBindings.Add(new Binding("SelectedItem", b, "Title"));
-
             this.Load += Form1_Load;
-         
         }
 
         private void Form1_Load(object? sender, EventArgs e)
         {
-            treeView1.CheckBoxes = true;
+            
             treeView1.Nodes.Clear();
-            treeView1.Nodes.Add(new TreeNode("test1"));
-            treeView1.Nodes[0].Nodes.Add(new TreeNode("test21") { Checked = true });
-            treeView1.Nodes[0].Nodes.Add(new TreeNode("test22"));
-            treeView1.Nodes[0].Nodes.Add(new TreeNode("test23"));
-            treeView1.Nodes[0].Nodes.Add(new TreeNode("test24"));
-            treeView1.SelectedNode = treeView1.Nodes[0].Nodes[1];
+            //treeView1.CheckBoxes = true;
+
+            string jsontext = File.ReadAllText("TestData1.json");
+            using (FileStream reader = new FileStream("TestData1.json", FileMode.Open, FileAccess.Read))
+            {
+                DataContractJsonSerializer dataContractJson = new DataContractJsonSerializer(typeof(List<TestDataMode>));
+                List<TestDataMode>? json = dataContractJson.ReadObject(reader) as List<TestDataMode>;
+                IEnumerable<TreeNode> childs = GetChild(null, json);
+                treeView1.Nodes.AddRange(childs);
+                foreach (TreeNode child in treeView1.Nodes)
+                    child.Expand();
+
+                treeView1.Nodes[0].Nodes[2].Nodes[3].Checked = true;
+                treeView1.SelectedNode = treeView1.Nodes[0].Nodes[2];
+            }
+        }
+        private IEnumerable<TreeNode> GetChild(string treeID, IEnumerable<TestDataMode> data)
+        {
+            List<TreeNode> children = new List<TreeNode>();
+            var list = data.Where(w => w.parent == treeID);
+            foreach (TestDataMode d in list)
+            {
+                var node = new TreeNode(d.name) { Name = d.treeID };
+                IEnumerable<TreeNode> childs = GetChild(d.treeID, data);
+                if (childs.Count() > 0)
+                    node.Nodes.AddRange(childs);
+                children.Add(node);
+            }
+            return children;
+        }
+        public class TestDataMode
+        {
+            public string name { get; set; }
+            public string treeID { get; set; }
+            public string parent { get; set; }
+            public string treeName { get; set; }
         }
 
         TestEntity b = new TestEntity();
         private void button1_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(treeView1.SelectedNode.Text);
+            Console.WriteLine(treeView1.SelectedNode?.Text);
             // b.Title = "test2";
             DialogResult result = MessageBox.Show("1、加载数据点yes \n2、不加载数据点no", "加载数据提示", MessageBoxButtons.YesNo);
             if (result == DialogResult.No)
@@ -64,7 +89,9 @@ namespace GTKWinFormsApp
             for (int i = 0; i < 10; i++)
                 data.Add(new TestEntity() { ID = i + 7, Title = "网络图片异步加载" + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString() });
 
-             this.dataGridView1.DataSource = data;
+
+
+            this.dataGridView1.DataSource = data;
             //var s=this.dataGridView1.Rows[0].Cells[0];
 
             //2、datatable数据源
@@ -76,17 +103,7 @@ namespace GTKWinFormsApp
             //dt.Rows.Add("test2", DateTime.Now.AddDays(5), false);
             //this.dataGridView1.Columns.Clear();
             // this.dataGridView1.DataSource = dt;
-
-            //3、通过dataviewrow添加数据
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    var cell = new DataGridViewRow();
-            //    cell.Cells.AddRange(new List<DataGridViewCell>() { new DataGridViewTextBoxCell() { Value = "user" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleCenter } }, new DataGridViewCheckBoxCell() { Value = true }, new DataGridViewTextBoxCell() { Value = "title" + i.ToString(), Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleLeft } }, new DataGridViewComboBoxCell() { Value = DateTime.Now }, new DataGridViewCheckBoxCell() { Value = "修改修改", Style = new DataGridViewCellStyle() { BackColor = i % 3 == 0 ? Color.Red : Color.Transparent, ForeColor = Color.Green, Alignment = DataGridViewContentAlignment.MiddleCenter } } }.ToArray());
-            //    //cell.DefaultCellStyle = new DataGridViewCellStyle() { BackColor = Color.Red };
-            //    this.dataGridView1.Rows.Add(cell);
-            //}
         }
-
         public class TestEntity : INotifyPropertyChanged
         {
             public int ID { get; set; }
@@ -105,6 +122,7 @@ namespace GTKWinFormsApp
                     PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
 
         private void button2_Click(object sender, EventArgs e)
         {

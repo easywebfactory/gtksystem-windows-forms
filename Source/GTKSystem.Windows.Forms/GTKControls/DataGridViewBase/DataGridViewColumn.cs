@@ -1,7 +1,6 @@
 ﻿using Gtk;
 using System.Collections;
 using System.ComponentModel;
-using System.Data.Common;
 using System.Linq;
 using System.Windows.Forms.GtkRender;
 
@@ -36,7 +35,7 @@ namespace System.Windows.Forms
             renderer.Height = RowHeight;
             renderer.Width = Width;
             renderer.Toggled += CellName_Toggled;
-
+            SetDefaultStyle(renderer);
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
@@ -81,7 +80,7 @@ namespace System.Windows.Forms
             renderer.Height = RowHeight;
             renderer.Width = Width;
             renderer.Toggled += CellName_Toggled;
-
+            SetDefaultStyle(renderer);
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
@@ -132,6 +131,7 @@ namespace System.Windows.Forms
             }
 
             renderer.Model = model;
+            SetDefaultStyle(renderer);
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             
@@ -185,6 +185,7 @@ namespace System.Windows.Forms
             renderer.Editable = false;
             renderer.Height = RowHeight;
             renderer.Width = Width;
+            SetDefaultStyle(renderer);
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
@@ -222,6 +223,7 @@ namespace System.Windows.Forms
             //renderer.IconName = "face-smile";
             renderer.Height = RowHeight;
             renderer.Width = Width;
+            SetDefaultStyle(renderer);
             base.PackStart(renderer, false);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
@@ -285,6 +287,7 @@ namespace System.Windows.Forms
             renderer.PlaceholderText = "---";
             renderer.Markup = this.Markup;
             renderer.Width = Width;
+            renderer.Height = RowHeight;
             if (_gridview != null)
             {
                 if (_gridview.DefaultCellStyle?.WrapMode == DataGridViewTriState.True)
@@ -300,6 +303,14 @@ namespace System.Windows.Forms
                 {
                     renderer.Height = RowHeight;
                 }
+            }
+
+            SetDefaultStyle(renderer);
+            if (this.DefaultCellStyle?.WrapMode == DataGridViewTriState.True)
+            {
+                renderer.WrapMode = Pango.WrapMode.WordChar;
+                renderer.WrapWidth = 0;
+                renderer.WidthChars = 0;
             }
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
@@ -319,6 +330,45 @@ namespace System.Windows.Forms
                 val.Value = args.NewText;
                 model.SetValue(iter, this.DisplayIndex, val);
                 _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices.Last(), val);
+            }
+        }
+        internal void SetDefaultStyle(CellRenderer renderer)
+        {
+            if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.TopLeft)
+            {
+                renderer.SetAlignment(0, 0);
+            }
+            else if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.TopCenter)
+            {
+                renderer.SetAlignment(0.5f, 0f);
+            }
+            else if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.TopRight)
+            {
+                renderer.SetAlignment(1f, 0f);
+            }
+            else if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.MiddleLeft)
+            {
+                renderer.SetAlignment(0f, 0.5f);
+            }
+            else if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.MiddleCenter)
+            {
+                renderer.SetAlignment(0.5f, 0.5f);
+            }
+            else if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.MiddleRight)
+            {
+                renderer.SetAlignment(1f, 0.5f);
+            }
+            else if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.BottomLeft)
+            {
+                renderer.SetAlignment(0f, 1f);
+            }
+            else if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.BottomCenter)
+            {
+                renderer.SetAlignment(0.5f, 1f);
+            }
+            else if (this.DefaultCellStyle?.Alignment == DataGridViewContentAlignment.BottomRight)
+            {
+                renderer.SetAlignment(1f, 1f);
             }
         }
         private int DefaultHeight

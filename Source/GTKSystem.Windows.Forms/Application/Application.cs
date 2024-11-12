@@ -113,11 +113,11 @@ namespace System.Windows.Forms
 
 .DefaultThemeStyle{padding: 0px 2px; border-style:solid;min-height:6px;min-width:6px;}
 .DefaultThemeStyle entry{
-   border-width: 1px; border-style: solid; border-color:@frame_color;
+   padding: 4px 5px; border-width: 1px; border-style: solid; border-color:@frame_color;
    background-color: @theme_base_color; color: @theme_text_color;
 }
 .DefaultThemeStyle entry.flat{
-   padding: 0px 4px; border-width: 1px; border-style: solid; border-color:@frame_color;
+   padding: 4px 5px; border-width: 1px; border-style: solid; border-color:@frame_color;
    background-color: @theme_base_color; color: @theme_text_color;
 }
 .DefaultThemeStyle button{padding:4px 3px;}
@@ -132,13 +132,18 @@ namespace System.Windows.Forms
 .GridViewCell-Button:selected{ color:blue}
 
 .LinkLabel{border-style:none;}
-.TextBox{padding:1px;}
+.TextBox{}
 
-.ComboBox entry.flat{border-right-width:0px;padding:0px;}
+.ComboBox entry.flat{border-right-width:0px;  }
+.ComboBox entry:focus{border-right-width:0px; box-shadow: inset 0px 0px 0px 1px #62a0ea;}
 .ComboBox button{padding-top:0px;padding-bottom:0px;}
 
 .DropDownList button{padding:0px;}
-.SplitContainer{padding:0px;}
+.SplitContainer{padding:0px;border:0px;box-shadow:none;}
+.SplitterPanel{padding:0px;margin:0px;border:0px;box-shadow:none;}
+.SplitterPanel .frame{padding:0px;margin:0px;border:0px;box-shadow:none;}
+.SplitterPanel .flat{padding:0px;margin:0px;border:0px;box-shadow:none;}
+
 .TableLayoutPanel {box-shadow: 1px 1px 1px 0px @frame_color;}
 .TableLayoutPanel viewport.frame {box-shadow: inset 1px 1px 1px 0 @frame_color;}
 .ListView{}
@@ -154,8 +159,8 @@ namespace System.Windows.Forms
 .NumericUpDown{border-width:1px;padding:2px; }
 .NumericUpDown button.up{border-width:0px;padding:0px;}
 .NumericUpDown button.down{border-width:0px;padding:0px;}
-.NumericUpDown.horizontal entry{border-width:0px;padding:1px;min-height:6px;min-width:6px;} 
-.NumericUpDown.vertical entry{border-width:0px;padding:1px;min-height:6px;min-width:6px;} 
+.NumericUpDown.horizontal entry{border-width:0px;padding:2px 3px; min-height:6px;min-width:6px;} 
+.NumericUpDown.vertical entry{border-width:0px;padding:2px 3px; min-height:6px;min-width:6px;} 
 
 .PrintPreviewBack{background-color:#cccccc; border-radius:0px;}
 .Paper{box-shadow: 0px 0px 3px 1px #999999;background:#ffffff; border-radius:0px;}
@@ -270,7 +275,7 @@ namespace System.Windows.Forms
                 }
                
                 css.LoadFromData(cssBuilder.ToString());
-                Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, 600);
+                Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, 700);
             }
             return App;
         }

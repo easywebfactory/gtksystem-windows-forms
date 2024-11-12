@@ -97,7 +97,14 @@ namespace System.Windows.Forms
             }
         }
         public event DataGridViewCellEventHandler CellValueChanged;
-
+        public void SetExpandRow(DataGridViewRow row, bool all)
+        {
+            GridView.ExpandRow(Store.GetPath(row.TreeIter), all);
+        }
+        public void SetCollapseRow(DataGridViewRow row)
+        {
+            GridView.CollapseRow(Store.GetPath(row.TreeIter));
+        }
         public bool MultiSelect { get => !GridView.ActivateOnSingleClick; set { GridView.ActivateOnSingleClick = !value; } }
         public DataGridViewSelectionMode SelectionMode { get; set; }
         public string Markup { get; set; } = "...";

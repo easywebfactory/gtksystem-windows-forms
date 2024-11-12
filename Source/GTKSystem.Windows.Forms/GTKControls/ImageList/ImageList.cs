@@ -78,7 +78,6 @@ namespace System.Windows.Forms
                 }
 
                 _colorDepth = value;
-                PerformRecreateHandle(nameof(ColorDepth));
             }
         }
 
@@ -107,7 +106,6 @@ namespace System.Windows.Forms
                 if (_imageSize.Width != value.Width || _imageSize.Height != value.Height)
                 {
                     _imageSize = new Size(value.Width, value.Height);
-                    PerformRecreateHandle(nameof(ImageSize));
                 }
             }
         }
@@ -142,16 +140,25 @@ namespace System.Windows.Forms
                 string path2 = $"{path1}/{value.ResourceInfo.ResourceName}/{name}";
                 if (IO.File.Exists(path2))
                 {
-                    return Bitmap.FromFile(path2);
+                    return ScaleSimpleBitmap(Bitmap.FromFile(path2));
                 }
             }
             if (IO.File.Exists($"{path1}/{name}"))
             {
-                return Bitmap.FromFile($"{path1}/{name}");
+                return ScaleSimpleBitmap(Bitmap.FromFile($"{path1}/{name}"));
             }
             return null;
         }
+        private Bitmap ScaleSimpleBitmap(Image bitmp)
+        {
+            Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(bitmp.PixbufData);
+            int w = Math.Max(16, Math.Min(ImageSize.Width, 200));
+            int h = Math.Max(16, Math.Min(ImageSize.Height, 200));
+            Gdk.Pixbuf newpixbuf = pixbuf.ScaleSimple(w, h, Gdk.InterpType.Bilinear);
+            return new Bitmap(w, h) { Pixbuf = newpixbuf };
+        }
 #if DEBUG
+
         internal bool IsDisposed { get; private set; }
 #endif
 
@@ -353,12 +360,7 @@ namespace System.Windows.Forms
         {
             try
             {
-                Bitmap bitmp = _originals[index]._image as Bitmap;
-                Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(bitmp.PixbufData);
-                int w = Math.Max(16, Math.Min(ImageSize.Width, 200));
-                int h = Math.Max(16, Math.Min(ImageSize.Height, 200));
-                Gdk.Pixbuf newpixbuf = pixbuf.ScaleSimple(w, h, Gdk.InterpType.Bilinear);
-                return new Bitmap(w, h) { Pixbuf = newpixbuf };
+                return _originals[index]._image as Bitmap;
             }
             catch (IndexOutOfRangeException ex)
             {
@@ -385,51 +387,6 @@ namespace System.Windows.Forms
 
         private void OnChangeHandle(EventArgs eventargs) => _changeHandler?.Invoke(this, eventargs);
 
-        // PerformRecreateHandle doesn't quite do what you would suspect.
-        // Any existing images in the imagelist will NOT be copied to the
-        // new image list -- they really should.
-
-        // The net effect is that if you add images to an imagelist, and
-        // then e.g. change the ImageSize any existing images will be lost
-        // and you will have to add them back. This is probably a corner case
-        // but it should be mentioned.
-        //
-        // The fix isn't as straightforward as you might think, i.e. we
-        // cannot just blindly store off the images and copy them into
-        // the newly created imagelist. E.g. say you change the ColorDepth
-        // from 8-bit to 32-bit. Just copying the 8-bit images would be wrong.
-        // Therefore we are going to leave this as is. Users should make sure
-        // to set these properties before actually adding the images.
-
-        // The Designer works around this by shadowing any Property that ends
-        // up calling PerformRecreateHandle (ImageSize, ColorDepth, ImageStream).
-
-        // Thus, if you add a new Property to ImageList which ends up calling
-        // PerformRecreateHandle, you must shadow the property in ImageListDesigner.
-        private void PerformRecreateHandle(string reason)
-        {
-            if (!HandleCreated)
-            {
-                return;
-            }
-
-            if (_originals is null || Images.Empty)
-            {
-                // spoof it into thinking this is the first CreateHandle
-                _originals = new List<Original>();
-            }
-
-            DestroyHandle();
-            CreateHandle();
-            OnRecreateHandle(EventArgs.Empty);
-        }
-
-        private void ResetImageSize() => ImageSize = s_defaultImageSize;
-
-        private void ResetTransparentColor() => TransparentColor = Color.LightGray;
-
-        private bool ShouldSerializeTransparentColor() => !TransparentColor.Equals(Color.LightGray);
-
         /// <summary>
         ///  Returns a string representation for this control.
         /// </summary>
@@ -437,9 +394,5 @@ namespace System.Windows.Forms
             => Images is null
                ? base.ToString()
                : $"{base.ToString()} Images.Count: {Images.Count}, ImageSize: {ImageSize}";
-
-        //HIMAGELIST IHandle<HIMAGELIST>.Handle => HIMAGELIST;
-
-        //internal HIMAGELIST HIMAGELIST => (HIMAGELIST)Handle;
     }
 }

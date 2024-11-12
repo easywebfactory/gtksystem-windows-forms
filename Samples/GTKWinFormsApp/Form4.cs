@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,6 +25,7 @@ namespace GTKWinFormsApp
         {
             panel1Location.X = panel1.Widget.MarginStart;
             panel1Location.Y = panel1.Widget.MarginTop;
+
         }
 
         private void button3_Click(object sender, EventArgs e)

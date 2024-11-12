@@ -27,19 +27,62 @@ namespace System.Windows.Forms
         {
             base.SetStyle(self.TreeView);
         }
+        private CellRendererToggle renderercheckbox;
+        private CellRendererIcon rendererPixbuf;
         public TreeView() : base()
         {
             root = new TreeNode(this);
             root.Index = "-1";
             root.Name = "__root";
-            _store = new Gtk.TreeStore(typeof(string), typeof(bool), typeof(Pixbuf));
+            _store = new Gtk.TreeStore(typeof(string), typeof(bool), typeof(int), typeof(string));
             self.TreeView.Model = _store;
-            self.TreeView.Realized += Control_Realized;
+            self.TreeView.Realized += TreeView_Realized;
             self.TreeView.Selection.Changed += Selection_Changed;
             self.TreeView.RowActivated += TreeView_RowActivated;
             self.TreeView.RowCollapsed += TreeView_RowCollapsed;
             self.TreeView.RowExpanded += TreeView_RowExpanded;
             this.BorderStyle = BorderStyle.Fixed3D;
+
+            Gtk.TreeViewColumn column = new Gtk.TreeViewColumn();
+            column.Title = "树目录";
+
+            renderercheckbox = new CellRendererToggle();
+            renderercheckbox.Activatable = true;
+            renderercheckbox.IsExpanded = true;
+            renderercheckbox.Toggled += CellName_Toggled;
+
+            renderercheckbox.Visible = false;
+            column.PackStart(renderercheckbox, false);
+            column.AddAttribute(renderercheckbox, "active", 1);
+
+            rendererPixbuf = new CellRendererIcon(this);
+            rendererPixbuf.IsExpanded = true;
+            rendererPixbuf.Visible = false;
+            column.PackStart(rendererPixbuf, false);
+            Gtk.CellRendererText renderertext = new Gtk.CellRendererText();
+            renderertext.IsExpanded = true;
+            renderertext.PlaceholderText = "---";
+            column.PackStart(renderertext, true);
+            column.AddAttribute(renderertext, "text", 0);
+            self.TreeView.AppendColumn(column);
+        }
+
+        private void TreeView_Realized(object sender, EventArgs e)
+        {
+            if (ImageList != null)
+            {
+                Gtk.TreeViewColumn column = ((Gtk.TreeView)sender).Columns[0];
+                if (string.IsNullOrWhiteSpace(ImageKey))
+                {
+                    System.Drawing.Image image = ImageList.GetBitmap(ImageIndex);
+                    rendererPixbuf.Pixbuf = image.Pixbuf;
+                }
+                else
+                {
+                    System.Drawing.Image image = ImageList.GetBitmap(ImageKey);
+                    rendererPixbuf.Pixbuf = image.Pixbuf;
+                }
+            }
         }
 
         private void TreeView_RowExpanded(object o, RowExpandedArgs args)
@@ -94,93 +137,9 @@ namespace System.Windows.Forms
         {
             Store.Clear();
         }
-        private void Control_Realized(object sender, EventArgs e)
-        {
-            CellRendererToggle renderercheckbox = new CellRendererToggle();
-            renderercheckbox.Activatable = true;
-            renderercheckbox.IsExpanded = true;
-            renderercheckbox.Toggled += CellName_Toggled;
-
-            Gtk.CellRendererText renderertext = new Gtk.CellRendererText();
-            renderertext.IsExpanded = true;
-            renderertext.PlaceholderText = "---";
-
-            Gtk.TreeViewColumn column = new Gtk.TreeViewColumn();
-            column.Title = "树目录";
-            if (CheckBoxes == true)
-            {
-                column.PackStart(renderercheckbox, false);
-                column.AddAttribute(renderercheckbox, "active", 1);
-            }
-            if (ImageList != null)
-            {
-                Gtk.CellRendererPixbuf rendererPixbuf = new Gtk.CellRendererPixbuf();
-                rendererPixbuf.IsExpanded = true;
-
-                if (string.IsNullOrWhiteSpace(ImageKey))
-                {
-                    System.Drawing.Image image = ImageList.GetBitmap(ImageIndex);
-                    rendererPixbuf.Pixbuf = image.Pixbuf;
-                }
-                else
-                {
-                    System.Drawing.Image image = ImageList.GetBitmap(ImageKey);
-                    rendererPixbuf.Pixbuf = image.Pixbuf;
-                }
-                column.PackStart(rendererPixbuf, false);
-                column.AddAttribute(rendererPixbuf, "pixbuf", 2);
-            }
-            column.PackStart(renderertext, true);
-            column.AddAttribute(renderertext, "text", 0);
-            self.TreeView.AppendColumn(column);
-        }
-        public class CellRendererIcon: Gtk.CellRendererPixbuf
-        {
-            public ImageList _imageList;
-            public CellRendererIcon(ImageList imageList) {
-                _imageList= imageList;
-            }
-            [Property("pixbuficon")]
-            public string PixbufIcon
-            {
-                set {
-                    if(string.IsNullOrWhiteSpace(value)==false)
-                        this.Pixbuf = _imageList.Images[value].Pixbuf;
-                    else
-                        this.IconName = "image-missing";
-                }
-            }
-        }
-        private void CellName_Toggled(object o, ToggledArgs args)
-        {
-            //Console.WriteLine("CellRendererToggle CellName_Toggled");
-            TreePath path = new TreePath(args.Path);
-            var model = _store;
-            model.GetIter(out TreeIter iter, path);
-            bool val = (bool)(model.GetValue(iter, 1));
-            model.SetValue(iter, 1, val == false);
- 
-        }
         internal void LoadNodeValue(TreeNode node, TreeIter parent)
         {
-            Pixbuf pixbuf = null;
-            if (ImageList != null)
-            {
-                if (string.IsNullOrWhiteSpace(node.ImageKey))
-                {
-                    var img = ImageList.GetBitmap(node.ImageIndex);
-                    if (img != null)
-                        pixbuf = img.Pixbuf;
-                }
-                else
-                {
-                    var img = ImageList.GetBitmap(node.ImageKey);
-                    if (img != null)
-                        pixbuf = img.Pixbuf;
-                }
-            }
-
-            TreeIter iter = parent.Equals(TreeIter.Zero) ? Store.AppendValues(node.Text, node.Checked, pixbuf) : Store.AppendValues(parent, node.Text, node.Checked, pixbuf);
+            TreeIter iter = parent.Equals(TreeIter.Zero) ? Store.AppendValues(node.Text, node.Checked, node.ImageIndex, node.ImageKey) : Store.AppendValues(parent, node.Text, node.Checked, node.ImageIndex, node.ImageKey);
             TreePath path = Store.GetPath(iter);
             node.Index = string.Join(",", path.Indices);
             node.TreeIter = iter;
@@ -210,8 +169,39 @@ namespace System.Windows.Forms
                 return root.Nodes;
             }
         }
-        public ImageList ImageList { get; set; }
-        public int ImageIndex { get; set; }
+        private bool _checkBoxs;
+        public bool CheckBoxes
+        {
+            get => _checkBoxs;
+            set
+            {
+                _checkBoxs = value;
+                renderercheckbox.Visible = _checkBoxs == true;
+            }
+        }
+        private void CellName_Toggled(object o, ToggledArgs args)
+        {
+            //Console.WriteLine("CellRendererToggle CellName_Toggled");
+            TreePath path = new TreePath(args.Path);
+            var model = _store;
+            model.GetIter(out TreeIter iter, path);
+            bool val = (bool)(model.GetValue(iter, 1));
+            model.SetValue(iter, 1, val == false);
+        }
+        private ImageList _imageList;
+        public ImageList ImageList { get => _imageList; 
+            set {
+                _imageList = value;
+                rendererPixbuf.Visible = _imageList != null;
+                if (_imageList != null)
+                {
+                    Gtk.TreeViewColumn column = self.TreeView.Columns[0];
+                    column.AddAttribute(rendererPixbuf, "pixbufkey", 3);
+                    column.AddAttribute(rendererPixbuf, "pixbufindex", 2);
+                }
+            } 
+        }
+        public int ImageIndex { get; set; } = -1;
         public string ImageKey { get; set; }
         public int SelectedImageIndex { get; set; }
         public string SelectedImageKey { get; set; }
@@ -238,7 +228,6 @@ namespace System.Windows.Forms
         {
             return self.TreeView.GetRowExpanded(_store.GetPath(node.TreeIter));
         }
-        public bool CheckBoxes { get; set; }
         public bool ShowLines { get=> self.TreeView.EnableTreeLines; set { self.TreeView.EnableTreeLines = true; self.TreeView.EnableGridLines = Gtk.TreeViewGridLines.Horizontal; } }
         public bool ShowNodeToolsTips { get; set; }
         public bool ShowPlusMinus { get; set; } = true;
@@ -346,6 +335,33 @@ namespace System.Windows.Forms
                     depth++;
                     if (depth < indices.Length)
                         GetNodePath(child, indices, depth, ref nodePath);
+                }
+            }
+        }
+
+        private class CellRendererIcon : Gtk.CellRendererPixbuf
+        {
+            public TreeView _treeView;
+            public CellRendererIcon(TreeView treeView)
+            {
+                _treeView = treeView;
+            }
+            [Property("pixbufindex")]
+            public int PixbufIndex
+            {
+                set
+                {
+                    if (value < _treeView.ImageList.Images.Count)
+                        this.Pixbuf = _treeView.ImageList.Images[value].Pixbuf;
+                }
+            }
+            [Property("pixbufkey")]
+            public string PixbufKey
+            {
+                set
+                {
+                    if (string.IsNullOrWhiteSpace(value) == false)
+                        this.Pixbuf = _treeView.ImageList.Images[value].Pixbuf;
                 }
             }
         }
