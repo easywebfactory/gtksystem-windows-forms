@@ -138,12 +138,11 @@ GTKWinFormsApp.runtimeconfig.json
 ### 支持各种主题风格界面（windows xp、vista、7、8、10，macOS系列，等等）
 
 #### 主题风格，windows7风格界面
-![windows7风格界面](/pic/windows7-1.png)
 ![windows7风格界面](/pic/windows7-0.png)
+#### 主题风格，window10黑色风格界面
+![mwindow10黑色风格界面](/pic/Windows-10-White.png)
 #### 主题风格，macOS风格界面
 ![macOS风格界面](/pic/macOS-1.png)
-#### 主题风格，window10黑色风格界面
-![mwindow10黑色风格界面](/pic/Windows-10-Dark.png)
 
 ### 支持GTKSystem，获取技术服务
 
