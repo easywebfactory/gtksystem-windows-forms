@@ -18,19 +18,23 @@ namespace System.Windows.Forms
 
         public virtual void Add(Control control, int column, int row)
         {
+            control.Location = new Drawing.Point(0, 0);
             control.LockLocation = true;
+            control.Parent = Container;
             control.Widget.Margin = 4;
+            control.Widget.Valign = Align.Start;
+            control.Widget.Halign = Align.Start;
+            control.Widget.Hexpand = false;
+            control.Widget.WidthRequest = 100;
             if (Container.self.GetChildAt(column, row) is Gtk.Viewport view)
             {
                 view.Child = control.Widget;
             }
-            else {
+            else
+            {
                 Gtk.Viewport viewport = new Gtk.Viewport() { Vexpand = false, Hexpand = false };
                 viewport.Valign = Align.Fill;
                 viewport.Halign = Align.Fill;
-                
-                control.Widget.Valign = Align.Start;
-                control.Widget.Halign = Align.Start;
                 viewport.Add(control.Widget);
                 Container.self.Attach(viewport, column, row, 1, 1);
             }

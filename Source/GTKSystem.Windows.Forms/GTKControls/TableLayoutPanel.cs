@@ -64,7 +64,9 @@ namespace System.Windows.Forms
                 else if (cs.SizeType == SizeType.Percent)
                 {
                     for (int r = 0; r < ColumnCount; r++)
+                    {
                         self.GetChildAt(cidx, r).WidthRequest = Convert.ToInt32(size.Width * cs.Width * 0.01);
+                    }
                 }
                 cidx++;
             }

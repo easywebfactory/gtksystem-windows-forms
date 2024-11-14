@@ -65,13 +65,12 @@ namespace System.Windows.Forms
             {
                 _owner = owner;
             }
-            public override void Add(Control item)
+            public override void Add(Control control)
             {
                 Gtk.FlowBoxChild box = new FlowBoxChild();
                 box.Valign = Align.Start;
                 box.Halign = Align.Start;
                 box.Expand = false;
-                Control control = (Control)item;
                 control.Location=new Drawing.Point(0, 0);
                 control.LockLocation = true;
                 control.Parent = _owner;
