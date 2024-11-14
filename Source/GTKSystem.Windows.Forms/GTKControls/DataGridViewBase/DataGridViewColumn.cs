@@ -182,7 +182,15 @@ namespace System.Windows.Forms
             renderer.Editable = false;
             renderer.Height = RowHeight;
             renderer.Width = Width;
-            base.PackStart(renderer, true);
+            if (base.DefaultCellStyle == null)
+            {
+                base.DefaultCellStyle = new DataGridViewCellStyle() { Alignment = DataGridViewContentAlignment.MiddleCenter };
+            }
+            else if (base.DefaultCellStyle.Alignment == null || base.DefaultCellStyle.Alignment == DataGridViewContentAlignment.NotSet)
+            {
+                base.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
+            base.PackStart(renderer, false);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
             if (this.SortMode != DataGridViewColumnSortMode.NotSortable)

@@ -28,7 +28,7 @@ namespace GTKWinFormsApp
         {
             
             treeView1.Nodes.Clear();
-            //treeView1.CheckBoxes = true;
+            treeView1.CheckBoxes = true;
 
             string jsontext = File.ReadAllText("TestData1.json");
             using (FileStream reader = new FileStream("TestData1.json", FileMode.Open, FileAccess.Read))
