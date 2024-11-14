@@ -378,7 +378,7 @@ namespace GTKWinFormsApp
             // 
             // panel1
             // 
-            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             panel1.AutoScroll = true;
             panel1.BackColor = System.Drawing.Color.MistyRose;
             panel1.BorderStyle = BorderStyle.Fixed3D;

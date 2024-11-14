@@ -14,7 +14,13 @@
     <Compile Update="GTKControls\CheckedListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\Collection\ArrangedElement.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\Collection\BindingSource.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\Collection\ControlCollection.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\ComboBox.cs">

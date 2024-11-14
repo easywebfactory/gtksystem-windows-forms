@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms.Design;
+using System.Windows.Forms.Layout;
 
 namespace System.Windows.Forms
 {
@@ -12,7 +13,7 @@ namespace System.Windows.Forms
     [DefaultProperty("Text")]
     [Designer(typeof(ControlDesigner))]
     [ToolboxItemFilter("System.Windows.Forms")]
-    public partial class Control : Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize
+    public partial class Control : Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize, IArrangedElement
     {
         private Gtk.Application app = Application.Init();
         public string unique_key { get; protected set; }
@@ -629,13 +630,10 @@ namespace System.Windows.Forms
             set
             {
                 this.Widget.MarginTop = value;
-                if (this.Widget.IsRealized)
-                {
-                    if (DockChanged != null)
-                        DockChanged(this, EventArgs.Empty);
-                    if (AnchorChanged != null)
-                        AnchorChanged(this, EventArgs.Empty);
-                }
+                if (DockChanged != null)
+                    DockChanged(this, EventArgs.Empty);
+                if (AnchorChanged != null)
+                    AnchorChanged(this, EventArgs.Empty);
             }
         }
         public virtual int Left
@@ -643,13 +641,10 @@ namespace System.Windows.Forms
             get => this.Widget.MarginStart;
             set { 
                 this.Widget.MarginStart = value;
-                if (this.Widget.IsRealized)
-                {
-                    if (DockChanged != null)
-                        DockChanged(this, EventArgs.Empty);
-                    if (AnchorChanged != null)
-                        AnchorChanged(this, EventArgs.Empty);
-                }
+                if (DockChanged != null)
+                    DockChanged(this, EventArgs.Empty);
+                if (AnchorChanged != null)
+                    AnchorChanged(this, EventArgs.Empty);
             }
         }
         public virtual int Right {
@@ -1423,6 +1418,15 @@ namespace System.Windows.Forms
                 return createParams;
             }
         }
+
+        public bool ParticipatesInLayout => throw new NotImplementedException();
+
+        PropertyStore IArrangedElement.Properties => throw new NotImplementedException();
+
+        IArrangedElement IArrangedElement.Container => throw new NotImplementedException();
+
+        public ArrangedElementCollection Children => throw new NotImplementedException();
+
         protected virtual void OnKeyDown(KeyEventArgs e)
         {
 
@@ -1450,6 +1454,16 @@ namespace System.Windows.Forms
         protected virtual void WndProc(ref Message m)
         {
             //Console.WriteLine($"HWnd:{m.HWnd},WParam:{m.WParam},LParam:{m.LParam},Msg:{m.Msg}");
+        }
+
+        public void SetBounds(Rectangle bounds, BoundsSpecified specified)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IArrangedElement.PerformLayout(IArrangedElement affectedElement, string propertyName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

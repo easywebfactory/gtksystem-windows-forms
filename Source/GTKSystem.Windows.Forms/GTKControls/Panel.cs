@@ -12,7 +12,7 @@ using System.Drawing;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class Panel : ContainerControl
+    public partial class Panel : ScrollableControl
     {
         public readonly PanelBase self = new PanelBase();
         public override object GtkControl => self;

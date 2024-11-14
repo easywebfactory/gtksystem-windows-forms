@@ -40,18 +40,24 @@ namespace GTKWinFormsApp
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             TreeNode treeNode1 = new TreeNode("Node21");
             TreeNode treeNode2 = new TreeNode("Node22");
             TreeNode treeNode3 = new TreeNode("Node2", new TreeNode[] { treeNode1, treeNode2 });
             TreeNode treeNode4 = new TreeNode("Node3");
             TreeNode treeNode5 = new TreeNode("Node0", new TreeNode[] { treeNode3, treeNode4 });
             TreeNode treeNode6 = new TreeNode("Node1");
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             button1 = new Button();
             comboBox1 = new ComboBox();
             textBox1 = new TextBox();
             dataGridView1 = new DataGridView();
+            ID = new DataGridViewTextBoxColumn();
+            State = new DataGridViewCheckBoxColumn();
+            Title = new DataGridViewTextBoxColumn();
+            CreateDate = new DataGridViewComboBoxColumn();
+            Operate = new DataGridViewButtonColumn();
+            PIC = new DataGridViewImageColumn();
             groupBox1 = new GroupBox();
             checkBox2 = new CheckBox();
             linkLabel1 = new LinkLabel();
@@ -99,12 +105,6 @@ namespace GTKWinFormsApp
             toolStripMenuItem4 = new ToolStripMenuItem();
             二级菜单1ToolStripMenuItem = new ToolStripMenuItem();
             splitContainer2 = new SplitContainer();
-            ID = new DataGridViewTextBoxColumn();
-            State = new DataGridViewCheckBoxColumn();
-            Title = new DataGridViewTextBoxColumn();
-            CreateDate = new DataGridViewComboBoxColumn();
-            Operate = new DataGridViewButtonColumn();
-            PIC = new DataGridViewImageColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
@@ -225,6 +225,59 @@ namespace GTKWinFormsApp
             dataGridView1.RowEnter += dataGridView1_RowEnter;
             dataGridView1.RowLeave += dataGridView1_RowLeave;
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
+            // 
+            // ID
+            // 
+            ID.HeaderText = "序号";
+            ID.MinimumWidth = 6;
+            ID.Name = "ID";
+            ID.SortMode = DataGridViewColumnSortMode.NotSortable;
+            ID.Width = 160;
+            // 
+            // State
+            // 
+            State.HeaderText = "状态";
+            State.MinimumWidth = 6;
+            State.Name = "State";
+            State.Resizable = DataGridViewTriState.False;
+            State.Width = 125;
+            // 
+            // Title
+            // 
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(192, 255, 192);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(192, 0, 0);
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            Title.DefaultCellStyle = dataGridViewCellStyle3;
+            Title.HeaderText = "标题";
+            Title.MinimumWidth = 6;
+            Title.Name = "Title";
+            Title.Resizable = DataGridViewTriState.True;
+            Title.Width = 250;
+            // 
+            // CreateDate
+            // 
+            CreateDate.HeaderText = "日期时间";
+            CreateDate.Items.AddRange(new object[] { "2012-09-12 12:32:11", "2012-09-13 12:32:22", "2012-09-14 12:32:33" });
+            CreateDate.MinimumWidth = 6;
+            CreateDate.Name = "CreateDate";
+            CreateDate.Resizable = DataGridViewTriState.True;
+            CreateDate.SortMode = DataGridViewColumnSortMode.Automatic;
+            CreateDate.Width = 180;
+            // 
+            // Operate
+            // 
+            Operate.HeaderText = "操作";
+            Operate.MinimumWidth = 6;
+            Operate.Name = "Operate";
+            Operate.Width = 160;
+            // 
+            // PIC
+            // 
+            PIC.HeaderText = "图片";
+            PIC.MinimumWidth = 6;
+            PIC.Name = "PIC";
+            PIC.Width = 225;
             // 
             // groupBox1
             // 
@@ -503,9 +556,9 @@ namespace GTKWinFormsApp
             tableLayoutPanel1.ColumnCount = 2;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Controls.Add(label6, 0, 1);
             tableLayoutPanel1.Controls.Add(label5, 0, 0);
             tableLayoutPanel1.Controls.Add(button6, 1, 1);
+            tableLayoutPanel1.Controls.Add(label6, 0, 1);
             tableLayoutPanel1.Location = new System.Drawing.Point(795, 26);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
@@ -521,7 +574,7 @@ namespace GTKWinFormsApp
             label6.Name = "label6";
             label6.Size = new System.Drawing.Size(129, 60);
             label6.TabIndex = 0;
-            label6.Text = "\r\nddddddddddddddddddddddddddddddddddddd";
+            label6.Text = "\r\ndddddddddddddddddddddddddddddddddddd";
             // 
             // label5
             // 
@@ -786,59 +839,6 @@ namespace GTKWinFormsApp
             splitContainer2.Size = new System.Drawing.Size(1409, 660);
             splitContainer2.SplitterDistance = 210;
             splitContainer2.TabIndex = 15;
-            // 
-            // ID
-            // 
-            ID.HeaderText = "序号";
-            ID.MinimumWidth = 6;
-            ID.Name = "ID";
-            ID.SortMode = DataGridViewColumnSortMode.NotSortable;
-            ID.Width = 160;
-            // 
-            // State
-            // 
-            State.HeaderText = "状态";
-            State.MinimumWidth = 6;
-            State.Name = "State";
-            State.Resizable = DataGridViewTriState.False;
-            State.Width = 125;
-            // 
-            // Title
-            // 
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(192, 255, 192);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(192, 0, 0);
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            Title.DefaultCellStyle = dataGridViewCellStyle3;
-            Title.HeaderText = "标题";
-            Title.MinimumWidth = 6;
-            Title.Name = "Title";
-            Title.Resizable = DataGridViewTriState.True;
-            Title.Width = 250;
-            // 
-            // CreateDate
-            // 
-            CreateDate.HeaderText = "日期时间";
-            CreateDate.Items.AddRange(new object[] { "2012-09-12 12:32:11", "2012-09-13 12:32:22", "2012-09-14 12:32:33" });
-            CreateDate.MinimumWidth = 6;
-            CreateDate.Name = "CreateDate";
-            CreateDate.Resizable = DataGridViewTriState.True;
-            CreateDate.SortMode = DataGridViewColumnSortMode.Automatic;
-            CreateDate.Width = 180;
-            // 
-            // Operate
-            // 
-            Operate.HeaderText = "操作";
-            Operate.MinimumWidth = 6;
-            Operate.Name = "Operate";
-            Operate.Width = 160;
-            // 
-            // PIC
-            // 
-            PIC.HeaderText = "图片";
-            PIC.MinimumWidth = 6;
-            PIC.Name = "PIC";
-            PIC.Width = 225;
             // 
             // Form1
             // 

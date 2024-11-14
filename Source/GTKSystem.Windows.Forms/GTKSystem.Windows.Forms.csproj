@@ -46,8 +46,10 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="GTKControls\Control\ArrangedElementCollection.cs" />
     <Compile Remove="GTKControls\Control\GridItem.cs" />
     <Compile Remove="GTKControls\Control\GridItemCollection.cs" />
+    <Compile Remove="GTKControls\Control\IArrangedElement.cs" />
     <Compile Remove="GTKControls\Enum\Enums\ColorDepth.cs" />
     <Compile Remove="GTKControls\Enum\Enums\GridItemType.cs" />
     <Compile Remove="GTKControls\EventArgs\PropertyValueChangedEventArgs.cs" />

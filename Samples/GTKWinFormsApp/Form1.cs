@@ -43,6 +43,18 @@ namespace GTKWinFormsApp
                 treeView1.Nodes[0].Nodes[2].Nodes[3].Checked = true;
                 treeView1.SelectedNode = treeView1.Nodes[0].Nodes[2];
             }
+            TabPage tabPage=new TabPage();
+            tabPage.Location = new System.Drawing.Point(4, 29);
+            tabPage.Margin = new Padding(4);
+            tabPage.Name = "tabPage3";
+            tabPage.Padding = new Padding(4);
+            tabPage.Size = new System.Drawing.Size(1179, 426);
+            tabPage.TabIndex = 1;
+            tabPage.Text = "test";
+            tabPage.UseVisualStyleBackColor = true;
+
+            tabControl1.Controls.Add(tabPage);
+            //tabPage.Show();
         }
         private IEnumerable<TreeNode> GetChild(string treeID, IEnumerable<TestDataMode> data)
         {

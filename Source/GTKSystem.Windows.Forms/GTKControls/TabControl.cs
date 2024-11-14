@@ -125,9 +125,15 @@ namespace System.Windows.Forms
                     };
                     return _owner.self.AppendPage(item.self, item.TabLabel);
                 }
+                catch
+                {
+                    throw;
+                }
                 finally
                 {
                     _owner.self.SetTabReorderable(item.self, true);
+                    if (_owner.Widget.IsRealized)
+                        item.Widget.ShowAll();
                 }
             }
             public new void RemoveAt(int index)
