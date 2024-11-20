@@ -232,10 +232,13 @@ namespace System.Windows.Forms
                                             Environment.SetEnvironmentVariable("GTK_DATA_PREFIX", themefolder);
                                         else
                                         {
+                                            string _themefolder = themefolder;
+                                            if (!_themefolder.StartsWith("/"))
+                                                _themefolder = Path.Combine(appdirectory, _themefolder);
                                             using (Diagnostics.Process process = new Diagnostics.Process())
                                             {
                                                 process.StartInfo.FileName = "/bin/bash";
-                                                process.StartInfo.Arguments = $"-c \"export GTK_DATA_PREFIX={themefolder}\"";
+                                                process.StartInfo.Arguments = $"-c \"export GTK_DATA_PREFIX={_themefolder}\"";
                                                 process.StartInfo.RedirectStandardOutput = false;
                                                 process.StartInfo.UseShellExecute = false;
                                                 process.StartInfo.CreateNoWindow = true;
