@@ -235,14 +235,18 @@ namespace System.Windows.Forms
                                             using (Diagnostics.Process process = new Diagnostics.Process())
                                             {
                                                 process.StartInfo.FileName = "/bin/bash";
-                                                process.StartInfo.Arguments = $"export GTK_DATA_PREFIX={themefolder}";
-                                                process.StartInfo.RedirectStandardOutput = true;
+                                                process.StartInfo.Arguments = $"-c \"export GTK_DATA_PREFIX={themefolder}\"";
+                                                process.StartInfo.RedirectStandardOutput = false;
                                                 process.StartInfo.UseShellExecute = false;
                                                 process.StartInfo.CreateNoWindow = true;
                                                 process.Start();
                                                 process.WaitForExit();
                                             }
                                         }
+                                    }
+                                    catch(Exception ex)
+                                    {
+                                        Console.WriteLine(ex.Message);
                                     }
                                     finally
                                     {
