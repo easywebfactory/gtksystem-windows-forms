@@ -136,9 +136,6 @@ GTKWinFormsApp.runtimeconfig.json
 ![图文窗口](/pic/native-3.png)
 
 ### 支持各种主题风格界面（windows xp、vista、7、8、10，macOS系列，等等）
-
-#### 主题风格，windows7风格界面
-![windows7风格界面](/pic/windows7-0.png)
 #### 主题风格，window10黑色风格界面
 ![mwindow10黑色风格界面](/pic/Windows-10-White.png)
 #### 主题风格，macOS风格界面
@@ -157,7 +154,7 @@ GTKWinFormsApp.runtimeconfig.json
  ![联系GTKSystem](/pic/contact_weixin.png)
 
 ### 交流/合作/商务/赞助
-QQ群：236066073
+QQ群：236066073（满），1011147488
 邮箱：438865652@qq.com <br/>
 
 ### 常见问题
