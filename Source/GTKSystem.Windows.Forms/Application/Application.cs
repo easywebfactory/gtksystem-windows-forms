@@ -228,26 +228,10 @@ namespace System.Windows.Forms
                                 {
                                     try
                                     {
-                                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                                            Environment.SetEnvironmentVariable("GTK_DATA_PREFIX", themefolder);
-                                        else
-                                        {
-                                            string _themefolder = themefolder;
-                                            if (!_themefolder.StartsWith("/"))
-                                                _themefolder = Path.Combine(appdirectory, _themefolder);
-                                            using (Diagnostics.Process process = new Diagnostics.Process())
-                                            {
-                                                process.StartInfo.FileName = "/bin/bash";
-                                                process.StartInfo.Arguments = $"-c \"export GTK_DATA_PREFIX={_themefolder}\"";
-                                                process.StartInfo.RedirectStandardOutput = false;
-                                                process.StartInfo.UseShellExecute = false;
-                                                process.StartInfo.CreateNoWindow = true;
-                                                process.Start();
-                                                process.WaitForExit();
-                                            }
-                                        }
+                                        string _themefolder = Path.GetFullPath(themefolder);
+                                        Environment.SetEnvironmentVariable("GTK_DATA_PREFIX", _themefolder);
                                     }
-                                    catch(Exception ex)
+                                    catch (Exception ex)
                                     {
                                         Console.WriteLine(ex.Message);
                                     }
@@ -255,6 +239,10 @@ namespace System.Windows.Forms
                                     {
                                         Gtk.Settings.Default.ThemeName = nameValue["Name"];
                                     }
+                                }
+                                else
+                                {
+                                    Console.WriteLine(themefolder + "=》目录不存在");
                                 }
                             }
                             if (nameValue.TryGetValue("ThemeCssPath", out string themecss))
