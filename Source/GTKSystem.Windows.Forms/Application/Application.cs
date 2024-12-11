@@ -293,7 +293,7 @@ namespace System.Windows.Forms
                     setupthemecontent.AppendLine("Name=mytheme");
                     setupthemecontent.AppendLine("/* 主题文件所在文件夹 */");
                     setupthemecontent.AppendLine("ThemeFolder=theme");
-                    setupthemecontent.AppendLine("/* css文件，相对路径 */");
+                    setupthemecontent.AppendLine("/* css文件路径 */");
                     setupthemecontent.AppendLine("ThemeCssPath=theme/mytheme/theme.css");
 
                     setupthemecontent.AppendLine().AppendLine("[custom style]");

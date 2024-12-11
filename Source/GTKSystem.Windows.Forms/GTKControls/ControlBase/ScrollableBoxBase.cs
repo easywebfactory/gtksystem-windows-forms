@@ -1,7 +1,5 @@
-﻿
+﻿using Gdk;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
@@ -25,6 +23,29 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             base.OverlayScrolling = false;
             base.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
             base.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
+            base.Vadjustment.Changed += Vadjustment_Changed;
+            base.Hadjustment.Changed += Hadjustment_Changed;
+        }
+        private int vadjustment_value = 0;
+        private int hadjustment_value = 0;
+        public event EventHandler SizeChange;
+        private void Vadjustment_Changed(object sender, EventArgs e)
+        {
+            if (this.AllocatedHeight != vadjustment_value)
+            {
+                vadjustment_value = this.AllocatedHeight;
+                if (SizeChange != null)
+                    SizeChange(this, EventArgs.Empty);
+            }
+        }
+        private void Hadjustment_Changed(object sender, EventArgs e)
+        {
+            if (this.AllocatedWidth != hadjustment_value)
+            {
+                hadjustment_value = this.AllocatedWidth;
+                if (SizeChange != null)
+                    SizeChange(this, EventArgs.Empty);
+            }
         }
         private void Vadjustment_ValueChanged(object sender, EventArgs e)
         {
