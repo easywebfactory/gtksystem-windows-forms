@@ -6,8 +6,6 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 便于开发跨平台winform软件，便于将C#升级为跨平台软件。
 
 项目官网：[https://www.gtkapp.com](https://www.gtkapp.com/)   
-博客：[https://www.cnblogs.com/easywebfactory](https://www.cnblogs.com/easywebfactory)
-
 
 目前功能持续更新中，将优先完善常用功能。
 
