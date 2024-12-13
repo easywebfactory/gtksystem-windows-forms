@@ -28,11 +28,29 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 也可以下载[https://github.com/GtkSharp/Dependencies](https://github.com/GtkSharp/Dependencies)，把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24\gtk.zip目录即可。
   ps: $(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData\Local\Gtk\3.24.24
 
-linux安装gtk环境：
+### 桌面版linux操作系统通常已经预装GTK环境，不需要再安装GTK，只需安装DotNet SDK即可运行本框架。  
+
+对于没有安装GTK环境的linux系统，可用以下命令安装：
 ```
- sudo apt install libgtk-3-dev
- 或
- sudo apt-get install libgtk3*
+#Debian/Ubuntu环境
+    sudo apt install libgtk-3-0  //Binary package
+    sudo apt install libgtk-3-dev //开发环境 package
+#Arch环境
+    sudo apt install gtk3
+#Fedora	环境
+    sudo apt install gtk3    //Binary package
+    sudo apt install gtk3-devel  //开发环境 package
+
+*或指定库名安装
+    sudo apt-get install libgtk3*
+
+#从MSYS2安装：
+    pacman -S mingw-w64-ucrt-x86_64-gtk3
+
+*检查环境情况（需要安装pkg-config）：
+    pkg-config --cflags --libs gtk+-3.0
+*查找gtk的安装包目录：
+    ldconfig -p | grep gtk
 ```
 linux安装dotnet环境：
 ```
