@@ -142,6 +142,17 @@ GTKWinFormsApp.runtimeconfig.json
 ### Resources资源的使用
 * [查看Resources资源的使用教程>>](Readme_Resources.md)
 
+### 支持GTKSystem，获取技术服务
+
+企业服务：[https://www.gtkapp.com/vipservice](https://www.gtkapp.com/vipservice)   
+
+ ![支持GTKSystem](/pic/love_reward_qrcode_.png)
+ ![联系GTKSystem](/pic/contact_weixin.png)
+
+### 交流/合作/商务/赞助
+QQ群：236066073（满），1011147488
+邮箱：438865652@qq.com <br/>
+
 ### 默认风格效果
 ![demo效果](/pic/native-2.png)
 
@@ -156,17 +167,6 @@ GTKWinFormsApp.runtimeconfig.json
 ![mwindow10黑色风格界面](/pic/Windows-10-White.png)
 #### 主题风格，macOS风格界面
 ![macOS风格界面](/pic/macOS-1.png)
-
-### 支持GTKSystem，获取技术服务
-
-[https://www.gtkapp.com/vipservice](https://www.gtkapp.com/vipservice)   
-
- ![支持GTKSystem](/pic/love_reward_qrcode_.png)
- ![联系GTKSystem](/pic/contact_weixin.png)
-
-### 交流/合作/商务/赞助
-QQ群：236066073（满），1011147488
-邮箱：438865652@qq.com <br/>
 
 ### 常见问题
   为什么Form窗体设计器打不开？<br/>
