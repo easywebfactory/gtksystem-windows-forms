@@ -663,12 +663,10 @@ namespace System.Windows.Forms
         }
         public virtual int Right {
             get => this.Widget.MarginEnd;
-            set => this.Widget.MarginEnd = value;
         }
         public virtual int Bottom
         {
             get => this.Widget.MarginBottom;
-            set => this.Widget.MarginBottom = value;
         }
         internal bool LockLocation = false;//由于代码有顺序执行，特殊锁定
         public virtual Point Location

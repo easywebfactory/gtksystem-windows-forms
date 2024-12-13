@@ -39,13 +39,12 @@ namespace System.Windows.Forms
                         {
                             control.Widget.MarginStart = Math.Max(0, control.Widget.MarginStart + Offset.X);
                             control.Widget.MarginTop = Math.Max(0, control.Widget.MarginTop + Offset.Y);
-                            SetMarginEnd(lay, control.Widget);
+                            SetMarginEnd(lay, control);
                         }
                         else if (item is Gtk.Widget widget)
                         {
                             widget.MarginStart = Math.Max(0, widget.MarginStart + Offset.X);
                             widget.MarginTop = Math.Max(0, widget.MarginTop + Offset.Y);
-                            SetMarginEnd(lay, widget);
                         }
                     }
                 }
@@ -84,7 +83,7 @@ namespace System.Windows.Forms
                             lay.AddOverlay(control.Widget);
                             lay.WidthRequest = Math.Max(0, Math.Max(lay.AllocatedWidth, control.Widget.MarginStart + control.Widget.WidthRequest + control.Widget.MarginEnd));
                             lay.HeightRequest = Math.Max(0, Math.Max(lay.AllocatedHeight, control.Widget.MarginTop + control.Widget.HeightRequest + control.Widget.MarginBottom));
-                            SetMarginEnd(lay, control.Widget);
+                            SetMarginEnd(lay, control);
                             control.DockChanged += Control_DockChanged;
                             control.AnchorChanged += Control_AnchorChanged;
                         }
@@ -93,7 +92,6 @@ namespace System.Windows.Forms
                             lay.AddOverlay(widget);
                             lay.WidthRequest = Math.Max(lay.WidthRequest, widget.MarginStart + widget.WidthRequest + widget.MarginEnd);
                             lay.HeightRequest = Math.Max(lay.HeightRequest, widget.MarginTop + widget.HeightRequest + widget.MarginBottom);
-                            SetMarginEnd(lay, widget);
                         }
                     }
                     else if (__ownerControl is Gtk.Fixed lay2)
@@ -154,7 +152,7 @@ namespace System.Windows.Forms
                 Control control = sender as Control;
                 if (control.Widget.Parent is Gtk.Overlay lay)
                 {
-                    SetMarginEnd(lay, control.Widget);
+                    SetMarginEnd(lay, control);
                 }
             }
             private void Control_DockChanged(object sender, EventArgs e)
@@ -162,21 +160,39 @@ namespace System.Windows.Forms
                 Control control = sender as Control;
                 if (control.Widget.Parent is Gtk.Overlay lay)
                 {
-                    SetMarginEnd(lay, control.Widget);
+                    SetMarginEnd(lay, control);
                 }
             }
-            private void SetMarginEnd(Gtk.Overlay lay, Gtk.Widget widget)
+            private void SetMarginEnd(Gtk.Overlay lay, Control control)
             {
-                if (widget.Halign == Gtk.Align.End || widget.Halign == Gtk.Align.Fill)
+                if (lay.IsMapped == true)
                 {
-                    if (widget.WidthRequest > 0)
-                        widget.MarginEnd = Math.Max(0, lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
+                    Gtk.Widget widget = control.Widget;
+                    if (widget.Halign == Gtk.Align.End || widget.Halign == Gtk.Align.Fill)
+                    {
+                        if (widget.WidthRequest > 0)
+                            widget.MarginEnd = Math.Max(control.Padding.Right, lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
+                    }
+                    if (widget.Valign == Gtk.Align.End || widget.Valign == Gtk.Align.Fill)
+                    {
+                        if (widget.HeightRequest > 0)
+                            widget.MarginBottom = Math.Max(control.Padding.Bottom, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
+                    }
                 }
-                if (widget.Valign == Gtk.Align.End || widget.Valign == Gtk.Align.Fill)
+            }
+            private Gtk.Widget GetFrame(Gtk.Widget widget)
+            {
+                Gtk.Widget parent = widget.Parent;
+                while (parent != null)
                 {
-                    if (widget.HeightRequest > 0)
-                        widget.MarginBottom = Math.Max(0, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
+                    if (parent is GTKSystem.Windows.Forms.GTKControls.ControlBase.IControlGtk)
+                    {
+                        return parent;
+                    }
+                    else
+                        parent = parent.Parent;
                 }
+                return null;
             }
             public virtual void Add(Gtk.Widget value)
             {
