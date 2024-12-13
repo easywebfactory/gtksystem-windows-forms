@@ -119,7 +119,10 @@ namespace GTKWinFormsApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            listView1.Items.Add(new ListViewItem("同时添加分组和数据") { ForeColor = Color.Red, BackColor = Color.Yellow, Group = new ListViewGroup("listViewGroup1", "ListViewGroup1") });
+           // listView1.Clear();
+            listView1.Groups.Add("listViewGroup11", "listViewGroup11");
+            listView1.Groups.Add("listViewGroup21", "listViewGroup21");
+            listView1.Items.Add(new ListViewItem("同时添加分组和数据") { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[0] });
             listView1.Items.Add(new ListViewItem("向指定分组添加数据") { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[1] });
 
             ListViewItem m = new ListViewItem("这是一种添加多栏数据的方法", 0);

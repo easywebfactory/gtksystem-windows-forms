@@ -246,7 +246,7 @@ namespace System.Windows.Forms
                 return _fontSize;
             }
         }
-        protected void NativeAdd(ListViewItem item, int position)
+        internal void NativeAdd(ListViewItem item, int position)
         {
             Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
             boxitem.TooltipText = item.Text;
@@ -529,7 +529,7 @@ namespace System.Windows.Forms
             }
         }
 
-        protected void NativeGroupAdd(ListViewGroup group, int position)
+        internal void NativeGroupAdd(ListViewGroup group, int position)
         {
             if (group == null)
                 return;
@@ -1010,7 +1010,12 @@ namespace System.Windows.Forms
 			{
 				base.Remove(base.Find(w => w.Name == key));
 			}
-
+            public new void Clear()
+            {
+                if (_owner != null)
+                    _owner.NativeItemsClear();
+                base.Clear();
+            }
 		}
 
 		[ListBindable(false)]
@@ -1122,6 +1127,11 @@ namespace System.Windows.Forms
 
 		public void Clear()
 		{
+            Items.Clear();
+            Groups.Clear();
+        }
+        internal void NativeItemsClear()
+        {
             foreach (Gtk.Box vbox in flowBoxContainer.AllChildren)
             {
                 foreach (var flow in vbox.AllChildren)
@@ -1132,13 +1142,25 @@ namespace System.Windows.Forms
                             _flow.Remove(child);
                     }
                 }
+            }
+        }
+        internal void NativeGroupsClear()
+        {
+            foreach (Gtk.Box vbox in flowBoxContainer.AllChildren)
+            {
+                foreach (var flow in vbox.Children)
+                {
+                    if (flow is Gtk.FlowBox _flow)
+                    {
+                        foreach (Gtk.FlowBoxChild child in _flow.Children)
+                            _flow.Remove(child);
+                    }
+                    vbox.Remove(flow);
+                }
                 flowBoxContainer.Remove(vbox);
             }
-            Items.Clear();
-		}
-
-
-		public ListViewItem FindItemWithText(string text)
+        }
+        public ListViewItem FindItemWithText(string text)
 		{
             return Items.Find(w => w.Text == text);
         }
