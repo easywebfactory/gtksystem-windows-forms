@@ -159,12 +159,7 @@ GTKWinFormsApp.runtimeconfig.json
 
 ### 支持GTKSystem，获取技术服务
 
-| ￥299基础服务一   | ￥2999套餐服务二    | ￥9999套餐服务三     |
-| :----               |    :----           |          :----   |
-| 帮助开发环境安装       | 包括套餐一服务        |   包含所有套餐服务  |
-| 运行环境gtk\dotnet安装 | 提供二次开发技术支持  |   提供二次开发技术支持    |
-| 上手开发疑难解答       | 为用户开发协商指定的功能或接口至少3项 | 为用户开发功能或接口不少于9项  |
-| 提供应用开发技术支持      | 提供定制的主题风格界面样式和一些常用扩展控件    |  提供定制的主题风格界面样式和一些常用扩展控件                           |
+[https://www.gtkapp.com/vipservice](https://www.gtkapp.com/vipservice)   
 
  ![支持GTKSystem](/pic/love_reward_qrcode_.png)
  ![联系GTKSystem](/pic/contact_weixin.png)
