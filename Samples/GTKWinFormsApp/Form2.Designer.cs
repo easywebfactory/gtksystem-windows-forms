@@ -202,7 +202,7 @@ namespace GTKWinFormsApp
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (System.Drawing.Image)resources.GetObject("$this.BackgroundImage");
-            ClientSize = new System.Drawing.Size(1303, 599);
+            ClientSize = new System.Drawing.Size(1303, 620);
             Controls.Add(label2);
             Controls.Add(button1);
             Controls.Add(label1);

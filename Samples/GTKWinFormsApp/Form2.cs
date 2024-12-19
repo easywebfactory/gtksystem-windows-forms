@@ -53,7 +53,7 @@ namespace GTKWinFormsApp
             //{
             i++;
                 listBox1.Items.Add($"异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}");
-                listBox1.TopIndex = i-3;
+                listBox1.TopIndex = i;
            // }
         }
         private void Form2_FormClosed(object sender, FormClosedEventArgs e)

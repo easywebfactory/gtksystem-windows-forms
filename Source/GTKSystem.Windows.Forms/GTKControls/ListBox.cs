@@ -396,19 +396,16 @@ namespace System.Windows.Forms
             set {
                 _topIndex = value;
                 GLib.Timeout.Add(100, new TimeoutHandler(() => {
-                    if (self.ListBox.Parent.Parent is Gtk.ScrolledWindow scrolledWindow)
+                    int rowheight = ItemHeight;
+                    if (rowheight < 14)
                     {
-                        int rowheight = ItemHeight;
-                        if (rowheight < 14)
-                        {
-                            if (self.ListBox.Children.Length > 0)
-                                rowheight = self.ListBox.Children[0].AllocatedHeight;
-                            else
-                                rowheight = 18;
-                        }
-                        var adjustment = scrolledWindow.Vadjustment;
-                        adjustment.Value = value * rowheight - Height;
+                        if (self.ListBox.Children.Length > 0)
+                            rowheight = self.ListBox.Children[0].AllocatedHeight;
+                        else
+                            rowheight = 18;
                     }
+                    var adjustment = self.Vadjustment;
+                    adjustment.Value = value * rowheight - Height + 5;
                     return false;
                 }));
             }
