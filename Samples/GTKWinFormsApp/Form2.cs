@@ -45,33 +45,16 @@ namespace GTKWinFormsApp
             this.FormClosing += Form2_FormClosing;
             this.FormClosed += Form2_FormClosed;
         }
-
-        private void TimersTimer_Elapsed(object? sender, ElapsedEventArgs e)
-        {
-            Gtk.Application.Invoke(delegate
-            {
-                listBox1.Items.Clear();
-                for (int i = 0; i < 10; i++)
-                {
-                    listBox1.Items.Add($"a异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}");
-                }
-            });
-        }
-        private void Timer1_Tick1(object? sender, System.EventArgs e)
-        {
-            listBox1.Items.Clear();
-            for (int i = 0; i < 10; i++)
-            {
-                listBox1.Items.Add($"b异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}");
-            }
-        }
+        int i = 4;
         private void Timer1_Tick(object? sender, System.EventArgs e)
         {
-            listBox1.Items.Clear();
-            for (int i = 0; i < 10; i++)
-            {
+            // listBox1.Items.Clear();
+            //for (int i = 0; i < 10; i++)
+            //{
+            i++;
                 listBox1.Items.Add($"异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}");
-            }
+                listBox1.TopIndex = i-3;
+           // }
         }
         private void Form2_FormClosed(object sender, FormClosedEventArgs e)
         {

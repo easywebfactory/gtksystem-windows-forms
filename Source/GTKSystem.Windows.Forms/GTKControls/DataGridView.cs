@@ -404,9 +404,10 @@ namespace System.Windows.Forms
         {
             _Created = true;
         }
-
-
-
+        public void ClearSelection()
+        {
+            GridView.Selection.UnselectAll();
+        }
 
         //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler BackgroundImageChanged;
