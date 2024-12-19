@@ -2,13 +2,12 @@
 ## 更新日志
  #### 2024/12/20 V1.3.24.57
 	1. 更新listview、listbox、checkedlistbox、datagridview功能。
-	2. 修正了一些发现的问题
+
  #### 2024/12/14 V1.3.24.56
 	1. 实现控件SizeChange事件。
-	2. 修正消息框内容换行、datagridview自动换行
-	3. 修正listview增删功能
+	2. 更新消息框内容换行、datagridview自动换行
+	3. 更新listview增删功能
 	4. 修正了一些发现的问题
-
  #### 2024/11/7 V1.3.24.53
 	1. 容器控件功能修正。
 	2. 完善treeview功能
