@@ -304,7 +304,7 @@ namespace System.Windows.Forms
                 }
 
                 css.LoadFromData(cssBuilder.ToString());
-                Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, 700);
+                Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, StyleProviderPriority.Application);
             }
             return App;
         }

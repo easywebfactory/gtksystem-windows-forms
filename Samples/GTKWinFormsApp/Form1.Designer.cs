@@ -358,17 +358,18 @@ namespace GTKWinFormsApp
             // checkedListBox1
             // 
             checkedListBox1.CheckOnClick = true;
-            checkedListBox1.ColumnWidth = 100;
+            checkedListBox1.ColumnWidth = 50;
             checkedListBox1.FormattingEnabled = true;
             checkedListBox1.Items.AddRange(new object[] { "北京市", "天津市", "河南省", "山西省", "内蒙古自治区", "辽宁省", "吉林省", "黑龙江省", "上海市", "江苏省", "浙江省", "安徽省", "福建省" });
             checkedListBox1.Location = new System.Drawing.Point(677, 22);
             checkedListBox1.Margin = new Padding(4);
             checkedListBox1.MultiColumn = true;
             checkedListBox1.Name = "checkedListBox1";
-            checkedListBox1.Size = new System.Drawing.Size(241, 114);
+            checkedListBox1.Size = new System.Drawing.Size(270, 114);
             checkedListBox1.TabIndex = 13;
             checkedListBox1.ItemCheck += checkedListBox1_ItemCheck;
             checkedListBox1.SelectedValueChanged += checkedListBox1_SelectedValueChanged;
+            
             // 
             // radioButton3
             // 
