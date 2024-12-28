@@ -54,23 +54,30 @@ namespace System.Windows.Forms
                 widget.Realized += Widget_Realized;
                 widget.ConfigureEvent += Widget_ConfigureEvent;
                 ISelf.Override.PaintGraphics += Override_PaintGraphics;
-                if(widget is ScrollableBoxBase scrollbase)
-                {
-                    scrollbase.SizeChange += Coner_ResizeChecked;
-                }
-                else if (widget is Gtk.Container coner)
-                {
-                    coner.ResizeChecked += Coner_ResizeChecked;
-                }
+                widget.SizeAllocated += Widget_SizeAllocated;
             }
         }
-
-        private void Coner_ResizeChecked(object sender, EventArgs e)
+        private int size_width = 0;
+        private int size_height = 0;
+        private int location_x = 0;
+        private int location_y = 0;
+        private void Widget_SizeAllocated(object o, SizeAllocatedArgs args)
         {
-            if (SizeChanged != null)
-                SizeChanged(this, EventArgs.Empty);
+            if (args.Allocation.Width != size_width || args.Allocation.Height != size_height)
+            {
+                size_width = args.Allocation.Width;
+                size_height = args.Allocation.Height;
+                if (SizeChanged != null)
+                    SizeChanged(this, EventArgs.Empty);
+            }
+            if (args.Allocation.X != location_x || args.Allocation.Y != location_y)
+            {
+                location_x = args.Allocation.X;
+                location_y = args.Allocation.Y;
+                if (LocationChanged != null)
+                    LocationChanged(this, EventArgs.Empty);
+            }
         }
-
         private void Widget_ConfigureEvent(object o, ConfigureEventArgs args)
         {
             if (Move != null)
