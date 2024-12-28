@@ -90,7 +90,6 @@ namespace System.Windows.Forms
             {
                 Add(column);
             }
-            base.AddRange(columns);
         }
         public new void Clear()
         {
