@@ -145,7 +145,6 @@ namespace System.Windows.Forms
         private void OnSetDataSource()
         {
             _Created = false;
-            Store.Clear();
             _rows.Clear();
             if (_DataSource != null)
             {
