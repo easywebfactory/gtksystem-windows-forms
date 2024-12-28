@@ -146,6 +146,7 @@ namespace System.Windows.Forms
         {
             _Created = false;
             Store.Clear();
+            _rows.Clear();
             if (_DataSource != null)
             {
                 Store = new Gtk.TreeStore(Array.ConvertAll(GridView.Columns, o => typeof(CellValue)));
