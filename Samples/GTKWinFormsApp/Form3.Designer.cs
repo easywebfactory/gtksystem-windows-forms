@@ -369,7 +369,7 @@ namespace GTKWinFormsApp
             trackBar1.Maximum = 100;
             trackBar1.Name = "trackBar1";
             trackBar1.Orientation = Orientation.Vertical;
-            trackBar1.Size = new System.Drawing.Size(56, 173);
+            trackBar1.Size = new System.Drawing.Size(20, 173);
             trackBar1.TabIndex = 7;
             trackBar1.TickFrequency = 2;
             trackBar1.TickStyle = TickStyle.Both;

@@ -1,5 +1,8 @@
 
 ## 更新日志
+ #### 2024/12/20 V1.3.24.58
+	1. 更新Anchor\Dock排版功能。
+
  #### 2024/12/20 V1.3.24.57
 	1. 更新listview、listbox、checkedlistbox、datagridview功能。
 

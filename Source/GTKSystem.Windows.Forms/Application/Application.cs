@@ -144,7 +144,7 @@ namespace System.Windows.Forms
 
 .DropDownList button{padding:0px;}
 .SplitContainer{padding:0px;border:0px;box-shadow:none;}
-.SplitterPanel{padding:0px;margin:0px;border:0px;box-shadow:none;}
+.SplitterPanel{padding:0px;margin:0px;border:0px;box-shadow:none;min-width:100px;min-height:100px;}
 .SplitterPanel .frame{padding:0px;margin:0px;border:0px;box-shadow:none;}
 .SplitterPanel .flat{padding:0px;margin:0px;border:0px;box-shadow:none;}
 
@@ -165,7 +165,7 @@ namespace System.Windows.Forms
 .NumericUpDown button.down{border-width:0px;padding:0px;}
 .NumericUpDown.horizontal entry{border-width:0px;padding:2px 3px; min-height:6px;min-width:6px;} 
 .NumericUpDown.vertical entry{border-width:0px;padding:2px 3px; min-height:6px;min-width:6px;} 
-
+.TrackBar {border-width:0px;box-shadow:none;}
 .PrintPreviewBack{background-color:#cccccc; border-radius:0px;}
 .Paper{box-shadow: 0px 0px 3px 1px #999999;background:#ffffff; border-radius:0px;}
 

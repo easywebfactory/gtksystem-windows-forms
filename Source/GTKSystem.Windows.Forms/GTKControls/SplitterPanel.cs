@@ -26,11 +26,11 @@ namespace System.Windows.Forms
             self.Margin = 0;
             self.Halign = Gtk.Align.Fill;
             self.Valign = Gtk.Align.Fill;
-            self.Hexpand = true;
-            self.Vexpand = true;
+            self.Hexpand = false;
+            self.Vexpand = false;
         }
 
-        public override DockStyle Dock { get; set; } = DockStyle.Fill;
+        public override DockStyle Dock { get { return DockStyle.Fill; } set { } }
         public override Size Size { get; set; }
         public override int Width { get; set; }
         public override int Height { get; set; }

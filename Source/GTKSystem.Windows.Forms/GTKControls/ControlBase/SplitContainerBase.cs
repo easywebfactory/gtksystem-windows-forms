@@ -8,7 +8,7 @@
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("SplitContainer");
             this.BorderWidth = 0;
-            this.WideHandle = false;
+            this.WideHandle = true;
             this.Orientation = Gtk.Orientation.Horizontal;
             base.Halign = Gtk.Align.Start;
             base.Valign = Gtk.Align.Start;
