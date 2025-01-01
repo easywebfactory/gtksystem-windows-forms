@@ -53,23 +53,27 @@ namespace System.Windows.Forms
             }
             private void ResizeMapped(Gtk.Overlay lay)
             {
+                int laywidth = 1;
+                int layheight = 1;
                 foreach (object item in this)
                 {
                     if (item is Control control)
                     {
                         control.Widget.MarginStart = Math.Max(0, control.Widget.MarginStart + Offset.X);
                         control.Widget.MarginTop = Math.Max(0, control.Widget.MarginTop + Offset.Y);
-                        lay.WidthRequest = Math.Max(0, Math.Max(lay.WidthRequest, control.Widget.MarginStart + control.Widget.AllocatedWidth + control.Widget.MarginEnd));
-                        lay.HeightRequest = Math.Max(0, Math.Max(lay.HeightRequest, control.Widget.MarginTop + control.Widget.AllocatedHeight + control.Widget.MarginBottom));
+                        laywidth = Math.Max(0, Math.Max(laywidth, control.Widget.MarginStart + control.Widget.AllocatedWidth + control.Widget.MarginEnd));
+                        layheight = Math.Max(0, Math.Max(layheight, control.Widget.MarginTop + control.Widget.AllocatedHeight + control.Widget.MarginBottom));
                     }
                     else if (item is Gtk.Widget widget)
                     {
                         widget.MarginStart = Math.Max(0, widget.MarginStart + Offset.X);
                         widget.MarginTop = Math.Max(0, widget.MarginTop + Offset.Y);
-                        lay.WidthRequest = Math.Max(0, Math.Max(lay.WidthRequest, widget.MarginStart + widget.AllocatedWidth + widget.MarginEnd));
-                        lay.HeightRequest = Math.Max(0, Math.Max(lay.HeightRequest, widget.MarginTop + widget.AllocatedHeight + widget.MarginBottom));
+                        laywidth = Math.Max(0, Math.Max(laywidth, widget.MarginStart + widget.AllocatedWidth + widget.MarginEnd));
+                        layheight = Math.Max(0, Math.Max(layheight, widget.MarginTop + widget.AllocatedHeight + widget.MarginBottom));
                     }
                 }
+                lay.WidthRequest = laywidth;
+                lay.HeightRequest = layheight;
                 foreach (object item in this)
                 {
                     if (item is Control control)
