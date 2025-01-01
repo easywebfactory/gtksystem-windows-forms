@@ -52,7 +52,7 @@ namespace GTKWinFormsApp
             richTextBox1 = new RichTextBox();
             label1 = new Label();
             button1 = new Button();
-            timer1 = new Timer(components);
+            timer1 = new System.Windows.Forms.Timer(components);
             label2 = new Label();
             SuspendLayout();
             // 
@@ -227,7 +227,7 @@ namespace GTKWinFormsApp
         private Button button1;
         private ColumnHeader columnHeader4;
         private ColumnHeader columnHeader5;
-        private Timer timer1;
+        private System.Windows.Forms.Timer timer1;
         private Label label2;
     }
 }

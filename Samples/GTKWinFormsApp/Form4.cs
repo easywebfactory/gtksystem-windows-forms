@@ -23,8 +23,8 @@ namespace GTKWinFormsApp
         Point panel1Location = new Point();
         private void Form4_Shown(object? sender, EventArgs e)
         {
-            panel1Location.X = panel1.Widget.MarginStart;
-            panel1Location.Y = panel1.Widget.MarginTop;
+            //panel1Location.X = panel1.Widget.MarginStart;
+            //panel1Location.Y = panel1.Widget.MarginTop;
 
         }
 
@@ -34,7 +34,7 @@ namespace GTKWinFormsApp
             ofd.Filter = "jpg|*.jpg;png|*.png";
             ofd.Multiselect = true;
             ofd.Title = "测试打开文件";
-            ofd.Description = "打开文件 decription";
+           // ofd.Description = "打开文件 decription";
 
             DialogResult dialogResult = ofd.ShowDialog(this);
             Console.WriteLine("dialogResult:" + dialogResult.ToString());
@@ -55,7 +55,7 @@ namespace GTKWinFormsApp
             SaveFileDialog ofd = new SaveFileDialog();
             ofd.Filter = "jpg|*.jpg;png|*.png";
             ofd.Title = "测试保存文件";
-            ofd.Description = " 保存文件 decription";
+           // ofd.Description = " 保存文件 decription";
 
             DialogResult dialogResult = ofd.ShowDialog();
             Console.WriteLine("dialogResult:" + dialogResult.ToString());
@@ -69,15 +69,11 @@ namespace GTKWinFormsApp
         private void button7_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog ofd = new FolderBrowserDialog();
-            ofd.Title = "测试浏览文件夹";
+          //  ofd.Title = "测试浏览文件夹";
             ofd.Description = "浏览文件夹 decription";
-            ofd.Multiselect = true;
+           // ofd.Multiselect = true;
             DialogResult dialogResult = ofd.ShowDialog();
             Console.WriteLine("dialogResult:" + dialogResult.ToString());
-            foreach (string file in ofd.SelectedPaths)
-            {
-                Console.WriteLine("SelectedPaths:" + file);
-            }
             Console.WriteLine("SelectedPath:" + ofd.SelectedPath);
         }
 
@@ -104,7 +100,7 @@ namespace GTKWinFormsApp
 
         private void vScrollBar1_ValueChanged(object sender, EventArgs e)
         {
-            panel1.Widget.MarginTop = panel1Location.Y + vScrollBar1.Value;
+          //  panel1.Widget.MarginTop = panel1Location.Y + vScrollBar1.Value;
 
 
         }
@@ -112,7 +108,7 @@ namespace GTKWinFormsApp
         private void hScrollBar1_ValueChanged(object sender, EventArgs e)
         {
 
-            panel1.Widget.MarginStart = panel1Location.X + hScrollBar1.Value;
+           // panel1.Widget.MarginStart = panel1Location.X + hScrollBar1.Value;
         }
     }
 }

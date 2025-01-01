@@ -36,7 +36,7 @@ namespace GTKWinFormsApp
 
         private void UserControl11_ParentChanged(object sender, EventArgs e)
         {
-            MessageBox.Show("sss");
+           // MessageBox.Show("sss");
         }
 
         private void UserControl11_Load(object sender, EventArgs e)

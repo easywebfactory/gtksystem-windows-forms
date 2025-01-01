@@ -24,15 +24,15 @@ namespace System.Windows.Forms
             SelectedPathNeedsCheck = false;
             ShowNewFolderButton = true;
         }
-        public new bool Multiselect { get => base.Multiselect; set => base.Multiselect = value; }
         public Environment.SpecialFolder RootFolder { get; set; } = Environment.SpecialFolder.Desktop;
         public new string SelectedPath
         {
             get => base.SelectedPath;
             set => base.SelectedPath = value;
         }
-        public new  string[] SelectedPaths => base.SelectedPaths;
-
+        private new string[] SelectedPaths => base.SelectedPaths;
+        private new bool Multiselect => base.Multiselect;
+        private new string Title => base.Title;
         public bool ShowNewFolderButton { get; set; }
         public bool SelectedPathNeedsCheck { get; set; }
         public override DialogResult ShowDialog(IWin32Window owner)

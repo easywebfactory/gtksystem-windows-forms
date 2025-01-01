@@ -8,6 +8,7 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
+using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
@@ -347,7 +348,18 @@ namespace System.Windows.Forms
         }
 
         public new ObjectCollection Controls { get { return _ObjectCollection; } }
-
+        public override Padding Padding
+        {
+            get => base.Padding;
+            set
+            {
+                base.Padding = value;
+                _body.MarginStart = value.Left;
+                _body.MarginTop = value.Top;
+                _body.MarginEnd = value.Right;
+                _body.MarginBottom = value.Bottom;
+            }
+        }
         public bool MaximizeBox { get; set; } = true;
         public bool MinimizeBox { get; set; } = true;
         public double Opacity { get { return self.Opacity; } set { self.Opacity = value; } }

@@ -31,7 +31,18 @@ namespace System.Windows.Forms
         }
         public override string Text { get { return self.Label; } set { self.Label = value; } }
         public override ControlCollection Controls => _controls;
-
+        public override Padding Padding
+        {
+            get => base.Padding;
+            set
+            {
+                base.Padding = value;
+                contaner.MarginStart = value.Left;
+                contaner.MarginTop = value.Top;
+                contaner.MarginEnd = value.Right;
+                contaner.MarginBottom = value.Bottom;
+            }
+        }
         public override void SuspendLayout()
         {
             _Created = false;

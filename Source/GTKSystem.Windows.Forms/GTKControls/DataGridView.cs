@@ -26,7 +26,7 @@ namespace System.Windows.Forms
         private DataGridViewRowCollection _rows;
         private ControlBindingsCollection _collect;
         internal Gtk.TreeStore Store = new TreeStore(typeof(CellValue));
-        internal Gtk.TreeView GridView { get { return self.GridView; } }
+        public Gtk.TreeView GridView { get { return self.GridView; } }
         public DataGridView():base()
         {
             this.BorderStyle = BorderStyle.FixedSingle;
@@ -111,7 +111,6 @@ namespace System.Windows.Forms
         public bool ReadOnly { get; set; }
         public int RowHeadersWidth { get; set; }
         public int ColumnHeadersHeight { get; set; }
-
         public DataGridViewColumnHeadersHeightSizeMode ColumnHeadersHeightSizeMode
         {
             get;set;

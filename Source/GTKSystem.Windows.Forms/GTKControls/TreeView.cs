@@ -246,22 +246,7 @@ namespace System.Windows.Forms
                 return SelectedNode.Text;
             }
         }
-        public string SelectedValuePath
-        {
-            get
-            {
-                string nodePath = string.Empty;
-                if (self.TreeView.Selection.GetSelected(out TreeIter iter))
-                {
-                    TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
-                    List<string> nodeNames = new List<string>();
-                    GetNodePath(root, paths[0].Indices, 0, ref nodeNames);
-                    nodePath = string.Join(PathSeparator, nodeNames);
-                }
-                return nodePath;
-            }
-            set { }
-        }
+
         [DefaultValue("\\")]
         public string PathSeparator
         {
@@ -323,22 +308,6 @@ namespace System.Windows.Forms
                 }
             }
         }
-
-        private void GetNodePath(TreeNode node, int[] indices, int depth, ref List<string> nodePath)
-        {
-            string nodeIndex = string.Join(",", indices.Take(depth + 1));
-            foreach (TreeNode child in node.Nodes)
-            {
-                if (child.Index == nodeIndex)
-                {
-                    nodePath.Add(child.Text);
-                    depth++;
-                    if (depth < indices.Length)
-                        GetNodePath(child, indices, depth, ref nodePath);
-                }
-            }
-        }
-
         private class CellRendererIcon : Gtk.CellRendererPixbuf
         {
             public TreeView _treeView;

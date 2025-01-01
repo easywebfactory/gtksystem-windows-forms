@@ -15,7 +15,7 @@ namespace System.Windows.Forms
         {
             
         }
-
+        private new string Description => base.Description;
         public bool ReadOnlyChecked { get; set; }
         public bool ShowReadOnly { get; set; }
         public new bool Multiselect { get => base.Multiselect; set => base.Multiselect = value; }

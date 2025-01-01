@@ -7,6 +7,8 @@ using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections;
 using GLib;
+using System.Collections.Generic;
+using Gtk;
 
 namespace System.Windows.Forms
 {
@@ -84,7 +86,24 @@ namespace System.Windows.Forms
             get => _IsChecked; set { _IsChecked = value; TreeView?.SetChecked(this, value); }
         }
 
-        public string FullPath { get; set; }
+        public string FullPath
+        {
+            get
+            {
+                List<string> paths=new List<string>();
+                GetFullPath(this, paths);
+                return string.Join("/", paths);
+            }
+            set { }
+        }
+        protected void GetFullPath(TreeNode node, List<string> paths)
+        {
+            paths.Add(node.Text);
+            if (node.Parent != null && node.Parent.index != "-1")
+            {
+                GetFullPath(node.Parent, paths);
+            }
+        }
         private bool _IsSelected;
         public bool IsSelected
         {

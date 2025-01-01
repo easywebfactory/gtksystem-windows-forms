@@ -383,6 +383,7 @@ namespace System.Windows.Forms
             Gtk.Dialog dia = o as Gtk.Dialog;
             dia.PangoContext.Dispose();
             dia.Dispose();
+            dia.Destroy();
         }
     }
 }

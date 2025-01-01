@@ -1,4 +1,5 @@
 ﻿
+using Gdk;
 using Gtk;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -144,7 +145,8 @@ namespace System.Windows.Forms
 
 .DropDownList button{padding:0px;}
 .SplitContainer{padding:0px;border:0px;box-shadow:none;}
-.SplitterPanel{padding:0px;margin:0px;border:0px;box-shadow:none;min-width:100px;min-height:100px;}
+/* 当有滚动条时，宽高小于60px有异常信息输出 */
+.SplitterPanel{padding:0px;margin:0px;border:0px;box-shadow:none;min-width:60px;min-height:60px;}
 .SplitterPanel .frame{padding:0px;margin:0px;border:0px;box-shadow:none;}
 .SplitterPanel .flat{padding:0px;margin:0px;border:0px;box-shadow:none;}
 
@@ -315,6 +317,7 @@ namespace System.Windows.Forms
         }
         private static void App_Shutdown(object sender, EventArgs e)
         {
+            Console.WriteLine("App_Shutdown");
             Gtk.Application.Quit();
         }
 
@@ -330,14 +333,8 @@ namespace System.Windows.Forms
         public static void Run(Form mainForm)
         {
             mainForm.self.Destroyed += Control_Destroyed;
-            mainForm.self.WindowStateEvent += Self_WindowStateEvent;
             mainForm.Show();
             Gtk.Application.Run();
-        }
-        private static void Self_WindowStateEvent(object o, WindowStateEventArgs args)
-        {
-            if (args.Event.NewWindowState == Gdk.WindowState.Withdrawn)
-                ExitThread();
         }
         private static void Control_Destroyed(object sender, EventArgs e)
         {
