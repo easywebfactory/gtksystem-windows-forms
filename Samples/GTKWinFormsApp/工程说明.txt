@@ -1,0 +1,5 @@
+GTKWinFormsApp.csproj 是引用GTKSystem框架的工程
+
+GTKWinFormsApp_Win.csproj是.net原生工程
+
+可以时打开这两个工程，方便界面设计，对照发开
