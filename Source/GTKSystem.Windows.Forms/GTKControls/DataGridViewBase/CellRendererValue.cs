@@ -1,9 +1,13 @@
-﻿using Atk;
+﻿/*
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * author:chenhongjin
+ */
 using Gdk;
 using GLib;
 using Gtk;
 using System.Diagnostics.CodeAnalysis;
-using System.Net.Http;
 
 namespace System.Windows.Forms.GtkRender
 {
@@ -79,82 +83,25 @@ namespace System.Windows.Forms.GtkRender
             {
                 if (value != null)
                 {
-                    if (value.ValueType == typeof(byte[]))
+                    try
                     {
                         value.SetControlWithStyle(Column, this);
-                        this.Pixbuf = new Pixbuf((byte[])value.Value);
-                    }
-                    else
-                    {
-                        string text = value.Text;
-                        if (string.IsNullOrWhiteSpace(text) == false && this.Data.ContainsKey(text))
+                        if (typeof(Drawing.Image).Equals(value.ValueType) || typeof(Drawing.Bitmap).Equals(value.ValueType))
                         {
-                            value.SetControlWithStyle(Column, this);
-                            if (this.Data[text] is Gdk.Pixbuf pixbuf)
-                                this.Pixbuf = pixbuf;
-                            else
-                                this.IconName = text;
+                            this.Pixbuf = ((Drawing.Image)value.Value).Pixbuf;
+                        }
+                        else if (value.ValueType == typeof(byte[]))
+                        {
+                            this.Pixbuf = new Pixbuf((byte[])value.Value);
                         }
                         else
                         {
-                            value.SetControlWithStyle(Column, this);
-                            if (string.IsNullOrWhiteSpace(text))
-                            {
-                                this.IconName = "";
-                            }
-                            else
-                            {
-                                try
-                                {
-                                    if (text.Contains("://"))
-                                    {
-                                        HttpClient httpClient = new HttpClient();
-                                        httpClient.GetStreamAsync(text).ContinueWith((x, o) =>
-                                        {
-                                            string key = o.ToString();
-                                            try
-                                            {
-                                                Gdk.Pixbuf obuf = new Gdk.Pixbuf(x.Result);
-                                                Gdk.Pixbuf nbuf = obuf.ScaleSimple(Column.Width < 1 ? obuf.Width : Column.Width, Column.RowHeight < 1 ? obuf.Height : Column.RowHeight, Gdk.InterpType.Tiles);
-                                                if (this.Data.ContainsKey(key) == false)
-                                                    this.Data.Add(key, nbuf);
-                                                Gtk.Application.Invoke((o, s) =>
-                                                {
-                                                    this.Pixbuf = nbuf;
-                                                });
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                //Console.WriteLine(text + ", " + ex.ToString());
-                                                if (this.Data.ContainsKey(key) == false)
-                                                    this.Data.Add(key, "image-missing");
-                                                Gtk.Application.Invoke((o, s) =>
-                                                {
-                                                    this.IconName = "image-missing";
-                                                });
-                                            }
-                                        }, text);
-
-                                    }
-                                    else if (text.Contains("."))
-                                    {
-                                        Gdk.Pixbuf nbuf = new Gdk.Pixbuf(text.Replace("\\\\", "//").Replace("\\", "/"));
-                                        this.Data.Add(text, nbuf);
-                                        this.Pixbuf = nbuf;
-                                    }
-                                    else
-                                    {
-                                        this.Data.Add(text, text);
-                                        this.IconName = text;
-                                    }
-                                }
-                                catch
-                                {
-                                    this.Data.Add(text, "image-missing");
-                                    this.IconName = "image-missing";
-                                }
-                            }
+                            this.Pixbuf = new Gdk.Pixbuf(value.Text.Replace("\\\\", "//").Replace("\\", "/"));
                         }
+                    }
+                    catch
+                    {
+                        this.IconName = "image-missing";
                     }
                 }
             }

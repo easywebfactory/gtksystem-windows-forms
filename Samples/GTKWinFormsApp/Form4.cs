@@ -19,7 +19,15 @@ namespace GTKWinFormsApp
         {
             InitializeComponent();
             this.Shown += Form4_Shown;
+
+            button4.Click += Button4_Click;
         }
+
+        private void Button4_Click(object? sender, EventArgs e)
+        {
+            splitContainer1.Panel1.Controls.Add(new Button() { Location = new Point(200, 100), Size = new Size(160, 30), Text = "testtest", Dock=DockStyle.Fill });
+        }
+
         Point panel1Location = new Point();
         private void Form4_Shown(object? sender, EventArgs e)
         {
@@ -88,7 +96,6 @@ namespace GTKWinFormsApp
             //Graphics g = CreateGraphics();
             //// g.DrawString("ddddddddd", new Font(FontFamily.GenericSansSerif, 16), new SolidBrush(Color.Red), 0, 0);
             //g.DrawRectangle(new Pen(new SolidBrush(Color.Red),2), new Rectangle(110, 110, 200, 200));
-
 
         }
 

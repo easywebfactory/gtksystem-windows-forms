@@ -1,4 +1,10 @@
-﻿using Gtk;
+﻿/*
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * author:chenhongjin
+ */
+using Gtk;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +21,6 @@ namespace System.Windows.Forms
         public DataGridViewRowCollection(DataGridView dataGridView)
         {
             this.dataGridView = dataGridView;
-            this.dataGridView.Columns.Invalidate();
         }
         private TreeIter AddGtkStore(List<CellValue> values)
         {
@@ -48,7 +53,7 @@ namespace System.Windows.Forms
 
                 row.TreeIter = AddGtkStore(row.Cells.ConvertAll(c =>
                 {
-                    return new CellValue() { Value = Convert.ToString(c.Value), Style = c.Style ?? _cellStyle };
+                    return new CellValue() { Value = c.Value, Style = c.Style ?? _cellStyle };
                 }));
                 rowindex++;
                 foreach (DataGridViewRow child in row.Children)
@@ -70,7 +75,7 @@ namespace System.Windows.Forms
 
             row.TreeIter = AddGtkStore(parent, row.Cells.ConvertAll(c =>
             {
-                return new CellValue() { Value = Convert.ToString(c.Value), Style = c.Style ?? _cellStyle };
+                return new CellValue() { Value = c.Value, Style = c.Style ?? _cellStyle };
             }));
             rowindex++;
             foreach (DataGridViewRow child in row.Children)
@@ -102,7 +107,7 @@ namespace System.Windows.Forms
 
                 row.TreeIter = InsertGtkStore(idx, row.Cells.ConvertAll(c =>
                 {
-                    return new CellValue() { Value = Convert.ToString(c.Value), Style = c.Style ?? _cellStyle };
+                    return new CellValue() { Value = c.Value, Style = c.Style ?? _cellStyle };
                 }));
                 idx++;
             }
@@ -143,9 +148,6 @@ namespace System.Windows.Forms
         }
         public virtual int Add(DataGridViewRow dataGridViewRow)
         {
-            if (this.dataGridView.Store.NColumns < this.dataGridView.GridView.Columns.Length)
-                this.dataGridView.Columns.Invalidate();
-
             AddGtkStore(dataGridViewRow);
             return items.Add(dataGridViewRow);
         }
@@ -153,29 +155,43 @@ namespace System.Windows.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual int Add(params object[] values)
         {
-            DataGridViewRow row = new DataGridViewRow();
-            row.Index = items.Count;
-            foreach (object o in values)
+            DataGridViewRow newRow = new DataGridViewRow();
+            newRow.Index = items.Count;
+            var cols = dataGridView.Columns;
+            int colleng = Math.Min(values.Length, cols.Count);
+            for (int i = 0; i < colleng; i++)
             {
-                row.Cells.Add(new DataGridViewTextBoxCell() { Value = o });
+                object cellvalue = values[i];
+                var col = cols[i];
+                if (col is DataGridViewTextBoxColumn)
+                    newRow.Cells.Add(new DataGridViewTextBoxCell() { Value = cellvalue });
+                else if (col is DataGridViewImageColumn)
+                    newRow.Cells.Add(new DataGridViewImageCell() { Value = cellvalue });
+                else if (col is DataGridViewCheckBoxColumn)
+                    newRow.Cells.Add(new DataGridViewCheckBoxCell() { Value = cellvalue });
+                else if (col is DataGridViewButtonColumn)
+                    newRow.Cells.Add(new DataGridViewButtonCell() { Value = cellvalue });
+                else if (col is DataGridViewComboBoxColumn)
+                    newRow.Cells.Add(new DataGridViewComboBoxCell() { Value = cellvalue });
+                else if (col is DataGridViewLinkColumn)
+                    newRow.Cells.Add(new DataGridViewLinkCell() { Value = cellvalue });
+                else
+                    newRow.Cells.Add(new DataGridViewTextBoxCell() { Value = cellvalue });
             }
-            AddGtkStore(row);
-            return items.Add(row);
+            return Add(newRow);
         }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual int Add(int count)
         {
-            if (this.dataGridView.Store.NColumns < this.dataGridView.GridView.Columns.Length)
-                this.dataGridView.Columns.Invalidate();
-
+            int start = items.Count;
             for (int i = 0; i < count; i++)
             {
-                DataGridViewRow row = new DataGridViewRow() { Index = items.Count };
+                DataGridViewRow row = new DataGridViewRow() { Index = start + i };
                 AddGtkStore(row);
                 items.Add(row);
             }
 
-            return count;
+            return start + count;
         }
         public virtual int AddCopies(int indexSource, int count)
         {

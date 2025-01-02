@@ -1,5 +1,6 @@
 using Atk;
 using GLib;
+using Gtk;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing.Imaging;
@@ -19,6 +20,7 @@ namespace System.Drawing
             PixbufData = pixbuf;
         }
         private byte[] _PixbufData;
+        //¡°jpeg¡±, ¡°tiff¡±, ¡°png¡±, ¡°ico¡± or ¡°bmp¡±.
         public byte[] PixbufData
         {
             get { if (_PixbufData == null && _Pixbuf != null) { _PixbufData = _Pixbuf.SaveToBuffer("bmp"); } return _PixbufData; }
@@ -29,12 +31,6 @@ namespace System.Drawing
         {
             get {
                 if (_Pixbuf == null && _PixbufData != null) { _Pixbuf = new Gdk.Pixbuf(_PixbufData); }
-                //else if (_Pixbuf == null)
-                //{
-                //    int width = Math.Max(1, this.Width);
-                //    int height = Math.Max(1, this.Height);
-                //    _Pixbuf = new Gdk.Pixbuf(new Cairo.ImageSurface(Cairo.Format.Argb32, width, height), 0, 0, width, height);
-                //}
                 return _Pixbuf;
             }
             set { _Pixbuf = value; _PixbufData = value.SaveToBuffer("bmp"); }
@@ -130,18 +126,18 @@ namespace System.Drawing
                 return flags;
 			}
 		}
-
-		/// <summary>Gets the file format of this <see cref="T:System.Drawing.Image" />.</summary>
-		/// <returns>The <see cref="T:System.Drawing.Imaging.ImageFormat" /> that represents the file format of this <see cref="T:System.Drawing.Image" />.</returns>
-		public ImageFormat RawFormat
-		{
-            get;
-            internal set;
+		private ImageFormat _rawFormat;
+        /// <summary>Gets the file format of this <see cref="T:System.Drawing.Image" />.</summary>
+        /// <returns>The <see cref="T:System.Drawing.Imaging.ImageFormat" /> that represents the file format of this <see cref="T:System.Drawing.Image" />.</returns>
+        public ImageFormat RawFormat
+        {
+            get => _rawFormat ?? ImageFormat.Bmp;
+            internal set => _rawFormat = value;
         }
 
-		/// <summary>Gets the pixel format for this <see cref="T:System.Drawing.Image" />.</summary>
-		/// <returns>A <see cref="T:System.Drawing.Imaging.PixelFormat" /> that represents the pixel format for this <see cref="T:System.Drawing.Image" />.</returns>
-		public PixelFormat PixelFormat
+        /// <summary>Gets the pixel format for this <see cref="T:System.Drawing.Image" />.</summary>
+        /// <returns>A <see cref="T:System.Drawing.Imaging.PixelFormat" /> that represents the pixel format for this <see cref="T:System.Drawing.Image" />.</returns>
+        public PixelFormat PixelFormat
 		{
 			get;
 			internal set;
@@ -256,8 +252,11 @@ namespace System.Drawing
 				throw new FileNotFoundException(filename);
 			}
 			filename = System.IO.Path.GetFullPath(filename);
-		    byte[] filebytes =File.ReadAllBytes(filename);
-			return new Bitmap(filebytes);
+            string extension = IO.Path.GetExtension(filename)?.ToLower();
+            byte[] filebytes =File.ReadAllBytes(filename);
+            Bitmap bitmap = new Bitmap(filebytes);
+            bitmap.GetImageFormat(extension);
+            return bitmap;
 		}
 
 		/// <summary>Creates an <see cref="T:System.Drawing.Image" /> from the specified data stream.</summary>
@@ -343,7 +342,58 @@ namespace System.Drawing
             if (_PixbufData != null)
                 _PixbufData = null;
         }
-
+		private ImageFormat GetImageFormat(string extension)
+		{
+            if (extension == ".memorybmp")
+            {
+                RawFormat = ImageFormat.MemoryBmp;
+            }
+            else if (extension == ".bmp")
+            {
+                RawFormat = ImageFormat.Bmp;
+            }
+            else if (extension == ".emf")
+            {
+                RawFormat = ImageFormat.Emf;
+            }
+            else if (extension == ".wmf")
+            {
+                RawFormat = ImageFormat.Wmf;
+            }
+            else if (extension == ".gif")
+            {
+                RawFormat = ImageFormat.Gif;
+            }
+            else if (extension == ".jpeg")
+            {
+                RawFormat = ImageFormat.Jpeg;
+            }
+            else if (extension == ".png")
+            {
+                RawFormat = ImageFormat.Png;
+            }
+            else if (extension == ".tiff")
+            {
+                RawFormat = ImageFormat.Tiff;
+            }
+            else if (extension == ".exif")
+            {
+                RawFormat = ImageFormat.Exif;
+            }
+            else if (extension == ".icon")
+            {
+                RawFormat = ImageFormat.Icon;
+            }
+            else if (extension == ".heif")
+            {
+                RawFormat = ImageFormat.Heif;
+            }
+            else if (extension == ".webp")
+            {
+                RawFormat = ImageFormat.Webp;
+            }
+			return RawFormat;
+        }
 		/// <summary>Saves this <see cref="T:System.Drawing.Image" /> to the specified file or stream.</summary>
 		/// <param name="filename">A string that contains the name of the file to which to save this <see cref="T:System.Drawing.Image" />.</param>
 		/// <exception cref="T:System.ArgumentNullException">
@@ -353,8 +403,10 @@ namespace System.Drawing
 		/// The image was saved to the same file it was created from.</exception>
 		public void Save(string filename)
 		{
-			Save(filename, RawFormat);
-		}
+			string extension = IO.Path.GetExtension(filename)?.ToLower();
+			GetImageFormat(extension);
+            Save(filename, RawFormat);
+        }
 
 		/// <summary>Saves this <see cref="T:System.Drawing.Image" /> to the specified file in the specified format.</summary>
 		/// <param name="filename">A string that contains the name of the file to which to save this <see cref="T:System.Drawing.Image" />.</param>
@@ -366,8 +418,7 @@ namespace System.Drawing
 		/// The image was saved to the same file it was created from.</exception>
 		public void Save(string filename, ImageFormat format)
 		{
-			ImageCodecInfo encoder = format.FindEncoder() ?? ImageFormat.Png.FindEncoder();
-			Save(filename, encoder, null);
+			Save(filename, format.FindEncoder(), null);
 		}
 
 		/// <summary>Saves this <see cref="T:System.Drawing.Image" /> to the specified file, with the specified encoder and image-encoder parameters.</summary>
@@ -382,18 +433,12 @@ namespace System.Drawing
 		public void Save(string filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
 		{
             if(Pixbuf != null)
-				Pixbuf.Save(filename, encoder.MimeType ?? "bmp");
+				Pixbuf.Save(filename, encoder.MimeType.Trim('.').ToLower());
         }
 
 		private void Save(MemoryStream stream)
 		{
-			ImageFormat imageFormat = RawFormat;
-			if (imageFormat.Guid == ImageFormat.Jpeg.Guid)
-			{
-				imageFormat = ImageFormat.Png;
-			}
-			ImageCodecInfo encoder = imageFormat.FindEncoder() ?? ImageFormat.Png.FindEncoder();
-			Save(stream, encoder, null);
+			Save(stream, null, null);
 		}
 
 		/// <summary>Saves this image to the specified stream in the specified format.</summary>
@@ -404,9 +449,7 @@ namespace System.Drawing
 		/// <exception cref="T:System.Runtime.InteropServices.ExternalException">The image was saved with the wrong image format</exception>
 		public void Save(Stream stream, ImageFormat format)
 		{
-
-			ImageCodecInfo encoder = format.FindEncoder();
-			Save(stream, encoder, null);
+            Save(stream, null, null);
 		}
 
 		/// <summary>Saves this image to the specified stream, with the specified encoder and image encoder parameters.</summary>

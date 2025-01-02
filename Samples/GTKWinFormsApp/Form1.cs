@@ -90,8 +90,8 @@ namespace GTKWinFormsApp
             //1、数据集列表数据源
             List<TestEntity> data = new List<TestEntity>();
             var createdate = DateTime.Now;
-            data.Add(new TestEntity() { ID = 0, Title = "加载数据点yes加载数据\n点yes加载数据点yes加载数据点yes", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "face-smile-big", PIC = Image.FromFile("Resources\\timg2.jpg") });
-            data.Add(new TestEntity() { ID = 1, Title = "test2", Info = " 3234fdf", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "Resources\\timg2.jpg", PIC = Image.FromFile("Resources\\timg2.jpg") });
+            data.Add(new TestEntity() { ID = 0, Title = "加载数据点yes加载数据\n点yes加载数据点yes加载数据点yes", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "face-smile-big", PIC = new Bitmap(10,10) });
+            data.Add(new TestEntity() { ID = 1, Title = "test2", Info = "yyyy2", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile("Resources\\img11.jpg") });
             data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "Resources\\BindingNavigator.Delete.ico", PIC = Image.FromFile("Resources\\timg2.jpg") });
             data.Add(new TestEntity() { ID = 4, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile("Resources\\timg2.jpg") });
 
@@ -100,10 +100,10 @@ namespace GTKWinFormsApp
             for (int i = 0; i < 10; i++)
                 data.Add(new TestEntity() { ID = i + 7, Title = "网络图片异步加载" + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString(), PIC = Image.FromFile("Resources\\timg2.jpg") });
 
-            this.dataGridView1.DataMember = "ID,State,Title,CreateDate";
+
             this.dataGridView1.DataSource = data;
             //foreach (TestEntity testEntity in data)
-            //    this.dataGridView1.Rows.Add(testEntity.ID, testEntity.State, testEntity.Title);
+            //    this.dataGridView1.Rows.Add(testEntity.ID, testEntity.State, testEntity.Title,testEntity.CreateDate, testEntity.Operate, testEntity.PIC);
 
             //var s=this.dataGridView1.Rows[0].Cells[0];
 

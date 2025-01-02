@@ -115,18 +115,61 @@ namespace System.Drawing.Imaging
 
 		internal ImageCodecInfo FindEncoder()
 		{
-			ImageCodecInfo[] imageEncoders = ImageCodecInfo.GetImageEncoders();
-			ImageCodecInfo[] array = imageEncoders;
-			foreach (ImageCodecInfo imageCodecInfo in array)
-			{
-				if (imageCodecInfo.FormatID.Equals(_guid))
-				{
-					return imageCodecInfo;
-				}
-			}
-			return null;
-		}
+            return new ImageCodecInfo() { FormatID = this._guid, MimeType = GetMimeType() };
+        }
+		private string GetMimeType()
+		{
 
+            if (Guid == s_memoryBMP.Guid)
+            {
+                return ".bmp";
+            }
+            if (Guid == s_bmp.Guid)
+            {
+                return ".bmp";
+            }
+            if (Guid == s_emf.Guid)
+            {
+                return ".emf";
+            }
+            if (Guid == s_wmf.Guid)
+            {
+                return ".wmf";
+            }
+            if (Guid == s_gif.Guid)
+            {
+                return ".gif";
+            }
+            if (Guid == s_jpeg.Guid)
+            {
+                return ".jpeg";
+            }
+            if (Guid == s_png.Guid)
+            {
+                return ".png";
+            }
+            if (Guid == s_tiff.Guid)
+            {
+                return ".tiff";
+            }
+            if (Guid == s_exif.Guid)
+            {
+                return ".exif";
+            }
+            if (Guid == s_icon.Guid)
+            {
+                return ".icon";
+            }
+            if (Guid == s_heif.Guid)
+            {
+                return ".heif";
+            }
+            if (Guid == s_webp.Guid)
+            {
+                return ".webp";
+            }
+			return ".bmp";
+        }
 		/// <summary>Converts this <see cref="T:System.Drawing.Imaging.ImageFormat" /> object to a human-readable string.</summary>
 		/// <returns>A string that represents this <see cref="T:System.Drawing.Imaging.ImageFormat" /> object.</returns>
 		public override string ToString()

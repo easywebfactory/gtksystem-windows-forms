@@ -1,4 +1,10 @@
-﻿using Gtk;
+﻿/*
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * author:chenhongjin
+ */
+using Gtk;
 using System.Collections;
 using System.ComponentModel;
 using System.Linq;
@@ -215,10 +221,12 @@ namespace System.Windows.Forms
     {
         public DataGridViewImageColumn() : base(new DataGridViewImageCell())
         {
+            ValueType = typeof(Image);
             this.SortMode = DataGridViewColumnSortMode.NotSortable;
         }
         public DataGridViewImageColumn(DataGridView owningDataGridView) : base(owningDataGridView, new DataGridViewImageCell())
         {
+            ValueType = typeof(Image);
             this.SortMode = DataGridViewColumnSortMode.NotSortable;
         }
         public override void Renderer()
@@ -233,7 +241,6 @@ namespace System.Windows.Forms
             if (this.SortMode != DataGridViewColumnSortMode.NotSortable)
                 base.SortColumnId = this.DisplayIndex;
         }
-
     }
     public class DataGridViewLinkColumn : DataGridViewColumn
     {
@@ -272,7 +279,7 @@ namespace System.Windows.Forms
             _treeView = owningDataGridView?.GridView;
             _gridview = owningDataGridView;
             _cellTemplate = cellTemplate;
-            base.Resizable = this.Resizable == DataGridViewTriState.True;
+            base.Resizable = true;
             this.SortMode = DataGridViewColumnSortMode.Automatic;
         }
 

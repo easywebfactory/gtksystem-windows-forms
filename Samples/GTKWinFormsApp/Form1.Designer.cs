@@ -187,7 +187,7 @@ namespace GTKWinFormsApp
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dataGridView1.ColumnHeadersHeight = 29;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { ID, State, Title, Operate,PIC});
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { ID, State, Title, CreateDate, Operate, PIC });
             dataGridView1.DataMember = "ID,State,Title";
             dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = SystemColors.Window;
@@ -791,6 +791,7 @@ namespace GTKWinFormsApp
             ID.Name = "ID";
             ID.SortMode = DataGridViewColumnSortMode.NotSortable;
             ID.Width = 160;
+            ID.Resizable = DataGridViewTriState.False;
             // 
             // State
             // 

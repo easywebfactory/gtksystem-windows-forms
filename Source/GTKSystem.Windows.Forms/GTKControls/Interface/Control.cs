@@ -1,4 +1,10 @@
-﻿using Gtk;
+﻿/*
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * author:chenhongjin
+ */
+using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
@@ -743,13 +749,10 @@ namespace System.Windows.Forms
             set
             {
                 this.Widget.HeightRequest = Math.Max(-1, value);
-                if (this.Widget.IsRealized)
-                {
-                    if (DockChanged != null)
-                        DockChanged(this, EventArgs.Empty);
-                    if (AnchorChanged != null)
-                        AnchorChanged(this, EventArgs.Empty);
-                }
+                if (DockChanged != null)
+                    DockChanged(this, EventArgs.Empty);
+                if (AnchorChanged != null)
+                    AnchorChanged(this, EventArgs.Empty);
             }
         }
         public virtual int Width
@@ -764,13 +767,10 @@ namespace System.Windows.Forms
             }
             set {
                 this.Widget.WidthRequest = Math.Max(-1, value);
-                if (this.Widget.IsRealized)
-                {
-                    if (DockChanged != null)
-                        DockChanged(this, EventArgs.Empty);
-                    if (AnchorChanged != null)
-                        AnchorChanged(this, EventArgs.Empty);
-                }
+                if (DockChanged != null)
+                    DockChanged(this, EventArgs.Empty);
+                if (AnchorChanged != null)
+                    AnchorChanged(this, EventArgs.Empty);
             }
         }
         public virtual int TabIndex { get; set; }
