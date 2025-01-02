@@ -1,11 +1,11 @@
 
 ## 更新日志
- #### 2024/12/20 V1.3.24.58
-	1. 更新Anchor\Dock排版功能。
-
+ #### 2025/1/2 V1.3.24.58
+	1. 更新容器控件排版功能。
+	2. 更新datagridview数据赋值功能。
+	3. 更新窗体close关闭功能。
  #### 2024/12/20 V1.3.24.57
 	1. 更新listview、listbox、checkedlistbox、datagridview功能。
-
  #### 2024/12/14 V1.3.24.56
 	1. 实现控件SizeChange事件。
 	2. 更新消息框内容换行、datagridview自动换行
