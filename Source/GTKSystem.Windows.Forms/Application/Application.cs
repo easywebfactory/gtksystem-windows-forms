@@ -152,12 +152,13 @@ namespace System.Windows.Forms
 
 .TableLayoutPanel {box-shadow: 1px 1px 1px 0px @frame_color;}
 .TableLayoutPanel viewport.frame {box-shadow: inset 1px 1px 1px 0 @frame_color;}
-.ListView{}
+.ListView{border:inset 1px @frame_color;}
 .ListView checkbutton {padding:0px;}
 .ListView .Label{background-color:transparent;} 
-.ListViewHeader {background-color:@theme_bg_color; opacity:0.88; }
+.ListViewHeader {background-color:@theme_bg_color; opacity:0.88;padding:0px;min-height:6px; }
+.ListViewHeader button{box-shadow:inset -1px 0px @frame_color;border-width:0px; border-radius:0px; padding:0px 0px 5px 0px;min-height:20px;min-width:6px;margin:0px; }
 .ListView .GroupLine{border-top:inset 1px #6677bb;}
-.ListView .GroupTitle{padding-left:5px;padding-right:5px; }
+.ListView .GroupTitle{padding-left:5px;padding-right:5px; color:#6677bb; }
 .ListView .GroupSubTitle{padding-left:5px;padding-right:5px; }
 .StatusStrip{padding:0px; border-width:1px 0px 0px 0px; border-top:solid 1px @frame_color;}
 .ToolStrip button{padding:0px;}

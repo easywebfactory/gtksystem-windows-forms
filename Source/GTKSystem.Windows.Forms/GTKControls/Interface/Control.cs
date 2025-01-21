@@ -617,6 +617,11 @@ namespace System.Windows.Forms
                     this.Widget.Halign = Align.Fill;
                     this.Widget.Valign = Align.End;
                 }
+                else if (value == DockStyle.None)
+                {
+                    this.Widget.Halign = Align.Start;
+                    this.Widget.Valign = Align.Start;
+                }
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
             }
