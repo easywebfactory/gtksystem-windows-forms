@@ -329,7 +329,7 @@ namespace System.Windows.Forms
                 }
                 return this.label.Text;
             } 
-            set { this.label.Text = value; this.button.Label = value; } }
+            set { this.label.Text = value; this.button.Label = value; this.entry.Text = value; } }
         public override Color ImageTransparentColor { get; set; }
         public override ToolStripItemDisplayStyle DisplayStyle { get; set; }
         public override bool AutoToolTip { get; set; }
