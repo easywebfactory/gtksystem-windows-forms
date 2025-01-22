@@ -156,6 +156,7 @@ namespace System.Windows.Forms
 .ListView .Label{background-color:transparent;} 
 .ListView checkbutton {padding:0px;}
 .ListView .Label{background-color:transparent;} 
+.ListView flowboxchild {padding:0px;}
 .ListView flowboxchild viewport{padding:2px 0px;}
 .ListView .GridBorder viewport{box-shadow: inset -1px -1px #eeeeee;}
 .ListViewHeader {background-color:@theme_bg_color; opacity:0.88;padding:0px;min-height:6px; }
