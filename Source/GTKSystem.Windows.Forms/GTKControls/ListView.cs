@@ -103,7 +103,7 @@ namespace System.Windows.Forms
 
         private void Columbt_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine(((Gtk.Widget)sender).AllocatedWidth);
+            //Console.WriteLine(((Gtk.Widget)sender).AllocatedWidth);
             Gtk.Button btn = (Gtk.Button)sender;
 
             if (this.HeaderStyle == ColumnHeaderStyle.Clickable)
@@ -273,6 +273,7 @@ namespace System.Windows.Forms
                 BoxBase hBox = new BoxBase(Gtk.Orientation.Horizontal, 0);
                 if (item.BackColor.HasValue)
                     hBox.Override.BackColor = item.BackColor.Value;
+
                 hBox.Valign = Gtk.Align.Fill;
                 hBox.Halign = Gtk.Align.Start;
                 hBox.BorderWidth = 0;
@@ -1276,15 +1277,33 @@ namespace System.Windows.Forms
             int idx = Items.FindIndex(startIndex, w => w.Text == text);
             return idx == -1 ? null : Items[idx];
         }
+       // public override event MouseEventHandler MouseDown;
+        public ListViewItem GetItemAt(int x, int y)
+        {
+            foreach (Gtk.Box vbox in flowBoxContainer.Children)
+            {
+                if (vbox.Allocation.Top < y && vbox.Allocation.Top + vbox.AllocatedHeight > y)
+                {
+                    foreach (var flow in vbox.Children)
+                    {
+                        if (flow is Gtk.FlowBox _flow)
+                        {
+                            int top2 = _flow.Allocation.Top;
+                            FlowBoxChild child = _flow.GetChildAtPos(x, y - top2);
+                            if (child != null)
+                            {
+                                return this.Items[Convert.ToInt32(child.Data["ItemId"])];
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        }
 
-		public ListViewItem GetItemAt(int x, int y)
+        public Drawing.Rectangle GetItemRect(int index)
 		{
-			throw null;
-		}
-
-		public Drawing.Rectangle GetItemRect(int index)
-		{
-			throw null;
+            throw null;
 		}
 
         public event ColumnClickEventHandler ColumnClick;

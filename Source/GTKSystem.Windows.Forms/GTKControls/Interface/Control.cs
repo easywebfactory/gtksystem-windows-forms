@@ -113,14 +113,16 @@ namespace System.Windows.Forms
             else if (args.Event.Button == 3)
                 result = MouseButtons.Right;
 
+            Gtk.Widget owidget = (Gtk.Widget)o;
+            owidget.Window.GetOrigin(out int x, out int y);//避免事件穿透错误
             if (MouseDown != null)
             {
-                MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+                MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
             }
             if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
             {
                 if (MouseDoubleClick != null)
-                    MouseDoubleClick(this, new MouseEventArgs(result, 2, (int)args.Event.X, (int)args.Event.Y, 0));
+                    MouseDoubleClick(this, new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
                 if (DoubleClick != null)
                     DoubleClick(this, EventArgs.Empty);
             }
@@ -129,7 +131,7 @@ namespace System.Windows.Forms
                 if (Click != null)
                     Click(this, EventArgs.Empty);
                 if (MouseClick != null)
-                    MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+                    MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
             }
             
         }
@@ -144,8 +146,9 @@ namespace System.Windows.Forms
                     result = MouseButtons.Middle;
                 else if (args.Event.Button == 3)
                     result = MouseButtons.Right;
-
-                MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+                Gtk.Widget owidget = (Gtk.Widget)o;
+                owidget.Window.GetOrigin(out int x, out int y);
+                MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
             }
 
             if (ContextMenuStrip != null)
@@ -1146,7 +1149,7 @@ namespace System.Windows.Forms
         {
             if (Widget != null)
             {
-                this.Widget.Window.GetPosition(out int x, out int y);
+                this.Widget.Window.GetOrigin(out int x, out int y);
                 if (p.X > x && p.Y > y)
                     return new Point(p.X - x, p.Y - y);
             }
@@ -1157,7 +1160,7 @@ namespace System.Windows.Forms
         {
             if (Widget != null)
             {
-                this.Widget.Window.GetPosition(out int x, out int y);
+                this.Widget.Window.GetOrigin(out int x, out int y);
                 if (p.X < x && p.Y < y)
                     return new Point(p.X + x, p.Y + y);
             }
