@@ -11,6 +11,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="TestData1.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="TestData1.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
 		<PackageReference Include="GTKSystem.Windows.FormsDesigner" Version="1.0.0.4" />
 	</ItemGroup>
@@ -32,19 +42,32 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Resources\010.jpg">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Resources\BindingNavigator.Delete.ico">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Resources\timg2.jpg">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
+		<Folder Include="obj\Debug\net8.0\" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Resources\010.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\BindingNavigator.Delete.ico">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\img10.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\timg.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\timg2.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\timg6.jpg">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>

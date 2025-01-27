@@ -11,11 +11,10 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("TabPage");
             this.BorderWidth = 0;
-            this.Content.MarginStart = 0;
-            this.Content.MarginTop = 0;
+            this.Content.Margin = 0;
             this.Content.Halign = Align.Fill;
             this.Content.Valign = Align.Fill;
-            this.Content.Expand = true;
+            this.Content.Expand = false;
             this.Content.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             base.Halign = Align.Fill;
             base.Valign = Align.Fill;

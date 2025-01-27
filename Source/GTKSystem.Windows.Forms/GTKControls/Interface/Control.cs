@@ -1,10 +1,17 @@
-﻿using Gtk;
+﻿/*
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * author:chenhongjin
+ */
+using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms.Design;
+using System.Windows.Forms.Layout;
 
 namespace System.Windows.Forms
 {
@@ -12,7 +19,7 @@ namespace System.Windows.Forms
     [DefaultProperty("Text")]
     [Designer(typeof(ControlDesigner))]
     [ToolboxItemFilter("System.Windows.Forms")]
-    public partial class Control : Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize
+    public partial class Control : Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize, IArrangedElement
     {
         private Gtk.Application app = Application.Init();
         public string unique_key { get; protected set; }
@@ -53,9 +60,30 @@ namespace System.Windows.Forms
                 widget.Realized += Widget_Realized;
                 widget.ConfigureEvent += Widget_ConfigureEvent;
                 ISelf.Override.PaintGraphics += Override_PaintGraphics;
+                widget.SizeAllocated += Widget_SizeAllocated;
             }
         }
-
+        private int size_width = 0;
+        private int size_height = 0;
+        private int location_x = 0;
+        private int location_y = 0;
+        private void Widget_SizeAllocated(object o, SizeAllocatedArgs args)
+        {
+            if (args.Allocation.Width != size_width || args.Allocation.Height != size_height)
+            {
+                size_width = args.Allocation.Width;
+                size_height = args.Allocation.Height;
+                if (SizeChanged != null)
+                    SizeChanged(this, EventArgs.Empty);
+            }
+            if (args.Allocation.X != location_x || args.Allocation.Y != location_y)
+            {
+                location_x = args.Allocation.X;
+                location_y = args.Allocation.Y;
+                if (LocationChanged != null)
+                    LocationChanged(this, EventArgs.Empty);
+            }
+        }
         private void Widget_ConfigureEvent(object o, ConfigureEventArgs args)
         {
             if (Move != null)
@@ -85,14 +113,16 @@ namespace System.Windows.Forms
             else if (args.Event.Button == 3)
                 result = MouseButtons.Right;
 
+            Gtk.Widget owidget = (Gtk.Widget)o;
+            owidget.Window.GetOrigin(out int x, out int y);//避免事件穿透错误
             if (MouseDown != null)
             {
-                MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+                MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
             }
             if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
             {
                 if (MouseDoubleClick != null)
-                    MouseDoubleClick(this, new MouseEventArgs(result, 2, (int)args.Event.X, (int)args.Event.Y, 0));
+                    MouseDoubleClick(this, new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
                 if (DoubleClick != null)
                     DoubleClick(this, EventArgs.Empty);
             }
@@ -101,7 +131,7 @@ namespace System.Windows.Forms
                 if (Click != null)
                     Click(this, EventArgs.Empty);
                 if (MouseClick != null)
-                    MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+                    MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
             }
             
         }
@@ -116,8 +146,9 @@ namespace System.Windows.Forms
                     result = MouseButtons.Middle;
                 else if (args.Event.Button == 3)
                     result = MouseButtons.Right;
-
-                MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+                Gtk.Widget owidget = (Gtk.Widget)o;
+                owidget.Window.GetOrigin(out int x, out int y);
+                MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
             }
 
             if (ContextMenuStrip != null)
@@ -196,6 +227,15 @@ namespace System.Windows.Forms
                 if (args.Event is Gdk.EventKey eventkey)
                 {
                     Keys keys = (Keys)eventkey.HardwareKeycode;
+                    if(eventkey.State.HasFlag(Gdk.ModifierType.Mod1Mask))
+                        keys |= Keys.Alt;
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.ControlMask))
+                        keys |= Keys.Control;
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.ShiftMask))
+                        keys |= Keys.Shift;
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.LockMask))
+                        keys |= Keys.CapsLock;
+
                     KeyDown(this, new KeyEventArgs(keys));
                 }
             }
@@ -580,6 +620,11 @@ namespace System.Windows.Forms
                     this.Widget.Halign = Align.Fill;
                     this.Widget.Valign = Align.End;
                 }
+                else if (value == DockStyle.None)
+                {
+                    this.Widget.Halign = Align.Start;
+                    this.Widget.Valign = Align.Start;
+                }
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
             }
@@ -626,21 +671,32 @@ namespace System.Windows.Forms
         public virtual int Top
         {
             get => this.Widget.MarginTop;
-            set => this.Widget.MarginTop = value;
+            set
+            {
+                this.Widget.MarginTop = value;
+                if (DockChanged != null)
+                    DockChanged(this, EventArgs.Empty);
+                if (AnchorChanged != null)
+                    AnchorChanged(this, EventArgs.Empty);
+            }
         }
         public virtual int Left
         {
             get => this.Widget.MarginStart;
-            set => this.Widget.MarginStart = value;
+            set { 
+                this.Widget.MarginStart = value;
+                if (DockChanged != null)
+                    DockChanged(this, EventArgs.Empty);
+                if (AnchorChanged != null)
+                    AnchorChanged(this, EventArgs.Empty);
+            }
         }
         public virtual int Right {
             get => this.Widget.MarginEnd;
-            set => this.Widget.MarginEnd = value;
         }
         public virtual int Bottom
         {
             get => this.Widget.MarginBottom;
-            set => this.Widget.MarginBottom = value;
         }
         internal bool LockLocation = false;//由于代码有顺序执行，特殊锁定
         public virtual Point Location
@@ -701,6 +757,10 @@ namespace System.Windows.Forms
             set
             {
                 this.Widget.HeightRequest = Math.Max(-1, value);
+                if (DockChanged != null)
+                    DockChanged(this, EventArgs.Empty);
+                if (AnchorChanged != null)
+                    AnchorChanged(this, EventArgs.Empty);
             }
         }
         public virtual int Width
@@ -715,6 +775,10 @@ namespace System.Windows.Forms
             }
             set {
                 this.Widget.WidthRequest = Math.Max(-1, value);
+                if (DockChanged != null)
+                    DockChanged(this, EventArgs.Empty);
+                if (AnchorChanged != null)
+                    AnchorChanged(this, EventArgs.Empty);
             }
         }
         public virtual int TabIndex { get; set; }
@@ -1085,7 +1149,7 @@ namespace System.Windows.Forms
         {
             if (Widget != null)
             {
-                this.Widget.Window.GetPosition(out int x, out int y);
+                this.Widget.Window.GetOrigin(out int x, out int y);
                 if (p.X > x && p.Y > y)
                     return new Point(p.X - x, p.Y - y);
             }
@@ -1096,7 +1160,7 @@ namespace System.Windows.Forms
         {
             if (Widget != null)
             {
-                this.Widget.Window.GetPosition(out int x, out int y);
+                this.Widget.Window.GetOrigin(out int x, out int y);
                 if (p.X < x && p.Y < y)
                     return new Point(p.X + x, p.Y + y);
             }
@@ -1390,6 +1454,15 @@ namespace System.Windows.Forms
                 return createParams;
             }
         }
+
+        public bool ParticipatesInLayout => throw new NotImplementedException();
+
+        PropertyStore IArrangedElement.Properties => throw new NotImplementedException();
+
+        IArrangedElement IArrangedElement.Container => throw new NotImplementedException();
+
+        public ArrangedElementCollection Children => throw new NotImplementedException();
+
         protected virtual void OnKeyDown(KeyEventArgs e)
         {
 
@@ -1417,6 +1490,16 @@ namespace System.Windows.Forms
         protected virtual void WndProc(ref Message m)
         {
             //Console.WriteLine($"HWnd:{m.HWnd},WParam:{m.WParam},LParam:{m.LParam},Msg:{m.Msg}");
+        }
+
+        public void SetBounds(Rectangle bounds, BoundsSpecified specified)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IArrangedElement.PerformLayout(IArrangedElement affectedElement, string propertyName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

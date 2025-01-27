@@ -52,7 +52,7 @@ namespace GTKWinFormsApp
             richTextBox1 = new RichTextBox();
             label1 = new Label();
             button1 = new Button();
-            timer1 = new Timer(components);
+            timer1 = new System.Windows.Forms.Timer(components);
             label2 = new Label();
             SuspendLayout();
             // 
@@ -185,7 +185,7 @@ namespace GTKWinFormsApp
             // timer1
             // 
             timer1.Enabled = true;
-            timer1.Interval = 1000;
+            timer1.Interval = 2000;
             timer1.Tick += Timer1_Tick;
             // 
             // label2
@@ -202,7 +202,7 @@ namespace GTKWinFormsApp
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (System.Drawing.Image)resources.GetObject("$this.BackgroundImage");
-            ClientSize = new System.Drawing.Size(1303, 599);
+            ClientSize = new System.Drawing.Size(1303, 620);
             Controls.Add(label2);
             Controls.Add(button1);
             Controls.Add(label1);
@@ -227,7 +227,7 @@ namespace GTKWinFormsApp
         private Button button1;
         private ColumnHeader columnHeader4;
         private ColumnHeader columnHeader5;
-        private Timer timer1;
+        private System.Windows.Forms.Timer timer1;
         private Label label2;
     }
 }

@@ -1,12 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using GLib;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -51,13 +53,7 @@ namespace System.Windows.Forms
         /// </summary>
         public ImageList()
         {
-            if (!s_isScalingInitialized)
-            {
-                const int MaxDimension = 256;
-                //s_maxImageWidth = ScaleHelper.ScaleToInitialSystemDpi(MaxDimension);
-                //s_maxImageHeight = ScaleHelper.ScaleToInitialSystemDpi(MaxDimension);
-                s_isScalingInitialized = true;
-            }
+
         }
 
         /// <summary>
@@ -76,15 +72,12 @@ namespace System.Windows.Forms
             get => _colorDepth;
             set
             {
-                //SourceGenerated.EnumValidator.Validate(value);
-
                 if (_colorDepth == value)
                 {
                     return;
                 }
 
                 _colorDepth = value;
-                PerformRecreateHandle(nameof(ColorDepth));
             }
         }
 
@@ -96,12 +89,6 @@ namespace System.Windows.Forms
         {
             get
             {
-                //if (_nativeImageList is null)
-                //{
-                //    CreateHandle();
-                //}
-
-                //return _nativeImageList.HIMAGELIST;
                 return IntPtr.Zero;
             }
         }
@@ -119,61 +106,59 @@ namespace System.Windows.Forms
                 if (_imageSize.Width != value.Width || _imageSize.Height != value.Height)
                 {
                     _imageSize = new Size(value.Width, value.Height);
-                    PerformRecreateHandle(nameof(ImageSize));
                 }
             }
         }
 
         private bool ShouldSerializeImageSize() => Images.Count == 0;
 
+        private ImageListStreamer? _ImageStream;
         public ImageListStreamer? ImageStream
         {
             get
             {
-                if (Images.Empty)
-                {
-                    return null;
-                }
-                return new ImageListStreamer(this);
+                return _ImageStream;
             }
             set
             {
+                _ImageStream = value;
                 if (value is null)
                 {
                     Images.Clear();
-                    return;
-                }
-                if (value.ResourceInfo != null)
-                {
-                    //这里加载图像数据
-                    string direc = System.IO.Directory.GetCurrentDirectory();
-                    string path1 = $"{direc}/Resources/{value.ResourceInfo.ResourceName}";
-                    string path2 = $"{direc}/Resources/{value.ResourceInfo.ResourceName.Split(".")[0]}";
-                    string path3 = $"{direc}/Resources";
-
-                    LoadOriginalImage(path1);
-                    LoadOriginalImage(path2);
-                    LoadOriginalImage(path3);
-
-                    if (_originals.Count == 0)
-                    {
-                        MessageBox.Show("ImageList控件的图片请放到程序目录:Resources/[imagelist名]/");
-                    }
                 }
             }
         }
-        private void LoadOriginalImage(string directory)
+
+        internal Image GetOriginalImage(string name)
         {
-            if (System.IO.Directory.Exists(directory))
+            string direc = System.IO.Directory.GetCurrentDirectory();
+            string path1 = $"{direc}/Resources";
+            var value = this.ImageStream;
+            if (value.ResourceInfo != null)
             {
-                foreach (string f in System.IO.Directory.GetFiles(directory, "*.*").Where(w => Regex.IsMatch(w, "[\\w\\W]+\\.(jpg|png|jpeg|bmp|ico)", RegexOptions.IgnoreCase)))
+                //这里加载图像数据
+                string path2 = $"{path1}/{value.ResourceInfo.ResourceName}/{name}";
+                if (IO.File.Exists(path2))
                 {
-                    Image img = Bitmap.FromFile(f);
-                    Images.Add(img);
+                    return ScaleSimpleBitmap(Bitmap.FromFile(path2));
                 }
             }
+            if (IO.File.Exists($"{path1}/{name}"))
+            {
+                return ScaleSimpleBitmap(Bitmap.FromFile($"{path1}/{name}"));
+            }
+            return null;
+        }
+        private Bitmap ScaleSimpleBitmap(Image bitmp)
+        {
+            Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(bitmp.PixbufData);
+            int w = Math.Max(16, Math.Min(ImageSize.Width, 200));
+            int h = Math.Max(16, Math.Min(ImageSize.Height, 200));
+            Gdk.Pixbuf newpixbuf = pixbuf.ScaleSimple(w, h, Gdk.InterpType.Bilinear);
+            return new Bitmap(w, h) { Pixbuf = newpixbuf };
         }
 #if DEBUG
+
         internal bool IsDisposed { get; private set; }
 #endif
 
@@ -211,115 +196,22 @@ namespace System.Windows.Forms
         {
             try
             {
-                //Debug.Assert(HandleCreated, "Calling AddIconToHandle when there is no handle");
-                //int index = PInvoke.ImageList.ReplaceIcon(this, -1, new HandleRef<HICON>(icon, (HICON)icon.Handle));
-                //if (index == -1)
-                //{
-                //    throw new InvalidOperationException(SR.ImageListAddFailed);
-                //}
-
-                //return index;
                 return 0;
             }
             finally
             {
-                if ((original._options & OriginalOptions.OwnsImage) != 0)
-                {
-                    // This is to handle the case were we clone the icon (see why below)
-                    icon.Dispose();
-                }
+
             }
         }
 
         private int AddToHandle(Bitmap bitmap)
         {
-            //Debug.Assert(HandleCreated, "Calling AddToHandle when there is no handle");
-
-            //// Calls GDI to create Bitmap.
-            //HBITMAP hMask = (HBITMAP)ControlPaint.CreateHBitmapTransparencyMask(bitmap);
-
-            //// Calls GDI+ to create Bitmap
-            //HBITMAP hBitmap = (HBITMAP)ControlPaint.CreateHBitmapColorMask(bitmap, (IntPtr)hMask);
-
-            //int index;
-            //try
-            //{
-            //    index = PInvoke.ImageList.Add(this, hBitmap, hMask);
-            //}
-            //finally
-            //{
-            //    PInvokeCore.DeleteObject(hBitmap);
-            //    PInvokeCore.DeleteObject(hMask);
-            //}
-
-            //if (index == -1)
-            //{
-            //    throw new InvalidOperationException(SR.ImageListAddFailed);
-            //}
-
-            //return index;
             return 0;
         }
 
         private void CreateHandle()
         {
-            //Debug.Assert(_nativeImageList is null, "Handle already created, this may be a source of temporary GDI leaks");
-
-            //IMAGELIST_CREATION_FLAGS flags = IMAGELIST_CREATION_FLAGS.ILC_MASK;
-            //switch (_colorDepth)
-            //{
-            //    case ColorDepth.Depth4Bit:
-            //        flags |= IMAGELIST_CREATION_FLAGS.ILC_COLOR4;
-            //        break;
-            //    case ColorDepth.Depth8Bit:
-            //        flags |= IMAGELIST_CREATION_FLAGS.ILC_COLOR8;
-            //        break;
-            //    case ColorDepth.Depth16Bit:
-            //        flags |= IMAGELIST_CREATION_FLAGS.ILC_COLOR16;
-            //        break;
-            //    case ColorDepth.Depth24Bit:
-            //        flags |= IMAGELIST_CREATION_FLAGS.ILC_COLOR24;
-            //        break;
-            //    case ColorDepth.Depth32Bit:
-            //        flags |= IMAGELIST_CREATION_FLAGS.ILC_COLOR32;
-            //        break;
-            //    default:
-            //        Debug.Fail("Unknown color depth in ImageList");
-            //        break;
-            //}
-
-            //using (ThemingScope scope = new(Application.UseVisualStyles))
-            //{
-            //    PInvoke.InitCommonControls();
-
-            //    _nativeImageList?.Dispose();
-            //    _nativeImageList = new NativeImageList(_imageSize, flags);
-            //}
-
-            //PInvoke.ImageList.SetBkColor(this, (COLORREF)PInvoke.CLR_NONE);
-
-            //Debug.Assert(_originals != null, "Handle not yet created, yet original images are gone");
-            for (int i = 0; i < _originals.Count; i++)
-            {
-                Original original = _originals[i];
-                if (original._image is Icon originalIcon)
-                {
-                    AddIconToHandle(original, originalIcon);
-                    // NOTE: if we own the icon (it's been created by us) this WILL dispose the icon to avoid a GDI leak
-                    // **** original.image is NOT LONGER VALID AFTER THIS POINT ***
-                }
-                else
-                {
-                    Bitmap bitmapValue = CreateBitmap(original, out bool ownsBitmap);
-                    AddToHandle(bitmapValue);
-                    if (ownsBitmap)
-                    {
-                        bitmapValue.Dispose();
-                    }
-                }
-            }
-
-            _originals = null;
+ 
         }
 
         // Don't merge this function into Dispose() -- that base.Dispose() will damage the design time experience
@@ -355,6 +247,8 @@ namespace System.Windows.Forms
                             ((IDisposable)original._image).Dispose();
                         }
                     }
+                    _originals.Clear();
+                    _imageCollection.Clear();
                 }
 
                 DestroyHandle();
@@ -462,67 +356,36 @@ namespace System.Windows.Forms
         /// </summary>
         // NOTE: forces handle creation, so doesn't return things from the original list
 
-        private Bitmap GetBitmap(int index)
+        public Bitmap GetBitmap(int index)
         {
-            Bitmap bitmp = _originals[index]._image as Bitmap;
-            Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(bitmp.PixbufData);
-            int w = Math.Max(16, Math.Min(ImageSize.Width, 200));
-            int h = Math.Max(16, Math.Min(ImageSize.Height, 200));
-            Gdk.Pixbuf newpixbuf = pixbuf.ScaleSimple(w, h, Gdk.InterpType.Bilinear);
-            return new Bitmap(w, h) { Pixbuf = newpixbuf };
+            try
+            {
+                return _originals[index]._image as Bitmap;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                throw new IndexOutOfRangeException("索引超出范围，请检查序号是否在ImageList的数据范围内，把相关图片保存到Resources目录下。", ex);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
-
+        public Bitmap GetBitmap(string name)
+        {
+            int index = _imageCollection.IndexOfKey(name);
+            if (index == -1)
+            {
+                throw new FileNotFoundException($"“{name}”未加载，请把相关图片保存到Resources目录下。", name);
+            }
+            return GetBitmap(index);
+        }
         /// <summary>
         ///  Called when the Handle property changes.
         /// </summary>
         private void OnRecreateHandle(EventArgs eventargs) => _recreateHandler?.Invoke(this, eventargs);
 
         private void OnChangeHandle(EventArgs eventargs) => _changeHandler?.Invoke(this, eventargs);
-
-        // PerformRecreateHandle doesn't quite do what you would suspect.
-        // Any existing images in the imagelist will NOT be copied to the
-        // new image list -- they really should.
-
-        // The net effect is that if you add images to an imagelist, and
-        // then e.g. change the ImageSize any existing images will be lost
-        // and you will have to add them back. This is probably a corner case
-        // but it should be mentioned.
-        //
-        // The fix isn't as straightforward as you might think, i.e. we
-        // cannot just blindly store off the images and copy them into
-        // the newly created imagelist. E.g. say you change the ColorDepth
-        // from 8-bit to 32-bit. Just copying the 8-bit images would be wrong.
-        // Therefore we are going to leave this as is. Users should make sure
-        // to set these properties before actually adding the images.
-
-        // The Designer works around this by shadowing any Property that ends
-        // up calling PerformRecreateHandle (ImageSize, ColorDepth, ImageStream).
-
-        // Thus, if you add a new Property to ImageList which ends up calling
-        // PerformRecreateHandle, you must shadow the property in ImageListDesigner.
-        private void PerformRecreateHandle(string reason)
-        {
-            if (!HandleCreated)
-            {
-                return;
-            }
-
-            if (_originals is null || Images.Empty)
-            {
-                // spoof it into thinking this is the first CreateHandle
-                _originals = new List<Original>();
-            }
-
-            DestroyHandle();
-            CreateHandle();
-            OnRecreateHandle(EventArgs.Empty);
-        }
-
-        private void ResetImageSize() => ImageSize = s_defaultImageSize;
-
-        private void ResetTransparentColor() => TransparentColor = Color.LightGray;
-
-        private bool ShouldSerializeTransparentColor() => !TransparentColor.Equals(Color.LightGray);
 
         /// <summary>
         ///  Returns a string representation for this control.
@@ -531,9 +394,5 @@ namespace System.Windows.Forms
             => Images is null
                ? base.ToString()
                : $"{base.ToString()} Images.Count: {Images.Count}, ImageSize: {ImageSize}";
-
-        //HIMAGELIST IHandle<HIMAGELIST>.Handle => HIMAGELIST;
-
-        //internal HIMAGELIST HIMAGELIST => (HIMAGELIST)Handle;
     }
 }

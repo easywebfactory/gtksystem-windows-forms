@@ -207,9 +207,8 @@ namespace System.Drawing.Imaging
 
 		private static ImageCodecInfo[] ConvertFromMemory(IntPtr memoryStart, int numCodecs)
 		{
-			ImageCodecInfo[] array = new ImageCodecInfo[numCodecs];
-			
-			return array;
-		}
+            ImageCodecInfo[] array = new ImageCodecInfo[numCodecs];
+            return array;
+        }
 	}
 }

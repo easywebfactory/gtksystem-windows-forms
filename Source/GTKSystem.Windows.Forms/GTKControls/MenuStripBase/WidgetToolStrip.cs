@@ -6,10 +6,12 @@
  * date: 2024/1/3
  */
 
+using GLib;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Text;
+using System.Windows.Forms.Layout;
 
 
 namespace System.Windows.Forms
@@ -23,13 +25,13 @@ namespace System.Windows.Forms
         internal Gtk.Label label = new Gtk.Label();
         internal Gtk.Button button = new Gtk.Button();
         internal Gtk.Entry entry = new Gtk.Entry();
-        internal Gtk.ComboBoxText comboBox = new Gtk.ComboBoxText() { HasFrame=false };
+        internal Gtk.ComboBoxText comboBox = new Gtk.ComboBoxText() { HasFrame = false };
         // internal Gtk.ProgressBar progressBar = new Gtk.ProgressBar();
         internal Gtk.LevelBar progressBar = new Gtk.LevelBar();
         internal Gtk.Viewport flagBox = new Gtk.Viewport();
         Gtk.CssProvider provider = new Gtk.CssProvider();
         public string StripType { get; set; }
-        public WidgetToolStrip() : this(null, "", null, null, "",null)
+        public WidgetToolStrip() : this(null, "", null, null, "", null)
         {
         }
 
@@ -44,7 +46,7 @@ namespace System.Windows.Forms
         {
         }
 
-        protected WidgetToolStrip(string stripType, string text, System.Drawing.Image image, EventHandler onClick, string name,params object[] args) : base(text, image, onClick, name)
+        protected WidgetToolStrip(string stripType, string text, System.Drawing.Image image, EventHandler onClick, string name, params object[] args) : base(text, image, onClick, name)
         {
             this.unique_key = Guid.NewGuid().ToString().ToLower();
             MenuItem = (Gtk.MenuItem)Activator.CreateInstance(typeof(T), args);
@@ -66,7 +68,7 @@ namespace System.Windows.Forms
                 itemBox.Valign = Gtk.Align.Center;
                 itemBox.Halign = Gtk.Align.Start;
                 flagBox.BorderWidth = 0;
-                flagBox.ShadowType=Gtk.ShadowType.None;
+                flagBox.ShadowType = Gtk.ShadowType.None;
                 flagBox.Hexpand = false;
                 flagBox.Vexpand = false;
                 if (stripType == "ToolStripDropDownItem")
@@ -83,7 +85,7 @@ namespace System.Windows.Forms
                     itemBox.PackStart(button, false, false, 0);
                     this.MenuItem.Add(itemBox);
                 }
-                else if(stripType == "ToolStripTextBox")
+                else if (stripType == "ToolStripTextBox")
                 {
                     entry.HasFrame = false;
                     entry.MaxWidthChars = 1;
@@ -113,7 +115,7 @@ namespace System.Windows.Forms
 
             }
             Created = true;
-            
+
         }
 
         private void MenuItem_ButtonReleaseEvent(object o, Gtk.ButtonReleaseEventArgs args)
@@ -147,19 +149,21 @@ namespace System.Windows.Forms
         }
         public override bool Checked { get; set; }
         public override CheckState CheckState { get; set; } = CheckState.Unchecked;
-        public override System.Drawing.Image Image {
+        public override System.Drawing.Image Image
+        {
             get => base.Image;
-            set {
+            set
+            {
                 base.Image = value;
-            } 
+            }
         }
-
+        public ToolStripItemAlignment Alignment { get => MenuItem.Halign == Gtk.Align.End ? ToolStripItemAlignment.Right : ToolStripItemAlignment.Left; set { MenuItem.Hexpand = true; MenuItem.Halign = Gtk.Align.End; MenuItem.RightJustified = value == ToolStripItemAlignment.Right; } }
         internal Gtk.RadioButton groupradio = new Gtk.RadioButton("");
         private void ToolStripItem_Realized(object sender, EventArgs e)
         {
             SetStyle((Gtk.MenuItem)sender);
             Gtk.MenuItem menuItem = (Gtk.MenuItem)sender;
-            if(menuItem.Parent is Gtk.Menu)
+            if (menuItem.Parent is Gtk.Menu)
             {
                 flagBox.Vexpand = true;
                 flagBox.Hexpand = true;
@@ -226,7 +230,7 @@ namespace System.Windows.Forms
                 catch { }
             }
             menuItem.ShowAll();
-            
+
         }
 
         private void Checkbutton_Toggled(object sender, EventArgs e)
@@ -237,7 +241,7 @@ namespace System.Windows.Forms
 
         internal void UpdateStyle()
         {
-            if(this.Widget.IsMapped)
+            if (this.Widget.IsMapped)
                 SetStyle(this.Widget);
         }
         protected virtual void SetStyle(Gtk.Widget widget)
@@ -312,8 +316,10 @@ namespace System.Windows.Forms
             }
         }
 
-        public override string Text { 
-            get {
+        public override string Text
+        {
+            get
+            {
                 if (this.StripType == "ToolStripTextBox")
                 {
                     return this.entry.Text;
@@ -327,8 +333,9 @@ namespace System.Windows.Forms
                     return this.comboBox.ActiveText;
                 }
                 return this.label.Text;
-            } 
-            set { this.label.Text = value; this.button.Label = value; } }
+            }
+            set { this.label.Text = value; this.button.Label = value; }
+        }
         public override Color ImageTransparentColor { get; set; }
         public override ToolStripItemDisplayStyle DisplayStyle { get; set; }
         public override bool AutoToolTip { get; set; }

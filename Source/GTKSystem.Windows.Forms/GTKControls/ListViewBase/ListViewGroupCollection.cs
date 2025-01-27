@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace System.Windows.Forms
 {
@@ -55,8 +56,21 @@ namespace System.Windows.Forms
 		}
 		private void AddCore(ListViewGroup group)
 		{
-			group.ListView = _listView;
-			Add(group);
+			if (this.Exists(m => m.Name == group.Name))
+			{
+				//Console.WriteLine("新增Group.Name重复");
+				// throw new ArgumentException("Group.Name重复");
+				return;
+			}
+            group.ListView = _listView;
+            base.Add(group);
+
+            _listView.NativeGroupAdd(group, -1);
+		}
+        public new void Clear()
+		{
+			_listView.NativeGroupsClear();
+            base.Clear();
 		}
 		public bool Contains(string name)
 		{

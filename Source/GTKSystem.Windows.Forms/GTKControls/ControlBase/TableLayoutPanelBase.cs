@@ -13,8 +13,10 @@
             this.BaselineRow = 0;
             this.ColumnSpacing = 0;
             this.RowSpacing = 0;
-            base.Halign = Gtk.Align.Start;
-            base.Valign = Gtk.Align.Start;
+            this.Halign = Gtk.Align.Start;
+            this.Valign = Gtk.Align.Start;
+            this.Vexpand = false;
+            this.Hexpand = false;
         }
         public void AddClass(string cssClass)
         {

@@ -8,6 +8,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public TabControlBase() : base()
         {
             this.Scrollable = true;
+            this.EnablePopup = true;
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("TabControl");
             base.Halign = Gtk.Align.Start;

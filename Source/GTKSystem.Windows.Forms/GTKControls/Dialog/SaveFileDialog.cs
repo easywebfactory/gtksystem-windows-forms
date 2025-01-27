@@ -13,6 +13,7 @@ namespace System.Windows.Forms
         public SaveFileDialog()
         {
         }
+        private new string Description => base.Description;
         public bool CheckWriteAccess
         {
             get => true;

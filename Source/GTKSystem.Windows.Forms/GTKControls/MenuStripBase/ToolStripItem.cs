@@ -1,7 +1,7 @@
-﻿ 
+﻿
 using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.InteropServices;
+using System.Windows.Forms.Layout;
 
 namespace System.Windows.Forms
 {
@@ -157,8 +157,37 @@ namespace System.Windows.Forms
         {
             
         }
+
+        public void SetBounds(Rectangle bounds, BoundsSpecified specified)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Size GetPreferredSize(Size proposedSize)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IArrangedElement.PerformLayout(IArrangedElement affectedElement, string propertyName)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual bool UseWaitCursor { get; set; }
         public virtual int Width { get; set; }
+
+        public Rectangle Bounds => throw new NotImplementedException();
+
+        public Rectangle DisplayRectangle => throw new NotImplementedException();
+
+        public bool ParticipatesInLayout => throw new NotImplementedException();
+
+        PropertyStore IArrangedElement.Properties => throw new NotImplementedException();
+
+        IArrangedElement IArrangedElement.Container => throw new NotImplementedException();
+
+        public ArrangedElementCollection Children => throw new NotImplementedException();
+
         public virtual event EventHandler Click;
         public virtual event EventHandler CheckedChanged;
         public virtual event EventHandler CheckStateChanged;

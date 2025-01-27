@@ -1,5 +1,4 @@
-﻿using Gtk;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -45,33 +44,16 @@ namespace GTKWinFormsApp
             this.FormClosing += Form2_FormClosing;
             this.FormClosed += Form2_FormClosed;
         }
-
-        private void TimersTimer_Elapsed(object? sender, ElapsedEventArgs e)
-        {
-            Gtk.Application.Invoke(delegate
-            {
-                listBox1.Items.Clear();
-                for (int i = 0; i < 10; i++)
-                {
-                    listBox1.Items.Add($"a异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}");
-                }
-            });
-        }
-        private void Timer1_Tick1(object? sender, System.EventArgs e)
-        {
-            listBox1.Items.Clear();
-            for (int i = 0; i < 10; i++)
-            {
-                listBox1.Items.Add($"b异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}");
-            }
-        }
+        int i = 4;
         private void Timer1_Tick(object? sender, System.EventArgs e)
         {
-            listBox1.Items.Clear();
-            for (int i = 0; i < 10; i++)
-            {
+            // listBox1.Items.Clear();
+            //for (int i = 0; i < 10; i++)
+            //{
+            i++;
                 listBox1.Items.Add($"异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}");
-            }
+                listBox1.TopIndex = i;
+           // }
         }
         private void Form2_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -119,7 +101,10 @@ namespace GTKWinFormsApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            listView1.Items.Add(new ListViewItem("同时添加分组和数据") { ForeColor = Color.Red, BackColor = Color.Yellow, Group = new ListViewGroup("listViewGroup1", "ListViewGroup1") });
+           // listView1.Clear();
+            listView1.Groups.Add("listViewGroup11", "listViewGroup11");
+            listView1.Groups.Add("listViewGroup21", "listViewGroup21");
+            listView1.Items.Add(new ListViewItem("同时添加分组和数据") { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[0] });
             listView1.Items.Add(new ListViewItem("向指定分组添加数据") { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[1] });
 
             ListViewItem m = new ListViewItem("这是一种添加多栏数据的方法", 0);

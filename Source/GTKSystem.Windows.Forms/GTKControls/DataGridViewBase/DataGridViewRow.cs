@@ -1,4 +1,5 @@
 ﻿using Gtk;
+using System.Collections.Generic;
 
 namespace System.Windows.Forms
 {
@@ -8,11 +9,14 @@ namespace System.Windows.Forms
         public TreeIter TreeIter { get; internal set; }
         public DataGridView DataGridView { get; set; }
         private DataGridViewCellCollection _cell;
+        private List<DataGridViewRow> _children;
         public DataGridViewRow()
         {
             _cell = new DataGridViewCellCollection(this);
+            _children = new List<DataGridViewRow>();
         }
         public DataGridViewCellCollection Cells { get { return _cell; } }
+        public List<DataGridViewRow> Children { get => _children; }
         public object DataBoundItem { get; }
         public DataGridViewCellStyle DefaultCellStyle { get; set; }
 

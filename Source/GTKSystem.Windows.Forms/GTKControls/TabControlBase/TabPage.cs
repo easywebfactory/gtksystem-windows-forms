@@ -58,5 +58,17 @@ namespace System.Windows.Forms
         public int ImageIndex { get; set; }
         public string ImageKey { get; set; }
         public List<object> ImageList { get; set; }
+        public override Padding Padding
+        {
+            get => base.Padding;
+            set
+            {
+                base.Padding = value;
+                self.Content.MarginStart = value.Left;
+                self.Content.MarginTop = value.Top;
+                self.Content.MarginEnd = value.Right;
+                self.Content.MarginBottom = value.Bottom;
+            }
+        }
     }
 }

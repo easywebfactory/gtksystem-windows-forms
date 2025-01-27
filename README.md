@@ -6,8 +6,6 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 便于开发跨平台winform软件，便于将C#升级为跨平台软件。
 
 项目官网：[https://www.gtkapp.com](https://www.gtkapp.com/)   
-博客：[https://www.cnblogs.com/easywebfactory](https://www.cnblogs.com/easywebfactory)
-
 
 目前功能持续更新中，将优先完善常用功能。
 
@@ -28,11 +26,29 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 也可以下载[https://github.com/GtkSharp/Dependencies](https://github.com/GtkSharp/Dependencies)，把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24\gtk.zip目录即可。
   ps: $(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData\Local\Gtk\3.24.24
 
-linux安装gtk环境：
+**桌面版linux操作系统通常已经预装GTK环境，不需要再安装GTK，只需安装DotNet SDK即可运行本框架。**
+
+对于没有安装GTK环境的linux系统，可用以下命令安装：
 ```
- sudo apt install libgtk-3-dev
- 或
- sudo apt-get install libgtk3*
+#Debian/Ubuntu环境
+    sudo apt install libgtk-3-0  //Binary package
+    sudo apt install libgtk-3-dev //开发环境 package
+#Arch环境
+    sudo apt install gtk3
+#Fedora	环境
+    sudo apt install gtk3    //Binary package
+    sudo apt install gtk3-devel  //开发环境 package
+
+*或指定库名安装
+    sudo apt-get install libgtk3*
+
+#从MSYS2安装：
+    pacman -S mingw-w64-ucrt-x86_64-gtk3
+
+*检查环境情况（需要安装pkg-config）：
+    pkg-config --cflags --libs gtk+-3.0
+*查找gtk的安装包目录：
+    ldconfig -p | grep gtk
 ```
 linux安装dotnet环境：
 ```
@@ -126,6 +142,17 @@ GTKWinFormsApp.runtimeconfig.json
 ### Resources资源的使用
 * [查看Resources资源的使用教程>>](Readme_Resources.md)
 
+### 支持GTKSystem，获取技术服务
+
+企业服务：[https://www.gtkapp.com/vipservice](https://www.gtkapp.com/vipservice)   
+
+ ![支持GTKSystem](/pic/love_reward_qrcode_.png)
+ ![联系GTKSystem](/pic/contact_weixin.png)
+
+### 交流/合作/商务/赞助
+QQ群：236066073（满），1011147488
+邮箱：438865652@qq.com <br/>
+
 ### 默认风格效果
 ![demo效果](/pic/native-2.png)
 
@@ -136,30 +163,10 @@ GTKWinFormsApp.runtimeconfig.json
 ![图文窗口](/pic/native-3.png)
 
 ### 支持各种主题风格界面（windows xp、vista、7、8、10，macOS系列，等等）
-
-#### 主题风格，windows7风格界面
-![windows7风格界面](/pic/windows7-1.png)
-![windows7风格界面](/pic/windows7-0.png)
+#### 主题风格，window10黑色风格界面
+![mwindow10黑色风格界面](/pic/Windows-10-White.png)
 #### 主题风格，macOS风格界面
 ![macOS风格界面](/pic/macOS-1.png)
-#### 主题风格，window10黑色风格界面
-![mwindow10黑色风格界面](/pic/Windows-10-Dark.png)
-
-### 支持GTKSystem，获取技术服务
-
-| ￥299基础服务一   | ￥2999套餐服务二    | ￥9999套餐服务三     |
-| :----               |    :----           |          :----   |
-| 帮助开发环境安装       | 包括套餐一服务        |   包含所有套餐服务  |
-| 运行环境gtk\dotnet安装 | 提供二次开发技术支持  |   提供二次开发技术支持    |
-| 上手开发疑难解答       | 为用户开发协商指定的功能或接口至少3项 | 为用户开发功能或接口不少于9项  |
-| 帮助解决程序异常      | 提供定制的主题风格界面样式和一些常用扩展控件    |  提供定制的主题风格界面样式和一些常用扩展控件                           |
-
- ![支持GTKSystem](/pic/love_reward_qrcode_.png)
- ![联系GTKSystem](/pic/contact_weixin.png)
-
-### 交流/合作/商务/赞助
-QQ群：236066073
-邮箱：438865652@qq.com <br/>
 
 ### 常见问题
   为什么Form窗体设计器打不开？<br/>

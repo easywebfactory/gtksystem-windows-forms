@@ -1,5 +1,6 @@
 ﻿using Gtk;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 
@@ -34,8 +35,9 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public delegate bool CloseWindowHandler(object sender, EventArgs e);
         public event CloseWindowHandler CloseWindowEvent;
         public event System.Windows.Forms.ScrollEventHandler Scroll;
-        public FormBase(Gtk.Window parent = null) : base("title", parent, DialogFlags.UseHeaderBar)
+        public FormBase(Gtk.Window parent = null) : base("title", Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive), DialogFlags.UseHeaderBar)
         {
+            this.DestroyWithParent = true;
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Form");
             this.WindowPosition = Gtk.WindowPosition.Center;
@@ -65,17 +67,12 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Drawn += FormBase_Drawn;
             this.Close += FormBase_Close;
         }
-
         private void FormBase_Close(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show(this, "你确定要关闭窗口吗？", "Esc热键操作提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show(this, "你正在关闭该窗口，确定要关闭吗？", "Esc按键操作提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
                 this.Respond(ResponseType.DeleteEvent);
-            }
-            else
-            {
-                Run();
             }
         }
 
@@ -90,7 +87,10 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             if (args.ResponseId == ResponseType.DeleteEvent)
             {
                 if (CloseWindowEvent(this, EventArgs.Empty))
-                    this.HideOnDelete();
+                {
+                    this.Dispose();
+                    this.Destroy();
+                }
                 else
                     this.Run();
             }
@@ -114,7 +114,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         }
         public void CloseWindow()
         {
-            this.HideOnDelete();
+            this.OnClose();
+            ((Gtk.Window)this).Close();
         }
 
         public void AddClass(string cssClass)

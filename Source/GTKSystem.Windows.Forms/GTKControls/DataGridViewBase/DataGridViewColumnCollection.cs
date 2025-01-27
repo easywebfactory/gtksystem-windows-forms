@@ -54,7 +54,31 @@ namespace System.Windows.Forms
                 {
                     Gtk.CssProvider css = new Gtk.CssProvider();
                     css.LoadFromData(style);
-                    header.StyleContext.AddProvider(css, 600);
+                    header.StyleContext.AddProvider(css, 800);
+                }
+                switch (_cellStyle.Alignment)
+                {
+                    case DataGridViewContentAlignment.TopLeft:
+                    case DataGridViewContentAlignment.MiddleLeft:
+                    case DataGridViewContentAlignment.BottomLeft:
+                        column.Alignment = 0f;
+                        break;
+
+                    case DataGridViewContentAlignment.TopCenter:
+                    case DataGridViewContentAlignment.MiddleCenter:
+                    case DataGridViewContentAlignment.BottomCenter:
+                        column.Alignment = 0.5f;
+                        break;
+
+                    case DataGridViewContentAlignment.TopRight:
+                    case DataGridViewContentAlignment.MiddleRight:
+                    case DataGridViewContentAlignment.BottomRight:
+                        column.Alignment = 1.0f;
+                        break;
+
+                    default:
+                        column.Alignment = 0f;
+                        break;
                 }
             }
             GridView.AppendColumn(column);
@@ -64,37 +88,8 @@ namespace System.Windows.Forms
         {
             foreach (DataGridViewColumn column in columns)
             {
-                column.DataGridView = __owner;
-                DataGridViewCellStyle _cellStyle = column.DefaultCellStyle;
-                if (__owner.ColumnHeadersDefaultCellStyle != null)
-                    _cellStyle = __owner.ColumnHeadersDefaultCellStyle;
-
-                if (_cellStyle != null)
-                {
-                    Gtk.Button header = ((Gtk.Button)column.Button);
-                    string style = "";
-                    if (_cellStyle.BackColor.Name != "0")
-                    {
-                        string backcolor = $"rgba({_cellStyle.BackColor.R},{_cellStyle.BackColor.G},{_cellStyle.BackColor.B},{_cellStyle.BackColor.A})";
-                        style += $".columnheaderbackcolor{{background-color:{backcolor};}} ";
-                        header.StyleContext.AddClass("columnheaderbackcolor");
-                    }
-                    if (_cellStyle.ForeColor.Name != "0")
-                    {
-                        string forecolor = $"rgba({_cellStyle.ForeColor.R},{_cellStyle.ForeColor.G},{_cellStyle.ForeColor.B},{_cellStyle.ForeColor.A})";
-                        style += $".columnheaderforecolor{{color:{forecolor};}} ";
-                        header.StyleContext.AddClass("columnheaderforecolor");
-                    }
-                    if (style.Length > 9)
-                    {
-                        Gtk.CssProvider css = new Gtk.CssProvider();
-                        css.LoadFromData(style);
-                        header.StyleContext.AddProvider(css, 600);
-                    }
-                }
-                GridView.AppendColumn(column);
+                Add(column);
             }
-            base.AddRange(columns);
         }
         public new void Clear()
         {

@@ -4,7 +4,7 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
-using Atk;
+using Gdk;
 using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
@@ -27,25 +27,69 @@ namespace System.Windows.Forms
         {
             base.SetStyle(self.TreeView);
         }
+        private CellRendererToggle renderercheckbox;
+        private CellRendererIcon rendererPixbuf;
         public TreeView() : base()
         {
             root = new TreeNode(this);
-            root.Name = "root";
-            _store = new Gtk.TreeStore(typeof(string), typeof(bool));
+            root.Index = "-1";
+            root.Name = "__root";
+            _store = new Gtk.TreeStore(typeof(string), typeof(bool), typeof(int), typeof(string));
             self.TreeView.Model = _store;
-            self.TreeView.Realized += Control_Realized;
+            self.TreeView.Realized += TreeView_Realized;
             self.TreeView.Selection.Changed += Selection_Changed;
             self.TreeView.RowActivated += TreeView_RowActivated;
             self.TreeView.RowCollapsed += TreeView_RowCollapsed;
             self.TreeView.RowExpanded += TreeView_RowExpanded;
             this.BorderStyle = BorderStyle.Fixed3D;
+
+            Gtk.TreeViewColumn column = new Gtk.TreeViewColumn();
+            column.Title = "树目录";
+
+            renderercheckbox = new CellRendererToggle();
+            renderercheckbox.Activatable = true;
+            renderercheckbox.IsExpanded = true;
+            renderercheckbox.Toggled += CellName_Toggled;
+
+            renderercheckbox.Visible = false;
+            column.PackStart(renderercheckbox, false);
+            column.AddAttribute(renderercheckbox, "active", 1);
+
+            rendererPixbuf = new CellRendererIcon(this);
+            rendererPixbuf.IsExpanded = true;
+            rendererPixbuf.Visible = false;
+            column.PackStart(rendererPixbuf, false);
+            Gtk.CellRendererText renderertext = new Gtk.CellRendererText();
+            renderertext.IsExpanded = true;
+            renderertext.PlaceholderText = "---";
+            column.PackStart(renderertext, true);
+            column.AddAttribute(renderertext, "text", 0);
+            self.TreeView.AppendColumn(column);
+        }
+
+        private void TreeView_Realized(object sender, EventArgs e)
+        {
+            if (ImageList != null)
+            {
+                Gtk.TreeViewColumn column = ((Gtk.TreeView)sender).Columns[0];
+                if (string.IsNullOrWhiteSpace(ImageKey))
+                {
+                    System.Drawing.Image image = ImageList.GetBitmap(ImageIndex);
+                    rendererPixbuf.Pixbuf = image.Pixbuf;
+                }
+                else
+                {
+                    System.Drawing.Image image = ImageList.GetBitmap(ImageKey);
+                    rendererPixbuf.Pixbuf = image.Pixbuf;
+                }
+            }
         }
 
         private void TreeView_RowExpanded(object o, RowExpandedArgs args)
         {
             if (AfterExpand != null && ((Gtk.TreeView)o).IsVisible)
             {
-                TreeNode result = new TreeNode();
+                TreeNode result = null;
                 GetNodeChild(root, args.Path.Indices, ref result);
                 AfterExpand(this, new TreeViewEventArgs(result, TreeViewAction.Expand));
             }
@@ -55,7 +99,7 @@ namespace System.Windows.Forms
         {
             if (AfterCollapse != null && ((Gtk.TreeView)o).IsVisible)
             {
-                TreeNode result = new TreeNode();
+                TreeNode result = null;
                 GetNodeChild(root, args.Path.Indices, ref result);
                 AfterCollapse(this, new TreeViewEventArgs(result, TreeViewAction.Collapse));
             }
@@ -67,7 +111,7 @@ namespace System.Windows.Forms
             {
                 if (cancelEventArgs == null || cancelEventArgs.Cancel == false)
                 {
-                    TreeNode result = new TreeNode();
+                    TreeNode result = null;
                     GetNodeChild(root, args.Path.Indices, ref result);
                     AfterSelect(this, new TreeViewEventArgs(result));
                 }
@@ -81,7 +125,7 @@ namespace System.Windows.Forms
                 if (self.TreeView.Selection.GetSelected(out TreeIter iter))
                 {
                     TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
-                    TreeNode result = new TreeNode();
+                    TreeNode result = null; 
                     GetNodeChild(root, paths[0].Indices, ref result);
                     cancelEventArgs = new TreeViewCancelEventArgs(result, false, TreeViewAction.ByMouse);
                     BeforeSelect(this, cancelEventArgs);
@@ -93,48 +137,29 @@ namespace System.Windows.Forms
         {
             Store.Clear();
         }
-        private void Control_Realized(object sender, EventArgs e)
-        {
-            CellRendererToggle renderercheckbox = new CellRendererToggle();
-            renderercheckbox.Activatable = true;
-            renderercheckbox.IsExpanded = true;
-            renderercheckbox.Toggled += CellName_Toggled;
-
-            Gtk.CellRendererText renderertext = new Gtk.CellRendererText();
-            renderertext.IsExpanded = true;
-            renderertext.PlaceholderText = "---";
-
-            Gtk.TreeViewColumn column = new Gtk.TreeViewColumn();
-            column.Title = "树目录";
-            if (CheckBoxes == true)
-            {
-                column.PackStart(renderercheckbox, false);
-                column.AddAttribute(renderercheckbox, "active", 1);
-            }
-            column.PackStart(renderertext, false);
-            column.SetAttributes(renderertext, new object[] { "text", 0 });
-            self.TreeView.AppendColumn(column);
-        }
-
-        private void CellName_Toggled(object o, ToggledArgs args)
-        {
-            //Console.WriteLine("CellRendererToggle CellName_Toggled");
-            TreePath path = new TreePath(args.Path);
-            var model = _store;
-            model.GetIter(out TreeIter iter, path);
-            bool val = (bool)(model.GetValue(iter, 1));
-            model.SetValue(iter, 1, val == false);
-          
-        }
         internal void LoadNodeValue(TreeNode node, TreeIter parent)
         {
-            TreeIter iter = parent.Equals(TreeIter.Zero) ? Store.AppendValues(node.Text, false) : Store.AppendValues(parent, node.Text, false);
+            TreeIter iter = parent.Equals(TreeIter.Zero) ? Store.AppendValues(node.Text, node.Checked, node.ImageIndex, node.ImageKey) : Store.AppendValues(parent, node.Text, node.Checked, node.ImageIndex, node.ImageKey);
             TreePath path = Store.GetPath(iter);
             node.Index = string.Join(",", path.Indices);
             node.TreeIter = iter;
             foreach (TreeNode child in node.Nodes)
             {
                 LoadNodeValue(child, iter);
+            }
+        }
+        internal void SetChecked(TreeNode node, bool isChecked)
+        {
+            if (node != null)
+            {
+                _store.SetValue(node.TreeIter,1,isChecked);
+            }
+        }
+        internal void SetSelected(TreeNode node, bool isSelected)
+        {
+            if (node != null)
+            {
+                this.SelectedNode = node;
             }
         }
         public TreeNodeCollection Nodes
@@ -144,7 +169,65 @@ namespace System.Windows.Forms
                 return root.Nodes;
             }
         }
-        public bool CheckBoxes { get; set; }
+        private bool _checkBoxs;
+        public bool CheckBoxes
+        {
+            get => _checkBoxs;
+            set
+            {
+                _checkBoxs = value;
+                renderercheckbox.Visible = _checkBoxs == true;
+            }
+        }
+        private void CellName_Toggled(object o, ToggledArgs args)
+        {
+            //Console.WriteLine("CellRendererToggle CellName_Toggled");
+            TreePath path = new TreePath(args.Path);
+            var model = _store;
+            model.GetIter(out TreeIter iter, path);
+            bool val = (bool)(model.GetValue(iter, 1));
+            model.SetValue(iter, 1, val == false);
+        }
+        private ImageList _imageList;
+        public ImageList ImageList { get => _imageList; 
+            set {
+                _imageList = value;
+                rendererPixbuf.Visible = _imageList != null;
+                if (_imageList != null)
+                {
+                    Gtk.TreeViewColumn column = self.TreeView.Columns[0];
+                    column.AddAttribute(rendererPixbuf, "pixbufkey", 3);
+                    column.AddAttribute(rendererPixbuf, "pixbufindex", 2);
+                }
+            } 
+        }
+        public int ImageIndex { get; set; } = -1;
+        public string ImageKey { get; set; }
+        public int SelectedImageIndex { get; set; }
+        public string SelectedImageKey { get; set; }
+        public int StateImageIndex { get; set; }
+        public string StateImageKey { get; set; }
+        public void ExpandAll()
+        {
+            self.TreeView.ExpandAll();
+        }
+        public void CollapseAll()
+        {
+            self.TreeView.CollapseAll();
+        }
+        internal void SetExpandNode(TreeNode node, bool all)
+        {
+            self.TreeView.ExpandRow(_store.GetPath(node.TreeIter), all);
+        }
+        internal void SetCollapseNode(TreeNode node)
+        {
+            
+            self.TreeView.CollapseRow(_store.GetPath(node.TreeIter));
+        }
+        internal bool GetNodeExpanded(TreeNode node)
+        {
+            return self.TreeView.GetRowExpanded(_store.GetPath(node.TreeIter));
+        }
         public bool ShowLines { get=> self.TreeView.EnableTreeLines; set { self.TreeView.EnableTreeLines = true; self.TreeView.EnableGridLines = Gtk.TreeViewGridLines.Horizontal; } }
         public bool ShowNodeToolsTips { get; set; }
         public bool ShowPlusMinus { get; set; } = true;
@@ -163,22 +246,7 @@ namespace System.Windows.Forms
                 return SelectedNode.Text;
             }
         }
-        public string SelectedValuePath
-        {
-            get
-            {
-                string nodePath = string.Empty;
-                if (self.TreeView.Selection.GetSelected(out TreeIter iter))
-                {
-                    TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
-                    List<string> nodeNames = new List<string>();
-                    GetNodePath(root, paths[0].Indices, 0, ref nodeNames);
-                    nodePath = string.Join(PathSeparator, nodeNames);
-                }
-                return nodePath;
-            }
-            set { }
-        }
+
         [DefaultValue("\\")]
         public string PathSeparator
         {
@@ -191,7 +259,7 @@ namespace System.Windows.Forms
             {
                 if (self.TreeView.Selection.GetSelected(out TreeIter iter)) {
                     TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
-                    TreeNode result = new TreeNode();
+                    TreeNode result = null;
                     GetNodeChild(root, paths[0].Indices, ref result);
                     return result;
                 }
@@ -199,7 +267,13 @@ namespace System.Windows.Forms
             }
             set
             {
-                self.TreeView.Selection.SelectIter(value.TreeIter);
+                if (value == null)
+                    self.TreeView.Selection.UnselectAll();
+                else
+                {
+                    self.TreeView.ExpandToPath(_store.GetPath(value.TreeIter));
+                    self.TreeView.Selection.SelectIter(value.TreeIter);
+                }
             }
         }
         public TreeNode TopNode
@@ -234,34 +308,29 @@ namespace System.Windows.Forms
                 }
             }
         }
-        private void GetNodeChilds(TreeNode node, int[] indices, int depth, ref TreeNode result, ref TreeNode lastNode)
+        private class CellRendererIcon : Gtk.CellRendererPixbuf
         {
-            TreeNode treeNode = new TreeNode();
-            string nodeIndex = string.Join(",", indices.Take(depth + 1));
-            foreach (TreeNode child in node.Nodes)
+            public TreeView _treeView;
+            public CellRendererIcon(TreeView treeView)
             {
-                if (child.Index == nodeIndex)
+                _treeView = treeView;
+            }
+            [Property("pixbufindex")]
+            public int PixbufIndex
+            {
+                set
                 {
-                    treeNode = (TreeNode)child.Clone();
-                    result.Nodes.Add(treeNode);
-                    depth++;
-                    if (depth < indices.Length)
-                        GetNodeChilds(child, indices, depth, ref treeNode, ref lastNode);
+                    if (value < _treeView.ImageList.Images.Count)
+                        this.Pixbuf = _treeView.ImageList.Images[value].Pixbuf;
                 }
             }
-            lastNode = treeNode;
-        }
-        private void GetNodePath(TreeNode node, int[] indices, int depth, ref List<string> nodePath)
-        {
-            string nodeIndex = string.Join(",", indices.Take(depth + 1));
-            foreach (TreeNode child in node.Nodes)
+            [Property("pixbufkey")]
+            public string PixbufKey
             {
-                if (child.Index == nodeIndex)
+                set
                 {
-                    nodePath.Add(child.Text);
-                    depth++;
-                    if (depth < indices.Length)
-                        GetNodePath(child, indices, depth, ref nodePath);
+                    if (string.IsNullOrWhiteSpace(value) == false)
+                        this.Pixbuf = _treeView.ImageList.Images[value].Pixbuf;
                 }
             }
         }

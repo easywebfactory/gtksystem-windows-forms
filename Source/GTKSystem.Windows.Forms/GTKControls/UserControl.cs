@@ -19,20 +19,20 @@ namespace System.Windows.Forms
     {
         public readonly UserControlBase self = new UserControlBase();
         public override object GtkControl => self;
-        private Gtk.Layout contaner;
+        private Gtk.Overlay contaner;
         private ControlCollection _controls;
 
         public UserControl() : base()
         {
-            contaner = new Gtk.Layout(new Gtk.Adjustment(IntPtr.Zero), new Gtk.Adjustment(IntPtr.Zero));
+            contaner = new Gtk.Overlay();
             contaner.MarginStart = 0;
             contaner.MarginTop = 0;
             contaner.BorderWidth = 0;
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
-            contaner.Expand = true;
-            contaner.Hexpand = true;
-            contaner.Vexpand = true;
+            contaner.Hexpand = false;
+            contaner.Vexpand = false;
+            contaner.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             _controls = new ControlCollection(this, contaner);
             self.Add(contaner);
             self.Override.Paint += Override_Paint;

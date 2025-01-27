@@ -7,10 +7,10 @@
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("ToolStrip");
-            this.Hexpand = false;
+            this.Hexpand = true;
             this.Vexpand = false;
             this.Valign = Gtk.Align.Start;
-            this.Halign = Gtk.Align.Start;
+            this.Halign = Gtk.Align.Fill;
             this.HeightRequest = 20;
         }
         public void AddClass(string cssClass)

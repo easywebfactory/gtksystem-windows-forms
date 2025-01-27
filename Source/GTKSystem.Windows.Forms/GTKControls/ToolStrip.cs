@@ -60,7 +60,7 @@ namespace System.Windows.Forms
         }
 
         public Size ImageScalingSize { get; set; }
-
+        public ToolStripLayoutStyle LayoutStyle { get; set; }
         public override event EventHandler Click;
         public event EventHandler CheckedChanged;
         public event EventHandler CheckStateChanged;

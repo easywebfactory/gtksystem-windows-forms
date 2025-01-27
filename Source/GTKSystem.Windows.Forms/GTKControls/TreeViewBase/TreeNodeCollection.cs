@@ -27,7 +27,17 @@ namespace System.Windows.Forms
             {
                 Add(node);
             }
-
+        }
+        public new void AddRange(IEnumerable<TreeNode> nodes)
+        {
+            if (nodes == null)
+            {
+                throw new ArgumentNullException("nodes");
+            }
+            foreach (TreeNode node in nodes)
+            {
+                Add(node);
+            }
         }
         public new void Add(TreeNode node)
         {

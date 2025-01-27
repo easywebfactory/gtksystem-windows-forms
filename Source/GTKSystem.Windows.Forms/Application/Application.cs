@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿
+using Gdk;
+using Gtk;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -113,11 +117,11 @@ namespace System.Windows.Forms
 
 .DefaultThemeStyle{padding: 0px 2px; border-style:solid;min-height:6px;min-width:6px;}
 .DefaultThemeStyle entry{
-   border-width: 1px; border-style: solid; border-color:@frame_color;
+   padding: 4px 5px; border-width: 1px; border-style: solid; border-color:@frame_color;
    background-color: @theme_base_color; color: @theme_text_color;
 }
 .DefaultThemeStyle entry.flat{
-   padding: 0px 4px; border-width: 1px; border-style: solid; border-color:@frame_color;
+   padding: 4px 5px; border-width: 1px; border-style: solid; border-color:@frame_color;
    background-color: @theme_base_color; color: @theme_text_color;
 }
 .DefaultThemeStyle button{padding:4px 3px;}
@@ -132,21 +136,34 @@ namespace System.Windows.Forms
 .GridViewCell-Button:selected{ color:blue}
 
 .LinkLabel{border-style:none;}
-.TextBox{padding:1px;}
-
-.ComboBox entry.flat{border-right-width:0px;padding:0px;}
-.ComboBox button{padding-top:0px;padding-bottom:0px;}
+.TextBox{}
+.ComboBox{padding:0px;}
+.ComboBox entry{border-right-width:0px;  }
+.ComboBox entry.flat{border-right-width:0px;  }
+.ComboBox entry:focus{border-right-width:0px; box-shadow: inset 0px 0px 0px 1px #62a0ea;}
+.ComboBox button{padding-top:0px;padding-bottom:0px;border-width: 1px 1px 1px 1px; border-style: solid; border-color:@frame_color;}
 
 .DropDownList button{padding:0px;}
-.SplitContainer{padding:0px;}
+.SplitContainer{padding:0px;border:0px;box-shadow:none;}
+/* 当有滚动条时，宽高小于60px有异常信息输出 */
+.SplitterPanel{padding:0px;margin:0px;border:0px;box-shadow:none;min-width:60px;min-height:60px;}
+.SplitterPanel .frame{padding:0px;margin:0px;border:0px;box-shadow:none;}
+.SplitterPanel .flat{padding:0px;margin:0px;border:0px;box-shadow:none;}
+
 .TableLayoutPanel {box-shadow: 1px 1px 1px 0px @frame_color;}
 .TableLayoutPanel viewport.frame {box-shadow: inset 1px 1px 1px 0 @frame_color;}
-.ListView{}
+.ListView{border:inset 1px @frame_color;}
+.ListView .Label{background-color:transparent;} 
 .ListView checkbutton {padding:0px;}
 .ListView .Label{background-color:transparent;} 
-.ListViewHeader {background-color:@theme_bg_color; opacity:0.88; }
+.ListView flowboxchild {padding:0px;}
+.ListView flowboxchild viewport{padding:2px 0px;}
+.ListView .GridBorder viewport{box-shadow: inset -1px -1px #eeeeee;}
+.ListViewHeader {background-color:@theme_bg_color; opacity:0.88;padding:0px;min-height:6px; }
+.ListViewHeader button{box-shadow:inset -1px 0px @frame_color;border-width:0px; border-radius:0px; padding:0px 0px 5px 0px;min-height:20px;min-width:6px;margin:0px; }
+.ListViewHeader button.frame{border-width:0px;padding:0px 0px 0px 0px;margin:0px; }
 .ListView .GroupLine{border-top:inset 1px #6677bb;}
-.ListView .GroupTitle{padding-left:5px;padding-right:5px; }
+.ListView .GroupTitle{padding-left:5px;padding-right:5px; color:#6677bb; }
 .ListView .GroupSubTitle{padding-left:5px;padding-right:5px; }
 .StatusStrip{padding:0px; border-width:1px 0px 0px 0px; border-top:solid 1px @frame_color;}
 .ToolStrip button{padding:0px;}
@@ -154,9 +171,9 @@ namespace System.Windows.Forms
 .NumericUpDown{border-width:1px;padding:2px; }
 .NumericUpDown button.up{border-width:0px;padding:0px;}
 .NumericUpDown button.down{border-width:0px;padding:0px;}
-.NumericUpDown.horizontal entry{border-width:0px;padding:1px;min-height:6px;min-width:6px;} 
-.NumericUpDown.vertical entry{border-width:0px;padding:1px;min-height:6px;min-width:6px;} 
-
+.NumericUpDown.horizontal entry{border-width:0px;padding:2px 3px; min-height:6px;min-width:6px;} 
+.NumericUpDown.vertical entry{border-width:0px;padding:2px 3px; min-height:6px;min-width:6px;} 
+.TrackBar {border-width:0px;box-shadow:none;}
 .PrintPreviewBack{background-color:#cccccc; border-radius:0px;}
 .Paper{box-shadow: 0px 0px 3px 1px #999999;background:#ffffff; border-radius:0px;}
 
@@ -181,12 +198,17 @@ namespace System.Windows.Forms
 
                 Gtk.Application.Init();
                 App = new Gtk.Application("GtkSystem.Windows.Forms", GLib.ApplicationFlags.None);
-                //App.Register(GLib.Cancellable.Current);
+                App.Register(GLib.Cancellable.Current);
                 App.Shutdown += App_Shutdown;
                 var quitAction = new GLib.SimpleAction("quit", null);
                 quitAction.Activated += QuitActivated;
                 App.AddAction(quitAction);
-                Gtk.Settings.Default.SplitCursor = true;
+                Gtk.Settings settings = Gtk.Settings.Default;
+                settings.SplitCursor = true;
+                settings.EnableAnimations = true;
+                string iconpath = Path.Combine(appdirectory, "icon.png");
+                if (File.Exists(iconpath))
+                    Gtk.Window.SetDefaultIconFromFile(iconpath);
 
                 Gtk.CssProvider css = new Gtk.CssProvider();
                 StringBuilder cssBuilder=new StringBuilder();
@@ -195,30 +217,50 @@ namespace System.Windows.Forms
                 {
                     string[] setuptheme = File.ReadAllLines(themesetuppath, Text.Encoding.UTF8);
                     Dictionary<string,string> nameValue = setuptheme.Where(w=>w.Contains("=")).ToDictionary(k => k.Split('=')[0],v=>v.Split("=")[1]);
-                    
-                    if (nameValue.TryGetValue("AutoTheme",out string autotheme))
-                    {
-                        if (autotheme == "false" && nameValue.TryGetValue("DefaultThemeName", out string themename))
+                    nameValue.TryGetValue("UseDefaultStyle", out string usedef);
+                    if (usedef != "false")
+                        cssBuilder.AppendLine(css_style);
+
+                    nameValue.TryGetValue("AutoTheme", out string autotheme);
+                    if (autotheme == "false") {
+                        if (nameValue.TryGetValue("DefaultThemeName", out string themename))
                             Gtk.Settings.Default.ThemeName = themename;
-                        else if (autotheme == "true")
-                            Gtk.Settings.Default.ThemeName = "Default";
                     }
                     if (nameValue.TryGetValue("UseCustomTheme", out string usetheme))
                     {
-                        if (usetheme == "true" && nameValue.TryGetValue("ThemeCssPath", out string themecss))
+                        if (usetheme == "true")
                         {
-                            //string themefolder = nameValue["ThemeFolder"];
-                            string themecsspath = "theme/" + themecss;
-                            if (File.Exists(themecsspath))
+                            if (nameValue.TryGetValue("ThemeFolder", out string themefolder))
                             {
-                                cssBuilder.AppendFormat("@import url(\"{0}\");", themecsspath).AppendLine();
+                                if (Directory.Exists(themefolder))
+                                {
+                                    try
+                                    {
+                                        string _themefolder = Path.GetFullPath(themefolder);
+                                        Environment.SetEnvironmentVariable("GTK_DATA_PREFIX", _themefolder);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine(ex.Message);
+                                    }
+                                    finally
+                                    {
+                                        Gtk.Settings.Default.ThemeName = nameValue["Name"];
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine(themefolder + "=》目录不存在");
+                                }
+                            }
+                            if (nameValue.TryGetValue("ThemeCssPath", out string themecss))
+                            {
+                                if (File.Exists(themecss))
+                                {
+                                    cssBuilder.AppendFormat("@import url(\"{0}\");", themecss).AppendLine();
+                                }
                             }
                         }
-                    }
-                    if (nameValue.TryGetValue("UseDefaultStyle", out string usedef))
-                    {
-                        if (usedef != "false")
-                            cssBuilder.AppendLine(css_style);
                     }
                     if (nameValue.TryGetValue("UseCustomStyle", out string customstyle))
                     {
@@ -244,12 +286,12 @@ namespace System.Windows.Forms
                     StringBuilder setupthemecontent = new StringBuilder();
                     setupthemecontent.AppendLine("[setup]");
                     setupthemecontent.AppendLine("/*是否默认跟随系统主题*/");
-                    setupthemecontent.AppendLine("AutoTheme=false");
+                    setupthemecontent.AppendLine("AutoTheme=true");
                     setupthemecontent.AppendLine("/*是否应用内置样式*/");
                     setupthemecontent.AppendLine("UseDefaultStyle=true");
                     setupthemecontent.AppendLine("/*指定主题，AutoTheme=false时有效*/");
                     setupthemecontent.AppendLine("DefaultThemeName=Default");
-                    setupthemecontent.AppendLine("/*是否使用自定义主师，对应[custom theme]*/");
+                    setupthemecontent.AppendLine("/*是否使用自定义主题，对应[custom theme]*/");
                     setupthemecontent.AppendLine("UseCustomTheme=false");
                     setupthemecontent.AppendLine("/*是否使用自定义样式，对应[custom style]*/");
                     setupthemecontent.AppendLine("UseCustomStyle=true");
@@ -257,10 +299,10 @@ namespace System.Windows.Forms
                     setupthemecontent.AppendLine().AppendLine("[custom theme]");
                     setupthemecontent.AppendLine("/* 自定义主题名称 */");
                     setupthemecontent.AppendLine("Name=mytheme");
-                    setupthemecontent.AppendLine("/* 主题文件所在文件夹，只能放在theme目录下 */");
-                    setupthemecontent.AppendLine("ThemeFolder=window10-white");
-                    setupthemecontent.AppendLine("/* 主题css引用文件路径，只能放在theme目录下，相对路径 */");
-                    setupthemecontent.AppendLine("ThemeCssPath=window10-white/theme.css");
+                    setupthemecontent.AppendLine("/* 主题文件所在文件夹 */");
+                    setupthemecontent.AppendLine("ThemeFolder=theme");
+                    setupthemecontent.AppendLine("/* css文件路径 */");
+                    setupthemecontent.AppendLine("ThemeCssPath=theme/mytheme/theme.css");
 
                     setupthemecontent.AppendLine().AppendLine("[custom style]");
                     setupthemecontent.AppendLine("/* 自由定义样式文件 */");
@@ -268,18 +310,20 @@ namespace System.Windows.Forms
 
                     File.WriteAllText(themesetuppath, setupthemecontent.ToString(), Text.Encoding.UTF8);
                 }
-               
+
                 css.LoadFromData(cssBuilder.ToString());
-                Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, 600);
+                Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, StyleProviderPriority.Application);
             }
             return App;
         }
+
         private static void QuitActivated(object sender, EventArgs e)
         {
             Gtk.Application.Quit();
         }
         private static void App_Shutdown(object sender, EventArgs e)
         {
+            Console.WriteLine("App_Shutdown");
             Gtk.Application.Quit();
         }
 
@@ -294,47 +338,56 @@ namespace System.Windows.Forms
         }
         public static void Run(Form mainForm)
         {
-            mainForm.Widget.Destroyed += Control_Destroyed;
+            mainForm.self.Destroyed += Control_Destroyed;
             mainForm.Show();
             Gtk.Application.Run();
         }
-
         private static void Control_Destroyed(object sender, EventArgs e)
         {
-            Exit(null);
+            ExitThread();
         }
 
         public static void Exit()
         {
-            Exit(null);
+            ExitThread();
         }
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public static void Exit(CancelEventArgs e)
         {
-            bool cancelExit = false;
             lock (internalSyncObject)
             {
                 try
                 {
-                    Gtk.Application.Quit();
-                    cancelExit = true;
+                    if (e == null)
+                    {
+                        Gtk.Application.Quit();
+                    }
+                    else
+                    {
+                        if (e.Cancel == false)
+                        {
+                            Gtk.Application.Quit();
+                        }
+                    }
                 }
                 finally
                 {
-                 
                 }
-            }
-            if (e != null)
-            {
-                e.Cancel = cancelExit;
             }
         }
 
         public static void ExitThread()
         {
             lock (internalSyncObject)
-                Gtk.Application.Quit();
+            {
+                try
+                {
+
+                    Gtk.Application.Quit();
+                }
+                finally { }
+            }
         }
     }
 

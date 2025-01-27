@@ -52,7 +52,7 @@ namespace System.Windows.Forms
 
         public virtual void ApplyStyle(DataGridViewCellStyle dataGridViewCellStyle) { }
         public virtual DataGridViewCellStyle Clone() {
-            return ((ArrayList)(new ArrayList() { this }).Clone())[0] as DataGridViewCellStyle; ;
+            return ((ArrayList)(new ArrayList() { this }).Clone())[0] as DataGridViewCellStyle;
         }
         public override bool Equals(object o) { return false; }
         public override int GetHashCode()

@@ -1,7 +1,5 @@
-﻿
+﻿using Gdk;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
@@ -18,14 +16,15 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Events = Gdk.EventMask.AllEventsMask;
             base.Halign = Gtk.Align.Start;
             base.Valign = Gtk.Align.Start;
-            base.Hexpand = true;
-            base.Vexpand = true;
+            base.Hexpand = false;
+            base.Vexpand = false;
             base.VscrollbarPolicy = Gtk.PolicyType.Never;
             base.HscrollbarPolicy = Gtk.PolicyType.Never;
             base.OverlayScrolling = false;
             base.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
             base.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
         }
+ 
         private void Vadjustment_ValueChanged(object sender, EventArgs e)
         {
             if (Scroll != null)

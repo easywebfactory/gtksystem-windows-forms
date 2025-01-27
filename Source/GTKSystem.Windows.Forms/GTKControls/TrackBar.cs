@@ -17,7 +17,7 @@ namespace System.Windows.Forms
         Gtk.Adjustment adjustment = new Gtk.Adjustment(10, 0, 100, 1, 1, 0);
         Gtk.Scale scale;
 		public TrackBar():base()
-		{
+        {
             self.Realized += Control_Realized;
         }
 

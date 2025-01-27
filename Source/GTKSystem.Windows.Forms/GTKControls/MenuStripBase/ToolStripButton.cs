@@ -31,7 +31,7 @@ namespace System.Windows.Forms
        
         public ToolStripButton(string text, Image image, EventHandler onClick, string name) : base(text, image, onClick, name)
         {
-            DisplayStyle=System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            DisplayStyle=System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText;
         }
 
         public bool CheckOnClick { get; set; }

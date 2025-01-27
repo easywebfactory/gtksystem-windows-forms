@@ -30,7 +30,7 @@ namespace System.Windows.Forms
         string CompanyName { get; }
         bool ContainsFocus { get; }
         ContextMenuStrip ContextMenuStrip { get; set; }
-        ControlCollection Controls { get; }
+        Control.ControlCollection Controls { get; }
         bool Created { get; }
         Cursor Cursor { get; set; }
         ControlBindingsCollection DataBindings { get; }

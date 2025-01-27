@@ -7,12 +7,12 @@
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
-using System.Drawing;
+using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class Panel : ContainerControl
+    public partial class Panel : ScrollableControl
     {
         public readonly PanelBase self = new PanelBase();
         public override object GtkControl => self;
@@ -21,8 +21,7 @@ namespace System.Windows.Forms
         public Panel() : base()
         {
             _controls = new ControlCollection(this, contaner);
-            contaner.MarginStart = 0;
-            contaner.MarginTop = 0;
+            contaner.Margin = 0;
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
             contaner.Hexpand = false;
@@ -31,7 +30,18 @@ namespace System.Windows.Forms
             contaner.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             self.Add(contaner);
         }
-
         public override ControlCollection Controls => _controls;
+        public override Padding Padding
+        {
+            get => base.Padding;
+            set
+            {
+                base.Padding = value;
+                contaner.MarginStart = value.Left;
+                contaner.MarginTop = value.Top;
+                contaner.MarginEnd = value.Right;
+                contaner.MarginBottom = value.Bottom;
+            }
+        }
     }
 }

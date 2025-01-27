@@ -26,7 +26,7 @@ namespace System.Windows.Forms
         private DataGridViewRowCollection _rows;
         private ControlBindingsCollection _collect;
         internal Gtk.TreeStore Store = new TreeStore(typeof(CellValue));
-        internal Gtk.TreeView GridView { get { return self.GridView; } }
+        public Gtk.TreeView GridView { get { return self.GridView; } }
         public DataGridView():base()
         {
             this.BorderStyle = BorderStyle.FixedSingle;
@@ -73,6 +73,7 @@ namespace System.Windows.Forms
         private void GridView_Realized(object sender, EventArgs e)
         {
             OnSetDataSource();
+            _columns.Invalidate();
             foreach (Binding binding in DataBindings)
                 GridView.AddNotification(binding.PropertyName, propertyNotity);
         }
@@ -97,14 +98,20 @@ namespace System.Windows.Forms
             }
         }
         public event DataGridViewCellEventHandler CellValueChanged;
-
+        public void SetExpandRow(DataGridViewRow row, bool all)
+        {
+            GridView.ExpandRow(Store.GetPath(row.TreeIter), all);
+        }
+        public void SetCollapseRow(DataGridViewRow row)
+        {
+            GridView.CollapseRow(Store.GetPath(row.TreeIter));
+        }
         public bool MultiSelect { get => !GridView.ActivateOnSingleClick; set { GridView.ActivateOnSingleClick = !value; } }
         public DataGridViewSelectionMode SelectionMode { get; set; }
         public string Markup { get; set; } = "...";
         public bool ReadOnly { get; set; }
         public int RowHeadersWidth { get; set; }
         public int ColumnHeadersHeight { get; set; }
-
         public DataGridViewColumnHeadersHeightSizeMode ColumnHeadersHeightSizeMode
         {
             get;set;
@@ -138,7 +145,7 @@ namespace System.Windows.Forms
         private void OnSetDataSource()
         {
             _Created = false;
-            Store.Clear();
+            _rows.Clear();
             if (_DataSource != null)
             {
                 Store = new Gtk.TreeStore(Array.ConvertAll(GridView.Columns, o => typeof(CellValue)));
@@ -146,6 +153,13 @@ namespace System.Windows.Forms
                 if (_DataSource is DataTable dtable)
                 {
                     LoadDataTableSource(dtable);
+                }
+                else if (_DataSource is DataSet dset)
+                {
+                    if (string.IsNullOrEmpty(DataMember))
+                        LoadDataTableSource(dset.Tables[0]);
+                    else
+                        LoadDataTableSource(dset.Tables[DataMember]);
                 }
                 else if (_DataSource is DataView dview)
                 {
@@ -155,37 +169,34 @@ namespace System.Windows.Forms
                 {
                     LoadListSource();
                 }
-                _columns.Invalidate();
             }
             _Created = true;
         }
         public string DataMember { get; set; }
         private void LoadDataTableSource(DataTable dt)
         {
-            if (Columns.Count == 0)
+            foreach (DataColumn col in dt.Columns)
             {
-                string[] _DataMembers = string.IsNullOrWhiteSpace(DataMember) ? new string[0] : DataMember.Split(",");
-                foreach (DataColumn col in dt.Columns)
+                if (_columns.Exists(m => m.DataPropertyName == col.ColumnName) == false)
                 {
-                    if (_DataMembers.Length == 0 || _DataMembers.Contains(col.ColumnName))
-                    {
-                        if (col.DataType.Name == "Boolean")
-                            Columns.Add(new DataGridViewCheckBoxColumn() { Name = col.ColumnName, HeaderText = col.ColumnName, ValueType = col.DataType });
-                        else
-                            Columns.Add(new DataGridViewColumn() { Name = col.ColumnName, HeaderText = col.ColumnName, ValueType = col.DataType });
-                    }
+                    if (col.DataType.Name == "Boolean")
+                        _columns.Add(new DataGridViewCheckBoxColumn() { Name = col.ColumnName, HeaderText = col.ColumnName, DataPropertyName = col.ColumnName, ValueType = col.DataType });
+                    else if (col.DataType.Name == "Image" || col.DataType.Name == "Bitmap")
+                        _columns.Add(new DataGridViewImageColumn() { Name = col.ColumnName, HeaderText = col.ColumnName, DataPropertyName = col.ColumnName, ValueType = col.DataType });
+                    else
+                        _columns.Add(new DataGridViewColumn() { Name = col.ColumnName, HeaderText = col.ColumnName, DataPropertyName = col.ColumnName, ValueType = col.DataType });
                 }
-                _columns.Invalidate();
             }
-            int ncolumns = Columns.Count;
-            if (ncolumns > 0)
+            _columns.Invalidate();
+
+            if (_columns.Count > 0)
             {
                 foreach (DataRow dr in dt.Rows)
                 {
                     DataGridViewRow newRow = new DataGridViewRow();
-                    foreach (DataGridViewColumn col in Columns)
+                    foreach (DataGridViewColumn col in _columns)
                     {
-                        string cellvalue = dt.Columns.Contains(col.Name) ? dr[col.Name].ToString() : string.Empty;
+                        object cellvalue = dt.Columns.Contains(col.DataPropertyName ?? string.Empty) ? dr[col.DataPropertyName] : null;
                         if (col is DataGridViewTextBoxColumn)
                             newRow.Cells.Add(new DataGridViewTextBoxCell() { Value = cellvalue });
                         else if (col is DataGridViewImageColumn)
@@ -211,36 +222,33 @@ namespace System.Windows.Forms
             Type[] _entityType = _type.GetGenericArguments();
             if (_entityType.Length == 1)
             {
-                if (Columns.Count == 0)
+                PropertyInfo[] pros = _entityType[0].GetProperties();
+                foreach (PropertyInfo pro in pros)
                 {
-                    string[] _DataMembers = string.IsNullOrWhiteSpace(DataMember) ? new string[0] : DataMember.Split(",");
-                    PropertyInfo[] pros = _entityType[0].GetProperties();
-                    foreach (PropertyInfo pro in pros)
+                    if (_columns.Exists(m => m.DataPropertyName == pro.Name) == false)
                     {
-                        if (_DataMembers.Length == 0 || _DataMembers.Contains(pro.Name))
-                        {
-                            if (pro.PropertyType.Name == "Boolean")
-                                Columns.Add(new DataGridViewCheckBoxColumn() { Name = pro.Name, HeaderText = pro.Name, ValueType = pro.PropertyType });
-                            else
-                                Columns.Add(new DataGridViewColumn() { Name = pro.Name, HeaderText = pro.Name, ValueType = pro.PropertyType });
-                        }
+                        if (pro.PropertyType.Name == "Boolean")
+                            _columns.Add(new DataGridViewCheckBoxColumn() { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
+                        else if (pro.PropertyType.Name == "Image" || pro.PropertyType.Name == "Bitmap")
+                            _columns.Add(new DataGridViewImageColumn() { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
+                        else
+                            _columns.Add(new DataGridViewColumn() { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
                     }
-                    _columns.Invalidate();
                 }
+                _columns.Invalidate();
 
-                int ncolumns = Columns.Count;
-                if (ncolumns > 0)
+                if (_columns.Count > 0)
                 {
                     IEnumerator reader = ((IEnumerable)_DataSource).GetEnumerator();
                     while (reader.MoveNext())
                     {
                         object obj = reader.Current;
-                        Dictionary<string, string> values = new Dictionary<string, string>();
-                        Array.ForEach(obj.GetType().GetProperties(), o => { values.Add(o.Name, Convert.ToString(o.GetValue(obj))); });
+                        Dictionary<string, object> values = new Dictionary<string, object>();
+                        Array.ForEach(obj.GetType().GetProperties(), o => { values.Add(o.Name, o.GetValue(obj)); });
                         DataGridViewRow newRow = new DataGridViewRow();
-                        foreach (DataGridViewColumn col in Columns)
+                        foreach (DataGridViewColumn col in _columns)
                         {
-                            string cellvalue = values.ContainsKey(col.Name) ? values[col.Name] : string.Empty;
+                            values.TryGetValue(col.DataPropertyName ?? string.Empty, out object cellvalue);
                             if (col is DataGridViewTextBoxColumn)
                                 newRow.Cells.Add(new DataGridViewTextBoxCell() { Value = cellvalue });
                             else if (col is DataGridViewImageColumn)
@@ -397,9 +405,10 @@ namespace System.Windows.Forms
         {
             _Created = true;
         }
-
-
-
+        public void ClearSelection()
+        {
+            GridView.Selection.UnselectAll();
+        }
 
         //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler BackgroundImageChanged;

@@ -1,7 +1,12 @@
-﻿using Gtk;
+﻿/*
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * author:chenhongjin
+ */
+using Gtk;
 using System.Collections;
 using System.ComponentModel;
-using System.Data.Common;
 using System.Linq;
 using System.Windows.Forms.GtkRender;
 
@@ -30,13 +35,12 @@ namespace System.Windows.Forms
         }
         public override void Renderer()
         {
-            var renderer = new CellRendererToggleValue();
+            var renderer = new CellRendererToggleValue(this);
             renderer.Activatable = this.ReadOnly == false;
             renderer.Mode = CellRendererMode.Activatable;
             renderer.Height = RowHeight;
             renderer.Width = Width;
             renderer.Toggled += CellName_Toggled;
-
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
@@ -74,14 +78,13 @@ namespace System.Windows.Forms
         }
         public override void Renderer()
         {
-            var renderer = new CellRendererToggleValue();
+            var renderer = new CellRendererToggleValue(this);
             renderer.Activatable = this.ReadOnly == false;
             renderer.Mode = CellRendererMode.Activatable;
             renderer.Radio = true;
             renderer.Height = RowHeight;
             renderer.Width = Width;
             renderer.Toggled += CellName_Toggled;
-
             base.PackStart(renderer, true);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
@@ -119,7 +122,7 @@ namespace System.Windows.Forms
         }
         public override void Renderer()
         {
-            CellRendererComboValue renderer = new CellRendererComboValue();
+            CellRendererComboValue renderer = new CellRendererComboValue(this);
             renderer.Editable = this.ReadOnly == false && _gridview.ReadOnly == false;
             renderer.Edited += Renderer_Edited;
             renderer.TextColumn = 0;
@@ -181,11 +184,19 @@ namespace System.Windows.Forms
         }
         public override void Renderer()
         {
-            var renderer = new CellRendererButtonValue();
+            var renderer = new CellRendererButtonValue(this);
             renderer.Editable = false;
             renderer.Height = RowHeight;
             renderer.Width = Width;
-            base.PackStart(renderer, true);
+            if (base.DefaultCellStyle == null)
+            {
+                base.DefaultCellStyle = new DataGridViewCellStyle() { Alignment = DataGridViewContentAlignment.MiddleCenter };
+            }
+            else if (base.DefaultCellStyle.Alignment == null || base.DefaultCellStyle.Alignment == DataGridViewContentAlignment.NotSet)
+            {
+                base.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
+            base.PackStart(renderer, false);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
             if (this.SortMode != DataGridViewColumnSortMode.NotSortable)
@@ -210,10 +221,12 @@ namespace System.Windows.Forms
     {
         public DataGridViewImageColumn() : base(new DataGridViewImageCell())
         {
+            ValueType = typeof(Image);
             this.SortMode = DataGridViewColumnSortMode.NotSortable;
         }
         public DataGridViewImageColumn(DataGridView owningDataGridView) : base(owningDataGridView, new DataGridViewImageCell())
         {
+            ValueType = typeof(Image);
             this.SortMode = DataGridViewColumnSortMode.NotSortable;
         }
         public override void Renderer()
@@ -222,13 +235,12 @@ namespace System.Windows.Forms
             //renderer.IconName = "face-smile";
             renderer.Height = RowHeight;
             renderer.Width = Width;
-            base.PackStart(renderer, true);
+            base.PackStart(renderer, false);
             base.AddAttribute(renderer, "cellvalue", this.DisplayIndex);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
             if (this.SortMode != DataGridViewColumnSortMode.NotSortable)
                 base.SortColumnId = this.DisplayIndex;
         }
-
     }
     public class DataGridViewLinkColumn : DataGridViewColumn
     {
@@ -267,7 +279,7 @@ namespace System.Windows.Forms
             _treeView = owningDataGridView?.GridView;
             _gridview = owningDataGridView;
             _cellTemplate = cellTemplate;
-            base.Resizable = this.Resizable == DataGridViewTriState.True;
+            base.Resizable = true;
             this.SortMode = DataGridViewColumnSortMode.Automatic;
         }
 
@@ -278,16 +290,17 @@ namespace System.Windows.Forms
         }
         public virtual void Renderer()
         {
-            var renderer = new CellRendererValue();
+            var renderer = new CellRendererValue(this);
             renderer.Editable = this.ReadOnly == false && _gridview.ReadOnly == false;
             renderer.Edited += Renderer_Edited;
             renderer.Mode = CellRendererMode.Editable;
             renderer.PlaceholderText = "---";
             renderer.Markup = this.Markup;
             renderer.Width = Width;
+            renderer.Height = RowHeight;
             if (_gridview != null)
             {
-                if (_gridview.DefaultCellStyle.WrapMode == DataGridViewTriState.True)
+                if (_gridview.DefaultCellStyle?.WrapMode == DataGridViewTriState.True)
                 {
                     renderer.WrapMode = Pango.WrapMode.WordChar;
                     renderer.WrapWidth = 0;

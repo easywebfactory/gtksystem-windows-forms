@@ -9,8 +9,11 @@
             this.Override.AddClass("Label");
             this.Xalign = 0.0f;
             this.Yalign = 0.0f;
-            base.Valign = Gtk.Align.Start;
-            base.Halign = Gtk.Align.Start;
+            this.Valign = Gtk.Align.Start;
+            this.Halign = Gtk.Align.Start;
+            this.Wrap = true;
+            this.LineWrap = true;
+            this.LineWrapMode = Pango.WrapMode.WordChar;
         }
 
         public LabelBase(string text) : base(text)
@@ -19,8 +22,11 @@
             this.Override.AddClass("Label");
             this.Xalign = 0.0f;
             this.Yalign = 0.0f;
-            base.Valign = Gtk.Align.Start;
-            base.Halign = Gtk.Align.Start;
+            this.Valign = Gtk.Align.Start;
+            this.Halign = Gtk.Align.Start;
+            this.Wrap = true;
+            this.LineWrap = true;
+            this.LineWrapMode = Pango.WrapMode.WordChar;
         }
         protected override void OnShown()
         {

@@ -141,7 +141,6 @@ namespace System.Windows.Forms
                 throw new ArgumentNullException("dataGridViewCells");
             }
 
-            
             foreach (DataGridViewCell dataGridViewCell2 in dataGridViewCells)
             {
                 dataGridViewCell2.OwningRowInternal = owner;

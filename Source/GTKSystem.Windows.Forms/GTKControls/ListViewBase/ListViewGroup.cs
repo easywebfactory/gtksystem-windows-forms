@@ -10,7 +10,7 @@ namespace System.Windows.Forms
         public readonly string SerialGuid = Guid.NewGuid().ToString();
         public static readonly string defaultListViewGroupKey = "00000defaultListViewGroup";
         ListView.ListViewItemCollection _items;
-
+        internal Gtk.Widget _groupbox { get; set; }
         public static ListViewGroup GetDefaultListViewGroup() {
             ListViewGroup defaultGroup = new ListViewGroup("default", HorizontalAlignment.Left);
             defaultGroup.Header = "default";

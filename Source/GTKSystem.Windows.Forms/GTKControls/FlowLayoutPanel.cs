@@ -65,13 +65,12 @@ namespace System.Windows.Forms
             {
                 _owner = owner;
             }
-            public override int Add(object item)
+            public override void Add(Control control)
             {
                 Gtk.FlowBoxChild box = new FlowBoxChild();
                 box.Valign = Align.Start;
                 box.Halign = Align.Start;
                 box.Expand = false;
-                Control control = (Control)item;
                 control.Location=new Drawing.Point(0, 0);
                 control.LockLocation = true;
                 control.Parent = _owner;
@@ -81,7 +80,7 @@ namespace System.Windows.Forms
                 widg.Expand = false;
                 box.Add(widg);
                 _owner.self.Add(box);
-                return base.AddWidget(box, control);
+                base.AddWidget(box, control);
             }
         }
     }

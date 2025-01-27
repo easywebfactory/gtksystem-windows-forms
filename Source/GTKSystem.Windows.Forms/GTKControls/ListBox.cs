@@ -7,11 +7,10 @@
 using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using Pango;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Linq;
 
 namespace System.Windows.Forms
 {
@@ -362,12 +361,54 @@ namespace System.Windows.Forms
         [Browsable(false)]
 		public override string Text
         {
-            get; set;
+            get
+            {
+                if (self.ListBox.SelectionMode == Gtk.SelectionMode.Multiple)
+                {
+                    var texts = self.ListBox.SelectedRows.Select(row => ((Gtk.Label)row.Child).Text);
+                    return string.Join(",", texts);
+                }
+                else
+                {
+                    var row = self.ListBox.SelectedRow;
+                    if (row == null)
+                        return string.Empty;
+                    else
+                        return ((Gtk.Label)row.Child).Text;
+                }
+            } 
+            set
+            {
+                foreach (var row in self.ListBox.Children)
+                {
+                    if (row is Gtk.ListBoxRow box)
+                    {
+                        if (((Gtk.Label)box.Child).Text == value)
+                            self.ListBox.SelectRow(box);
+                    }
+                }
+            }
         }
-
+        private int _topIndex;
 		public int TopIndex
         {
-            get; set;
+            get=> _topIndex; 
+            set {
+                _topIndex = value;
+                GLib.Timeout.Add(100, new TimeoutHandler(() => {
+                    int rowheight = ItemHeight;
+                    if (rowheight < 14)
+                    {
+                        if (self.ListBox.Children.Length > 0)
+                            rowheight = self.ListBox.Children[0].AllocatedHeight;
+                        else
+                            rowheight = 18;
+                    }
+                    var adjustment = self.Vadjustment;
+                    adjustment.Value = value * rowheight - Height + 5;
+                    return false;
+                }));
+            }
         }
 
         [DefaultValue(true)]
