@@ -46,7 +46,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj" />
+		<ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\Gtk.Windows.Forms.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

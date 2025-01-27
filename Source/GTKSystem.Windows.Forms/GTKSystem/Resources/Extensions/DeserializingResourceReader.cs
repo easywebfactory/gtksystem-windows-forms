@@ -5,14 +5,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
-using System.Resources;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Windows.Forms.Design;
-using System.Xml.Serialization;
 
 namespace GTKSystem.Resources.Extensions
 {

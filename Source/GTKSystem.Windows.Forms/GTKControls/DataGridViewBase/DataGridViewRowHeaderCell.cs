@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace System.Windows.Forms
+﻿namespace System.Windows.Forms
 {
     public class DataGridViewRowHeaderCell //: DataGridViewHeaderCell
     {

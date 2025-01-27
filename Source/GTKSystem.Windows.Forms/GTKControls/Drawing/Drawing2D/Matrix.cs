@@ -1,4 +1,3 @@
-using Gtk;
 using System.Collections;
 
 namespace System.Drawing.Drawing2D

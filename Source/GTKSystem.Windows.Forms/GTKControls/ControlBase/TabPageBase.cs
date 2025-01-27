@@ -1,5 +1,4 @@
 ﻿using Gtk;
-using System;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {

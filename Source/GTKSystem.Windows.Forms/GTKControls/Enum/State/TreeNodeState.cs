@@ -5,46 +5,46 @@
 namespace System.Windows.Forms
 {
     //
-    // 摘要:
+    // summary:
     //     Defines constants that represent the possible states of a System.Windows.Forms.TreeNode.
     [Flags]
     public enum TreeNodeStates
     {
         //
-        // 摘要:
+        // summary:
         //     The node is selected.
         Selected = 1,
         //
-        // 摘要:
+        // summary:
         //     The node is disabled.
         Grayed = 2,
         //
-        // 摘要:
+        // summary:
         //     The node is checked.
         Checked = 8,
         //
-        // 摘要:
+        // summary:
         //     The node has focus.
         Focused = 16,
         //
-        // 摘要:
+        // summary:
         //     The node is in its default state.
         Default = 32,
         //
-        // 摘要:
+        // summary:
         //     The node is hot. This state occurs when the System.Windows.Forms.TreeView.HotTracking
         //     property is set to true and the mouse pointer is over the node.
         Hot = 64,
         //
-        // 摘要:
+        // summary:
         //     The node is marked.
         Marked = 128,
         //
-        // 摘要:
+        // summary:
         //     The node in an indeterminate state.
         Indeterminate = 256,
         //
-        // 摘要:
+        // summary:
         //     The node should indicate a keyboard shortcut.
         ShowKeyboardCues = 512
     }

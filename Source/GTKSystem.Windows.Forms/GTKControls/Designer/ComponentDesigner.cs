@@ -2,8 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Collections;
-using System.Configuration;
-using System.Windows.Forms.Design;
 
 namespace System.ComponentModel.Design
 {

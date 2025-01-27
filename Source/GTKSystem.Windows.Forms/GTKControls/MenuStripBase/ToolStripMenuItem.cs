@@ -1,10 +1,4 @@
-﻿using Gtk;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-
-
-namespace System.Windows.Forms
+﻿namespace System.Windows.Forms
 {
     public class ToolStripMenuItem : WidgetToolStrip<Gtk.MenuItem>
     {

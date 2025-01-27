@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 using System.Windows.Forms.GtkRender;
 
 namespace System.Windows.Forms

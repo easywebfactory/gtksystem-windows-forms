@@ -1,7 +1,6 @@
 ﻿
 using Gtk;
 using GTKSystem.Windows.Forms.Utility;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;

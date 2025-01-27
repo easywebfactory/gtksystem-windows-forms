@@ -1,7 +1,7 @@
 ﻿/*
- * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
- * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
+ * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
+ * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
 
@@ -20,7 +20,7 @@ namespace System.Windows.Forms
         Gtk.Calendar calendar = new Gtk.Calendar();
         public DateTimePicker() : base("DateTimePicker")
         {
-            base.Mask = "____年__月__日";
+            base.Mask = Gtk.Windows.Forms.Properties.Resources.DateTimePicker_DateTimePicker_Mask;
 
             self.SecondaryIconActivatable = true;
             self.SecondaryIconStock= "open-menu";
@@ -43,7 +43,7 @@ namespace System.Windows.Forms
 
             Gtk.Box popbody=new Gtk.Box(Gtk.Orientation.Vertical, 6);
             popbody.Add(calendar);
-            Gtk.Button todaybtn = new Gtk.Button() { Label = "选择今天"+DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") };
+            Gtk.Button todaybtn = new Gtk.Button() { Label = Gtk.Windows.Forms.Properties.Resources.DateTimePicker_DateTimePicker_Choose_Today +DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") };
             todaybtn.Clicked += Todaybtn_Clicked;
             popbody.Add(todaybtn);
             popver.Add(popbody);
@@ -123,7 +123,9 @@ namespace System.Windows.Forms
             if (dt > MaxDate || dt < MinDate)
             {
                 calendar.Date = Value;
-                MessageBox.Show($"选择的日期超出限制范围 \n最大时间：{MaxDate.ToString("yyyy/MM/dd HH:mm:ss")}\n最小时间：{MinDate.ToString("yyyy/MM/dd HH:mm:ss")}","日期限制");
+                MessageBox.Show(
+                    string.Format(Gtk.Windows.Forms.Properties.Resources.DateTimePicker_Calendar_DaySelected_Choose, MaxDate.ToString("yyyy/MM/dd HH:mm:ss"),
+                        MinDate.ToString("yyyy/MM/dd HH:mm:ss")), Gtk.Windows.Forms.Properties.Resources.DateTimePicker_Calendar_DaySelected_Date_restrictions);
             }
             else
             {
@@ -170,7 +172,7 @@ namespace System.Windows.Forms
                     value = MinDate.AddDays(1);
                 }
                 if (Format==DateTimePickerFormat.Long)
-                    base.Text = value.ToString("yyyy年MM月dd日");
+                    base.Text = value.ToString(Gtk.Windows.Forms.Properties.Resources.DateTimePicker_Value_yyyy年MM月dd日);
                 else if (Format == DateTimePickerFormat.Short)
                     base.Text = value.ToString("yyyy/MM/dd");
                 else if (Format == DateTimePickerFormat.Time)
@@ -178,10 +180,10 @@ namespace System.Windows.Forms
                 else if (Format == DateTimePickerFormat.Custom)
                     base.Text = value.ToString(CustomFormat);
                 else
-                    base.Text = value.ToString("yyyy年MM月dd日"); 
+                    base.Text = value.ToString(Gtk.Windows.Forms.Properties.Resources.DateTimePicker_Value_yyyy年MM月dd日); 
             }
         }
-        private string _CustomFormat= "yyyy年MM月dd日";
+        private string _CustomFormat= Gtk.Windows.Forms.Properties.Resources.DateTimePicker_Value_yyyy年MM月dd日;
         public string CustomFormat { get => _CustomFormat; 
             set { _CustomFormat = value; 
                 base.Mask = Regex.Replace(value,"[ymdhs]","_",RegexOptions.IgnoreCase); 
@@ -192,7 +194,7 @@ namespace System.Windows.Forms
             set {
                 _Format = value;
                 if (Format == DateTimePickerFormat.Long)
-                    base.Mask = "____年__月__日";
+                    base.Mask = Gtk.Windows.Forms.Properties.Resources.DateTimePicker_DateTimePicker_Mask;
                 else if (Format == DateTimePickerFormat.Short)
                     base.Mask = "____/__/__";
                 else if (Format == DateTimePickerFormat.Time)
@@ -200,7 +202,7 @@ namespace System.Windows.Forms
                 else if (Format == DateTimePickerFormat.Custom)
                     base.Mask = Regex.Replace(CustomFormat, "[ymdhs]", "_", RegexOptions.IgnoreCase);
                 else
-                    base.Mask = "____年__月__日";
+                    base.Mask = Gtk.Windows.Forms.Properties.Resources.DateTimePicker_DateTimePicker_Mask;
             } 
         }
         public Font CalendarFont { get; set; }

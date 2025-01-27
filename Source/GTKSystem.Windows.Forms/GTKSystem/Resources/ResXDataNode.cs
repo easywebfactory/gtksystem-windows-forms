@@ -11,7 +11,6 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;

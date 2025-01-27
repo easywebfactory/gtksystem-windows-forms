@@ -1,9 +1,4 @@
-﻿
-using Atk;
-using Gtk;
-using Pango;
-using System;
-using System.Collections;
+﻿using Gtk;
 using System.Collections.Generic;
 
 namespace System.Windows.Forms

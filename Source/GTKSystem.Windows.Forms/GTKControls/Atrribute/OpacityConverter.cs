@@ -4,12 +4,12 @@ using System.Globalization;
 namespace System.Windows.Forms
 {
     //
-    // 摘要:
+    // summary:
     //     Provides a type converter to convert opacity values to and from a string.
     public class OpacityConverter : TypeConverter
     {
         //
-        // 摘要:
+        // summary:
         //     Initializes an instance of the System.Windows.Forms.OpacityConverter class.
         public OpacityConverter()
         {
@@ -17,12 +17,12 @@ namespace System.Windows.Forms
         }
 
         //
-        // 摘要:
+        // summary:
         //     Returns a value indicating whether this converter can convert an object of the
         //     specified source type to the native type of the converter that uses the specified
         //     context.
         //
-        // 参数:
+        // parameter:
         //   context:
         //     A System.ComponentModel.ITypeDescriptorContext that provides information about
         //     the context of a type converter.
@@ -30,17 +30,17 @@ namespace System.Windows.Forms
         //   sourceType:
         //     The System.Type that represents the type you want to convert from.
         //
-        // 返回结果:
+        // Return results:
         //     true if this converter can perform the conversion; otherwise, false.
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
             return true;
         }
         //
-        // 摘要:
+        // summary:
         //     Converts the specified object to the converter's native type.
         //
-        // 参数:
+        // parameter:
         //   context:
         //     A System.ComponentModel.ITypeDescriptorContext that provides information about
         //     the context of a type converter.
@@ -51,10 +51,10 @@ namespace System.Windows.Forms
         //   value:
         //     The object to convert.
         //
-        // 返回结果:
+        // Return results:
         //     An System.Object that represents the converted value.
         //
-        // 异常:
+        // Exception:
         //   T:System.Exception:
         //     The object was not a supported type for the conversion.
         //
@@ -63,10 +63,10 @@ namespace System.Windows.Forms
         //     converted value was less than zero percent or greater than one hundred percent.
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) { return value; }
         //
-        // 摘要:
+        // summary:
         //     Converts from the converter's native type to a value of the destination type.
         //
-        // 参数:
+        // parameter:
         //   context:
         //     A System.ComponentModel.ITypeDescriptorContext that provides information about
         //     the context of a type converter.
@@ -80,10 +80,10 @@ namespace System.Windows.Forms
         //   destinationType:
         //     The type to convert the object to.
         //
-        // 返回结果:
+        // Return results:
         //     An System.Object that represents the converted value.
         //
-        // 异常:
+        // Exception:
         //   T:System.ArgumentNullException:
         //     destinationType is null.
         //

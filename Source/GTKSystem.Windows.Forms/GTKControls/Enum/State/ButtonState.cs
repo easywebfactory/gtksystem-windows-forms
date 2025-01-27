@@ -11,24 +11,24 @@ namespace System.Windows.Forms
     public enum ButtonState
     {
         //
-        // 摘要:
+        // summary:
         //     The button has its normal appearance (three-dimensional).
         Normal = 0,
         //
-        // 摘要:
+        // summary:
         //     The button is inactive (grayed).
         Inactive = 256,
         //
-        // 摘要:
+        // summary:
         //     The button appears pressed.
         Pushed = 512,
         //
-        // 摘要:
+        // summary:
         //     The button has a checked or latched appearance. Use this appearance to show that
         //     a toggle button has been pressed.
         Checked = 1024,
         //
-        // 摘要:
+        // summary:
         //     The button has a flat, two-dimensional appearance.
         Flat = 16384,
         /// <summary>

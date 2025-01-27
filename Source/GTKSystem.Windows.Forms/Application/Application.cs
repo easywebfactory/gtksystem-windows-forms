@@ -1,13 +1,10 @@
-﻿
-using Gdk;
-using Gtk;
+﻿using Gtk;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -104,9 +101,9 @@ namespace System.Windows.Forms
         {
             if (App == null)
             {
-                string css_style = @"
+                string css_style = $@"
 
-/* 定义控件样式*/
+/* {Gtk.Windows.Forms.Properties.Resources.Application_Init_Define_control_style} */
 
 @define-color frame_color  alpha(@theme_fg_color, 0.2);
 @define-color frame3d_color  alpha(@theme_fg_color, 0.2);
@@ -115,67 +112,67 @@ namespace System.Windows.Forms
 @define-color separator_color1 #C6C5C4;
 @define-color separator_color2 #D6D7D8;
 
-.DefaultThemeStyle{padding: 0px 2px; border-style:solid;min-height:6px;min-width:6px;}
-.DefaultThemeStyle entry{
+.DefaultThemeStyle{{padding: 0px 2px; border-style:solid;min-height:6px;min-width:6px;}}
+.DefaultThemeStyle entry{{
    padding: 4px 5px; border-width: 1px; border-style: solid; border-color:@frame_color;
    background-color: @theme_base_color; color: @theme_text_color;
-}
-.DefaultThemeStyle entry.flat{
+}}
+.DefaultThemeStyle entry.flat{{
    padding: 4px 5px; border-width: 1px; border-style: solid; border-color:@frame_color;
    background-color: @theme_base_color; color: @theme_text_color;
-}
-.DefaultThemeStyle button{padding:4px 3px;}
-.BorderNone{border-style:none;box-shadow:none;}
+}}
+.DefaultThemeStyle button{{padding:4px 3px;}}
+.BorderNone{{border-style:none;box-shadow:none;}}
 
-.BorderFixedSingle{border-width:0px;border-style:none;padding:1px;box-shadow: inset 0px 0px 0px 1px @frame_color;}
-.BorderFixed3D{border-width:0px;border-style:none; padding:2px; box-shadow: inset 1px 1px 1px 2px @frame3d_color;}
+.BorderFixedSingle{{border-width:0px;border-style:none;padding:1px;box-shadow: inset 0px 0px 0px 1px @frame_color;}}
+.BorderFixed3D{{border-width:0px;border-style:none; padding:2px; box-shadow: inset 1px 1px 1px 2px @frame3d_color;}}
 
-.DataGridView {border-width:1px;margin:-3px;}
-.GridViewCell-Button{ color:@theme_text_color; border:solid 1px @frame_color; background-color: shade(@theme_bg_color, 0.7);}
-.GridViewCell-Button:hover{background-color: shade(@theme_bg_color, 0.8);}
-.GridViewCell-Button:selected{ color:blue}
+.DataGridView {{border-width:1px;margin:-3px;}}
+.GridViewCell-Button{{ color:@theme_text_color; border:solid 1px @frame_color; background-color: shade(@theme_bg_color, 0.7);}}
+.GridViewCell-Button:hover{{background-color: shade(@theme_bg_color, 0.8);}}
+.GridViewCell-Button:selected{{ color:blue}}
 
-.LinkLabel{border-style:none;}
-.TextBox{}
-.ComboBox{padding:0px;}
-.ComboBox entry{border-right-width:0px;  }
-.ComboBox entry.flat{border-right-width:0px;  }
-.ComboBox entry:focus{border-right-width:0px; box-shadow: inset 0px 0px 0px 1px #62a0ea;}
-.ComboBox button{padding-top:0px;padding-bottom:0px;border-width: 1px 1px 1px 1px; border-style: solid; border-color:@frame_color;}
+.LinkLabel{{border-style:none;}}
+.TextBox{{}}
+.ComboBox{{padding:0px;}}
+.ComboBox entry{{border-right-width:0px;  }}
+.ComboBox entry.flat{{border-right-width:0px;  }}
+.ComboBox entry:focus{{border-right-width:0px; box-shadow: inset 0px 0px 0px 1px #62a0ea;}}
+.ComboBox button{{padding-top:0px;padding-bottom:0px;border-width: 1px 1px 1px 1px; border-style: solid; border-color:@frame_color;}}
 
-.DropDownList button{padding:0px;}
-.SplitContainer{padding:0px;border:0px;box-shadow:none;}
-/* 当有滚动条时，宽高小于60px有异常信息输出 */
-.SplitterPanel{padding:0px;margin:0px;border:0px;box-shadow:none;min-width:60px;min-height:60px;}
-.SplitterPanel .frame{padding:0px;margin:0px;border:0px;box-shadow:none;}
-.SplitterPanel .flat{padding:0px;margin:0px;border:0px;box-shadow:none;}
+.DropDownList button{{padding:0px;}}
+.SplitContainer{{padding:0px;border:0px;box-shadow:none;}}
+/* 当有滚动条时，宽高小于60px有Exception信息输出 */
+.SplitterPanel{{padding:0px;margin:0px;border:0px;box-shadow:none;min-width:60px;min-height:60px;}}
+.SplitterPanel .frame{{padding:0px;margin:0px;border:0px;box-shadow:none;}}
+.SplitterPanel .flat{{padding:0px;margin:0px;border:0px;box-shadow:none;}}
 
-.TableLayoutPanel {box-shadow: 1px 1px 1px 0px @frame_color;}
-.TableLayoutPanel viewport.frame {box-shadow: inset 1px 1px 1px 0 @frame_color;}
-.ListView{border:inset 1px @frame_color;}
-.ListView .Label{background-color:transparent;} 
-.ListView checkbutton {padding:0px;}
-.ListView .Label{background-color:transparent;} 
-.ListView flowboxchild {padding:0px;}
-.ListView flowboxchild viewport{padding:2px 0px;}
-.ListView .GridBorder viewport{box-shadow: inset -1px -1px #eeeeee;}
-.ListViewHeader {background-color:@theme_bg_color; opacity:0.88;padding:0px;min-height:6px; }
-.ListViewHeader button{box-shadow:inset -1px 0px @frame_color;border-width:0px; border-radius:0px; padding:0px 0px 5px 0px;min-height:20px;min-width:6px;margin:0px; }
-.ListViewHeader button.frame{border-width:0px;padding:0px 0px 0px 0px;margin:0px; }
-.ListView .GroupLine{border-top:inset 1px #6677bb;}
-.ListView .GroupTitle{padding-left:5px;padding-right:5px; color:#6677bb; }
-.ListView .GroupSubTitle{padding-left:5px;padding-right:5px; }
-.StatusStrip{padding:0px; border-width:1px 0px 0px 0px; border-top:solid 1px @frame_color;}
-.ToolStrip button{padding:0px;}
+.TableLayoutPanel {{box-shadow: 1px 1px 1px 0px @frame_color;}}
+.TableLayoutPanel viewport.frame {{box-shadow: inset 1px 1px 1px 0 @frame_color;}}
+.ListView{{border:inset 1px @frame_color;}}
+.ListView .Label{{background-color:transparent;}} 
+.ListView checkbutton {{padding:0px;}}
+.ListView .Label{{background-color:transparent;}} 
+.ListView flowboxchild {{padding:0px;}}
+.ListView flowboxchild viewport{{padding:2px 0px;}}
+.ListView .GridBorder viewport{{box-shadow: inset -1px -1px #eeeeee;}}
+.ListViewHeader {{background-color:@theme_bg_color; opacity:0.88;padding:0px;min-height:6px; }}
+.ListViewHeader button{{box-shadow:inset -1px 0px @frame_color;border-width:0px; border-radius:0px; padding:0px 0px 5px 0px;min-height:20px;min-width:6px;margin:0px; }}
+.ListViewHeader button.frame{{border-width:0px;padding:0px 0px 0px 0px;margin:0px; }}
+.ListView .GroupLine{{border-top:inset 1px #6677bb;}}
+.ListView .GroupTitle{{padding-left:5px;padding-right:5px; color:#6677bb; }}
+.ListView .GroupSubTitle{{padding-left:5px;padding-right:5px; }}
+.StatusStrip{{padding:0px; border-width:1px 0px 0px 0px; border-top:solid 1px @frame_color;}}
+.ToolStrip button{{padding:0px;}}
 
-.NumericUpDown{border-width:1px;padding:2px; }
-.NumericUpDown button.up{border-width:0px;padding:0px;}
-.NumericUpDown button.down{border-width:0px;padding:0px;}
-.NumericUpDown.horizontal entry{border-width:0px;padding:2px 3px; min-height:6px;min-width:6px;} 
-.NumericUpDown.vertical entry{border-width:0px;padding:2px 3px; min-height:6px;min-width:6px;} 
-.TrackBar {border-width:0px;box-shadow:none;}
-.PrintPreviewBack{background-color:#cccccc; border-radius:0px;}
-.Paper{box-shadow: 0px 0px 3px 1px #999999;background:#ffffff; border-radius:0px;}
+.NumericUpDown{{border-width:1px;padding:2px; }}
+.NumericUpDown button.up{{border-width:0px;padding:0px;}}
+.NumericUpDown button.down{{border-width:0px;padding:0px;}}
+.NumericUpDown.horizontal entry{{border-width:0px;padding:2px 3px; min-height:6px;min-width:6px;}} 
+.NumericUpDown.vertical entry{{border-width:0px;padding:2px 3px; min-height:6px;min-width:6px;}} 
+.TrackBar {{border-width:0px;box-shadow:none;}}
+.PrintPreviewBack{{background-color:#cccccc; border-radius:0px;}}
+.Paper{{box-shadow: 0px 0px 3px 1px #999999;background:#ffffff; border-radius:0px;}}
 
 ";
 
@@ -250,7 +247,7 @@ namespace System.Windows.Forms
                                 }
                                 else
                                 {
-                                    Console.WriteLine(themefolder + "=》目录不存在");
+                                    Console.WriteLine(themefolder + Gtk.Windows.Forms.Properties.Resources.Application_Init_Directory_does_not_exist);
                                 }
                             }
                             if (nameValue.TryGetValue("ThemeCssPath", out string themecss))
@@ -274,7 +271,7 @@ namespace System.Windows.Forms
                             }
                             else
                             {
-                                File.WriteAllText(stylepath, "/* 这里可以自定义或调整控件样式 */ ", Text.Encoding.UTF8);
+                                File.WriteAllText(stylepath, Gtk.Windows.Forms.Properties.Resources.Application_Init_Here_you_can_customize_or_adjust_the_control_style, Text.Encoding.UTF8);
                             }
                         }
                     }
@@ -285,27 +282,27 @@ namespace System.Windows.Forms
 
                     StringBuilder setupthemecontent = new StringBuilder();
                     setupthemecontent.AppendLine("[setup]");
-                    setupthemecontent.AppendLine("/*是否默认跟随系统主题*/");
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_Whether_to_follow_the_system_theme_by_default);
                     setupthemecontent.AppendLine("AutoTheme=true");
-                    setupthemecontent.AppendLine("/*是否应用内置样式*/");
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_Whether_to_apply_built_in_styles);
                     setupthemecontent.AppendLine("UseDefaultStyle=true");
-                    setupthemecontent.AppendLine("/*指定主题，AutoTheme=false时有效*/");
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_Specify_the_theme__valid_when_AutoTheme_is_false);
                     setupthemecontent.AppendLine("DefaultThemeName=Default");
-                    setupthemecontent.AppendLine("/*是否使用自定义主题，对应[custom theme]*/");
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_Whether_to_use_a_custom_theme__corresponding_to_custom_theme);
                     setupthemecontent.AppendLine("UseCustomTheme=false");
-                    setupthemecontent.AppendLine("/*是否使用自定义样式，对应[custom style]*/");
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_Whether_to_use_custom_style__corresponding_to__custom_style_);
                     setupthemecontent.AppendLine("UseCustomStyle=true");
 
                     setupthemecontent.AppendLine().AppendLine("[custom theme]");
-                    setupthemecontent.AppendLine("/* 自定义主题名称 */");
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_Custom_theme_name);
                     setupthemecontent.AppendLine("Name=mytheme");
-                    setupthemecontent.AppendLine("/* 主题文件所在文件夹 */");
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_The_folder_where_the_theme_files_are_located);
                     setupthemecontent.AppendLine("ThemeFolder=theme");
-                    setupthemecontent.AppendLine("/* css文件路径 */");
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_css_file_path);
                     setupthemecontent.AppendLine("ThemeCssPath=theme/mytheme/theme.css");
 
                     setupthemecontent.AppendLine().AppendLine("[custom style]");
-                    setupthemecontent.AppendLine("/* 自由定义样式文件 */");
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_Freely_defined_style_files);
                     setupthemecontent.AppendLine("StylePath=style.css");
 
                     File.WriteAllText(themesetuppath, setupthemecontent.ToString(), Text.Encoding.UTF8);

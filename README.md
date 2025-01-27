@@ -1,189 +1,156 @@
 # GTKSystem.Windows.Forms
 
-### 介绍
-**Visual Studio原生开发，无需学习，一次编译，跨平台运行**.
-C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，基于GTK组件开发，该组件的核心优势是使用C#的原生winform表单控件窗体设计器，相同的属性方法，C#原生开发即可，无需学习。一次编译，跨平台运行。
-便于开发跨平台winform软件，便于将C#升级为跨平台软件。
+### Introduction
+**Native development in Visual Studio, no learning curve, compile once, and run cross-platform.**  
+A C# desktop application cross-platform (Windows, Linux, macOS) UI development framework based on GTK components. The core advantage of this framework is the use of native WinForms controls and form designers in C#, with the same properties and methods. Native C# development is possible without requiring additional learning. Compile once, and run across platforms.  
+This framework is designed to facilitate the development of cross-platform WinForms applications and enables C# to be upgraded to cross-platform software.
 
-项目官网：[https://www.gtkapp.com](https://www.gtkapp.com/)   
+Project homepage: [https://www.gtkapp.com](https://www.gtkapp.com/)  
 
-目前功能持续更新中，将优先完善常用功能。
+Currently, the functionality is being continuously updated, prioritizing commonly used features.
 
-### 软件架构
+### Software Architecture
+This framework uses GTK 3.24.24.95 to rewrite the UI of C#'s `System.Windows.Forms` component. It is compatible with native C# application components when applied.
 
-使用GTK3.24.24.95作为表单UI重写C#的System.Windows.Forms组件，在应用时，兼容原生C#程序组件。
+### Installation Guide
+1. Set the project framework to "Windows Application", modify the configuration `UseWindowsForms` to `false`, or choose "Console Application" with frameworks such as .NET Core 3.1 or .NET 6+.
+2. Install the following NuGet packages: `GtkSharp(3.24.24.95)`, `GTKSystem.Windows.Forms`, and `GTKSystem.Windows.FormsDesigner`.
+3. Check whether the form uses image resources. If used, create a `System.Resources.ResourceManager` and `System.ComponentModel.ComponentResourceManager` class. See details below.
+4. Compile and test using the default configuration.
+5. On Linux and macOS, run the command: `dotnet demo_app.dll`.
+6. Compile the project and run the development plugin menu "Fix Form Designer" or manually create the `.designer.runtimeconfig.json` file in the `obj` directory (see point 5 below).
 
-### 安装教程
-1.  项目工程框架选择“window应用程序”改配置UseWindowsForms为false或“控制台应用程序”，框架.netcore3.1或.net6及以上版本
-2.  NulGet安装GtkSharp(3.24.24.95)、GTKSystem.Windows.Forms、GTKSystem.Windows.FormsDesigner
-3.  检查form表单是否有使用图像资源，如使用需新建System.Resources.ResourceManager和System.ComponentModel.ComponentResourceManager，具体请看下面内容。
-4.  按默认配置编译发布测试运行
-5.  linux和macos上执行命令：dotnet demo_app.dll
-6.  编译工程，执行本项目的开发插件菜单“修复窗体设计器”，或者手动在obj目录下创建.designer.runtimeconfig.json，请看下面第5点。
+**Note:** After installing `GtkSharp`, when you compile your project, it will automatically download the GTK environment configuration `$(LOCALAPPDATA)\Gtk\3.24.24\gtk.zip`. Due to network restrictions in certain regions, this may fail to download.  
+If automatic download fails, download it manually here: [/Dependencies/gtk-3.24.24.zip](/Dependencies/gtk-3.24.24.zip).  
+Alternatively, download from [https://github.com/GtkSharp/Dependencies](https://github.com/GtkSharp/Dependencies), extract the files, and place them in the `$(LOCALAPPDATA)\Gtk\3.24.24\gtk.zip` directory.  
+*(Note: $(LOCALAPPDATA) is the AppData\Local folder of your computer, e.g., C:\Users\chj\AppData\Local\Gtk\3.24.24)*
 
-注意：安装GtkSharp后，编译你的工程项目时，会自动下载$(LOCALAPPDATA)\Gtk\3.24.24\gtk.zip配置Gtk环境，目前国内网络限制，可能会出现无法下载的错误。
-如果无法自动下载，本项目提供下载 [/Dependencies/gtk-3.24.24.zip](/Dependencies/gtk-3.24.24.zip)。
-也可以下载[https://github.com/GtkSharp/Dependencies](https://github.com/GtkSharp/Dependencies)，把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24\gtk.zip目录即可。
-  ps: $(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData\Local\Gtk\3.24.24
+**Most desktop Linux operating systems already have GTK pre-installed. You only need to install the .NET SDK to run this framework.**
 
-**桌面版linux操作系统通常已经预装GTK环境，不需要再安装GTK，只需安装DotNet SDK即可运行本框架。**
+For Linux systems without a GTK environment, use the following commands to install:
+```bash
+# Debian/Ubuntu
+sudo apt install libgtk-3-0      # Binary package
+sudo apt install libgtk-3-dev    # Development package
 
-对于没有安装GTK环境的linux系统，可用以下命令安装：
-```
-#Debian/Ubuntu环境
-    sudo apt install libgtk-3-0  //Binary package
-    sudo apt install libgtk-3-dev //开发环境 package
-#Arch环境
-    sudo apt install gtk3
-#Fedora	环境
-    sudo apt install gtk3    //Binary package
-    sudo apt install gtk3-devel  //开发环境 package
+# Arch
+sudo apt install gtk3
 
-*或指定库名安装
-    sudo apt-get install libgtk3*
+# Fedora
+sudo apt install gtk3            # Binary package
+sudo apt install gtk3-devel      # Development package
 
-#从MSYS2安装：
-    pacman -S mingw-w64-ucrt-x86_64-gtk3
+# From MSYS2:
+pacman -S mingw-w64-ucrt-x86_64-gtk3
 
-*检查环境情况（需要安装pkg-config）：
-    pkg-config --cflags --libs gtk+-3.0
-*查找gtk的安装包目录：
-    ldconfig -p | grep gtk
-```
-linux安装dotnet环境：
-```
-  安装方法可以查看微软官网教程：https://learn.microsoft.com/zh-cn/dotnet/core/install/linux-scripted-manual
-```
-### VisualStudio插件安装
+# Check GTK environment (requires pkg-config):
+pkg-config --cflags --libs gtk+-3.0
+# Find GTK installation package directory:
+ldconfig -p | grep gtk
 
-工具一、从NuGet上安装GTKSystem.Windows.FormsDesigner类库，此类库可以在编译工程时修正窗体设计器。
+## Install .NET Environment on Linux
+To install .NET on Linux, refer to the official Microsoft guide:  
+[Microsoft .NET Install Guide for Linux](https://learn.microsoft.com/dotnet/core/install/linux-scripted-manual)
 
-工具二、下载本插件工具，关闭visual studio，直接双击GTKWinformVSIXProject.vsix文件安装（本框架下的工程，Studio没有添加Form模板项，需要安装此插件）
+---
 
-插件会安装两个功能：
+## Visual Studio Plugin Installation
 
-1、新建项的Form窗体模板、用户控件模板。
+### Tool 1: NuGet Installation
+Install the `GTKSystem.Windows.FormsDesigner` library from NuGet.  
+This library helps fix form designers during project compilation.
 
-2、工程右键菜单。
+### Tool 2: VSIX Plugin Installation
+Download the plugin tool, close Visual Studio, and double-click the `GTKWinformVSIXProject.vsix` file to install it.  
+*(Required if no Form template is available for projects in this framework.)*
 
-![输入图片说明](pic/vs_vsix.jpeg)
+The plugin installs two functionalities:
+1. **Form Templates**: Adds templates for Forms and User Controls to "New Item" options.
+2. **Right-Click Menu**: Adds a context menu to projects for specific GTKWinForms tasks.
 
-### 开发教程及说明
+![Visual Studio Plugin Screenshot](pic/vs_vsix.jpeg)
 
-以下配置在你的项目工程里操作：
+## Development Instructions
 
-1、新建System.Resources.ResourceManager类<br/>
-在项目下新建System.Resources.ResourceManager类，继承GTKSystem.Resources.ResourceManager，用于覆盖原生System.Resources.ResourceManager类。
-GTKSystem.Resources.ResourceManager实现了项目资源文件和图像文件读取。
-如果项目里没有使用资源图像文件，可以不用新建此文件。
+### Configuration Steps
 
-2、新建System.ComponentModel.ComponentResourceManager类<br/>
-在项目下新建System.ComponentModel.ComponentResourceManager类，继承GTKSystem.ComponentModel.ComponentResourceManager，用于覆盖原生System.ComponentModel.ComponentResourceManager类。<br/>
-GTKSystem.ComponentModel.ComponentResourceManager实现了项目资源文件和图像文件读取（调用GTKSystem.Resources.ResourceManager）。
-如果项目里没有使用资源图像文件，可以不用新建此文件。
+1. **Create `System.Resources.ResourceManager` Class**
+   - Create a `System.Resources.ResourceManager` class in your project.
+   - Inherit from `GTKSystem.Resources.ResourceManager` to override the native `System.Resources.ResourceManager`.
+   - This is used for reading project resource files and images.  
+   *(If your project does not use resource files or images, this step is unnecessary.)*
 
-3、GTKWinFormsApp.csproj<br/>
-配置UseWindowsForms为false，目标OS设置为“(空)”，或者使用控制台应用程序(在控制台框架下会显示控制台窗口，不建议这种方式)
-```
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <UseWindowsForms>false</UseWindowsForms>
-```
+2. **Create `System.ComponentModel.ComponentResourceManager` Class**
+   - Create a `System.ComponentModel.ComponentResourceManager` class in your project.
+   - Inherit from `GTKSystem.ComponentResourceManager` to override the native `System.ComponentModel.ComponentResourceManager`.
+   - This class enables reading project resources and images (calls `GTKSystem.Resources.ResourceManager`).  
+   *(If your project does not use resource files or images, this step is unnecessary.)*
 
-4、引用GTKSystem.Windows.Forms、System.Resources.Extensions <br/>
-GTKSystem.Windows.Forms是必须引用<br/>
-System.Resources.Extensions是空程序dll，不是必须引用，只有VS在窗体设计器出现相关异常提示时使用
+3. **Modify `GTKWinFormsApp.csproj`**
+   - Configure the project file by setting `UseWindowsForms` to `false`.  
+   - Example configuration:
+     ```xml
+     <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+       <PropertyGroup>
+         <OutputType>WinExe</OutputType>
+         <TargetFramework>net8.0</TargetFramework>
+         <UseWindowsForms>false</UseWindowsForms>
+     ```
 
-5、GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.designer.runtimeconfig.json
-GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.runtimeconfig.json
-将name设置为Microsoft.WindowsDesktop.App， **用于VS支持可视化窗体设计器，重新加载工程或重启VS** 
-如以下配置：
-GTKWinFormsApp.designer.runtimeconfig.json
-```
-{
-  "runtimeOptions": {
-    "tfm": "net8.0",
-    "framework": {
-      "name":"Microsoft.WindowsDesktop.App",
-      "version": "8.0.0"
-    },
-    "additionalProbingPaths": [
-      "C:\\Users\\chj\\.dotnet\\store\\|arch|\\|tfm|", 
-      "C:\\Users\\chj\\.nuget\\packages",
-      "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-    ],
-    "configProperties": {
-      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false,
-      "Microsoft.NETCore.DotNetHostPolicy.SetAppPaths": true
-    }
-  }
-}
-```
+4. **Add References**
+   - Add the following references to your project:
+     - `GTKSystem.Windows.Forms` (mandatory)
+     - `System.Resources.Extensions` (optional, used only for specific design-time exceptions in Visual Studio).
 
-GTKWinFormsApp.runtimeconfig.json
-```
-{
-  "runtimeOptions": {
-    "tfm": "net8.0",
-    "framework": {
-      "name": "Microsoft.WindowsDesktop.App",
-      "version": "8.0.0"
-    },
-    "configProperties": {
-      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false
-    }
-  }
-}
-```
+5. **Configure Runtime Files**
+   - Ensure the runtime configuration files include the following changes for Visual Studio form designers:  
+     Example `GTKWinFormsApp.designer.runtimeconfig.json`:
+     ```json
+     {
+       "runtimeOptions": {
+         "tfm": "net8.0",
+         "framework": {
+           "name": "Microsoft.WindowsDesktop.App",
+           "version": "8.0.0"
+         }
+       }
+     }
+     ```
 
-### Resources资源的使用
-* [查看Resources资源的使用教程>>](Readme_Resources.md)
+---
 
-### 支持GTKSystem，获取技术服务
+## Support and Resources
 
-企业服务：[https://www.gtkapp.com/vipservice](https://www.gtkapp.com/vipservice)   
+**Enterprise Services**: [https://www.gtkapp.com/vipservice](https://www.gtkapp.com/vipservice)  
 
- ![支持GTKSystem](/pic/love_reward_qrcode_.png)
- ![联系GTKSystem](/pic/contact_weixin.png)
+![Support GTKSystem](pic/love_reward_qrcode_.png)  
+![Contact GTKSystem](pic/contact_weixin.png)
 
-### 交流/合作/商务/赞助
-QQ群：236066073（满），1011147488
-邮箱：438865652@qq.com <br/>
+---
 
-### 默认风格效果
-![demo效果](/pic/native-2.png)
+## Common Issues
 
-### 默认风格工具栏菜单
-![工具栏菜单](/pic/native-1.png)
+**Why can't I open the Form Designer?**  
+Follow these steps to resolve the issue:
+1. Compile the project.
+2. Open the Form Designer.
+3. If it still doesn't open:
+   - Close the Form Designer.
+   - Recompile the project.
+   - Restart Visual Studio.
+   - Open the Form Designer again.
 
-### 图文窗口
-![图文窗口](/pic/native-3.png)
+---
 
-### 支持各种主题风格界面（windows xp、vista、7、8、10，macOS系列，等等）
-#### 主题风格，window10黑色风格界面
-![mwindow10黑色风格界面](/pic/Windows-10-White.png)
-#### 主题风格，macOS风格界面
-![macOS风格界面](/pic/macOS-1.png)
+## Contribution
+You can contribute to the development of this framework:
 
-### 常见问题
-  为什么Form窗体设计器打不开？<br/>
-  ```
-  答：检查runtimeconfig确保配置正确，通过NuGet安装GTKSystem.Windows.FormsDesigner，然后按以下流程操作：
-    1、编译一下 
-    2、打开Form窗体
-    （如果不能打开窗体，执行下面流程） 
-    3、关闭Form窗体，编译一下 
-    4、重启Visual Studio 
-    5、打开Form窗体设计器 
- ```
-### 参与贡献
+- [Gitee Repository](https://gitee.com/easywebfactory)  
+- [GitHub Repository](https://github.com/easywebfactory)  
+- [CSDN Blog](https://blog.csdn.net/auto_toyota)  
 
-1. https://gitee.com/easywebfactory
-2. https://github.com/easywebfactory
-3. https://blog.csdn.net/auto_toyota
+---
 
-### 更新记录
-* [查看更新记录>>](UpdateHistory.md)
+## Update History
+For detailed updates, check: [Update History >>](UpdateHistory.md)
+

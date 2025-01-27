@@ -1,5 +1,3 @@
-using Gdk;
-using GTKSystem.Resources;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization;
@@ -8,7 +6,6 @@ namespace System.Drawing
 {
 	public sealed class Icon : MarshalByRefObject, ICloneable, IDisposable, ISerializable
 	{
-        #region 只取图像byte[]数据 
         private byte[] _PixbufData;
         public byte[] PixbufData
         {
@@ -22,7 +19,6 @@ namespace System.Drawing
             set { _Pixbuf = value; _PixbufData = value.SaveToBuffer("bmp"); }
         }
         public string FileName { get; set; }
-        #endregion
 
         [Browsable(false)]
 		public IntPtr Handle

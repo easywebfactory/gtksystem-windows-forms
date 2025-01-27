@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props" Condition="Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.props')" />
+    <PropertyGroup>
+        <PackageOutputPath>$(SolutionDir)Packages/</PackageOutputPath>
+        <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+        <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+        <Authors>chenhongjin</Authors>
+        <Company>chenhongjin</Company>
+        <Copyright>438865652@qq.com，chenhongjin</Copyright>
+        <Version>$(VersionPrefix).$(VersionSuffix)</Version>
+        <PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
+        <PackageProjectUrl>https://www.gtkapp.com</PackageProjectUrl>
+        <PackageReleaseNotes>C# Interface cross-platform development components gtk-windows-forms</PackageReleaseNotes>
+        <Title>GTK cross-platform winform interface component, compiled once, can run on windows, linux, macos platforms</Title>
+        <Description>
+	        It is a cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
+	        Use this component GTKSystem.Windows.Forms to compile once and run across platforms windows\linux\macos.
+	        Update platform：
+			https://www.gtkapp.com；
+			https://gitee.com/easywebfactory/gtksystem-windows-forms；
+			https://github.com/easywebfactory/gtksystem-windows-forms；
+		</Description>
+        <PackageId>Net4x.$(MSBuildProjectName)</PackageId>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://gitee.com/easywebfactory/gtksystem-windows-forms</RepositoryUrl>
+        <PackAsTool>False</PackAsTool>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\..\GtkForms.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <Optimize>True</Optimize>
+        <IsAotCompatible>True</IsAotCompatible>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <IsAotCompatible>True</IsAotCompatible>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Remove="GTKControls\Internal\**" />
+        <Compile Remove="obj\**" />
+        <Compile Remove="Resources\Forms_ico\**" />
+        <Compile Remove="Resources\icons\**" />
+        <EmbeddedResource Remove="GTKControls\Internal\**" />
+        <EmbeddedResource Remove="obj\**" />
+        <EmbeddedResource Remove="Resources\Forms_ico\**" />
+        <EmbeddedResource Remove="Resources\icons\**" />
+        <None Remove="GTKControls\Internal\**" />
+        <None Remove="obj\**" />
+        <None Remove="Resources\Forms_ico\**" />
+        <None Remove="Resources\icons\**" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="GTKControls\Control\ArrangedElementCollection.cs" />
+        <Compile Remove="GTKControls\Control\GridItem.cs" />
+        <Compile Remove="GTKControls\Control\GridItemCollection.cs" />
+        <Compile Remove="GTKControls\Control\IArrangedElement.cs" />
+        <Compile Remove="GTKControls\Enum\Enums\ColorDepth.cs" />
+        <Compile Remove="GTKControls\Enum\Enums\GridItemType.cs" />
+        <Compile Remove="GTKControls\EventArgs\PropertyValueChangedEventArgs.cs" />
+        <Compile Remove="GTKControls\EventArgs\SelectedGridItemChangedEventArgs.cs" />
+        <Compile Remove="GTKControls\EventHandlers\SelectedGridItemChangedEventHandler.cs" />
+        <Compile Remove="GTKControls\Interface\WidgetContainerControl.cs" />
+        <Compile Remove="GTKControls\Interface\WidgetControl.cs" />
+        <Compile Remove="GTKControls\ListViewBase\ImageList.cs" />
+        <Compile Remove="GTKControls\ListViewBase\ImageListStreamer.cs" />
+        <Compile Remove="GTKControls\ListViewBase\SerializationInfo.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="Resources\Cursors\aero_ew.cur" />
+        <None Remove="Resources\Cursors\aero_nesw.cur" />
+        <None Remove="Resources\Cursors\aero_ns.cur" />
+        <None Remove="Resources\Cursors\aero_nwse.cur" />
+        <None Remove="Resources\Cursors\aero_unavail.cur" />
+        <None Remove="Resources\Cursors\east.cur" />
+        <None Remove="Resources\Cursors\hsplit.cur" />
+        <None Remove="Resources\Cursors\ne.cur" />
+        <None Remove="Resources\Cursors\nomove2d.cur" />
+        <None Remove="Resources\Cursors\nomoveh.cur" />
+        <None Remove="Resources\Cursors\nomovev.cur" />
+        <None Remove="Resources\Cursors\north.cur" />
+        <None Remove="Resources\Cursors\no_l.cur" />
+        <None Remove="Resources\Cursors\nw.cur" />
+        <None Remove="Resources\Cursors\se.cur" />
+        <None Remove="Resources\Cursors\south.cur" />
+        <None Remove="Resources\Cursors\sw.cur" />
+        <None Remove="Resources\Cursors\vsplit.cur" />
+        <None Remove="Resources\Cursors\west.cur" />
+        <None Remove="Resources\System\CloseWin.png" />
+        <None Remove="Resources\System\CloseWindow.png" />
+        <None Remove="Resources\System\DateTimePicker.ico" />
+        <None Remove="Resources\System\MaxWin.png" />
+        <None Remove="Resources\System\MaxWindow.png" />
+        <None Remove="Resources\System\MinWin.png" />
+        <None Remove="Resources\System\MinWindow.png" />
+        <None Remove="Resources\System\MonthCalendar.ico" />
+        <None Remove="Resources\System\Panel.ico" />
+        <None Remove="Resources\System\view-more.ico" />
+        <None Remove="Resources\System\view-more.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Resources\Cursors\aero_ew.cur" />
+        <EmbeddedResource Include="Resources\Cursors\aero_nesw.cur" />
+        <EmbeddedResource Include="Resources\Cursors\aero_ns.cur" />
+        <EmbeddedResource Include="Resources\Cursors\aero_nwse.cur" />
+        <EmbeddedResource Include="Resources\Cursors\aero_unavail.cur" />
+        <EmbeddedResource Include="Resources\Cursors\east.cur" />
+        <EmbeddedResource Include="Resources\Cursors\hsplit.cur" />
+        <EmbeddedResource Include="Resources\Cursors\ne.cur" />
+        <EmbeddedResource Include="Resources\Cursors\nomove2d.cur" />
+        <EmbeddedResource Include="Resources\Cursors\nomoveh.cur" />
+        <EmbeddedResource Include="Resources\Cursors\nomovev.cur" />
+        <EmbeddedResource Include="Resources\Cursors\north.cur" />
+        <EmbeddedResource Include="Resources\Cursors\nw.cur" />
+        <EmbeddedResource Include="Resources\Cursors\se.cur" />
+        <EmbeddedResource Include="Resources\Cursors\south.cur" />
+        <EmbeddedResource Include="Resources\Cursors\sw.cur" />
+        <EmbeddedResource Include="Resources\Cursors\vsplit.cur" />
+        <EmbeddedResource Include="Resources\Cursors\west.cur" />
+        <EmbeddedResource Include="Resources\System\CloseWin.png" />
+        <EmbeddedResource Include="Resources\System\CloseWindow.png" />
+        <EmbeddedResource Include="Resources\System\DateTimePicker.ico" />
+        <EmbeddedResource Include="Resources\System\MaxWin.png" />
+        <EmbeddedResource Include="Resources\System\MaxWindow.png" />
+        <EmbeddedResource Include="Resources\System\MinWin.png" />
+        <EmbeddedResource Include="Resources\System\MinWindow.png" />
+        <EmbeddedResource Include="Resources\System\MonthCalendar.ico" />
+        <EmbeddedResource Include="Resources\System\Panel.ico" />
+        <EmbeddedResource Include="Resources\System\view-more.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="GtkSharp" Version="$(GtkSharpVersion).$(VersionBuildSuffix)" />
+        <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Update="GTKControls\Button.cs" />
+        <Compile Update="GTKControls\CheckBox.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\CheckedListBox.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\ComboBox.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\DataGridView.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\DateTimePicker.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\EventArgs\Control.PrintPaintEventArgs.cs" />
+        <Compile Update="GTKControls\Form.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Update="GTKControls\GroupBox.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\Label.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\LinkLabel.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\MaskedTextBox.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\MenuStrip.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\MonthCalendar.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\NumericUpDown.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\Panel.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\PictureBox.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\RadioButton.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\RichTextBox.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\SplitContainer.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\SplitterPanel.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\TabControl.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\TextBox.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\Timer.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="GTKControls\TreeView.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <EmbeddedResource Update="Properties\Resources.zh-HANS.resx">
+            <DependentUpon>Resources.resx</DependentUpon>
+        </EmbeddedResource>
+        <Compile Update="Properties\Resources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\..\README.zh-HANS.md" Link="README.zh-HANS.md" />
+        <None Include="..\..\README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+        <None Include="..\licenses\LICENSE.txt">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Properties\Resources.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <PackageReference Include="Net4x.NuGetUtility" Version="$(NuGetUtilityVersion)" PrivateAssets="All" />
+    </ItemGroup>
+    <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets" Condition="Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets')" />
+</Project>

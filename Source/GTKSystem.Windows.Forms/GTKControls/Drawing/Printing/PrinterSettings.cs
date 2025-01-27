@@ -2,10 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Drawing.Imaging;
-using System.IO;
-using System.Runtime.InteropServices;
 
 namespace System.Drawing.Printing
 {

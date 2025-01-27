@@ -2,19 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections;
-using GLib;
 using System.Collections.Generic;
-using Gtk;
 
 namespace System.Windows.Forms
 {
     public class TreeNode: ICloneable, ISerializable, IEquatable<TreeNode>
     {
-        //格式，各级索引并集：0,1,2,3....
+        //Format, union of indexes at all levels: 0,1,2,3....
         private string index = "";
         public string Index { get { return index; } internal set { index = value ?? ""; } }
         internal Gtk.TreeIter TreeIter = Gtk.TreeIter.Zero;

@@ -1,20 +1,20 @@
 ﻿namespace System.Drawing
 {
     //
-    // 摘要:
+    // summary:
     //     Defines methods for obtaining and releasing an existing handle to a Windows device
     //     context.
     public interface IDeviceContext : IDisposable
     {
         //
-        // 摘要:
+        // summary:
         //     Returns the handle to a Windows device context.
         //
-        // 返回结果:
+        // Return results:
         //     An System.IntPtr representing the handle of a device context.
         IntPtr GetHdc();
         //
-        // 摘要:
+        // summary:
         //     Releases the handle of a Windows device context.
         void ReleaseHdc();
     }

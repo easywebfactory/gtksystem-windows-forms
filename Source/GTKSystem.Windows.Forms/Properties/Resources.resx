@@ -121,4 +121,91 @@
   <data name="DateTimePicker" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\System\DateTimePicker.ico;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="MessageBox_ShowCore_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="MessageBox_ShowCore_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="MessageBox_ShowCore_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="MessageBox_ShowCore_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="MessageBox_ShowCore_Reject" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="MessageBox_ShowCore_Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="MessageBox_ShowCore_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Application_Init_Directory_does_not_exist" xml:space="preserve">
+    <value>=》Directory does not exist</value>
+  </data>
+  <data name="Application_Init_Here you can customize or adjust the control style" xml:space="preserve">
+    <value>/* Here you can customize or adjust the control style */ </value>
+  </data>
+  <data name="Application_Init_Define control style" xml:space="preserve">
+	  <value>Define control style</value>
+  </data>
+  <data name="Application_Init_Whether to follow the system theme by default" xml:space="preserve">
+	  <value>/*Whether to follow the system theme by default*/</value>
+  </data>
+  <data name="Application_Init_Whether to apply built-in styles" xml:space="preserve">
+	  <value>/*Whether to apply built-in styles*/</value>
+  </data>
+  <data name="Application_Init_Specify the theme, valid when AutoTheme is false" xml:space="preserve">
+	  <value>/*Specify the theme, valid when AutoTheme=false*/</value>
+  </data>
+  <data name="Application_Init_Whether to use a custom theme, corresponding to custom theme" xml:space="preserve">
+	  <value>/*Whether to use a custom theme, corresponding to [custom theme]*/</value>
+  </data>
+  <data name="Application_Init_Whether to use custom style, corresponding to [custom style]" xml:space="preserve">
+	  <value>/*Whether to use custom style, corresponding to [custom style]*/</value>
+  </data>
+  <data name="Application_Init_Custom theme name" xml:space="preserve">
+	  <value>/* Custom theme name */</value>
+  </data>
+  <data name="Application_Init_The folder where the theme files are located" xml:space="preserve">
+	  <value>/* The folder where the theme files are located */</value>
+  </data>
+  <data name="Application_Init_css file path" xml:space="preserve">
+	  <value>/* css file path */</value>
+  </data>
+  <data name="Application_Init_Freely defined style files" xml:space="preserve">
+	  <value>/* Freely defined style files */</value>
+  </data>
+  <data name="FormBase_FormBase_Close_" xml:space="preserve">
+	  <value>You are closing this window, are you sure you want to close it?</value>
+  </data>
+  <data name="ColorDialog_RunDialog_Choose color" xml:space="preserve">
+	  <value>Choose color</value>
+  </data>
+  <data name="FileDialog_RunDialog_Select file" xml:space="preserve">
+	  <value>Select file</value>
+  </data>
+  <data name="FontDialog_RunDialog_Select font" xml:space="preserve">
+	  <value>Select font</value>
+  </data>
+  <data name="PrintDialog_RunPrint_File is in use and cannot be overwritten" xml:space="preserve">
+	  <value>File is in use and cannot be overwritten</value>
+  </data>
+  <data name="DateTimePicker_DateTimePicker_Mask" xml:space="preserve">
+	  <value>____year__month__day</value>
+  </data>
+  <data name="DateTimePicker_DateTimePicker_Choose Today" xml:space="preserve">
+	  <value>Choose Today </value>
+  </data>
+  <data name="DateTimePicker_Calendar_DaySelected_Choose" xml:space="preserve">
+	  <value>The selected date is outside the restricted range \nMaximum time: {0}\nMinimum time: {1}</value>
+  </data>
+  <data name="DateTimePicker_Calendar_DaySelected_Date restrictions" xml:space="preserve">
+	  <value>Date restrictions</value>
+  </data>
+  <data name="DateTimePicker_Value_yyyy年MM月dd日" xml:space="preserve">
+	  <value>MM month dd day yyyy year</value>
+  </data>
 </root>

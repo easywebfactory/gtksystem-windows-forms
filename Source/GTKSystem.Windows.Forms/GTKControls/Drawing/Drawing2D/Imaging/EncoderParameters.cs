@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 namespace System.Drawing.Imaging
 {
 	/// <summary>Encapsulates an array of <see cref="T:System.Drawing.Imaging.EncoderParameter" /> objects.</summary>

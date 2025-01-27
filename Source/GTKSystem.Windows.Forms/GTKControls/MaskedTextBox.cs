@@ -1,9 +1,10 @@
 ﻿/*
- * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
- * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
+ * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
+ * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+
 using System.Text.RegularExpressions;
 
 namespace System.Windows.Forms
@@ -32,7 +33,7 @@ namespace System.Windows.Forms
                 self.Visibility = false;
             }
             else if (!string.IsNullOrWhiteSpace(Mask))
-            {//按格式化赋值
+            {// Assign value according to format
                 string txt = Regex.Match(Text, "\\d").Value;
                 int windex = -1;
                 Text = Regex.Replace(Mask, "\\d", (Match m) =>
@@ -67,7 +68,7 @@ namespace System.Windows.Forms
                     {
                         if (IsNumberText(correctText.Substring(position-1, 1)) && IsNumberText(new_text))
                         {
-                            //正常
+                            // normal
                             self.DeleteText(position, position+1);
                         }
                         else
@@ -89,9 +90,9 @@ namespace System.Windows.Forms
         {
             if (IsMaskPassword == true)
             {
-                //格式化掩码，只改数字
+                // Format mask, only change numbers
                 int position = self.CursorPosition;
-                if (self.Text.Length + 1 == correctText.Length) //删除一个字符
+                if (self.Text.Length + 1 == correctText.Length) // delete a character
                 {
                     isBackspace = true;
                     if (IsNumberChar(correctText[position]))
@@ -103,7 +104,7 @@ namespace System.Windows.Forms
                         self.InsertText(correctText[position].ToString(), ref position);
                     }
                 }
-                else if (self.Text.Length + 1 < correctText.Length) //选择多字符删除
+                else if (self.Text.Length + 1 < correctText.Length) // Select multiple characters to delete
                 {
                     self.Text = correctText;
                 }

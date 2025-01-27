@@ -1,10 +1,5 @@
 ﻿using GLib;
 using Gtk;
-using System;
-using System.Drawing;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {

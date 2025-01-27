@@ -1,15 +1,12 @@
-﻿/*
- * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
- * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
- * author:chenhongjin
- */
+﻿  /*
+   * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
+   * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
+   * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+   * author:chenhongjin
+   */
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace System.Windows.Forms
 {
@@ -215,7 +212,7 @@ namespace System.Windows.Forms
             }
             return result;
         }
-        private static Gtk.Window ActiveWindow = null; //有缓存意义
+        private static Gtk.Window ActiveWindow = null; //Caching significance
         private static DialogResult ShowCore(IWin32Window owner, string text, string caption,
                                              MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defaultButton,
                                              MessageBoxOptions options, bool showHelp)
@@ -346,34 +343,34 @@ namespace System.Windows.Forms
             dia.Icon = pixbuf;
             if (buttons == MessageBoxButtons.OK)
             {
-                dia.AddButton("确定", Gtk.ResponseType.Ok);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_OK, Gtk.ResponseType.Ok);
             }
             else if (buttons == MessageBoxButtons.OKCancel)
             {
-                dia.AddButton("确定", Gtk.ResponseType.Ok);
-                dia.AddButton("取消", Gtk.ResponseType.Cancel);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_OK, Gtk.ResponseType.Ok);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Cancel, Gtk.ResponseType.Cancel);
             }
             else if (buttons == MessageBoxButtons.YesNo)
             {
-                dia.AddButton("是", Gtk.ResponseType.Yes);
-                dia.AddButton("否", Gtk.ResponseType.No);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Yes, Gtk.ResponseType.Yes);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_No, Gtk.ResponseType.No);
             }
             else if (buttons == MessageBoxButtons.YesNoCancel)
             {
-                dia.AddButton("是", Gtk.ResponseType.Yes);
-                dia.AddButton("否", Gtk.ResponseType.No);
-                dia.AddButton("取消", Gtk.ResponseType.Cancel);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Yes, Gtk.ResponseType.Yes);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_No, Gtk.ResponseType.No);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Cancel, Gtk.ResponseType.Cancel);
             }
             else if (buttons == MessageBoxButtons.AbortRetryIgnore)
             {
-                dia.AddButton("放弃", Gtk.ResponseType.Reject);
-                dia.AddButton("重试", Gtk.ResponseType.Help);
-                dia.AddButton("忽略", Gtk.ResponseType.Close);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Reject, Gtk.ResponseType.Reject);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Help, Gtk.ResponseType.Help);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Close, Gtk.ResponseType.Close);
             }
             else if (buttons == MessageBoxButtons.RetryCancel)
             {
-                dia.AddButton("重试", Gtk.ResponseType.Help);
-                dia.AddButton("取消", Gtk.ResponseType.Cancel);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Help, Gtk.ResponseType.Help);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Cancel, Gtk.ResponseType.Cancel);
             }
             dia.ShowAll();
             return dia.Run();

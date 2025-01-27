@@ -1,28 +1,28 @@
 ﻿namespace System.Drawing.Text
 {
     //
-    // 摘要:
+    // summary:
     //     Provides a base class for installed and private font collections.
     public abstract class FontCollection : IDisposable
     {
         //
-        // 摘要:
+        // summary:
         //     Gets the array of System.Drawing.FontFamily objects associated with this System.Drawing.Text.FontCollection.
         //
-        // 返回结果:
+        // Return results:
         //     An array of System.Drawing.FontFamily objects.
         public FontFamily[] Families { get; }
 
         //
-        // 摘要:
+        // summary:
         //     Releases all resources used by this System.Drawing.Text.FontCollection.
         public void Dispose() { }
         //
-        // 摘要:
+        // summary:
         //     Releases the unmanaged resources used by the System.Drawing.Text.FontCollection
         //     and optionally releases the managed resources.
         //
-        // 参数:
+        // parameter:
         //   disposing:
         //     true to release both managed and unmanaged resources; false to release only unmanaged
         //     resources.

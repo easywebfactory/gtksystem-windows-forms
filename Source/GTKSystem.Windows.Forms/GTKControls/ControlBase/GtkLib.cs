@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using GLib;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {

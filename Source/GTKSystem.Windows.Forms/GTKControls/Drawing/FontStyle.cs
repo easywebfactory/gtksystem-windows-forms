@@ -5,29 +5,29 @@
 namespace System.Drawing
 {
     //
-    // 摘要:
+    // summary:
     //     Specifies style information applied to text.
     [Flags]
     public enum FontStyle
     {
         //
-        // 摘要:
+        // summary:
         //     Normal text.
         Regular = 0,
         //
-        // 摘要:
+        // summary:
         //     Bold text.
         Bold = 1,
         //
-        // 摘要:
+        // summary:
         //     Italic text.
         Italic = 2,
         //
-        // 摘要:
+        // summary:
         //     Underlined text.
         Underline = 4,
         //
-        // 摘要:
+        // summary:
         //     Text with a line through the middle.
         Strikeout = 8
     }

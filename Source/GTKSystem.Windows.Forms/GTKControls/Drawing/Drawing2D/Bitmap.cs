@@ -1,7 +1,4 @@
-﻿using Cairo;
-using Gdk;
-using Pango;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;

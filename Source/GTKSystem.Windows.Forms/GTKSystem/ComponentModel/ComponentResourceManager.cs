@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 
 
 namespace GTKSystem.ComponentModel
 {
     /// <summary>
-    /// 此为System.ComponentModel.ComponentResourceManager的取图实现
-    /// 使用方法：在form项目下新建System.ComponentModel.ComponentResourceManager并继承GTKSystem.ComponentModel.ComponentResourceManager即可
+    /// This is the image retrieval implementation of System.ComponentModel.ComponentResourceManager
+    /// How to use: Create a new System.ComponentModel.ComponentResourceManager under the form project and inherit GTKSystem.ComponentModel.ComponentResourceManager.
     /// </summary>
     public class ComponentResourceManager : System.ComponentModel.ComponentResourceManager
     {

@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 namespace System.Drawing.Imaging
 {
 	/// <summary>The <see cref="T:System.Drawing.Imaging.ImageCodecInfo" /> class provides the necessary storage members and methods to retrieve all pertinent information about the installed image encoders and decoders (called codecs). Not inheritable.</summary>

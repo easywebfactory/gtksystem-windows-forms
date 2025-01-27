@@ -5,20 +5,20 @@
 namespace System.Drawing
 {
     //
-    // 摘要:
+    // summary:
     //     Specifies a generic System.Drawing.FontFamily object.
     public enum GenericFontFamilies
     {
         //
-        // 摘要:
+        // summary:
         //     A generic Serif System.Drawing.FontFamily object.
         Serif = 0,
         //
-        // 摘要:
+        // summary:
         //     A generic Sans Serif System.Drawing.FontFamily object.
         SansSerif = 1,
         //
-        // 摘要:
+        // summary:
         //     A generic Monospace System.Drawing.FontFamily object.
         Monospace = 2
     }

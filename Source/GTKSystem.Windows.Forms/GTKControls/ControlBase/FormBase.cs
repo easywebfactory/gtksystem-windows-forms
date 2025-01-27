@@ -63,13 +63,13 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             ScrollView.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
             ScrollView.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
             this.ContentArea.PackStart(ScrollView, true, true, 0);
-            //this.Decorated = false; //删除工具栏
+            //this.Decorated = false; //Delete toolbar
             this.Drawn += FormBase_Drawn;
             this.Close += FormBase_Close;
         }
         private void FormBase_Close(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show(this, "你正在关闭该窗口，确定要关闭吗？", "Esc按键操作提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show(this, Gtk.Windows.Forms.Properties.Resources.FormBase_FormBase_Close_, "Esc按键操作提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
                 this.Respond(ResponseType.DeleteEvent);

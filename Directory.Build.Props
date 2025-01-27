@@ -1,0 +1,9 @@
+<Project>
+  <Import Project="Directory.Nuget.Props" Condition="'$(DirectoryNuGet)'==''" />
+  <PropertyGroup>
+    <VersionPrefix>$(GTKWinFormsAppVersion)</VersionPrefix>
+    <VersionSuffix Condition="'$(Configuration)'!='Release'">0-at20250127054140</VersionSuffix>
+    <VersionSuffix Condition="'$(Configuration)'=='Release'">0</VersionSuffix>
+    <SolutionDir Condition="'$(SolutionDir)'==''">$(MSBuildThisFileDirectory)</SolutionDir>
+  </PropertyGroup>
+</Project>

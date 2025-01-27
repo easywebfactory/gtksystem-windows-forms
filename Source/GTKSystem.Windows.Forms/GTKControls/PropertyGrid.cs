@@ -1,22 +1,21 @@
 ﻿/*
- * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
- * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
+ * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
+ * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+
 using Microsoft.Win32;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing;
-using System.Reflection;
 using System.Windows.Forms.ComponentModel.Com2Interop;
 using System.Windows.Forms.Design;
 namespace System.Windows.Forms
 {
     /// <summary>
-    /// 注：此控件无法使用，正在开发中...
+    /// Note: This control cannot be used and is under development...
     /// </summary>
     [Designer($"System.Windows.Forms.Design.PropertyGridDesigner, {AssemblyRef.SystemDesign}")]
     public partial class PropertyGrid : ContainerControl, IComPropertyBrowser//, IPropertyNotifySink.Interface

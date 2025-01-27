@@ -1,8 +1,4 @@
-﻿using System;
-
-
-
-namespace System.Windows.Forms
+﻿namespace System.Windows.Forms
 {
 
     public class ToolStripItemClickedEventArgs : EventArgs

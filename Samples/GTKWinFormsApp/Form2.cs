@@ -51,7 +51,7 @@ namespace GTKWinFormsApp
             //for (int i = 0; i < 10; i++)
             //{
             i++;
-                listBox1.Items.Add($"异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}");
+                listBox1.Items.Add($"Exception警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}");
                 listBox1.TopIndex = i;
            // }
         }

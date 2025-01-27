@@ -1,7 +1,6 @@
 ﻿using Gtk;
 using System.Drawing;
 using System.Windows.Forms;
-using static GTKSystem.Windows.Forms.GTKControls.ControlBase.GtkControlOverride;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {

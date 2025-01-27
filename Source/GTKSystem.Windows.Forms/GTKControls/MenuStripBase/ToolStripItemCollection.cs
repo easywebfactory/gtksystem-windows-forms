@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Collections;
-using System.Xml.Linq;
-using GLib;
-using Pango;
 
 namespace System.Windows.Forms
 {

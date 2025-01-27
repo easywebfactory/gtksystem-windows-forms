@@ -2,40 +2,40 @@
 namespace System.Windows.Forms
 {
     //
-    // 摘要:
+    // summary:
     //     Specifies the day of the week.
     public enum Day
     {
         //
-        // 摘要:
+        // summary:
         //     The day Monday.
         Monday,
         //
-        // 摘要:
+        // summary:
         //     The day Tuesday.
         Tuesday,
         //
-        // 摘要:
+        // summary:
         //     The day Wednesday.
         Wednesday,
         //
-        // 摘要:
+        // summary:
         //     The day Thursday.
         Thursday,
         //
-        // 摘要:
+        // summary:
         //     The day Friday.
         Friday,
         //
-        // 摘要:
+        // summary:
         //     The day Saturday.
         Saturday,
         //
-        // 摘要:
+        // summary:
         //     The day Sunday.
         Sunday,
         //
-        // 摘要:
+        // summary:
         //     A default day of the week specified by the application.
         Default
     }

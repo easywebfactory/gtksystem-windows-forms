@@ -1,12 +1,12 @@
 ﻿namespace System.Windows.Forms
 {
     //
-    // 摘要:
+    // summary:
     //     Determines the alignment of a System.Windows.Forms.ToolStripItem in a System.Windows.Forms.ToolStrip.
     public enum ToolStripItemAlignment
     {
         //
-        // 摘要:
+        // summary:
         //     Specifies that the System.Windows.Forms.ToolStripItem is to be anchored toward
         //     the left or top end of the System.Windows.Forms.ToolStrip, depending on the System.Windows.Forms.ToolStrip
         //     orientation. If the value of System.Windows.Forms.RightToLeft is Yes, items marked
@@ -14,7 +14,7 @@
         //     side of the System.Windows.Forms.ToolStrip.
         Left = 0,
         //
-        // 摘要:
+        // summary:
         //     Specifies that the System.Windows.Forms.ToolStripItem is to be anchored toward
         //     the right or bottom end of the System.Windows.Forms.ToolStrip, depending on the
         //     System.Windows.Forms.ToolStrip orientation. If the value of System.Windows.Forms.RightToLeft

@@ -1,13 +1,5 @@
-﻿using System;
-using System.Drawing;
-using System.Collections.Generic;
+﻿using System.Drawing;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System.Windows.Forms;
-using Gtk;
 
 namespace System.Windows.Forms
 {
@@ -45,12 +37,12 @@ namespace System.Windows.Forms
         {
             if (owner != null && owner is Form ownerform)
             {
-                fontChooserDialog = new Gtk.FontChooserDialog("选择字体", ownerform.self);
+                fontChooserDialog = new Gtk.FontChooserDialog(Gtk.Windows.Forms.Properties.Resources.FontDialog_RunDialog_Select_font, ownerform.self);
                 fontChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
             }
             else
             {
-                fontChooserDialog = new Gtk.FontChooserDialog("选择字体", null);
+                fontChooserDialog = new Gtk.FontChooserDialog(Gtk.Windows.Forms.Properties.Resources.FontDialog_RunDialog_Select_font, null);
                 fontChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
             }
             fontChooserDialog.KeepAbove = true;

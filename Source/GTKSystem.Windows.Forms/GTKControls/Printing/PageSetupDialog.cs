@@ -5,7 +5,6 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing.Printing;
-using System.Globalization;
 using System.Linq;
 
 namespace System.Windows.Forms

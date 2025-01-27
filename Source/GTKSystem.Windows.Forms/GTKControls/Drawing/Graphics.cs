@@ -15,12 +15,11 @@ namespace System.Drawing
 		private Cairo.Context context;
 		private Gdk.Rectangle rectangle;
 		private Gtk.Widget widget;
-        #region 用于输入与输出的数值调整差值
         internal double diff_left { get; set; }
         internal double diff_top { get; set; }
         //internal int diff_right { get; set; }
         //internal int diff_bottom { get; set; }
-        #endregion
+
         internal Graphics(Gtk.Widget widget, Cairo.Context context, Gdk.Rectangle rectangle)
 		{
 			this.widget = widget;
@@ -206,7 +205,7 @@ namespace System.Drawing
 					gradient.AddColorStop((++idx) / linearcount, new Cairo.Color(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f));
 
 				Cairo.Matrix matrix = new Cairo.Matrix(1, 0, 0, 1, 0, 0);
-				matrix.Rotate(Math.PI * 45 / 180);//弧度
+				matrix.Rotate(Math.PI * 45 / 180);
 				gradient.Matrix = matrix;
                 using Cairo.Pattern pattern = Cairo.Pattern.Lookup(gradient.Handle, false);
 				this.context.SetSource(pattern);
@@ -303,12 +302,6 @@ namespace System.Drawing
             DrawArcCore(pen, x, y, width, height, startAngle, sweepAngle);
         }
 
-        #region 贝塞尔曲线
-        /// <summary>
-        /// 收集贝塞尔曲线坐标点全部点的位置集合
-        /// </summary>
-        /// <param name="points"></param>
-        /// <returns></returns>
         private List<PointF> GetBezierPoints(List<PointF> points)
         {
             float seedNum = 0;
@@ -327,12 +320,7 @@ namespace System.Drawing
             }
             return rpoint;
         }
-        /// <summary>
-        /// 计算贝塞尔曲线上坐标点单点位置
-        /// </summary>
-        /// <param name="points">贝塞尔条件坐标集合</param>
-        /// <param name="time">时间因子</param>
-        /// <returns></returns>
+
         private List<PointF> CalculateBezier(List<PointF> points, float time)
         {
             List<PointF> nList = new List<PointF> { };
@@ -382,7 +370,6 @@ namespace System.Drawing
 		{
             DrawBeziersCore(pen, Array.ConvertAll(points, p => new PointF(p.X, p.Y)));
         }
-        #endregion
 
         private void DrawCurveCore(bool isClosePath, bool isfill, Pen pen, PointF[] points, int offset, int numberOfSegments, float tension, FillMode fillmode)
         {
@@ -1491,21 +1478,16 @@ namespace System.Drawing
         private static Cairo.ImageSurface imagesurface;
         private static Cairo.Surface simisurface;
         private static Cairo.Context imagecontext;
-        /// <summary>
-        /// 使用此方法必须要执行Flush()方法输出Image
-        /// </summary>
-        /// <param name="image"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
+
         public static Graphics FromImage(Image image)
         {
             int _width = image.Width;
             int _height = image.Height;
 
             if (_width < 1)
-                throw new ArgumentOutOfRangeException("Image.Width不能小于等于0");
+                throw new ArgumentOutOfRangeException(nameof(image.Width));
             if (_height < 1)
-                throw new ArgumentOutOfRangeException("Image.Height不能小于等于0");
+                throw new ArgumentOutOfRangeException(nameof(image.Height));
 
             if (imagesurface == null)
                 imagesurface = new Cairo.ImageSurface(Cairo.Format.Argb32, _width, _height);

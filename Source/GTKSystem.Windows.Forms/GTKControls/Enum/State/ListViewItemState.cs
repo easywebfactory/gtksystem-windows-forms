@@ -5,45 +5,45 @@
 namespace System.Windows.Forms
 {
     //
-    // 摘要:
+    // summary:
     //     Defines constants that represent the possible states of a System.Windows.Forms.ListViewItem.
     [Flags]
     public enum ListViewItemStates
     {
         //
-        // 摘要:
+        // summary:
         //     The item is selected.
         Selected = 1,
         //
-        // 摘要:
+        // summary:
         //     The item is disabled.
         Grayed = 2,
         //
-        // 摘要:
+        // summary:
         //     The item is checked.
         Checked = 8,
         //
-        // 摘要:
+        // summary:
         //     The item has focus.
         Focused = 16,
         //
-        // 摘要:
+        // summary:
         //     The item is in its default state.
         Default = 32,
         //
-        // 摘要:
+        // summary:
         //     The item is currently under the mouse pointer.
         Hot = 64,
         //
-        // 摘要:
+        // summary:
         //     The item is marked.
         Marked = 128,
         //
-        // 摘要:
+        // summary:
         //     The item is in an indeterminate state.
         Indeterminate = 256,
         //
-        // 摘要:
+        // summary:
         //     The item should indicate a keyboard shortcut.
         ShowKeyboardCues = 512
     }

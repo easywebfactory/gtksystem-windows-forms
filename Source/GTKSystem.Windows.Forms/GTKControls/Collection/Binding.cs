@@ -136,7 +136,7 @@ namespace System.Windows.Forms
 			FormatString = formatString;
 			FormatInfo = formatInfo;
         }
-        //更新数据源
+
         public void WriteValue()
 		{
 			object _dataSource = DataSource ?? this.DataSourceNullValue;
@@ -160,7 +160,7 @@ namespace System.Windows.Forms
                 propertyInfo.SetValue(data, corVal);
             }
         }
-        //更新客户端
+
         public void ReadValue()
         {
             object _dataSource = DataSource ?? this.DataSourceNullValue;

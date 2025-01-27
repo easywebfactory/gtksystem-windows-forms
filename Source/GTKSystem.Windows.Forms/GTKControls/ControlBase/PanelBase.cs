@@ -1,6 +1,4 @@
-﻿using Gtk;
-
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public sealed class PanelBase: ScrollableBoxBase
     {

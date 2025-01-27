@@ -1,5 +1,4 @@
 using System.Drawing.Drawing2D;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace System.Drawing.Imaging

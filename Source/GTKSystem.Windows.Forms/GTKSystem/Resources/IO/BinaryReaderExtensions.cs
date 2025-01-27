@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using GTKSystem;
 
 namespace GTKSystem.IO
 {

@@ -3,15 +3,11 @@ using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using System.Resources;
-using System.Runtime.Serialization;
 using System.Windows.Forms;
 using System.Xml;
-using System.Xml.Linq;
 
 namespace GTKSystem.Resources
 {
@@ -112,7 +108,7 @@ namespace GTKSystem.Resources
                             }
                             catch
                             {
-                                //图像格式内容不能提取
+                                // Image format content cannot be extracted
                                 return null;
                             }
                         }
