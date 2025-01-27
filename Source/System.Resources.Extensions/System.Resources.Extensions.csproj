@@ -7,11 +7,11 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="System\Resources\Extensions\DeserializingResourceReader.cs" />
-	  <Compile Remove="System\Resources\Extensions\PreserializedResourceWriter.cs" />
+	  <Compile Remove="System\**" />
+	  <EmbeddedResource Remove="System\**" />
+	  <None Remove="System\**" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Properties\" />
-	  <Folder Include="System\Resources\Extensions\" />
 	</ItemGroup>
 </Project>

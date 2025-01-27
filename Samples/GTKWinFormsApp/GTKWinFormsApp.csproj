@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<OutputType>Exe</OutputType>
+		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<UseWindowsForms>False</UseWindowsForms>
@@ -41,10 +41,6 @@
 		<None Update="Resources\timg2.jpg">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="obj\Debug\net8.0\" />
 	</ItemGroup>
 
 	<ItemGroup>
