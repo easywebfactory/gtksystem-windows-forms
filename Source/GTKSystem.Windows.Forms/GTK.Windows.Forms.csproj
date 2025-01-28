@@ -33,20 +33,6 @@
         <Optimize Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">True</Optimize>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Remove="GTKControls\Internal\**" />
-        <Compile Remove="obj\**" />
-        <Compile Remove="Resources\Forms_ico\**" />
-        <Compile Remove="Resources\icons\**" />
-        <EmbeddedResource Remove="GTKControls\Internal\**" />
-        <EmbeddedResource Remove="obj\**" />
-        <EmbeddedResource Remove="Resources\Forms_ico\**" />
-        <EmbeddedResource Remove="Resources\icons\**" />
-        <None Remove="GTKControls\Internal\**" />
-        <None Remove="obj\**" />
-        <None Remove="Resources\Forms_ico\**" />
-        <None Remove="Resources\icons\**" />
-    </ItemGroup>
-    <ItemGroup>
         <Compile Remove="GTKControls\Control\ArrangedElementCollection.cs" />
         <Compile Remove="GTKControls\Control\GridItem.cs" />
         <Compile Remove="GTKControls\Control\GridItemCollection.cs" />
