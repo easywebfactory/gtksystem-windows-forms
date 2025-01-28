@@ -126,6 +126,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="GtkSharp" Version="$(GtkSharpVersion).$(VersionBuildSuffix)" />
+        <PackageReference Include="Net4x.NuGetUtility" Version="$(NuGetUtilityVersion)" PrivateAssets="All" />
         <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
     </ItemGroup>
     <ItemGroup>
@@ -200,6 +201,18 @@
         <Compile Update="GTKControls\TreeView.cs">
             <SubType>Component</SubType>
         </Compile>
+        <EmbeddedResource Update="Properties\Resources.de.resx">
+            <DependentUpon>Resources.resx</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Resources.es.resx">
+            <DependentUpon>Resources.resx</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Resources.it.resx">
+            <DependentUpon>Resources.resx</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Resources.fr.resx">
+            <DependentUpon>Resources.resx</DependentUpon>
+        </EmbeddedResource>
         <EmbeddedResource Update="Properties\Resources.zh-HANS.resx">
             <DependentUpon>Resources.resx</DependentUpon>
         </EmbeddedResource>

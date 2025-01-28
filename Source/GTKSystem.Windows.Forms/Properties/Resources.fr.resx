@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="DateTimePicker" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\System\DateTimePicker.ico;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MessageBox_ShowCore_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="MessageBox_ShowCore_Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="MessageBox_ShowCore_Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="MessageBox_ShowCore_No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="MessageBox_ShowCore_Reject" xml:space="preserve">
+    <value>Rejeter</value>
+  </data>
+  <data name="MessageBox_ShowCore_Help" xml:space="preserve">
+    <value>Aide</value>
+  </data>
+  <data name="MessageBox_ShowCore_Close" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="Application_Init_Directory_does_not_exist" xml:space="preserve">
+    <value>Le répertoire n'existe pas</value>
+  </data>
+  <data name="Application_Init_Here you can customize or adjust the control style" xml:space="preserve">
+    <value>/* Ici, vous pouvez personnaliser ou ajuster le style de contrôle */</value>
+  </data>
+  <data name="Application_Init_Define control style" xml:space="preserve">
+    <value>Définir le style de contrôle</value>
+  </data>
+  <data name="Application_Init_Whether to follow the system theme by default" xml:space="preserve">
+    <value>/* Suivre le thème système par défaut */</value>
+  </data>
+  <data name="Application_Init_Whether to apply built-in styles" xml:space="preserve">
+    <value>/* Appliquer les styles intégrés */</value>
+  </data>
+  <data name="Application_Init_Specify the theme, valid when AutoTheme is false" xml:space="preserve">
+    <value>/* Spécifier le thème, valide lorsque AutoTheme=false */</value>
+  </data>
+  <data name="Application_Init_Whether to use a custom theme, corresponding to custom theme" xml:space="preserve">
+    <value>/* Utiliser un thème personnalisé, correspondant à [thème personnalisé] */</value>
+  </data>
+  <data name="Application_Init_Whether to use custom style, corresponding to [custom style]" xml:space="preserve">
+    <value>/* Utiliser un style personnalisé, correspondant à [style personnalisé] */</value>
+  </data>
+  <data name="Application_Init_Custom theme name" xml:space="preserve">
+    <value>/* Nom du thème personnalisé */</value>
+  </data>
+  <data name="Application_Init_The folder where the theme files are located" xml:space="preserve">
+    <value>/* Dossier où se trouvent les fichiers de thème */</value>
+  </data>
+  <data name="Application_Init_css file path" xml:space="preserve">
+    <value>/* Chemin du fichier CSS */</value>
+  </data>
+  <data name="Application_Init_Freely defined style files" xml:space="preserve">
+    <value>/* Fichiers de style librement définis */</value>
+  </data>
+  <data name="FormBase_FormBase_Close_" xml:space="preserve">
+    <value>Vous fermez cette fenêtre, êtes-vous sûr de vouloir la fermer ?</value>
+  </data>
+  <data name="ColorDialog_RunDialog_Choose color" xml:space="preserve">
+    <value>Choisir une couleur</value>
+  </data>
+  <data name="FileDialog_RunDialog_Select file" xml:space="preserve">
+    <value>Sélectionner un fichier</value>
+  </data>
+  <data name="FontDialog_RunDialog_Select font" xml:space="preserve">
+    <value>Sélectionner une police</value>
+  </data>
+  <data name="PrintDialog_RunPrint_File is in use and cannot be overwritten" xml:space="preserve">
+    <value>Le fichier est en cours d'utilisation et ne peut pas être écrasé</value>
+  </data>
+  <data name="DateTimePicker_DateTimePicker_Mask" xml:space="preserve">
+    <value>____année__mois__jour</value>
+  </data>
+  <data name="DateTimePicker_DateTimePicker_Choose Today" xml:space="preserve">
+    <value>Choisir aujourd'hui</value>
+  </data>
+  <data name="DateTimePicker_Calendar_DaySelected_Choose" xml:space="preserve">
+    <value>La date sélectionnée est en dehors de la plage restreinte \nHeure maximale : {0}\nHeure minimale : {1}</value>
+  </data>
+  <data name="DateTimePicker_Calendar_DaySelected_Date restrictions" xml:space="preserve">
+    <value>Restrictions de date</value>
+  </data>
+  <data name="DateTimePicker_Value_yyyy年MM月dd日" xml:space="preserve">
+    <value>MM mois dd jour année yyyy</value>
+  </data>
+</root>
