@@ -24,7 +24,7 @@
         <PackageId>Net4x.$(MSBuildProjectName)</PackageId>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <RepositoryUrl>https://gitee.com/easywebfactory/gtksystem-windows-forms</RepositoryUrl>
+        <RepositoryUrl>https://github.com/pieroviano/gtksystem-windows-forms.git</RepositoryUrl>
         <PackAsTool>False</PackAsTool>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <SignAssembly>true</SignAssembly>
