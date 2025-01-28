@@ -14,9 +14,9 @@
         <PackageReleaseNotes>C# Interface cross-platform development components gtk-windows-forms</PackageReleaseNotes>
         <Title>GTK cross-platform winform interface component, compiled once, can run on windows, linux, macos platforms</Title>
         <Description>
-	        It is a cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
-	        Use this component GTKSystem.Windows.Forms to compile once and run across platforms windows\linux\macos.
-	        Update platform：
+			It is a cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
+			Use this component GTKSystem.Windows.Forms to compile once and run across platforms windows\linux\macos.
+			Update platform：
 			https://www.gtkapp.com；
 			https://gitee.com/easywebfactory/gtksystem-windows-forms；
 			https://github.com/easywebfactory/gtksystem-windows-forms；
@@ -29,13 +29,8 @@
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>..\..\GtkForms.snk</AssemblyOriginatorKeyFile>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <Optimize>True</Optimize>
         <IsAotCompatible>True</IsAotCompatible>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <IsAotCompatible>True</IsAotCompatible>
+        <Optimize Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">True</Optimize>
     </PropertyGroup>
     <ItemGroup>
         <Compile Remove="GTKControls\Internal\**" />
@@ -230,7 +225,6 @@
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
-        <PackageReference Include="Net4x.NuGetUtility" Version="$(NuGetUtilityVersion)" PrivateAssets="All" />
     </ItemGroup>
     <Import Project="$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets" Condition="Exists('$(NuGetPackageRoot)net4x.nugetutility/$(NuGetUtilityVersion)/build/NuGet.Utility.targets')" />
 </Project>
