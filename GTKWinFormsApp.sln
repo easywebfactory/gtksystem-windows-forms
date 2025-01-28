@@ -11,17 +11,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gtk.Windows.Forms", "Source
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTKWinFormsApp", "Samples\GTKWinFormsApp\GTKWinFormsApp.csproj", "{A963833A-1053-4321-9BCF-3FB7C58F0601}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readme", "readme", "{7674FDFE-A432-492E-AC63-C24377F85870}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{7674FDFE-A432-492E-AC63-C24377F85870}"
 	ProjectSection(SolutionItems) = preProject
-		README.en.md = README.en.md
 		README.md = README.md
+		README.zh-HANS.md = README.zh-HANS.md
 		Readme_Resources.md = Readme_Resources.md
+		Readme_Resources.zh-HANS.md = Readme_Resources.zh-HANS.md
 		UpdateHistory.md = UpdateHistory.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{56631C54-2CE5-44E4-A931-4788557760B4}"
-	ProjectSection(SolutionItems) = preProject
-		licenses\LICENSE.txt = licenses\LICENSE.txt
+		UpdateHistory.zh-HANS.md = UpdateHistory.zh-HANS.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "licenses", "licenses", "{FA74C15D-95F5-4B11-A721-308659F09D90}"
@@ -31,7 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "licenses", "licenses", "{FA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTKSystemWinFormsApp11", "Samples\GTKSystemWinFormsApp11\GTKSystemWinFormsApp11.csproj", "{ED029673-302D-4E58-B33E-1472BD96B19C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B33A25AB-3FEF-4B92-A091-653BC9DFFBD3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{6714F9A3-8835-48E5-9AE1-CF53B39F24FD}"
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
