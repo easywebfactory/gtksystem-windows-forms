@@ -101,7 +101,8 @@ namespace System.Windows.Forms.Layout
             InnerList[toIndex] = element;
         }
 
-        private static void Copy(ArrangedElementCollection sourceList, int sourceIndex, ArrangedElementCollection destinationList, int destinationIndex, int length)
+        private static void Copy(ArrangedElementCollection sourceList, int sourceIndex,
+            ArrangedElementCollection destinationList, int destinationIndex, int length)
         {
             if (sourceIndex < destinationIndex)
             {

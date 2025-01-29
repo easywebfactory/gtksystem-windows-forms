@@ -11,11 +11,11 @@ namespace System.Windows.Forms
     {
         public static bool IsCriticalException(Exception ex)
             => ex is NullReferenceException
-                || ex is StackOverflowException
-                || ex is OutOfMemoryException
-                || ex is ThreadAbortException
-                || ex is IndexOutOfRangeException
-                || ex is AccessViolationException;
+               || ex is StackOverflowException
+               || ex is OutOfMemoryException
+               || ex is ThreadAbortException
+               || ex is IndexOutOfRangeException
+               || ex is AccessViolationException;
 
         private enum CharType
         {
@@ -44,7 +44,7 @@ namespace System.Windows.Forms
                 }
 
                 bool isWord = char.IsLetterOrDigit(character) ||
-                    CharUnicodeInfo.GetUnicodeCategory(character) == UnicodeCategory.NonSpacingMark;
+                              CharUnicodeInfo.GetUnicodeCategory(character) == UnicodeCategory.NonSpacingMark;
                 if ((isWord && lastSeen == CharType.NonWord && seenWord) ||
                     (!isWord && lastSeen == CharType.Word && index != 0))
                 {

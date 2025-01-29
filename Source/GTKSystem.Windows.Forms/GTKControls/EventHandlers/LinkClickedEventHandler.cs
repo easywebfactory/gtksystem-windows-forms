@@ -10,4 +10,3 @@ namespace System.Windows.Forms
     /// </summary>
     public delegate void LinkClickedEventHandler(object sender, LinkClickedEventArgs e);
 }
-

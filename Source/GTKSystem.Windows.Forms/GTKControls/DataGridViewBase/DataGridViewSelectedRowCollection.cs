@@ -24,7 +24,8 @@ namespace System.Windows.Forms
 
         int IList.IndexOf(object? value) => ((IList)_items).IndexOf(value);
 
-        void IList.Insert(int index, object? value) => throw new NotSupportedException("SR.DataGridView_ReadOnlyCollection");
+        void IList.Insert(int index, object? value) =>
+            throw new NotSupportedException("SR.DataGridView_ReadOnlyCollection");
 
         void IList.Remove(object? value) => throw new NotSupportedException("SR.DataGridView_ReadOnlyCollection");
 
@@ -74,6 +75,7 @@ namespace System.Windows.Forms
         public void CopyTo(DataGridViewRow[] array, int index) => _items.CopyTo(array, index);
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public void Insert(int index, DataGridViewRow dataGridViewRow) => throw new NotSupportedException("SR.DataGridView_ReadOnlyCollection");
+        public void Insert(int index, DataGridViewRow dataGridViewRow) =>
+            throw new NotSupportedException("SR.DataGridView_ReadOnlyCollection");
     }
 }

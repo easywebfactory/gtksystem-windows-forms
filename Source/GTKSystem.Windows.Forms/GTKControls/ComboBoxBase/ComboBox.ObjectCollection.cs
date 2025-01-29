@@ -23,10 +23,7 @@ namespace System.Windows.Forms
 
             internal List<Entry> InnerList
             {
-                get
-                {
-                    return _innerList;
-                }
+                get { return _innerList; }
             }
 
             /// <summary>
@@ -36,34 +33,22 @@ namespace System.Windows.Forms
 
             object ICollection.SyncRoot
             {
-                get
-                {
-                    return this;
-                }
+                get { return this; }
             }
 
             bool ICollection.IsSynchronized
             {
-                get
-                {
-                    return false;
-                }
+                get { return false; }
             }
 
             bool IList.IsFixedSize
             {
-                get
-                {
-                    return false;
-                }
+                get { return false; }
             }
 
             public bool IsReadOnly
             {
-                get
-                {
-                    return false;
-                }
+                get { return false; }
             }
 
             /// <summary>
@@ -101,8 +86,10 @@ namespace System.Windows.Forms
                         {
                             index = ~index; // getting the index of the first element that is larger than the search value
                         }
+
                         InnerList.Insert(index, entry);
                     }
+
                     bool successful = false;
                     try
                     {
@@ -114,6 +101,7 @@ namespace System.Windows.Forms
                         {
                             _owner.self.AppendText(item.ToString());
                         }
+
                         successful = true;
                     }
                     finally
@@ -124,6 +112,7 @@ namespace System.Windows.Forms
                         }
                     }
                 }
+
                 return index;
             }
 
@@ -140,7 +129,6 @@ namespace System.Windows.Forms
                 }
                 finally
                 {
-                    
                 }
             }
 
@@ -162,14 +150,8 @@ namespace System.Windows.Forms
             [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
             public virtual object? this[int index]
             {
-                get
-                {
-                    return InnerList[index].Item;
-                }
-                set
-                {
-                    SetItemInternal(index, value!);
-                }
+                get { return InnerList[index].Item; }
+                set { SetItemInternal(index, value!); }
             }
 
             /// <summary>
@@ -187,6 +169,7 @@ namespace System.Windows.Forms
                     ((Gtk.ListStore)_owner.self.Model).Clear();
                     InnerList.Clear();
                 }
+
                 _owner.SelectedIndex = -1;
             }
 
@@ -210,9 +193,8 @@ namespace System.Windows.Forms
 
             void ICollection.CopyTo(Array destination, int index)
             {
-
                 int count = InnerList.Count;
- 
+
                 for (int i = 0; i < count; i++)
                 {
                     destination.SetValue(InnerList[i], i + index);
@@ -276,6 +258,7 @@ namespace System.Windows.Forms
                     _owner.self.Remove(index);
                     InnerList.RemoveAt(index);
                 }
+
                 if (!_owner.IsHandleCreated)
                 {
                     if (index < _owner._selectedIndex)
@@ -285,7 +268,7 @@ namespace System.Windows.Forms
                     else if (index == _owner._selectedIndex)
                     {
                         _owner._selectedIndex = -1;
-                        _owner.Text=string.Empty;
+                        _owner.Text = string.Empty;
                     }
                 }
             }
@@ -315,16 +298,17 @@ namespace System.Windows.Forms
 
                 bool selected = (index == _owner.SelectedIndex);
 
-                if (string.Compare(_owner.GetItemText(value), _owner.NativeGetItemText(index), true, CultureInfo.CurrentCulture) != 0)
+                if (string.Compare(_owner.GetItemText(value), _owner.NativeGetItemText(index), true,
+                        CultureInfo.CurrentCulture) != 0)
                 {
                     _owner.self.Remove(index);
                     _owner.self.InsertText(index, value?.ToString());
                     InnerList.RemoveAt(index);
-                    InnerList.Insert(index,new Entry(value));
+                    InnerList.Insert(index, new Entry(value));
                     if (selected)
                     {
                         _owner.SelectedIndex = index;
-                        _owner.Text=value?.ToString();
+                        _owner.Text = value?.ToString();
                     }
                 }
                 else

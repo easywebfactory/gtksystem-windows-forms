@@ -1,5 +1,4 @@
-﻿
-using Gdk;
+﻿using Gdk;
 using System.Drawing.Text;
 
 namespace System.Drawing
@@ -19,6 +18,7 @@ namespace System.Drawing
         public FontFamily(GenericFontFamilies genericFamily) : this(genericFamily.ToString(), null)
         {
         }
+
         /// <summary>
         ///     Initializes a new System.Drawing.FontFamily with the specified name.
         /// </summary>
@@ -30,7 +30,10 @@ namespace System.Drawing
         ///     on the computer running the application. -or- name specifies a font that is not
         ///     a TrueType font.
         /// </exception>
-        public FontFamily(string name) : this(name, null) { }
+        public FontFamily(string name) : this(name, null)
+        {
+        }
+
         /// <summary>
         ///     Initializes a new System.Drawing.FontFamily in the specified System.Drawing.Text.FontCollection
         ///     with the specified name.
@@ -46,25 +49,32 @@ namespace System.Drawing
         ///     on the computer running the application. -or- name specifies a font that is not
         ///     a TrueType font.
         /// </exception>
-        public FontFamily(string name, FontCollection fontCollection) {
+        public FontFamily(string name, FontCollection fontCollection)
+        {
             this.Name = name;
         }
 
-
-      /// <summary>
+        /// <summary>
         ///     Gets a generic sans serif System.Drawing.FontFamily object.
         ///</summary>
         /// <returns>
         ///     A System.Drawing.FontFamily object that represents a generic sans serif font.
         /// </returns>
-        public static FontFamily GenericSansSerif { get => new FontFamily(GenericFontFamilies.SansSerif); }
+        public static FontFamily GenericSansSerif
+        {
+            get => new FontFamily(GenericFontFamilies.SansSerif);
+        }
+
         /// <summary>
         ///     Gets a generic monospace System.Drawing.FontFamily.
         ///</summary>
         /// <returns>
         ///     A System.Drawing.FontFamily that represents a generic monospace font.
         /// </returns>
-        public static FontFamily GenericMonospace { get => new FontFamily(GenericFontFamilies.Monospace); }
+        public static FontFamily GenericMonospace
+        {
+            get => new FontFamily(GenericFontFamilies.Monospace);
+        }
 
         /// <summary>
         ///     Returns an array that contains all the System.Drawing.FontFamily objects associated
@@ -74,7 +84,10 @@ namespace System.Drawing
         ///     An array of System.Drawing.FontFamily objects associated with the current graphics
         ///     context.
         /// </returns>
-        public static FontFamily[] Families { get => Array.ConvertAll(PangoHelper.ContextGet().Families, o => new FontFamily(o.Name)); }
+        public static FontFamily[] Families
+        {
+            get => Array.ConvertAll(PangoHelper.ContextGet().Families, o => new FontFamily(o.Name));
+        }
 
         /// <summary>
         ///     Gets a generic serif System.Drawing.FontFamily.
@@ -82,7 +95,11 @@ namespace System.Drawing
         /// <returns>
         ///     A System.Drawing.FontFamily that represents a generic serif font.
         /// </returns>
-        public static FontFamily GenericSerif { get => new FontFamily(GenericFontFamilies.Serif); }
+        public static FontFamily GenericSerif
+        {
+            get => new FontFamily(GenericFontFamilies.Serif);
+        }
+
         /// <summary>
         ///     Gets the name of this System.Drawing.FontFamily.
         ///</summary>
@@ -107,11 +124,18 @@ namespace System.Drawing
         ///     graphics is null.
         /// </exception>
         [Obsolete("Do not use method GetFamilies, use property Families instead")]
-        public static FontFamily[] GetFamilies(Graphics graphics) { return new FontFamily[0]; }
+        public static FontFamily[] GetFamilies(Graphics graphics)
+        {
+            return new FontFamily[0];
+        }
+
         /// <summary>
         ///     Releases all resources used by this System.Drawing.FontFamily.
         ///</summary>
-        public void Dispose() { }
+        public void Dispose()
+        {
+        }
+
         /// <summary>
         ///     Indicates whether the specified object is a System.Drawing.FontFamily and is
         ///     identical to this System.Drawing.FontFamily.
@@ -123,7 +147,11 @@ namespace System.Drawing
         ///     true if obj is a System.Drawing.FontFamily and is identical to this System.Drawing.FontFamily;
         ///     otherwise, false.
         /// </returns>
-        public override bool Equals(object obj) { return Equals(obj as FontFamily); }
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as FontFamily);
+        }
+
         /// <summary>
         ///     Returns the cell ascent, in design units, of the System.Drawing.FontFamily of
         ///     the specified style.
@@ -134,7 +162,11 @@ namespace System.Drawing
         /// <returns>
         ///     The cell ascent for this System.Drawing.FontFamily that uses the specified System.Drawing.FontStyle.
         /// </returns>
-        public int GetCellAscent(FontStyle style) { return 0; }
+        public int GetCellAscent(FontStyle style)
+        {
+            return 0;
+        }
+
         /// <summary>
         ///     Returns the cell descent, in design units, of the System.Drawing.FontFamily of
         ///     the specified style.
@@ -146,7 +178,11 @@ namespace System.Drawing
         ///     The cell descent metric for this System.Drawing.FontFamily that uses the specified
         ///     System.Drawing.FontStyle.
         /// </returns>
-        public int GetCellDescent(FontStyle style) { return 0; }
+        public int GetCellDescent(FontStyle style)
+        {
+            return 0;
+        }
+
         /// <summary>
         ///     Gets the height, in font design units, of the em square for the specified style.
         ///</summary>
@@ -156,14 +192,22 @@ namespace System.Drawing
         /// <returns>
         ///     The height of the em square.
         /// </returns>
-        public int GetEmHeight(FontStyle style) { return 0; }
+        public int GetEmHeight(FontStyle style)
+        {
+            return 0;
+        }
+
         /// <summary>
         ///     Gets a hash code for this System.Drawing.FontFamily.
         ///</summary>
         /// <returns>
         ///     The hash code for this System.Drawing.FontFamily.
         /// </returns>
-        public override int GetHashCode() { return Name.GetHashCode(); }
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
+
         /// <summary>
         ///     Returns the line spacing, in design units, of the System.Drawing.FontFamily of
         ///     the specified style. The line spacing is the vertical distance between the base
@@ -175,7 +219,11 @@ namespace System.Drawing
         /// <returns>
         ///     The distance between two consecutive lines of text.
         /// </returns>
-        public int GetLineSpacing(FontStyle style) { return 0; }
+        public int GetLineSpacing(FontStyle style)
+        {
+            return 0;
+        }
+
         /// <summary>
         ///     Returns the name, in the specified language, of this System.Drawing.FontFamily.
         ///</summary>
@@ -186,7 +234,11 @@ namespace System.Drawing
         ///     A System.String that represents the name, in the specified language, of this
         ///     System.Drawing.FontFamily.
         /// </returns>
-        public string GetName(int language) { return Name; }
+        public string GetName(int language)
+        {
+            return Name;
+        }
+
         /// <summary>
         ///     Indicates whether the specified System.Drawing.FontStyle enumeration is available.
         /// </summary>
@@ -196,7 +248,11 @@ namespace System.Drawing
         /// <returns>
         ///     true if the specified System.Drawing.FontStyle is available; otherwise, false.
         /// </returns>
-        public bool IsStyleAvailable(FontStyle style) { return false; }
+        public bool IsStyleAvailable(FontStyle style)
+        {
+            return false;
+        }
+
         /// <summary>
         ///     Converts this System.Drawing.FontFamily to a human-readable string representation.
         /// </summary>

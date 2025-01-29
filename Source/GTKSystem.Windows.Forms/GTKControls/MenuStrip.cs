@@ -17,6 +17,5 @@ namespace System.Windows.Forms
             this.self.StyleContext.AddClass("MenuStrip");
             this.Dock = DockStyle.Top;
         }
-
     }
 }

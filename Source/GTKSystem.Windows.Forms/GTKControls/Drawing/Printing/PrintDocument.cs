@@ -1,14 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-
 using Gtk;
 using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace System.Drawing.Printing
 {
-
     [DefaultProperty("DocumentName"), DefaultEvent("PrintPage")]
     public class PrintDocument : Component
     {
@@ -27,20 +25,29 @@ namespace System.Drawing.Printing
         private bool _originAtMargins;
         private bool _userSetPageSettings;
 
-        public PrintDocument() 
-        { 
+        public PrintDocument()
+        {
             _defaultPageSettings = new PageSettings(_printerSettings);
             _pageSetup = new PageSetup();
         }
+
         private PageSetup _pageSetup;
-        public PageSetup PageSetup { 
-            get=> _pageSetup; 
-            set {
+
+        public PageSetup PageSetup
+        {
+            get => _pageSetup;
+            set
+            {
                 _pageSetup = value;
                 PageSettings pageSettings = DefaultPageSettings;
-                pageSettings.Landscape = value.Orientation == Gtk.PageOrientation.Landscape || value.Orientation == Gtk.PageOrientation.ReverseLandscape;
-                pageSettings.Margins = new Margins((int)value.GetLeftMargin(Unit.Points), (int)value.GetTopMargin(Unit.Points), (int)value.GetRightMargin(Unit.Points), (int)value.GetBottomMargin(Unit.Points));
-                pageSettings.PaperSize = new System.Drawing.Printing.PaperSize(Enum.Parse<PaperKind>(value.PaperSize.DisplayName), value.PaperSize.Name, (int)value.PaperSize.GetWidth(Unit.Points), (int)value.PaperSize.GetHeight(Unit.Points));
+                pageSettings.Landscape = value.Orientation == Gtk.PageOrientation.Landscape ||
+                                         value.Orientation == Gtk.PageOrientation.ReverseLandscape;
+                pageSettings.Margins = new Margins((int)value.GetLeftMargin(Unit.Points),
+                    (int)value.GetTopMargin(Unit.Points), (int)value.GetRightMargin(Unit.Points),
+                    (int)value.GetBottomMargin(Unit.Points));
+                pageSettings.PaperSize = new System.Drawing.Printing.PaperSize(
+                    Enum.Parse<PaperKind>(value.PaperSize.DisplayName), value.PaperSize.Name,
+                    (int)value.PaperSize.GetWidth(Unit.Points), (int)value.PaperSize.GetHeight(Unit.Points));
                 _userSetPageSettings = true;
             }
         }
@@ -127,7 +134,8 @@ namespace System.Drawing.Printing
 
         protected internal virtual void OnPrintPage(PrintPageEventArgs e) => _printPageHandler?.Invoke(this, e);
 
-        protected internal virtual void OnQueryPageSettings(QueryPageSettingsEventArgs e) => _queryHandler?.Invoke(this, e);
+        protected internal virtual void OnQueryPageSettings(QueryPageSettingsEventArgs e) =>
+            _queryHandler?.Invoke(this, e);
 
         public void Print()
         {

@@ -18,6 +18,7 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         private Gtk.Overlay contaner = new Gtk.Overlay();
         private ControlCollection _controls = null;
+
         public GroupBox() : base()
         {
             _controls = new ControlCollection(this, contaner);
@@ -29,8 +30,15 @@ namespace System.Windows.Forms
             contaner.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             self.Child = contaner;
         }
-        public override string Text { get { return self.Label; } set { self.Label = value; } }
+
+        public override string Text
+        {
+            get { return self.Label; }
+            set { self.Label = value; }
+        }
+
         public override ControlCollection Controls => _controls;
+
         public override Padding Padding
         {
             get => base.Padding;
@@ -43,10 +51,12 @@ namespace System.Windows.Forms
                 contaner.MarginBottom = value.Bottom;
             }
         }
+
         public override void SuspendLayout()
         {
             _Created = false;
         }
+
         public override void ResumeLayout(bool resume)
         {
             _Created = resume == false;
@@ -56,6 +66,5 @@ namespace System.Windows.Forms
         {
             _Created = true;
         }
-
     }
 }

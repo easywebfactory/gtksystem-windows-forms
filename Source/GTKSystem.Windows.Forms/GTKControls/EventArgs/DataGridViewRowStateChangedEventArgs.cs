@@ -6,7 +6,8 @@ namespace System.Windows.Forms
 {
     public class DataGridViewRowStateChangedEventArgs : EventArgs
     {
-        public DataGridViewRowStateChangedEventArgs(DataGridViewRow dataGridViewRow, DataGridViewElementStates stateChanged)
+        public DataGridViewRowStateChangedEventArgs(DataGridViewRow dataGridViewRow,
+            DataGridViewElementStates stateChanged)
         {
             Row = dataGridViewRow;
             StateChanged = stateChanged;

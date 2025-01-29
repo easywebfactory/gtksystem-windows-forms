@@ -3,7 +3,6 @@
 
 namespace System.Drawing.Printing
 {
-
     /// <summary>
     ///  Specifies the printer's duplex setting.
     /// </summary>

@@ -14,7 +14,6 @@ namespace System.Windows.Forms
     /// </summary>
     public class DrawItemEventArgs : EventArgs, IDisposable, IDeviceContext
     {
-
         /// <summary>
         ///  The backColor to paint each menu item with.
         /// </summary>
@@ -30,7 +29,8 @@ namespace System.Windows.Forms
         /// </summary>
         public DrawItemEventArgs(Graphics graphics, Font? font, Rectangle rect, int index, DrawItemState state)
             : this(graphics, font, rect, index, state, SystemColors.WindowText, SystemColors.Window)
-        { }
+        {
+        }
 
         /// <summary>
         ///  Creates a new DrawItemEventArgs with the given parameters, including the foreColor and backColor
@@ -45,7 +45,7 @@ namespace System.Windows.Forms
             Color foreColor,
             Color backColor)
         {
-            this.graphics=graphics ?? throw new ArgumentNullException(nameof(graphics));
+            this.graphics = graphics ?? throw new ArgumentNullException(nameof(graphics));
             this.Bounds = rect;
             Font = font;
             Index = index;
@@ -53,14 +53,15 @@ namespace System.Windows.Forms
             _foreColor = foreColor;
             _backColor = backColor;
         }
+
         private Graphics graphics;
+
         /// <summary>
         ///  Gets the <see cref="Drawing.Graphics"/> object used to paint.
         /// </summary>
-        public Graphics Graphics { 
-            get {
-                return graphics;
-            } 
+        public Graphics Graphics
+        {
+            get { return graphics; }
         }
 
         /// <summary>
@@ -98,7 +99,6 @@ namespace System.Windows.Forms
 
         public void Dispose()
         {
-             
         }
 
         /// <summary>
@@ -118,18 +118,17 @@ namespace System.Windows.Forms
             if ((State & DrawItemState.Focus) == DrawItemState.Focus
                 && (State & DrawItemState.NoFocusRect) != DrawItemState.NoFocusRect)
             {
-               // ControlPaint.DrawFocusRectangle(GraphicsInternal, Bounds, ForeColor, BackColor);
+                // ControlPaint.DrawFocusRectangle(GraphicsInternal, Bounds, ForeColor, BackColor);
             }
         }
 
         public IntPtr GetHdc()
         {
-           return IntPtr.Zero;
+            return IntPtr.Zero;
         }
 
         public void ReleaseHdc()
         {
-            
         }
     }
 }

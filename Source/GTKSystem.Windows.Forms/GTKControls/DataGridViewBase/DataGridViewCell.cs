@@ -7,18 +7,23 @@ namespace System.Windows.Forms
     {
         internal DataGridViewRow OwningRowInternal { get; set; }
         public DataGridView DataGridView { get; set; }
-        protected DataGridViewCell() { }
+
+        protected DataGridViewCell()
+        {
+        }
+
         public object Value { get; set; }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string ToolTipText { get; set; }
+
         [Bindable(true)]
         [DefaultValue(null)]
         [Localizable(false)]
         [TypeConverter(typeof(StringConverter))]
         public object Tag { get; set; }
-        [Browsable(true)]
-        public DataGridViewCellStyle Style { get; set; }
+
+        [Browsable(true)] public DataGridViewCellStyle Style { get; set; }
 
         public Size Size { get; }
 
@@ -48,8 +53,7 @@ namespace System.Windows.Forms
         public int ColumnIndex { get; }
 
         public Rectangle ContentBounds { get; }
-        [DefaultValue(null)]
-        public virtual ContextMenuStrip ContextMenuStrip { get; set; }
+        [DefaultValue(null)] public virtual ContextMenuStrip ContextMenuStrip { get; set; }
 
         public virtual object DefaultNewRowValue { get; }
 
@@ -80,24 +84,30 @@ namespace System.Windows.Forms
 
         public virtual Type ValueType { get; set; }
     }
+
     public class DataGridViewTextBoxCell : DataGridViewCell
     {
         //public DataGridViewTextBoxCell(DataGridViewRow dataGridViewRow) {
-         
+
         //}
     }
+
     public class DataGridViewCheckBoxCell : DataGridViewCell
     {
     }
+
     public class DataGridViewComboBoxCell : DataGridViewCell
     {
     }
+
     public class DataGridViewButtonCell : DataGridViewCell
     {
     }
+
     public class DataGridViewImageCell : DataGridViewCell
     {
     }
+
     public class DataGridViewLinkCell : DataGridViewCell
     {
     }

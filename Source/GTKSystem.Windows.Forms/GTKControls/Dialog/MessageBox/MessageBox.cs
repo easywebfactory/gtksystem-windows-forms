@@ -1,9 +1,10 @@
-﻿  /*
-   * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
-   * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
-   * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
-   * author:chenhongjin
-   */
+﻿/*
+ * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
+ * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
+ * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * author:chenhongjin
+ */
+
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace System.Windows.Forms
         ///  Displays a message box with specified text, caption, and style with Help Button.
         /// </summary>
         public static DialogResult Show(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
-                                        MessageBoxDefaultButton defaultButton, MessageBoxOptions options, bool displayHelpButton)
+            MessageBoxDefaultButton defaultButton, MessageBoxOptions options, bool displayHelpButton)
         {
             return ShowCore(null, text, caption, buttons, icon, defaultButton, options, displayHelpButton);
         }
@@ -25,7 +26,7 @@ namespace System.Windows.Forms
         ///  Displays a message box with specified text, caption, style and Help file Path .
         /// </summary>
         public static DialogResult Show(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
-                                        MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath)
+            MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath)
         {
             return ShowCore(null, text, caption, buttons, icon, defaultButton, options);
         }
@@ -33,8 +34,9 @@ namespace System.Windows.Forms
         /// <summary>
         ///  Displays a message box with specified text, caption, style and Help file Path for a IWin32Window.
         /// </summary>
-        public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
-                                        MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath)
+        public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons,
+            MessageBoxIcon icon,
+            MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath)
         {
             return ShowCore(owner, text, caption, buttons, icon, defaultButton, options);
         }
@@ -43,7 +45,7 @@ namespace System.Windows.Forms
         ///  Displays a message box with specified text, caption, style, Help file Path and keyword.
         /// </summary>
         public static DialogResult Show(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
-                                        MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath, string keyword)
+            MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath, string keyword)
         {
             return ShowCore(null, text, caption, buttons, icon, defaultButton, options);
         }
@@ -51,8 +53,9 @@ namespace System.Windows.Forms
         /// <summary>
         ///  Displays a message box with specified text, caption, style, Help file Path and keyword for a IWin32Window.
         /// </summary>
-        public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
-                                        MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath, string keyword)
+        public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons,
+            MessageBoxIcon icon,
+            MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath, string keyword)
         {
             return ShowCore(owner, text, caption, buttons, icon, defaultButton, options);
         }
@@ -61,7 +64,8 @@ namespace System.Windows.Forms
         ///  Displays a message box with specified text, caption, style, Help file Path and HelpNavigator.
         /// </summary>
         public static DialogResult Show(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
-                                        MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath, HelpNavigator navigator)
+            MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath,
+            HelpNavigator navigator)
         {
             return ShowCore(null, text, caption, buttons, icon, defaultButton, options);
         }
@@ -69,8 +73,10 @@ namespace System.Windows.Forms
         /// <summary>
         ///  Displays a message box with specified text, caption, style, Help file Path and HelpNavigator for IWin32Window.
         /// </summary>
-        public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
-                                        MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath, HelpNavigator navigator)
+        public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons,
+            MessageBoxIcon icon,
+            MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath,
+            HelpNavigator navigator)
         {
             return ShowCore(owner, text, caption, buttons, icon, defaultButton, options);
         }
@@ -79,7 +85,8 @@ namespace System.Windows.Forms
         ///  Displays a message box with specified text, caption, style, Help file Path ,HelpNavigator and object.
         /// </summary>
         public static DialogResult Show(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
-                                        MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath, HelpNavigator navigator, object param)
+            MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath,
+            HelpNavigator navigator, object param)
         {
             return ShowCore(null, text, caption, buttons, icon, defaultButton, options);
         }
@@ -87,8 +94,10 @@ namespace System.Windows.Forms
         /// <summary>
         ///  Displays a message box with specified text, caption, style, Help file Path ,HelpNavigator and object for a IWin32Window.
         /// </summary>
-        public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
-                                        MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath, HelpNavigator navigator, object param)
+        public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons,
+            MessageBoxIcon icon,
+            MessageBoxDefaultButton defaultButton, MessageBoxOptions options, string helpFilePath,
+            HelpNavigator navigator, object param)
         {
             return ShowCore(owner, text, caption, buttons, icon, defaultButton, options);
         }
@@ -100,7 +109,7 @@ namespace System.Windows.Forms
         ///  Displays a message box with specified text, caption, and style.
         /// </summary>
         public static DialogResult Show(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
-                                        MessageBoxDefaultButton defaultButton, MessageBoxOptions options)
+            MessageBoxDefaultButton defaultButton, MessageBoxOptions options)
         {
             return ShowCore(null, text, caption, buttons, icon, defaultButton, options, false);
         }
@@ -109,7 +118,7 @@ namespace System.Windows.Forms
         ///  Displays a message box with specified text, caption, and style.
         /// </summary>
         public static DialogResult Show(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
-                                        MessageBoxDefaultButton defaultButton)
+            MessageBoxDefaultButton defaultButton)
         {
             return ShowCore(null, text, caption, buttons, icon, defaultButton, 0, false);
         }
@@ -127,7 +136,8 @@ namespace System.Windows.Forms
         /// </summary>
         public static DialogResult Show(string text, string caption, MessageBoxButtons buttons)
         {
-            return ShowCore(null, text, caption, buttons, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, 0, false);
+            return ShowCore(null, text, caption, buttons, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, 0,
+                false);
         }
 
         /// <summary>
@@ -135,7 +145,8 @@ namespace System.Windows.Forms
         /// </summary>
         public static DialogResult Show(string text, string caption)
         {
-            return ShowCore(null, text, caption, MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, 0, false);
+            return ShowCore(null, text, caption, MessageBoxButtons.OK, MessageBoxIcon.None,
+                MessageBoxDefaultButton.Button1, 0, false);
         }
 
         /// <summary>
@@ -143,14 +154,16 @@ namespace System.Windows.Forms
         /// </summary>
         public static DialogResult Show(string text)
         {
-            return ShowCore(null, text, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, 0, false);
+            return ShowCore(null, text, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.None,
+                MessageBoxDefaultButton.Button1, 0, false);
         }
 
         /// <summary>
         ///  Displays a message box with specified text, caption, and style.
         /// </summary>
-        public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
-                                        MessageBoxDefaultButton defaultButton, MessageBoxOptions options)
+        public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons,
+            MessageBoxIcon icon,
+            MessageBoxDefaultButton defaultButton, MessageBoxOptions options)
         {
             return ShowCore(owner, text, caption, buttons, icon, defaultButton, options, false);
         }
@@ -158,8 +171,9 @@ namespace System.Windows.Forms
         /// <summary>
         ///  Displays a message box with specified text, caption, and style.
         /// </summary>
-        public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon,
-                                        MessageBoxDefaultButton defaultButton)
+        public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons,
+            MessageBoxIcon icon,
+            MessageBoxDefaultButton defaultButton)
         {
             return ShowCore(owner, text, caption, buttons, icon, defaultButton, 0, false);
         }
@@ -167,7 +181,8 @@ namespace System.Windows.Forms
         /// <summary>
         ///  Displays a message box with specified text, caption, and style.
         /// </summary>
-        public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
+        public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons,
+            MessageBoxIcon icon)
         {
             return ShowCore(owner, text, caption, buttons, icon, MessageBoxDefaultButton.Button1, 0, false);
         }
@@ -177,7 +192,8 @@ namespace System.Windows.Forms
         /// </summary>
         public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons)
         {
-            return ShowCore(owner, text, caption, buttons, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, 0, false);
+            return ShowCore(owner, text, caption, buttons, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, 0,
+                false);
         }
 
         /// <summary>
@@ -185,7 +201,8 @@ namespace System.Windows.Forms
         /// </summary>
         public static DialogResult Show(IWin32Window owner, string text, string caption)
         {
-            return ShowCore(owner, text, caption, MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, 0, false);
+            return ShowCore(owner, text, caption, MessageBoxButtons.OK, MessageBoxIcon.None,
+                MessageBoxDefaultButton.Button1, 0, false);
         }
 
         /// <summary>
@@ -193,43 +210,47 @@ namespace System.Windows.Forms
         /// </summary>
         public static DialogResult Show(IWin32Window owner, string text)
         {
-            return ShowCore(owner, text, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, 0, false);
+            return ShowCore(owner, text, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.None,
+                MessageBoxDefaultButton.Button1, 0, false);
         }
 
         private static DialogResult ShowCore(IWin32Window owner, string text, string caption,
-                                     MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defaultButton,
-                                     MessageBoxOptions options)
+            MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defaultButton,
+            MessageBoxOptions options)
         {
             DialogResult result = DialogResult.None;
             try
             {
-                
                 result = ShowCore(owner, text, caption, buttons, icon, defaultButton, options, true);
             }
             finally
             {
-              
             }
+
             return result;
         }
+
         private static Gtk.Window ActiveWindow = null; //Caching significance
+
         private static DialogResult ShowCore(IWin32Window owner, string text, string caption,
-                                             MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defaultButton,
-                                             MessageBoxOptions options, bool showHelp)
+            MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defaultButton,
+            MessageBoxOptions options, bool showHelp)
         {
             int irun = 0;
             if (owner is System.Windows.Forms.Form control)
             {
                 //irun = ShowMessageDialogCore(control.self, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon, defaultButton, options, showHelp);
-                irun = ShowCore((Gtk.Window)control.Widget, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon);
+                irun = ShowCore((Gtk.Window)control.Widget, Gtk.WindowPosition.CenterOnParent, text, caption, buttons,
+                    icon);
             }
             else
             {
                 Gtk.Window window = Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive);
-                if(window != null)
+                if (window != null)
                 {
                     ActiveWindow = window;
                 }
+
                 //irun = ShowMessageDialogCore(null, Gtk.WindowPosition.Center, text, caption, buttons, icon, defaultButton, options, showHelp);
                 irun = ShowCore(ActiveWindow, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon);
             }
@@ -257,7 +278,8 @@ namespace System.Windows.Forms
                 return DialogResult.None;
         }
 
-        private static int ShowMessageDialogCore(Gtk.Window owner, Gtk.WindowPosition position, string text, string caption, MessageBoxButtons buttons, params object[] icon)
+        private static int ShowMessageDialogCore(Gtk.Window owner, Gtk.WindowPosition position, string text,
+            string caption, MessageBoxButtons buttons, params object[] icon)
         {
             Gtk.ButtonsType buttonsType = Gtk.ButtonsType.Close;
             if (buttons == MessageBoxButtons.OK)
@@ -274,7 +296,8 @@ namespace System.Windows.Forms
                 buttonsType = Gtk.ButtonsType.OkCancel;
 
 
-            Gtk.MessageDialog dia = new Gtk.MessageDialog(owner, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Info, buttonsType, text);
+            Gtk.MessageDialog dia = new Gtk.MessageDialog(owner, Gtk.DialogFlags.DestroyWithParent,
+                Gtk.MessageType.Info, buttonsType, text);
             dia.SetPosition(position);
             dia.StyleContext.AddClass("DefaultThemeStyle");
             dia.StyleContext.AddClass("MessageBox");
@@ -286,7 +309,8 @@ namespace System.Windows.Forms
             return dia.Run();
         }
 
-        private static int ShowCore(Gtk.Window owner, Gtk.WindowPosition position, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon, params object[] args)
+        private static int ShowCore(Gtk.Window owner, Gtk.WindowPosition position, string text, string caption,
+            MessageBoxButtons buttons, MessageBoxIcon icon, params object[] args)
         {
             Gtk.Dialog dia = new Gtk.Dialog(caption, owner, Gtk.DialogFlags.DestroyWithParent);
             dia.KeepAbove = true;
@@ -325,6 +349,7 @@ namespace System.Windows.Forms
                 Gdk.Rectangle rectangle = Gdk.Screen.Default.Display.GetMonitor(0).Workarea;
                 maxwidth = rectangle.Width / 2;
             }
+
             var pag = content.CreatePangoLayout(text);
             pag.GetPixelSize(out int width, out int height);
             if (width > maxwidth)
@@ -335,9 +360,10 @@ namespace System.Windows.Forms
                 content.LineWrap = true;
                 content.LineWrapMode = Pango.WrapMode.Word;
             }
+
             msgbox.PackStart(content, false, true, 5);
             dia.ContentArea.PackStart(msgbox, false, true, 0);
-         
+
             IconTheme iconTheme = new IconTheme();
             Gdk.Pixbuf pixbuf = iconTheme.LoadIcon("dialog-information", 16, IconLookupFlags.DirLtr);
             dia.Icon = pixbuf;
@@ -348,7 +374,8 @@ namespace System.Windows.Forms
             else if (buttons == MessageBoxButtons.OKCancel)
             {
                 dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_OK, Gtk.ResponseType.Ok);
-                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Cancel, Gtk.ResponseType.Cancel);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Cancel,
+                    Gtk.ResponseType.Cancel);
             }
             else if (buttons == MessageBoxButtons.YesNo)
             {
@@ -359,22 +386,27 @@ namespace System.Windows.Forms
             {
                 dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Yes, Gtk.ResponseType.Yes);
                 dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_No, Gtk.ResponseType.No);
-                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Cancel, Gtk.ResponseType.Cancel);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Cancel,
+                    Gtk.ResponseType.Cancel);
             }
             else if (buttons == MessageBoxButtons.AbortRetryIgnore)
             {
-                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Reject, Gtk.ResponseType.Reject);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Reject,
+                    Gtk.ResponseType.Reject);
                 dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Help, Gtk.ResponseType.Help);
                 dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Close, Gtk.ResponseType.Close);
             }
             else if (buttons == MessageBoxButtons.RetryCancel)
             {
                 dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Help, Gtk.ResponseType.Help);
-                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Cancel, Gtk.ResponseType.Cancel);
+                dia.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Cancel,
+                    Gtk.ResponseType.Cancel);
             }
+
             dia.ShowAll();
             return dia.Run();
         }
+
         private static void Dia_Response(object o, Gtk.ResponseArgs args)
         {
             Gtk.Dialog dia = o as Gtk.Dialog;

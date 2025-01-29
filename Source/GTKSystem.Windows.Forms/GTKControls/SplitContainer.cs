@@ -9,7 +9,6 @@ using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using static Gtk.Paned;
 
-
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
@@ -17,6 +16,7 @@ namespace System.Windows.Forms
     {
         public readonly SplitContainerBase self = new SplitContainerBase();
         public override object GtkControl => self;
+
         public SplitContainer() : base()
         {
             _panel1 = new SplitterPanel(this);
@@ -29,48 +29,71 @@ namespace System.Windows.Forms
 
         private SplitterPanel _panel1;
         private SplitterPanel _panel2;
+
         public SplitterPanel Panel1
+        {
+            get { return _panel1; }
+            set { _panel1 = value; }
+        }
+
+        public SplitterPanel Panel2
+        {
+            get { return _panel2; }
+            set { _panel2 = value; }
+        }
+
+        public int _SplitterDistance;
+
+        public int SplitterDistance
+        {
+            get => self.Position + 5;
+            set
+            {
+                _SplitterDistance = Math.Max(1, value - 5);
+                self.Position = _SplitterDistance;
+            }
+        }
+
+        private int _SplitterWidth;
+
+        public int SplitterWidth
+        {
+            get { return _SplitterWidth; }
+            set
+            {
+                _SplitterWidth = value;
+                self.WideHandle = value > 2;
+            }
+        }
+
+        public int SplitterIncrement { get; set; }
+
+        public Orientation Orientation
         {
             get
             {
-                return _panel1;
+                return self.Orientation == Gtk.Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
             }
             set
             {
-                _panel1 = value;
+                self.Orientation = value == Orientation.Horizontal
+                    ? Gtk.Orientation.Vertical
+                    : Gtk.Orientation.Horizontal;
             }
         }
-        public SplitterPanel Panel2 {
-            get
-            {
-                return _panel2;
-            }
-            set
-            {
-                _panel2 = value;
-            }
-        }
-        public int _SplitterDistance;
-        public int SplitterDistance { get => self.Position + 5; set { _SplitterDistance = Math.Max(1, value - 5); self.Position = _SplitterDistance; } }
-        private int _SplitterWidth;
-        public int SplitterWidth { get { return _SplitterWidth; } set { _SplitterWidth = value; self.WideHandle = value > 2; } }
-        public int SplitterIncrement { get; set; }
-        public Orientation Orientation {
-            get { return self.Orientation == Gtk.Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal; }
-            set {
-                self.Orientation = value == Orientation.Horizontal ? Gtk.Orientation.Vertical : Gtk.Orientation.Horizontal;
-            }
-        }
+
         private FixedPanel _fixedPanel = FixedPanel.Panel1;
-        public FixedPanel FixedPanel {
+
+        public FixedPanel FixedPanel
+        {
             get => _fixedPanel;
-            set {
+            set
+            {
                 _fixedPanel = value;
                 bool resize = value == FixedPanel.Panel2;
                 ((PanedChild)self[_panel1.Widget]).Resize = resize;
                 ((PanedChild)self[_panel2.Widget]).Resize = !resize;
-            } 
+            }
         }
     }
-
 }

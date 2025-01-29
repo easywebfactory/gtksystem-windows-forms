@@ -13,11 +13,15 @@ namespace System.Windows.Forms
 {
     public sealed class Application
     {
-        static Application() {
+        static Application()
+        {
             Init();
         }
 
-        private static string appDataDirectory { get {
+        private static string appDataDirectory
+        {
+            get
+            {
                 string[] assemblyFullName = Assembly.GetEntryAssembly().FullName.Split(",");
                 string _namespace = assemblyFullName[0];
                 AssemblyName assembly = Assembly.GetExecutingAssembly().GetName();
@@ -25,27 +29,37 @@ namespace System.Windows.Forms
             }
         }
 
-        public static string CommonAppDataPath {
-            get {
-                return Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),appDataDirectory);
-            } 
+        public static string CommonAppDataPath
+        {
+            get
+            {
+                return Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                    appDataDirectory);
+            }
         }
+
         public static string UserAppDataPath
         {
             get
             {
-                return Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),appDataDirectory);
+                return Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    appDataDirectory);
             }
         }
+
         public static string LocalUserAppDataPath
         {
             get
             {
-                return Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),appDataDirectory);
+                return Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    appDataDirectory);
             }
         }
-        public static string ExecutablePath { 
-            get {
+
+        public static string ExecutablePath
+        {
+            get
+            {
                 System.Diagnostics.ProcessModule module = System.Diagnostics.Process.GetCurrentProcess().MainModule;
                 if (module.ModuleName.ToLower() == "dotnet" || module.ModuleName.ToLower() == "dotnet.exe")
                     return Assembly.GetEntryAssembly().Location;
@@ -53,32 +67,26 @@ namespace System.Windows.Forms
                     return module.FileName;
             }
         }
-        public static string StartupPath { get { return System.IO.Directory.GetCurrentDirectory(); } }
+
+        public static string StartupPath
+        {
+            get { return System.IO.Directory.GetCurrentDirectory(); }
+        }
 
         private static readonly object internalSyncObject = new object();
+
         public static CultureInfo CurrentCulture
         {
-            get
-            {
-                return Thread.CurrentThread.CurrentCulture;
-            }
-            set
-            {
-                Thread.CurrentThread.CurrentCulture = value;
-            }
+            get { return Thread.CurrentThread.CurrentCulture; }
+            set { Thread.CurrentThread.CurrentCulture = value; }
         }
 
         public static InputLanguage CurrentInputLanguage
         {
-            get
-            {
-                return InputLanguage.CurrentInputLanguage;
-            }
-            set
-            {
-                InputLanguage.CurrentInputLanguage = value;
-            }
+            get { return InputLanguage.CurrentInputLanguage; }
+            set { InputLanguage.CurrentInputLanguage = value; }
         }
+
         public static FormCollection OpenForms
         {
             get
@@ -91,12 +99,15 @@ namespace System.Windows.Forms
                 return forms;
             }
         }
+
         public static void DoEvents()
         {
-            while(Gtk.Application.EventsPending())
+            while (Gtk.Application.EventsPending())
                 Gtk.Application.RunIteration(false);
         }
+
         public static Gtk.Application App { get; private set; }
+
         public static Gtk.Application Init()
         {
             if (App == null)
@@ -181,6 +192,7 @@ namespace System.Windows.Forms
                 {
                     appdirectory = Path.GetDirectoryName(ExecutablePath);
                 }
+
                 string resourcepath = Path.Combine(appdirectory, "Resources");
                 string themepath = Path.Combine(appdirectory, "theme");
                 string themesetuppath = Path.Combine(themepath, "setup.theme");
@@ -188,6 +200,7 @@ namespace System.Windows.Forms
                 {
                     Directory.CreateDirectory(resourcepath);
                 }
+
                 if (!Directory.Exists(themepath))
                 {
                     Directory.CreateDirectory(themepath);
@@ -208,21 +221,24 @@ namespace System.Windows.Forms
                     Gtk.Window.SetDefaultIconFromFile(iconpath);
 
                 Gtk.CssProvider css = new Gtk.CssProvider();
-                StringBuilder cssBuilder=new StringBuilder();
+                StringBuilder cssBuilder = new StringBuilder();
 
                 if (File.Exists(themesetuppath))
                 {
                     string[] setuptheme = File.ReadAllLines(themesetuppath, Text.Encoding.UTF8);
-                    Dictionary<string,string> nameValue = setuptheme.Where(w=>w.Contains("=")).ToDictionary(k => k.Split('=')[0],v=>v.Split("=")[1]);
+                    Dictionary<string, string> nameValue = setuptheme.Where(w => w.Contains("="))
+                        .ToDictionary(k => k.Split('=')[0], v => v.Split("=")[1]);
                     nameValue.TryGetValue("UseDefaultStyle", out string usedef);
                     if (usedef != "false")
                         cssBuilder.AppendLine(css_style);
 
                     nameValue.TryGetValue("AutoTheme", out string autotheme);
-                    if (autotheme == "false") {
+                    if (autotheme == "false")
+                    {
                         if (nameValue.TryGetValue("DefaultThemeName", out string themename))
                             Gtk.Settings.Default.ThemeName = themename;
                     }
+
                     if (nameValue.TryGetValue("UseCustomTheme", out string usetheme))
                     {
                         if (usetheme == "true")
@@ -247,9 +263,11 @@ namespace System.Windows.Forms
                                 }
                                 else
                                 {
-                                    Console.WriteLine(themefolder + Gtk.Windows.Forms.Properties.Resources.Application_Init_Directory_does_not_exist);
+                                    Console.WriteLine(themefolder + Gtk.Windows.Forms.Properties.Resources
+                                        .Application_Init_Directory_does_not_exist);
                                 }
                             }
+
                             if (nameValue.TryGetValue("ThemeCssPath", out string themecss))
                             {
                                 if (File.Exists(themecss))
@@ -259,6 +277,7 @@ namespace System.Windows.Forms
                             }
                         }
                     }
+
                     if (nameValue.TryGetValue("UseCustomStyle", out string customstyle))
                     {
                         if (customstyle == "true" && nameValue.TryGetValue("StylePath", out string stylefile))
@@ -271,7 +290,10 @@ namespace System.Windows.Forms
                             }
                             else
                             {
-                                File.WriteAllText(stylepath, Gtk.Windows.Forms.Properties.Resources.Application_Init_Here_you_can_customize_or_adjust_the_control_style, Text.Encoding.UTF8);
+                                File.WriteAllText(stylepath,
+                                    Gtk.Windows.Forms.Properties.Resources
+                                        .Application_Init_Here_you_can_customize_or_adjust_the_control_style,
+                                    Text.Encoding.UTF8);
                             }
                         }
                     }
@@ -282,27 +304,35 @@ namespace System.Windows.Forms
 
                     StringBuilder setupthemecontent = new StringBuilder();
                     setupthemecontent.AppendLine("[setup]");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_Whether_to_follow_the_system_theme_by_default);
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources
+                        .Application_Init_Whether_to_follow_the_system_theme_by_default);
                     setupthemecontent.AppendLine("AutoTheme=true");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_Whether_to_apply_built_in_styles);
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources
+                        .Application_Init_Whether_to_apply_built_in_styles);
                     setupthemecontent.AppendLine("UseDefaultStyle=true");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_Specify_the_theme__valid_when_AutoTheme_is_false);
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources
+                        .Application_Init_Specify_the_theme__valid_when_AutoTheme_is_false);
                     setupthemecontent.AppendLine("DefaultThemeName=Default");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_Whether_to_use_a_custom_theme__corresponding_to_custom_theme);
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources
+                        .Application_Init_Whether_to_use_a_custom_theme__corresponding_to_custom_theme);
                     setupthemecontent.AppendLine("UseCustomTheme=false");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_Whether_to_use_custom_style__corresponding_to__custom_style_);
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources
+                        .Application_Init_Whether_to_use_custom_style__corresponding_to__custom_style_);
                     setupthemecontent.AppendLine("UseCustomStyle=true");
 
                     setupthemecontent.AppendLine().AppendLine("[custom theme]");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_Custom_theme_name);
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources
+                        .Application_Init_Custom_theme_name);
                     setupthemecontent.AppendLine("Name=mytheme");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_The_folder_where_the_theme_files_are_located);
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources
+                        .Application_Init_The_folder_where_the_theme_files_are_located);
                     setupthemecontent.AppendLine("ThemeFolder=theme");
                     setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_css_file_path);
                     setupthemecontent.AppendLine("ThemeCssPath=theme/mytheme/theme.css");
 
                     setupthemecontent.AppendLine().AppendLine("[custom style]");
-                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources.Application_Init_Freely_defined_style_files);
+                    setupthemecontent.AppendLine(Gtk.Windows.Forms.Properties.Resources
+                        .Application_Init_Freely_defined_style_files);
                     setupthemecontent.AppendLine("StylePath=style.css");
 
                     File.WriteAllText(themesetuppath, setupthemecontent.ToString(), Text.Encoding.UTF8);
@@ -311,6 +341,7 @@ namespace System.Windows.Forms
                 css.LoadFromData(cssBuilder.ToString());
                 Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, StyleProviderPriority.Application);
             }
+
             return App;
         }
 
@@ -318,27 +349,33 @@ namespace System.Windows.Forms
         {
             Gtk.Application.Quit();
         }
+
         private static void App_Shutdown(object sender, EventArgs e)
         {
             Console.WriteLine("App_Shutdown");
             Gtk.Application.Quit();
         }
 
-        public static bool SetHighDpiMode(HighDpiMode highDpiMode) {
-             return true;
-         }
-        public static void EnableVisualStyles() {
+        public static bool SetHighDpiMode(HighDpiMode highDpiMode)
+        {
+            return true;
+        }
 
+        public static void EnableVisualStyles()
+        {
         }
-        public static void SetCompatibleTextRenderingDefault(bool defaultValue) {
-            
+
+        public static void SetCompatibleTextRenderingDefault(bool defaultValue)
+        {
         }
+
         public static void Run(Form mainForm)
         {
             mainForm.self.Destroyed += Control_Destroyed;
             mainForm.Show();
             Gtk.Application.Run();
         }
+
         private static void Control_Destroyed(object sender, EventArgs e)
         {
             ExitThread();
@@ -380,23 +417,25 @@ namespace System.Windows.Forms
             {
                 try
                 {
-
                     Gtk.Application.Quit();
                 }
-                finally { }
+                finally
+                {
+                }
             }
         }
     }
 
     public static class InitAppliction
     {
-       private static Gtk.Application app = Application.Init();
+        private static Gtk.Application app = Application.Init();
+
         static InitAppliction()
         {
-
         }
     }
 }
+
 public sealed class ApplicationConfiguration
 {
     public static void Initialize()

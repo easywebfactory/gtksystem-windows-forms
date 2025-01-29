@@ -6,12 +6,14 @@ namespace System.Windows.Forms
 {
     public class DataGridViewRowDividerDoubleClickEventArgs : HandledMouseEventArgs
     {
-        public DataGridViewRowDividerDoubleClickEventArgs(int rowIndex, HandledMouseEventArgs e) : base(e?.Button ?? MouseButtons.None, e?.Clicks ?? 0, e?.X ?? 0, e?.Y ?? 0, e?.Delta ?? 0, e?.Handled ?? false)
+        public DataGridViewRowDividerDoubleClickEventArgs(int rowIndex, HandledMouseEventArgs e) : base(
+            e?.Button ?? MouseButtons.None, e?.Clicks ?? 0, e?.X ?? 0, e?.Y ?? 0, e?.Delta ?? 0, e?.Handled ?? false)
         {
             if (rowIndex < -1)
             {
                 throw new ArgumentOutOfRangeException(nameof(rowIndex));
             }
+
             if (e == null)
             {
                 throw new ArgumentNullException(nameof(e));

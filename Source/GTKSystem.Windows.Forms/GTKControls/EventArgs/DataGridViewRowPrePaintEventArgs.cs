@@ -9,7 +9,7 @@ namespace System.Windows.Forms
     public class DataGridViewRowPrePaintEventArgs : HandledEventArgs
     {
         private readonly DataGridView _dataGridView;
-       // private DataGridViewPaintParts _paintParts;
+        // private DataGridViewPaintParts _paintParts;
 
         //public DataGridViewRowPrePaintEventArgs(DataGridView dataGridView,
         //                                        Graphics graphics,

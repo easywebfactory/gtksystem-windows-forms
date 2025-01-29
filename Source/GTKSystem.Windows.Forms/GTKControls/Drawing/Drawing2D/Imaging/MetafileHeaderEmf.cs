@@ -3,42 +3,43 @@ using System.Runtime.InteropServices;
 
 namespace System.Drawing.Imaging
 {
-	[StructLayout(LayoutKind.Sequential)]
-	internal sealed class MetafileHeaderEmf
-	{
-		public MetafileType type;
+    [StructLayout(LayoutKind.Sequential)]
+    internal sealed class MetafileHeaderEmf
+    {
+        public MetafileType type;
 
-		public int size;
+        public int size;
 
-		public int version;
+        public int version;
 
-		public EmfPlusFlags emfPlusFlags;
+        public EmfPlusFlags emfPlusFlags;
 
-		public float dpiX;
+        public float dpiX;
 
-		public float dpiY;
+        public float dpiY;
 
-		public int X;
+        public int X;
 
-		public int Y;
+        public int Y;
 
-		public int Width;
+        public int Width;
 
-		public int Height;
+        public int Height;
 
-		public SafeNativeMethods.ENHMETAHEADER EmfHeader;
+        public SafeNativeMethods.ENHMETAHEADER EmfHeader;
 
-		public int EmfPlusHeaderSize;
+        public int EmfPlusHeaderSize;
 
-		public int LogicalDpiX;
+        public int LogicalDpiX;
 
-		public int LogicalDpiY;
+        public int LogicalDpiY;
 
-		internal ref byte GetPinnableReference()
-		{
-			return ref Unsafe.As<MetafileType, byte>(ref type);
-		}
-	}
+        internal ref byte GetPinnableReference()
+        {
+            return ref Unsafe.As<MetafileType, byte>(ref type);
+        }
+    }
+
     internal static class SafeNativeMethods
     {
         public struct ENHMETAHEADER

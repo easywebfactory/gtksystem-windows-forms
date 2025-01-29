@@ -10,4 +10,3 @@ namespace System.Windows.Forms
     /// </summary>
     public delegate void TabControlEventHandler(object sender, TabControlEventArgs e);
 }
-

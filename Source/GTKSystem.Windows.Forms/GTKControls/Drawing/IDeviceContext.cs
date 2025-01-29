@@ -13,6 +13,7 @@
         ///     An System.IntPtr representing the handle of a device context.
         ///</returns>
         IntPtr GetHdc();
+
         /// <summary>
         ///     Releases the handle of a Windows device context.
         /// </summary>

@@ -14,7 +14,8 @@ namespace System.Windows.Forms
             AffectedProperty = affectedProperty;
         }
 
-        public LayoutEventArgs(Control affectedControl, string affectedProperty) : this((IComponent)affectedControl, affectedProperty)
+        public LayoutEventArgs(Control affectedControl, string affectedProperty) : this((IComponent)affectedControl,
+            affectedProperty)
         {
         }
 

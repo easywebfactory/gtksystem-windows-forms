@@ -1,6 +1,6 @@
 ﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class PanelBase: ScrollableBoxBase
+    public sealed class PanelBase : ScrollableBoxBase
     {
         public PanelBase() : base()
         {
@@ -8,6 +8,7 @@
             this.ShadowType = Gtk.ShadowType.None;
             this.BorderWidth = 0;
         }
+
         protected override bool OnDrawn(Cairo.Context cr)
         {
             Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);

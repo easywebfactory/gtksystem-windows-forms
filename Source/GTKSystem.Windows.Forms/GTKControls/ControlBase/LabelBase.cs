@@ -3,6 +3,7 @@
     public sealed class LabelBase : Gtk.Label, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
+
         public LabelBase() : base()
         {
             this.Override = new GtkControlOverride(this);
@@ -28,11 +29,13 @@
             this.LineWrap = true;
             this.LineWrapMode = Pango.WrapMode.WordChar;
         }
+
         protected override void OnShown()
         {
             Override.OnAddClass();
             base.OnShown();
         }
+
         protected override bool OnDrawn(Cairo.Context cr)
         {
             Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);

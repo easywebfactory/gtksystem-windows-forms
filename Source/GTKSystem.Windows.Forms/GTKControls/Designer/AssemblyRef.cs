@@ -11,8 +11,9 @@ internal static class FXAssembly
 internal static class AssemblyRef
 {
     internal const string MicrosoftPublicKey = "b03f5f7f11d50a3a";
-    internal const string EnvDTE = "EnvDTE, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
-   // internal const string SystemDesign = $"System.Design, Version={FXAssembly.Version}, Culture=neutral, PublicKeyToken={MicrosoftPublicKey}";
-    internal const string SystemDesign = "System.Windows.Forms";
 
+    internal const string EnvDTE = "EnvDTE, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
+
+    // internal const string SystemDesign = $"System.Design, Version={FXAssembly.Version}, Culture=neutral, PublicKeyToken={MicrosoftPublicKey}";
+    internal const string SystemDesign = "System.Windows.Forms";
 }

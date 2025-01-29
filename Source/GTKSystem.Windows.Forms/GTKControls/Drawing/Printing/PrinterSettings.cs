@@ -29,23 +29,11 @@ namespace System.Drawing.Printing
             _defaultPageSettings = new PageSettings(this);
         }
 
-        public bool CanDuplex
-        {
-            get;
-            set;
-        }
+        public bool CanDuplex { get; set; }
 
-        public short Copies
-        {
-            get;
-            set;
-        }
+        public short Copies { get; set; }
 
-        public bool Collate
-        {
-            get;
-            set;
-        }
+        public bool Collate { get; set; }
 
         public PageSettings DefaultPageSettings => _defaultPageSettings;
 
@@ -53,26 +41,15 @@ namespace System.Drawing.Printing
         // But I'm leaving this code in place in case I'm wrong.
         internal string DriverName => _driverName;
 
-        public Duplex Duplex
-        {
-            get;
-            set;
-        }
+        public Duplex Duplex { get; set; }
 
         public int FromPage
         {
             get => _fromPage;
-            set
-            {
-                _fromPage = value;
-            }
+            set { _fromPage = value; }
         }
 
-        public static StringCollection InstalledPrinters
-        {
-            get;
-            set;
-        }
+        public static StringCollection InstalledPrinters { get; set; }
 
         public bool IsDefaultPrinter => false;
 
@@ -87,43 +64,26 @@ namespace System.Drawing.Printing
         public int MaximumPage
         {
             get => _maxPage;
-            set
-            {
-                _maxPage = value;
-            }
+            set { _maxPage = value; }
         }
 
         public int MinimumPage
         {
             get => _minPage;
-            set
-            {
-                _minPage = value;
-            }
+            set { _minPage = value; }
         }
 
-        public string PrintFileName
-        {
-            get;
-            set;
-        }
+        public string PrintFileName { get; set; }
 
         public PrintRange PrintRange
         {
             get => _printRange;
-            set
-            {
-                _printRange = value;
-            }
+            set { _printRange = value; }
         }
 
         public bool PrintToFile { get; set; }
 
-        public string PrinterName
-        {
-            get;
-            set;
-        }
+        public string PrinterName { get; set; }
 
         public bool IsDirectPrintingSupported(Image image)
         {
@@ -140,10 +100,7 @@ namespace System.Drawing.Printing
         public int ToPage
         {
             get => _toPage;
-            set
-            {
-                _toPage = value;
-            }
+            set { _toPage = value; }
         }
 
         public object Clone()
@@ -155,12 +112,10 @@ namespace System.Drawing.Printing
 
         public void SetHdevmode(IntPtr hdevmode)
         {
-
         }
 
         public void SetHdevnames(IntPtr hdevnames)
         {
-
         }
 
         public override string ToString() =>

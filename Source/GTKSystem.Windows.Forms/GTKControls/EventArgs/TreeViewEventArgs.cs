@@ -25,10 +25,7 @@ namespace System.Windows.Forms
 
         public TreeNode Node
         {
-            get
-            {
-                return node;
-            }
+            get { return node; }
         }
 
         /// <summary>
@@ -36,10 +33,7 @@ namespace System.Windows.Forms
         /// </summary>
         public TreeViewAction Action
         {
-            get
-            {
-                return action;
-            }
+            get { return action; }
         }
     }
 }

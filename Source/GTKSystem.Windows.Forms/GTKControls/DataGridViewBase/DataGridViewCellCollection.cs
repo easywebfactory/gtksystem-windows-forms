@@ -10,26 +10,35 @@ namespace System.Windows.Forms
         private ArrayList items = new ArrayList();
 
         private DataGridViewRow owner;
-        public DataGridViewRow Row { set => owner = value; get => owner; }
+
+        public DataGridViewRow Row
+        {
+            set => owner = value;
+            get => owner;
+        }
+
         public bool IsFixedSize => false;
 
-        object IList.this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        object IList.this[int index]
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
+        }
 
         public DataGridViewCell this[int index]
         {
-            get
-            {
-                return (DataGridViewCell)items[index];
-            }
+            get { return (DataGridViewCell)items[index]; }
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException("value");
                 }
+
                 items[index] = value;
             }
         }
+
         public DataGridViewCell this[string columnName]
         {
             get
@@ -63,46 +72,57 @@ namespace System.Windows.Forms
                 this[dataGridViewColumn.Index] = value;
             }
         }
+
         public DataGridViewCellCollection(DataGridViewRow dataGridViewRow)
         {
             owner = dataGridViewRow;
         }
+
         void IList.Clear()
         {
             Clear();
         }
+
         bool IList.Contains(object value)
         {
             return items.Contains(value);
         }
+
         int IList.IndexOf(object value)
         {
             return items.IndexOf(value);
         }
+
         int IList.Add(object value)
         {
             return Add((DataGridViewCell)value);
         }
+
         void IList.Insert(int index, object value)
         {
             Insert(index, (DataGridViewCell)value);
         }
+
         void IList.Remove(object value)
         {
             Remove((DataGridViewCell)value);
         }
+
         void IList.RemoveAt(int index)
         {
             RemoveAt(index);
         }
+
         void ICollection.CopyTo(Array array, int index)
         {
             items.CopyTo(array, index);
         }
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return items.GetEnumerator();
         }
+
         //*****************
         public virtual int Add(DataGridViewCell dataGridViewCell)
         {
@@ -115,6 +135,7 @@ namespace System.Windows.Forms
             {
                 throw new InvalidOperationException("DataGridViewCellCollection_CellAlreadyBelongsToDataGridViewRow");
             }
+
             dataGridViewCell.OwningRowInternal = owner;
             return items.Add(dataGridViewCell);
         }
@@ -132,6 +153,7 @@ namespace System.Windows.Forms
                 dataGridViewCell2.OwningRowInternal = owner;
             }
         }
+
         public void AddRange(IEnumerable<DataGridViewCell> dataGridViewCells)
         {
             if (dataGridViewCells == null)
@@ -145,10 +167,12 @@ namespace System.Windows.Forms
                 items.Add(dataGridViewCell2);
             }
         }
+
         public override int Count
         {
             get { return items.Count; }
         }
+
         public virtual void Clear()
         {
             if (owner.DataGridView != null)
@@ -163,22 +187,26 @@ namespace System.Windows.Forms
 
             items.Clear();
         }
+
         public void CopyTo(DataGridViewCell[] array, int index)
         {
             items.CopyTo(array, index);
         }
+
         internal List<TOutput> ConvertAll<TOutput>(Converter<DataGridViewCell, TOutput> converter)
         {
-            List <TOutput> data = new List<TOutput>();
+            List<TOutput> data = new List<TOutput>();
             foreach (DataGridViewCell cell in items)
                 data.Add(converter(cell));
             return data;
         }
+
         public virtual bool Contains(DataGridViewCell dataGridViewCell)
         {
             int num = items.IndexOf(dataGridViewCell);
             return num != -1;
         }
+
         public int IndexOf(DataGridViewCell dataGridViewCell)
         {
             return items.IndexOf(dataGridViewCell);
@@ -225,6 +253,7 @@ namespace System.Windows.Forms
 
             RemoveAt(num);
         }
+
         public virtual void RemoveAt(int index)
         {
             if (owner.DataGridView != null)

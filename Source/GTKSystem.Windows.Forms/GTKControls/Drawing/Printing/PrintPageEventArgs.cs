@@ -3,7 +3,6 @@
 
 namespace System.Drawing.Printing
 {
-
     /// <summary>
     ///  Provides data for the <see cref='PrintDocument.PrintPage'/> event.
     /// </summary>
@@ -12,7 +11,8 @@ namespace System.Drawing.Printing
         /// <summary>
         ///  Initializes a new instance of the <see cref='PrintPageEventArgs'/> class.
         /// </summary>
-        public PrintPageEventArgs(Graphics graphics, Rectangle marginBounds, Rectangle pageBounds, PageSettings pageSettings)
+        public PrintPageEventArgs(Graphics graphics, Rectangle marginBounds, Rectangle pageBounds,
+            PageSettings pageSettings)
         {
             Graphics = graphics; // may be null, see PrintController
             MarginBounds = marginBounds;

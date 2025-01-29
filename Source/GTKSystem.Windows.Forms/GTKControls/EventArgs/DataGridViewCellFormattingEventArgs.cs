@@ -7,15 +7,16 @@ namespace System.Windows.Forms
     public class DataGridViewCellFormattingEventArgs : ConvertEventArgs
     {
         public DataGridViewCellFormattingEventArgs(int columnIndex,
-                                                   int rowIndex,
-                                                   object value,
-                                                   Type desiredType,
-                                                   DataGridViewCellStyle cellStyle) : base(value, desiredType)
+            int rowIndex,
+            object value,
+            Type desiredType,
+            DataGridViewCellStyle cellStyle) : base(value, desiredType)
         {
             if (columnIndex < -1)
             {
                 throw new ArgumentOutOfRangeException(nameof(columnIndex));
             }
+
             if (rowIndex < -1)
             {
                 throw new ArgumentOutOfRangeException(nameof(rowIndex));

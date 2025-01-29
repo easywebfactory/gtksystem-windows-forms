@@ -12,13 +12,14 @@ using System.ComponentModel.Design;
 using System.Drawing;
 using System.Windows.Forms.ComponentModel.Com2Interop;
 using System.Windows.Forms.Design;
+
 namespace System.Windows.Forms
 {
     /// <summary>
     /// Note: This control cannot be used and is under development...
     /// </summary>
     [Designer($"System.Windows.Forms.Design.PropertyGridDesigner, {AssemblyRef.SystemDesign}")]
-    public partial class PropertyGrid : ContainerControl, IComPropertyBrowser//, IPropertyNotifySink.Interface
+    public partial class PropertyGrid : ContainerControl, IComPropertyBrowser //, IPropertyNotifySink.Interface
     {
         private static readonly object s_propertyValueChangedEvent = new();
         private static readonly object s_comComponentNameChangedEvent = new();
@@ -28,91 +29,119 @@ namespace System.Windows.Forms
         private static readonly object s_selectedObjectsChangedEvent = new();
         private object[]? _selectedObjects;
         private readonly List<TabInfo> _tabs = new List<TabInfo>();
+
         public PropertyGrid()
         {
         }
+
         [DefaultValue(true)]
         [Localizable(true)]
         public virtual bool HelpVisible { get; set; }
+
         [DefaultValue(typeof(Color), "ControlDark")]
         public Color HelpBorderColor { get; set; }
+
         [DefaultValue(typeof(Color), "ControlText")]
         public Color HelpForeColor { get; set; }
+
         [DefaultValue(typeof(Color), "Control")]
         public Color HelpBackColor { get; set; }
+
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override Color ForeColor { get; set; }
+
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override bool AutoScroll { get; set; }
+
         public override Color BackColor { get; set; }
 #nullable disable
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override Image BackgroundImage { get; set; }
+
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override ImageLayout BackgroundImageLayout { get; set; }
+
         [DefaultValue(typeof(Color), "Highlight")]
         public Color SelectedItemWithFocusBackColor { get; set; }
+
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public AttributeCollection BrowsableAttributes { get; set; }
+
         [DefaultValue(typeof(Color), "ControlText")]
         public Color CategoryForeColor { get; set; }
+
         public Color CommandsBackColor { get; set; }
         public Color CommandsForeColor { get; set; }
         public Color CommandsLinkColor { get; set; }
         public Color CommandsActiveLinkColor { get; set; }
         public Color CommandsDisabledLinkColor { get; set; }
+
         [DefaultValue(typeof(Color), "ControlDark")]
         public Color CommandsBorderColor { get; set; }
+
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public virtual bool CommandsVisible { get; }
-        [DefaultValue(true)]
-        public virtual bool CommandsVisibleIfAvailable { get; set; }
+
+        [DefaultValue(true)] public virtual bool CommandsVisibleIfAvailable { get; set; }
+
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public virtual bool CanShowCommands { get; }
+
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public Point ContextMenuDefaultLocation { get; }
+
         [DefaultValue(typeof(Color), "HighlightText")]
         public Color SelectedItemWithFocusForeColor { get; set; }
+
         [DefaultValue(typeof(Color), "Control")]
         public Color CategorySplitterColor { get; set; }
-        [DefaultValue(false)]
-        public bool UseCompatibleTextRendering { get; set; }
+
+        [DefaultValue(false)] public bool UseCompatibleTextRendering { get; set; }
+
         [DefaultValue(typeof(Color), "ControlDark")]
         public Color ViewBorderColor { get; set; }
+
         [DefaultValue(typeof(Color), "WindowText")]
         public Color ViewForeColor { get; set; }
+
         [DefaultValue(typeof(Color), "Window")]
         public Color ViewBackColor { get; set; }
-        [DefaultValue(true)]
-        public virtual bool ToolbarVisible { get; set; }
-        [DefaultValue(false)]
-        public bool LargeButtons { get; set; }
+
+        [DefaultValue(true)] public virtual bool ToolbarVisible { get; set; }
+        [DefaultValue(false)] public bool LargeButtons { get; set; }
+
         [DefaultValue(typeof(Color), "GrayText")]
         public Color DisabledItemForeColor { get; set; }
+
         public override ISite Site { get; set; }
+
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public GridItem SelectedGridItem { get; set; }
+
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string Text { get; set; }
+
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public object[] SelectedObjects { 
+        public object[] SelectedObjects
+        {
             get => _selectedObjects is null ? Array.Empty<object>() : (object[])_selectedObjects.Clone();
-            set { } 
+            set { }
         }
+
         [DefaultValue(null)]
         //[TypeConverter(typeof(SelectedObjectConverter))]
         public object SelectedObject
@@ -125,9 +154,11 @@ namespace System.Windows.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public PropertyTabCollection PropertyTabs { get; }
+
         internal void AddTab(Type tabType, PropertyTabScope scope, object? @object = null, bool setupToolbar = true)
         {
         }
+
         internal void ClearTabs(PropertyTabScope tabScope)
         {
             //if (tabScope < PropertyTabScope.Document)
@@ -137,34 +168,42 @@ namespace System.Windows.Forms
 
             //RemoveTabs(tabScope, true);
         }
+
         internal void RemoveTabs(PropertyTabScope classification, bool setupToolbar)
         {
-
         }
+
         internal void RemoveTab(int tabIndex, bool setupToolbar)
         {
         }
+
         internal void RemoveTab(Type tabType)
         {
         }
+
         [DefaultValue(PropertySort.CategorizedAlphabetical)]
         public PropertySort PropertySort { get; set; }
+
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public Padding Padding { get; set; }
+
         [DefaultValue(typeof(Color), "InactiveBorder")]
         public Color LineColor { get; set; }
-        [DefaultValue(true)]
-        public bool CanShowVisualStyleGlyphs { get; set; }
+
+        [DefaultValue(true)] public bool CanShowVisualStyleGlyphs { get; set; }
+
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public PropertyTab SelectedTab { get; }
+
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public ControlCollection Controls { get; }
+
         public bool InPropertySet => throw new NotImplementedException();
         protected bool DrawFlatToolbar { get; set; }
         //protected ToolStripRenderer ToolStripRenderer { get; set; }
@@ -173,26 +212,32 @@ namespace System.Windows.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         protected virtual Bitmap SortByPropertyImage { get; }
+
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         protected virtual Bitmap SortByCategoryImage { get; }
+
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         protected virtual Bitmap ShowPropertyPageImage { get; }
+
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         protected virtual Type DefaultTabType { get; }
+
         protected override Size DefaultSize { get; }
         protected internal override bool ShowFocusCues { get; }
         public event ComponentRenameEventHandler ComComponentNameChanged;
+
         public event EventHandler SelectedObjectsChanged
         {
             add => Events.AddHandler(s_selectedObjectsChangedEvent, value);
             remove => Events.RemoveHandler(s_selectedObjectsChangedEvent, value);
         }
+
         //[Browsable(false)]
         //[EditorBrowsable(EditorBrowsableState.Never)]
         //public event EventHandler BackgroundImageChanged
@@ -253,11 +298,13 @@ namespace System.Windows.Forms
             add => Events.AddHandler(s_selectedGridItemChangedEvent, value);
             remove => Events.RemoveHandler(s_selectedGridItemChangedEvent, value);
         }
+
         public event EventHandler PropertySortChanged
         {
             add => Events.AddHandler(s_propertySortChangedEvent, value);
             remove => Events.RemoveHandler(s_propertySortChangedEvent, value);
         }
+
         // [Browsable(false)]
         //[EditorBrowsable(EditorBrowsableState.Advanced)]
         //public new event MouseEventHandler MouseUp
@@ -270,6 +317,7 @@ namespace System.Windows.Forms
             add => Events.AddHandler(s_propertyValueChangedEvent, value);
             remove => Events.RemoveHandler(s_propertyValueChangedEvent, value);
         }
+
         public event PropertyTabChangedEventHandler PropertyTabChanged
         {
             add => Events.AddHandler(s_propertyTabChangedEvent, value);
@@ -283,6 +331,7 @@ namespace System.Windows.Forms
             add => base.MouseLeave += value;
             remove => base.MouseLeave -= value;
         }
+
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public new event EventHandler MouseEnter
@@ -290,6 +339,7 @@ namespace System.Windows.Forms
             add => base.MouseEnter += value;
             remove => base.MouseEnter -= value;
         }
+
         public void CollapseAllGridItems()
         {
         }
@@ -297,12 +347,15 @@ namespace System.Windows.Forms
         public override void Refresh()
         {
         }
+
         public void RefreshTabs(PropertyTabScope tabScope)
         {
         }
+
         public void ResetSelectedProperty()
         {
         }
+
         public void SaveState(RegistryKey key)
         {
             throw new NotImplementedException();

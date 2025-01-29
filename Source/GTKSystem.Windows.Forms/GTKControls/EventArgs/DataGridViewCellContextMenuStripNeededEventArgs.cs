@@ -6,11 +6,13 @@ namespace System.Windows.Forms
 {
     public class DataGridViewCellContextMenuStripNeededEventArgs : DataGridViewCellEventArgs
     {
-        public DataGridViewCellContextMenuStripNeededEventArgs(int columnIndex, int rowIndex) : base(columnIndex, rowIndex)
+        public DataGridViewCellContextMenuStripNeededEventArgs(int columnIndex, int rowIndex) : base(columnIndex,
+            rowIndex)
         {
         }
 
-        internal DataGridViewCellContextMenuStripNeededEventArgs(int columnIndex, int rowIndex, ContextMenuStrip contextMenuStrip) : base(columnIndex, rowIndex)
+        internal DataGridViewCellContextMenuStripNeededEventArgs(int columnIndex, int rowIndex,
+            ContextMenuStrip contextMenuStrip) : base(columnIndex, rowIndex)
         {
             ContextMenuStrip = contextMenuStrip;
         }

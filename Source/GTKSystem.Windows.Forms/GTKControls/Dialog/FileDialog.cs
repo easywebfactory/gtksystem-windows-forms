@@ -12,10 +12,11 @@ namespace System.Windows.Forms
     public abstract class FileDialog : CommonDialog
     {
         public Gtk.FileChooserDialog fileDialog;
+
         public FileDialog()
         {
-
         }
+
         public bool ValidateNames { get; set; }
 
         public string Title { get; set; }
@@ -29,28 +30,31 @@ namespace System.Windows.Forms
         public string InitialDirectory { get; set; }
         public string Description { get; set; }
         internal bool Multiselect { get; set; }
+
         internal string SelectedPath
         {
             get => SelectedPaths.Length > 0 ? SelectedPaths[0] : string.Empty;
             set => FileName = value;
         }
-        internal string[] SelectedPaths => FileNames != null && FileNames.Length > 0 ? (string[])FileNames.Clone() : Array.Empty<string>();
+
+        internal string[] SelectedPaths => FileNames != null && FileNames.Length > 0
+            ? (string[])FileNames.Clone()
+            : Array.Empty<string>();
 
         public int FilterIndex { get; set; }
 
         private string _filter;
+
         public string Filter
         {
-            get
-            {
-                return _filter ?? string.Empty;
-            }
+            get { return _filter ?? string.Empty; }
             set
             {
                 if (value == _filter)
                 {
                     return;
                 }
+
                 string[] filters = value?.Split(';');
                 foreach (string filter in filters)
                 {
@@ -64,11 +68,13 @@ namespace System.Windows.Forms
                     //ffilter.AddPattern(pattern[1]);
                     //fileDialog.AddFilter(ffilter);
                 }
+
                 string[] array = value?.Split('|');
                 if (array == null || array[1].Split('.').Length == 0)
                 {
                     throw new ArgumentException("FileDialog Invalid Filter");
                 }
+
                 _filter = value;
             }
         }
@@ -89,7 +95,9 @@ namespace System.Windows.Forms
 
         public event CancelEventHandler FileOk;
         internal Gtk.FileChooserAction ActionType { get; set; }
-        public override void Reset() {
+
+        public override void Reset()
+        {
             AddExtension = true;
             Title = null;
             InitialDirectory = null;
@@ -98,21 +106,28 @@ namespace System.Windows.Forms
             FilterIndex = 1;
             SupportMultiDottedExtensions = false;
         }
+
         protected override bool RunDialog(IWin32Window owner)
         {
             if (owner != null && owner is Form ownerform)
             {
-                fileDialog = new Gtk.FileChooserDialog(Gtk.Windows.Forms.Properties.Resources.FileDialog_RunDialog_Select_file, ownerform.self, ActionType);
+                fileDialog = new Gtk.FileChooserDialog(
+                    Gtk.Windows.Forms.Properties.Resources.FileDialog_RunDialog_Select_file, ownerform.self,
+                    ActionType);
                 fileDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
             }
             else
             {
-                fileDialog = new Gtk.FileChooserDialog(Gtk.Windows.Forms.Properties.Resources.FileDialog_RunDialog_Select_file, null, ActionType);
+                fileDialog =
+                    new Gtk.FileChooserDialog(Gtk.Windows.Forms.Properties.Resources.FileDialog_RunDialog_Select_file,
+                        null, ActionType);
                 fileDialog.WindowPosition = Gtk.WindowPosition.Center;
             }
+
             fileDialog.KeepAbove = true;
             fileDialog.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_OK, Gtk.ResponseType.Ok);
-            fileDialog.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Cancel, Gtk.ResponseType.Cancel);
+            fileDialog.AddButton(Gtk.Windows.Forms.Properties.Resources.MessageBox_ShowCore_Cancel,
+                Gtk.ResponseType.Cancel);
             fileDialog.SelectMultiple = this.Multiselect;
             fileDialog.Title = this.Title ?? string.Empty;
             fileDialog.TooltipText = this.Description ?? string.Empty;
@@ -122,7 +137,7 @@ namespace System.Windows.Forms
             else if (!string.IsNullOrWhiteSpace(this.InitialDirectory))
                 fileDialog.SetCurrentFolder(this.InitialDirectory);
 
-            
+
             if (!string.IsNullOrWhiteSpace(DefaultExt))
             {
                 DefaultExt = DefaultExt.Trim('.');
@@ -131,10 +146,11 @@ namespace System.Windows.Forms
                 filter.AddPattern($"*.{DefaultExt}");
                 fileDialog.Filter = filter;
             }
+
             if (_filter != null)
             {
                 string[] filters = _filter.Split(';');
-                foreach(string filter in filters)
+                foreach (string filter in filters)
                 {
                     string[] pattern = filter.Split('|');
                     Gtk.FileFilter ffilter = new Gtk.FileFilter();
@@ -149,7 +165,7 @@ namespace System.Windows.Forms
 
                 //}
             }
-            
+
 
             int response = fileDialog.Run();
             this.FileName = fileDialog.Filename;
@@ -166,6 +182,7 @@ namespace System.Windows.Forms
                 fileDialog.Dispose();
                 fileDialog = null;
             }
+
             base.Dispose(disposing);
         }
     }

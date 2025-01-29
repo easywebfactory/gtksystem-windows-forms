@@ -184,10 +184,7 @@ namespace System.Windows.Forms
             [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
             public virtual object this[int index]
             {
-                get
-                {
-                    return InnerArray.GetItem(index);
-                }
+                get { return InnerArray.GetItem(index); }
                 set
                 {
                     _owner.CheckNoDataSource();
@@ -221,6 +218,7 @@ namespace System.Windows.Forms
                 {
                     _owner.NativeClear();
                 }
+
                 InnerArray.Clear();
             }
 
@@ -354,7 +352,8 @@ namespace System.Windows.Forms
                 if (_owner.IsHandleCreated)
                 {
                     bool selected = (_owner.SelectedIndex == index);
-                    if (string.Compare(_owner.GetItemText(value), _owner.NativeGetItemText(index), true, CultureInfo.CurrentCulture) != 0)
+                    if (string.Compare(_owner.GetItemText(value), _owner.NativeGetItemText(index), true,
+                            CultureInfo.CurrentCulture) != 0)
                     {
                         _owner.NativeRemoveAt(index);
                         _owner.SelectedItems.SetSelected(index, false);
@@ -370,7 +369,6 @@ namespace System.Windows.Forms
                         if (selected)
                         {
                             _owner.OnSelectedIndexChanged(EventArgs.Empty); // will fire selectedvaluechanged
-
                         }
                     }
                 }

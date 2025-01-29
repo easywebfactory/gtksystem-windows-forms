@@ -135,7 +135,8 @@ namespace System.Resources
                     // or if it's a byte array we just return that
                     byte[] temp = null;
 
-                    using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (FileStream fileStream =
+                           new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
                         Debug.Assert(fileStream != null, "Couldn't open " + fileName);
                         temp = new byte[fileStream.Length];
@@ -161,7 +162,9 @@ namespace System.Resources
                         return ico.ToBitmap();
                     }
 
-                    return Activator.CreateInstance(toCreate, BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance, null, new object[] { memStream }, null);
+                    return Activator.CreateInstance(toCreate,
+                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance, null,
+                        new object[] { memStream }, null);
                 }
 
                 return null;

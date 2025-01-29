@@ -4,6 +4,7 @@
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+
 using System.IO;
 
 namespace System.Windows.Forms
@@ -12,12 +13,18 @@ namespace System.Windows.Forms
     {
         public OpenFileDialog()
         {
-            
         }
+
         private new string Description => base.Description;
         public bool ReadOnlyChecked { get; set; }
         public bool ShowReadOnly { get; set; }
-        public new bool Multiselect { get => base.Multiselect; set => base.Multiselect = value; }
+
+        public new bool Multiselect
+        {
+            get => base.Multiselect;
+            set => base.Multiselect = value;
+        }
+
         public string SafeFileName => Path.GetFileName(FileName) ?? string.Empty;
 
         public string[] SafeFileNames
@@ -40,12 +47,12 @@ namespace System.Windows.Forms
             }
         }
 
-        public Stream OpenFile() {
+        public Stream OpenFile()
+        {
             if (System.IO.File.Exists(base.FileName))
                 return System.IO.File.OpenRead(base.FileName);
             else
                 return null;
-
         }
 
         public override DialogResult ShowDialog(IWin32Window owner)

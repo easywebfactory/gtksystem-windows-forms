@@ -6,7 +6,6 @@ using System.ComponentModel.Design;
 using System.ComponentModel.Design.Serialization;
 using System.Drawing.Design;
 
-
 namespace System.Windows.Forms.Design
 {
     /// <summary>
@@ -16,8 +15,7 @@ namespace System.Windows.Forms.Design
     [ToolboxItemFilter("System.Windows.Forms")]
     public partial class DocumentDesigner : ScrollableControlDesigner, IRootDesigner, IToolboxUser, IOleDragClient
     {
-
-        private bool initializing;   // is the designer initializing?
+        private bool initializing; // is the designer initializing?
 
         // used to keep the state of the tab order view
         //
@@ -25,7 +23,6 @@ namespace System.Windows.Forms.Design
         private MenuCommand tabOrderCommand;
 
         internal static IDesignerSerializationManager manager;
-
 
         private int trayHeight = 80;
         private bool trayLargeIcon;

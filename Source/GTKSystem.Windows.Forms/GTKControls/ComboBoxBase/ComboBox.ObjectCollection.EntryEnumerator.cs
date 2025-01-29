@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 namespace System.Windows.Forms
 {
-
     public partial class ComboBox
     {
         public partial class ObjectCollection

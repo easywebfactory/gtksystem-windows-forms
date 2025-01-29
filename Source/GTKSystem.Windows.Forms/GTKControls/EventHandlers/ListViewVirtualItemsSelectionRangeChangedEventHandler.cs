@@ -8,5 +8,6 @@ namespace System.Windows.Forms
     ///  Represents a method that will handle the <see cref='ListView.VirtualItemsSelectionRangeChanged'/>
     ///  event of a <see cref='ListView'/>.
     /// </summary>
-    public delegate void ListViewVirtualItemsSelectionRangeChangedEventHandler(object sender, ListViewVirtualItemsSelectionRangeChangedEventArgs e);
+    public delegate void ListViewVirtualItemsSelectionRangeChangedEventHandler(object sender,
+        ListViewVirtualItemsSelectionRangeChangedEventArgs e);
 }

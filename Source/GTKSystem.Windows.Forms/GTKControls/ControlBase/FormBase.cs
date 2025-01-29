@@ -3,13 +3,13 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 
-
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public sealed class FormBase : Gtk.Dialog, IControlGtk, IScrollableBoxBase, IWin32Window
     {
         public readonly Gtk.ScrolledWindow ScrollView = new Gtk.ScrolledWindow();
         public GtkControlOverride Override { get; set; }
+
         public bool AutoScroll
         {
             get => ScrollView.VscrollbarPolicy == Gtk.PolicyType.Automatic;
@@ -29,13 +29,17 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 }
             }
         }
+
         public bool VScroll { get; set; } = true;
         public bool HScroll { get; set; } = true;
 
         public delegate bool CloseWindowHandler(object sender, EventArgs e);
+
         public event CloseWindowHandler CloseWindowEvent;
         public event System.Windows.Forms.ScrollEventHandler Scroll;
-        public FormBase(Gtk.Window parent = null) : base("title", Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive), DialogFlags.UseHeaderBar)
+
+        public FormBase(Gtk.Window parent = null) : base("title",
+            Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive), DialogFlags.UseHeaderBar)
         {
             this.DestroyWithParent = true;
             this.Override = new GtkControlOverride(this);
@@ -67,9 +71,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Drawn += FormBase_Drawn;
             this.Close += FormBase_Close;
         }
+
         private void FormBase_Close(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show(this, Gtk.Windows.Forms.Properties.Resources.FormBase_FormBase_Close_, "Esc按键操作提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show(this, Gtk.Windows.Forms.Properties.Resources.FormBase_FormBase_Close_,
+                "Esc按键操作提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
                 this.Respond(ResponseType.DeleteEvent);
@@ -95,12 +101,16 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                     this.Run();
             }
         }
+
         private void Vadjustment_ValueChanged(object sender, EventArgs e)
         {
             if (Scroll != null)
             {
                 Gtk.Adjustment adj = (Gtk.Adjustment)sender;
-                Scroll(this, new System.Windows.Forms.ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj.Value > adj.StepIncrement ? (adj.Value - adj.StepIncrement) : adj.Value), (int)adj.Value, ScrollOrientation.VerticalScroll));
+                Scroll(this,
+                    new System.Windows.Forms.ScrollEventArgs(ScrollEventType.ThumbTrack,
+                        (int)(adj.Value > adj.StepIncrement ? (adj.Value - adj.StepIncrement) : adj.Value),
+                        (int)adj.Value, ScrollOrientation.VerticalScroll));
             }
         }
 
@@ -109,9 +119,13 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             if (Scroll != null)
             {
                 Gtk.Adjustment adj = (Gtk.Adjustment)sender;
-                Scroll(this, new System.Windows.Forms.ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj.Value > adj.StepIncrement ? (adj.Value - adj.StepIncrement) : adj.Value), (int)adj.Value, ScrollOrientation.HorizontalScroll));
+                Scroll(this,
+                    new System.Windows.Forms.ScrollEventArgs(ScrollEventType.ThumbTrack,
+                        (int)(adj.Value > adj.StepIncrement ? (adj.Value - adj.StepIncrement) : adj.Value),
+                        (int)adj.Value, ScrollOrientation.HorizontalScroll));
             }
         }
+
         public void CloseWindow()
         {
             this.OnClose();
@@ -122,6 +136,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             this.Override.AddClass(cssClass);
         }
+
         public new void Add(Gtk.Widget child)
         {
             ScrollView.Child = child;

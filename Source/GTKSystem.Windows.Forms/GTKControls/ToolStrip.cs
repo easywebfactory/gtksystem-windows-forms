@@ -16,12 +16,14 @@ namespace System.Windows.Forms
         public readonly ToolStripBase self = new ToolStripBase();
         public override object GtkControl => self;
         public ToolStripItemCollection toolStripItemCollection;
+
         public ToolStrip() : base()
         {
             toolStripItemCollection = new ToolStripItemCollection(this);
             self.ActivateCurrent += ToolStripItem_Activated;
             //Dock = DockStyle.Top;
         }
+
         public ToolStrip(string owner) : base()
         {
             self.Hexpand = false;
@@ -32,32 +34,39 @@ namespace System.Windows.Forms
             self.ActivateCurrent += ToolStripItem_Activated;
             //Dock = DockStyle.Top;
         }
+
         private void ToolStripItem_Activated(object sender, ActivateCurrentArgs e)
         {
             if (DropDownItemClicked != null)
             {
                 DropDownItemClicked(this, new ToolStripItemClickedEventArgs(new ToolStripItem()));
             }
+
             if (Click != null)
             {
                 Click(sender, e);
             }
+
             if (CheckedChanged != null)
             {
                 CheckedChanged(this, e);
             }
+
             if (CheckStateChanged != null)
             {
                 CheckStateChanged(this, e);
             }
         }
-        public override Size Size { get => base.Size; set => base.Size = new Size(value.Width, 30); }
+
+        public override Size Size
+        {
+            get => base.Size;
+            set => base.Size = new Size(value.Width, 30);
+        }
+
         public ToolStripItemCollection Items
         {
-            get
-            {
-                return toolStripItemCollection;
-            }
+            get { return toolStripItemCollection; }
         }
 
         public Size ImageScalingSize { get; set; }

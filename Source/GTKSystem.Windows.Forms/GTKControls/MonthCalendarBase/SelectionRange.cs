@@ -10,7 +10,7 @@ namespace System.Windows.Forms
     ///  This is a class that represents the date selection range of a MonthCalendar control.
     /// </summary>
     [
-    TypeConverter(typeof(SelectionRangeConverter))
+        TypeConverter(typeof(SelectionRangeConverter))
     ]
     public sealed class SelectionRange
     {
@@ -68,14 +68,8 @@ namespace System.Windows.Forms
         /// </summary>
         public DateTime End
         {
-            get
-            {
-                return end;
-            }
-            set
-            {
-                end = value.Date;
-            }
+            get { return end; }
+            set { end = value.Date; }
         }
 
         /// <summary>
@@ -83,14 +77,8 @@ namespace System.Windows.Forms
         /// </summary>
         public DateTime Start
         {
-            get
-            {
-                return start;
-            }
-            set
-            {
-                start = value.Date;
-            }
+            get { return start; }
+            set { start = value.Date; }
         }
 
         /// <summary>
@@ -102,4 +90,3 @@ namespace System.Windows.Forms
         }
     }
 }
-

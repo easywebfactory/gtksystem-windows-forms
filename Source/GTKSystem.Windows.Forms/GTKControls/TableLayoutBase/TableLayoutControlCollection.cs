@@ -1,16 +1,16 @@
-
 using Gtk;
 using System.ComponentModel;
 
 namespace System.Windows.Forms
 {
     [ListBindable(false)]
-	public class TableLayoutControlCollection : Control.ControlCollection
-	{
+    public class TableLayoutControlCollection : Control.ControlCollection
+    {
         public TableLayoutControlCollection(Control owner, Gtk.Container ownerContainer) : base(owner, ownerContainer)
         {
             Container = owner as TableLayoutPanel;
         }
+
         public TableLayoutControlCollection(TableLayoutPanel container) : base(container)
         {
             Container = container;
@@ -38,6 +38,7 @@ namespace System.Windows.Forms
                 viewport.Add(control.Widget);
                 Container.self.Attach(viewport, column, row, 1, 1);
             }
+
             base.Add(control);
             Container.SetColumn(control, column);
             Container.SetRow(control, row);

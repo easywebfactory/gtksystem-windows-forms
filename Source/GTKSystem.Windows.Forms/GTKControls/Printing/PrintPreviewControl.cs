@@ -21,7 +21,7 @@ namespace System.Windows.Forms
         private const int Border = 10;
         private static readonly object s_startPageChangedEvent = new object();
         private PrintDocument _document;
-        private int _startPage;  // 0-based
+        private int _startPage; // 0-based
         private int _rows = 1;
         private int _columns = 1;
         private bool _autoZoom = true;
@@ -29,11 +29,12 @@ namespace System.Windows.Forms
         private Gtk.ScrolledWindow scroll;
         private ViewportBase paper;
         private const double pxscale = 0.75;
+
         public PrintPreviewControl()
         {
             Size = new Size(600, 500);
             self.StyleContext.AddClass("PrintPreviewBack");
-            
+
             paper = new ViewportBase();
             paper.Valign = Align.Center;
             paper.Halign = Align.Center;
@@ -53,9 +54,11 @@ namespace System.Windows.Forms
             if (AutoZoom == false)
             {
                 paper.WidthRequest = (int)Math.Round(_document.PageSetup.GetPaperWidth(Unit.Points) * _zoom / 0.75, 0);
-                paper.HeightRequest = (int)Math.Round(_document.PageSetup.GetPaperHeight(Unit.Points) * _zoom / 0.75, 0);
+                paper.HeightRequest =
+                    (int)Math.Round(_document.PageSetup.GetPaperHeight(Unit.Points) * _zoom / 0.75, 0);
             }
         }
+
         private void paper_Drawn(object o, Gtk.DrawnArgs args)
         {
             if (_document != null)
@@ -72,27 +75,26 @@ namespace System.Windows.Forms
 
                 if (AutoZoom == false)
                 {
-
                     paper.WidthRequest = (int)Math.Round(width * _zoom, 0);
                     paper.HeightRequest = (int)Math.Round(height * _zoom, 0);
                     self.WidthRequest = paper.WidthRequest + 100;
                     self.HeightRequest = paper.HeightRequest + 100;
                     cr.Scale(_zoom, _zoom);
                 }
+
                 cr.Translate(0, 0);
                 cr.Rectangle(0, 0, width, height);
                 cr.SetSourceRGBA(ForeColor.R / 255, ForeColor.G / 255, ForeColor.B / 255, ForeColor.A / 255);
                 cr.Fill();
-                _document.OnPrintPage(new PrintPageEventArgs(new Drawing.Graphics((Gtk.Widget)o, cr, new Gdk.Rectangle(0, 0, width, height)), new Drawing.Rectangle(left, top, width - left - right, height - top - bottom), new Drawing.Rectangle(0, 0, width, height), _document.DefaultPageSettings));
+                _document.OnPrintPage(new PrintPageEventArgs(
+                    new Drawing.Graphics((Gtk.Widget)o, cr, new Gdk.Rectangle(0, 0, width, height)),
+                    new Drawing.Rectangle(left, top, width - left - right, height - top - bottom),
+                    new Drawing.Rectangle(0, 0, width, height), _document.DefaultPageSettings));
                 _document.OnEndPrint(new PrintEventArgs());
             }
         }
 
-        [DefaultValue(false)]
-        public bool UseAntiAlias
-        {
-            get; set;
-        }
+        [DefaultValue(false)] public bool UseAntiAlias { get; set; }
 
         [DefaultValue(true)]
         public bool AutoZoom
@@ -140,7 +142,7 @@ namespace System.Windows.Forms
             set
             {
                 _rows = value;
-               // InvalidateLayout();
+                // InvalidateLayout();
             }
         }
 
@@ -171,7 +173,7 @@ namespace System.Windows.Forms
                 _startPage = value;
                 if (oldValue != _startPage)
                 {
-                   // InvalidateLayout();
+                    // InvalidateLayout();
                     OnStartPageChanged(EventArgs.Empty);
                 }
             }
@@ -229,7 +231,7 @@ namespace System.Windows.Forms
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override void ResetForeColor() => ForeColor = Color.White;
-         
+
         public void InvalidatePreview()
         {
             paper.QueueDraw();

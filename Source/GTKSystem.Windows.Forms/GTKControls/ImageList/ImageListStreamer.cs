@@ -7,12 +7,13 @@ using static GTKSystem.Resources.ResourceManager;
 
 namespace System.Windows.Forms
 {
-
     [Serializable] // This type is participating in resx serialization scenarios.
     public sealed class ImageListStreamer : ISerializable, IDisposable
     {
         private static readonly byte[] HEADER_MAGIC = new byte[] { 0x4D, 0x53, 0x46, 0X74 };
+
         public ResourceInfo ResourceInfo { get; set; }
+
         // Compressed magic header. If we see this, the image stream is compressed.
         //private static ReadOnlySpan<byte> HeaderMagic => "MSFt"u8;
         private static readonly object s_syncObject = new object();
@@ -30,6 +31,7 @@ namespace System.Windows.Forms
                 Deserialize(data);
             }
         }
+
         internal ImageListStreamer(Stream stream)
         {
             if (stream is MemoryStream ms
@@ -46,6 +48,7 @@ namespace System.Windows.Forms
                 Deserialize(copyStream.GetBuffer());
             }
         }
+
         internal ImageListStreamer(byte[] data) => Deserialize(data);
 
         /// <summary>
@@ -83,6 +86,7 @@ namespace System.Windows.Forms
             //Debug.Assert(written == length, "RLE decompression failure");
             //return output;
         }
+
         private static byte[] Decompress(byte[] input)
         {
             int finalLength = 0;

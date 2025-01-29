@@ -13,11 +13,12 @@ using System.Drawing;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class LinkLabel: Control
+    public partial class LinkLabel : Control
     {
         public readonly LinkLabelBase self = new LinkLabelBase();
         public override object GtkControl => self;
-        public LinkLabel():base()
+
+        public LinkLabel() : base()
         {
             self.Clicked += LinkLabel_Click;
             self.ActivateLink += LinkLabel_ActivateLink;
@@ -27,7 +28,8 @@ namespace System.Windows.Forms
         {
             if (LinkClicked != null)
             {
-                LinkClicked(this, new LinkLabelLinkClickedEventArgs(new Link() { Description = self.Label, LinkData = self.Uri }));
+                LinkClicked(this,
+                    new LinkLabelLinkClickedEventArgs(new Link() { Description = self.Label, LinkData = self.Uri }));
             }
         }
 
@@ -39,9 +41,18 @@ namespace System.Windows.Forms
                 Click(this, e);
             }
         }
+
         public override event EventHandler Click;
-        public override string Text { get { return string.IsNullOrEmpty(self.Label)? self.Uri : self.Label; } set { self.Label = value; self.Uri = value; } }
-         
+
+        public override string Text
+        {
+            get { return string.IsNullOrEmpty(self.Label) ? self.Uri : self.Label; }
+            set
+            {
+                self.Label = value;
+                self.Uri = value;
+            }
+        }
 
         public event LinkLabelLinkClickedEventHandler LinkClicked;
 
@@ -51,13 +62,11 @@ namespace System.Windows.Forms
 
         public Color LinkColor { get; set; }
 
-
         //public LinkBehavior LinkBehavior { get; set; }
 
         //public LinkArea LinkArea { get; set; }
 
         public FlatStyle FlatStyle { get; set; }
-
 
         public Color DisabledLinkColor { get; set; }
 
@@ -65,7 +74,6 @@ namespace System.Windows.Forms
 
         public Color VisitedLinkColor { get; set; }
         public bool UseCompatibleTextRendering { get; set; }
-
 
         public class Link
         {
@@ -75,21 +83,20 @@ namespace System.Windows.Forms
 
             public Link(int start, int length)
             {
-
             }
 
             public Link(int start, int length, object linkData)
             {
-
             }
+
             public string Description { get; set; }
-            [DefaultValue(null)]
-            public object LinkData { get; set; }
+            [DefaultValue(null)] public object LinkData { get; set; }
         }
+
         public class LinkCollection : IList
         {
             private readonly LinkLabel owner;
-            private bool linksAdded = false;   
+            private bool linksAdded = false;
             private int lastAccessedIndex = -1;
 
             public LinkCollection(LinkLabel owner)
@@ -97,7 +104,11 @@ namespace System.Windows.Forms
                 this.owner = owner ?? throw new ArgumentNullException(nameof(owner));
             }
 
-            public object this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            public object this[int index]
+            {
+                get => throw new NotImplementedException();
+                set => throw new NotImplementedException();
+            }
 
             public bool IsFixedSize => throw new NotImplementedException();
 
@@ -111,7 +122,7 @@ namespace System.Windows.Forms
 
             public int Add(object value)
             {
-                if(value is Label)
+                if (value is Label)
                 {
                     owner.Text = ((Label)value).Text;
                 }
@@ -119,6 +130,7 @@ namespace System.Windows.Forms
                 {
                     owner.Text = value?.ToString();
                 }
+
                 return 1;
             }
 

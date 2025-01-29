@@ -1,5 +1,4 @@
-﻿
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms.Layout;
 
@@ -8,7 +7,8 @@ namespace System.Windows.Forms
     /// <summary>
     ///  A non selectable ToolStrip item
     /// </summary>
-    public class ToolStripItem : Component, IDropTarget, ISupportOleDropSource, IArrangedElement, IComponent, IDisposable, IKeyboardToolTip
+    public class ToolStripItem : Component, IDropTarget, ISupportOleDropSource, IArrangedElement, IComponent,
+        IDisposable, IKeyboardToolTip
     {
         public virtual string unique_key { get; protected set; }
         public virtual Gtk.Widget Widget { get; }
@@ -18,6 +18,7 @@ namespace System.Windows.Forms
         public virtual CheckState CheckState { get; set; }
         internal Gtk.Image DefaultImage = new Gtk.Image("image-missing", Gtk.IconSize.Menu);
         public virtual System.Drawing.Image Image { get; set; }
+
         public ToolStripItem()
         {
             dropDownItems = new ToolStripItemCollection(this);
@@ -26,7 +27,7 @@ namespace System.Windows.Forms
         protected ToolStripItem(string text, Image image, EventHandler onClick) : this(text, image, onClick, "")
         {
         }
-      
+
         protected ToolStripItem(string text, Image image, EventHandler onClick, string name) : this()
         {
             this.Name = name;
@@ -37,30 +38,33 @@ namespace System.Windows.Forms
             if (onClick != null)
                 Click += onClick;
         }
-        public virtual void CreateControl() { }
+
+        public virtual void CreateControl()
+        {
+        }
+
         public virtual ToolStripItemCollection Items
         {
-            get
-            {
-                return dropDownItems;
-            }
+            get { return dropDownItems; }
         }
+
         private ToolStripItemCollection dropDownItems;
 
         //public virtual event EventHandler Disposed;
 
         public virtual ToolStripItemCollection DropDownItems
         {
-            get
-            {
-                return dropDownItems;
-            }
+            get { return dropDownItems; }
         }
+
         public virtual string Name { get; set; }
+
         //public virtual string Text { get { return base.Label; } set { base.Label = value; } }
         public virtual string Text { get; set; }
         public virtual Color ImageTransparentColor { get; set; }
+
         public virtual ToolStripItemDisplayStyle DisplayStyle { get; set; }
+
         //public virtual Size Size { get; set; }
         public virtual bool AutoToolTip { get; set; }
 
@@ -81,7 +85,7 @@ namespace System.Windows.Forms
 
         public virtual ContentAlignment TextAlign { get; set; }
 
-       // public virtual bool Selected { get; }
+        // public virtual bool Selected { get; }
 
         public virtual bool RightToLeftAutoMirrorImage { get; set; }
 
@@ -94,8 +98,6 @@ namespace System.Windows.Forms
 
         public virtual int MergeIndex { get; set; }
         public virtual MergeAction MergeAction { get; set; }
-
-
 
         public virtual bool Enabled { get; set; }
 
@@ -110,11 +112,7 @@ namespace System.Windows.Forms
         public virtual int Height { get; set; }
         public virtual ImeMode ImeMode { get; set; }
 
-        public virtual int Left
-        {
-            get;
-            set;
-        }
+        public virtual int Left { get; set; }
 
         //public override Padding Margin { get; set; }
         //public override Size MaximumSize { get; set; }
@@ -125,37 +123,31 @@ namespace System.Windows.Forms
         public virtual int Right { get; }
 
         public virtual RightToLeft RightToLeft { get; set; }
+
         //public virtual ISite Site { get; set; }
         public virtual Size Size { get; set; }
 
         public virtual object Tag { get; set; }
-        public virtual int Top
-        {
-            get;
-            set;
-        }
+        public virtual int Top { get; set; }
+
         public virtual void ResumeLayout()
         {
-            
         }
 
         public virtual void ResumeLayout(bool performLayout)
         {
-             
         }
+
         public virtual void SuspendLayout()
         {
-            
         }
 
         public virtual void PerformLayout()
         {
-            
         }
 
         public virtual void PerformLayout(Control affectedControl, string affectedProperty)
         {
-            
         }
 
         public void SetBounds(Rectangle bounds, BoundsSpecified specified)
@@ -193,7 +185,4 @@ namespace System.Windows.Forms
         public virtual event EventHandler CheckStateChanged;
         public virtual event ToolStripItemClickedEventHandler DropDownItemClicked;
     }
-
 }
-
-

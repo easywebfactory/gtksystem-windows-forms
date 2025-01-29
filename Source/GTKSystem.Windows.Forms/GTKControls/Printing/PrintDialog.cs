@@ -1,5 +1,4 @@
-﻿
-using Gtk;
+﻿using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing.Printing;
@@ -13,32 +12,17 @@ namespace System.Windows.Forms
         private PrinterSettings _printerSettings;
         private PrintDocument _printDocument;
 
-
         public PrintDialog() => Reset();
 
-        
-        [DefaultValue(false)]
-        
-        public bool AllowCurrentPage { get; set; }
+        [DefaultValue(false)] public bool AllowCurrentPage { get; set; }
 
-                                
-        [DefaultValue(false)]
-        
-        public bool AllowSomePages { get; set; }
+        [DefaultValue(false)] public bool AllowSomePages { get; set; }
 
-                                
-        [DefaultValue(true)]
-        
-        public bool AllowPrintToFile { get; set; }
+        [DefaultValue(true)] public bool AllowPrintToFile { get; set; }
 
-                                
-        [DefaultValue(false)]
-        
-        public bool AllowSelection { get; set; }
+        [DefaultValue(false)] public bool AllowSelection { get; set; }
 
-                                        
         [DefaultValue(null)]
-        
         public PrintDocument Document
         {
             get => _printDocument;
@@ -53,11 +37,10 @@ namespace System.Windows.Forms
             ? PrinterSettings.DefaultPageSettings
             : Document.DefaultPageSettings;
 
-                                
         [DefaultValue(null)]
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        
+
         public PrinterSettings PrinterSettings
         {
             get => _printerSettings ??= new PrinterSettings();
@@ -71,23 +54,12 @@ namespace System.Windows.Forms
             }
         }
 
-                                
-        [DefaultValue(false)]
-        
-        public bool PrintToFile { get; set; }
+        [DefaultValue(false)] public bool PrintToFile { get; set; }
 
-                                
-        [DefaultValue(false)]
-        
-        public bool ShowHelp { get; set; }
+        [DefaultValue(false)] public bool ShowHelp { get; set; }
 
-                                
-        [DefaultValue(true)]
-        
-        public bool ShowNetwork { get; set; }                                                                                [DefaultValue(false)]
-        
-        public bool UseEXDialog { get; set; }
-
+        [DefaultValue(true)] public bool ShowNetwork { get; set; }
+        [DefaultValue(false)] public bool UseEXDialog { get; set; }
 
         public override void Reset()
         {
@@ -106,6 +78,7 @@ namespace System.Windows.Forms
         {
             return RunPrint(owner, true);
         }
+
         public bool RunPrint(IWin32Window owner, bool showDialog)
         {
             try
@@ -130,20 +103,25 @@ namespace System.Windows.Forms
                         exportFileName += ".pdf";
 
                     printOperation.ExportFilename = exportFileName;
-                    Gtk.PrintOperationResult result = printOperation.Run(PrintOperationAction.Export, owner == null ? window : ((Form)owner).self);
+                    Gtk.PrintOperationResult result = printOperation.Run(PrintOperationAction.Export,
+                        owner == null ? window : ((Form)owner).self);
                     return result != Gtk.PrintOperationResult.Cancel && result != Gtk.PrintOperationResult.Error;
                 }
                 else
                 {
-                    Gtk.PrintOperationResult result = printOperation.Run(PrintOperationAction.PrintDialog, owner == null ? window : ((Form)owner).self);
+                    Gtk.PrintOperationResult result = printOperation.Run(PrintOperationAction.PrintDialog,
+                        owner == null ? window : ((Form)owner).self);
                     return result != Gtk.PrintOperationResult.Cancel && result != Gtk.PrintOperationResult.Error;
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                Gtk.MessageDialog messageDialog = new MessageDialog(owner == null ? null : ((Form)owner).self, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "");
+                Gtk.MessageDialog messageDialog = new MessageDialog(owner == null ? null : ((Form)owner).self,
+                    DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, "");
                 messageDialog.WindowPosition = owner == null ? WindowPosition.Center : WindowPosition.CenterOnParent;
                 if (ex.Message.ToLower().Contains("doc"))
-                    messageDialog.Text = Gtk.Windows.Forms.Properties.Resources.PrintDialog_RunPrint_File_is_in_use_and_cannot_be_overwritten;
+                    messageDialog.Text = Gtk.Windows.Forms.Properties.Resources
+                        .PrintDialog_RunPrint_File_is_in_use_and_cannot_be_overwritten;
                 else
                     messageDialog.Text = ex.Message;
                 messageDialog.Response += MessageDialog_Response;
@@ -199,7 +177,10 @@ namespace System.Windows.Forms
 
                 cr.Scale(pxscale, pxscale);
                 cr.Translate(0, 0);
-                _printDocument?.OnPrintPage(new PrintPageEventArgs(new Drawing.Graphics(cr, new Gdk.Rectangle(0, 0, width, height)), new Drawing.Rectangle(left, top, width - left - right, height - top - bottom), new Drawing.Rectangle(0, 0, width, height), PageSettings));
+                _printDocument?.OnPrintPage(new PrintPageEventArgs(
+                    new Drawing.Graphics(cr, new Gdk.Rectangle(0, 0, width, height)),
+                    new Drawing.Rectangle(left, top, width - left - right, height - top - bottom),
+                    new Drawing.Rectangle(0, 0, width, height), PageSettings));
             }
         }
     }

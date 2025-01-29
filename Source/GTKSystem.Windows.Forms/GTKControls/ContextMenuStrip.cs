@@ -9,15 +9,18 @@ using System.ComponentModel;
 
 namespace System.Windows.Forms
 {
-    public class ContextMenuStrip:ToolStripDropDownMenu
+    public class ContextMenuStrip : ToolStripDropDownMenu
     {
-        public ContextMenuStrip() { 
-        
+        public ContextMenuStrip()
+        {
         }
-        public ContextMenuStrip(IContainer container) {
-        
-        }
-        protected void SetVisibleCore(bool visible) { }
-    }
 
+        public ContextMenuStrip(IContainer container)
+        {
+        }
+
+        protected void SetVisibleCore(bool visible)
+        {
+        }
+    }
 }

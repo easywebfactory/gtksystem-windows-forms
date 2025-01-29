@@ -16,23 +16,29 @@ using System.Linq;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-	[DefaultEvent("SelectedIndexChanged")]
-	[DefaultProperty("Items")]
-	[DefaultBindingProperty("SelectedValue")]
-	public partial class ListBox : ListControl
+    [DefaultEvent("SelectedIndexChanged")]
+    [DefaultProperty("Items")]
+    [DefaultBindingProperty("SelectedValue")]
+    public partial class ListBox : ListControl
     {
         public readonly ListBoxBase self = new ListBoxBase();
         public override object GtkControl => self;
-        public override IControlGtk ISelf { get => self; }
+
+        public override IControlGtk ISelf
+        {
+            get => self;
+        }
+
         protected override void SetStyle(Widget widget)
         {
             base.SetStyle(self.ListBox);
         }
+
         private ControlBindingsCollection _collect;
         private ObjectCollection _items;
 
-        public ListBox():base()
-		{
+        public ListBox() : base()
+        {
             self.ListBox.Halign = Gtk.Align.Fill;
             self.ListBox.Valign = Gtk.Align.Fill;
             self.ListBox.Hexpand = true;
@@ -43,6 +49,7 @@ namespace System.Windows.Forms
             self.ListBox.SelectedRowsChanged += ListBox_SelectedRowsChanged;
             this.BorderStyle = BorderStyle.Fixed3D;
         }
+
         private void ListBox_SelectedRowsChanged(object sender, EventArgs e)
         {
             if (self.ListBox.IsVisible)
@@ -59,17 +66,22 @@ namespace System.Windows.Forms
             foreach (Binding binding in DataBindings)
                 self.ListBox.AddNotification(binding.PropertyName, propertyNotity);
         }
+
         private void propertyNotity(object o, NotifyArgs args)
         {
             Binding binding = DataBindings[args.Property];
             binding.WriteValue();
         }
+
         #region listcontrol
+
         private object _DataSource;
+
         public override object DataSource
         {
             get => _DataSource;
-            set {
+            set
+            {
                 _DataSource = value;
                 if (self.ListBox.IsVisible)
                 {
@@ -77,6 +89,7 @@ namespace System.Windows.Forms
                 }
             }
         }
+
         private void OnSetDataSource()
         {
             if (_DataSource != null)
@@ -92,6 +105,7 @@ namespace System.Windows.Forms
                 }
             }
         }
+
         private void SetDataSource(IEnumerator enumerator)
         {
             _items.Clear();
@@ -124,7 +138,8 @@ namespace System.Windows.Forms
 
         public override int SelectedIndex
         {
-            get => self.ListBox.SelectedRow == null ? -1 : self.ListBox.SelectedRow.Index; set => SelectedItems.SetSelected(value, true);
+            get => self.ListBox.SelectedRow == null ? -1 : self.ListBox.SelectedRow.Index;
+            set => SelectedItems.SetSelected(value, true);
         }
 
         [DefaultValue(null)]
@@ -160,14 +175,17 @@ namespace System.Windows.Forms
                 SelectedItems.SetSelected(index, true);
             }
         }
+
         public override string GetItemText(object item)
         {
-            if(item is ItemArray.Entry entry)
+            if (item is ItemArray.Entry entry)
             {
                 return entry.Item?.ToString();
             }
+
             return item?.ToString();
         }
+
         protected void NativeInsert(int index, object item)
         {
             Gtk.ListBoxRow row = new Gtk.ListBoxRow();
@@ -179,6 +197,7 @@ namespace System.Windows.Forms
                 self.ListBox.ShowAll();
             }
         }
+
         protected void NativeAdd(object item)
         {
             Gtk.ListBoxRow row = new Gtk.ListBoxRow();
@@ -190,6 +209,7 @@ namespace System.Windows.Forms
                 self.ListBox.ShowAll();
             }
         }
+
         protected void NativeClear()
         {
             int count = self.ListBox.Children.Length;
@@ -200,111 +220,82 @@ namespace System.Windows.Forms
                 //System.Threading.Thread.Sleep(3);
             }
         }
+
         protected void NativeRemoveAt(int index)
         {
             self.ListBox.Remove(self.ListBox.GetRowAtIndex(index));
         }
+
         protected string NativeGetItemText(int index)
         {
             Gtk.Label row = self.ListBox.GetRowAtIndex(index).Child as Gtk.Label;
             return row?.Text;
         }
-        protected void OnSelectedIndexChanged(EventArgs e) {
+
+        protected void OnSelectedIndexChanged(EventArgs e)
+        {
             if (self.ListBox.SelectedRow != null)
                 self.ListBox.SelectRow(self.ListBox.SelectedRow);
         }
+
         #endregion
-        public override ControlBindingsCollection DataBindings { get => _collect; }
+
+        public override ControlBindingsCollection DataBindings
+        {
+            get => _collect;
+        }
+
         internal bool ShowCheckBox { get; set; }
         internal bool ShowImage { get; set; }
 
         public const int NoMatches = -1;
 
-		public const int DefaultItemHeight = 13;
+        public const int DefaultItemHeight = 13;
 
-        [Localizable(true)]
-		[DefaultValue(0)]
-		public int ColumnWidth
-        {
-            get; set;
-        }
+        [Localizable(true)] [DefaultValue(0)] public int ColumnWidth { get; set; }
 
         [DefaultValue(false)]
-		[Browsable(false)]
-		public bool UseCustomTabOffsets
-        {
-            get; set;
-        }
+        [Browsable(false)]
+        public bool UseCustomTabOffsets { get; set; }
 
         [DefaultValue(DrawMode.Normal)]
-		public virtual DrawMode DrawMode
-		{
-			get
-			{
-				throw null;
-			}
-			set
-			{
-				throw null;
-			}
-		}
-
-        [DefaultValue(0)]
-		[Localizable(true)]
-		public int HorizontalExtent
+        public virtual DrawMode DrawMode
         {
-            get; set;
+            get { throw null; }
+            set { throw null; }
         }
+
+        [DefaultValue(0)] [Localizable(true)] public int HorizontalExtent { get; set; }
 
         [DefaultValue(false)]
-		[Localizable(true)]
-		public bool HorizontalScrollbar
-        {
-            get; set;
-        }
+        [Localizable(true)]
+        public bool HorizontalScrollbar { get; set; }
 
         [DefaultValue(true)]
-		[Localizable(true)]
-		public bool IntegralHeight
-        {
-            get; set;
-        }
+        [Localizable(true)]
+        public bool IntegralHeight { get; set; }
+
+        [Localizable(true)] public virtual int ItemHeight { get; set; }
 
         [Localizable(true)]
-		public virtual int ItemHeight
-        {
-            get; set;
-        }
-
-		[Localizable(true)]
-		public ObjectCollection Items
+        public ObjectCollection Items
         {
             get => _items;
         }
 
-        [DefaultValue(false)]
-		public bool MultiColumn
-        {
-            get; set;
-        }
+        [DefaultValue(false)] public bool MultiColumn { get; set; }
 
-        [Browsable(false)]
-		public int PreferredHeight
-        {
-            get; 
-        }
+        [Browsable(false)] public int PreferredHeight { get; }
 
         [DefaultValue(false)]
-		[Localizable(true)]
-		public bool ScrollAlwaysVisible
-        {
-            get; set;
-        }
+        [Localizable(true)]
+        public bool ScrollAlwaysVisible { get; set; }
 
         [Browsable(false)]
-		public SelectedIndexCollection SelectedIndices
+        public SelectedIndexCollection SelectedIndices
         {
-            get {
+            get
+            {
                 SelectedIndexCollection indexs = new SelectedIndexCollection(this);
                 return indexs;
             }
@@ -319,14 +310,15 @@ namespace System.Windows.Forms
                 return indexs;
             }
         }
+
         public SelectionMode _SelectionMode;
+
         [DefaultValue(SelectionMode.One)]
-		public virtual SelectionMode SelectionMode
+        public virtual SelectionMode SelectionMode
         {
-            get {
-                return _SelectionMode;
-            }
-            set {
+            get { return _SelectionMode; }
+            set
+            {
                 if (value == SelectionMode.None)
                 {
                     self.ListBox.SelectionMode = Gtk.SelectionMode.None;
@@ -345,6 +337,7 @@ namespace System.Windows.Forms
                 }
             }
         }
+
         private void CheckNoDataSource()
         {
             //if (DataSource != null)
@@ -352,15 +345,18 @@ namespace System.Windows.Forms
             //    throw new ArgumentException("SR.DataSourceLocksItems");
             //}
         }
+
         private bool _sorted;
+
         [DefaultValue(false)]
-		public bool Sorted
+        public bool Sorted
         {
-            get => _sorted; set => _sorted = value;
+            get => _sorted;
+            set => _sorted = value;
         }
 
         [Browsable(false)]
-		public override string Text
+        public override string Text
         {
             get
             {
@@ -377,7 +373,7 @@ namespace System.Windows.Forms
                     else
                         return ((Gtk.Label)row.Child).Text;
                 }
-            } 
+            }
             set
             {
                 foreach (var row in self.ListBox.Children)
@@ -390,13 +386,17 @@ namespace System.Windows.Forms
                 }
             }
         }
+
         private int _topIndex;
-		public int TopIndex
+
+        public int TopIndex
         {
-            get=> _topIndex; 
-            set {
+            get => _topIndex;
+            set
+            {
                 _topIndex = value;
-                GLib.Timeout.Add(100, new TimeoutHandler(() => {
+                GLib.Timeout.Add(100, new TimeoutHandler(() =>
+                {
                     int rowheight = ItemHeight;
                     if (rowheight < 14)
                     {
@@ -405,6 +405,7 @@ namespace System.Windows.Forms
                         else
                             rowheight = 18;
                     }
+
                     var adjustment = self.Vadjustment;
                     adjustment.Value = value * rowheight - Height + 5;
                     return false;
@@ -412,109 +413,109 @@ namespace System.Windows.Forms
             }
         }
 
-        [DefaultValue(true)]
-		public bool UseTabStops
-        {
-            get; set;
-        }
+        [DefaultValue(true)] public bool UseTabStops { get; set; }
 
-		public IntegerCollection CustomTabOffsets
-        {
-            get; 
-        }
+        public IntegerCollection CustomTabOffsets { get; }
 
-		public new Padding Padding
-		{
-			get;set;
-		}
+        public new Padding Padding { get; set; }
+
         public void ClearSelected()
         {
             self.ListBox.UnselectAll();
         }
+
         internal bool IsUpdateing = false;
+
         public void BeginUpdate()
-		{
+        {
             IsUpdateing = true;
         }
 
-		public void EndUpdate()
-		{
+        public void EndUpdate()
+        {
             IsUpdateing = false;
             self.ListBox.ShowAll();
         }
 
-		public int FindString(string s)
-		{
-			throw null;
-		}
+        public int FindString(string s)
+        {
+            throw null;
+        }
 
-		public int FindString(string s, int startIndex)
-		{
-			throw null;
-		}
+        public int FindString(string s, int startIndex)
+        {
+            throw null;
+        }
 
-		public int FindStringExact(string s)
-		{
-			throw null;
-		}
+        public int FindStringExact(string s)
+        {
+            throw null;
+        }
 
-		public int FindStringExact(string s, int startIndex)
-		{
-			throw null;
-		}
+        public int FindStringExact(string s, int startIndex)
+        {
+            throw null;
+        }
 
-		public int GetItemHeight(int index)
-		{
-			throw null;
-		}
+        public int GetItemHeight(int index)
+        {
+            throw null;
+        }
 
-		public Drawing.Rectangle GetItemRectangle(int index)
-		{
-			throw null;
-		}
-		public bool GetSelected(int index)
-		{
+        public Drawing.Rectangle GetItemRectangle(int index)
+        {
+            throw null;
+        }
+
+        public bool GetSelected(int index)
+        {
             return self.ListBox.GetRowAtIndex(index).IsSelected;
         }
 
-		public int IndexFromPoint(Drawing.Point p)
-		{
-			throw null;
-		}
+        public int IndexFromPoint(Drawing.Point p)
+        {
+            throw null;
+        }
 
-		public int IndexFromPoint(int x, int y)
-		{
-			throw null;
-		}
+        public int IndexFromPoint(int x, int y)
+        {
+            throw null;
+        }
 
-		public override void Refresh()
-		{
-			self.ListBox.ShowAll();
-		}
+        public override void Refresh()
+        {
+            self.ListBox.ShowAll();
+        }
 
-		public override void ResetBackColor()
-		{
-			
-		}
+        public override void ResetBackColor()
+        {
+        }
 
-		public override void ResetForeColor()
-		{
-			
-		}
+        public override void ResetForeColor()
+        {
+        }
 
-		public void SetSelected(int index, bool value)
-		{
+        public void SetSelected(int index, bool value)
+        {
             if (value == true)
                 self.ListBox.SelectRow(self.ListBox.GetRowAtIndex(index));
             else
                 self.ListBox.UnselectRow(self.ListBox.GetRowAtIndex(index));
         }
-        public class ListBoxItem: Gtk.Label
+
+        public class ListBoxItem : Gtk.Label
         {
-            public ListBoxItem() { 
-               base.Xalign = 0;
+            public ListBoxItem()
+            {
+                base.Xalign = 0;
             }
-            public object DisplayText { get { return base.Text; } set { base.Text = value?.ToString(); } }
+
+            public object DisplayText
+            {
+                get { return base.Text; }
+                set { base.Text = value?.ToString(); }
+            }
+
             public object ItemValue { get; set; }
             public object CheckValue { get; set; }
 

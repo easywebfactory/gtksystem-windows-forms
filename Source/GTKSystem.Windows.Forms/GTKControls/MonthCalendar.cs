@@ -15,7 +15,8 @@ namespace System.Windows.Forms
     {
         public readonly MonthCalendarBase self = new MonthCalendarBase();
         public override object GtkControl => self;
-        public MonthCalendar():base()
+
+        public MonthCalendar() : base()
         {
             self.DaySelected += MonthCalendar_DaySelected;
         }
@@ -28,33 +29,24 @@ namespace System.Windows.Forms
             if (DateSelected != null && self.IsVisible)
                 DateSelected(this, new DateRangeEventArgs(SelectionRange.Start, SelectionRange.End));
         }
-      
-   
-        public Day FirstDayOfWeek
-        {
-            get;set;
-        }
-        public DateTime MaxDate
-        {
-            get;set;
-        }
-        public DateTime MinDate
-        {
-            get; set;
-        }
+
+        public Day FirstDayOfWeek { get; set; }
+        public DateTime MaxDate { get; set; }
+        public DateTime MinDate { get; set; }
 
         public bool ShowToday { get; set; }
         public bool ShowTodayCircle { get; set; }
         public SelectionRange SelectionRange { get; set; }
+
         public DateTime TodayDate
         {
             get { return self.Date; }
             set { self.Date = value; }
         }
+
         public bool ShowWeekNumbers { get; set; }
         public event DateRangeEventHandler DateChanged;
 
         public event DateRangeEventHandler DateSelected;
-
     }
 }

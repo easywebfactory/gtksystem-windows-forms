@@ -12,7 +12,6 @@ using System.ComponentModel;
 
 namespace System.Windows.Forms
 {
-
     [DesignerCategory("Component")]
     public partial class CheckedListBox : ContainerControl
     {
@@ -20,6 +19,7 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         internal Gtk.FlowBox _flow = new Gtk.FlowBox();
         private ObjectCollection _items;
+
         public CheckedListBox() : base()
         {
             _items = new ObjectCollection(this);
@@ -32,10 +32,12 @@ namespace System.Windows.Forms
             _flow.Realized += _flow_Realized;
             self.AutoScroll = true;
             self.Add(_flow);
-            
+
             this.BorderStyle = BorderStyle.Fixed3D;
         }
+
         private bool is_flow_Realized;
+
         private void _flow_Realized(object sender, EventArgs e)
         {
             if (is_flow_Realized == false)
@@ -45,6 +47,7 @@ namespace System.Windows.Forms
                 {
                     NativeAdd(item, false, -1);
                 }
+
                 _flow.ShowAll();
             }
         }
@@ -63,33 +66,59 @@ namespace System.Windows.Forms
         }
 
         public int ColumnWidth { get; set; }
-        public bool MultiColumn { get { return _flow.Orientation == Gtk.Orientation.Vertical; } set { if (value == false) { _flow.Orientation = Gtk.Orientation.Horizontal; } else { _flow.Orientation = Gtk.Orientation.Vertical; } } }
+
+        public bool MultiColumn
+        {
+            get { return _flow.Orientation == Gtk.Orientation.Vertical; }
+            set
+            {
+                if (value == false)
+                {
+                    _flow.Orientation = Gtk.Orientation.Horizontal;
+                }
+                else
+                {
+                    _flow.Orientation = Gtk.Orientation.Vertical;
+                }
+            }
+        }
+
         public bool HorizontalScrollbar { get; set; }
         public bool FormattingEnabled { get; set; }
         public int ItemHeight { get; set; }
         public SelectionMode SelectionMode { get; set; }
-        public void ClearSelected() {
-            foreach(Gtk.FlowBoxChild wi in _flow.Children) { 
+
+        public void ClearSelected()
+        {
+            foreach (Gtk.FlowBoxChild wi in _flow.Children)
+            {
                 Gtk.Widget box = ((Gtk.Box)wi.Child).Children[0];
                 if (box is Gtk.CheckButton check)
                 {
                     check.Active = false;
                 }
-            };
+            }
+
+            ;
             _flow.UnselectAll();
         }
+
         public bool CheckOnClick { get; set; }
-        public ObjectCollection Items { 
-            get {
+
+        public ObjectCollection Items
+        {
+            get
+            {
                 ArrayList list = new ArrayList();
                 foreach (var item in _items)
                 {
                     list.Add(item);
                 }
-                return _items;
 
-            } 
+                return _items;
+            }
         }
+
         public SelectedItemCollection SelectedItems
         {
             get
@@ -101,11 +130,15 @@ namespace System.Windows.Forms
                     if (item.Selected == true)
                         items.Add(item.Item);
                 }
+
                 return items;
             }
         }
-        public CheckedItemCollection CheckedItems { 
-            get {
+
+        public CheckedItemCollection CheckedItems
+        {
+            get
+            {
                 CheckedItemCollection items = new CheckedItemCollection();
                 for (int i = 0; i < _items.Count; i++)
                 {
@@ -113,7 +146,9 @@ namespace System.Windows.Forms
                     if (item.Checked == true)
                         items.Add(item.Item);
                 }
-                return items; } 
+
+                return items;
+            }
         }
 
         public CheckedIndexCollection CheckedIndices
@@ -127,6 +162,7 @@ namespace System.Windows.Forms
                     if (item.Checked == true)
                         items.Add(i);
                 }
+
                 return items;
             }
         }
@@ -135,6 +171,7 @@ namespace System.Windows.Forms
         public event EventHandler SelectedIndexChanged;
         public event EventHandler SelectedValueChanged;
         public event EventHandler SelectedItemChanged;
+
         internal void NativeAdd(object item, bool isChecked, int position)
         {
             if (_flow.IsRealized)
@@ -151,7 +188,10 @@ namespace System.Windows.Forms
                     Gtk.FlowBoxChild item = box.Parent as Gtk.FlowBoxChild;
                     Items.GetCheckedListBoxItem(item.Index).Checked = box.Active;
                     if (this.ItemCheck != null)
-                        this.ItemCheck(this, new ItemCheckEventArgs(item.Index, box.Active == true ? CheckState.Checked : CheckState.Unchecked, box.Active == false ? CheckState.Checked : CheckState.Unchecked));
+                        this.ItemCheck(this,
+                            new ItemCheckEventArgs(item.Index,
+                                box.Active == true ? CheckState.Checked : CheckState.Unchecked,
+                                box.Active == false ? CheckState.Checked : CheckState.Unchecked));
                     if (this.CheckOnClick == true)
                         this._flow.SelectChild(item);
                 };
@@ -161,6 +201,7 @@ namespace System.Windows.Forms
                 {
                     boxitem.WidthRequest = this.ColumnWidth;
                 }
+
                 boxitem.Valign = Gtk.Align.Start;
                 boxitem.Halign = Gtk.Align.Start;
                 boxitem.TooltipText = item.ToString();
@@ -175,6 +216,7 @@ namespace System.Windows.Forms
                 }
             }
         }
+
         internal void NativeRemove(int index)
         {
             if (_flow.IsRealized)
@@ -183,6 +225,7 @@ namespace System.Windows.Forms
                     _flow.Remove(_flow.Children[index]);
             }
         }
+
         internal void NativeClear()
         {
             if (_flow.IsRealized)
@@ -190,7 +233,6 @@ namespace System.Windows.Forms
                 foreach (var item in _flow.Children)
                     _flow.Remove(item);
             }
-
         }
 
         public class ObjectCollection : ArrayList
@@ -200,29 +242,36 @@ namespace System.Windows.Forms
                 public object Item { get; set; }
                 public bool Checked { get; set; }
                 public bool Selected { get; set; }
+
                 public override string ToString()
                 {
                     return Item?.ToString();
                 }
             }
+
             private CheckedListBox _owner;
+
             public ObjectCollection(CheckedListBox owner)
             {
                 _owner = owner;
             }
+
             public override object this[int index]
             {
                 get => ((CheckedListBoxItem)base[index]).Item;
                 set => ((CheckedListBoxItem)base[index]).Item = value;
             }
+
             public CheckedListBoxItem GetCheckedListBoxItem(int index)
             {
                 return base[index] as CheckedListBoxItem;
             }
+
             public override int Add(object value)
             {
                 return AddCore(value, false, -1);
             }
+
             public int Add(object item, bool isChecked)
             {
                 return AddCore(item, isChecked, -1);
@@ -252,19 +301,22 @@ namespace System.Windows.Forms
                 foreach (object o in c)
                     AddCore(o, false, -1);
             }
+
             public override void RemoveAt(int index)
             {
                 _owner.NativeRemove(index);
                 base.RemoveAt(index);
             }
+
             public override void Remove(object obj)
             {
                 int index = base.IndexOf(obj);
-                if (index>-1)
+                if (index > -1)
                 {
                     RemoveAt(index);
                 }
             }
+
             public override void Clear()
             {
                 _owner.NativeClear();
@@ -278,11 +330,10 @@ namespace System.Windows.Forms
 
         public class CheckedItemCollection : List<object>
         {
-
         }
+
         public class SelectedItemCollection : List<object>
         {
-
         }
     }
 }

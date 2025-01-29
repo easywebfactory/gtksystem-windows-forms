@@ -3,7 +3,6 @@
 
 namespace System.Windows.Forms
 {
-
     public partial class PropertyGrid
     {
         [Flags]

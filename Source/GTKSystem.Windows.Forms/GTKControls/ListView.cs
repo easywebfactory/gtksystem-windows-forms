@@ -10,16 +10,12 @@ using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-
 using System.Drawing;
 using System.Linq;
 using static System.Windows.Forms.ListViewItem;
 
-
-
 namespace System.Windows.Forms
 {
-
     [DefaultEvent("SelectedIndexChanged")]
     public class ListView : ContainerControl
     {
@@ -29,8 +25,9 @@ namespace System.Windows.Forms
         private ListViewGroupCollection _groups;
         private ColumnHeaderCollection _columns;
         internal Gtk.Box flowBoxContainer = new Gtk.Box(Gtk.Orientation.Vertical, 0);
-        internal Gtk.Box header = new Gtk.Box(Gtk.Orientation.Horizontal,0);
+        internal Gtk.Box header = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
         private int __headerheight = 30;
+
         public ListView() : base()
         {
             _items = new ListViewItemCollection(this);
@@ -56,7 +53,9 @@ namespace System.Windows.Forms
             self.Add(flowBoxContainer);
             this.BorderStyle = BorderStyle.Fixed3D;
         }
+
         private bool ControlRealized = false;
+
         private void Control_Realized(object sender, EventArgs e)
         {
             if (ControlRealized == false)
@@ -69,17 +68,26 @@ namespace System.Windows.Forms
 
                     foreach (ColumnHeader col in Columns)
                     {
-                        LabelBase label = new LabelBase(col.Text) { Xalign=0, Xpad = 5, WidthRequest = col.Width, MaxWidthChars = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.End, Ellipsize = Pango.EllipsizeMode.End, Wrap = false, LineWrap = false };
+                        LabelBase label = new LabelBase(col.Text)
+                        {
+                            Xalign = 0, Xpad = 5, WidthRequest = col.Width, MaxWidthChars = 0, Halign = Gtk.Align.Start,
+                            Valign = Gtk.Align.End, Ellipsize = Pango.EllipsizeMode.End, Wrap = false, LineWrap = false
+                        };
                         label.TooltipText = col.Text;
                         label.Markup = col.Text;
                         label.Data.Add("ColumnIndex", col.DisplayIndex);
                         label.Override.DrawnBackground += Override_DrawnBackground;
-                        var columbt = new Gtk.Button(label) { MarginStart=0, WidthRequest = col.Width, HeightRequest = __headerheight, Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill };
+                        var columbt = new Gtk.Button(label)
+                        {
+                            MarginStart = 0, WidthRequest = col.Width, HeightRequest = __headerheight,
+                            Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill
+                        };
                         columbt.ActionTargetValue = new GLib.Variant(col.DisplayIndex);
                         columbt.Data.Add("ColumnIndex", col.DisplayIndex);
                         columbt.Clicked += Columbt_Clicked;
                         header.PackStart(columbt, false, false, 0);
                     }
+
                     header.PackStart(new LabelBase(""), true, true, 0);
                     header.ShowAll();
                 }
@@ -94,7 +102,6 @@ namespace System.Windows.Forms
 
                 MultiSelect = MultiSelect == true;
                 self.ShowAll();
-                
             }
         }
 
@@ -137,10 +144,12 @@ namespace System.Windows.Forms
                     }
 
                     if (ColumnReordered != null)
-                        ColumnReordered(this, new ColumnReorderedEventArgs(SortingColumnIndex, actioncolumn, Columns[actioncolumn]));
+                        ColumnReordered(this,
+                            new ColumnReorderedEventArgs(SortingColumnIndex, actioncolumn, Columns[actioncolumn]));
 
                     SortingColumnIndex = actioncolumn;
                 }
+
                 if (ColumnClick != null)
                     ColumnClick(this, new ColumnClickEventArgs((int)btn.ActionTargetValue));
             }
@@ -178,6 +187,7 @@ namespace System.Windows.Forms
                 }
             }
         }
+
         private int SortingColumnIndex = -1;
         public bool Sorted { get; set; }
         public System.Windows.Forms.SortOrder Sorting { get; set; }
@@ -193,12 +203,10 @@ namespace System.Windows.Forms
         public bool LabelWrap { get; set; }
         public ImageList LargeImageList { get; set; }
         private bool _MultiSelect;
+
         public virtual bool MultiSelect
         {
-            get
-            {
-                return _MultiSelect;
-            }
+            get { return _MultiSelect; }
             set
             {
                 _MultiSelect = value;
@@ -237,6 +245,7 @@ namespace System.Windows.Forms
         public bool UseCompatibleStateImageBehavior { get; set; }
         public System.Windows.Forms.View View { get; set; }
         private int _fontSize;
+
         protected int FontSize
         {
             get
@@ -251,9 +260,11 @@ namespace System.Windows.Forms
                             _fontSize = (int)Font.Size;
                     }
                 }
+
                 return _fontSize;
             }
         }
+
         internal void NativeAdd(ListViewItem item, int position)
         {
             if (self.IsRealized)
@@ -287,7 +298,7 @@ namespace System.Windows.Forms
                     else
                         boxitem.Data.Add(col.DisplayIndex, string.Empty);
                 }
-          
+
                 boxitem.Add(hBox);
 
                 Gtk.FlowBox flowBox = DefaultGroup.FlowBox;
@@ -346,8 +357,12 @@ namespace System.Windows.Forms
                             thisitem.Checked = box.self.Active;
                             if (ItemCheck != null)
                             {
-                                ItemCheck(sender, new ItemCheckEventArgs(boxitem.Index, box.self.Active ? CheckState.Checked : CheckState.Unchecked, box.self.Active ? CheckState.Unchecked : CheckState.Checked));
+                                ItemCheck(sender,
+                                    new ItemCheckEventArgs(boxitem.Index,
+                                        box.self.Active ? CheckState.Checked : CheckState.Unchecked,
+                                        box.self.Active ? CheckState.Unchecked : CheckState.Checked));
                             }
+
                             if (ItemChecked != null)
                             {
                                 ItemChecked(sender, new ItemCheckedEventArgs(thisitem));
@@ -366,29 +381,42 @@ namespace System.Windows.Forms
                         {
                             Drawing.Image img = this.SmallImageList.GetBitmap(item.ImageKey);
                             if (img != null)
-                                fistcell.Put(new Gtk.Image(img.Pixbuf) { Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill }, x_position, padding + 2);
+                                fistcell.Put(
+                                    new Gtk.Image(img.Pixbuf) { Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill },
+                                    x_position, padding + 2);
                             x_position += imgsize + 5;
                         }
                         else if (item.ImageIndex > -1)
                         {
                             Drawing.Image img = this.SmallImageList.GetBitmap(item.ImageIndex);
                             if (img != null)
-                                fistcell.Put(new Gtk.Image(img.Pixbuf) { Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill }, x_position, padding + 2);
+                                fistcell.Put(
+                                    new Gtk.Image(img.Pixbuf) { Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill },
+                                    x_position, padding + 2);
                             x_position += imgsize + 5;
                         }
                     }
+
                     Gtk.Label lab = new Gtk.Label();
                     Pango.AttrList attributes = new Pango.AttrList();
                     if (item.ForeColor.HasValue)
                     {
-                        Pango.AttrForeground fg = new Pango.AttrForeground(Convert.ToUInt16(item.ForeColor.Value.R * 257), Convert.ToUInt16(item.ForeColor.Value.G * 257), Convert.ToUInt16(item.ForeColor.Value.B * 257));
+                        Pango.AttrForeground fg = new Pango.AttrForeground(
+                            Convert.ToUInt16(item.ForeColor.Value.R * 257),
+                            Convert.ToUInt16(item.ForeColor.Value.G * 257),
+                            Convert.ToUInt16(item.ForeColor.Value.B * 257));
                         attributes.Insert(fg);
                     }
+
                     if (item.BackColor.HasValue)
                     {
-                        Pango.AttrBackground fg = new Pango.AttrBackground(Convert.ToUInt16(item.BackColor.Value.R * 257), Convert.ToUInt16(item.BackColor.Value.G * 257), Convert.ToUInt16(item.BackColor.Value.B * 257));
+                        Pango.AttrBackground fg = new Pango.AttrBackground(
+                            Convert.ToUInt16(item.BackColor.Value.R * 257),
+                            Convert.ToUInt16(item.BackColor.Value.G * 257),
+                            Convert.ToUInt16(item.BackColor.Value.B * 257));
                         attributes.Insert(fg);
                     }
+
                     lab.Attributes = attributes;
                     lab.Halign = Gtk.Align.Start;
                     lab.Valign = Gtk.Align.Fill;
@@ -410,7 +438,8 @@ namespace System.Windows.Forms
                     {
                         if (index > 0)
                         {
-                            Gtk.Layout sublayout = new Gtk.Layout(new Adjustment(IntPtr.Zero), new Adjustment(IntPtr.Zero));
+                            Gtk.Layout sublayout =
+                                new Gtk.Layout(new Adjustment(IntPtr.Zero), new Adjustment(IntPtr.Zero));
                             sublayout.Halign = Gtk.Align.Start;
                             sublayout.Valign = Gtk.Align.Fill;
                             sublayout.WidthRequest = col.Width;
@@ -421,15 +450,23 @@ namespace System.Windows.Forms
                                 Pango.AttrList subattributes = new Pango.AttrList();
                                 if (subitem.ForeColor.HasValue)
                                 {
-                                    Pango.AttrForeground fg = new Pango.AttrForeground(Convert.ToUInt16(subitem.ForeColor.Value.R * 257), Convert.ToUInt16(subitem.ForeColor.Value.G * 257), Convert.ToUInt16(subitem.ForeColor.Value.B * 257));
+                                    Pango.AttrForeground fg = new Pango.AttrForeground(
+                                        Convert.ToUInt16(subitem.ForeColor.Value.R * 257),
+                                        Convert.ToUInt16(subitem.ForeColor.Value.G * 257),
+                                        Convert.ToUInt16(subitem.ForeColor.Value.B * 257));
                                     subattributes.Insert(fg);
                                     sublabel.Attributes = subattributes;
                                 }
+
                                 if (subitem.BackColor.HasValue)
                                 {
-                                    Pango.AttrBackground fg = new Pango.AttrBackground(Convert.ToUInt16(subitem.BackColor.Value.R * 257), Convert.ToUInt16(subitem.BackColor.Value.G * 257), Convert.ToUInt16(subitem.BackColor.Value.B * 257));
+                                    Pango.AttrBackground fg = new Pango.AttrBackground(
+                                        Convert.ToUInt16(subitem.BackColor.Value.R * 257),
+                                        Convert.ToUInt16(subitem.BackColor.Value.G * 257),
+                                        Convert.ToUInt16(subitem.BackColor.Value.B * 257));
                                     subattributes.Insert(fg);
                                 }
+
                                 sublabel.Attributes = subattributes;
                                 sublabel.WidthRequest = col.Width + 2;
                                 sublabel.MaxWidthChars = 0;
@@ -440,12 +477,14 @@ namespace System.Windows.Forms
                                 sublabel.Text = subitem.Text;
                                 sublayout.Add(sublabel);
                             }
+
                             Gtk.Viewport sviewport = new Viewport();
                             sviewport.WidthRequest = col.Width;
                             sviewport.BorderWidth = 0;
                             sviewport.Add(sublayout);
                             hBox.PackStart(sviewport, false, true, 0);
                         }
+
                         index++;
                     }
                 }
@@ -467,15 +506,20 @@ namespace System.Windows.Forms
                             thisitem.Checked = box.self.Active;
                             if (ItemCheck != null)
                             {
-                                ItemCheck(sender, new ItemCheckEventArgs(boxitem.Index, box.self.Active ? CheckState.Checked : CheckState.Unchecked, box.self.Active ? CheckState.Unchecked : CheckState.Checked));
+                                ItemCheck(sender,
+                                    new ItemCheckEventArgs(boxitem.Index,
+                                        box.self.Active ? CheckState.Checked : CheckState.Unchecked,
+                                        box.self.Active ? CheckState.Unchecked : CheckState.Checked));
                             }
+
                             if (ItemChecked != null)
                             {
                                 ItemChecked(sender, new ItemCheckedEventArgs(thisitem));
                             }
-                        }; 
+                        };
                         hBox.PackStart(checkBox.self, false, true, 5);
                     }
+
                     if (this.View == View.SmallIcon)
                     {
                         header.Visible = false;
@@ -497,21 +541,28 @@ namespace System.Windows.Forms
                                 if (img != null)
                                     hBox.PackStart(new Gtk.Image(img.Pixbuf), false, false, 0);
                             }
-
                         }
+
                         Gtk.Label lab = new Gtk.Label();
                         Pango.AttrList attributes = new Pango.AttrList();
                         if (item.ForeColor.HasValue)
                         {
-                            Pango.AttrForeground fg = new Pango.AttrForeground(Convert.ToUInt16(item.ForeColor.Value.R * 257), Convert.ToUInt16(item.ForeColor.Value.G * 257), Convert.ToUInt16(item.ForeColor.Value.B * 257));
+                            Pango.AttrForeground fg = new Pango.AttrForeground(
+                                Convert.ToUInt16(item.ForeColor.Value.R * 257),
+                                Convert.ToUInt16(item.ForeColor.Value.G * 257),
+                                Convert.ToUInt16(item.ForeColor.Value.B * 257));
                             attributes.Insert(fg);
-
                         }
+
                         if (item.BackColor.HasValue)
                         {
-                            Pango.AttrBackground fg = new Pango.AttrBackground(Convert.ToUInt16(item.BackColor.Value.R * 257), Convert.ToUInt16(item.BackColor.Value.G * 257), Convert.ToUInt16(item.BackColor.Value.B * 257));
+                            Pango.AttrBackground fg = new Pango.AttrBackground(
+                                Convert.ToUInt16(item.BackColor.Value.R * 257),
+                                Convert.ToUInt16(item.BackColor.Value.G * 257),
+                                Convert.ToUInt16(item.BackColor.Value.B * 257));
                             attributes.Insert(fg);
                         }
+
                         lab.Attributes = attributes;
                         lab.MaxWidthChars = 100;
                         lab.Halign = Gtk.Align.Start;
@@ -535,7 +586,8 @@ namespace System.Windows.Forms
                                 {
                                     int width = img.Pixbuf.Width;
                                     int height = img.Pixbuf.Height;
-                                    vBox.Add(new Gtk.Image(new Gdk.Pixbuf(img.PixbufData)) { WidthRequest = Math.Min(50, width), HeightRequest = Math.Min(50, height) });
+                                    vBox.Add(new Gtk.Image(new Gdk.Pixbuf(img.PixbufData))
+                                        { WidthRequest = Math.Min(50, width), HeightRequest = Math.Min(50, height) });
                                 }
                             }
                             else if (item.ImageIndex > -1)
@@ -545,23 +597,32 @@ namespace System.Windows.Forms
                                 {
                                     int width = img.Pixbuf.Width;
                                     int height = img.Pixbuf.Height;
-                                    vBox.Add(new Gtk.Image(img.Pixbuf) { WidthRequest = Math.Min(50, width), HeightRequest = Math.Min(50, height) });
+                                    vBox.Add(new Gtk.Image(img.Pixbuf)
+                                        { WidthRequest = Math.Min(50, width), HeightRequest = Math.Min(50, height) });
                                 }
                             }
                         }
+
                         Gtk.Label lab = new Gtk.Label();
                         Pango.AttrList attributes = new Pango.AttrList();
                         if (item.ForeColor.HasValue)
                         {
-                            Pango.AttrForeground fg = new Pango.AttrForeground(Convert.ToUInt16(item.ForeColor.Value.R * 257), Convert.ToUInt16(item.ForeColor.Value.G * 257), Convert.ToUInt16(item.ForeColor.Value.B * 257));
+                            Pango.AttrForeground fg = new Pango.AttrForeground(
+                                Convert.ToUInt16(item.ForeColor.Value.R * 257),
+                                Convert.ToUInt16(item.ForeColor.Value.G * 257),
+                                Convert.ToUInt16(item.ForeColor.Value.B * 257));
                             attributes.Insert(fg);
-
                         }
+
                         if (item.BackColor.HasValue)
                         {
-                            Pango.AttrBackground fg = new Pango.AttrBackground(Convert.ToUInt16(item.BackColor.Value.R * 257), Convert.ToUInt16(item.BackColor.Value.G * 257), Convert.ToUInt16(item.BackColor.Value.B * 257));
+                            Pango.AttrBackground fg = new Pango.AttrBackground(
+                                Convert.ToUInt16(item.BackColor.Value.R * 257),
+                                Convert.ToUInt16(item.BackColor.Value.G * 257),
+                                Convert.ToUInt16(item.BackColor.Value.B * 257));
                             attributes.Insert(fg);
                         }
+
                         lab.MaxWidthChars = 16;
                         lab.Halign = Gtk.Align.Center;
                         lab.Valign = Gtk.Align.Center;
@@ -579,21 +640,29 @@ namespace System.Windows.Forms
                         Pango.AttrList attributes = new Pango.AttrList();
                         if (item.ForeColor.HasValue)
                         {
-                            Pango.AttrForeground fg = new Pango.AttrForeground(Convert.ToUInt16(item.ForeColor.Value.R * 257), Convert.ToUInt16(item.ForeColor.Value.G * 257), Convert.ToUInt16(item.ForeColor.Value.B * 257));
+                            Pango.AttrForeground fg = new Pango.AttrForeground(
+                                Convert.ToUInt16(item.ForeColor.Value.R * 257),
+                                Convert.ToUInt16(item.ForeColor.Value.G * 257),
+                                Convert.ToUInt16(item.ForeColor.Value.B * 257));
                             attributes.Insert(fg);
-
                         }
+
                         if (item.BackColor.HasValue)
                         {
-                            Pango.AttrBackground fg = new Pango.AttrBackground(Convert.ToUInt16(item.BackColor.Value.R * 257), Convert.ToUInt16(item.BackColor.Value.G * 257), Convert.ToUInt16(item.BackColor.Value.B * 257));
+                            Pango.AttrBackground fg = new Pango.AttrBackground(
+                                Convert.ToUInt16(item.BackColor.Value.R * 257),
+                                Convert.ToUInt16(item.BackColor.Value.G * 257),
+                                Convert.ToUInt16(item.BackColor.Value.B * 257));
                             attributes.Insert(fg);
                         }
+
                         lab.Halign = Gtk.Align.Start;
                         lab.Valign = Gtk.Align.Fill;
                         lab.Text = item.Text;
                         hBox.PackStart(lab, false, false, 0);
                     }
                 }
+
                 if (IsCacheUpdate == false)
                     self.ShowAll();
             }
@@ -612,7 +681,8 @@ namespace System.Windows.Forms
                     {
                         if (Sorting == SortOrder.Descending)
                         {
-                            position = Groups.OrderByDescending(o => o.Header).ToList().FindIndex(g => g.Name == group.Name);
+                            position = Groups.OrderByDescending(o => o.Header).ToList()
+                                .FindIndex(g => g.Name == group.Name);
                         }
                         else if (Sorting == SortOrder.Ascending)
                         {
@@ -634,7 +704,11 @@ namespace System.Windows.Forms
                     Gtk.Box groupbox = new Box(Gtk.Orientation.Horizontal, 0);
                     groupbox.StyleContext.AddClass("GroupTitle");
                     groupbox.MarginStart = 3;
-                    var title = new Gtk.Label(group.Header) { Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Center, Ellipsize = Pango.EllipsizeMode.End };
+                    var title = new Gtk.Label(group.Header)
+                    {
+                        Xalign = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.Center,
+                        Ellipsize = Pango.EllipsizeMode.End
+                    };
                     groupbox.PackStart(title, false, false, 0);
                     Gtk.Viewport groupline = new Gtk.Viewport();
                     groupline.StyleContext.AddClass("GroupLine");
@@ -666,13 +740,18 @@ namespace System.Windows.Forms
                     hBox.PackStart(groupbox, false, false, 0);
                     if (!string.IsNullOrEmpty(group.Subtitle))
                     {
-                        var subtitle = new Gtk.Label(group.Subtitle) { Xalign = 0, Halign = Gtk.Align.Fill, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
+                        var subtitle = new Gtk.Label(group.Subtitle)
+                        {
+                            Xalign = 0, Halign = Gtk.Align.Fill, Valign = Gtk.Align.Start,
+                            Ellipsize = Pango.EllipsizeMode.End
+                        };
                         subtitle.MarginStart = 3;
                         subtitle.MarginBottom = 2;
                         subtitle.StyleContext.AddClass("GroupSubTitle");
                         hBox.PackStart(subtitle, false, false, 0);
                     }
                 }
+
                 if (_flow.Parent != null)
                     return;
 
@@ -688,9 +767,11 @@ namespace System.Windows.Forms
                     if (this.AllowColumnReorder && SortingColumnIndex > -1)
                     {
                         if (this.Sorting == SortOrder.Ascending)
-                            return fbc2.Data[SortingColumnIndex].ToString().CompareTo(fbc1.Data[SortingColumnIndex].ToString());
+                            return fbc2.Data[SortingColumnIndex].ToString()
+                                .CompareTo(fbc1.Data[SortingColumnIndex].ToString());
                         else if (this.Sorting == SortOrder.Descending)
-                            return fbc1.Data[SortingColumnIndex].ToString().CompareTo(fbc2.Data[SortingColumnIndex].ToString());
+                            return fbc1.Data[SortingColumnIndex].ToString()
+                                .CompareTo(fbc2.Data[SortingColumnIndex].ToString());
                         else
                             return fbc2.Index.CompareTo(fbc1.Index);
                     }
@@ -704,13 +785,18 @@ namespace System.Windows.Forms
                 {
                     if (!string.IsNullOrEmpty(group.Footer))
                     {
-                        var footer = new Gtk.Label(group.Footer) { Xalign = 0, Halign = Gtk.Align.Fill, Valign = Gtk.Align.Start, Ellipsize = Pango.EllipsizeMode.End };
+                        var footer = new Gtk.Label(group.Footer)
+                        {
+                            Xalign = 0, Halign = Gtk.Align.Fill, Valign = Gtk.Align.Start,
+                            Ellipsize = Pango.EllipsizeMode.End
+                        };
                         footer.MarginStart = 3;
                         footer.MarginTop = 2;
                         footer.StyleContext.AddClass("GroupSubTitle");
                         hBox.PackEnd(footer, false, false, 0);
                     }
                 }
+
                 flowBoxContainer.PackStart(hBox, false, true, 0);
                 if (position > -1)
                 {
@@ -718,6 +804,7 @@ namespace System.Windows.Forms
                 }
             }
         }
+
         private void _flow_ChildActivated(object o, Gtk.ChildActivatedArgs args)
         {
             ListViewItem item = this.Items[Convert.ToInt32(args.Child.Data["ItemId"])];
@@ -733,6 +820,7 @@ namespace System.Windows.Forms
                 if (SelectedIndexChanged != null)
                     SelectedIndexChanged(this, args);
             }
+
             if (ItemActivate != null)
                 ItemActivate(this, args);
 
@@ -742,6 +830,7 @@ namespace System.Windows.Forms
             if (Click != null)
                 Click(this, args);
         }
+
         public void Sort()
         {
             foreach (Gtk.Box vbox in flowBoxContainer.AllChildren)
@@ -755,44 +844,39 @@ namespace System.Windows.Forms
                 }
             }
         }
+
         private bool IsCacheUpdate;
+
         public void BeginUpdate()
         {
             IsCacheUpdate = true;
         }
+
         public void EndUpdate()
         {
             IsCacheUpdate = false;
             self.Window.ProcessUpdates(true);
             self.ShowAll();
         }
+
         public class CheckedIndexCollection : List<int>
         {
-
             public CheckedIndexCollection(ListView owner)
             {
-
             }
-
         }
 
         [ListBindable(false)]
         public class CheckedListViewItemCollection : List<ListViewItem>
         {
-
             public virtual ListViewItem this[string key]
             {
-                get
-                {
-                    return this.Find(w => w.Name == key);
-                }
+                get { return this.Find(w => w.Name == key); }
             }
 
             public CheckedListViewItemCollection(ListView owner)
             {
-
             }
-
         }
 
         [ListBindable(false)]
@@ -810,20 +894,13 @@ namespace System.Windows.Forms
 
             public virtual ColumnHeader this[string key]
             {
-                get
-                {
-                    return base.Find(o => o.Name == key);
-                }
+                get { return base.Find(o => o.Name == key); }
             }
 
             public bool IsReadOnly
             {
-                get
-                {
-                    return false;
-                }
+                get { return false; }
             }
-
 
             public virtual void RemoveByKey(string key)
             {
@@ -860,7 +937,8 @@ namespace System.Windows.Forms
                 return Add(key, text, width, HorizontalAlignment.Left, "");
             }
 
-            public virtual ColumnHeader Add(string key, string text, int width, HorizontalAlignment textAlign, string imageKey)
+            public virtual ColumnHeader Add(string key, string text, int width, HorizontalAlignment textAlign,
+                string imageKey)
             {
                 ColumnHeader header = new ColumnHeader();
                 header.Name = key;
@@ -875,7 +953,8 @@ namespace System.Windows.Forms
                 return header;
             }
 
-            public virtual ColumnHeader Add(string key, string text, int width, HorizontalAlignment textAlign, int imageIndex)
+            public virtual ColumnHeader Add(string key, string text, int width, HorizontalAlignment textAlign,
+                int imageIndex)
             {
                 ColumnHeader header = new ColumnHeader();
                 header.Name = key;
@@ -907,7 +986,6 @@ namespace System.Windows.Forms
                 return base.Contains(base.Find(o => o.Name == key));
             }
 
-
             public void Insert(int index, string text, int width, HorizontalAlignment textAlign)
             {
                 Insert(index, "", text, width, textAlign, null);
@@ -926,7 +1004,6 @@ namespace System.Windows.Forms
             public void Insert(int index, string key, string text)
             {
                 Insert(index, key, text, 0, HorizontalAlignment.Center, null);
-
             }
 
             public void Insert(int index, string key, string text, int width)
@@ -934,7 +1011,8 @@ namespace System.Windows.Forms
                 Insert(index, key, text, width, HorizontalAlignment.Center, null);
             }
 
-            public void Insert(int index, string key, string text, int width, HorizontalAlignment textAlign, string imageKey)
+            public void Insert(int index, string key, string text, int width, HorizontalAlignment textAlign,
+                string imageKey)
             {
                 ColumnHeader header = new ColumnHeader();
                 header._index = index;
@@ -947,7 +1025,8 @@ namespace System.Windows.Forms
                 base.Insert(index, header);
             }
 
-            public void Insert(int index, string key, string text, int width, HorizontalAlignment textAlign, int imageIndex)
+            public void Insert(int index, string key, string text, int width, HorizontalAlignment textAlign,
+                int imageIndex)
             {
                 ColumnHeader header = new ColumnHeader();
                 header._index = index;
@@ -960,7 +1039,9 @@ namespace System.Windows.Forms
                 base.Insert(index, header);
             }
         }
+
         private ListViewGroup _defaultGroup;
+
         internal ListViewGroup DefaultGroup
         {
             get
@@ -969,66 +1050,67 @@ namespace System.Windows.Forms
                 {
                     _defaultGroup = ListViewGroup.GetDefaultListViewGroup();
                 }
+
                 return _defaultGroup;
             }
         }
 
         [ListBindable(false)]
-		public class ListViewItemCollection : List<ListViewItem>, IList
-		{
+        public class ListViewItemCollection : List<ListViewItem>, IList
+        {
             ListView _owner;
-			public virtual ListViewItem this[string key]
-			{
-				get
-				{
-					return base.Find(w => w.Name == key);
-				}
-			}
+
+            public virtual ListViewItem this[string key]
+            {
+                get { return base.Find(w => w.Name == key); }
+            }
 
             public ListViewItemCollection(ListView owner)
-			{
-				_owner = owner;
+            {
+                _owner = owner;
             }
 
             public new void Add(ListViewItem item)
             {
                 AddCore(item, -1);
             }
-			public virtual ListViewItem Add(string text)
-			{
-				return Add("", text, -1);
+
+            public virtual ListViewItem Add(string text)
+            {
+                return Add("", text, -1);
             }
 
-			public virtual ListViewItem Add(string text, int imageIndex)
-			{
+            public virtual ListViewItem Add(string text, int imageIndex)
+            {
                 return Add("", text, imageIndex);
             }
 
-			public virtual ListViewItem Add(string text, string imageKey)
+            public virtual ListViewItem Add(string text, string imageKey)
             {
                 SortedSet<ListViewItem> dd = new SortedSet<ListViewItem>();
 
                 return Add("", text, imageKey);
             }
 
-			public virtual ListViewItem Add(string key, string text, string imageKey)
-			{
-				ListViewItem item = new ListViewItem(text,imageKey);
+            public virtual ListViewItem Add(string key, string text, string imageKey)
+            {
+                ListViewItem item = new ListViewItem(text, imageKey);
                 item.Name = key;
-				item.Text = text;
+                item.Text = text;
                 AddCore(item, -1);
                 return item;
             }
 
-			public virtual ListViewItem Add(string key, string text, int imageIndex)
-			{
-                ListViewItem item = new ListViewItem(text,imageIndex);
+            public virtual ListViewItem Add(string key, string text, int imageIndex)
+            {
+                ListViewItem item = new ListViewItem(text, imageIndex);
                 item.Name = key;
                 AddCore(item, -1);
                 return item;
             }
+
             private void AddCore(ListViewItem item, int position)
-			{
+            {
                 item.Index = Count;
                 if (item.Group == null)
                     item.Group = _owner.DefaultGroup;
@@ -1036,182 +1118,171 @@ namespace System.Windows.Forms
                 base.Add(item);
                 _owner.NativeAdd(item, position);
             }
+
             public void AddRange(ListViewItem[] items)
             {
                 foreach (ListViewItem item in items)
                 {
                     AddCore(item, -1);
-                }   
+                }
             }
 
-			public void AddRange(ListViewItemCollection items)
-			{
-				 foreach(ListViewItem item in items)
-                    AddCore(item,-1);
-			}
-
-			public virtual bool ContainsKey(string key)
-			{
-				return base.FindIndex(w => w.Name == key) > -1;
+            public void AddRange(ListViewItemCollection items)
+            {
+                foreach (ListViewItem item in items)
+                    AddCore(item, -1);
             }
 
-			public void CopyTo(Array dest, int index)
-			{
-				throw null;
-			}
+            public virtual bool ContainsKey(string key)
+            {
+                return base.FindIndex(w => w.Name == key) > -1;
+            }
 
-			public ListViewItem[] Find(string key, bool searchAllSubItems)
-			{
-				if(searchAllSubItems)
-					return base.FindAll(w => w.Name == key && w.SubItems.ContainsKey(key)).ToArray();
-				else
+            public void CopyTo(Array dest, int index)
+            {
+                throw null;
+            }
+
+            public ListViewItem[] Find(string key, bool searchAllSubItems)
+            {
+                if (searchAllSubItems)
+                    return base.FindAll(w => w.Name == key && w.SubItems.ContainsKey(key)).ToArray();
+                else
                     return base.FindAll(w => w.Name == key).ToArray();
             }
 
-			public virtual int IndexOfKey(string key)
-			{
-				return base.FindIndex(w => w.Name == key);
-			}
+            public virtual int IndexOfKey(string key)
+            {
+                return base.FindIndex(w => w.Name == key);
+            }
 
-			public ListViewItem Insert(int index, string text)
-			{
+            public ListViewItem Insert(int index, string text)
+            {
                 return Insert(index, "", text, -1);
             }
 
-			public ListViewItem Insert(int index, string text, int imageIndex)
-			{
+            public ListViewItem Insert(int index, string text, int imageIndex)
+            {
                 return Insert(index, "", text, imageIndex);
             }
 
-			public ListViewItem Insert(int index, string text, string imageKey)
-			{
-				return Insert(index, "", text, imageKey);
+            public ListViewItem Insert(int index, string text, string imageKey)
+            {
+                return Insert(index, "", text, imageKey);
             }
 
-			public virtual ListViewItem Insert(int index, string key, string text, string imageKey)
-			{
+            public virtual ListViewItem Insert(int index, string key, string text, string imageKey)
+            {
                 ListViewItem item = new ListViewItem(text, imageKey);
                 item.Name = key;
                 base.Insert(index, item);
                 return item;
             }
 
-			public virtual ListViewItem Insert(int index, string key, string text, int imageIndex)
-			{
+            public virtual ListViewItem Insert(int index, string key, string text, int imageIndex)
+            {
                 ListViewItem item = new ListViewItem(text, imageIndex);
                 item.Name = key;
-				base.Insert(index, item);
-				return item;
-			}
+                base.Insert(index, item);
+                return item;
+            }
 
-			public virtual void RemoveByKey(string key)
-			{
-				base.Remove(base.Find(w => w.Name == key));
-			}
+            public virtual void RemoveByKey(string key)
+            {
+                base.Remove(base.Find(w => w.Name == key));
+            }
+
             public new void Clear()
             {
                 if (_owner != null)
                     _owner.NativeItemsClear();
                 base.Clear();
             }
-		}
+        }
 
-		[ListBindable(false)]
-		public class SelectedIndexCollection : List<int>
-		{
-			
-		}
-
-		[ListBindable(false)]
-		public class SelectedListViewItemCollection : List<ListViewItem>
+        [ListBindable(false)]
+        public class SelectedIndexCollection : List<int>
         {
-		
-		}
+        }
 
+        [ListBindable(false)]
+        public class SelectedListViewItemCollection : List<ListViewItem>
+        {
+        }
 
-		public ItemActivation Activation { get; set; }
+        public ItemActivation Activation { get; set; }
 
         public bool CheckBoxes { get; set; }
 
         public CheckedIndexCollection CheckedIndices
-		{
-			get
-			{
+        {
+            get
+            {
                 CheckedIndexCollection selecteditems = new CheckedIndexCollection(this);
                 foreach (ListViewItem item in CheckedItems)
                 {
                     selecteditems.Add(item.Index);
                 }
+
                 return selecteditems;
             }
-		}
+        }
 
-		public CheckedListViewItemCollection CheckedItems
-		{
-			get
-			{
+        public CheckedListViewItemCollection CheckedItems
+        {
+            get
+            {
                 CheckedListViewItemCollection selecteditems = new CheckedListViewItemCollection(this);
-                foreach(ListViewItem item in this.Items)
+                foreach (ListViewItem item in this.Items)
                 {
                     if (item.Checked)
                     {
                         selecteditems.Add(item);
                     }
                 }
+
                 return selecteditems;
             }
-		}
-		public ColumnHeaderCollection Columns
-		{
-			get
-			{
-				return _columns;
-			}
-		}
+        }
 
-		public bool FullRowSelect { get; set; }
+        public ColumnHeaderCollection Columns
+        {
+            get { return _columns; }
+        }
+
+        public bool FullRowSelect { get; set; }
 
         public ListViewGroupCollection Groups
-		{
-			get
-			{
-                return _groups;
-            }
-		}
+        {
+            get { return _groups; }
+        }
 
-		public ListViewItemCollection Items
-		{
-			get
-			{
-                return _items;
-            }
-		}
+        public ListViewItemCollection Items
+        {
+            get { return _items; }
+        }
 
-		public IComparer ListViewItemSorter
-		{
-			get;
-			set;
-		}
+        public IComparer ListViewItemSorter { get; set; }
 
-		public SelectedIndexCollection SelectedIndices
-		{
-			get
-			{
+        public SelectedIndexCollection SelectedIndices
+        {
+            get
+            {
                 SelectedIndexCollection selecteditems = new SelectedIndexCollection();
-                foreach(ListViewItem item in SelectedItems)
+                foreach (ListViewItem item in SelectedItems)
                 {
                     selecteditems.Add(item.Index);
                 }
-               
+
                 return selecteditems;
             }
-		}
+        }
 
-		public SelectedListViewItemCollection SelectedItems
-		{
-			get
-			{
-				SelectedListViewItemCollection selecteditems = new SelectedListViewItemCollection();
+        public SelectedListViewItemCollection SelectedItems
+        {
+            get
+            {
+                SelectedListViewItemCollection selecteditems = new SelectedListViewItemCollection();
                 foreach (ListViewItem item in this.Items)
                 {
                     if (item.Selected)
@@ -1219,15 +1290,17 @@ namespace System.Windows.Forms
                         selecteditems.Add(item);
                     }
                 }
+
                 return selecteditems;
             }
-		}
+        }
 
-		public void Clear()
-		{
+        public void Clear()
+        {
             Items.Clear();
             Groups.Clear();
         }
+
         internal void NativeItemsClear()
         {
             foreach (Gtk.Box vbox in flowBoxContainer.AllChildren)
@@ -1242,6 +1315,7 @@ namespace System.Windows.Forms
                 }
             }
         }
+
         internal void NativeGroupsClear()
         {
             foreach (Gtk.Box vbox in flowBoxContainer.AllChildren)
@@ -1253,28 +1327,33 @@ namespace System.Windows.Forms
                         foreach (Gtk.FlowBoxChild child in _flow.Children)
                             _flow.Remove(child);
                     }
+
                     vbox.Remove(flow);
                 }
+
                 flowBoxContainer.Remove(vbox);
             }
         }
+
         public ListViewItem FindItemWithText(string text)
-		{
+        {
             return Items.Find(w => w.Text == text);
         }
 
-		public ListViewItem FindItemWithText(string text, bool includeSubItemsInSearch, int startIndex)
-		{
+        public ListViewItem FindItemWithText(string text, bool includeSubItemsInSearch, int startIndex)
+        {
             int idx = Items.FindIndex(startIndex, w => w.Text == text);
             return idx == -1 ? null : Items[idx];
         }
 
-		public ListViewItem FindItemWithText(string text, bool includeSubItemsInSearch, int startIndex, bool isPrefixSearch)
-		{
+        public ListViewItem FindItemWithText(string text, bool includeSubItemsInSearch, int startIndex,
+            bool isPrefixSearch)
+        {
             int idx = Items.FindIndex(startIndex, w => w.Text == text);
             return idx == -1 ? null : Items[idx];
         }
-       // public override event MouseEventHandler MouseDown;
+
+        // public override event MouseEventHandler MouseDown;
         public ListViewItem GetItemAt(int x, int y)
         {
             foreach (Gtk.Box vbox in flowBoxContainer.Children)
@@ -1295,21 +1374,22 @@ namespace System.Windows.Forms
                     }
                 }
             }
+
             return null;
         }
 
         public Drawing.Rectangle GetItemRect(int index)
-		{
+        {
             throw null;
-		}
+        }
 
         public event ColumnClickEventHandler ColumnClick;
         public event ColumnReorderedEventHandler ColumnReordered;
         public event ItemCheckEventHandler ItemCheck;
         public event ItemCheckedEventHandler ItemChecked;
         public event ListViewItemSelectionChangedEventHandler ItemSelectionChanged;
-		public event EventHandler SelectedIndexChanged;
-		public override event EventHandler Click;
-		public event EventHandler ItemActivate;
+        public event EventHandler SelectedIndexChanged;
+        public override event EventHandler Click;
+        public event EventHandler ItemActivate;
     }
 }

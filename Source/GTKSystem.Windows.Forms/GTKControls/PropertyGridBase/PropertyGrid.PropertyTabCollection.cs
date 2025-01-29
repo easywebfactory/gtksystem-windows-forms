@@ -1,5 +1,4 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms.Design;
@@ -36,10 +35,7 @@ namespace System.Windows.Forms
 
             public PropertyTab this[int index]
             {
-                get
-                {
-                    return _ownerPropertyGrid._tabs[index].Tab;
-                }
+                get { return _ownerPropertyGrid._tabs[index].Tab; }
             }
 
             public void AddTabType(Type propertyTabType)

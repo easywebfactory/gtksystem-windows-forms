@@ -4,6 +4,7 @@
  * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+
 using System.IO;
 
 namespace System.Windows.Forms
@@ -13,21 +14,26 @@ namespace System.Windows.Forms
         public SaveFileDialog()
         {
         }
+
         private new string Description => base.Description;
+
         public bool CheckWriteAccess
         {
             get => true;
             set { }
         }
+
         public Stream OpenFile()
         {
             string filename = FileName;
-            if(string.IsNullOrEmpty(filename))
+            if (string.IsNullOrEmpty(filename))
             {
                 throw new ArgumentNullException("filename");
             }
+
             return new FileStream(filename, FileMode.Create, FileAccess.ReadWrite);
         }
+
         public override DialogResult ShowDialog(IWin32Window owner)
         {
             ActionType = Gtk.FileChooserAction.Save;

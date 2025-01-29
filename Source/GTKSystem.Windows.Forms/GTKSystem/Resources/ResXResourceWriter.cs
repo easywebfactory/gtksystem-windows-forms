@@ -34,13 +34,17 @@ namespace System.Resources
 
         private Hashtable _cachedAliases;
 
-        private static readonly TraceSwitch s_resValueProviderSwitch = new TraceSwitch("ResX", "Debug the resource value provider");
+        private static readonly TraceSwitch s_resValueProviderSwitch =
+            new TraceSwitch("ResX", "Debug the resource value provider");
 
 #pragma warning disable IDE1006 // Naming Styles (Shipped public API)
         public static readonly string BinSerializedObjectMimeType = "application/x-microsoft.net.object.binary.base64";
         public static readonly string SoapSerializedObjectMimeType = "application/x-microsoft.net.object.soap.base64";
         public static readonly string DefaultSerializedObjectMimeType = BinSerializedObjectMimeType;
-        public static readonly string ByteArraySerializedObjectMimeType = "application/x-microsoft.net.object.bytearray.base64";
+
+        public static readonly string ByteArraySerializedObjectMimeType =
+            "application/x-microsoft.net.object.bytearray.base64";
+
         public static readonly string ResMimeType = "text/microsoft-resx";
         public static readonly string Version = "2.0";
 
@@ -102,7 +106,8 @@ namespace System.Resources
         private bool _hasBeenSaved;
         private bool _initialized;
 
-        private readonly Func<Type, string> _typeNameConverter; // no public property to be consistent with ResXDataNode class.
+        private readonly Func<Type, string>
+            _typeNameConverter; // no public property to be consistent with ResXDataNode class.
 
         /// <summary>
         ///  Base Path for ResXFileRefs.
@@ -221,7 +226,8 @@ namespace System.Resources
                 _xmlTextWriter.WriteAttributeString(NameStr, ReaderStr);
                 _xmlTextWriter.WriteStartElement(ValueStr);
                 {
-                    _xmlTextWriter.WriteString(MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXResourceReader), _typeNameConverter));
+                    _xmlTextWriter.WriteString(
+                        MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXResourceReader), _typeNameConverter));
                 }
 
                 _xmlTextWriter.WriteEndElement();
@@ -234,7 +240,8 @@ namespace System.Resources
                 _xmlTextWriter.WriteAttributeString(NameStr, WriterStr);
                 _xmlTextWriter.WriteStartElement(ValueStr);
                 {
-                    _xmlTextWriter.WriteString(MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXResourceWriter), _typeNameConverter));
+                    _xmlTextWriter.WriteString(
+                        MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXResourceWriter), _typeNameConverter));
                 }
 
                 _xmlTextWriter.WriteEndElement();
@@ -350,7 +357,8 @@ namespace System.Resources
         /// </summary>
         private void AddDataRow(string elementName, string name, byte[] value)
         {
-            AddDataRow(elementName, name, ToBase64WrappedString(value), TypeNameWithAssembly(typeof(byte[])), null, null);
+            AddDataRow(elementName, name, ToBase64WrappedString(value), TypeNameWithAssembly(typeof(byte[])), null,
+                null);
         }
 
         /// <summary>
@@ -370,20 +378,20 @@ namespace System.Resources
                     AddDataRow(elementName, name, bytes);
                     break;
                 case ResXFileRef fileRef:
-                    {
-                        ResXDataNode node = new ResXDataNode(name, fileRef, _typeNameConverter);
-                        DataNodeInfo info = node.GetDataNodeInfo();
-                        AddDataRow(elementName, info.Name, info.ValueData, info.TypeName, info.MimeType, info.Comment);
-                        break;
-                    }
+                {
+                    ResXDataNode node = new ResXDataNode(name, fileRef, _typeNameConverter);
+                    DataNodeInfo info = node.GetDataNodeInfo();
+                    AddDataRow(elementName, info.Name, info.ValueData, info.TypeName, info.MimeType, info.Comment);
+                    break;
+                }
 
                 default:
-                    {
-                        ResXDataNode node = new ResXDataNode(name, value, _typeNameConverter);
-                        DataNodeInfo info = node.GetDataNodeInfo();
-                        AddDataRow(elementName, info.Name, info.ValueData, info.TypeName, info.MimeType, info.Comment);
-                        break;
-                    }
+                {
+                    ResXDataNode node = new ResXDataNode(name, value, _typeNameConverter);
+                    DataNodeInfo info = node.GetDataNodeInfo();
+                    AddDataRow(elementName, info.Name, info.ValueData, info.TypeName, info.MimeType, info.Comment);
+                    break;
+                }
             }
         }
 
@@ -404,7 +412,8 @@ namespace System.Resources
         ///  Adds a new row to the Resources table. This helper is used because
         ///  we want to always late bind to the columns for greater flexibility.
         /// </summary>
-        private void AddDataRow(string elementName, string name, string value, string type, string mimeType, string comment)
+        private void AddDataRow(string elementName, string name, string value, string type, string mimeType,
+            string comment)
         {
             if (_hasBeenSaved)
             {
@@ -426,7 +435,8 @@ namespace System.Resources
                         }
                         else if (typeObject != null)
                         {
-                            assemblyName = GetFullName(MultitargetUtil.GetAssemblyQualifiedName(typeObject, _typeNameConverter));
+                            assemblyName =
+                                GetFullName(MultitargetUtil.GetAssemblyQualifiedName(typeObject, _typeNameConverter));
                             alias = GetAliasFromName(new AssemblyName(assemblyName));
                         }
                     }
@@ -465,7 +475,8 @@ namespace System.Resources
                     Writer.WriteAttributeString(MimeTypeStr, mimeType);
                 }
 
-                if ((type is null && mimeType is null) || (type != null && type.StartsWith("System.Char", StringComparison.Ordinal)))
+                if ((type is null && mimeType is null) ||
+                    (type != null && type.StartsWith("System.Char", StringComparison.Ordinal)))
                 {
                     Writer.WriteAttributeString("xml", "space", null, "preserve");
                 }
@@ -599,7 +610,9 @@ namespace System.Resources
             string raw = Convert.ToBase64String(data);
             if (raw.Length > lineWrap)
             {
-                StringBuilder output = new StringBuilder(raw.Length + (raw.Length / lineWrap) * 3); // word wrap on lineWrap chars, \r\n
+                StringBuilder
+                    output = new StringBuilder(raw.Length +
+                                               (raw.Length / lineWrap) * 3); // word wrap on lineWrap chars, \r\n
                 int current = 0;
                 for (; current < raw.Length - lineWrap; current += lineWrap)
                 {

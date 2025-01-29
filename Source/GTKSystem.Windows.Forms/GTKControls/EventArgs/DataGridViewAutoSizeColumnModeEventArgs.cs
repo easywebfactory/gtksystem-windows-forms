@@ -6,7 +6,8 @@ namespace System.Windows.Forms
 {
     public class DataGridViewAutoSizeColumnModeEventArgs : EventArgs
     {
-        public DataGridViewAutoSizeColumnModeEventArgs(DataGridViewColumn dataGridViewColumn, DataGridViewAutoSizeColumnMode previousMode)
+        public DataGridViewAutoSizeColumnModeEventArgs(DataGridViewColumn dataGridViewColumn,
+            DataGridViewAutoSizeColumnMode previousMode)
         {
             Column = dataGridViewColumn;
             PreviousMode = previousMode;

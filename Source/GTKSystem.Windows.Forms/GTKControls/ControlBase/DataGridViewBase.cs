@@ -3,6 +3,7 @@
     public sealed class DataGridViewBase : ScrollableBoxBase
     {
         internal Gtk.TreeView GridView = new Gtk.TreeView();
+
         public DataGridViewBase() : base()
         {
             this.Override = new GtkControlOverride(this);

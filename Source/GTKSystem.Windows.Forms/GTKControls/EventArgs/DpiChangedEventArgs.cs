@@ -17,7 +17,6 @@ namespace System.Windows.Forms
         /// </summary>
         internal DpiChangedEventArgs(int old, Message m)
         {
-
         }
 
         public int DeviceDpiOld { get; }

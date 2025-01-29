@@ -1,8 +1,8 @@
 namespace System.Windows.Forms
 {
-	public enum ToolStripItemImageScaling
-	{
-		None,
-		SizeToFit
-	}
+    public enum ToolStripItemImageScaling
+    {
+        None,
+        SizeToFit
+    }
 }

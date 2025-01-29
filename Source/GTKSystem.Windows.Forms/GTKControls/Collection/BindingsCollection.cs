@@ -31,9 +31,10 @@ namespace System.Windows.Forms
 
         protected virtual void AddCore(Binding dataBinding)
         {
-           // ArgumentNullException.ThrowIfNull(dataBinding);
+            // ArgumentNullException.ThrowIfNull(dataBinding);
             _list.Add(dataBinding);
         }
+
         public event CollectionChangeEventHandler? CollectionChanging
         {
             add => _onCollectionChanging += value;
@@ -53,6 +54,7 @@ namespace System.Windows.Forms
             ClearCore();
             OnCollectionChanged(eventArgs);
         }
+
         protected virtual void ClearCore() => _list.Clear();
 
         protected virtual void OnCollectionChanging(CollectionChangeEventArgs e)

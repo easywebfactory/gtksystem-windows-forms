@@ -9,6 +9,5 @@ namespace System.Windows.Forms.Design
     /// </summary>
     public class ScrollableControlDesigner : ParentControlDesigner
     {
-
     }
 }

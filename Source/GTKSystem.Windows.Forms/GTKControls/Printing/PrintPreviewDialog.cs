@@ -9,7 +9,6 @@ using System.Drawing.Printing;
 
 namespace System.Windows.Forms
 {
-
     [DesignTimeVisible(true)]
     //[DefaultProperty(nameof(Document))]
     [ToolboxItemFilter("System.Windows.Forms.Control.TopLevel")]
@@ -17,14 +16,20 @@ namespace System.Windows.Forms
     public partial class PrintPreviewDialog : ScrollableControl
     {
         public ViewportBase self = new ViewportBase();
-        public override object GtkControl { get => self; }
+
+        public override object GtkControl
+        {
+            get => self;
+        }
+
         private PrintPreviewControl _previewControl;
         private Form previewForm;
         private Gtk.Box box;
-        public PrintPreviewDialog():base()
+
+        public PrintPreviewDialog() : base()
         {
-            
         }
+
         private void Printbutton_ButtonPressEvent(object o, Gtk.ButtonPressEventArgs args)
         {
             PrintDialog printDialog = new PrintDialog();
@@ -34,6 +39,7 @@ namespace System.Windows.Forms
             printDialog.Document.DocumentName = "PrintDoument";
             printDialog.ShowDialog(previewForm);
         }
+
         private void Init()
         {
             previewForm = new Form();
@@ -81,88 +87,49 @@ namespace System.Windows.Forms
         {
             this.Show(null);
         }
+
         public void Show(IWin32Window owner)
         {
             if (owner == this)
             {
                 throw new InvalidOperationException("OwnsSelfOrOwner");
             }
+
             Init();
             previewForm.Show(owner);
         }
+
         public DialogResult ShowDialog(IWin32Window owner)
         {
             Init();
             return previewForm.ShowDialog(owner);
         }
+
         public DialogResult ShowDialog()
         {
             return ShowDialog(null);
         }
-        public System.Drawing.Icon Icon
-        {
-            get;
-            set;
-        }
-        public IButtonControl AcceptButton
-        {
-            get;
-            set;
-        }
-         
-         
-        public bool AutoScale
-        {
-            get;
-            set;
-        }
 
-        public IButtonControl CancelButton
-        {
-            get;
-            set;
-        }
+        public System.Drawing.Icon Icon { get; set; }
+        public IButtonControl AcceptButton { get; set; }
 
-         
-         
-        public bool ControlBox
-        {
-            get;
-            set;
-        } 
-        public bool HelpButton
-        {
-            get;
-            set;
-        }
+        public bool AutoScale { get; set; }
 
-        public bool IsMdiContainer
-        {
-            get;
-            set;
-        }
+        public IButtonControl CancelButton { get; set; }
 
-        public bool KeyPreview
-        {
-            get;
-            set;
-        }
+        public bool ControlBox { get; set; }
+        public bool HelpButton { get; set; }
 
-        
+        public bool IsMdiContainer { get; set; }
+
+        public bool KeyPreview { get; set; }
+
         public event EventHandler MaximumSizeChanged;
-         
+
         public event EventHandler MinimumSizeChanged;
 
-        public FormStartPosition StartPosition
-        {
-            get;
-            set;
-        }
-        public bool TopMost
-        {
-            get;
-            set;
-        }
+        public FormStartPosition StartPosition { get; set; }
+        public bool TopMost { get; set; }
 
         public bool UseAntiAlias
         {
@@ -170,19 +137,10 @@ namespace System.Windows.Forms
             set => PrintPreviewControl.UseAntiAlias = value;
         }
 
-        public PrintDocument Document
-        {
-            get;
-            set;
-        }
+        public PrintDocument Document { get; set; }
 
         public PrintPreviewControl PrintPreviewControl => _previewControl;
 
-        public SizeGripStyle SizeGripStyle
-        {
-            get;
-            set;
-        }
- 
+        public SizeGripStyle SizeGripStyle { get; set; }
     }
 }

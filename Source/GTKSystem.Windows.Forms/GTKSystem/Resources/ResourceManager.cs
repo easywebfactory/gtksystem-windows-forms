@@ -19,15 +19,22 @@ namespace GTKSystem.Resources
         private Assembly _assembly;
         private string _baseName;
         public ResourceInfo GetResourceInfo = new ResourceInfo();
-        public ResourceManager([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) : this(null, null, usingResourceSet)
-        {
 
+        public ResourceManager(
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors |
+                                        DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+            Type? usingResourceSet) : this(null, null, usingResourceSet)
+        {
         }
+
         public ResourceManager(string baseName, Assembly assembly) : this(baseName, assembly, null)
         {
-
         }
-        public ResourceManager(string baseName, Assembly assembly, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) : base(baseName, assembly, usingResourceSet)
+
+        public ResourceManager(string baseName, Assembly assembly,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors |
+                                        DynamicallyAccessedMemberTypes.NonPublicConstructors)]
+            Type? usingResourceSet) : base(baseName, assembly, usingResourceSet)
         {
             this._baseName = baseName;
             this._assembly = assembly;
@@ -36,9 +43,9 @@ namespace GTKSystem.Resources
             GetResourceInfo.BaseName = baseName;
             GetResourceInfo.SourceType = usingResourceSet;
         }
+
         protected ResourceManager()
         {
-
         }
 
         private byte[] ReadResourceFile(string name)
@@ -46,9 +53,11 @@ namespace GTKSystem.Resources
             byte[] result = null;
             try
             {
-                string resourceDirctory = System.AppContext.BaseDirectory.Replace("\\", "/") + $"Resources";//linux路径必须用/
+                string resourceDirctory =
+                    System.AppContext.BaseDirectory.Replace("\\", "/") + $"Resources"; //linux路径必须用/
                 //string resourceDirctory = Environment.CurrentDirectory.Replace("\\", "/") + $"Resources";//linux路径必须用/
-                string filepath = resourceDirctory + $"/{Path.GetExtension(_baseName).TrimStart('.')}.resx"; //linux路径必须用/
+                string filepath =
+                    resourceDirctory + $"/{Path.GetExtension(_baseName).TrimStart('.')}.resx"; //linux路径必须用/
                 if (System.IO.File.Exists(filepath))
                 {
                     try
@@ -72,15 +81,18 @@ namespace GTKSystem.Resources
                             }
                         }
                     }
-                    catch { }
+                    catch
+                    {
+                    }
                 }
             }
             catch (System.Exception ex)
             {
-
             }
+
             return result;
         }
+
         private object ReadResourceData(string name)
         {
             if (_assembly == null)
@@ -90,7 +102,8 @@ namespace GTKSystem.Resources
                 try
                 {
                     Stream stream = _assembly.GetManifestResourceStream(_baseName + ResFileExtension);
-                    GTKSystem.Resources.Extensions.DeserializingResourceReader reader = new GTKSystem.Resources.Extensions.DeserializingResourceReader(stream);
+                    GTKSystem.Resources.Extensions.DeserializingResourceReader reader =
+                        new GTKSystem.Resources.Extensions.DeserializingResourceReader(stream);
                     IDictionaryEnumerator dict = reader.GetEnumerator();
                     while (dict.MoveNext())
                     {
@@ -98,7 +111,7 @@ namespace GTKSystem.Resources
                         {
                             try
                             {
-                                if(dict.Value is ImageListStreamer streamer)
+                                if (dict.Value is ImageListStreamer streamer)
                                 {
                                     streamer.ResourceInfo = GetResourceInfo;
                                     return streamer;
@@ -119,8 +132,10 @@ namespace GTKSystem.Resources
                     return null;
                 }
             }
+
             return null;
         }
+
         private string ReadResourceText(string name)
         {
             if (_assembly == null)
@@ -128,7 +143,8 @@ namespace GTKSystem.Resources
             else
             {
                 Stream stream = _assembly.GetManifestResourceStream(_baseName + ".resources");
-                GTKSystem.Resources.Extensions.DeserializingResourceReader reader = new GTKSystem.Resources.Extensions.DeserializingResourceReader(stream);
+                GTKSystem.Resources.Extensions.DeserializingResourceReader reader =
+                    new GTKSystem.Resources.Extensions.DeserializingResourceReader(stream);
                 IDictionaryEnumerator dict = reader.GetEnumerator();
                 while (dict.MoveNext())
                 {
@@ -145,8 +161,10 @@ namespace GTKSystem.Resources
                     }
                 }
             }
+
             return null;
         }
+
         public override object GetObject(string name, CultureInfo culture)
         {
             object result = GetObject(name);
@@ -160,8 +178,8 @@ namespace GTKSystem.Resources
             {
                 return null;
             }
-
         }
+
         public override object GetObject(string name)
         {
             GetResourceInfo.ResourceName = name;
@@ -185,15 +203,15 @@ namespace GTKSystem.Resources
                             fileName = files[0];
                             filebytes = File.ReadAllBytes(files[0]);
                         }
-
                     }
+
                     if (name.EndsWith(".BackgroundImage"))
                     {
-                        return new System.Drawing.Bitmap(filebytes) { FileName = fileName }; 
+                        return new System.Drawing.Bitmap(filebytes) { FileName = fileName };
                     }
                     else if (name.EndsWith(".Image"))
                     {
-                        return new System.Drawing.Bitmap(filebytes) { FileName = fileName }; 
+                        return new System.Drawing.Bitmap(filebytes) { FileName = fileName };
                     }
                     else if (name.EndsWith(".Icon"))
                     {
@@ -214,7 +232,7 @@ namespace GTKSystem.Resources
                 return obj;
             }
         }
-      
+
         //public  UnmanagedMemoryStream GetStream(string name)
         //{
         //    return GetStream(name);
@@ -237,10 +255,12 @@ namespace GTKSystem.Resources
         {
             return GetString(name, null);
         }
+
         public override string GetString(string name, CultureInfo culture)
         {
             return ReadResourceText(name);
         }
+
         public class ResourceInfo
         {
             public string ResourceName { get; set; }

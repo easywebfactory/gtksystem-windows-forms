@@ -4,8 +4,6 @@
     {
         public DataGridViewRowHeaderCell()
         {
- 
         }
- 
     }
 }

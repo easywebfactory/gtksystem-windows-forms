@@ -32,17 +32,13 @@ namespace System.Windows.Forms
         /// </summary>
         public static InputLanguage CurrentInputLanguage
         {
-            get
-            {
-                return new InputLanguage(PangoHelper.ContextGet().Language.Handle);
-            }
+            get { return new InputLanguage(PangoHelper.ContextGet().Language.Handle); }
             set
             {
                 if (value == null)
                 {
                     value = InputLanguage.DefaultInputLanguage;
                 }
-            
             }
         }
 
@@ -51,10 +47,7 @@ namespace System.Windows.Forms
         /// </summary>
         public static InputLanguage DefaultInputLanguage
         {
-            get
-            {
-                return new InputLanguage(PangoHelper.ContextGet().Language.Handle);
-            }
+            get { return new InputLanguage(PangoHelper.ContextGet().Language.Handle); }
         }
 
         /// <summary>
@@ -87,11 +80,7 @@ namespace System.Windows.Forms
         /// </summary>
         public string LayoutName
         {
-            get
-            {
-               
-                return PangoHelper.ContextGet().Language.ToString();
-            }
+            get { return PangoHelper.ContextGet().Language.ToString(); }
         }
 
         /// <summary>
@@ -111,6 +100,7 @@ namespace System.Windows.Forms
             {
                 throw new ArgumentNullException(nameof(culture));
             }
+
             // KeyboardLayoutId is the LCID for built-in cultures, but it
             // is the CU-preferred keyboard language for custom cultures.
             int lcid = culture.KeyboardLayoutId;
@@ -122,6 +112,7 @@ namespace System.Windows.Forms
                     return lang;
                 }
             }
+
             return DefaultInputLanguage;
         }
 

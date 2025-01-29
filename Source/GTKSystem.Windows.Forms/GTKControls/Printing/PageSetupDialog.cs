@@ -20,17 +20,13 @@ namespace System.Windows.Forms
 
         public PageSetupDialog() => Reset();
 
-        [DefaultValue(true)]
-        public bool AllowMargins { get; set; }
+        [DefaultValue(true)] public bool AllowMargins { get; set; }
 
-        [DefaultValue(true)]
-        public bool AllowOrientation { get; set; }
+        [DefaultValue(true)] public bool AllowOrientation { get; set; }
 
-        [DefaultValue(true)]
-        public bool AllowPaper { get; set; }
+        [DefaultValue(true)] public bool AllowPaper { get; set; }
 
-        [DefaultValue(true)]
-        public bool AllowPrinter { get; set; }
+        [DefaultValue(true)] public bool AllowPrinter { get; set; }
 
         [DefaultValue(null)]
         public PrintDocument Document
@@ -84,11 +80,9 @@ namespace System.Windows.Forms
             }
         }
 
-        [DefaultValue(false)]
-        public bool ShowHelp { get; set; }
+        [DefaultValue(false)] public bool ShowHelp { get; set; }
 
-        [DefaultValue(true)]
-        public bool ShowNetwork { get; set; }
+        [DefaultValue(true)] public bool ShowNetwork { get; set; }
 
         public override void Reset()
         {
@@ -110,7 +104,8 @@ namespace System.Windows.Forms
             {
                 Gtk.Window window = Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive);
                 Gtk.PrintSettings printSettings = new Gtk.PrintSettings();
-                PageSetup pageSetup = Gtk.Print.RunPageSetupDialog(owner == null ? window : ((Form)owner).self, _printDocument.PageSetup ?? new Gtk.PageSetup(), printSettings);
+                PageSetup pageSetup = Gtk.Print.RunPageSetupDialog(owner == null ? window : ((Form)owner).self,
+                    _printDocument.PageSetup ?? new Gtk.PageSetup(), printSettings);
                 _printDocument.PageSetup = pageSetup;
                 return true;
             }

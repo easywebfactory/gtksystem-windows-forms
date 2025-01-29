@@ -1,9 +1,9 @@
-﻿  /*
-   * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
-   * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
-   * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
-   * author:chenhongjin
-   */
+﻿/*
+ * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
+ * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
+ * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * author:chenhongjin
+ */
 
 using System.Collections;
 using System.Collections.Generic;
@@ -20,6 +20,7 @@ namespace System.Windows.Forms
             Gtk.Container __ownerControl;
             Control __owner;
             Type __itemType;
+
             public ControlCollection(Control owner)
             {
                 __ownerControl = owner.GtkControl as Gtk.Container;
@@ -35,6 +36,7 @@ namespace System.Windows.Forms
                 __ownerControl.Mapped += __ownerControl_Mapped;
                 __ownerControl.ResizeChecked += __ownerControl_ResizeChecked;
             }
+
             //ResizeChecked可重置布局
             private void __ownerControl_ResizeChecked(object sender, EventArgs e)
             {
@@ -45,6 +47,7 @@ namespace System.Windows.Forms
             }
 
             private bool is__ownerControl_Mapped = false;
+
             private void __ownerControl_Mapped(object sender, EventArgs e)
             {
                 if (is__ownerControl_Mapped == false)
@@ -56,6 +59,7 @@ namespace System.Windows.Forms
                     }
                 }
             }
+
             private void ResizeMapped(Gtk.Overlay lay)
             {
                 int laywidth = 1;
@@ -66,10 +70,16 @@ namespace System.Windows.Forms
                     {
                         control.Widget.MarginStart = Math.Max(0, control.Widget.MarginStart + Offset.X);
                         control.Widget.MarginTop = Math.Max(0, control.Widget.MarginTop + Offset.Y);
-                        int w = control.Widget.WidthRequest == -1 ? control.Widget.AllocatedWidth : control.Widget.WidthRequest;
-                        int h = control.Widget.HeightRequest == -1 ? control.Widget.AllocatedHeight : control.Widget.HeightRequest;
-                        laywidth = Math.Max(2, Math.Max(laywidth, control.Widget.MarginStart + w + control.Widget.MarginEnd));
-                        layheight = Math.Max(2, Math.Max(layheight, control.Widget.MarginTop + h + control.Widget.MarginBottom));
+                        int w = control.Widget.WidthRequest == -1
+                            ? control.Widget.AllocatedWidth
+                            : control.Widget.WidthRequest;
+                        int h = control.Widget.HeightRequest == -1
+                            ? control.Widget.AllocatedHeight
+                            : control.Widget.HeightRequest;
+                        laywidth = Math.Max(2,
+                            Math.Max(laywidth, control.Widget.MarginStart + w + control.Widget.MarginEnd));
+                        layheight = Math.Max(2,
+                            Math.Max(layheight, control.Widget.MarginTop + h + control.Widget.MarginBottom));
                     }
                     else if (item is Gtk.Widget widget)
                     {
@@ -81,6 +91,7 @@ namespace System.Windows.Forms
                         layheight = Math.Max(2, Math.Max(layheight, widget.MarginTop + h + widget.MarginBottom));
                     }
                 }
+
                 lay.WidthRequest = laywidth;
                 lay.HeightRequest = layheight;
                 foreach (object item in this)
@@ -102,6 +113,7 @@ namespace System.Windows.Forms
                     {
                         icontrol.Parent = __owner;
                     }
+
                     if (__ownerControl is Gtk.Overlay lay)
                     {
                         if (item is StatusStrip statusbar)
@@ -124,8 +136,14 @@ namespace System.Windows.Forms
                         else if (item is Control control)
                         {
                             lay.AddOverlay(control.Widget);
-                            lay.WidthRequest = Math.Max(2, Math.Max(lay.WidthRequest, control.Widget.MarginStart + control.Widget.WidthRequest + control.Widget.MarginEnd));
-                            lay.HeightRequest = Math.Max(2, Math.Max(lay.HeightRequest, control.Widget.MarginTop + control.Widget.HeightRequest + control.Widget.MarginBottom));
+                            lay.WidthRequest = Math.Max(2,
+                                Math.Max(lay.WidthRequest,
+                                    control.Widget.MarginStart + control.Widget.WidthRequest +
+                                    control.Widget.MarginEnd));
+                            lay.HeightRequest = Math.Max(2,
+                                Math.Max(lay.HeightRequest,
+                                    control.Widget.MarginTop + control.Widget.HeightRequest +
+                                    control.Widget.MarginBottom));
                             control.DockChanged += Control_DockChanged;
                             control.AnchorChanged += Control_AnchorChanged;
                             SetMarginEnd(lay, control);
@@ -133,8 +151,10 @@ namespace System.Windows.Forms
                         else if (item is Gtk.Widget widget)
                         {
                             lay.AddOverlay(widget);
-                            lay.WidthRequest = Math.Max(lay.WidthRequest, widget.MarginStart + widget.WidthRequest + widget.MarginEnd);
-                            lay.HeightRequest = Math.Max(lay.HeightRequest, widget.MarginTop + widget.HeightRequest + widget.MarginBottom);
+                            lay.WidthRequest = Math.Max(lay.WidthRequest,
+                                widget.MarginStart + widget.WidthRequest + widget.MarginEnd);
+                            lay.HeightRequest = Math.Max(lay.HeightRequest,
+                                widget.MarginTop + widget.HeightRequest + widget.MarginBottom);
                         }
                     }
                     else if (__ownerControl is Gtk.Fixed lay2)
@@ -175,6 +195,7 @@ namespace System.Windows.Forms
                     }
                 }
             }
+
             private void NativeAdd()
             {
                 try
@@ -198,6 +219,7 @@ namespace System.Windows.Forms
                     SetMarginEnd(lay, control);
                 }
             }
+
             private void Control_DockChanged(object sender, EventArgs e)
             {
                 Control control = sender as Control;
@@ -206,6 +228,7 @@ namespace System.Windows.Forms
                     SetMarginEnd(lay, control);
                 }
             }
+
             private void SetMarginEnd(Gtk.Overlay lay, Control control)
             {
                 if (lay.IsMapped == true)
@@ -214,15 +237,19 @@ namespace System.Windows.Forms
                     if (widget.Halign == Gtk.Align.End || widget.Halign == Gtk.Align.Fill)
                     {
                         if (widget.WidthRequest > 0)
-                            widget.MarginEnd = Math.Max(0, lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
+                            widget.MarginEnd = Math.Max(0,
+                                lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
                     }
+
                     if (widget.Valign == Gtk.Align.End || widget.Valign == Gtk.Align.Fill)
                     {
                         if (widget.HeightRequest > 0)
-                            widget.MarginBottom = Math.Max(0, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
+                            widget.MarginBottom = Math.Max(0,
+                                lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
                     }
                 }
             }
+
             private Gtk.Widget GetFrame(Gtk.Widget widget)
             {
                 Gtk.Widget parent = widget.Parent;
@@ -235,23 +262,26 @@ namespace System.Windows.Forms
                     else
                         parent = parent.Parent;
                 }
+
                 return null;
             }
+
             public virtual void Add(Gtk.Widget value)
             {
                 NativeAdd(value);
             }
+
             public void AddWidget(Gtk.Widget item, Control control)
             {
                 control.Parent = __owner;
                 InnerList.Add(new ArrangedElementWidget(item));
             }
+
             public virtual void Add(Type itemType, Control item)
             {
                 // Overload handling
                 this.Add(item);
             }
-
 
             public object Clone()
             {
@@ -271,6 +301,7 @@ namespace System.Windows.Forms
                 {
                     return;
                 }
+
                 NativeAdd(value);
                 InnerList.Add(value);
             }
@@ -297,6 +328,7 @@ namespace System.Windows.Forms
                 {
                     return;
                 }
+
                 foreach (Control item in controls)
                 {
                     Add(item);
@@ -324,7 +356,10 @@ namespace System.Windows.Forms
                     {
                         return widget.GetWidget?.Name == key;
                     }
-                    else { return false; }
+                    else
+                    {
+                        return false;
+                    }
                 });
                 if (foundControls == null)
                     return new Control[0];
@@ -345,6 +380,7 @@ namespace System.Windows.Forms
                 {
                     return -1;
                 }
+
                 return InnerList.FindIndex(o =>
                 {
                     if (o is Control con)
@@ -355,7 +391,10 @@ namespace System.Windows.Forms
                     {
                         return widget.GetWidget?.Name == key;
                     }
-                    else { return false; }
+                    else
+                    {
+                        return false;
+                    }
                 });
             }
 
@@ -364,7 +403,10 @@ namespace System.Windows.Forms
                 return ((index >= 0) && (index < Count));
             }
 
-            public Control Owner { get => __owner; }
+            public Control Owner
+            {
+                get => __owner;
+            }
 
             public virtual void Remove(Control? value)
             {
@@ -372,6 +414,7 @@ namespace System.Windows.Forms
                 {
                     return;
                 }
+
                 InnerList.Remove(value);
                 __ownerControl.Remove(value.Widget);
             }
@@ -463,7 +506,6 @@ namespace System.Windows.Forms
 
             internal virtual void SetChildIndexInternal(Control child, int newIndex)
             {
-
             }
 
             public virtual void SetChildIndex(Control child, int newIndex) => SetChildIndexInternal(child, newIndex);
@@ -472,11 +514,17 @@ namespace System.Windows.Forms
         internal class ArrangedElementWidget : IArrangedElement
         {
             Gtk.Widget _widget;
+
             internal ArrangedElementWidget(Gtk.Widget widget)
             {
                 _widget = widget;
             }
-            public Gtk.Widget GetWidget { get => _widget; }
+
+            public Gtk.Widget GetWidget
+            {
+                get => _widget;
+            }
+
             public Rectangle Bounds => throw new NotImplementedException();
 
             public Rectangle DisplayRectangle => throw new NotImplementedException();
@@ -489,7 +537,11 @@ namespace System.Windows.Forms
 
             public ArrangedElementCollection Children => throw new NotImplementedException();
 
-            public ISite Site { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            public ISite Site
+            {
+                get => throw new NotImplementedException();
+                set => throw new NotImplementedException();
+            }
 
             public event EventHandler Disposed;
 

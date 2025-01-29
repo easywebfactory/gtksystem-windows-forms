@@ -8,7 +8,8 @@ namespace System.Drawing
     ///     Defines a particular format for text, including font face, size, and style attributes.
     ///     This class cannot be inherited.
     /// </summary>
-    [TypeConverter("System.Drawing.FontConverter, System.Windows.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51")]
+    [TypeConverter(
+        "System.Drawing.FontConverter, System.Windows.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51")]
     public sealed class Font : MarshalByRefObject, ICloneable, IDisposable, ISerializable
     {
         /// <summary>
@@ -23,12 +24,12 @@ namespace System.Drawing
         ///     values of the System.Drawing.FontStyle enumeration can be combined with the OR
         ///     operator.
         /// </param>
-        public Font(Font prototype, FontStyle newStyle) : this(prototype.FontFamily, prototype.Size, newStyle, prototype.Unit, prototype.GdiCharSet, prototype.GdiVerticalFont)
+        public Font(Font prototype, FontStyle newStyle) : this(prototype.FontFamily, prototype.Size, newStyle,
+            prototype.Unit, prototype.GdiCharSet, prototype.GdiVerticalFont)
         {
-
         }
- 
-       /// <summary>
+
+        /// <summary>
         ///     Initializes a new System.Drawing.Font using a specified size.
         /// </summary>
         /// <param name="family">
@@ -40,9 +41,9 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentException">
         ///     emSize is less than or equal to 0, evaluates to infinity, or is not a valid number.
         /// </exception>
-        public Font(FontFamily family, float emSize) : this(family, emSize, FontStyle.Regular, GraphicsUnit.Point, 1, false)
+        public Font(FontFamily family, float emSize) : this(family, emSize, FontStyle.Regular, GraphicsUnit.Point, 1,
+            false)
         {
-
         }
 
         /// <summary>
@@ -57,7 +58,10 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentException">
         ///     emSize is less than or equal to 0, evaluates to infinity or is not a valid number.
         /// </exception>
-        public Font(string familyName, float emSize) : this(new FontFamily(familyName), emSize, FontStyle.Regular, GraphicsUnit.Point, 1, false) { }
+        public Font(string familyName, float emSize) : this(new FontFamily(familyName), emSize, FontStyle.Regular,
+            GraphicsUnit.Point, 1, false)
+        {
+        }
 
         /// <summary>
         ///     Initializes a new System.Drawing.Font using a specified size and style.
@@ -77,7 +81,10 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentNullException">
         ///     family is null.
         /// </exception>
-        public Font(FontFamily family, float emSize, FontStyle style) : this(family, emSize, style, GraphicsUnit.Point, 1, false) { }
+        public Font(FontFamily family, float emSize, FontStyle style) : this(family, emSize, style, GraphicsUnit.Point,
+            1, false)
+        {
+        }
 
         /// <summary>
         ///     Initializes a new System.Drawing.Font using a specified size and unit. The style
@@ -95,10 +102,9 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentException">
         ///     emSize is less than or equal to 0, evaluates to infinity, or is not a valid number.
         /// </exception>
-        public Font(string familyName, float emSize, GraphicsUnit unit) : this(new FontFamily(familyName), emSize, FontStyle.Regular, unit, 1, false)
+        public Font(string familyName, float emSize, GraphicsUnit unit) : this(new FontFamily(familyName), emSize,
+            FontStyle.Regular, unit, 1, false)
         {
-
-
         }
 
         /// <summary>
@@ -116,7 +122,8 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentException">
         ///     emSize is less than or equal to 0, evaluates to infinity, or is not a valid number.
         /// </exception>
-        public Font(string familyName, float emSize, FontStyle style) : this(new FontFamily(familyName), emSize, style, GraphicsUnit.Point, 1, false)
+        public Font(string familyName, float emSize, FontStyle style) : this(new FontFamily(familyName), emSize, style,
+            GraphicsUnit.Point, 1, false)
         {
             this.FontFamily = new FontFamily(familyName);
             this.Size = emSize;
@@ -142,9 +149,9 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentException">
         ///     emSize is less than or equal to 0, evaluates to infinity, or is not a valid number.
         /// </exception>
-        public Font(FontFamily family, float emSize, GraphicsUnit unit) : this(family, emSize, FontStyle.Regular, unit, 1, false)
+        public Font(FontFamily family, float emSize, GraphicsUnit unit) : this(family, emSize, FontStyle.Regular, unit,
+            1, false)
         {
-
         }
 
         /// <summary>
@@ -165,7 +172,8 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentException">
         ///     emSize is less than or equal to 0, evaluates to infinity or is not a valid number.
         /// </exception>
-        public Font(string familyName, float emSize, FontStyle style, GraphicsUnit unit) : this(new FontFamily(familyName), emSize, style, unit, 1, false)
+        public Font(string familyName, float emSize, FontStyle style, GraphicsUnit unit) : this(
+            new FontFamily(familyName), emSize, style, unit, 1, false)
         {
         }
 
@@ -190,7 +198,10 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentNullException">
         ///     family is null.
         /// </exception>
-        public Font(FontFamily family, float emSize, FontStyle style, GraphicsUnit unit) : this(family, emSize, style, unit, 1, false) { }
+        public Font(FontFamily family, float emSize, FontStyle style, GraphicsUnit unit) : this(family, emSize, style,
+            unit, 1, false)
+        {
+        }
 
         /// <summary>
         ///     Initializes a new System.Drawing.Font using a specified size, style, unit, and
@@ -217,7 +228,10 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentNullException">
         ///     family is null.
         /// </exception>
-        public Font(FontFamily family, float emSize, FontStyle style, GraphicsUnit unit, byte gdiCharSet) : this(family, emSize, style, unit, gdiCharSet, false) { }
+        public Font(FontFamily family, float emSize, FontStyle style, GraphicsUnit unit, byte gdiCharSet) : this(family,
+            emSize, style, unit, gdiCharSet, false)
+        {
+        }
 
         /// <summary>
         ///     Initializes a new System.Drawing.Font using a specified size, style, unit, and
@@ -241,7 +255,10 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentException">
         ///     emSize is less than or equal to 0, evaluates to infinity, or is not a valid number.
         /// </exception>
-        public Font(string familyName, float emSize, FontStyle style, GraphicsUnit unit, byte gdiCharSet) : this(new FontFamily(familyName), emSize, style, unit, gdiCharSet, false) { }
+        public Font(string familyName, float emSize, FontStyle style, GraphicsUnit unit, byte gdiCharSet) : this(
+            new FontFamily(familyName), emSize, style, unit, gdiCharSet, false)
+        {
+        }
 
         /// <summary>
         ///     Initializes a new System.Drawing.Font using the specified size, style, unit,
@@ -269,7 +286,10 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentException">
         ///     emSize is less than or equal to 0, evaluates to infinity, or is not a valid number.
         /// </exception>
-        public Font(string familyName, float emSize, FontStyle style, GraphicsUnit unit, byte gdiCharSet, bool gdiVerticalFont) : this(new FontFamily(familyName), emSize, style, unit, gdiCharSet, gdiVerticalFont) { }
+        public Font(string familyName, float emSize, FontStyle style, GraphicsUnit unit, byte gdiCharSet,
+            bool gdiVerticalFont) : this(new FontFamily(familyName), emSize, style, unit, gdiCharSet, gdiVerticalFont)
+        {
+        }
 
         /// <summary>
         ///     Initializes a new System.Drawing.Font using a specified size, style, unit, and
@@ -300,7 +320,8 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentNullException">
         ///     family is null
         /// </exception>
-        public Font(FontFamily family, float emSize, FontStyle style, GraphicsUnit unit, byte gdiCharSet, bool gdiVerticalFont)
+        public Font(FontFamily family, float emSize, FontStyle style, GraphicsUnit unit, byte gdiCharSet,
+            bool gdiVerticalFont)
         {
             this.Name = family?.Name;
             this.FontFamily = family;
@@ -318,7 +339,10 @@ namespace System.Drawing
         ///     true to indicate this font has the italic style applied; otherwise, false.
         /// </returns>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool Italic { get => Style.HasFlag(FontStyle.Italic); }
+        public bool Italic
+        {
+            get => Style.HasFlag(FontStyle.Italic);
+        }
 
         /// <summary>
         ///     Gets a byte value that specifies the GDI character set that this System.Drawing.Font
@@ -445,7 +469,10 @@ namespace System.Drawing
         ///     true if this System.Drawing.Font is bold; otherwise, false.
         /// </returns>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool Bold { get => Style.HasFlag(FontStyle.Bold); }
+        public bool Bold
+        {
+            get => Style.HasFlag(FontStyle.Bold);
+        }
 
         /// <summary>
         ///     Gets the unit of measure for this System.Drawing.Font.
@@ -462,7 +489,10 @@ namespace System.Drawing
         ///     true if this System.Drawing.Font is underlined; otherwise, false.
         /// </returns>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool Underline { get => Style.HasFlag(FontStyle.Underline); }
+        public bool Underline
+        {
+            get => Style.HasFlag(FontStyle.Underline);
+        }
 
         /// <summary>
         ///     Creates a System.Drawing.Font from the specified Windows handle to a device context.
@@ -476,7 +506,10 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentException">
         ///     The font for the specified device context is not a TrueType font.
         ///</exception>  
-        public static Font FromHdc(IntPtr hdc) { return new Font("Arial", 12); }
+        public static Font FromHdc(IntPtr hdc)
+        {
+            return new Font("Arial", 12);
+        }
 
         /// <summary>
         ///     Creates a System.Drawing.Font from the specified Windows handle.
@@ -490,7 +523,10 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentException">
         ///     hfont points to an object that is not a TrueType font.
         /// </exception>
-        public static Font FromHfont(IntPtr hfont) { return new Font("Arial", 12); }
+        public static Font FromHfont(IntPtr hfont)
+        {
+            return new Font("Arial", 12);
+        }
 
         /// <summary>
         ///     Creates a System.Drawing.Font from the specified GDI logical font (LOGFONT) structure.
@@ -509,7 +545,10 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentException">
         ///     The font is not a TrueType font.
         /// </exception>
-        public static Font FromLogFont(object lf, IntPtr hdc) { return new Font("Arial", 12); }
+        public static Font FromLogFont(object lf, IntPtr hdc)
+        {
+            return new Font("Arial", 12);
+        }
 
         /// <summary>
         ///     Creates a System.Drawing.Font from the specified GDI logical font (LOGFONT) structure.
@@ -521,7 +560,10 @@ namespace System.Drawing
         /// <returns>
         ///     The System.Drawing.Font that this method creates.
         /// </returns>
-        public static Font FromLogFont(object lf) { return new Font("Arial", 12); }
+        public static Font FromLogFont(object lf)
+        {
+            return new Font("Arial", 12);
+        }
 
         /// <summary>
         ///     Creates an exact copy of this System.Drawing.Font.
@@ -529,12 +571,17 @@ namespace System.Drawing
         /// <returns>
         ///     The System.Drawing.Font this method creates, cast as an System.Object.
         /// </returns>
-        public object Clone() { return ((ArrayList)(new ArrayList() { this }).Clone())[0]; }
+        public object Clone()
+        {
+            return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+        }
 
         /// <summary>
         ///     Releases all resources used by this System.Drawing.Font.
         /// </summary>
-        public void Dispose() { }
+        public void Dispose()
+        {
+        }
 
         /// <summary>
         ///     Indicates whether the specified object is a System.Drawing.Font and has the same
@@ -551,7 +598,10 @@ namespace System.Drawing
         ///     System.Drawing.Font.Size, and System.Drawing.Font.Unit property values as this
         ///     System.Drawing.Font; otherwise, false.
         /// </returns>
-        public override bool Equals(object obj) { return Equals(obj as Font); }
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Font);
+        }
 
         /// <summary>
         ///     Gets the hash code for this System.Drawing.Font.
@@ -559,7 +609,10 @@ namespace System.Drawing
         /// <returns>
         ///     The hash code for this System.Drawing.Font.
         /// </returns>
-        public override int GetHashCode() { return base.GetHashCode(); }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
         /// <summary>
         ///     Returns the height, in pixels, of this System.Drawing.Font when drawn to a device
@@ -572,7 +625,10 @@ namespace System.Drawing
         /// <returns>
         ///     The height, in pixels, of this System.Drawing.Font.
         /// </returns>
-        public float GetHeight(float dpi) { return Height; }
+        public float GetHeight(float dpi)
+        {
+            return Height;
+        }
 
         /// <summary>
         ///     Returns the line spacing, in the current unit of a specified System.Drawing.Graphics,
@@ -588,7 +644,10 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentNullException">
         ///     graphics is null.
         /// </exception>
-        public float GetHeight(Graphics graphics) { return Height; }
+        public float GetHeight(Graphics graphics)
+        {
+            return Height;
+        }
 
         /// <summary>
         ///     Returns the line spacing, in pixels, of this font.
@@ -596,11 +655,13 @@ namespace System.Drawing
         /// <returns>
         ///     The line spacing, in pixels, of this font.
         /// </returns>
-        public float GetHeight() { return Height; }
+        public float GetHeight()
+        {
+            return Height;
+        }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-
         }
 
         /// <summary>
@@ -612,7 +673,10 @@ namespace System.Drawing
         /// <exception cref="T:System.ComponentModel.Win32Exception">
         ///     The operation was unsuccessful.
         /// </exception>
-        public IntPtr ToHfont() { return IntPtr.Zero; }
+        public IntPtr ToHfont()
+        {
+            return IntPtr.Zero;
+        }
 
         /// <summary>
         ///     Creates a GDI logical font (LOGFONT) structure from this System.Drawing.Font.
@@ -627,7 +691,9 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentNullException">
         ///     graphics is null.
         /// </exception>
-        public void ToLogFont(object logFont, Graphics graphics) { }
+        public void ToLogFont(object logFont, Graphics graphics)
+        {
+        }
 
         /// <summary>
         ///     Creates a GDI logical font (LOGFONT) structure from this System.Drawing.Font.
@@ -635,7 +701,9 @@ namespace System.Drawing
         /// <param name="logFont">
         ///     An System.Object to represent the LOGFONT structure that this method creates.
         /// </param>
-        public void ToLogFont(object logFont) { }
+        public void ToLogFont(object logFont)
+        {
+        }
 
         /// <summary>
         ///     Returns a human-readable string representation of this System.Drawing.Font.
@@ -643,6 +711,9 @@ namespace System.Drawing
         /// <returns>
         ///     A string that represents this System.Drawing.Font.
         /// </returns>
-        public override string ToString() { return "Font"; }
+        public override string ToString()
+        {
+            return "Font";
+        }
     }
 }

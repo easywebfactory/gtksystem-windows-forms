@@ -13,7 +13,7 @@ namespace System.Windows.Forms
         private Rectangle _bounds = Rectangle.Empty;
         private IArrangedElement? _parent;
         private BitVector32 _state;
-        private readonly PropertyStore _propertyStore = new();  // Contains all properties that are not always set.
+        private readonly PropertyStore _propertyStore = new(); // Contains all properties that are not always set.
 
         private static readonly int s_stateVisible = BitVector32.CreateMask();
 
@@ -26,10 +26,7 @@ namespace System.Windows.Forms
 
         public Rectangle Bounds
         {
-            get
-            {
-                return _bounds;
-            }
+            get { return _bounds; }
         }
 
         ArrangedElementCollection IArrangedElement.Children
@@ -61,64 +58,34 @@ namespace System.Windows.Forms
             }
         }
 
-        public abstract LayoutEngine LayoutEngine
-        {
-            get;
-        }
+        public abstract LayoutEngine LayoutEngine { get; }
 
-        public Padding Margin
-        {
-            get;
-            set;
-        }
+        public Padding Margin { get; set; }
 
-        public virtual Padding Padding
-        {
-            get;
-            set;
-        }
+        public virtual Padding Padding { get; set; }
 
         public virtual IArrangedElement? Parent
         {
-            get
-            {
-                return _parent;
-            }
-            set
-            {
-                _parent = value;
-            }
+            get { return _parent; }
+            set { _parent = value; }
         }
 
         public virtual bool ParticipatesInLayout
         {
-            get
-            {
-                return Visible;
-            }
+            get { return Visible; }
         }
 
         PropertyStore IArrangedElement.Properties
         {
-            get
-            {
-                return Properties;
-            }
+            get { return Properties; }
         }
 
         private PropertyStore Properties
         {
-            get
-            {
-                return _propertyStore;
-            }
+            get { return _propertyStore; }
         }
 
-        public virtual bool Visible
-        {
-            get;
-            set;
-        }
+        public virtual bool Visible { get; set; }
 
         public IntPtr Handle => throw new NotImplementedException();
 
@@ -138,12 +105,10 @@ namespace System.Windows.Forms
 
         protected virtual void OnLayout(LayoutEventArgs e)
         {
-
         }
 
         protected virtual void OnBoundsChanged(Rectangle oldBounds, Rectangle newBounds)
         {
-
         }
 
         public void SetBounds(Rectangle bounds, BoundsSpecified specified)

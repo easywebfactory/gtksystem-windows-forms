@@ -3,6 +3,7 @@
     public sealed class NumericUpDownBase : Gtk.SpinButton, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
+
         public NumericUpDownBase() : base(0, 100, 1)
         {
             this.Override = new GtkControlOverride(this);
@@ -12,10 +13,12 @@
             base.Valign = Gtk.Align.Start;
             base.Halign = Gtk.Align.Start;
         }
+
         public void AddClass(string cssClass)
         {
             this.Override.AddClass(cssClass);
         }
+
         protected override void OnShown()
         {
             Override.OnAddClass();

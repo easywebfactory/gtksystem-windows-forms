@@ -16,15 +16,18 @@ namespace System.Windows.Forms
     {
         public readonly RichTextBoxBase self = new RichTextBoxBase();
         public override object GtkControl => self;
+
         protected override void SetStyle(Widget widget)
         {
             base.SetStyle(self.TextView);
         }
-        public RichTextBox():base()
+
+        public RichTextBox() : base()
         {
             self.TextView.Buffer.Changed += Buffer_Changed;
             this.BorderStyle = BorderStyle.Fixed3D;
         }
+
         private void Buffer_Changed(object sender, EventArgs e)
         {
             if (TextChanged != null && self.IsVisible)
@@ -33,10 +36,20 @@ namespace System.Windows.Forms
             }
         }
 
-        public override string Text { get => self.TextView.Buffer.Text; set => self.TextView.Buffer.Text = value; }
-        public virtual bool ReadOnly { get { return self.TextView.CanFocus; } set { self.TextView.CanFocus = value; } }
+        public override string Text
+        {
+            get => self.TextView.Buffer.Text;
+            set => self.TextView.Buffer.Text = value;
+        }
+
+        public virtual bool ReadOnly
+        {
+            get { return self.TextView.CanFocus; }
+            set { self.TextView.CanFocus = value; }
+        }
 
         public override event EventHandler TextChanged;
+
         public void AppendText(string text)
         {
             var enditer = self.TextView.Buffer.EndIter;

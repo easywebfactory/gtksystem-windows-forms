@@ -30,6 +30,7 @@ namespace System.Windows.Forms
             All = all;
             Size = new Size(0, 0);
         }
+
         /// <summary>
         ///     Initializes a new instance of the System.Windows.Forms.Padding class using a
         ///     separate padding size for each edge.
@@ -65,7 +66,11 @@ namespace System.Windows.Forms
         ///     padding values.
         /// </returns>
         [Browsable(false)]
-        public int Horizontal { get { return Right - Left; } }
+        public int Horizontal
+        {
+            get { return Right - Left; }
+        }
+
         /// <summary>
         ///     Gets or sets the padding value for the top edge.
         /// </summary>
@@ -74,6 +79,7 @@ namespace System.Windows.Forms
         /// </returns>
         [RefreshProperties(RefreshProperties.All)]
         public int Top { get; set; }
+
         /// <summary>
         ///     Gets or sets the padding value for the right edge.
         /// </summary>
@@ -82,6 +88,7 @@ namespace System.Windows.Forms
         /// </returns>
         [RefreshProperties(RefreshProperties.All)]
         public int Right { get; set; }
+
         /// <summary>
         ///     Gets or sets the padding value for the left edge.
         /// </summary>
@@ -90,6 +97,7 @@ namespace System.Windows.Forms
         /// </returns>
         [RefreshProperties(RefreshProperties.All)]
         public int Left { get; set; }
+
         /// <summary>
         ///     Gets or sets the padding value for the bottom edge.
         /// </summary>
@@ -98,6 +106,7 @@ namespace System.Windows.Forms
         /// </returns>
         [RefreshProperties(RefreshProperties.All)]
         public int Bottom { get; set; }
+
         /// <summary>
         ///     Gets or sets the padding value for all the edges.
         /// </summary>
@@ -106,6 +115,7 @@ namespace System.Windows.Forms
         /// </returns>
         [RefreshProperties(RefreshProperties.All)]
         public int All { get; set; }
+
         /// <summary>
         ///     Gets the padding information in the form of a System.Drawing.Size.
         /// </summary>
@@ -114,6 +124,7 @@ namespace System.Windows.Forms
         /// </returns>
         [Browsable(false)]
         public Size Size { get; }
+
         /// <summary>
         ///     Gets the combined padding for the top and bottom edges.
         /// </summary>
@@ -122,7 +133,10 @@ namespace System.Windows.Forms
         ///     padding values.
         /// </returns>
         [Browsable(false)]
-        public int Vertical { get { return Bottom - Top; } }
+        public int Vertical
+        {
+            get { return Bottom - Top; }
+        }
 
         /// <summary>
         ///     Computes the sum of the two specified System.Windows.Forms.Padding values.
@@ -141,6 +155,7 @@ namespace System.Windows.Forms
         {
             return new Padding(p1.Left + p2.Left, p1.Top + p2.Top, p1.Right + p2.Right, p1.Bottom + p2.Bottom);
         }
+
         /// <summary>
         ///     Subtracts one specified System.Windows.Forms.Padding value from another.
         /// </summary>
@@ -158,6 +173,7 @@ namespace System.Windows.Forms
         {
             return new Padding(p1.Left - p2.Left, p1.Top - p2.Top, p1.Right - p2.Right, p1.Bottom - p2.Bottom);
         }
+
         /// <summary>
         ///     Determines whether the value of the specified object is equivalent to the current
         ///     System.Windows.Forms.Padding.
@@ -172,6 +188,7 @@ namespace System.Windows.Forms
         {
             return false;
         }
+
         /// <summary>
         ///     Generates a hash code for the current System.Windows.Forms.Padding.
         /// </summary>
@@ -182,6 +199,7 @@ namespace System.Windows.Forms
         {
             return Left.GetHashCode() + Top.GetHashCode() + Right.GetHashCode() + Bottom.GetHashCode();
         }
+
         /// <summary>
         ///     Returns a string that represents the current System.Windows.Forms.Padding.
         /// </summary>
@@ -210,6 +228,7 @@ namespace System.Windows.Forms
         {
             return new Padding(p1.Left + p2.Left, p1.Top + p2.Top, p1.Right + p2.Right, p1.Bottom + p2.Bottom);
         }
+
         /// <summary>
         ///     Performs vector subtraction on the two specified System.Windows.Forms.Padding
         ///     objects, resulting in a new System.Windows.Forms.Padding.
@@ -227,6 +246,7 @@ namespace System.Windows.Forms
         {
             return new Padding(p1.Left - p2.Left, p1.Top - p2.Top, p1.Right - p2.Right, p1.Bottom - p2.Bottom);
         }
+
         /// <summary>
         ///     Tests whether two specified System.Windows.Forms.Padding objects are equivalent.
         /// </summary>
@@ -239,7 +259,11 @@ namespace System.Windows.Forms
         /// <returns>
         ///     true if the two System.Windows.Forms.Padding objects are equal; otherwise, false.
         /// </returns>
-        public static bool operator ==(Padding p1, Padding p2) { return p1.Left == p2.Left && p1.Top == p2.Top && p1.Right == p2.Right && p1.Bottom == p2.Bottom; }
+        public static bool operator ==(Padding p1, Padding p2)
+        {
+            return p1.Left == p2.Left && p1.Top == p2.Top && p1.Right == p2.Right && p1.Bottom == p2.Bottom;
+        }
+
         /// <summary>
         ///     Tests whether two specified System.Windows.Forms.Padding objects are not equivalent.
         /// </summary>

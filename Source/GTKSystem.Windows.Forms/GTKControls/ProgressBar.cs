@@ -12,11 +12,12 @@ namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
     [DefaultProperty("Value")]
-	public class ProgressBar : Control
+    public class ProgressBar : Control
     {
         private ProgressBarBase self = new ProgressBarBase();
         public override object GtkControl => self;
-        public ProgressBar():base()
+
+        public ProgressBar() : base()
         {
             self.Realized += Control_Realized;
         }
@@ -29,25 +30,25 @@ namespace System.Windows.Forms
         }
 
         public ProgressBarStyle Style { get; set; }
-        [DefaultValue(100)]
-		public int MarqueeAnimationSpeed { get; set; } = 100;
-        [DefaultValue(100)]
-		public int Maximum { get; set; } = 100;
-        [DefaultValue(0)]
-		public int Minimum { get; set; } = 0;
+        [DefaultValue(100)] public int MarqueeAnimationSpeed { get; set; } = 100;
+        [DefaultValue(100)] public int Maximum { get; set; } = 100;
+        [DefaultValue(0)] public int Minimum { get; set; } = 0;
         public new Padding Padding { get; set; }
-        [DefaultValue(10)]
-        public int Step { get; set; }
+        [DefaultValue(10)] public int Step { get; set; }
+
         [DefaultValue(0)]
-        public int Value { get => (int)self.Value; set => self.Value = value; }
+        public int Value
+        {
+            get => (int)self.Value;
+            set => self.Value = value;
+        }
+
         public void Increment(int value)
         {
-
         }
- 
+
         public void PerformStep()
-		{
-	
-		}
-	}
+        {
+        }
+    }
 }

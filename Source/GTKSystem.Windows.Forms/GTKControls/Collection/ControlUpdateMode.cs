@@ -1,8 +1,8 @@
 namespace System.Windows.Forms
 {
-	public enum ControlUpdateMode
-	{
-		OnPropertyChanged,
-		Never
-	}
+    public enum ControlUpdateMode
+    {
+        OnPropertyChanged,
+        Never
+    }
 }

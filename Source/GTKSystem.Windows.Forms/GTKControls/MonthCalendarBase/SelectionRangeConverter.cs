@@ -27,6 +27,7 @@ namespace System.Windows.Forms
             {
                 return true;
             }
+
             return base.CanConvertFrom(context, sourceType);
         }
 
@@ -40,6 +41,7 @@ namespace System.Windows.Forms
             {
                 return true;
             }
+
             return base.CanConvertTo(context, destinationType);
         }
 
@@ -62,6 +64,7 @@ namespace System.Windows.Forms
                 {
                     culture = CultureInfo.CurrentCulture;
                 }
+
                 char separator = culture.TextInfo.ListSeparator[0];
                 string[] tokens = text.Split(new char[] { separator });
 
@@ -75,8 +78,8 @@ namespace System.Windows.Forms
                 else
                 {
                     throw new ArgumentException(string.Format("Text Parse Failed Format:{0},{1}",
-                                                              text,
-                                                              "Start" + separator + " End"));
+                        text,
+                        "Start" + separator + " End"));
                 }
             }
             else if (value is DateTime dt)
@@ -94,7 +97,8 @@ namespace System.Windows.Forms
         ///  type is string.  If this cannot convert to the desitnation type, this will
         ///  throw a NotSupportedException.
         /// </summary>
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value,
+            Type destinationType)
         {
             if (destinationType == null)
             {
@@ -109,6 +113,7 @@ namespace System.Windows.Forms
                     {
                         culture = CultureInfo.CurrentCulture;
                     }
+
                     string sep = culture.TextInfo.ListSeparator + " ";
                     PropertyDescriptorCollection props = GetProperties(value);
                     string[] args = new string[props.Count];
@@ -121,20 +126,25 @@ namespace System.Windows.Forms
 
                     return string.Join(sep, args);
                 }
+
                 if (destinationType == typeof(DateTime))
                 {
                     return range.Start;
                 }
+
                 if (destinationType == typeof(InstanceDescriptor))
                 {
-                    ConstructorInfo ctor = typeof(SelectionRange).GetConstructor(new Type[] {
-                        typeof(DateTime), typeof(DateTime)});
+                    ConstructorInfo ctor = typeof(SelectionRange).GetConstructor(new Type[]
+                    {
+                        typeof(DateTime), typeof(DateTime)
+                    });
                     if (ctor != null)
                     {
                         return new InstanceDescriptor(ctor, new object[] { range.Start, range.End });
                     }
                 }
             }
+
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
@@ -148,7 +158,7 @@ namespace System.Windows.Forms
             try
             {
                 return new SelectionRange((DateTime)propertyValues["Start"],
-                                          (DateTime)propertyValues["End"]);
+                    (DateTime)propertyValues["End"]);
             }
             catch (InvalidCastException invalidCast)
             {
@@ -174,7 +184,8 @@ namespace System.Windows.Forms
         ///  does not return any properties.  An easy implementation of this method
         ///  can just call TypeDescriptor.GetProperties for the correct data type.
         /// </summary>
-        public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
+        public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value,
+            Attribute[] attributes)
         {
             PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(SelectionRange), attributes);
             return props.Sort(new string[] { "Start", "End" });
@@ -190,4 +201,3 @@ namespace System.Windows.Forms
         }
     }
 }
-

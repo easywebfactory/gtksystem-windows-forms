@@ -20,10 +20,7 @@ namespace System.Windows.Forms
 
             internal Message Message
             {
-                get
-                {
-                    return _m;
-                }
+                get { return _m; }
             }
         }
     }

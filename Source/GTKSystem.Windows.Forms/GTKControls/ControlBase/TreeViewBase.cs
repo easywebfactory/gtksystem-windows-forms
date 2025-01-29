@@ -17,7 +17,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.TreeView.EnableTreeLines = true;
             this.TreeView.HeadersVisible = false;
             this.TreeView.ActivateOnSingleClick = true;
-            
+
             this.AutoScroll = true;
             this.Add(this.TreeView);
         }

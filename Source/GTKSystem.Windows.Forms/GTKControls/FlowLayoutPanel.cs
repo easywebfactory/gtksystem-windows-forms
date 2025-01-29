@@ -9,17 +9,17 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 
-
 namespace System.Windows.Forms
 {
-	[ProvideProperty("FlowBreak", typeof(Control))]
-	[DefaultProperty("FlowDirection")]
+    [ProvideProperty("FlowBreak", typeof(Control))]
+    [DefaultProperty("FlowDirection")]
     [DesignerCategory("Component")]
     public partial class FlowLayoutPanel : Control, IExtenderProvider
     {
         public readonly FlowLayoutPanelBase self = new FlowLayoutPanelBase();
         public override object GtkControl => self;
         private ObjectCollection _controls;
+
         public FlowLayoutPanel() : base()
         {
             self.Orientation = Gtk.Orientation.Horizontal;
@@ -33,13 +33,20 @@ namespace System.Windows.Forms
         }
 
         private FlowDirection _FlowDirection;
-		public FlowDirection FlowDirection
-		{
+
+        public FlowDirection FlowDirection
+        {
             get { return _FlowDirection; }
             set
             {
-                if (value == FlowDirection.LeftToRight || value == FlowDirection.RightToLeft) { self.Orientation = Gtk.Orientation.Horizontal; }
-                else if (value == FlowDirection.TopDown || value == FlowDirection.BottomUp) { self.Orientation = Gtk.Orientation.Vertical; }
+                if (value == FlowDirection.LeftToRight || value == FlowDirection.RightToLeft)
+                {
+                    self.Orientation = Gtk.Orientation.Horizontal;
+                }
+                else if (value == FlowDirection.TopDown || value == FlowDirection.BottomUp)
+                {
+                    self.Orientation = Gtk.Orientation.Vertical;
+                }
             }
         }
 
@@ -52,27 +59,31 @@ namespace System.Windows.Forms
 
         public void SetFlowBreak(Control control, bool value)
         {
-
         }
+
         public override ControlCollection Controls => _controls;
+
         public bool CanExtend(object extendee)
         {
             return true;
         }
+
         public class ObjectCollection : ControlCollection
         {
             private FlowLayoutPanel _owner;
+
             public ObjectCollection(FlowLayoutPanel owner) : base(owner)
             {
                 _owner = owner;
             }
+
             public override void Add(Control control)
             {
                 Gtk.FlowBoxChild box = new FlowBoxChild();
                 box.Valign = Align.Start;
                 box.Halign = Align.Start;
                 box.Expand = false;
-                control.Location=new Drawing.Point(0, 0);
+                control.Location = new Drawing.Point(0, 0);
                 control.LockLocation = true;
                 control.Parent = _owner;
                 Gtk.Widget widg = control.Widget;

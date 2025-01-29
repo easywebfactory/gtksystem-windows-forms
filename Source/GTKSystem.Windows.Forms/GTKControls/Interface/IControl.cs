@@ -40,8 +40,10 @@ namespace System.Windows.Forms
         bool Enabled { get; set; }
         bool Focused { get; }
         Font Font { get; set; }
+
         Color ForeColor { get; set; }
-       // IntPtr Handle { get; }
+
+        // IntPtr Handle { get; }
         bool HasChildren { get; }
         int Height { get; set; }
         ImeMode ImeMode { get; set; }
@@ -55,7 +57,9 @@ namespace System.Windows.Forms
         Point Location { get; set; }
         Padding Margin { get; set; }
         Size MaximumSize { get; set; }
+
         Size MinimumSize { get; set; }
+
         //string Name { get; set; } 
         Padding Padding { get; set; }
         Control Parent { get; set; }
@@ -165,8 +169,10 @@ namespace System.Windows.Forms
         Control GetChildAtPoint(Point pt, GetChildAtPointSkip skipValue);
         IContainerControl GetContainerControl();
         Control GetNextControl(Control ctl, bool forward);
+
         Size GetPreferredSize(Size proposedSize);
-       // void Hide();
+
+        // void Hide();
         void Invalidate();
         void Invalidate(bool invalidateChildren);
         void Invalidate(Rectangle rc);
@@ -205,8 +211,10 @@ namespace System.Windows.Forms
         bool SelectNextControl(Control ctl, bool forward, bool tabStopOnly, bool nested, bool wrap);
         void SendToBack();
         void SetBounds(int x, int y, int width, int height);
+
         void SetBounds(int x, int y, int width, int height, BoundsSpecified specified);
-       // void Show();
+
+        // void Show();
         void SuspendLayout();
         void Update();
 

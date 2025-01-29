@@ -216,7 +216,7 @@ namespace System.Windows.Forms
         ///  caret, header control, list-view control, tab control, toolbar control, tree view control, 
         ///  and window object. Server applications send this event for their accessible objects.
         /// </summary>
-        Create = 0x8000,                // hwnd + ID + idChild is created item
+        Create = 0x8000, // hwnd + ID + idChild is created item
 
         /// <summary>
         ///  <c>EVENT_OBJECT_DESTROY</c>
@@ -225,7 +225,7 @@ namespace System.Windows.Forms
         ///  caret, header control, list-view control, tab control, toolbar control, tree view control, 
         ///  and window object. Server applications send this event for their accessible objects.
         /// </summary>
-        Destroy = 0x8001,               // hwnd + ID + idChild is destroyed item
+        Destroy = 0x8001, // hwnd + ID + idChild is destroyed item
 
         /// <summary>
         /// <c>EVENT_OBJECT_SHOW</c>
@@ -235,7 +235,7 @@ namespace System.Windows.Forms
         ///  Clients assume that when this event is sent by a parent object, all child objects are already displayed. 
         ///  Therefore, server applications do not send this event for the child objects.
         /// </summary>
-        Show = 0x8002,                  // hwnd + ID + idChild is shown item
+        Show = 0x8002, // hwnd + ID + idChild is shown item
 
         /// <summary>
         /// <c>EVENT_OBJECT_HIDE</c>
@@ -245,7 +245,7 @@ namespace System.Windows.Forms
         ///  When this event is generated for a parent object, all child objects are already hidden.
         ///  Server applications do not send this event for the child objects.
         /// </summary>
-        Hide = 0x8003,                  // hwnd + ID + idChild is hidden item
+        Hide = 0x8003, // hwnd + ID + idChild is hidden item
 
         /// <summary>
         /// <c>EVENT_OBJECT_REORDER</c>
@@ -254,7 +254,7 @@ namespace System.Windows.Forms
         ///  header control, list-view control, toolbar control, and window object.
         ///  Server applications send this event as appropriate for their accessible objects.
         /// </summary>
-        Reorder = 0x8004,               // hwnd + ID + idChild is parent of zordering children
+        Reorder = 0x8004, // hwnd + ID + idChild is parent of zordering children
 
         /// <summary>
         ///  Minimize the number of notifications!
@@ -263,12 +263,12 @@ namespace System.Windows.Forms
         ///  but are not truly visible. Hence do not send HIDE notifications for the
         ///  children also. One implies all. The same goes for SHOW.
         /// </summary>
-        Focus = 0x8005,                 // hwnd + ID + idChild is focused item
+        Focus = 0x8005, // hwnd + ID + idChild is focused item
 
-        Selection = 0x8006,             // hwnd + ID + idChild is selected item (if only one), or idChild is OBJID_WINDOW if complex
-        SelectionAdd = 0x8007,          // hwnd + ID + idChild is item added
-        SelectionRemove = 0x8008,       // hwnd + ID + idChild is item removed
-        SelectionWithin = 0x8009,       // hwnd + ID + idChild is parent of changed selected items
+        Selection = 0x8006, // hwnd + ID + idChild is selected item (if only one), or idChild is OBJID_WINDOW if complex
+        SelectionAdd = 0x8007, // hwnd + ID + idChild is item added
+        SelectionRemove = 0x8008, // hwnd + ID + idChild is item removed
+        SelectionWithin = 0x8009, // hwnd + ID + idChild is parent of changed selected items
 
         /// <summary>
         ///  There is only one "focused" child item in a parent. This is the place
@@ -304,14 +304,14 @@ namespace System.Windows.Forms
         ///  query the container control what the new bunch of selected items
         ///  are.
         /// </summary>
-        StateChange = 0x800A,           // hwnd + ID + idChild is item w/ state change
-        LocationChange = 0x800B,        // hwnd + ID + idChild is moved/sized item
-        NameChange = 0x800C,            // hwnd + ID + idChild is item w/ name change
-        DescriptionChange = 0x800D,     // hwnd + ID + idChild is item w/ desc change
-        ValueChange = 0x800E,           // hwnd + ID + idChild is item w/ value change
-        ParentChange = 0x800F,          // hwnd + ID + idChild is item w/ new parent
-        HelpChange = 0x8010,            // hwnd + ID + idChild is item w/ help change
-        DefaultActionChange = 0x8011,   // hwnd + ID + idChild is item w/ def action change
-        AcceleratorChange = 0x8012,     // hwnd + ID + idChild is item w/ keybd accel change
+        StateChange = 0x800A, // hwnd + ID + idChild is item w/ state change
+        LocationChange = 0x800B, // hwnd + ID + idChild is moved/sized item
+        NameChange = 0x800C, // hwnd + ID + idChild is item w/ name change
+        DescriptionChange = 0x800D, // hwnd + ID + idChild is item w/ desc change
+        ValueChange = 0x800E, // hwnd + ID + idChild is item w/ value change
+        ParentChange = 0x800F, // hwnd + ID + idChild is item w/ new parent
+        HelpChange = 0x8010, // hwnd + ID + idChild is item w/ help change
+        DefaultActionChange = 0x8011, // hwnd + ID + idChild is item w/ def action change
+        AcceleratorChange = 0x8012, // hwnd + ID + idChild is item w/ keybd accel change
     }
 }

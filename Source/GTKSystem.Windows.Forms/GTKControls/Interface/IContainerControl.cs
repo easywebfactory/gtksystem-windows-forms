@@ -18,6 +18,5 @@ namespace System.Windows.Forms
         ///  Activates the specified control.
         /// </summary>
         bool ActivateControl(Control active);
-
     }
 }

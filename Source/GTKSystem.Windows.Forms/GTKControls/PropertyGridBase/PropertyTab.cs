@@ -1,10 +1,8 @@
-﻿
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 
 namespace System.Windows.Forms.Design
 {
-
     public abstract class PropertyTab : IExtenderProvider
     {
         private Bitmap? _bitmap;
@@ -16,7 +14,6 @@ namespace System.Windows.Forms.Design
             {
                 if (!_checkedBitmap && _bitmap is null)
                 {
-
                     _checkedBitmap = true;
                 }
 

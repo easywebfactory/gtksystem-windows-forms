@@ -34,7 +34,8 @@ namespace System.Windows.Forms
         private IntPtr oldPal = IntPtr.Zero;
 
 #if DEBUG
-        private static readonly TraceSwitch s_paintEventFinalizationSwitch = new TraceSwitch("PaintEventFinalization", "Tracks the creation and finalization of PaintEvent objects");
+        private static readonly TraceSwitch s_paintEventFinalizationSwitch =
+ new TraceSwitch("PaintEventFinalization", "Tracks the creation and finalization of PaintEvent objects");
 
         internal static string GetAllocationStack()
         {
@@ -91,11 +92,7 @@ namespace System.Windows.Forms
         /// </summary>
         public Graphics Graphics
         {
-            get
-            {
-
-                return _graphics;
-            }
+            get { return _graphics; }
         }
 
         /// <summary>
@@ -110,7 +107,6 @@ namespace System.Windows.Forms
 
         protected virtual void Dispose(bool disposing)
         {
-
             if (oldPal != IntPtr.Zero && _dc != IntPtr.Zero)
             {
                 //SafeNativeMethods.SelectPalette(new HandleRef(this, _dc), new HandleRef(this, oldPal), 0);
@@ -127,7 +123,6 @@ namespace System.Windows.Forms
         /// </summary>
         internal void ResetGraphics()
         {
-  
         }
     }
 }

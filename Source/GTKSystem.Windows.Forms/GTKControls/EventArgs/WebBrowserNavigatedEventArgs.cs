@@ -24,10 +24,7 @@ namespace System.Windows.Forms
         /// </summary>
         public Uri Url
         {
-            get
-            {
-                return _url;
-            }
+            get { return _url; }
         }
     }
 }

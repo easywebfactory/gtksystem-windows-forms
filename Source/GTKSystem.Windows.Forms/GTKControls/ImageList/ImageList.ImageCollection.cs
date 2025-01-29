@@ -11,7 +11,6 @@ namespace System.Windows.Forms
 {
     public sealed partial class ImageList
     {
-
         public sealed partial class ImageCollection : IList
         {
             private readonly ImageList _owner;
@@ -37,7 +36,8 @@ namespace System.Windows.Forms
 
                     for (int i = 0; i < _imageInfoCollection.Count; i++)
                     {
-                        if ((_imageInfoCollection[i] is ImageInfo image) && (image.Name != null) && (image.Name.Length != 0))
+                        if ((_imageInfoCollection[i] is ImageInfo image) && (image.Name != null) &&
+                            (image.Name.Length != 0))
                         {
                             keysCollection.Add(image.Name);
                         }
@@ -69,10 +69,7 @@ namespace System.Windows.Forms
             [Browsable(false)]
             public int Count
             {
-                get
-                {
-                    return _imageInfoCollection.Count;
-                }
+                get { return _imageInfoCollection.Count; }
             }
 
             object ICollection.SyncRoot => this;
@@ -92,10 +89,7 @@ namespace System.Windows.Forms
             [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
             public Image this[int index]
             {
-                get
-                {
-                    return _owner._originals[index]._image as Image;
-                }
+                get { return _owner._originals[index]._image as Image; }
                 set
                 {
                     if ((_imageInfoCollection.Count > index))
@@ -109,10 +103,7 @@ namespace System.Windows.Forms
             object? IList.this[int index]
             {
                 get => this[index];
-                set
-                {
-                     
-                }
+                set { }
             }
 
             /// <summary>
@@ -126,6 +117,7 @@ namespace System.Windows.Forms
                     {
                         return null;
                     }
+
                     int index = IndexOfKey(key);
                     if (!IsValidIndex(index))
                     {
@@ -270,8 +262,8 @@ namespace System.Windows.Forms
                 if (value is Image image)
                 {
                     return IndexOf(image);
-                    
                 }
+
                 return -1;
             }
 
@@ -286,6 +278,7 @@ namespace System.Windows.Forms
                     // We don't support empty or null keys.
                     return -1;
                 }
+
                 return _imageInfoCollection.FindIndex(o => o.Name == key);
             }
 

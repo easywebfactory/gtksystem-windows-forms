@@ -61,7 +61,8 @@ namespace System.Drawing.Printing
 
         private static TypeConverter GetIntConverter() => TypeDescriptor.GetConverter(typeof(int));
 
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value,
+            Type destinationType)
         {
             if (value is Margins margins)
             {
@@ -84,7 +85,8 @@ namespace System.Drawing.Printing
 
                 if (destinationType == typeof(InstanceDescriptor))
                 {
-                    if (typeof(Margins).GetConstructor(new Type[] { typeof(int), typeof(int), typeof(int), typeof(int) }) is { } constructor)
+                    if (typeof(Margins).GetConstructor(
+                            new Type[] { typeof(int), typeof(int), typeof(int), typeof(int) }) is { } constructor)
                     {
                         return new InstanceDescriptor(
                             constructor,
@@ -105,7 +107,9 @@ namespace System.Drawing.Printing
             object top = propertyValues["Top"];
             object bottom = propertyValues["Bottom"];
 
-            return left is int && right is int && bottom is int && top is int ? (object)new Margins((int)left, (int)right, (int)top, (int)bottom) : throw new ArgumentException("PropertyValueInvalidEntry");
+            return left is int && right is int && bottom is int && top is int
+                ? (object)new Margins((int)left, (int)right, (int)top, (int)bottom)
+                : throw new ArgumentException("PropertyValueInvalidEntry");
         }
     }
 }

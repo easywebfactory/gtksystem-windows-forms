@@ -9,4 +9,3 @@ namespace System.Windows.Forms
     /// </summary>
     public delegate void FormClosedEventHandler(object sender, FormClosedEventArgs e);
 }
-

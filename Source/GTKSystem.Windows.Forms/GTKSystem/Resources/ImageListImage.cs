@@ -12,6 +12,7 @@ namespace System.Windows.Forms.Design
     public class ImageListImage
     {
         private string _name;
+
         public ImageListImage(Image image)
         {
             Image = image;
@@ -29,8 +30,7 @@ namespace System.Windows.Forms.Design
             set => _name = value;
         }
 
-        [Browsable(false)]
-        public Image Image { get; set; }
+        [Browsable(false)] public Image Image { get; set; }
 
         // Add properties to make this object "look" like Image in the Collection editor
         public float HorizontalResolution => Image.HorizontalResolution;

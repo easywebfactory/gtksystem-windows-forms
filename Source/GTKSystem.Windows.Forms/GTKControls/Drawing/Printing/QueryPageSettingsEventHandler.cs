@@ -3,7 +3,6 @@
 
 namespace System.Drawing.Printing
 {
-
     /// <summary>
     ///  Represents the method that will handle the <see cref='PrintDocument.QueryPageSettings'/> event of a
     ///  <see cref='PrintDocument'/>.

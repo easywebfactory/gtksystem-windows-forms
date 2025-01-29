@@ -14,12 +14,17 @@ namespace System.Windows.Forms
 {
     [DesignerCategory("Form")]
     [DefaultEvent(nameof(Load)),
-    InitializationEvent(nameof(Load))]
-    public partial class Form: ContainerControl, IWin32Window
+     InitializationEvent(nameof(Load))]
+    public partial class Form : ContainerControl, IWin32Window
     {
         private Gtk.Application app = Application.Init();
         public FormBase self = new FormBase();
-        public override object GtkControl { get => self; }
+
+        public override object GtkControl
+        {
+            get => self;
+        }
+
         private Gtk.Overlay _body = new Gtk.Overlay();
         private ObjectCollection _ObjectCollection;
         public override event EventHandler SizeChanged;
@@ -28,10 +33,12 @@ namespace System.Windows.Forms
         {
             Init();
         }
+
         public Form(string title) : this()
         {
             self.Title = title;
         }
+
         private void Init()
         {
             this.SetScrolledWindow(self);
@@ -66,29 +73,41 @@ namespace System.Windows.Forms
                 if (FormClosed != null)
                     FormClosed(this, new FormClosedEventArgs(CloseReason.UserClosing));
             }
+
             return closing.Cancel == false;
         }
+
         private void Control_Shown(object sender, EventArgs e)
         {
             if (self.Titlebar is Gtk.HeaderBar titlebar)
             {
                 titlebar.DecorationLayout = "menu:close";
-                if (formBorderStyle == FormBorderStyle.FixedToolWindow || formBorderStyle == FormBorderStyle.SizableToolWindow)
+                if (formBorderStyle == FormBorderStyle.FixedToolWindow ||
+                    formBorderStyle == FormBorderStyle.SizableToolWindow)
                 {
                 }
                 else
                 {
                     if (MaximizeBox == true)
                     {
-                        Gtk.Button maximize = new Gtk.Button("window-maximize-symbolic", IconSize.SmallToolbar) { Name = "maximize", Visible = true, Relief = ReliefStyle.None, Valign = Align.Center, Halign = Align.Center };
+                        Gtk.Button maximize = new Gtk.Button("window-maximize-symbolic", IconSize.SmallToolbar)
+                        {
+                            Name = "maximize", Visible = true, Relief = ReliefStyle.None, Valign = Align.Center,
+                            Halign = Align.Center
+                        };
                         maximize.StyleContext.AddClass("maximize");
                         maximize.StyleContext.AddClass("titlebutton");
                         maximize.Clicked += Maximize_Clicked;
                         titlebar.PackEnd(maximize);
                     }
+
                     if (MinimizeBox == true)
                     {
-                        Gtk.Button minimize = new Gtk.Button("window-minimize-symbolic", IconSize.SmallToolbar) { Name = "minimize", Visible = true, Relief = ReliefStyle.None, Valign = Align.Center, Halign = Align.Center };
+                        Gtk.Button minimize = new Gtk.Button("window-minimize-symbolic", IconSize.SmallToolbar)
+                        {
+                            Name = "minimize", Visible = true, Relief = ReliefStyle.None, Valign = Align.Center,
+                            Halign = Align.Center
+                        };
                         minimize.StyleContext.AddClass("minimize");
                         minimize.StyleContext.AddClass("titlebutton");
                         minimize.Clicked += Minimize_Clicked;
@@ -96,6 +115,7 @@ namespace System.Windows.Forms
                     }
                 }
             }
+
             OnLoadHandler();
             OnShownHandler();
         }
@@ -132,20 +152,24 @@ namespace System.Windows.Forms
             add { self.Scroll += value; }
             remove { self.Scroll += value; }
         }
+
         private void OnLoadHandler()
         {
             if (Load != null)
                 Load(this, EventArgs.Empty);
         }
+
         private void OnShownHandler()
         {
             if (Shown != null)
                 Shown(this, EventArgs.Empty);
         }
+
         public override void Show()
         {
             this.Show(null);
         }
+
         public void Show(IWin32Window owner)
         {
             if (owner == this)
@@ -192,6 +216,7 @@ namespace System.Windows.Forms
                 {
                     self.Resizable = false;
                 }
+
                 self.Resize(self.DefaultWidth, self.DefaultHeight);
 
                 if (this.WindowState == FormWindowState.Maximized)
@@ -202,6 +227,7 @@ namespace System.Windows.Forms
                 {
                     self.Iconify();
                 }
+
                 try
                 {
                     if (this.ShowIcon)
@@ -214,9 +240,11 @@ namespace System.Windows.Forms
                                 self.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
                             else if (this.Icon.FileName != null && System.IO.File.Exists(this.Icon.FileName))
                                 self.SetIconFromFile(this.Icon.FileName);
-                            else if (this.Icon.FileName != null && System.IO.File.Exists("Resources\\" + this.Icon.FileName))
+                            else if (this.Icon.FileName != null &&
+                                     System.IO.File.Exists("Resources\\" + this.Icon.FileName))
                                 self.SetIconFromFile("Resources\\" + this.Icon.FileName);
                         }
+
                         Gtk.HeaderBar titlebar = (Gtk.HeaderBar)self.Titlebar;
                         Gtk.Image flag = new Gtk.Image(self.Icon);
                         flag.Visible = true;
@@ -224,15 +252,15 @@ namespace System.Windows.Forms
                     }
                     else
                     {
-                        self.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.view-more.png");
+                        self.Icon = new Gdk.Pixbuf(this.GetType().Assembly,
+                            "GTKSystem.Windows.Forms.Resources.System.view-more.png");
                     }
-
                 }
                 catch
                 {
-
                 }
             }
+
             self.ShowAll();
         }
 
@@ -240,6 +268,7 @@ namespace System.Windows.Forms
         {
             return ShowDialog(null);
         }
+
         public DialogResult ShowDialog(IWin32Window owner)
         {
             if (owner == this)
@@ -256,6 +285,7 @@ namespace System.Windows.Forms
             {
                 throw new InvalidOperationException("ShowDialogOnDisabled");
             }
+
             Show(owner);
             int irun = self.Run();
 
@@ -266,13 +296,16 @@ namespace System.Windows.Forms
         public event FormClosingEventHandler FormClosing;
         public event FormClosedEventHandler FormClosed;
         public override event EventHandler Load;
-        public override string Text { get { return self.Title; } set { self.Title = value; } }
+
+        public override string Text
+        {
+            get { return self.Title; }
+            set { self.Title = value; }
+        }
+
         public override Size ClientSize
         {
-            get
-            {
-                return new Size(self.AllocatedWidth, self.AllocatedHeight);
-            }
+            get { return new Size(self.AllocatedWidth, self.AllocatedHeight); }
             set
             {
                 self.WidthRequest = -1;
@@ -280,13 +313,16 @@ namespace System.Windows.Forms
                 self.SetDefaultSize(value.Width, value.Height);
             }
         }
+
         public SizeF AutoScaleDimensions { get; set; }
         public AutoScaleMode AutoScaleMode { get; set; }
         public FormBorderStyle formBorderStyle = FormBorderStyle.Sizable;
+
         public FormBorderStyle FormBorderStyle
         {
             get { return formBorderStyle; }
-            set {
+            set
+            {
                 formBorderStyle = value;
                 self.Resizable = value == FormBorderStyle.Sizable || value == FormBorderStyle.SizableToolWindow;
                 if (value == FormBorderStyle.None)
@@ -310,12 +346,13 @@ namespace System.Windows.Forms
                 }
             }
         }
+
         public FormStartPosition StartPosition { get; set; }
         private FormWindowState _WindowState = FormWindowState.Normal;
-        public FormWindowState WindowState {
-            get { 
-                return _WindowState;
-            } 
+
+        public FormWindowState WindowState
+        {
+            get { return _WindowState; }
             set
             {
                 _WindowState = value;
@@ -330,15 +367,19 @@ namespace System.Windows.Forms
                         self.Iconify();
                     }
                 }
-            } 
+            }
         }
+
         public DialogResult DialogResult { get; set; }
-        public void Close() {
+
+        public void Close()
+        {
             if (self != null)
             {
                 self.CloseWindow();
             }
         }
+
         public override void Hide()
         {
             if (self != null)
@@ -347,7 +388,11 @@ namespace System.Windows.Forms
             }
         }
 
-        public new ObjectCollection Controls { get { return _ObjectCollection; } }
+        public new ObjectCollection Controls
+        {
+            get { return _ObjectCollection; }
+        }
+
         public override Padding Padding
         {
             get => base.Padding;
@@ -360,16 +405,31 @@ namespace System.Windows.Forms
                 _body.MarginBottom = value.Bottom;
             }
         }
+
         public bool MaximizeBox { get; set; } = true;
         public bool MinimizeBox { get; set; } = true;
-        public double Opacity { get { return self.Opacity; } set { self.Opacity = value; } }
+
+        public double Opacity
+        {
+            get { return self.Opacity; }
+            set { self.Opacity = value; }
+        }
+
         public bool ShowIcon { get; set; } = true;
-        public bool ShowInTaskbar { get { return self.SkipTaskbarHint == false; } set { self.SkipTaskbarHint = value == false; } }
+
+        public bool ShowInTaskbar
+        {
+            get { return self.SkipTaskbarHint == false; }
+            set { self.SkipTaskbarHint = value == false; }
+        }
+
         public System.Drawing.Icon Icon { get; set; }
+
         public override void SuspendLayout()
         {
             _Created = false;
         }
+
         public override void ResumeLayout(bool resume)
         {
             _Created = resume == false;
@@ -379,10 +439,12 @@ namespace System.Windows.Forms
         {
             _Created = true;
         }
+
         public bool Activate()
         {
             return self.Activate();
         }
+
         public MenuStrip MainMenuStrip { get; set; }
 
         public override IntPtr Handle => self.Handle;
@@ -390,11 +452,11 @@ namespace System.Windows.Forms
         public class ObjectCollection : ControlCollection
         {
             Gtk.Container __owner;
+
             public ObjectCollection(Control control, Gtk.Container owner) : base(control, owner)
             {
                 __owner = owner;
             }
-
         }
 
         public class MdiLayout
@@ -406,4 +468,3 @@ namespace System.Windows.Forms
     {
     }
 }
-

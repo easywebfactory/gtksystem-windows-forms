@@ -21,18 +21,22 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         private TabControl.ControlCollection _controls;
         private TabControl.TabPageCollection _tabPageControls;
+
         public TabControl() : base()
         {
             _controls = new ControlCollection(this);
             _tabPageControls = new TabPageCollection(this);
             self.SwitchPage += Self_SwitchPage;
         }
+
         private void Self_SwitchPage(object o, SwitchPageArgs args)
         {
             if (SelectedIndexChanged != null && self.IsMapped)
                 SelectedIndexChanged(this, new EventArgs());
         }
-        public TabAlignment Alignment {
+
+        public TabAlignment Alignment
+        {
             get
             {
                 if (self.TabPos == PositionType.Left)
@@ -46,8 +50,9 @@ namespace System.Windows.Forms
                 else
                     return TabAlignment.Top;
             }
-            set {
-                if(value == TabAlignment.Left)
+            set
+            {
+                if (value == TabAlignment.Left)
                     self.TabPos = PositionType.Left;
                 else if (value == TabAlignment.Top)
                     self.TabPos = PositionType.Top;
@@ -57,24 +62,50 @@ namespace System.Windows.Forms
                     self.TabPos = PositionType.Bottom;
             }
         }
-        public bool Multiline { get; set; }
-        public int SelectedIndex { get { return self.CurrentPage; } set { self.CurrentPage = value; } }
 
-        public TabPage SelectedTab { get { return _controls[self.CurrentPage]; } set { } }
+        public bool Multiline { get; set; }
+
+        public int SelectedIndex
+        {
+            get { return self.CurrentPage; }
+            set { self.CurrentPage = value; }
+        }
+
+        public TabPage SelectedTab
+        {
+            get { return _controls[self.CurrentPage]; }
+            set { }
+        }
 
         public TabSizeMode SizeMode { get; set; }
         public TabDrawMode DrawMode { get; set; }
         public bool ShowToolTips { get; set; }
-        public bool ShowTabs { get => self.ShowTabs; set => self.ShowTabs = value; }
+
+        public bool ShowTabs
+        {
+            get => self.ShowTabs;
+            set => self.ShowTabs = value;
+        }
+
         public Size ItemSize { get; set; }
-        public int TabCount { get => self.NPages; }
-        public TabPageCollection TabPages { get { return _tabPageControls; } }
+
+        public int TabCount
+        {
+            get => self.NPages;
+        }
+
+        public TabPageCollection TabPages
+        {
+            get { return _tabPageControls; }
+        }
+
         public Rectangle GetTabRect(int index)
         {
             if (index < 0 || (index >= TabCount))
             {
                 throw new ArgumentOutOfRangeException(nameof(index), index, "SR.InvalidArgument");
             }
+
             TabPage page = TabPages[index];
             Gtk.Label tab = page.TabLabel;
             Gdk.Rectangle rect = tab.Allocation;
@@ -89,10 +120,12 @@ namespace System.Windows.Forms
         public class ControlCollection : List<TabPage>
         {
             TabControl _owner;
+
             public ControlCollection(TabControl owner)
             {
                 _owner = owner;
             }
+
             public new int Add(TabPage item)
             {
                 try
@@ -109,6 +142,7 @@ namespace System.Windows.Forms
                     {
                         item._tabLabel.Halign = Align.End;
                     }
+
                     base.Add(item);
                     item.TabLabel.Drawn += (object sender, DrawnArgs args) =>
                     {
@@ -119,8 +153,12 @@ namespace System.Windows.Forms
                             args.Cr.ResetClip();
                             int width = allocation.Width + 24;
                             int height = allocation.Height + 2;
-                            _owner.DrawItem(this, new DrawItemEventArgs(new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height)) { diff_left = -12, diff_top = -2 }, _owner.Font, new Rectangle(0, 0, width, height), Convert.ToInt32(tab.Name), DrawItemState.Default));
-
+                            _owner.DrawItem(this,
+                                new DrawItemEventArgs(
+                                    new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height))
+                                        { diff_left = -12, diff_top = -2 }, _owner.Font,
+                                    new Rectangle(0, 0, width, height), Convert.ToInt32(tab.Name),
+                                    DrawItemState.Default));
                         }
                     };
                     return _owner.self.AppendPage(item.self, item.TabLabel);
@@ -136,11 +174,13 @@ namespace System.Windows.Forms
                         item.Widget.ShowAll();
                 }
             }
+
             public new void RemoveAt(int index)
             {
                 base.RemoveAt(index);
                 _owner.self.RemovePage(index);
             }
+
             public new void Remove(TabPage value)
             {
                 base.Remove(value);
@@ -148,24 +188,42 @@ namespace System.Windows.Forms
             }
         }
 
-
         public class TabPageCollection : IList, ICollection, IEnumerable
         {
             private TabControl _owner;
+
             public TabPageCollection(TabControl owner)
             {
                 _owner = owner;
             }
 
-            public virtual TabPage this[string key] { get { return _owner.Controls.Find(p => p.Name == key); } }
-            public virtual TabPage this[int index] { get { return _owner.Controls[index]; } set { Add(value); } }
+            public virtual TabPage this[string key]
+            {
+                get { return _owner.Controls.Find(p => p.Name == key); }
+            }
 
-            object IList.this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            public virtual TabPage this[int index]
+            {
+                get { return _owner.Controls[index]; }
+                set { Add(value); }
+            }
+
+            object IList.this[int index]
+            {
+                get => throw new NotImplementedException();
+                set => throw new NotImplementedException();
+            }
 
             //[Browsable(false)]
-            public int Count { get { return _owner.Controls.Count; } }
+            public int Count
+            {
+                get { return _owner.Controls.Count; }
+            }
 
-            public bool IsReadOnly { get { return false; } }
+            public bool IsReadOnly
+            {
+                get { return false; }
+            }
 
             bool IList.IsFixedSize => throw new NotImplementedException();
 
@@ -186,6 +244,7 @@ namespace System.Windows.Forms
                 value.Parent = _owner;
                 _owner.Controls.Add(value);
             }
+
             public void Add(string key, string text)
             {
                 this.Add(key, text, null);
@@ -240,7 +299,6 @@ namespace System.Windows.Forms
             public virtual bool ContainsKey(string key)
             {
                 return _owner.Controls.FindIndex(p => p.Name == key) > -1;
-
             }
 
             public IEnumerator GetEnumerator()
@@ -260,7 +318,8 @@ namespace System.Windows.Forms
 
             public void Insert(int index, string key, string text, int imageIndex)
             {
-                _owner.Controls.Insert(index, new TabPage() { Name = key, Text = text }); ;
+                _owner.Controls.Insert(index, new TabPage() { Name = key, Text = text });
+                ;
             }
 
             public void Insert(int index, string key, string text)

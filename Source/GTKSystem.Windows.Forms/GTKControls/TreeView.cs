@@ -19,13 +19,20 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         private Gtk.TreeStore _store;
         internal TreeNode root;
-        internal Gtk.TreeStore Store { get { return _store; } }
+
+        internal Gtk.TreeStore Store
+        {
+            get { return _store; }
+        }
+
         protected override void SetStyle(Widget widget)
         {
             base.SetStyle(self.TreeView);
         }
+
         private CellRendererToggle renderercheckbox;
         private CellRendererIcon rendererPixbuf;
+
         public TreeView() : base()
         {
             root = new TreeNode(this);
@@ -114,7 +121,9 @@ namespace System.Windows.Forms
                 }
             }
         }
+
         private TreeViewCancelEventArgs cancelEventArgs = null;
+
         private void Selection_Changed(object sender, EventArgs e)
         {
             if (BeforeSelect != null)
@@ -122,7 +131,7 @@ namespace System.Windows.Forms
                 if (self.TreeView.Selection.GetSelected(out TreeIter iter))
                 {
                     TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
-                    TreeNode result = null; 
+                    TreeNode result = null;
                     GetNodeChild(root, paths[0].Indices, ref result);
                     cancelEventArgs = new TreeViewCancelEventArgs(result, false, TreeViewAction.ByMouse);
                     BeforeSelect(this, cancelEventArgs);
@@ -134,9 +143,12 @@ namespace System.Windows.Forms
         {
             Store.Clear();
         }
+
         internal void LoadNodeValue(TreeNode node, TreeIter parent)
         {
-            TreeIter iter = parent.Equals(TreeIter.Zero) ? Store.AppendValues(node.Text, node.Checked, node.ImageIndex, node.ImageKey) : Store.AppendValues(parent, node.Text, node.Checked, node.ImageIndex, node.ImageKey);
+            TreeIter iter = parent.Equals(TreeIter.Zero)
+                ? Store.AppendValues(node.Text, node.Checked, node.ImageIndex, node.ImageKey)
+                : Store.AppendValues(parent, node.Text, node.Checked, node.ImageIndex, node.ImageKey);
             TreePath path = Store.GetPath(iter);
             node.Index = string.Join(",", path.Indices);
             node.TreeIter = iter;
@@ -145,13 +157,15 @@ namespace System.Windows.Forms
                 LoadNodeValue(child, iter);
             }
         }
+
         internal void SetChecked(TreeNode node, bool isChecked)
         {
             if (node != null)
             {
-                _store.SetValue(node.TreeIter,1,isChecked);
+                _store.SetValue(node.TreeIter, 1, isChecked);
             }
         }
+
         internal void SetSelected(TreeNode node, bool isSelected)
         {
             if (node != null)
@@ -159,14 +173,14 @@ namespace System.Windows.Forms
                 this.SelectedNode = node;
             }
         }
+
         public TreeNodeCollection Nodes
         {
-            get
-            {
-                return root.Nodes;
-            }
+            get { return root.Nodes; }
         }
+
         private bool _checkBoxs;
+
         public bool CheckBoxes
         {
             get => _checkBoxs;
@@ -176,6 +190,7 @@ namespace System.Windows.Forms
                 renderercheckbox.Visible = _checkBoxs == true;
             }
         }
+
         private void CellName_Toggled(object o, ToggledArgs args)
         {
             //Console.WriteLine("CellRendererToggle CellName_Toggled");
@@ -185,9 +200,14 @@ namespace System.Windows.Forms
             bool val = (bool)(model.GetValue(iter, 1));
             model.SetValue(iter, 1, val == false);
         }
+
         private ImageList _imageList;
-        public ImageList ImageList { get => _imageList; 
-            set {
+
+        public ImageList ImageList
+        {
+            get => _imageList;
+            set
+            {
                 _imageList = value;
                 rendererPixbuf.Visible = _imageList != null;
                 if (_imageList != null)
@@ -196,71 +216,82 @@ namespace System.Windows.Forms
                     column.AddAttribute(rendererPixbuf, "pixbufkey", 3);
                     column.AddAttribute(rendererPixbuf, "pixbufindex", 2);
                 }
-            } 
+            }
         }
+
         public int ImageIndex { get; set; } = -1;
         public string ImageKey { get; set; }
         public int SelectedImageIndex { get; set; }
         public string SelectedImageKey { get; set; }
         public int StateImageIndex { get; set; }
         public string StateImageKey { get; set; }
+
         public void ExpandAll()
         {
             self.TreeView.ExpandAll();
         }
+
         public void CollapseAll()
         {
             self.TreeView.CollapseAll();
         }
+
         internal void SetExpandNode(TreeNode node, bool all)
         {
             self.TreeView.ExpandRow(_store.GetPath(node.TreeIter), all);
         }
+
         internal void SetCollapseNode(TreeNode node)
         {
-            
             self.TreeView.CollapseRow(_store.GetPath(node.TreeIter));
         }
+
         internal bool GetNodeExpanded(TreeNode node)
         {
             return self.TreeView.GetRowExpanded(_store.GetPath(node.TreeIter));
         }
-        public bool ShowLines { get=> self.TreeView.EnableTreeLines; set { self.TreeView.EnableTreeLines = true; self.TreeView.EnableGridLines = Gtk.TreeViewGridLines.Horizontal; } }
-        public bool ShowNodeToolsTips { get; set; }
-        public bool ShowPlusMinus { get; set; } = true;
-        public bool ShowRootLines { get; set; } = true;
-        public object SelectedItem
+
+        public bool ShowLines
         {
-            get
+            get => self.TreeView.EnableTreeLines;
+            set
             {
-                return SelectedNode.Text;
-            }
-        }
-        public object SelectedValue
-        {
-            get
-            {
-                return SelectedNode.Text;
+                self.TreeView.EnableTreeLines = true;
+                self.TreeView.EnableGridLines = Gtk.TreeViewGridLines.Horizontal;
             }
         }
 
-        [DefaultValue("\\")]
-        public string PathSeparator
+        public bool ShowNodeToolsTips { get; set; }
+        public bool ShowPlusMinus { get; set; } = true;
+        public bool ShowRootLines { get; set; } = true;
+
+        public object SelectedItem
         {
-            get;
-            set;
-        } = "\\";
+            get { return SelectedNode.Text; }
+        }
+
+        public object SelectedValue
+        {
+            get { return SelectedNode.Text; }
+        }
+
+        [DefaultValue("\\")] public string PathSeparator { get; set; } = "\\";
+
         public TreeNode SelectedNode
         {
             get
             {
-                if (self.TreeView.Selection.GetSelected(out TreeIter iter)) {
+                if (self.TreeView.Selection.GetSelected(out TreeIter iter))
+                {
                     TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
                     TreeNode result = null;
                     GetNodeChild(root, paths[0].Indices, ref result);
                     return result;
                 }
-                else { return null; }
+                else
+                {
+                    return null;
+                }
             }
             set
             {
@@ -273,25 +304,21 @@ namespace System.Windows.Forms
                 }
             }
         }
+
         public TreeNode TopNode
         {
-            get
-            {
-                return root;
-            }
-            set
-            {
-               
-            }
+            get { return root; }
+            set { }
         }
-        
+
         public event TreeViewCancelEventHandler BeforeSelect;
         public event TreeViewEventHandler AfterSelect;
         public event TreeViewEventHandler AfterCollapse;
         public event TreeViewEventHandler AfterExpand;
+
         private void GetNodeChild(TreeNode node, int[] indices, ref TreeNode result)
         {
-            string nodeIndex= string.Join(",", indices);
+            string nodeIndex = string.Join(",", indices);
             foreach (TreeNode child in node.Nodes)
             {
                 if (child.Index == nodeIndex)
@@ -305,13 +332,16 @@ namespace System.Windows.Forms
                 }
             }
         }
+
         private class CellRendererIcon : Gtk.CellRendererPixbuf
         {
             public TreeView _treeView;
+
             public CellRendererIcon(TreeView treeView)
             {
                 _treeView = treeView;
             }
+
             [Property("pixbufindex")]
             public int PixbufIndex
             {
@@ -321,6 +351,7 @@ namespace System.Windows.Forms
                         this.Pixbuf = _treeView.ImageList.Images[value].Pixbuf;
                 }
             }
+
             [Property("pixbufkey")]
             public string PixbufKey
             {

@@ -8,5 +8,6 @@ namespace System.Windows.Forms
     ///  Represents a method that will handle the <see cref='ListView.ItemSelectionChanged'/>
     ///  event of a <see cref='ListView'/>.
     /// </summary>
-    public delegate void ListViewItemSelectionChangedEventHandler(object sender, ListViewItemSelectionChangedEventArgs e);
+    public delegate void ListViewItemSelectionChangedEventHandler(object sender,
+        ListViewItemSelectionChangedEventArgs e);
 }

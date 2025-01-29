@@ -24,13 +24,14 @@ namespace System.Windows.Forms
         public readonly TableLayoutPanelBase self = new TableLayoutPanelBase();
         public override object GtkControl => self;
         private TableLayoutControlCollection _controls;
-		private TableLayoutColumnStyleCollection _columnStyles;
-		private TableLayoutRowStyleCollection _rowStyles;
-        public TableLayoutPanel():base()
+        private TableLayoutColumnStyleCollection _columnStyles;
+        private TableLayoutRowStyleCollection _rowStyles;
+
+        public TableLayoutPanel() : base()
         {
-            _controls=new TableLayoutControlCollection(this);
-			_columnStyles = new TableLayoutColumnStyleCollection();
-			_rowStyles = new TableLayoutRowStyleCollection();
+            _controls = new TableLayoutControlCollection(this);
+            _columnStyles = new TableLayoutColumnStyleCollection();
+            _rowStyles = new TableLayoutRowStyleCollection();
         }
 
         public override void PerformLayout()
@@ -49,8 +50,10 @@ namespace System.Windows.Forms
                     for (int c = 0; c < ColumnCount; c++)
                         self.GetChildAt(c, ridx).HeightRequest = Convert.ToInt32(size.Height * rs.Height * 0.01);
                 }
+
                 ridx++;
             }
+
             int cidx = 0;
             foreach (ColumnStyle cs in ColumnStyles)
             {
@@ -66,32 +69,32 @@ namespace System.Windows.Forms
                         self.GetChildAt(cidx, r).WidthRequest = Convert.ToInt32(size.Width * cs.Width * 0.01);
                     }
                 }
+
                 cidx++;
             }
         }
 
         [Browsable(false)]
-        public override BorderStyle BorderStyle { get => base.BorderStyle; set => base.BorderStyle = value; }
+        public override BorderStyle BorderStyle
+        {
+            get => base.BorderStyle;
+            set => base.BorderStyle = value;
+        }
 
+        [Localizable(true)] public TableLayoutPanelCellBorderStyle CellBorderStyle { get; set; }
 
+        [Browsable(false)]
+        public new TableLayoutControlCollection Controls
+        {
+            get => _controls;
+        }
 
+        private int _ColumnCount;
+
+        [DefaultValue(0)]
         [Localizable(true)]
-		public TableLayoutPanelCellBorderStyle CellBorderStyle
-		{
-            get;
-            set;
-        }
-
-		[Browsable(false)]
-		public new TableLayoutControlCollection Controls
-		{
-			get => _controls;
-        }
-		private int _ColumnCount;
-		[DefaultValue(0)]
-		[Localizable(true)]
-		public int ColumnCount
-		{
+        public int ColumnCount
+        {
             get => _ColumnCount;
             set
             {
@@ -105,24 +108,23 @@ namespace System.Windows.Forms
                         }
                     }
                 }
+
                 for (int c = value; c < _ColumnCount; c++)
                 {
                     self.RemoveColumn(value);
                 }
+
                 _ColumnCount = value;
             }
         }
 
-		public TableLayoutPanelGrowStyle GrowStyle
-		{
-            get;
-            set;
-        }
+        public TableLayoutPanelGrowStyle GrowStyle { get; set; }
         private int _RowCount;
+
         [DefaultValue(0)]
-		[Localizable(true)]
-		public int RowCount
-		{
+        [Localizable(true)]
+        public int RowCount
+        {
             get => _RowCount;
             set
             {
@@ -136,92 +138,98 @@ namespace System.Windows.Forms
                         }
                     }
                 }
+
                 for (int r = value; r < _RowCount; r++)
                 {
                     self.RemoveRow(value);
                 }
+
                 _RowCount = value;
             }
         }
 
-		[DisplayName("Rows")]
-		[Browsable(false)]
-		public TableLayoutRowStyleCollection RowStyles
-		{
-			get => _rowStyles;
+        [DisplayName("Rows")]
+        [Browsable(false)]
+        public TableLayoutRowStyleCollection RowStyles
+        {
+            get => _rowStyles;
         }
 
-
-		[DisplayName("Columns")]
-		[Browsable(false)]
-		public TableLayoutColumnStyleCollection ColumnStyles
-		{
-			get => _columnStyles;
+        [DisplayName("Columns")]
+        [Browsable(false)]
+        public TableLayoutColumnStyleCollection ColumnStyles
+        {
+            get => _columnStyles;
         }
-        public override Size Size { 
+
+        public override Size Size
+        {
             get => base.Size;
-            set {
+            set
+            {
                 base.Size = value;
                 PerformLayout();
             }
         }
+
         bool IExtenderProvider.CanExtend(object obj)
-		{
-			throw null;
-		}
+        {
+            throw null;
+        }
 
-		[DefaultValue(1)]
-		[DisplayName("ColumnSpan")]
-		public int GetColumnSpan(Control control)
-		{
-			return control.Widget.MarginStart;
-		}
+        [DefaultValue(1)]
+        [DisplayName("ColumnSpan")]
+        public int GetColumnSpan(Control control)
+        {
+            return control.Widget.MarginStart;
+        }
 
-		public void SetColumnSpan(Control control, int value)
-		{
+        public void SetColumnSpan(Control control, int value)
+        {
             control.Widget.MarginStart = value;
             control.Widget.MarginEnd = value;
         }
 
-		[DefaultValue(1)]
-		[DisplayName("RowSpan")]
-		public int GetRowSpan(Control control)
-		{
+        [DefaultValue(1)]
+        [DisplayName("RowSpan")]
+        public int GetRowSpan(Control control)
+        {
             return control.Widget.MarginTop;
         }
 
-		public void SetRowSpan(Control control, int value)
-		{
+        public void SetRowSpan(Control control, int value)
+        {
             control.Widget.MarginTop = value;
             control.Widget.MarginBottom = value;
         }
 
-		[DefaultValue(-1)]
-		[DisplayName("Row")]
-		public int GetRow(Control control)
-		{
+        [DefaultValue(-1)]
+        [DisplayName("Row")]
+        public int GetRow(Control control)
+        {
             return ((Gtk.Grid.GridChild)self[control.Widget.Parent]).TopAttach;
         }
 
-		public void SetRow(Control control, int row)
-		{
+        public void SetRow(Control control, int row)
+        {
             ((Gtk.Grid.GridChild)self[control.Widget.Parent]).TopAttach = row;
         }
 
-		[DisplayName("Cell")]
-		public TableLayoutPanelCellPosition GetCellPosition(Control control)
-		{
+        [DisplayName("Cell")]
+        public TableLayoutPanelCellPosition GetCellPosition(Control control)
+        {
             TableLayoutPanelCellPosition cellPosition = new TableLayoutPanelCellPosition(-1, -1);
             if (self[control.Widget.Parent] is Gtk.Grid.GridChild cell)
             {
                 cellPosition.Column = cell.LeftAttach;
                 cellPosition.Row = cell.TopAttach;
             }
+
             return cellPosition;
         }
 
-		public void SetCellPosition(Control control, TableLayoutPanelCellPosition position)
-		{
+        public void SetCellPosition(Control control, TableLayoutPanelCellPosition position)
+        {
             if (self[control.Widget.Parent] is Gtk.Grid.GridChild cell)
             {
                 cell.LeftAttach = position.Column;
@@ -229,24 +237,23 @@ namespace System.Windows.Forms
             }
         }
 
-		[DefaultValue(-1)]
-		[DisplayName("Column")]
-		public int GetColumn(Control control)
-		{
+        [DefaultValue(-1)]
+        [DisplayName("Column")]
+        public int GetColumn(Control control)
+        {
             return ((Gtk.Grid.GridChild)self[control.Widget.Parent]).LeftAttach;
         }
 
-		public void SetColumn(Control control, int column)
-		{
+        public void SetColumn(Control control, int column)
+        {
             if (self[control.Widget.Parent] is Gtk.Grid.GridChild child)
                 child.LeftAttach = column;
-
         }
 
-		public Control GetControlFromPosition(int column, int row)
-		{
+        public Control GetControlFromPosition(int column, int row)
+        {
             return self.GetChildAt(column, row).Data["Control"] as Control;
-		}
+        }
 
         public TableLayoutPanelCellPosition GetPositionFromControl(Control control)
         {
@@ -256,32 +263,35 @@ namespace System.Windows.Forms
                 cellPosition.Column = cell.LeftAttach;
                 cellPosition.Row = cell.TopAttach;
             }
+
             return cellPosition;
         }
 
         [Browsable(false)]
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		public int[] GetColumnWidths()
-		{
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int[] GetColumnWidths()
+        {
             List<int> list = new List<int>();
             if (RowCount > 0)
             {
                 for (int c = 0; c < ColumnCount; c++)
                     list.Add(self.GetChildAt(c, 0).WidthRequest);
             }
-            return list.ToArray();
-		}
 
-		[Browsable(false)]
-		public int[] GetRowHeights()
-		{
+            return list.ToArray();
+        }
+
+        [Browsable(false)]
+        public int[] GetRowHeights()
+        {
             List<int> list = new List<int>();
             if (ColumnCount > 0)
             {
                 for (int r = 0; r < RowCount; r++)
                     list.Add(self.GetChildAt(0, r).WidthRequest);
             }
+
             return list.ToArray();
         }
-	}
+    }
 }

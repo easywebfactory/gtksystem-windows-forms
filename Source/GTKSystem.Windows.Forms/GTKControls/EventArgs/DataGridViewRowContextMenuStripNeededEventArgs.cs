@@ -16,7 +16,8 @@ namespace System.Windows.Forms
             RowIndex = rowIndex;
         }
 
-        internal DataGridViewRowContextMenuStripNeededEventArgs(int rowIndex, ContextMenuStrip contextMenuStrip) : this(rowIndex)
+        internal DataGridViewRowContextMenuStripNeededEventArgs(int rowIndex, ContextMenuStrip contextMenuStrip) :
+            this(rowIndex)
         {
             ContextMenuStrip = contextMenuStrip;
         }

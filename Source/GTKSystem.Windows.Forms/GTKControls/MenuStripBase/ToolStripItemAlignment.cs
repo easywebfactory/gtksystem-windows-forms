@@ -13,6 +13,7 @@
         ///     side of the System.Windows.Forms.ToolStrip.
         /// </summary>
         Left = 0,
+
         /// <summary>
         ///     Specifies that the System.Windows.Forms.ToolStripItem is to be anchored toward
         ///     the right or bottom end of the System.Windows.Forms.ToolStrip, depending on the

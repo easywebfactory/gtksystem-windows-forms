@@ -1,12 +1,12 @@
 namespace System.Windows.Forms
 {
-	public readonly struct BindingMemberInfo : IEquatable<BindingMemberInfo>
-	{
-		private readonly string _dataList;
+    public readonly struct BindingMemberInfo : IEquatable<BindingMemberInfo>
+    {
+        private readonly string _dataList;
 
-		private readonly string _dataField;
+        private readonly string _dataField;
 
-		public string BindingPath => _dataList ?? string.Empty;
+        public string BindingPath => _dataList ?? string.Empty;
 
         public string BindingField => _dataField ?? string.Empty;
 
@@ -15,7 +15,7 @@ namespace System.Windows.Forms
             : BindingField;
 
         public BindingMemberInfo(string dataMember)
-		{
+        {
             dataMember ??= string.Empty;
             int lastDot = dataMember.LastIndexOf('.');
             if (lastDot != -1)
@@ -35,8 +35,8 @@ namespace System.Windows.Forms
             if (otherObject is BindingMemberInfo otherMember)
             {
                 return Equals(otherMember);
-                
             }
+
             return false;
         }
 

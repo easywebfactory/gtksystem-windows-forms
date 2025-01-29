@@ -2,32 +2,34 @@
 {
     public class ToolStripMenuItem : WidgetToolStrip<Gtk.MenuItem>
     {
-        public ToolStripMenuItem():base("ToolStripMenuItem")
+        public ToolStripMenuItem() : base("ToolStripMenuItem")
         {
             DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
         }
 
-        public override CheckState CheckState { 
+        public override CheckState CheckState
+        {
             get => base.CheckState;
-            set
-            {
-                base.CheckState = value;
-            }
+            set { base.CheckState = value; }
         }
-        public override bool Checked {
+
+        public override bool Checked
+        {
             get
             {
                 if (this.flagBox.Child is Gtk.CheckButton checkbutton)
                 {
-                   return checkbutton.Active;
+                    return checkbutton.Active;
                 }
                 else if (this.flagBox.Child is Gtk.RadioButton radiobutton)
                 {
                     return radiobutton.Active;
                 }
-                return base.Checked; 
+
+                return base.Checked;
             }
-            set { 
+            set
+            {
                 base.Checked = value;
                 if (this.flagBox.Child is Gtk.CheckButton checkbutton)
                 {
@@ -37,6 +39,7 @@
                 {
                     radiobutton.Active = value;
                 }
-            } }
+            }
+        }
     }
 }

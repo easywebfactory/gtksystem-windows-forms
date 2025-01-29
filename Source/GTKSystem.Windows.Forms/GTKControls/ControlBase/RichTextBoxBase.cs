@@ -3,6 +3,7 @@
     public sealed class RichTextBoxBase : ScrollableBoxBase
     {
         internal Gtk.TextView TextView = new Gtk.TextView();
+
         public RichTextBoxBase() : base()
         {
             this.Override.AddClass("RichTextBox");

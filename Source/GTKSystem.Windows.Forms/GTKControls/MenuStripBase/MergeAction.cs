@@ -1,11 +1,11 @@
 namespace System.Windows.Forms
 {
-	public enum MergeAction
-	{
-		Append,
-		Insert,
-		Replace,
-		Remove,
-		MatchOnly
-	}
+    public enum MergeAction
+    {
+        Append,
+        Insert,
+        Replace,
+        Remove,
+        MatchOnly
+    }
 }

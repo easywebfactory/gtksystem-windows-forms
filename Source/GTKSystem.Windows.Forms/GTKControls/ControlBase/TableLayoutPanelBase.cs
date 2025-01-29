@@ -3,6 +3,7 @@
     public sealed class TableLayoutPanelBase : Gtk.Grid, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
+
         public TableLayoutPanelBase() : base()
         {
             this.Override = new GtkControlOverride(this);
@@ -18,15 +19,18 @@
             this.Vexpand = false;
             this.Hexpand = false;
         }
+
         public void AddClass(string cssClass)
         {
             this.Override.AddClass(cssClass);
         }
+
         protected override void OnShown()
         {
             Override.OnAddClass();
             base.OnShown();
         }
+
         protected override bool OnDrawn(Cairo.Context cr)
         {
             Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);

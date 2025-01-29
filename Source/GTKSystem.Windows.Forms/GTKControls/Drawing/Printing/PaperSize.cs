@@ -5,7 +5,6 @@ using System.Globalization;
 
 namespace System.Drawing.Printing
 {
-
     public partial class PaperSize
     {
         private PaperKind _kind;
@@ -54,7 +53,7 @@ namespace System.Drawing.Printing
         }
 
         public PaperKind Kind
-=> PaperKind.Custom;
+            => PaperKind.Custom;
 
         public string PaperName
         {
@@ -90,6 +89,7 @@ namespace System.Drawing.Printing
             }
         }
 
-        public override string ToString() => $"[PaperSize {PaperName} Kind={Kind} Height={Height.ToString(CultureInfo.InvariantCulture)} Width={Width.ToString(CultureInfo.InvariantCulture)}]";
+        public override string ToString() =>
+            $"[PaperSize {PaperName} Kind={Kind} Height={Height.ToString(CultureInfo.InvariantCulture)} Width={Width.ToString(CultureInfo.InvariantCulture)}]";
     }
 }

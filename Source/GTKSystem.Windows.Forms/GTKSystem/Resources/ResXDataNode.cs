@@ -26,7 +26,8 @@ namespace System.Resources
         private string _name;
         private string _comment;
 
-        private string _typeName; // is only used when we create a resxdatanode manually with an object and contains the FQN
+        private string
+            _typeName; // is only used when we create a resxdatanode manually with an object and contains the FQN
 
         private string _fileRefFullPath;
         private string _fileRefType;
@@ -37,8 +38,10 @@ namespace System.Resources
 
         //private IFormatter _binaryFormatter;
         private DataContractSerializer _binaryFormatter;
+
         // this is going to be used to check if a ResXDataNode is of type ResXFileRef
-        private static readonly ITypeResolutionService s_internalTypeResolver = new AssemblyNamesTypeResolutionService(new AssemblyName[] { new AssemblyName("System.Windows.Forms") });
+        private static readonly ITypeResolutionService s_internalTypeResolver =
+            new AssemblyNamesTypeResolutionService(new AssemblyName[] { new AssemblyName("System.Windows.Forms") });
 
         // callback function to get type name for multitargeting.
         // No public property to force using constructors for the following reasons:
@@ -87,7 +90,8 @@ namespace System.Resources
 
             if (value != null && !valueType.IsSerializable)
             {
-                throw new InvalidOperationException(string.Format("SR.NotSerializableType,{0},{1}", name, valueType.FullName));
+                throw new InvalidOperationException(string.Format("SR.NotSerializableType,{0},{1}", name,
+                    valueType.FullName));
             }
 
             if (value != null)
@@ -123,7 +127,8 @@ namespace System.Resources
             // and we can't be sure that we have a typeResolutionService that can
             // recognize this. It's not very clean but this should work.
             Type nodeType = null;
-            if (!string.IsNullOrEmpty(_nodeInfo.TypeName)) // can be null if we have a string (default for string is TypeName == null)
+            if (!string.IsNullOrEmpty(_nodeInfo
+                    .TypeName)) // can be null if we have a string (default for string is TypeName == null)
             {
                 nodeType = s_internalTypeResolver.GetType(_nodeInfo.TypeName, false, true);
             }
@@ -164,10 +169,7 @@ namespace System.Resources
 
                 return result ?? string.Empty;
             }
-            set
-            {
-                _comment = value;
-            }
+            set { _comment = value; }
         }
 
         public string Name
@@ -217,26 +219,17 @@ namespace System.Resources
 
         private string FileRefFullPath
         {
-            get
-            {
-                return _fileRef?.FileName ?? _fileRefFullPath;
-            }
+            get { return _fileRef?.FileName ?? _fileRefFullPath; }
         }
 
         private string FileRefType
         {
-            get
-            {
-                return _fileRef?.TypeName ?? _fileRefType;
-            }
+            get { return _fileRef?.TypeName ?? _fileRefType; }
         }
 
         private string FileRefTextEncoding
         {
-            get
-            {
-                return _fileRef?.TextFileEncoding?.BodyName ?? _fileRefTextEncoding;
-            }
+            get { return _fileRef?.TextFileEncoding?.BodyName ?? _fileRefTextEncoding; }
         }
 
         private static string ToBase64WrappedString(byte[] data)
@@ -247,7 +240,9 @@ namespace System.Resources
             string raw = Convert.ToBase64String(data);
             if (raw.Length > lineWrap)
             {
-                StringBuilder output = new StringBuilder(raw.Length + (raw.Length / lineWrap) * 3); // word wrap on lineWrap chars, \r\n
+                StringBuilder
+                    output = new StringBuilder(raw.Length +
+                                               (raw.Length / lineWrap) * 3); // word wrap on lineWrap chars, \r\n
                 int current = 0;
                 for (; current < raw.Length - lineWrap; current += lineWrap)
                 {
@@ -288,7 +283,8 @@ namespace System.Resources
                 Type valueType = (value is null) ? typeof(object) : value.GetType();
                 if (value != null && !valueType.IsSerializable)
                 {
-                    throw new InvalidOperationException(string.Format("SR.NotSerializableType,{0},{1}", _name, valueType.FullName));
+                    throw new InvalidOperationException(string.Format("SR.NotSerializableType,{0},{1}", _name,
+                        valueType.FullName));
                 }
 
                 TypeConverter tc = TypeDescriptor.GetConverter(valueType);
@@ -329,7 +325,8 @@ namespace System.Resources
                 if (value is null)
                 {
                     nodeInfo.ValueData = string.Empty;
-                    nodeInfo.TypeName = MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXNullRef), _typeNameConverter);
+                    nodeInfo.TypeName =
+                        MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXNullRef), _typeNameConverter);
                 }
                 else
                 {
@@ -416,8 +413,10 @@ namespace System.Resources
                         }
                         else
                         {
-                            string newMessage = string.Format("SR.TypeLoadException,{0},{1},{2}", typeName, dataNodeInfo.ReaderPosition.Y, dataNodeInfo.ReaderPosition.X);
-                            XmlException xml = new XmlException(newMessage, null, dataNodeInfo.ReaderPosition.Y, dataNodeInfo.ReaderPosition.X);
+                            string newMessage = string.Format("SR.TypeLoadException,{0},{1},{2}", typeName,
+                                dataNodeInfo.ReaderPosition.Y, dataNodeInfo.ReaderPosition.X);
+                            XmlException xml = new XmlException(newMessage, null, dataNodeInfo.ReaderPosition.Y,
+                                dataNodeInfo.ReaderPosition.X);
                             TypeLoadException newTle = new TypeLoadException(newMessage, xml);
 
                             throw newTle;
@@ -435,7 +434,8 @@ namespace System.Resources
                         result = null;
                     }
                     else if (type == typeof(byte[]) ||
-                        (typeName.Contains("System.Byte[]") && (typeName.Contains("mscorlib") || typeName.Contains("System.Private.CoreLib"))))
+                             (typeName.Contains("System.Byte[]") && (typeName.Contains("mscorlib") ||
+                                                                     typeName.Contains("System.Private.CoreLib"))))
                     {
                         // Handle byte[]'s, which are stored as base-64 encoded strings.
                         // We can't hard-code byte[] type name due to version number
@@ -454,8 +454,10 @@ namespace System.Resources
                             }
                             catch (NotSupportedException nse)
                             {
-                                string newMessage = string.Format("SR.NotSupported,{0},{1},{2},{3}", typeName, dataNodeInfo.ReaderPosition.Y, dataNodeInfo.ReaderPosition.X, nse.Message);
-                                XmlException xml = new XmlException(newMessage, nse, dataNodeInfo.ReaderPosition.Y, dataNodeInfo.ReaderPosition.X);
+                                string newMessage = string.Format("SR.NotSupported,{0},{1},{2},{3}", typeName,
+                                    dataNodeInfo.ReaderPosition.Y, dataNodeInfo.ReaderPosition.X, nse.Message);
+                                XmlException xml = new XmlException(newMessage, nse, dataNodeInfo.ReaderPosition.Y,
+                                    dataNodeInfo.ReaderPosition.X);
                                 NotSupportedException newNse = new NotSupportedException(newMessage, xml);
                                 throw newNse;
                             }
@@ -468,8 +470,10 @@ namespace System.Resources
                 }
                 else
                 {
-                    string newMessage = string.Format("SR.TypeLoadException,{0},{1},{2}", typeName, dataNodeInfo.ReaderPosition.Y, dataNodeInfo.ReaderPosition.X);
-                    XmlException xml = new XmlException(newMessage, null, dataNodeInfo.ReaderPosition.Y, dataNodeInfo.ReaderPosition.X);
+                    string newMessage = string.Format("SR.TypeLoadException,{0},{1},{2}", typeName,
+                        dataNodeInfo.ReaderPosition.Y, dataNodeInfo.ReaderPosition.X);
+                    XmlException xml = new XmlException(newMessage, null, dataNodeInfo.ReaderPosition.Y,
+                        dataNodeInfo.ReaderPosition.X);
                     TypeLoadException newTle = new TypeLoadException(newMessage, xml);
 
                     throw newTle;
@@ -509,7 +513,8 @@ namespace System.Resources
                 {
                     _nodeInfo.ValueData = FileRef.ToString();
                     _nodeInfo.MimeType = null;
-                    _nodeInfo.TypeName = MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXFileRef), _typeNameConverter);
+                    _nodeInfo.TypeName =
+                        MultitargetUtil.GetAssemblyQualifiedName(typeof(ResXFileRef), _typeNameConverter);
                 }
                 else
                 {
@@ -586,7 +591,8 @@ namespace System.Resources
 
                         if (insideObject != null)
                         {
-                            result = MultitargetUtil.GetAssemblyQualifiedName(insideObject.GetType(), _typeNameConverter);
+                            result = MultitargetUtil.GetAssemblyQualifiedName(insideObject.GetType(),
+                                _typeNameConverter);
                         }
                     }
                     else

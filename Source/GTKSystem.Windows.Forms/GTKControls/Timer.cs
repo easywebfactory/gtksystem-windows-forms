@@ -15,6 +15,7 @@ namespace System.Windows.Forms
     public class Timer : Component
     {
         readonly System.Timers.Timer TimersTimer = new Timers.Timer();
+
         public Timer()
         {
             TimersTimer.Elapsed += TimersTimer_Elapsed;
@@ -23,6 +24,7 @@ namespace System.Windows.Forms
         public Timer(IContainer container) : this()
         {
         }
+
         private void TimersTimer_Elapsed(object sender, Timers.ElapsedEventArgs e)
         {
             if (Tick != null)
@@ -36,12 +38,21 @@ namespace System.Windows.Forms
         public object Tag { get; set; }
 
         [DefaultValue(false)]
-        public virtual bool Enabled { get => TimersTimer.Enabled; set => TimersTimer.Enabled = value; }
+        public virtual bool Enabled
+        {
+            get => TimersTimer.Enabled;
+            set => TimersTimer.Enabled = value;
+        }
 
         [DefaultValue(100)]
-        public int Interval { get => (int)TimersTimer.Interval; set => TimersTimer.Interval = value; }
+        public int Interval
+        {
+            get => (int)TimersTimer.Interval;
+            set => TimersTimer.Interval = value;
+        }
 
         public event EventHandler Tick;
+
         public void Start()
         {
             TimersTimer.Start();
@@ -52,13 +63,17 @@ namespace System.Windows.Forms
             TimersTimer.Stop();
         }
 
-        public override string ToString() { return "System.Windows.Forms.Timer"; }
+        public override string ToString()
+        {
+            return "System.Windows.Forms.Timer";
+        }
 
         protected override void Dispose(bool disposing)
         {
             TimersTimer.Dispose();
             base.Dispose();
         }
+
         protected new void Dispose()
         {
             Dispose(true);

@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
 
-
 namespace System.Windows.Forms
 {
     public interface IControl_Sample
@@ -12,7 +11,9 @@ namespace System.Windows.Forms
         string AccessibleName { get; set; }
         AccessibleRole AccessibleRole { get; set; }
         bool AllowDrop { get; set; }
+
         AnchorStyles Anchor { get; set; }
+
         //Color BackColor { get; set; }
         Image BackgroundImage { get; set; }
         ImageLayout BackgroundImageLayout { get; set; }
@@ -21,26 +22,38 @@ namespace System.Windows.Forms
         Cursor Cursor { get; set; }
         DockStyle Dock { get; set; }
         bool Enabled { get; set; }
+
         Font Font { get; set; }
+
         //Color ForeColor { get; set; }
         int Height { get; set; }
+
         ImeMode ImeMode { get; set; }
+
         //int Left { get; set; }
         //Point Location { get; set; }
         //Padding Margin { get; set; }
         Size MaximumSize { get; set; }
+
         Size MinimumSize { get; set; }
-       // string Name { get; set; }
+
+        // string Name { get; set; }
         Padding Padding { get; set; }
+
         //Control Parent { get; set; }
         RightToLeft RightToLeft { get; set; }
+
         //Size Size { get; set; }
         int TabIndex { get; set; }
         bool TabStop { get; set; }
+
         object Tag { get; set; }
+
         //string Text { get; set; }
         int Top { get; set; }
+
         bool UseWaitCursor { get; set; }
+
         //bool Visible { get; set; }
         int Width { get; set; }
 

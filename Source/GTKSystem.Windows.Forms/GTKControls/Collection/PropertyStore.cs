@@ -65,7 +65,8 @@ internal partial class PropertyStore
                 return wrapper.Color;
             }
 
-            Debug.Assert(storedObject is null, $"Have non-null object that isn't a color wrapper stored in a color entry!{Environment.NewLine}Did someone SetObject instead of SetColor?");
+            Debug.Assert(storedObject is null,
+                $"Have non-null object that isn't a color wrapper stored in a color entry!{Environment.NewLine}Did someone SetObject instead of SetColor?");
         }
 
         found = false;
@@ -85,7 +86,8 @@ internal partial class PropertyStore
                 return wrapper.Padding;
             }
 
-            Debug.Assert(storedObject is null, $"Have non-null object that isn't a padding wrapper stored in a padding entry!{Environment.NewLine}Did someone SetObject instead of SetPadding?");
+            Debug.Assert(storedObject is null,
+                $"Have non-null object that isn't a padding wrapper stored in a padding entry!{Environment.NewLine}Did someone SetObject instead of SetPadding?");
         }
 
         found = false;
@@ -105,7 +107,8 @@ internal partial class PropertyStore
                 return wrapper.Size;
             }
 
-            Debug.Assert(storedObject is null, $"Have non-null object that isn't a padding wrapper stored in a padding entry!{Environment.NewLine}Did someone SetObject instead of SetPadding?");
+            Debug.Assert(storedObject is null,
+                $"Have non-null object that isn't a padding wrapper stored in a padding entry!{Environment.NewLine}Did someone SetObject instead of SetPadding?");
         }
 
         found = false;
@@ -125,7 +128,8 @@ internal partial class PropertyStore
                 return wrapper.Rectangle;
             }
 
-            Debug.Assert(storedObject is null, $"Have non-null object that isn't a Rectangle wrapper stored in a Rectangle entry!{Environment.NewLine}Did someone SetObject instead of SetRectangle?");
+            Debug.Assert(storedObject is null,
+                $"Have non-null object that isn't a Rectangle wrapper stored in a Rectangle entry!{Environment.NewLine}Did someone SetObject instead of SetRectangle?");
         }
 
         found = false;
@@ -200,7 +204,8 @@ internal partial class PropertyStore
     public bool TryGetObject<T>(int key, out T? value)
     {
         object? entry = GetObject(key, out bool found);
-        Debug.Assert(!found || entry is null || entry is T, $"Entry is not of type {typeof(T)}, but of type {entry?.GetType()}");
+        Debug.Assert(!found || entry is null || entry is T,
+            $"Entry is not of type {typeof(T)}, but of type {entry?.GetType()}");
         if (typeof(T).IsValueType || typeof(T).IsEnum || typeof(T).IsPrimitive)
         {
             value = found && entry is not null ? (T?)entry : default;
@@ -266,10 +271,8 @@ internal partial class PropertyStore
     /// </summary>
     private bool LocateIntegerEntry(short entryKey, out int index)
     {
-
-            index = 0;
-            return false;
-        
+        index = 0;
+        return false;
     }
 
     /// <summary>
@@ -282,10 +285,8 @@ internal partial class PropertyStore
     /// </summary>
     private bool LocateObjectEntry(short entryKey, out int index)
     {
-
-            index = 0;
-            return false;
-        
+        index = 0;
+        return false;
     }
 
     /// <summary>
@@ -293,7 +294,6 @@ internal partial class PropertyStore
     /// </summary>
     public void RemoveInteger(int key)
     {
-
     }
 
     /// <summary>
@@ -386,7 +386,8 @@ internal partial class PropertyStore
             }
             else
             {
-                Debug.Assert(storedObject is null, "object should either be null or ColorWrapper"); // could someone have SetObject to this key behind our backs?
+                Debug.Assert(storedObject is null,
+                    "object should either be null or ColorWrapper"); // could someone have SetObject to this key behind our backs?
                 SetObject(key, new ColorWrapper(value));
             }
         }
@@ -408,7 +409,8 @@ internal partial class PropertyStore
             }
             else
             {
-                Debug.Assert(storedObject is null, "object should either be null or PaddingWrapper"); // could someone have SetObject to this key behind our backs?
+                Debug.Assert(storedObject is null,
+                    "object should either be null or PaddingWrapper"); // could someone have SetObject to this key behind our backs?
                 SetObject(key, new PaddingWrapper(value));
             }
         }
@@ -430,7 +432,8 @@ internal partial class PropertyStore
             }
             else
             {
-                Debug.Assert(storedObject is null, "object should either be null or RectangleWrapper"); // could someone have SetObject to this key behind our backs?
+                Debug.Assert(storedObject is null,
+                    "object should either be null or RectangleWrapper"); // could someone have SetObject to this key behind our backs?
                 SetObject(key, new RectangleWrapper(value));
             }
         }
@@ -452,7 +455,8 @@ internal partial class PropertyStore
             }
             else
             {
-                Debug.Assert(storedObject is null, "object should either be null or SizeWrapper"); // could someone have SetObject to this key behind our backs?
+                Debug.Assert(storedObject is null,
+                    "object should either be null or SizeWrapper"); // could someone have SetObject to this key behind our backs?
                 SetObject(key, new SizeWrapper(value));
             }
         }
@@ -599,7 +603,7 @@ internal partial class PropertyStore
     private struct IntegerEntry
     {
         public short Key;
-        public short Mask;  // only lower four bits are used; mask of used values.
+        public short Mask; // only lower four bits are used; mask of used values.
         public int Value1;
         public int Value2;
         public int Value3;
@@ -616,7 +620,7 @@ internal partial class PropertyStore
     private struct ObjectEntry
     {
         public short Key;
-        public short Mask;  // only lower four bits are used; mask of used values.
+        public short Mask; // only lower four bits are used; mask of used values.
         public object? Value1;
         public object? Value2;
         public object? Value3;

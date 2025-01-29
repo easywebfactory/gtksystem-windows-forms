@@ -49,13 +49,13 @@ namespace System.Resources
         private static bool IsCriticalException(Exception ex)
         {
             return ex is NullReferenceException
-                    || ex is StackOverflowException
-                    || ex is OutOfMemoryException
-                    || ex is Threading.ThreadAbortException
-                    || ex is ExecutionEngineException
-                    || ex is IndexOutOfRangeException
-                    || ex is AccessViolationException
-                    || ex is Security.SecurityException;
+                   || ex is StackOverflowException
+                   || ex is OutOfMemoryException
+                   || ex is Threading.ThreadAbortException
+                   || ex is ExecutionEngineException
+                   || ex is IndexOutOfRangeException
+                   || ex is AccessViolationException
+                   || ex is Security.SecurityException;
         }
     }
 }

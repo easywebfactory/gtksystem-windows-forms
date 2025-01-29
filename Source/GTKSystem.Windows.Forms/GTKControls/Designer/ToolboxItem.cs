@@ -10,19 +10,16 @@ namespace System.Drawing.Design
     /// </summary>
     public class ToolboxItem : ISerializable
     {
-
         private static bool s_isScalingInitialized;
         private const int ICON_DIMENSION = 16;
         private static int s_iconWidth = ICON_DIMENSION;
         private static int s_iconHeight = ICON_DIMENSION;
-
 
         /// <summary>
         ///  Initializes a new instance of the ToolboxItem class.
         /// </summary>
         public ToolboxItem()
         {
-
         }
 
         /// <summary>
@@ -30,12 +27,10 @@ namespace System.Drawing.Design
         /// </summary>
         public ToolboxItem(Type? toolType) : this()
         {
-
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-
         }
     }
 }

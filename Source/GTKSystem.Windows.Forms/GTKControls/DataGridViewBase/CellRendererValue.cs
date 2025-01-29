@@ -1,9 +1,10 @@
-﻿  /*
-   * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
-   * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
-   * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
-   * author:chenhongjin
-   */
+﻿/*
+ * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
+ * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
+ * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * author:chenhongjin
+ */
+
 using Gdk;
 using GLib;
 using Gtk;
@@ -14,10 +15,12 @@ namespace System.Windows.Forms.GtkRender
     public class CellRendererValue : CellRendererText
     {
         DataGridViewColumn Column;
+
         public CellRendererValue(DataGridViewColumn view)
         {
             Column = view;
         }
+
         [Property("cellvalue")]
         public CellValue CellValue
         {
@@ -30,13 +33,16 @@ namespace System.Windows.Forms.GtkRender
             }
         }
     }
+
     public class CellRendererToggleValue : CellRendererToggle
     {
         DataGridViewColumn Column;
+
         public CellRendererToggleValue(DataGridViewColumn view)
         {
             Column = view;
         }
+
         [Property("cellvalue")]
         public CellValue CellValue
         {
@@ -50,13 +56,16 @@ namespace System.Windows.Forms.GtkRender
             }
         }
     }
+
     public class CellRendererComboValue : CellRendererCombo
     {
         DataGridViewColumn Column;
+
         public CellRendererComboValue(DataGridViewColumn view)
         {
             Column = view;
         }
+
         [Property("cellvalue")]
         public CellValue CellValue
         {
@@ -69,13 +78,16 @@ namespace System.Windows.Forms.GtkRender
             }
         }
     }
+
     public class CellRendererPixbufValue : CellRendererPixbuf
     {
         DataGridViewColumn Column;
+
         public CellRendererPixbufValue(DataGridViewColumn view)
         {
             Column = view;
         }
+
         [Property("cellvalue")]
         public CellValue CellValue
         {
@@ -86,7 +98,8 @@ namespace System.Windows.Forms.GtkRender
                     try
                     {
                         value.SetControlWithStyle(Column, this);
-                        if (typeof(Drawing.Image).Equals(value.ValueType) || typeof(Drawing.Bitmap).Equals(value.ValueType))
+                        if (typeof(Drawing.Image).Equals(value.ValueType) ||
+                            typeof(Drawing.Bitmap).Equals(value.ValueType))
                         {
                             this.Pixbuf = ((Drawing.Image)value.Value).Pixbuf;
                         }
@@ -107,15 +120,18 @@ namespace System.Windows.Forms.GtkRender
             }
         }
     }
+
     public class CellRendererButtonValue : CellRendererText
     {
         DataGridViewColumn Column;
+
         public CellRendererButtonValue(DataGridViewColumn view)
         {
             Column = view;
             this.SetAlignment(0.5f, 0.5f);
             this.Ellipsize = Pango.EllipsizeMode.End;
         }
+
         [Property("cellvalue")]
         public CellValue CellValue
         {
@@ -127,7 +143,9 @@ namespace System.Windows.Forms.GtkRender
                 }
             }
         }
-        protected override void OnRender(Cairo.Context cr, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
+
+        protected override void OnRender(Cairo.Context cr, Widget widget, Gdk.Rectangle background_area,
+            Gdk.Rectangle cell_area, CellRendererState flags)
         {
             widget.StyleContext.AddClass("button");
             widget.StyleContext.AddClass("GridViewCell-Button");
@@ -139,27 +157,56 @@ namespace System.Windows.Forms.GtkRender
                 y = y + (cell_area.Height - 36) / 2;
                 height = 36;
             }
+
             widget.StyleContext.RenderFrame(cr, cell_area.X + 3, y, cell_area.Width - 6, height);
             widget.StyleContext.RenderBackground(cr, cell_area.X + 3, y, cell_area.Width - 6, height);
             widget.StyleContext.Restore();
-            base.OnRender(cr, widget, new Gdk.Rectangle(background_area.X, background_area.Y, background_area.Width, background_area.Height), new Gdk.Rectangle(cell_area.X, cell_area.Y, cell_area.Width, cell_area.Height), flags);
+            base.OnRender(cr, widget,
+                new Gdk.Rectangle(background_area.X, background_area.Y, background_area.Width, background_area.Height),
+                new Gdk.Rectangle(cell_area.X, cell_area.Y, cell_area.Width, cell_area.Height), flags);
         }
     }
+
     public class CellValue : IComparable, IComparable<CellValue>, IEquatable<CellValue>
     {
         private DataGridViewCellStyle _style;
-        public DataGridViewCellStyle Style { get => _style; set => _style = value; }
+
+        public DataGridViewCellStyle Style
+        {
+            get => _style;
+            set => _style = value;
+        }
+
         public Type ValueType { get; set; }
         private object _value;
-        public object Value { get=> _value; set { _value = value; ValueType = value?.GetType(); } }
-        public string Text { get => _value?.ToString(); }
-        internal void SetControlWithStyle(DataGridViewColumn Column, CellRenderer cell) {
+
+        public object Value
+        {
+            get => _value;
+            set
+            {
+                _value = value;
+                ValueType = value?.GetType();
+            }
+        }
+
+        public string Text
+        {
+            get => _value?.ToString();
+        }
+
+        internal void SetControlWithStyle(DataGridViewColumn Column, CellRenderer cell)
+        {
             if (Column.DefaultCellStyle != null)
                 _style = Column.DefaultCellStyle;
             if (_style != null)
             {
                 if (_style.BackColor.Name != "0")
-                    cell.CellBackgroundRgba = new Gdk.RGBA() { Alpha = _style.BackColor.A / 255f, Blue = _style.BackColor.B / 255f, Green = _style.BackColor.G / 255f, Red = _style.BackColor.R / 255f };
+                    cell.CellBackgroundRgba = new Gdk.RGBA()
+                    {
+                        Alpha = _style.BackColor.A / 255f, Blue = _style.BackColor.B / 255f,
+                        Green = _style.BackColor.G / 255f, Red = _style.BackColor.R / 255f
+                    };
                 if (_style.Alignment == DataGridViewContentAlignment.TopLeft)
                     cell.SetAlignment(0, 0);
                 else if (_style.Alignment == DataGridViewContentAlignment.TopCenter)
@@ -180,6 +227,7 @@ namespace System.Windows.Forms.GtkRender
                     cell.SetAlignment(1.0f, 1f);
             }
         }
+
         internal void SetTextWithStyle(DataGridViewColumn Column, CellRendererText cell)
         {
             if (Column.DefaultCellStyle != null)
@@ -187,9 +235,17 @@ namespace System.Windows.Forms.GtkRender
             if (_style != null)
             {
                 if (_style.ForeColor.Name != "0")
-                    cell.ForegroundRgba = new Gdk.RGBA() { Alpha = _style.ForeColor.A / 255f, Blue = _style.ForeColor.B / 255f, Green = _style.ForeColor.G / 255f, Red = _style.ForeColor.R / 255f };
+                    cell.ForegroundRgba = new Gdk.RGBA()
+                    {
+                        Alpha = _style.ForeColor.A / 255f, Blue = _style.ForeColor.B / 255f,
+                        Green = _style.ForeColor.G / 255f, Red = _style.ForeColor.R / 255f
+                    };
                 if (_style.BackColor.Name != "0")
-                    cell.CellBackgroundRgba = new Gdk.RGBA() { Alpha = _style.BackColor.A / 255f, Blue = _style.BackColor.B / 255f, Green = _style.BackColor.G / 255f, Red = _style.BackColor.R / 255f };
+                    cell.CellBackgroundRgba = new Gdk.RGBA()
+                    {
+                        Alpha = _style.BackColor.A / 255f, Blue = _style.BackColor.B / 255f,
+                        Green = _style.BackColor.G / 255f, Red = _style.BackColor.R / 255f
+                    };
                 if (_style.Alignment == DataGridViewContentAlignment.TopLeft)
                     cell.SetAlignment(0, 0);
                 else if (_style.Alignment == DataGridViewContentAlignment.TopCenter)
@@ -210,10 +266,14 @@ namespace System.Windows.Forms.GtkRender
                     cell.SetAlignment(1.0f, 1f);
 
                 if (_style.WrapMode != DataGridViewTriState.NotSet)
-                    cell.WrapMode = _style.WrapMode == DataGridViewTriState.True ? Pango.WrapMode.WordChar : Pango.WrapMode.Word;
+                    cell.WrapMode = _style.WrapMode == DataGridViewTriState.True
+                        ? Pango.WrapMode.WordChar
+                        : Pango.WrapMode.Word;
             }
+
             cell.Text = GetFormatText(_value);
         }
+
         internal string GetFormatText(object text)
         {
             if (text == null && _style != null)
@@ -223,6 +283,7 @@ namespace System.Windows.Forms.GtkRender
             else
                 return text?.ToString();
         }
+
         public int CompareTo(object obj)
         {
             if (obj is CellValue cell)
@@ -233,11 +294,12 @@ namespace System.Windows.Forms.GtkRender
 
         public int CompareTo([AllowNull] CellValue other)
         {
-            if(other != null)
+            if (other != null)
             {
                 if (this._value == other.Value && this._style != null && other.Style != null)
                     return this._style.GetHashCode().CompareTo(other.Style.GetHashCode());
             }
+
             return -1;
         }
 
@@ -250,7 +312,5 @@ namespace System.Windows.Forms.GtkRender
         {
             return _value?.ToString();
         }
-
     }
-
 }

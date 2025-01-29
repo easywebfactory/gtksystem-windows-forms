@@ -6,7 +6,8 @@ namespace System.Windows.Forms
 {
     public class DataGridViewCellStateChangedEventArgs : EventArgs
     {
-        public DataGridViewCellStateChangedEventArgs(DataGridViewCell dataGridViewCell, DataGridViewElementStates stateChanged)
+        public DataGridViewCellStateChangedEventArgs(DataGridViewCell dataGridViewCell,
+            DataGridViewElementStates stateChanged)
         {
             Cell = dataGridViewCell ?? throw new ArgumentNullException(nameof(dataGridViewCell));
             StateChanged = stateChanged;

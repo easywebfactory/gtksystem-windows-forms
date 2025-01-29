@@ -36,7 +36,7 @@ namespace System.Windows.Forms
         int TabIndex { get; set; }
         bool TabStop { get; set; }
         object Tag { get; set; }
-        
+
         bool Enabled { get; set; }
         bool Visible { get; set; }
         int Width { get; set; }

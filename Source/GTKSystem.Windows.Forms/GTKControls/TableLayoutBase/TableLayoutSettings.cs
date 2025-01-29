@@ -1,5 +1,4 @@
 using System.Runtime.Serialization;
- 
 
 namespace System.Windows.Forms
 {
@@ -8,7 +7,6 @@ namespace System.Windows.Forms
     {
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-             
         }
     }
 }

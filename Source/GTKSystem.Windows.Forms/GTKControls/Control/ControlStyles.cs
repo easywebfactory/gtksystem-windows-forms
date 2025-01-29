@@ -109,7 +109,9 @@ namespace System.Windows.Forms
         ///  obsolete, please
         ///  use OptimizedDoubleBuffer instead.
         /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)] // It is recommended that you use the DoubleBuffer property instead.
+        [EditorBrowsable(EditorBrowsableState
+            .Never)]
+        // It is recommended that you use the DoubleBuffer property instead.
         DoubleBuffer = 0x00010000,
 
         /// <summary>

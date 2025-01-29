@@ -3,7 +3,6 @@
 
 namespace System.Drawing.Printing
 {
-
     /// <summary>
     ///  Retrieves the resolution supported by a printer.
     /// </summary>
@@ -32,10 +31,7 @@ namespace System.Drawing.Printing
         public PrinterResolutionKind Kind
         {
             get => _kind;
-            set
-            {
-                _kind = value;
-            }
+            set { _kind = value; }
         }
 
         /// <summary>

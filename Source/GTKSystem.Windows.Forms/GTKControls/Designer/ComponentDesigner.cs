@@ -28,57 +28,46 @@ namespace System.ComponentModel.Design
 
         public void DoDefaultAction()
         {
-
         }
 
         public void Initialize(IComponent component)
         {
-
         }
 
         public void Dispose()
         {
-
         }
 
         public void PostFilterAttributes(IDictionary attributes)
         {
-
         }
 
         public void PostFilterEvents(IDictionary events)
         {
-
         }
 
         public void PostFilterProperties(IDictionary properties)
         {
-
         }
 
         public void PreFilterAttributes(IDictionary attributes)
         {
-
         }
 
         public void PreFilterEvents(IDictionary events)
         {
-
         }
 
         public void PreFilterProperties(IDictionary properties)
         {
-
         }
 
         public void InitializeExistingComponent(IDictionary defaultValues)
         {
-
         }
 
         public void InitializeNewComponent(IDictionary defaultValues)
         {
-
         }
     }
 }

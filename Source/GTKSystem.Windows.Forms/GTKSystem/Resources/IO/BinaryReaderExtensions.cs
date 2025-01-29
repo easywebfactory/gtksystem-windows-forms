@@ -16,11 +16,12 @@ namespace GTKSystem.IO
                 {
                     throw new FormatException(SR.Format_Bad7BitInt32);
                 }
+
                 b = reader.ReadByte();
                 num |= (b & 0x7F) << num2;
                 num2 += 7;
-            }
-            while ((b & 0x80u) != 0);
+            } while ((b & 0x80u) != 0);
+
             return num;
         }
     }

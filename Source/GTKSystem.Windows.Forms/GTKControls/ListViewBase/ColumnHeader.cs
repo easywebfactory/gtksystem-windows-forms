@@ -15,88 +15,44 @@ namespace System.Windows.Forms
 
         internal int _width = 120;
 
-        [Localizable(true)]
-        public int DisplayIndex { get; set; }
+        [Localizable(true)] public int DisplayIndex { get; set; }
 
         [Browsable(false)]
         public int Index
         {
-            get
-            {
-                return _index;
-            }
+            get { return _index; }
         }
 
-        [DefaultValue(-1)]
-
-        public int ImageIndex { get; set; } = -1;
+        [DefaultValue(-1)] public int ImageIndex { get; set; } = -1;
 
         [Browsable(false)]
         public ImageList ImageList
         {
-            get
-            {
-                throw null;
-            }
+            get { throw null; }
         }
 
         public string ImageKey { get; set; }
 
-        [Browsable(false)]
-        public ListView ListView
-        {
-            [CompilerGenerated]
-            get;
-        }
+        [Browsable(false)] public ListView ListView { [CompilerGenerated] get; }
 
-        [Browsable(false)]
+        [Browsable(false)] public string Name { get; set; }
 
-        public string Name
-        {
-            get;
-            set;
-        }
-
-        [Localizable(true)]
-
-        public string Text
-        {
-            get;
-            set;
-        }
-
+        [Localizable(true)] public string Text { get; set; }
 
         [Localizable(true)]
         [DefaultValue(HorizontalAlignment.Left)]
-        public HorizontalAlignment TextAlign
-        {
-            get;
-            set;
-        }
-
+        public HorizontalAlignment TextAlign { get; set; }
 
         [Localizable(false)]
         [Bindable(true)]
-
         [DefaultValue(null)]
 
-        public object Tag
-        {
-            get;
-            set;
-        }
+        public object Tag { get; set; }
 
-        [Localizable(true)]
-        [DefaultValue(60)]
-        public int Width
-        {
-            get;
-            set;
-        } = 100;
+        [Localizable(true)] [DefaultValue(60)] public int Width { get; set; } = 100;
 
         public ColumnHeader()
         {
-            
         }
 
         public ColumnHeader(int imageIndex)
@@ -120,9 +76,9 @@ namespace System.Windows.Forms
             //string data = System.Text.Json.JsonSerializer.Serialize(this,typeof(ColumnHeader));
             //return System.Text.Json.JsonSerializer.Deserialize<ColumnHeader>(data);
         }
+
         protected override void Dispose(bool disposing)
         {
-         
         }
     }
 }

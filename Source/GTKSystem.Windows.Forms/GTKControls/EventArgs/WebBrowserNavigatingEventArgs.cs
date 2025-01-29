@@ -28,10 +28,7 @@ namespace System.Windows.Forms
         /// </summary>
         public Uri Url
         {
-            get
-            {
-                return _url;
-            }
+            get { return _url; }
         }
 
         /// <summary>
@@ -39,10 +36,7 @@ namespace System.Windows.Forms
         /// </summary>
         public string TargetFrameName
         {
-            get
-            {
-                return _targetFrameName;
-            }
+            get { return _targetFrameName; }
         }
     }
 }

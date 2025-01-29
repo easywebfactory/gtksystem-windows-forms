@@ -13,7 +13,6 @@ namespace System.Windows.Forms
         /// </summary>
         public OpacityConverter()
         {
-
         }
 
         /// <summary>
@@ -59,7 +58,10 @@ namespace System.Windows.Forms
         ///     value could not be properly converted to type System.Double. -or- The resulting
         ///     converted value was less than zero percent or greater than one hundred percent.
         /// </exception>
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) { return value; }
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        {
+            return value;
+        }
 
         /// <summary>
         ///     Converts from the converter's native type to a value of the destination type.
@@ -86,7 +88,10 @@ namespace System.Windows.Forms
         /// <exception cref="T:System.NotSupportedException">
         ///     value cannot be converted to the destinationType.
         /// </exception>
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) { return value; }
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value,
+            Type destinationType)
+        {
+            return value;
+        }
     }
 }
-

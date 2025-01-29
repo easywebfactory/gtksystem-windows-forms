@@ -17,14 +17,17 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         Gtk.Adjustment adjustment = new Gtk.Adjustment(10, 0, 100, 1, 1, 0);
         Gtk.Scale scale;
-		public TrackBar():base()
+
+        public TrackBar() : base()
         {
             self.Realized += Control_Realized;
         }
 
         private void Control_Realized(object sender, EventArgs e)
         {
-            scale = new Gtk.Scale(Orientation== Orientation.Horizontal ? Gtk.Orientation.Horizontal : Gtk.Orientation.Vertical, adjustment);
+            scale = new Gtk.Scale(
+                Orientation == Orientation.Horizontal ? Gtk.Orientation.Horizontal : Gtk.Orientation.Vertical,
+                adjustment);
             scale.ShowFillLevel = true;
             scale.DrawValue = false;
             scale.RoundDigits = 1;
@@ -47,7 +50,13 @@ namespace System.Windows.Forms
         public int LargeChange { get; set; } = 5;
         public int Maximum { get; set; }
         public int Minimum { get; set; }
-        public int Value { get=> (int)adjustment.Value; set { adjustment.Value = value; } }
+
+        public int Value
+        {
+            get => (int)adjustment.Value;
+            set { adjustment.Value = value; }
+        }
+
         public System.Windows.Forms.Orientation Orientation { get; set; }
         public int TickFrequency { get; set; }
         public System.Windows.Forms.TickStyle TickStyle { get; set; }

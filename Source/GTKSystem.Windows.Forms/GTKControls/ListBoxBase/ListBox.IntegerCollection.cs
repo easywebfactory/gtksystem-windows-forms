@@ -25,42 +25,27 @@ namespace System.Windows.Forms
             [Browsable(false)]
             public int Count
             {
-                get
-                {
-                    return _count;
-                }
+                get { return _count; }
             }
 
             object ICollection.SyncRoot
             {
-                get
-                {
-                    return this;
-                }
+                get { return this; }
             }
 
             bool ICollection.IsSynchronized
             {
-                get
-                {
-                    return true;
-                }
+                get { return true; }
             }
 
             bool IList.IsFixedSize
             {
-                get
-                {
-                    return false;
-                }
+                get { return false; }
             }
 
             bool IList.IsReadOnly
             {
-                get
-                {
-                    return false;
-                }
+                get { return false; }
             }
 
             public bool Contains(int item)
@@ -272,10 +257,7 @@ namespace System.Windows.Forms
             /// </summary>
             public int this[int index]
             {
-                get
-                {
-                    return _innerArray![index];
-                }
+                get { return _innerArray![index]; }
 
                 set
                 {
@@ -286,10 +268,7 @@ namespace System.Windows.Forms
 
             object? IList.this[int index]
             {
-                get
-                {
-                    return this[index];
-                }
+                get { return this[index]; }
                 set
                 {
                     if (!(value is int))

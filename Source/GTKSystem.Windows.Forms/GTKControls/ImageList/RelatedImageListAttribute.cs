@@ -19,10 +19,7 @@ namespace System.Windows.Forms
 
         public string? RelatedImageList
         {
-            get
-            {
-                return _relatedImageList;
-            }
+            get { return _relatedImageList; }
         }
     }
 }

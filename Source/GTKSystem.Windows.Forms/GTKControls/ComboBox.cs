@@ -13,14 +13,14 @@ using System.Data;
 
 namespace System.Windows.Forms
 {
-
     [DesignerCategory("Component")]
-    public partial class ComboBox: ListControl
+    public partial class ComboBox : ListControl
     {
         public readonly ComboBoxBase self = new ComboBoxBase();
         public override object GtkControl => self;
         private ObjectCollection __itemsData;
-        public ComboBox():base()
+
+        public ComboBox() : base()
         {
             self.Entry.HasFrame = false;
             self.Entry.WidthChars = 0;
@@ -65,7 +65,9 @@ namespace System.Windows.Forms
                 ws.Drawn += Ws_Drawn;
             }
         }
+
         public event EventHandler DropDown;
+
         private void Ws_Toggled(object sender, EventArgs e)
         {
             if (DropDown != null)
@@ -73,6 +75,7 @@ namespace System.Windows.Forms
                 DropDown(this, e);
             }
         }
+
         private void Ws_Drawn(object o, Gtk.DrawnArgs args)
         {
             self.Entry.Visible = false;
@@ -88,7 +91,8 @@ namespace System.Windows.Forms
             }
             else
             {
-                args.Cr.SetSourceRGBA(this.ForeColor.R / 255, this.ForeColor.G / 255, this.ForeColor.B / 255, this.ForeColor.A / 255);
+                args.Cr.SetSourceRGBA(this.ForeColor.R / 255, this.ForeColor.G / 255, this.ForeColor.B / 255,
+                    this.ForeColor.A / 255);
             }
 
             double fontsize = pangocontext.FontDescription.Size / Pango.Scale.PangoScale * 1.5;
@@ -105,9 +109,12 @@ namespace System.Windows.Forms
         }
 
         private ComboBoxStyle _DropDownStyle;
-        public ComboBoxStyle DropDownStyle { 
-            get=> _DropDownStyle; 
-            set {
+
+        public ComboBoxStyle DropDownStyle
+        {
+            get => _DropDownStyle;
+            set
+            {
                 _DropDownStyle = value;
                 if (value == ComboBoxStyle.DropDown)
                 {
@@ -122,34 +129,76 @@ namespace System.Windows.Forms
             }
         }
 
-
-        public override string Text { get => self.Entry.Text; set { self.Entry.Text = value; } }
-        public object SelectedItem { 
-            get { return SelectedIndex == -1 ? null : __itemsData[SelectedIndex]; }
-            set { int _index = __itemsData.IndexOf(value); if (_index != -1) { SelectedIndex = _index; } } 
+        public override string Text
+        {
+            get => self.Entry.Text;
+            set { self.Entry.Text = value; }
         }
+
+        public object SelectedItem
+        {
+            get { return SelectedIndex == -1 ? null : __itemsData[SelectedIndex]; }
+            set
+            {
+                int _index = __itemsData.IndexOf(value);
+                if (_index != -1)
+                {
+                    SelectedIndex = _index;
+                }
+            }
+        }
+
         internal int _selectedIndex;
-        public override int SelectedIndex { get { return self.Active; } set { self.Active = value; _selectedIndex = value; if (value == -1) { Text = ""; } } }
-        public ObjectCollection Items { get { return __itemsData; } }
+
+        public override int SelectedIndex
+        {
+            get { return self.Active; }
+            set
+            {
+                self.Active = value;
+                _selectedIndex = value;
+                if (value == -1)
+                {
+                    Text = "";
+                }
+            }
+        }
+
+        public ObjectCollection Items
+        {
+            get { return __itemsData; }
+        }
+
         public override string GetItemText(object item)
         {
             if (item is ObjectCollection.Entry entry)
             {
                 return entry.Item?.ToString();
             }
+
             return item?.ToString();
         }
+
         public string NativeGetItemText(int index)
         {
             return __itemsData[index].ToString();
         }
+
         private bool _sorted;
-        public bool Sorted { get=> _sorted; set=> _sorted = value; }
+
+        public bool Sorted
+        {
+            get => _sorted;
+            set => _sorted = value;
+        }
+
         public object _DataSource;
+
         public override object DataSource
         {
             get => _DataSource;
-            set {
+            set
+            {
                 _DataSource = value;
                 if (self.IsVisible)
                 {
@@ -157,6 +206,7 @@ namespace System.Windows.Forms
                 }
             }
         }
+
         private void OnSetDataSource()
         {
             if (_DataSource != null)
@@ -172,6 +222,7 @@ namespace System.Windows.Forms
                 }
             }
         }
+
         private void SetDataSource(IEnumerator enumerator)
         {
             __itemsData.Clear();
@@ -193,7 +244,7 @@ namespace System.Windows.Forms
                     while (enumerator.MoveNext())
                     {
                         var o = enumerator.Current;
-                        if(o is DataRowView row)
+                        if (o is DataRowView row)
                             __itemsData.Add(row[DisplayMember]);
                         else
                             __itemsData.Add(o.GetType().GetProperty(DisplayMember)?.GetValue(o));
@@ -201,7 +252,5 @@ namespace System.Windows.Forms
                 }
             }
         }
-
     }
-
 }

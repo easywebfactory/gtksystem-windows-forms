@@ -7,7 +7,6 @@ using System.ComponentModel;
 
 namespace System.Windows.Forms
 {
-
     /// <summary>
     ///  Represents a collection of selected <see cref="DataGridViewCell"/> objects in the <see cref="DataGridView"/>
     ///  control.
@@ -72,18 +71,12 @@ namespace System.Windows.Forms
 
         protected override ArrayList List
         {
-            get
-            {
-                return ArrayList.Adapter(_items);
-            }
+            get { return ArrayList.Adapter(_items); }
         }
 
         public DataGridViewCell this[int index]
         {
-            get
-            {
-                return _items[index];
-            }
+            get { return _items[index]; }
         }
 
         /// <summary>

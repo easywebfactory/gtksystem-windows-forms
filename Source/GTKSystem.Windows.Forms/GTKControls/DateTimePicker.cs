@@ -18,13 +18,15 @@ namespace System.Windows.Forms
     {
         Gtk.Popover popver;
         Gtk.Calendar calendar = new Gtk.Calendar();
+
         public DateTimePicker() : base("DateTimePicker")
         {
             base.Mask = Gtk.Windows.Forms.Properties.Resources.DateTimePicker_DateTimePicker_Mask;
 
             self.SecondaryIconActivatable = true;
-            self.SecondaryIconStock= "open-menu";
-            self.SecondaryIconPixbuf = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.MonthCalendar.ico");
+            self.SecondaryIconStock = "open-menu";
+            self.SecondaryIconPixbuf = new Gdk.Pixbuf(this.GetType().Assembly,
+                "GTKSystem.Windows.Forms.Resources.System.MonthCalendar.ico");
             self.IconRelease += DateTimePicker_IconRelease;
             self.Shown += Self_Shown;
 
@@ -41,14 +43,19 @@ namespace System.Windows.Forms
             calendar.PrevMonth += Calendar_PrevMonth;
             calendar.NextMonth += Calendar_NextMonth;
 
-            Gtk.Box popbody=new Gtk.Box(Gtk.Orientation.Vertical, 6);
+            Gtk.Box popbody = new Gtk.Box(Gtk.Orientation.Vertical, 6);
             popbody.Add(calendar);
-            Gtk.Button todaybtn = new Gtk.Button() { Label = Gtk.Windows.Forms.Properties.Resources.DateTimePicker_DateTimePicker_Choose_Today +DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") };
+            Gtk.Button todaybtn = new Gtk.Button()
+            {
+                Label = Gtk.Windows.Forms.Properties.Resources.DateTimePicker_DateTimePicker_Choose_Today +
+                        DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
+            };
             todaybtn.Clicked += Todaybtn_Clicked;
             popbody.Add(todaybtn);
             popver.Add(popbody);
             self.Changed += Self_Changed;
         }
+
         private void Self_Changed(object sender, EventArgs e)
         {
             if (ValueChanged != null && self.IsMapped)
@@ -105,7 +112,7 @@ namespace System.Windows.Forms
             {
                 calendar.Date = MaxDate.Date.AddDays(-1);
             }
-            else if(current <= MinDate)
+            else if (current <= MinDate)
             {
                 calendar.Date = MinDate.AddDays(1);
             }
@@ -113,6 +120,7 @@ namespace System.Windows.Forms
             {
                 calendar.Date = Value;
             }
+
             popver.ShowAll();
         }
 
@@ -124,8 +132,10 @@ namespace System.Windows.Forms
             {
                 calendar.Date = Value;
                 MessageBox.Show(
-                    string.Format(Gtk.Windows.Forms.Properties.Resources.DateTimePicker_Calendar_DaySelected_Choose, MaxDate.ToString("yyyy/MM/dd HH:mm:ss"),
-                        MinDate.ToString("yyyy/MM/dd HH:mm:ss")), Gtk.Windows.Forms.Properties.Resources.DateTimePicker_Calendar_DaySelected_Date_restrictions);
+                    string.Format(Gtk.Windows.Forms.Properties.Resources.DateTimePicker_Calendar_DaySelected_Choose,
+                        MaxDate.ToString("yyyy/MM/dd HH:mm:ss"),
+                        MinDate.ToString("yyyy/MM/dd HH:mm:ss")),
+                    Gtk.Windows.Forms.Properties.Resources.DateTimePicker_Calendar_DaySelected_Date_restrictions);
             }
             else
             {
@@ -136,6 +146,7 @@ namespace System.Windows.Forms
 
         public DateTime MaxDate { get; set; } = DateTime.MaxValue;
         public DateTime MinDate { get; set; } = DateTime.MinValue;
+
         public DateTime Value
         {
             get
@@ -143,35 +154,45 @@ namespace System.Windows.Forms
                 DateTime result = DateTime.Now;
                 CultureInfo provider = CultureInfo.InvariantCulture;
                 if (string.IsNullOrWhiteSpace(Text))
-                { }
-                else if (Format == DateTimePickerFormat.Custom && DateTime.TryParseExact(Text, CustomFormat, provider, Globalization.DateTimeStyles.AllowWhiteSpaces, out result))
-                { }
+                {
+                }
+                else if (Format == DateTimePickerFormat.Custom && DateTime.TryParseExact(Text, CustomFormat, provider,
+                             Globalization.DateTimeStyles.AllowWhiteSpaces, out result))
+                {
+                }
                 else if (DateTime.TryParse(Text, provider, Globalization.DateTimeStyles.AllowWhiteSpaces, out result))
-                { }
+                {
+                }
                 else
-                { 
+                {
                     result = DateTime.Now;
                 }
+
                 if (result > MaxDate)
                 {
                     return MaxDate;
                 }
+
                 if (result < MinDate)
                 {
                     return MinDate;
                 }
+
                 return result;
             }
-            set { 
-                if(value > MaxDate)
+            set
+            {
+                if (value > MaxDate)
                 {
                     value = MaxDate.AddDays(-1);
                 }
+
                 if (value < MinDate)
                 {
                     value = MinDate.AddDays(1);
                 }
-                if (Format==DateTimePickerFormat.Long)
+
+                if (Format == DateTimePickerFormat.Long)
                     base.Text = value.ToString(Gtk.Windows.Forms.Properties.Resources.DateTimePicker_Value_yyyy年MM月dd日);
                 else if (Format == DateTimePickerFormat.Short)
                     base.Text = value.ToString("yyyy/MM/dd");
@@ -180,18 +201,29 @@ namespace System.Windows.Forms
                 else if (Format == DateTimePickerFormat.Custom)
                     base.Text = value.ToString(CustomFormat);
                 else
-                    base.Text = value.ToString(Gtk.Windows.Forms.Properties.Resources.DateTimePicker_Value_yyyy年MM月dd日); 
+                    base.Text = value.ToString(Gtk.Windows.Forms.Properties.Resources.DateTimePicker_Value_yyyy年MM月dd日);
             }
         }
-        private string _CustomFormat= Gtk.Windows.Forms.Properties.Resources.DateTimePicker_Value_yyyy年MM月dd日;
-        public string CustomFormat { get => _CustomFormat; 
-            set { _CustomFormat = value; 
-                base.Mask = Regex.Replace(value,"[ymdhs]","_",RegexOptions.IgnoreCase); 
+
+        private string _CustomFormat = Gtk.Windows.Forms.Properties.Resources.DateTimePicker_Value_yyyy年MM月dd日;
+
+        public string CustomFormat
+        {
+            get => _CustomFormat;
+            set
+            {
+                _CustomFormat = value;
+                base.Mask = Regex.Replace(value, "[ymdhs]", "_", RegexOptions.IgnoreCase);
             }
         }
+
         public DateTimePickerFormat _Format;
-        public DateTimePickerFormat Format { get => _Format;
-            set {
+
+        public DateTimePickerFormat Format
+        {
+            get => _Format;
+            set
+            {
                 _Format = value;
                 if (Format == DateTimePickerFormat.Long)
                     base.Mask = Gtk.Windows.Forms.Properties.Resources.DateTimePicker_DateTimePicker_Mask;
@@ -203,8 +235,9 @@ namespace System.Windows.Forms
                     base.Mask = Regex.Replace(CustomFormat, "[ymdhs]", "_", RegexOptions.IgnoreCase);
                 else
                     base.Mask = Gtk.Windows.Forms.Properties.Resources.DateTimePicker_DateTimePicker_Mask;
-            } 
+            }
         }
+
         public Font CalendarFont { get; set; }
         public Color CalendarForeColor { get; set; }
         public Color CalendarMonthBackground { get; set; }

@@ -63,7 +63,8 @@ namespace System.Resources
 
             for (i = 0; (i < path1.Length) && (i < path2.Length); ++i)
             {
-                if ((path1[i] != path2[i]) && (compareCase || (char.ToLower(path1[i], CultureInfo.InvariantCulture) != char.ToLower(path2[i], CultureInfo.InvariantCulture))))
+                if ((path1[i] != path2[i]) && (compareCase || (char.ToLower(path1[i], CultureInfo.InvariantCulture) !=
+                                                               char.ToLower(path2[i], CultureInfo.InvariantCulture))))
                 {
                     break;
                 }

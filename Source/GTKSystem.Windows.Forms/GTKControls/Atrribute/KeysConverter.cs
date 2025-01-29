@@ -91,6 +91,7 @@ namespace System.Windows.Forms
                     Debug.Assert(displayOrder == null);
                     Initialize();
                 }
+
                 return keyNames;
             }
         }
@@ -104,6 +105,7 @@ namespace System.Windows.Forms
                     Debug.Assert(keyNames == null);
                     Initialize();
                 }
+
                 return displayOrder;
             }
         }
@@ -118,6 +120,7 @@ namespace System.Windows.Forms
             {
                 return true;
             }
+
             return base.CanConvertFrom(context, sourceType);
         }
 
@@ -131,6 +134,7 @@ namespace System.Windows.Forms
             {
                 return true;
             }
+
             return base.CanConvertTo(context, destinationType);
         }
 
@@ -149,7 +153,6 @@ namespace System.Windows.Forms
         {
             if (value is string)
             {
-
                 string text = ((string)value).Trim();
 
                 if (text.Length == 0)
@@ -158,7 +161,6 @@ namespace System.Windows.Forms
                 }
                 else
                 {
-
                     // Parse an array of key tokens.
                     //
                     string[] tokens = text.Split(new char[] { '+' });
@@ -178,7 +180,6 @@ namespace System.Windows.Forms
 
                         if (obj == null)
                         {
-
                             // Key was not found in our table.  See if it is a valid value in
                             // the Keys enum.
                             //
@@ -191,7 +192,6 @@ namespace System.Windows.Forms
 
                             if ((currentKey & Keys.KeyCode) != 0)
                             {
-
                                 // We found a match.  If we have previously found a
                                 // key code, then check to see that this guy
                                 // isn't a key code (it is illegal to have, say,
@@ -201,6 +201,7 @@ namespace System.Windows.Forms
                                 {
                                     throw new FormatException("SR.KeysConverterInvalidKeyCombination");
                                 }
+
                                 foundKeyCode = true;
                             }
 
@@ -210,11 +211,9 @@ namespace System.Windows.Forms
                         }
                         else
                         {
-
                             // We did not match this key.  Report this as an error too.
                             //
                             throw new FormatException(string.Format("SR.KeysConverterInvalidKeyName", tokens[i]));
-
                         }
                     }
 
@@ -228,6 +227,7 @@ namespace System.Windows.Forms
                 {
                     finalValue |= Convert.ToInt64(e, CultureInfo.InvariantCulture);
                 }
+
                 return Enum.ToObject(typeof(Keys), finalValue);
             }
 
@@ -241,7 +241,8 @@ namespace System.Windows.Forms
         ///  type is string.  If this cannot convert to the desitnation type, this will
         ///  throw a NotSupportedException.
         /// </summary>
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value,
+            Type destinationType)
         {
             if (destinationType == null)
             {
@@ -273,7 +274,6 @@ namespace System.Windows.Forms
                         Keys keyValue = (Keys)keyNames[keyString];
                         if (((int)(keyValue) & (int)modifiers) != 0)
                         {
-
                             if (asString)
                             {
                                 if (added)
@@ -309,7 +309,6 @@ namespace System.Windows.Forms
                         Keys keyValue = (Keys)keyNames[keyString];
                         if (keyValue.Equals(keyOnly))
                         {
-
                             if (asString)
                             {
                                 terms.Add((string)keyString);
@@ -318,6 +317,7 @@ namespace System.Windows.Forms
                             {
                                 terms.Add(keyValue);
                             }
+
                             added = true;
                             foundKey = true;
                             break;
@@ -347,6 +347,7 @@ namespace System.Windows.Forms
                         {
                             b.Append(t);
                         }
+
                         return b.ToString();
                     }
                     else
@@ -382,6 +383,7 @@ namespace System.Windows.Forms
 
                 values = new StandardValuesCollection(list.ToArray());
             }
+
             return values;
         }
 
@@ -408,4 +410,3 @@ namespace System.Windows.Forms
         }
     }
 }
-

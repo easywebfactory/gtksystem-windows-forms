@@ -3,7 +3,6 @@
 
 namespace System.Drawing.Printing
 {
-
     public unsafe class PageSettings : ICloneable
     {
         private PrinterSettings _printerSettings;
@@ -21,35 +20,15 @@ namespace System.Drawing.Printing
             _printerSettings = printerSettings;
         }
 
-        public Rectangle Bounds
-        {
-            get;
-            internal set;
-        }
+        public Rectangle Bounds { get; internal set; }
 
-        public bool Color
-        {
-            get;
-            set;
-        }
+        public bool Color { get; set; }
 
-        public float HardMarginX
-        {
-            get;
-            internal set;
-        }
+        public float HardMarginX { get; internal set; }
 
-        public float HardMarginY
-        {
-            get;
-            internal set;
-        }
+        public float HardMarginY { get; internal set; }
 
-        public bool Landscape
-        {
-            get;
-            set;
-        }
+        public bool Landscape { get; set; }
 
         public Margins Margins
         {
@@ -57,29 +36,13 @@ namespace System.Drawing.Printing
             set => _margins = value;
         }
 
-        public PaperSize PaperSize
-        {
-            get;
-            set;
-        }
+        public PaperSize PaperSize { get; set; }
 
-        public PaperSource PaperSource
-        {
-            get;
-            set;
-        }
+        public PaperSource PaperSource { get; set; }
 
-        public RectangleF PrintableArea
-        {
-            get;
-            internal set;
-        }
+        public RectangleF PrintableArea { get; internal set; }
 
-        public PrinterResolution PrinterResolution
-        {
-            get;
-            set;
-        }
+        public PrinterResolution PrinterResolution { get; set; }
 
         public PrinterSettings PrinterSettings
         {
@@ -96,12 +59,10 @@ namespace System.Drawing.Printing
 
         public void CopyToHdevmode(IntPtr hdevmode)
         {
-            
         }
 
         public void SetHdevmode(IntPtr hdevmode)
         {
-        
         }
 
         public override string ToString() =>

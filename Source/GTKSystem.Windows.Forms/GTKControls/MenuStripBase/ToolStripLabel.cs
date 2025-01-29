@@ -13,12 +13,10 @@ namespace System.Windows.Forms
     {
         public ToolStripLabel() : this("", null, null, "")
         {
-
         }
 
         public ToolStripLabel(string text) : this(text, null, null, "")
         {
-
         }
 
         public ToolStripLabel(string text, Image image) : this(text, image, null, "")
@@ -27,14 +25,11 @@ namespace System.Windows.Forms
 
         public ToolStripLabel(string text, Image image, EventHandler onClick) : this(text, image, onClick, "")
         {
-
         }
 
-        public ToolStripLabel(string text, Image image, EventHandler onClick, string name) : base(null, text, image, onClick, name)
+        public ToolStripLabel(string text, Image image, EventHandler onClick, string name) : base(null, text, image,
+            onClick, name)
         {
         }
     }
-
 }
-
-

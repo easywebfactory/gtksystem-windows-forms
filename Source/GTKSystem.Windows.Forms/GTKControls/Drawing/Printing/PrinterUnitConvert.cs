@@ -5,7 +5,6 @@ using System.Diagnostics;
 
 namespace System.Drawing.Printing
 {
-
     /// <summary>
     ///  Specifies a series of conversion methods that are useful when interoperating with the raw Win32 printing API.
     /// </summary>

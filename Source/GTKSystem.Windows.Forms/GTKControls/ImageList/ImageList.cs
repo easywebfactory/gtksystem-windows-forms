@@ -16,11 +16,10 @@ namespace System.Windows.Forms
     ///  Toolbar. You can add either bitmaps or Icons to the ImageList, and the
     ///  other controls will be able to use the Images as they desire.
     /// </summary>
-
     [ToolboxItemFilter("System.Windows.Forms")]
     [DefaultProperty(nameof(Images))]
     [TypeConverter(typeof(ImageListConverter))]
-    public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
+    public sealed partial class ImageList : Component //, IHandle<HIMAGELIST>
     {
         private static readonly Color s_fakeTransparencyColor = Color.FromArgb(0x0d, 0x0b, 0x0c);
         private static readonly Size s_defaultImageSize = new Size(16, 16);
@@ -49,7 +48,6 @@ namespace System.Windows.Forms
         /// </summary>
         public ImageList()
         {
-
         }
 
         /// <summary>
@@ -83,10 +81,7 @@ namespace System.Windows.Forms
 
         public IntPtr Handle
         {
-            get
-            {
-                return IntPtr.Zero;
-            }
+            get { return IntPtr.Zero; }
         }
 
         public bool HandleCreated => !(_nativeImageList is null);
@@ -98,7 +93,6 @@ namespace System.Windows.Forms
             get => _imageSize;
             set
             {
-
                 if (_imageSize.Width != value.Width || _imageSize.Height != value.Height)
                 {
                     _imageSize = new Size(value.Width, value.Height);
@@ -109,12 +103,10 @@ namespace System.Windows.Forms
         private bool ShouldSerializeImageSize() => Images.Count == 0;
 
         private ImageListStreamer? _ImageStream;
+
         public ImageListStreamer? ImageStream
         {
-            get
-            {
-                return _ImageStream;
-            }
+            get { return _ImageStream; }
             set
             {
                 _ImageStream = value;
@@ -139,12 +131,15 @@ namespace System.Windows.Forms
                     return ScaleSimpleBitmap(Bitmap.FromFile(path2));
                 }
             }
+
             if (IO.File.Exists($"{path1}/{name}"))
             {
                 return ScaleSimpleBitmap(Bitmap.FromFile($"{path1}/{name}"));
             }
+
             return null;
         }
+
         private Bitmap ScaleSimpleBitmap(Image bitmp)
         {
             Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(bitmp.PixbufData);
@@ -154,7 +149,6 @@ namespace System.Windows.Forms
             return new Bitmap(w, h) { Pixbuf = newpixbuf };
         }
 #if DEBUG
-
         internal bool IsDisposed { get; private set; }
 #endif
 
@@ -196,7 +190,6 @@ namespace System.Windows.Forms
             }
             finally
             {
-
             }
         }
 
@@ -207,7 +200,6 @@ namespace System.Windows.Forms
 
         private void CreateHandle()
         {
- 
         }
 
         // Don't merge this function into Dispose() -- that base.Dispose() will damage the design time experience
@@ -243,6 +235,7 @@ namespace System.Windows.Forms
                             ((IDisposable)original._image).Dispose();
                         }
                     }
+
                     _originals.Clear();
                     _imageCollection.Clear();
                 }
@@ -268,7 +261,8 @@ namespace System.Windows.Forms
         ///  Draw the image indicated by the given index on the given Graphics
         ///  at the given location.
         /// </summary>
-        public void Draw(Graphics g, int x, int y, int index) => Draw(g, x, y, _imageSize.Width, _imageSize.Height, index);
+        public void Draw(Graphics g, int x, int y, int index) =>
+            Draw(g, x, y, _imageSize.Width, _imageSize.Height, index);
 
         /// <summary>
         ///  Draw the image indicated by the given index using the location, size
@@ -304,7 +298,8 @@ namespace System.Windows.Forms
         private static unsafe void CopyBitmapData(BitmapData sourceData, BitmapData targetData)
         {
             Debug.Assert(Image.GetPixelFormatSize(sourceData.PixelFormat) == 32);
-            Debug.Assert(Image.GetPixelFormatSize(sourceData.PixelFormat) == Image.GetPixelFormatSize(targetData.PixelFormat));
+            Debug.Assert(Image.GetPixelFormatSize(sourceData.PixelFormat) ==
+                         Image.GetPixelFormatSize(targetData.PixelFormat));
             Debug.Assert(targetData.Width == sourceData.Width);
             Debug.Assert(targetData.Height == sourceData.Height);
             Debug.Assert(targetData.Stride == targetData.Width * 4);
@@ -351,7 +346,6 @@ namespace System.Windows.Forms
         ///  copy of the original image.
         /// </summary>
         // NOTE: forces handle creation, so doesn't return things from the original list
-
         public Bitmap GetBitmap(int index)
         {
             try
@@ -367,6 +361,7 @@ namespace System.Windows.Forms
                 throw;
             }
         }
+
         public Bitmap GetBitmap(string name)
         {
             int index = _imageCollection.IndexOfKey(name);
@@ -374,8 +369,10 @@ namespace System.Windows.Forms
             {
                 throw new FileNotFoundException($"“{name}”未加载，请把相关图片保存到Resources目录下。", name);
             }
+
             return GetBitmap(index);
         }
+
         /// <summary>
         ///  Called when the Handle property changes.
         /// </summary>
@@ -388,7 +385,7 @@ namespace System.Windows.Forms
         /// </summary>
         public override string ToString()
             => Images is null
-               ? base.ToString()
-               : $"{base.ToString()} Images.Count: {Images.Count}, ImageSize: {ImageSize}";
+                ? base.ToString()
+                : $"{base.ToString()} Images.Count: {Images.Count}, ImageSize: {ImageSize}";
     }
 }

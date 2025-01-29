@@ -32,54 +32,33 @@ namespace System.Windows.Forms
 
         public object CellValue1
         {
-            get
-            {
-                return cellValue1;
-            }
+            get { return cellValue1; }
         }
 
         public object CellValue2
         {
-            get
-            {
-                return cellValue2;
-            }
+            get { return cellValue2; }
         }
 
         public DataGridViewColumn Column
         {
-            get
-            {
-                return dataGridViewColumn;
-            }
+            get { return dataGridViewColumn; }
         }
 
         public int RowIndex1
         {
-            get
-            {
-                return rowIndex1;
-            }
+            get { return rowIndex1; }
         }
 
         public int RowIndex2
         {
-            get
-            {
-                return rowIndex2;
-            }
+            get { return rowIndex2; }
         }
 
         public int SortResult
         {
-            get
-            {
-                return sortResult;
-            }
-            set
-            {
-                sortResult = value;
-            }
+            get { return sortResult; }
+            set { sortResult = value; }
         }
     }
 }

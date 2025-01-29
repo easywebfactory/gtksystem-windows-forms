@@ -13,7 +13,8 @@ namespace System.Windows.Forms
     /// </summary>
     public class TableLayoutCellPaintEventArgs : PaintEventArgs
     {
-        public TableLayoutCellPaintEventArgs(Graphics g, Rectangle clipRectangle, Rectangle cellBounds, int column, int row) : base(g, clipRectangle)
+        public TableLayoutCellPaintEventArgs(Graphics g, Rectangle clipRectangle, Rectangle cellBounds, int column,
+            int row) : base(g, clipRectangle)
         {
             CellBounds = cellBounds;
             Column = column;

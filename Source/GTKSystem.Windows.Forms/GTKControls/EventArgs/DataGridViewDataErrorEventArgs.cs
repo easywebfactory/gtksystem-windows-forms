@@ -8,7 +8,8 @@ namespace System.Windows.Forms
     {
         private bool _throwException;
 
-        public DataGridViewDataErrorEventArgs(Exception exception, int columnIndex, int rowIndex, DataGridViewDataErrorContexts context) : base(columnIndex, rowIndex)
+        public DataGridViewDataErrorEventArgs(Exception exception, int columnIndex, int rowIndex,
+            DataGridViewDataErrorContexts context) : base(columnIndex, rowIndex)
         {
             Exception = exception;
             Context = context;

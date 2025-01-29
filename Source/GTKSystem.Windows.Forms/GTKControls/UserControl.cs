@@ -36,6 +36,7 @@ namespace System.Windows.Forms
             self.Override.Paint += Override_Paint;
             self.ParentSet += Self_ParentSet;
         }
+
         private void Self_ParentSet(object o, ParentSetArgs args)
         {
             OnParentChanged(EventArgs.Empty);
@@ -54,17 +55,19 @@ namespace System.Windows.Forms
         protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
         {
         }
+
         protected override void OnParentChanged(EventArgs e)
         {
         }
+
         public override void SuspendLayout()
         {
-
         }
+
         public override void ResumeLayout(bool performLayout)
         {
-
         }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

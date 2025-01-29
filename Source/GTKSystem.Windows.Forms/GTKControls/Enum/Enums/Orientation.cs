@@ -1,6 +1,4 @@
-﻿
-
-namespace System.Windows.Forms
+﻿namespace System.Windows.Forms
 {
     /// <summary>
     ///     Specifies the orientation of controls or elements of controls.
@@ -11,7 +9,8 @@ namespace System.Windows.Forms
         ///     The control or element is oriented horizontally.
         /// </summary>
         Horizontal,
-      /// <summary>
+
+        /// <summary>
         ///     The control or element is oriented vertically.
         /// </summary>
         Vertical

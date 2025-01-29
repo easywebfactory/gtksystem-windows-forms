@@ -15,35 +15,40 @@ namespace System.Windows.Forms
         private bool isMenuStrip;
         private bool isToolStripDropDown;
 
-        public ToolStripItemCollection(ToolStrip owner) 
+        public ToolStripItemCollection(ToolStrip owner)
         {
             this.toolStrip = owner;
             isToolStrip = true;
         }
+
         public ToolStripItemCollection(ToolStrip toolStrip, string owner)
         {
             this.toolStrip = toolStrip;
             isMenuStrip = owner == "MenuStrip";
         }
+
         public ToolStripItemCollection(StatusStrip owner)
         {
             this.statusStrip = owner;
             isStatusStrip = true;
         }
+
         public ToolStripItemCollection(ToolStripDropDown owner)
         {
-             this.menu = owner.Widget as Gtk.Menu;
+            this.menu = owner.Widget as Gtk.Menu;
             isToolStripDropDown = true;
         }
+
         public ToolStripItemCollection(ToolStripItem owner)
         {
             this.owner = owner;
-            if(owner.Widget is Gtk.Menu gmenu)
+            if (owner.Widget is Gtk.Menu gmenu)
             {
                 this.menu = gmenu;
                 isToolStripDropDown = true;
             }
         }
+
         internal ToolStripItemCollection(ToolStripItem owner, bool itemsCollection)
             : this(owner, itemsCollection, isReadOnly: false)
         {
@@ -53,14 +58,15 @@ namespace System.Windows.Forms
         {
             this.owner = owner;
             isToolStrip = false;
-
         }
+
         public ToolStripItemCollection(ToolStripItem owner, ToolStripItem[] value)
         {
             this.owner = owner;
             isToolStrip = false;
             AddRange(value);
         }
+
         public ToolStripItem Add(string text)
         {
             return Add(text, null, null);
@@ -70,7 +76,6 @@ namespace System.Windows.Forms
         {
             return Add(null, image, null);
         }
-
 
         public ToolStripItem Add(string text, Image image)
         {
@@ -110,6 +115,7 @@ namespace System.Windows.Forms
                     this.menu = new Gtk.Menu();
                     owner.MenuItem.Submenu = this.menu;
                 }
+
                 menu.Add(item.Widget);
             }
 
@@ -133,11 +139,16 @@ namespace System.Windows.Forms
                 AddMemu(toolStripItems[i]);
             }
         }
+
         //-------------------
         public new ToolStripItem this[int index]
         {
             get { return base[index]; }
-            set { menu.Insert(value.Widget, index); base[index] = value; }
+            set
+            {
+                menu.Insert(value.Widget, index);
+                base[index] = value;
+            }
         }
     }
 }

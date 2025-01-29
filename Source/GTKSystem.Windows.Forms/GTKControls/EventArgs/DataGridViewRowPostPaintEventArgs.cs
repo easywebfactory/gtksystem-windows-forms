@@ -12,15 +12,15 @@ namespace System.Windows.Forms
         private readonly DataGridView _dataGridView;
 
         public DataGridViewRowPostPaintEventArgs(DataGridView dataGridView,
-                                                 Graphics graphics,
-                                                 Rectangle clipBounds,
-                                                 Rectangle rowBounds,
-                                                 int rowIndex,
-                                                 DataGridViewElementStates rowState,
-                                                 string errorText,
-                                                 DataGridViewCellStyle inheritedRowStyle,
-                                                 bool isFirstDisplayedRow,
-                                                 bool isLastVisibleRow)
+            Graphics graphics,
+            Rectangle clipBounds,
+            Rectangle rowBounds,
+            int rowIndex,
+            DataGridViewElementStates rowState,
+            string errorText,
+            DataGridViewCellStyle inheritedRowStyle,
+            bool isFirstDisplayedRow,
+            bool isLastVisibleRow)
         {
             _dataGridView = dataGridView ?? throw new ArgumentNullException(nameof(dataGridView));
             Graphics = graphics ?? throw new ArgumentNullException(nameof(graphics));
@@ -158,14 +158,14 @@ namespace System.Windows.Forms
         //}
 
         internal void SetProperties(Graphics graphics,
-                                    Rectangle clipBounds,
-                                    Rectangle rowBounds,
-                                    int rowIndex,
-                                    DataGridViewElementStates rowState,
-                                    string errorText,
-                                    DataGridViewCellStyle inheritedRowStyle,
-                                    bool isFirstDisplayedRow,
-                                    bool isLastVisibleRow)
+            Rectangle clipBounds,
+            Rectangle rowBounds,
+            int rowIndex,
+            DataGridViewElementStates rowState,
+            string errorText,
+            DataGridViewCellStyle inheritedRowStyle,
+            bool isFirstDisplayedRow,
+            bool isLastVisibleRow)
         {
             Debug.Assert(graphics != null);
 

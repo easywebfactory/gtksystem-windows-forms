@@ -11,42 +11,33 @@ namespace System.Windows.Forms
     internal class DataGridViewCellLinkedList : IEnumerable
     {
         private int _count;
+
         public DataGridViewCellLinkedList()
         {
- 
         }
 
         public DataGridViewCell this[int index]
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         public int Count => _count;
 
         public DataGridViewCell HeadCell
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         public void Add(DataGridViewCell dataGridViewCell)
         {
-            
         }
 
         public void Clear()
         {
- 
         }
 
         public bool Contains(DataGridViewCell dataGridViewCell)
         {
- 
             return false;
         }
 
@@ -57,14 +48,13 @@ namespace System.Windows.Forms
 
         public bool Remove(DataGridViewCell dataGridViewCell)
         {
- 
             return false;
         }
 
         public int RemoveAllCellsAtBand(bool column, int bandIndex)
         {
             int removedCount = 0;
-          
+
             return removedCount;
         }
     }

@@ -25,7 +25,6 @@ namespace System.Windows.Forms
 
             public virtual ImageList? ImageList { get; set; }
 
-
             public virtual string Key
             {
                 get => _key;
@@ -56,11 +55,11 @@ namespace System.Windows.Forms
                     {
                         return Index;
                     }
+
                     if (ImageList is null)
                     {
-
                     }
-                     else //  if (ImageList != null)
+                    else //  if (ImageList != null)
                     {
                         return ImageList.Images.IndexOfKey(Key);
                     }

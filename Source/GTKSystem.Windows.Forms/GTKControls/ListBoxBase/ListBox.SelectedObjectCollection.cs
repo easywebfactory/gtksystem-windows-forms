@@ -6,7 +6,6 @@ using System.ComponentModel;
 
 namespace System.Windows.Forms
 {
-
     public partial class ListBox
     {
         // Should be "ObjectCollection", except we already have one of those.
@@ -73,26 +72,17 @@ namespace System.Windows.Forms
 
             object ICollection.SyncRoot
             {
-                get
-                {
-                    return this;
-                }
+                get { return this; }
             }
 
             bool ICollection.IsSynchronized
             {
-                get
-                {
-                    return false;
-                }
+                get { return false; }
             }
 
             bool IList.IsFixedSize
             {
-                get
-                {
-                    return true;
-                }
+                get { return true; }
             }
 
             /// <summary>
@@ -134,10 +124,7 @@ namespace System.Windows.Forms
 
             public bool IsReadOnly
             {
-                get
-                {
-                    return true;
-                }
+                get { return true; }
             }
 
             public bool Contains(object? selectedObject)
@@ -192,14 +179,8 @@ namespace System.Windows.Forms
             [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
             public object? this[int index]
             {
-                get
-                {
-                    return InnerArray.GetItem(index, SelectedObjectMask);
-                }
-                set
-                {
-                    throw new NotSupportedException("SR.ListBoxSelectedObjectCollectionIsReadOnly");
-                }
+                get { return InnerArray.GetItem(index, SelectedObjectMask); }
+                set { throw new NotSupportedException("SR.ListBoxSelectedObjectCollectionIsReadOnly"); }
             }
 
             public void CopyTo(Array destination, int index)

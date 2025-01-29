@@ -24,10 +24,7 @@ namespace System.Windows.Forms
         /// </summary>
         public InputLanguage this[int index]
         {
-            get
-            {
-                return ((InputLanguage)(InnerList[index]));
-            }
+            get { return ((InputLanguage)(InnerList[index])); }
         }
 
         /// <summary>

@@ -13,6 +13,7 @@ namespace GTKSystem.Resources.Extensions
             else
                 return value;
         }
+
         public static string OrThrowIfNull(this string value)
         {
             if (value == null)
@@ -22,6 +23,7 @@ namespace GTKSystem.Resources.Extensions
             else
                 return value;
         }
+
         public static ResXFileRef OrThrowIfNull(this ResXFileRef value)
         {
             if (value == null)
@@ -31,6 +33,5 @@ namespace GTKSystem.Resources.Extensions
             else
                 return value;
         }
-
     }
 }

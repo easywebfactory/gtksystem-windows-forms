@@ -14,23 +14,28 @@ namespace System.Windows.Forms
         ///     The button has its normal appearance (three-dimensional).
         /// </summary>
         Normal = 0,
+
         /// <summary>
         ///     The button is inactive (grayed).
         /// </summary>
         Inactive = 256,
+
         /// <summary>
         ///     The button appears pressed.
         /// </summary>
         Pushed = 512,
+
         /// <summary>
         ///     The button has a checked or latched appearance. Use this appearance to show that
         ///     a toggle button has been pressed.
         /// </summary>
         Checked = 1024,
+
         /// <summary>
         ///     The button has a flat, two-dimensional appearance.
         /// </summary>
         Flat = 16384,
+
         /// <summary>
         ///  All viable flags in the bit mask are used.
         /// </summary>

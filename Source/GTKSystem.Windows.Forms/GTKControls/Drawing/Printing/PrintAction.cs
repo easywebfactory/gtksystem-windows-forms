@@ -12,10 +12,12 @@ namespace System.Drawing.Printing
         ///  Printing to a file.
         /// </summary>
         PrintToFile,
+
         /// <summary>
         ///  Printing to a preview.
         /// </summary>
         PrintToPreview,
+
         /// <summary>
         ///  Printing to a printer.
         /// </summary>

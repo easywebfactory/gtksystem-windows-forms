@@ -12,10 +12,10 @@ namespace System.Drawing
     {
         private static readonly Color s_defaultTransparentColor = Color.LightGray;
 
-        internal Bitmap(byte[] pixbuf):base(pixbuf)
+        internal Bitmap(byte[] pixbuf) : base(pixbuf)
         {
-            
         }
+
         internal Bitmap(IntPtr ptr)
         {
             SetNativeImage(ptr);
@@ -74,7 +74,6 @@ namespace System.Drawing
 
         private static Stream GetResourceStream(Type type, string resource)
         {
-  
             Stream manifestResourceStream = type.Module.Assembly.GetManifestResourceStream(type, resource);
 
             return manifestResourceStream;
@@ -88,7 +87,7 @@ namespace System.Drawing
             : this(width, height, PixelFormat.Format32bppArgb)
         {
             //object obj =  Activator.CreateInstance("System.Drawing", "System.Drawing.Design.BitmapEditor, System.Drawing.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");
-          //  Reflection.Assembly.CreateQualifiedName("");
+            //  Reflection.Assembly.CreateQualifiedName("");
         }
 
         /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Bitmap" /> class with the specified size and with the resolution of the specified <see cref="T:System.Drawing.Graphics" /> object.</summary>
@@ -99,7 +98,6 @@ namespace System.Drawing
         ///   <paramref name="g" /> is <see langword="null" />.</exception>
         public Bitmap(int width, int height, Graphics g) : this(width, height, PixelFormat.Format32bppArgb)
         {
-
         }
 
         /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Bitmap" /> class with the specified size, pixel format, and pixel data.</summary>
@@ -109,9 +107,9 @@ namespace System.Drawing
         /// <param name="format">The pixel format for the new <see cref="T:System.Drawing.Bitmap" />. This must specify a value that begins with <c>Format</c>.</param>
         /// <param name="scan0">Pointer to an array of bytes that contains the pixel data.</param>
         /// <exception cref="T:System.ArgumentException">A <see cref="T:System.Drawing.Imaging.PixelFormat" /> value is specified whose name does not start with Format. For example, specifying <see cref="F:System.Drawing.Imaging.PixelFormat.Gdi" /> will cause an <see cref="T:System.ArgumentException" />, but <see cref="F:System.Drawing.Imaging.PixelFormat.Format48bppRgb" /> will not.</exception>
-        public Bitmap(int width, int height, int stride, PixelFormat format, IntPtr scan0) : this(width, height, PixelFormat.Format32bppArgb)
+        public Bitmap(int width, int height, int stride, PixelFormat format, IntPtr scan0) : this(width, height,
+            PixelFormat.Format32bppArgb)
         {
-
         }
 
         /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Bitmap" /> class with the specified size and format.</summary>
@@ -163,7 +161,6 @@ namespace System.Drawing
         /// <returns>The <see cref="T:System.Drawing.Bitmap" /> that this method creates.</returns>
         public static Bitmap FromHicon(IntPtr hicon)
         {
-
             return new Bitmap(hicon);
         }
 
@@ -176,7 +173,6 @@ namespace System.Drawing
             IntPtr intPtr = Marshal.StringToHGlobalUni(bitmapName);
             try
             {
-
                 return new Bitmap(hinstance);
             }
             finally
@@ -203,7 +199,6 @@ namespace System.Drawing
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public IntPtr GetHbitmap(Color background)
         {
- 
             return IntPtr.Zero;
         }
 
@@ -213,7 +208,7 @@ namespace System.Drawing
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public IntPtr GetHicon()
         {
-            IntPtr hicon=IntPtr.Zero;
+            IntPtr hicon = IntPtr.Zero;
 
             return hicon;
         }
@@ -227,7 +222,6 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentException">The height or width of <paramref name="rect" /> is 0.</exception>
         public Bitmap Clone(RectangleF rect, PixelFormat format)
         {
-
             return new Bitmap((int)rect.Width, (int)rect.Height, format);
         }
 
@@ -241,6 +235,7 @@ namespace System.Drawing
             {
                 pixel = GetPixel(0, base.Size.Height - 1);
             }
+
             if (pixel.A >= byte.MaxValue)
             {
                 MakeTransparent(pixel);
@@ -253,7 +248,6 @@ namespace System.Drawing
         /// <exception cref="T:System.Exception">The operation failed.</exception>
         public void MakeTransparent(Color transparentColor)
         {
-      
         }
 
         /// <summary>Locks a <see cref="T:System.Drawing.Bitmap" /> into system memory.</summary>
@@ -283,7 +277,6 @@ namespace System.Drawing
         /// <exception cref="T:System.Exception">The operation failed.</exception>
         public BitmapData LockBits(Rectangle rect, ImageLockMode flags, PixelFormat format, BitmapData bitmapData)
         {
-
             return bitmapData;
         }
 
@@ -292,7 +285,6 @@ namespace System.Drawing
         /// <exception cref="T:System.Exception">The operation failed.</exception>
         public void UnlockBits(BitmapData bitmapdata)
         {
-         
         }
 
         /// <summary>Gets the color of the specified pixel in this <see cref="T:System.Drawing.Bitmap" />.</summary>
@@ -306,8 +298,7 @@ namespace System.Drawing
         /// <exception cref="T:System.Exception">The operation failed.</exception>
         public Color GetPixel(int x, int y)
         {
-
-            return Color.FromArgb(x*y);
+            return Color.FromArgb(x * y);
         }
 
         /// <summary>Sets the color of the specified pixel in this <see cref="T:System.Drawing.Bitmap" />.</summary>
@@ -317,7 +308,6 @@ namespace System.Drawing
         /// <exception cref="T:System.Exception">The operation failed.</exception>
         public void SetPixel(int x, int y, Color color)
         {
-        
         }
 
         /// <summary>Sets the resolution for this <see cref="T:System.Drawing.Bitmap" />.</summary>
@@ -326,7 +316,6 @@ namespace System.Drawing
         /// <exception cref="T:System.Exception">The operation failed.</exception>
         public void SetResolution(float xDpi, float yDpi)
         {
-           
         }
 
         /// <summary>Creates a copy of the section of this <see cref="T:System.Drawing.Bitmap" /> defined by <see cref="T:System.Drawing.Rectangle" /> structure and with a specified <see cref="T:System.Drawing.Imaging.PixelFormat" /> enumeration.</summary>
@@ -340,7 +329,6 @@ namespace System.Drawing
         /// A <see cref="T:System.Drawing.Imaging.PixelFormat" /> value is specified whose name does not start with Format. For example, specifying <see cref="F:System.Drawing.Imaging.PixelFormat.Gdi" /> will cause an <see cref="T:System.ArgumentException" />, but <see cref="F:System.Drawing.Imaging.PixelFormat.Format48bppRgb" /> will not.</exception>
         public Bitmap Clone(Rectangle rect, PixelFormat format)
         {
-
             return new Bitmap(rect.Width, rect.Height, format) { PixbufData = (byte[])this.PixbufData.Clone() };
         }
     }

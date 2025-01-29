@@ -6,7 +6,8 @@ namespace System.Windows.Forms
 {
     public class DataGridViewCellStyleContentChangedEventArgs : EventArgs
     {
-        internal DataGridViewCellStyleContentChangedEventArgs(DataGridViewCellStyle dataGridViewCellStyle, bool changeAffectsPreferredSize)
+        internal DataGridViewCellStyleContentChangedEventArgs(DataGridViewCellStyle dataGridViewCellStyle,
+            bool changeAffectsPreferredSize)
         {
             CellStyle = dataGridViewCellStyle;
             ChangeAffectsPreferredSize = changeAffectsPreferredSize;

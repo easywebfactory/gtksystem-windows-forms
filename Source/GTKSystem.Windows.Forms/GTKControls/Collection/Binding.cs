@@ -5,146 +5,97 @@ using System.Runtime.CompilerServices;
 
 namespace System.Windows.Forms
 {
-	public class Binding
-	{
-		public object DataSource
-		{
-			[CompilerGenerated]
-			get;
-            internal set;
-        }
+    public class Binding
+    {
+        public object DataSource { [CompilerGenerated] get; internal set; }
 
-		public BindingMemberInfo BindingMemberInfo
-		{
-			[CompilerGenerated]
-			get;
-            internal set;
-        }
+        public BindingMemberInfo BindingMemberInfo { [CompilerGenerated] get; internal set; }
 
-		[DefaultValue(null)]
-		public IBindableComponent BindableComponent
-		{
-			[CompilerGenerated]
-			get;
-            internal set;
-        }
+        [DefaultValue(null)] public IBindableComponent BindableComponent { [CompilerGenerated] get; internal set; }
 
-		[DefaultValue(null)]
-		public Control Control
-		{
-			get;
-            internal set;
-        }
+        [DefaultValue(null)] public Control Control { get; internal set; }
 
         internal bool IsBindable =>
             BindableComponent != null
             && !string.IsNullOrEmpty(PropertyName)
             && DataSource != null;
 
-        public BindingManagerBase BindingManagerBase
-		{
-			get;
-			internal set;
-		}
+        public BindingManagerBase BindingManagerBase { get; internal set; }
 
-        [DefaultValue("")]
-		public string PropertyName
-		{
-			[CompilerGenerated]
-			get;
-            internal set;
-        }
-        [DefaultValue("")]
-        public string DataMember
-        {
-            [CompilerGenerated]
-            get;
-            internal set;
-        }
-        [DefaultValue(false)]
-		public bool FormattingEnabled
-		{
-            get; set;
-        }
+        [DefaultValue("")] public string PropertyName { [CompilerGenerated] get; internal set; }
+        [DefaultValue("")] public string DataMember { [CompilerGenerated] get; internal set; }
+        [DefaultValue(false)] public bool FormattingEnabled { get; set; }
 
-		[DefaultValue(null)]
-		public IFormatProvider FormatInfo
-		{
-            get; set;
-        }
+        [DefaultValue(null)] public IFormatProvider FormatInfo { get; set; }
 
-		public string FormatString
-		{
-            get; set;
-        }
+        public string FormatString { get; set; }
 
-		public object NullValue
-		{
-            get; set;
-        }
+        public object NullValue { get; set; }
 
-		public object DataSourceNullValue
-		{
-            get; set;
-        }
+        public object DataSourceNullValue { get; set; }
 
-		public ControlUpdateMode ControlUpdateMode
-		{
-            get; set;
-        }
+        public ControlUpdateMode ControlUpdateMode { get; set; }
 
-		public DataSourceUpdateMode DataSourceUpdateMode
-		{
-			get;set;
-		}
+        public DataSourceUpdateMode DataSourceUpdateMode { get; set; }
 
-		public event BindingCompleteEventHandler BindingComplete;
-		public event ConvertEventHandler Parse;
+        public event BindingCompleteEventHandler BindingComplete;
+        public event ConvertEventHandler Parse;
 
-		public event ConvertEventHandler Format;
-		public Binding(string propertyName, object dataSource, string dataMember) : this(propertyName, dataSource, dataMember, true, DataSourceUpdateMode.OnPropertyChanged, null, null, null)
+        public event ConvertEventHandler Format;
+
+        public Binding(string propertyName, object dataSource, string dataMember) : this(propertyName, dataSource,
+            dataMember, true, DataSourceUpdateMode.OnPropertyChanged, null, null, null)
         {
         }
 
-		public Binding(string propertyName, object dataSource, string dataMember, bool formattingEnabled) : this(propertyName, dataSource, dataMember, formattingEnabled, DataSourceUpdateMode.OnPropertyChanged, null, null, null)
+        public Binding(string propertyName, object dataSource, string dataMember, bool formattingEnabled) : this(
+            propertyName, dataSource, dataMember, formattingEnabled, DataSourceUpdateMode.OnPropertyChanged, null, null,
+            null)
         {
         }
 
-		public Binding(string propertyName, object dataSource, string dataMember, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode) : this(propertyName, dataSource, dataMember, formattingEnabled, dataSourceUpdateMode, null, null, null)
+        public Binding(string propertyName, object dataSource, string dataMember, bool formattingEnabled,
+            DataSourceUpdateMode dataSourceUpdateMode) : this(propertyName, dataSource, dataMember, formattingEnabled,
+            dataSourceUpdateMode, null, null, null)
         {
         }
 
-		public Binding(string propertyName, object dataSource, string dataMember, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode, object nullValue) : this(propertyName, dataSource, dataMember, formattingEnabled, dataSourceUpdateMode, nullValue, null, null)
+        public Binding(string propertyName, object dataSource, string dataMember, bool formattingEnabled,
+            DataSourceUpdateMode dataSourceUpdateMode, object nullValue) : this(propertyName, dataSource, dataMember,
+            formattingEnabled, dataSourceUpdateMode, nullValue, null, null)
         {
-			
-		}
+        }
 
-		public Binding(string propertyName, object dataSource, string dataMember, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode, object nullValue, string formatString) : this(propertyName, dataSource, dataMember, formattingEnabled, dataSourceUpdateMode, nullValue, formatString, null)
+        public Binding(string propertyName, object dataSource, string dataMember, bool formattingEnabled,
+            DataSourceUpdateMode dataSourceUpdateMode, object nullValue, string formatString) : this(propertyName,
+            dataSource, dataMember, formattingEnabled, dataSourceUpdateMode, nullValue, formatString, null)
         {
-			
-		}
+        }
 
-		public Binding(string propertyName, object dataSource, string dataMember, bool formattingEnabled, DataSourceUpdateMode dataSourceUpdateMode, object nullValue, string formatString, IFormatProvider formatInfo)
-		{
+        public Binding(string propertyName, object dataSource, string dataMember, bool formattingEnabled,
+            DataSourceUpdateMode dataSourceUpdateMode, object nullValue, string formatString,
+            IFormatProvider formatInfo)
+        {
             PropertyName = propertyName;
             DataSource = dataSource;
             DataMember = dataMember;
             BindingMemberInfo = new BindingMemberInfo(dataMember);
             FormattingEnabled = formattingEnabled;
-			DataSourceUpdateMode = dataSourceUpdateMode;
-			NullValue = nullValue;
-			FormatString = formatString;
-			FormatInfo = formatInfo;
+            DataSourceUpdateMode = dataSourceUpdateMode;
+            NullValue = nullValue;
+            FormatString = formatString;
+            FormatInfo = formatInfo;
         }
 
         public void WriteValue()
-		{
-			object _dataSource = DataSource ?? this.DataSourceNullValue;
+        {
+            object _dataSource = DataSource ?? this.DataSourceNullValue;
             if (this.Control != null && _dataSource != null)
             {
                 WriteValueCore(_dataSource);
             }
         }
+
         private void WriteValueCore(object data)
         {
             Type type = this.Control.GetType();
@@ -157,6 +108,7 @@ namespace System.Windows.Forms
                 {
                     Parse(this, new ConvertEventArgs(corVal, propertyInfo.PropertyType));
                 }
+
                 propertyInfo.SetValue(data, corVal);
             }
         }
@@ -164,8 +116,8 @@ namespace System.Windows.Forms
         public void ReadValue()
         {
             object _dataSource = DataSource ?? this.DataSourceNullValue;
-			if (this.Control != null && _dataSource != null)
-			{
+            if (this.Control != null && _dataSource != null)
+            {
                 if (_dataSource is IEnumerable list)
                 {
                     foreach (object data in list)
@@ -179,8 +131,9 @@ namespace System.Windows.Forms
                 }
             }
         }
-		private void ReadValueCore(object data)
-		{
+
+        private void ReadValueCore(object data)
+        {
             object val = data.GetType().GetProperty(DataMember).GetValue(data) ?? this.NullValue;
             if (FormattingEnabled)
             {
@@ -192,6 +145,7 @@ namespace System.Windows.Forms
                         Format(this, new ConvertEventArgs(val, oriType));
                 }
             }
+
             if (val != null)
             {
                 Type type = this.Control.GetType();
@@ -207,6 +161,7 @@ namespace System.Windows.Forms
                     {
                         Parse(this, new ConvertEventArgs(corVal, propertyInfo.PropertyType));
                     }
+
                     propertyInfo.SetValue(this.Control, corVal);
                 }
             }

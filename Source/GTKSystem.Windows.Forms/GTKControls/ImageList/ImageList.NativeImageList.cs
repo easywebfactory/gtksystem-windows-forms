@@ -5,7 +5,7 @@ namespace System.Windows.Forms
 {
     public sealed partial class ImageList
     {
-        internal class NativeImageList : IDisposable//, IHandle<HIMAGELIST>
+        internal class NativeImageList : IDisposable //, IHandle<HIMAGELIST>
         {
 #if DEBUG
             private readonly string _callStack = new StackTrace().ToString();

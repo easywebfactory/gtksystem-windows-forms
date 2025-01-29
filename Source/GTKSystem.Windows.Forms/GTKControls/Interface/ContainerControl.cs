@@ -1,9 +1,9 @@
-﻿ 
-namespace System.Windows.Forms
+﻿namespace System.Windows.Forms
 {
     public class ContainerControl : ScrollableControl, IContainerControl
     {
         private Control _ActiveControl;
+
         public Control ActiveControl
         {
             get
@@ -16,13 +16,16 @@ namespace System.Windows.Forms
                             return con;
                     }
                 }
+
                 return _ActiveControl;
             }
-            set { ActivateControl(value); } 
+            set { ActivateControl(value); }
         }
+
         public ContainerControl() : base()
         {
         }
+
         public bool ActivateControl(Control active)
         {
             _ActiveControl = active;
@@ -33,8 +36,10 @@ namespace System.Windows.Forms
                     return widget.Activate();
                 }
             }
+
             return false;
         }
+
         public virtual StatusStrip StatusStrip { get; set; }
     }
 }

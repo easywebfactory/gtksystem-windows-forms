@@ -18,6 +18,7 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         public Gtk.Overlay contaner = new Gtk.Overlay();
         private ControlCollection _controls;
+
         public Panel() : base()
         {
             _controls = new ControlCollection(this, contaner);
@@ -30,7 +31,9 @@ namespace System.Windows.Forms
             contaner.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             self.Add(contaner);
         }
+
         public override ControlCollection Controls => _controls;
+
         public override Padding Padding
         {
             get => base.Padding;

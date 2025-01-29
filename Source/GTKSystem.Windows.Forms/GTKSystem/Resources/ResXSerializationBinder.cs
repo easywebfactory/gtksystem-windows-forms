@@ -84,10 +84,9 @@ namespace System.Resources
                 // we try 1) FQN 2) FQN without a version 3) just the short name
                 if (typeParts is null)
                 {
-
                 }
                 else if (typeParts.Length > 2)
-                  // if (typeParts != null && typeParts.Length > 2)
+                    // if (typeParts != null && typeParts.Length > 2)
                 {
                     string partialName = typeParts[0].Trim();
 
@@ -129,13 +128,14 @@ namespace System.Resources
             //
             // another example are singleton objects like DBNull.Value which are serialized by System.UnitySerializationHolder
             typeName = null;
-            if(_typeNameConverter is null)
+            if (_typeNameConverter is null)
             {
-
-            }else
-           // if (_typeNameConverter != null)
+            }
+            else
+                // if (_typeNameConverter != null)
             {
-                string assemblyQualifiedTypeName = MultitargetUtil.GetAssemblyQualifiedName(serializedType, _typeNameConverter);
+                string assemblyQualifiedTypeName =
+                    MultitargetUtil.GetAssemblyQualifiedName(serializedType, _typeNameConverter);
                 if (!string.IsNullOrEmpty(assemblyQualifiedTypeName))
                 {
                     int pos = assemblyQualifiedTypeName.IndexOf(',');

@@ -6,11 +6,13 @@ namespace System.Windows.Forms
 {
     public class HandledMouseEventArgs : MouseEventArgs
     {
-        public HandledMouseEventArgs(MouseButtons button, int clicks, int x, int y, int delta) : this(button, clicks, x, y, delta, false)
+        public HandledMouseEventArgs(MouseButtons button, int clicks, int x, int y, int delta) : this(button, clicks, x,
+            y, delta, false)
         {
         }
 
-        public HandledMouseEventArgs(MouseButtons button, int clicks, int x, int y, int delta, bool defaultHandledValue) : base(button, clicks, x, y, delta)
+        public HandledMouseEventArgs(MouseButtons button, int clicks, int x, int y, int delta, bool defaultHandledValue)
+            : base(button, clicks, x, y, delta)
         {
             Handled = defaultHandledValue;
         }

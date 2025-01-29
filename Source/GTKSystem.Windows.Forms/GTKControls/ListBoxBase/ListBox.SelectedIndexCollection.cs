@@ -23,42 +23,27 @@ namespace System.Windows.Forms
             [Browsable(false)]
             public int Count
             {
-                get
-                {
-                    return _owner.SelectedItems.Count;
-                }
+                get { return _owner.SelectedItems.Count; }
             }
 
             object ICollection.SyncRoot
             {
-                get
-                {
-                    return this;
-                }
+                get { return this; }
             }
 
             bool ICollection.IsSynchronized
             {
-                get
-                {
-                    return true;
-                }
+                get { return true; }
             }
 
             bool IList.IsFixedSize
             {
-                get
-                {
-                    return true;
-                }
+                get { return true; }
             }
 
             public bool IsReadOnly
             {
-                get
-                {
-                    return true;
-                }
+                get { return true; }
             }
 
             public bool Contains(int selectedIndex)
@@ -88,7 +73,8 @@ namespace System.Windows.Forms
                     selectedIndex < InnerArray.Count &&
                     InnerArray.GetState(selectedIndex, SelectedObjectCollection.SelectedObjectMask))
                 {
-                    return InnerArray.IndexOf(InnerArray.GetItem(selectedIndex), SelectedObjectCollection.SelectedObjectMask);
+                    return InnerArray.IndexOf(InnerArray.GetItem(selectedIndex),
+                        SelectedObjectCollection.SelectedObjectMask);
                 }
 
                 return -1;
@@ -145,14 +131,8 @@ namespace System.Windows.Forms
 
             object? IList.this[int index]
             {
-                get
-                {
-                    return this[index];
-                }
-                set
-                {
-                    throw new NotSupportedException("SR.ListBoxSelectedIndexCollectionIsReadOnly");
-                }
+                get { return this[index]; }
+                set { throw new NotSupportedException("SR.ListBoxSelectedIndexCollectionIsReadOnly"); }
             }
 
             /// <summary>

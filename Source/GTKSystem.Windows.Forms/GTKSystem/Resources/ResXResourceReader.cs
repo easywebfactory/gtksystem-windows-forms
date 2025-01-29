@@ -54,7 +54,8 @@ namespace System.Resources
         {
         }
 
-        public ResXResourceReader(string fileName, ITypeResolutionService typeResolver) : this(fileName, typeResolver, null)
+        public ResXResourceReader(string fileName, ITypeResolutionService typeResolver) : this(fileName, typeResolver,
+            null)
         {
         }
 
@@ -69,11 +70,13 @@ namespace System.Resources
         {
         }
 
-        public ResXResourceReader(TextReader reader, ITypeResolutionService typeResolver) : this(reader, typeResolver, (IAliasResolver)null)
+        public ResXResourceReader(TextReader reader, ITypeResolutionService typeResolver) : this(reader, typeResolver,
+            (IAliasResolver)null)
         {
         }
 
-        internal ResXResourceReader(TextReader reader, ITypeResolutionService typeResolver, IAliasResolver aliasResolver)
+        internal ResXResourceReader(TextReader reader, ITypeResolutionService typeResolver,
+            IAliasResolver aliasResolver)
         {
             _reader = reader;
             _typeResolver = typeResolver;
@@ -84,7 +87,8 @@ namespace System.Resources
         {
         }
 
-        public ResXResourceReader(Stream stream, ITypeResolutionService typeResolver) : this(stream, typeResolver, (IAliasResolver)null)
+        public ResXResourceReader(Stream stream, ITypeResolutionService typeResolver) : this(stream, typeResolver,
+            (IAliasResolver)null)
         {
         }
 
@@ -95,7 +99,8 @@ namespace System.Resources
             _aliasResolver = aliasResolver ?? new ReaderAliasResolver();
         }
 
-        public ResXResourceReader(Stream stream, AssemblyName[] assemblyNames) : this(stream, assemblyNames, (IAliasResolver)null)
+        public ResXResourceReader(Stream stream, AssemblyName[] assemblyNames) : this(stream, assemblyNames,
+            (IAliasResolver)null)
         {
         }
 
@@ -106,7 +111,8 @@ namespace System.Resources
             _aliasResolver = aliasResolver ?? new ReaderAliasResolver();
         }
 
-        public ResXResourceReader(TextReader reader, AssemblyName[] assemblyNames) : this(reader, assemblyNames, (IAliasResolver)null)
+        public ResXResourceReader(TextReader reader, AssemblyName[] assemblyNames) : this(reader, assemblyNames,
+            (IAliasResolver)null)
         {
         }
 
@@ -117,7 +123,8 @@ namespace System.Resources
             _aliasResolver = aliasResolver ?? new ReaderAliasResolver();
         }
 
-        public ResXResourceReader(string fileName, AssemblyName[] assemblyNames) : this(fileName, assemblyNames, (IAliasResolver)null)
+        public ResXResourceReader(string fileName, AssemblyName[] assemblyNames) : this(fileName, assemblyNames,
+            (IAliasResolver)null)
         {
         }
 
@@ -138,10 +145,7 @@ namespace System.Resources
         /// </summary>
         public string BasePath
         {
-            get
-            {
-                return _basePath;
-            }
+            get { return _basePath; }
             set
             {
                 if (_isReaderDirty)
@@ -161,10 +165,7 @@ namespace System.Resources
         /// </summary>
         public bool UseResXDataNodes
         {
-            get
-            {
-                return _useResXDataNodes;
-            }
+            get { return _useResXDataNodes; }
             set
             {
                 if (_isReaderDirty)
@@ -379,7 +380,8 @@ namespace System.Resources
                 catch (SerializationException se)
                 {
                     Point pt = GetPosition(reader);
-                    string newMessage = string.Format("SR.SerializationException,{0},{1},{2},{3}", reader[ResXResourceWriter.TypeStr], pt.Y, pt.X, se.Message);
+                    string newMessage = string.Format("SR.SerializationException,{0},{1},{2},{3}",
+                        reader[ResXResourceWriter.TypeStr], pt.Y, pt.X, se.Message);
                     XmlException xml = new XmlException(newMessage, se, pt.Y, pt.X);
                     SerializationException newSe = new SerializationException(newMessage, xml);
 
@@ -388,7 +390,8 @@ namespace System.Resources
                 catch (TargetInvocationException tie)
                 {
                     Point pt = GetPosition(reader);
-                    string newMessage = string.Format("SR.InvocationException,{0},{1},{2},{3}", reader[ResXResourceWriter.TypeStr], pt.Y, pt.X, tie.InnerException.Message);
+                    string newMessage = string.Format("SR.InvocationException,{0},{1},{2},{3}",
+                        reader[ResXResourceWriter.TypeStr], pt.Y, pt.X, tie.InnerException.Message);
                     XmlException xml = new XmlException(newMessage, tie.InnerException, pt.Y, pt.X);
                     TargetInvocationException newTie = new TargetInvocationException(newMessage, xml);
 
@@ -618,7 +621,9 @@ namespace System.Resources
             nodeInfo.ReaderPosition = GetPosition(reader);
             while (!finishedReadingDataNode && reader.Read())
             {
-                if (reader.NodeType == XmlNodeType.EndElement && (reader.LocalName.Equals(ResXResourceWriter.DataStr) || reader.LocalName.Equals(ResXResourceWriter.MetadataStr)))
+                if (reader.NodeType == XmlNodeType.EndElement && (reader.LocalName.Equals(ResXResourceWriter.DataStr) ||
+                                                                  reader.LocalName.Equals(
+                                                                      ResXResourceWriter.MetadataStr)))
                 {
                     // we just found </data>, quit or </metadata>
                     finishedReadingDataNode = true;

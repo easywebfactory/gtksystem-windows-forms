@@ -6,7 +6,6 @@ using System.Runtime.Serialization;
 
 namespace System.Drawing.Printing
 {
-
     /// <summary>
     ///  Specifies the margins of a printed page.
     /// </summary>
@@ -18,17 +17,13 @@ namespace System.Drawing.Printing
         private int _bottom;
         private int _top;
 
-        [OptionalField]
-        private double _doubleLeft;
+        [OptionalField] private double _doubleLeft;
 
-        [OptionalField]
-        private double _doubleRight;
+        [OptionalField] private double _doubleRight;
 
-        [OptionalField]
-        private double _doubleTop;
+        [OptionalField] private double _doubleTop;
 
-        [OptionalField]
-        private double _doubleBottom;
+        [OptionalField] private double _doubleBottom;
 
         /// <summary>
         ///  Initializes a new instance of a the <see cref='Margins'/> class with one-inch margins.
@@ -175,12 +170,13 @@ namespace System.Drawing.Printing
         }
 
         public object Clone() => MemberwiseClone();
+
         public override bool Equals(object obj) =>
             obj is Margins margins
-                && margins.Left == Left
-                && margins.Right == Right
-                && margins.Top == Top
-                && margins.Bottom == Bottom;
+            && margins.Left == Left
+            && margins.Right == Right
+            && margins.Top == Top
+            && margins.Bottom == Bottom;
 
         /// <summary>
         ///  Calculates and retrieves a hash code based on the left, right, top, and bottom margins.
