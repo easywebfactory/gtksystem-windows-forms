@@ -117,22 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="GtkForm_InitializeComponent_DropSownMenu" xml:space="preserve">
-    <value>DropSownMenu</value>
-  </data>
   <data name="GtkForm_InitializeComponent_Item" xml:space="preserve">
-    <value>Item</value>
-  </data>
-  <data name="GtkForm_InitializeComponent_Menu" xml:space="preserve">
-    <value>Menu</value>
-  </data>
-  <data name="GtkForm_InitializeComponent_Open_main_window" xml:space="preserve">
-    <value>Open main window</value>
-  </data>
-  <data name="GtkForm_InitializeComponent_Open_Status_Text" xml:space="preserve">
-    <value>Status Text</value>
-  </data>
-  <data name="GtkForm_GtkForm_dropdown list 1" xml:space="preserve">
-    <value>DropdownList 1</value>
+    <value>项</value>
   </data>
 </root>

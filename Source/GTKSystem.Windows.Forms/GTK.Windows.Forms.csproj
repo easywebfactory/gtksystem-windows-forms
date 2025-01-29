@@ -35,6 +35,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Remove="Content\System.ComponentModel.cs" />
+        <Compile Remove="Content\System.Resources.ResourceManager.cs" />
         <Compile Remove="GTKControls\Control\ArrangedElementCollection.cs" />
         <Compile Remove="GTKControls\Control\GridItem.cs" />
         <Compile Remove="GTKControls\Control\GridItemCollection.cs" />
@@ -51,36 +53,12 @@
         <Compile Remove="GTKControls\ListViewBase\SerializationInfo.cs" />
     </ItemGroup>
     <ItemGroup>
-        <None Remove="Resources\Cursors\aero_ew.cur" />
-        <None Remove="Resources\Cursors\aero_nesw.cur" />
-        <None Remove="Resources\Cursors\aero_ns.cur" />
-        <None Remove="Resources\Cursors\aero_nwse.cur" />
-        <None Remove="Resources\Cursors\aero_unavail.cur" />
-        <None Remove="Resources\Cursors\east.cur" />
-        <None Remove="Resources\Cursors\hsplit.cur" />
-        <None Remove="Resources\Cursors\ne.cur" />
-        <None Remove="Resources\Cursors\nomove2d.cur" />
-        <None Remove="Resources\Cursors\nomoveh.cur" />
-        <None Remove="Resources\Cursors\nomovev.cur" />
-        <None Remove="Resources\Cursors\north.cur" />
-        <None Remove="Resources\Cursors\no_l.cur" />
-        <None Remove="Resources\Cursors\nw.cur" />
-        <None Remove="Resources\Cursors\se.cur" />
-        <None Remove="Resources\Cursors\south.cur" />
-        <None Remove="Resources\Cursors\sw.cur" />
-        <None Remove="Resources\Cursors\vsplit.cur" />
-        <None Remove="Resources\Cursors\west.cur" />
-        <None Remove="Resources\System\CloseWin.png" />
-        <None Remove="Resources\System\CloseWindow.png" />
-        <None Remove="Resources\System\DateTimePicker.ico" />
-        <None Remove="Resources\System\MaxWin.png" />
-        <None Remove="Resources\System\MaxWindow.png" />
-        <None Remove="Resources\System\MinWin.png" />
-        <None Remove="Resources\System\MinWindow.png" />
-        <None Remove="Resources\System\MonthCalendar.ico" />
-        <None Remove="Resources\System\Panel.ico" />
-        <None Remove="Resources\System\view-more.ico" />
-        <None Remove="Resources\System\view-more.png" />
+        <None Include="Content\System.ComponentModel.cs" Pack="true" PackagePath="\content\" />
+        <None Include="Content\System.Resources.ResourceManager.cs" Pack="true" PackagePath="\content\" />
+        <None Include="..\..\README.zh-HANS.md" Link="README.zh-HANS.md" Pack="true" PackagePath="\" />
+        <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+        <None Include="Net4x.Gtk.Windows.Forms.props" Pack="true" PackagePath="\build\" />
+        <None Include="..\licenses\LICENSE.txt" Pack="true" PackagePath="\" />
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="Resources\Cursors\aero_ew.cur" />
@@ -209,17 +187,6 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Resources.resx</DependentUpon>
         </Compile>
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="..\..\README.zh-HANS.md" Link="README.zh-HANS.md" />
-        <None Include="..\..\README.md">
-            <Pack>True</Pack>
-            <PackagePath>\</PackagePath>
-        </None>
-        <None Include="..\licenses\LICENSE.txt">
-            <Pack>True</Pack>
-            <PackagePath>\</PackagePath>
-        </None>
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Update="Properties\Resources.resx">

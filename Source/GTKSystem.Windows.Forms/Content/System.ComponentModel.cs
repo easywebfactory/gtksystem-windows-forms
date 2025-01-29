@@ -1,6 +1,6 @@
-﻿//此文件主要是为了覆盖原生System.ComponentModel.ComponentResourceManager类，原生类不支持读取项目资源图像文件。
-//GTKSystem.ComponentModel.ComponentResourceManager实现了项目资源文件和图像文件读取。
-//如果项目里没有使用资源图像文件，可以不用新建此文件
+﻿//This file is mainly to overwrite the native System.ComponentModel.ComponentResourceManager class. The native class does not support reading project resource image files.
+//GTKSystem.ComponentModel.ComponentResourceManager implements reading of project resource files and image files.
+//If the resource image file is not used in the project, there is no need to create this file.
 
 using System.Globalization;
 

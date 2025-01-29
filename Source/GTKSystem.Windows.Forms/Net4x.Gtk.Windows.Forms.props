@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup>
+		<Compile Include="$(MSBuildThisFileDirectory)../content/System.ComponentModel.cs" Link="System.ComponentModel.cs" />
+		<Compile Include="$(MSBuildThisFileDirectory)../content/System.Resources.ResourceManager.cs" Link="System.Resources.ResourceManager.cs" />
+	</ItemGroup>
+</Project>

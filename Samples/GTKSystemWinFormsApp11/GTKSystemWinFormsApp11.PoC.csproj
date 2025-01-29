@@ -7,28 +7,18 @@
     <UseWindowsForms>false</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <AssemblyName>GTKSystemWinFormsApp11</AssemblyName>
+    <RootNamespace>GTKSystemWinFormsApp11</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\..\Source\GTKSystem.Windows.Forms\Content\System.ComponentModel.cs" Link="System.ComponentModel.cs" />
-    <Compile Include="..\..\Source\GTKSystem.Windows.Forms\Content\System.Resources.ResourceManager.cs" Link="System.Resources.ResourceManager.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="GtkSharp" Version="3.24.24.95" />
     <PackageReference Include="GTKSystem.Windows.FormsDesigner" Version="1.0.0.4" />
+    <PackageReference Include="Net4x.Gtk.Windows.Forms" Version="1.3.24" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="System.Windows.Forms" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="obj\Debug\net8.0\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\Gtk.Windows.Forms.csproj" />
   </ItemGroup>
 
   <ItemGroup>
