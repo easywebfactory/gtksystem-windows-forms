@@ -116,8 +116,8 @@ namespace System.Windows.Forms
         ///  Sent when a window enters drag drop mode.
         /// </summary>
         /// <seealso cref="SystemDragDropEnd"/>.
-        //  Note that it is up to apps and OLE to generate this, since the system doesn't know. 
-        //  Like <c>EVENT_SYSTEM_SOUND</c>, it will be a while before this is prevalent.
+        ///  Note that it is up to apps and OLE to generate this, since the system doesn't know. 
+        ///  Like <c>EVENT_SYSTEM_SOUND</c>, it will be a while before this is prevalent.
         SystemDragDropStart = 0x000E,
 
         /// <summary>
@@ -125,8 +125,8 @@ namespace System.Windows.Forms
         ///  Sent when a window leaves drag drop mode.
         /// </summary>
         /// <seealso cref="SystemDragDropStart"/>.
-        //  Note that it is up to apps and OLE to generate this, since the system doesn't know. 
-        //  Like <c>EVENT_SYSTEM_SOUND</c>, it will be a while before this is prevalent.
+        ///  Note that it is up to apps and OLE to generate this, since the system doesn't know. 
+        ///  Like <c>EVENT_SYSTEM_SOUND</c>, it will be a while before this is prevalent.
         SystemDragDropEnd = 0x000F,
 
         /// <summary>

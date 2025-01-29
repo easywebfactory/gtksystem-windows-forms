@@ -142,7 +142,7 @@ namespace System.Windows.Forms
 
 .DropDownList button{{padding:0px;}}
 .SplitContainer{{padding:0px;border:0px;box-shadow:none;}}
-/* 当有滚动条时，宽高小于60px有Exception信息输出 */
+/* When there is a scroll bar, an Exception message will be output if the width and height are less than 60px. */
 .SplitterPanel{{padding:0px;margin:0px;border:0px;box-shadow:none;min-width:60px;min-height:60px;}}
 .SplitterPanel .frame{{padding:0px;margin:0px;border:0px;box-shadow:none;}}
 .SplitterPanel .flat{{padding:0px;margin:0px;border:0px;box-shadow:none;}}
