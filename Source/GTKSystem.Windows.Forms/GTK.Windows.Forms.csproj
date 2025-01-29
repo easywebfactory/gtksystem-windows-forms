@@ -31,6 +31,8 @@
         <AssemblyOriginatorKeyFile>..\..\GtkForms.snk</AssemblyOriginatorKeyFile>
         <IsAotCompatible>True</IsAotCompatible>
         <Optimize Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">True</Optimize>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
         <Compile Remove="GTKControls\Control\ArrangedElementCollection.cs" />
