@@ -57,7 +57,7 @@ namespace System.Windows.Forms
             flowBoxContainer.Halign = Gtk.Align.Fill;
             flowBoxContainer.Valign = Gtk.Align.Start;
             scrolledWindow.Add(flowBoxContainer);
-            self.box.PackStart(scrolledWindow, false, true, 0);
+            self.box.PackStart(scrolledWindow, true, true, 0);
             this.BorderStyle = BorderStyle.Fixed3D;
         }
         private bool ControlRealized = false;
