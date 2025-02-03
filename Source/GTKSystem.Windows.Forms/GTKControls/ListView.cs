@@ -125,20 +125,7 @@ namespace System.Windows.Forms
                     {
                         Sorting = SortOrder.Ascending;
                     }
-
-                    foreach (var box in flowBoxContainer.AllChildren)
-                    {
-                        if (box is Gtk.Box group)
-                        {
-                            foreach (var flow in group.Children)
-                            {
-                                if (flow is Gtk.FlowBox _flow)
-                                {
-                                    _flow.InvalidateSort();
-                                }
-                            }
-                        }
-                    }
+                    this.Sort();
 
                     if (ColumnReordered != null)
                         ColumnReordered(this, new ColumnReorderedEventArgs(SortingColumnIndex, actioncolumn, Columns[actioncolumn]));
@@ -257,32 +244,17 @@ namespace System.Windows.Forms
         }
         internal void NativeItemsClear()
         {
-            foreach (Gtk.Box vbox in flowBoxContainer.AllChildren)
+            foreach (var group in GetAllGroups())
             {
-                foreach (var flow in vbox.AllChildren)
-                {
-                    if (flow is Gtk.FlowBox _flow)
-                    {
-                        foreach (Gtk.FlowBoxChild child in _flow.Children)
-                            _flow.Remove(child);
-                    }
-                }
+                foreach (Gtk.FlowBoxChild child in group.FlowBox.Children)
+                    group.FlowBox.Remove(child);
             }
         }
         internal void NativeGroupsClear()
         {
-            foreach (Gtk.Box vbox in flowBoxContainer.AllChildren)
-            {
-                foreach (var flow in vbox.Children)
-                {
-                    if (flow is Gtk.FlowBox _flow)
-                    {
-                        foreach (Gtk.FlowBoxChild child in _flow.Children)
-                            _flow.Remove(child);
-                    }
-                    vbox.Remove(flow);
-                }
-                flowBoxContainer.Remove(vbox);
+            foreach(var  group in flowBoxContainer.Children) {
+                flowBoxContainer.Remove(group);
+                group.Dispose();
             }
         }
         internal void NativeUpdateText(ListViewItem item, string text)
@@ -897,15 +869,9 @@ namespace System.Windows.Forms
         }
         public void Sort()
         {
-            foreach (Gtk.Box vbox in flowBoxContainer.AllChildren)
+            foreach (var group in GetAllGroups())
             {
-                foreach (var flow in vbox.AllChildren)
-                {
-                    if (flow is Gtk.FlowBox _flow)
-                    {
-                        _flow.InvalidateSort();
-                    }
-                }
+                group.FlowBox.InvalidateSort();
             }
         }
         private bool IsCacheUpdate;
