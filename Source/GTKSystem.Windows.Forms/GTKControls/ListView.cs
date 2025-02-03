@@ -785,7 +785,7 @@ namespace System.Windows.Forms
 
                 _flow.Name = group.Name;
                 _flow.ColumnSpacing = 0;
-                _flow.RowSpacing = 2;
+                _flow.RowSpacing = 0;
                 _flow.BorderWidth = 0;
                 _flow.Homogeneous = false;
                 _flow.Orientation = Gtk.Orientation.Horizontal;
