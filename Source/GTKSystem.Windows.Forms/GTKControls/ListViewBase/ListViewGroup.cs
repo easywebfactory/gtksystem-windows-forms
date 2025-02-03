@@ -8,15 +8,19 @@ namespace System.Windows.Forms
 	public sealed class ListViewGroup : ISerializable
 	{
         public readonly string SerialGuid = Guid.NewGuid().ToString();
-        public static readonly string defaultListViewGroupKey = "00000defaultListViewGroup";
+        public static readonly string defaultListViewGroupKey = "_DefaultListViewGroup_";
         ListView.ListViewItemCollection _items;
-        internal Gtk.Widget _groupbox { get; set; }
+        internal Gtk.Box _groupbox { get; set; }
+        private static ListViewGroup _defaultGroup;
         public static ListViewGroup GetDefaultListViewGroup() {
-            ListViewGroup defaultGroup = new ListViewGroup("default", HorizontalAlignment.Left);
-            defaultGroup.Header = "default";
-            defaultGroup.Name = ListViewGroup.defaultListViewGroupKey;
-            defaultGroup.Subtitle = "";
-            return defaultGroup;
+            if (_defaultGroup == null)
+            {
+                _defaultGroup = new ListViewGroup("default", HorizontalAlignment.Left);
+                _defaultGroup.Header = "default";
+                _defaultGroup.Name = ListViewGroup.defaultListViewGroupKey;
+                _defaultGroup.Subtitle = "";
+            }
+            return _defaultGroup;
         }
         public ListViewGroup() : this("", "")
         {

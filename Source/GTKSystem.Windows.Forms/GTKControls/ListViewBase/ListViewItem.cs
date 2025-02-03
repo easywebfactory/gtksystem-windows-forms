@@ -15,6 +15,7 @@ namespace System.Windows.Forms
 		private ListViewSubItemCollection _subitems;
         public class ListViewSubItem
 		{
+			internal Gtk.Label _label;
 			public Color? BackColor
 			{
 				get;
@@ -46,15 +47,21 @@ namespace System.Windows.Forms
                 set;
             }
 
-			
-			public string Text
-			{
-                get;
-                set;
+
+            internal string _text = string.Empty;
+            public string Text
+            {
+                get => _text;
+                set
+                {
+                    _text = value;
+                    if (_label != null)
+                        _label.Text = value;
+                }
             }
 
-			
-			public string Name
+
+            public string Name
 			{
                 get;
                 set;
@@ -162,7 +169,7 @@ namespace System.Windows.Forms
 		internal ListViewGroup _group;
 
 		internal int ID;
-
+		internal Gtk.FlowBoxChild _flowBoxChild;
 		internal virtual AccessibleObject AccessibilityObject
 		{
 			get;
@@ -188,11 +195,16 @@ namespace System.Windows.Forms
 
 		
 		
-		
+		internal bool _checked;
 		public bool Checked
 		{
-            get;
-            set;
+			get => _checked;
+
+            set {
+				_checked = value;
+                if (_listView != null)
+                    _listView.NativeCheckItem(this, value);
+            }
         }
 
 		
@@ -297,22 +309,26 @@ namespace System.Windows.Forms
             get;
             set;
         }
-		 
-		public bool Selected
-		{
-            get;
-            set;
+		internal bool _selected;
+        public bool Selected
+        {
+            get => _selected;
+			set { 
+				_selected = value;
+                if (_listView != null)
+                    _listView.NativeSelectItem(this, value);
+            }
         }
 
-		
-		
-		
-		
-		
-		
-		
-		
-		public int StateImageIndex
+
+
+
+
+
+
+
+
+        public int StateImageIndex
 		{
             get;
             set;
@@ -351,18 +367,20 @@ namespace System.Windows.Forms
             set;
         }
 
+        internal string _text = string.Empty;
+        public string Text
+        {
+            get => _text;
+            set
+            {
+                _text = value;
+                if (_listView != null)
+                    _listView.NativeUpdateText(this, value);
 
+            }
+        }
 
-
-		public string Text
-		{
-			get;
-			set;
-		} = string.Empty;
-
-		
-		
-		public string ToolTipText
+        public string ToolTipText
 		{
             get;
             set;
