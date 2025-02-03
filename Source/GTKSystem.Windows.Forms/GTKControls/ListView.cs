@@ -30,6 +30,7 @@ namespace System.Windows.Forms
         private ListViewItemCollection _items;
         private ListViewGroupCollection _groups;
         private ColumnHeaderCollection _columns;
+        internal Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
         internal Gtk.Box flowBoxContainer = new Gtk.Box(Gtk.Orientation.Vertical, 0);
         internal Gtk.Box header = new Gtk.Box(Gtk.Orientation.Horizontal,0);
         private int __headerheight = 30;
@@ -51,11 +52,12 @@ namespace System.Windows.Forms
             header.NoShowAll = true;
             header.Visible = false;
             header.Hide();
+            self.box.PackStart(header, false, true, 0);
 
             flowBoxContainer.Halign = Gtk.Align.Fill;
             flowBoxContainer.Valign = Gtk.Align.Start;
-            flowBoxContainer.PackStart(header, false, true, 0);
-            self.Add(flowBoxContainer);
+            scrolledWindow.Add(flowBoxContainer);
+            self.box.PackStart(scrolledWindow, false, true, 0);
             this.BorderStyle = BorderStyle.Fixed3D;
         }
         private bool ControlRealized = false;
