@@ -66,21 +66,25 @@ namespace System.Windows.Forms
             column.AddAttribute(renderertext, "text", 0);
             self.TreeView.AppendColumn(column);
         }
-
+        private bool Is_TreeView_Realized = false;
         private void TreeView_Realized(object sender, EventArgs e)
         {
-            if (ImageList != null)
+            if (Is_TreeView_Realized == false)
             {
-                Gtk.TreeViewColumn column = ((Gtk.TreeView)sender).Columns[0];
-                if (string.IsNullOrWhiteSpace(ImageKey))
+                Is_TreeView_Realized = true;
+                if (ImageList != null)
                 {
-                    System.Drawing.Image image = ImageList.GetBitmap(ImageIndex);
-                    rendererPixbuf.Pixbuf = image.Pixbuf;
-                }
-                else
-                {
-                    System.Drawing.Image image = ImageList.GetBitmap(ImageKey);
-                    rendererPixbuf.Pixbuf = image.Pixbuf;
+                    Gtk.TreeViewColumn column = ((Gtk.TreeView)sender).Columns[0];
+                    if (string.IsNullOrWhiteSpace(ImageKey))
+                    {
+                        System.Drawing.Image image = ImageList.GetBitmap(ImageIndex);
+                        rendererPixbuf.Pixbuf = image.Pixbuf;
+                    }
+                    else
+                    {
+                        System.Drawing.Image image = ImageList.GetBitmap(ImageKey);
+                        rendererPixbuf.Pixbuf = image.Pixbuf;
+                    }
                 }
             }
         }
@@ -148,18 +152,39 @@ namespace System.Windows.Forms
                 LoadNodeValue(child, iter);
             }
         }
-        internal void SetChecked(TreeNode node, bool isChecked)
+        internal void NativeNodeChecked(TreeNode node, bool isChecked)
         {
             if (node != null)
             {
                 _store.SetValue(node.TreeIter,1,isChecked);
             }
         }
-        internal void SetSelected(TreeNode node, bool isSelected)
+        internal void NativeNodeSelected(TreeNode node, bool isSelected)
         {
             if (node != null)
             {
                 this.SelectedNode = node;
+            }
+        }
+        internal void NativeNodeText(TreeNode node, string text)
+        {
+            if (node != null)
+            {
+                _store.SetValue(node.TreeIter, 0, text);
+            }
+        }
+        internal void NativeNodeImage(TreeNode node, int index)
+        {
+            if (node != null)
+            {
+                _store.SetValue(node.TreeIter, 2, index);
+            }
+        }
+        internal void NativeNodeImage(TreeNode node, string key)
+        {
+            if (node != null)
+            {
+                _store.SetValue(node.TreeIter, 3, key);
             }
         }
         public TreeNodeCollection Nodes

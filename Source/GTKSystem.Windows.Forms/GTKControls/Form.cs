@@ -8,7 +8,6 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
-using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
@@ -68,35 +67,40 @@ namespace System.Windows.Forms
             }
             return closing.Cancel == false;
         }
+        private bool Is_Control_Shown = false;
         private void Control_Shown(object sender, EventArgs e)
         {
-            if (self.Titlebar is Gtk.HeaderBar titlebar)
+            if (Is_Control_Shown == false)
             {
-                titlebar.DecorationLayout = "menu:close";
-                if (formBorderStyle == FormBorderStyle.FixedToolWindow || formBorderStyle == FormBorderStyle.SizableToolWindow)
+                Is_Control_Shown = true;
+                if (self.Titlebar is Gtk.HeaderBar titlebar)
                 {
-                }
-                else
-                {
-                    if (MaximizeBox == true)
+                    titlebar.DecorationLayout = "menu:close";
+                    if (formBorderStyle == FormBorderStyle.FixedToolWindow || formBorderStyle == FormBorderStyle.SizableToolWindow)
                     {
-                        Gtk.Button maximize = new Gtk.Button("window-maximize-symbolic", IconSize.SmallToolbar) { Name = "maximize", Visible = true, Relief = ReliefStyle.None, Valign = Align.Center, Halign = Align.Center };
-                        maximize.StyleContext.AddClass("maximize");
-                        maximize.StyleContext.AddClass("titlebutton");
-                        maximize.Clicked += Maximize_Clicked;
-                        titlebar.PackEnd(maximize);
                     }
-                    if (MinimizeBox == true)
+                    else
                     {
-                        Gtk.Button minimize = new Gtk.Button("window-minimize-symbolic", IconSize.SmallToolbar) { Name = "minimize", Visible = true, Relief = ReliefStyle.None, Valign = Align.Center, Halign = Align.Center };
-                        minimize.StyleContext.AddClass("minimize");
-                        minimize.StyleContext.AddClass("titlebutton");
-                        minimize.Clicked += Minimize_Clicked;
-                        titlebar.PackEnd(minimize);
+                        if (MaximizeBox == true)
+                        {
+                            Gtk.Button maximize = new Gtk.Button("window-maximize-symbolic", IconSize.SmallToolbar) { Name = "maximize", Visible = true, Relief = ReliefStyle.None, Valign = Align.Center, Halign = Align.Center };
+                            maximize.StyleContext.AddClass("maximize");
+                            maximize.StyleContext.AddClass("titlebutton");
+                            maximize.Clicked += Maximize_Clicked;
+                            titlebar.PackEnd(maximize);
+                        }
+                        if (MinimizeBox == true)
+                        {
+                            Gtk.Button minimize = new Gtk.Button("window-minimize-symbolic", IconSize.SmallToolbar) { Name = "minimize", Visible = true, Relief = ReliefStyle.None, Valign = Align.Center, Halign = Align.Center };
+                            minimize.StyleContext.AddClass("minimize");
+                            minimize.StyleContext.AddClass("titlebutton");
+                            minimize.Clicked += Minimize_Clicked;
+                            titlebar.PackEnd(minimize);
+                        }
                     }
                 }
+                OnLoadHandler();
             }
-            OnLoadHandler();
             OnShownHandler();
         }
 
@@ -202,35 +206,38 @@ namespace System.Windows.Forms
                 {
                     self.Iconify();
                 }
-                try
+                if (self.IsMapped == false)
                 {
-                    if (this.ShowIcon)
+                    try
                     {
-                        if (this.Icon != null)
+                        if (this.ShowIcon)
                         {
-                            if (this.Icon.Pixbuf != null)
-                                self.Icon = this.Icon.Pixbuf;
-                            else if (this.Icon.PixbufData != null)
-                                self.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
-                            else if (this.Icon.FileName != null && System.IO.File.Exists(this.Icon.FileName))
-                                self.SetIconFromFile(this.Icon.FileName);
-                            else if (this.Icon.FileName != null && System.IO.File.Exists("Resources\\" + this.Icon.FileName))
-                                self.SetIconFromFile("Resources\\" + this.Icon.FileName);
+                            if (this.Icon != null)
+                            {
+                                if (this.Icon.Pixbuf != null)
+                                    self.Icon = this.Icon.Pixbuf;
+                                else if (this.Icon.PixbufData != null)
+                                    self.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
+                                else if (this.Icon.FileName != null && System.IO.File.Exists(this.Icon.FileName))
+                                    self.SetIconFromFile(this.Icon.FileName);
+                                else if (this.Icon.FileName != null && System.IO.File.Exists("Resources\\" + this.Icon.FileName))
+                                    self.SetIconFromFile("Resources\\" + this.Icon.FileName);
+                            }
+                            Gtk.HeaderBar titlebar = (Gtk.HeaderBar)self.Titlebar;
+                            Gtk.Image flag = new Gtk.Image(self.Icon);
+                            flag.Visible = true;
+                            titlebar.PackStart(flag);
                         }
-                        Gtk.HeaderBar titlebar = (Gtk.HeaderBar)self.Titlebar;
-                        Gtk.Image flag = new Gtk.Image(self.Icon);
-                        flag.Visible = true;
-                        titlebar.PackStart(flag);
+                        else
+                        {
+                            self.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.view-more.png");
+                        }
+
                     }
-                    else
+                    catch
                     {
-                        self.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.view-more.png");
+
                     }
-
-                }
-                catch
-                {
-
                 }
             }
             self.ShowAll();
