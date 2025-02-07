@@ -1,4 +1,6 @@
 ﻿using Gtk;
+using System;
+using System.Linq;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
@@ -8,7 +10,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public TabControlBase() : base()
         {
             this.Scrollable = true;
-            this.EnablePopup = true;
+            this.EnablePopup = false;
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("TabControl");
             base.Halign = Gtk.Align.Start;

@@ -179,7 +179,7 @@ namespace System.Windows.Forms
 
 ";
 
-                string appdirectory = StartupPath;
+                string appdirectory = "./";// StartupPath; //由于linux系统常用到环境变量路径，会导至Directory/Environment获取到的当前目录不正确
                 if (!File.Exists($"{appdirectory}/GTKSystem.Windows.Forms.dll"))
                 {
                     appdirectory = Path.GetDirectoryName(ExecutablePath);
