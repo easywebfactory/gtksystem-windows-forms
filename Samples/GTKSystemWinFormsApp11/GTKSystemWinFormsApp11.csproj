@@ -19,8 +19,4 @@
     <Using Include="System.Windows.Forms" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="obj\Debug\net8.0\" />
-  </ItemGroup>
-
 </Project>

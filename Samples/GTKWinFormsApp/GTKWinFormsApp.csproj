@@ -42,10 +42,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="obj\Debug\net8.0\" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj" />
 	</ItemGroup>
 
