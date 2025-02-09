@@ -11,20 +11,33 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 
 ### 软件架构
 
-使用GTK3.24.24.95作为表单UI重写C#的System.Windows.Forms组件，在应用时，兼容原生C#程序组件。
+使用DotNet Csharp为开发语言，使用GTK3.24.24.95作为表单UI，重写C#的System.Windows.Forms组件，在应用时，兼容原生C#程序组件。
 
 ### 安装教程
-1.  项目工程框架选择“window应用程序”改配置UseWindowsForms为false或“控制台应用程序”，框架.netcore3.1或.net6及以上版本
-2.  NulGet安装GtkSharp(3.24.24.95)、GTKSystem.Windows.Forms、GTKSystem.Windows.FormsDesigner
-3.  检查form表单是否有使用图像资源，如使用需新建System.Resources.ResourceManager和System.ComponentModel.ComponentResourceManager，具体请看下面内容。
-4.  按默认配置编译发布测试运行
-5.  linux和macos上执行命令：dotnet demo_app.dll
-6.  编译工程，执行本项目的开发插件菜单“修复窗体设计器”，或者手动在obj目录下创建.designer.runtimeconfig.json，请看下面第5点。
+默认的情况下，visual studio从Nuget引用GtkSharp编译时，就会自动下载Gtk.zip运行时安装包，并自动解压安装。本开源项目下载包也包含Gtk.zip包，可手动安装。以下是三种环境安装方法：
 
-注意：安装GtkSharp后，编译你的工程项目时，会自动下载$(LOCALAPPDATA)\Gtk\3.24.24\gtk.zip配置Gtk环境，目前国内网络限制，可能会出现无法下载的错误。
-如果无法自动下载，本项目提供下载 [/Dependencies/gtk-3.24.24.zip](/Dependencies/gtk-3.24.24.zip)。
-也可以下载[https://github.com/GtkSharp/Dependencies](https://github.com/GtkSharp/Dependencies)，把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24\gtk.zip目录即可。
-  ps: $(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData\Local\Gtk\3.24.24
+1. 安装GtkSharp后，编译你的工程项目，自动安装（此库不是最新的，有些功能可能有Bug）。
+
+安装GtkSharp后，编译你的工程项目时，会自动下载gtk.zip解压到目录$(LOCALAPPDATA)\Gtk\3.24.24配置Gtk环境，目前国内网络限制，可能会出现无法下载的错误。
+如果无法自动下载，本项目提供下载 https://gitee.com/easywebfactory/gtksystem-windows-forms/blob/master/Dependencies/gtk-3.24.24.zip。
+也可以下载https://github.com/GtkSharp/Dependencies，把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24目录即可。
+ps: $(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData\Local\Gtk\3.24.24
+
+2. 下载exe安装包安装（建议使用此方法下载安装，获取最新库）
+
+上面方法在国内可能会有网络障碍，并且是比较旧的运行时库，可能有Bug，建议用以下方法获取最新版本安装：下载https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer，安装后配置电脑变量环境：
+
+你可以打开电脑属性配置，或者执行以下.bat命令：
+@set GTK3R_PREFIX=C:\Program Files\GTK3-Runtime Win64
+@echo set PATH=%GTK3R_PREFIX%;%%PATH%%
+@set PATH=%GTK3R_PREFIX%;%PATH%
+
+3. 使用MSYS软件平台安装，具体操作请网上查询（可以获取最新库）
+
+windows安装DotNet环境：
+```
+  从微软官网下载安装包https://dotnet.microsoft.com/zh-cn/download
+```
 
 **桌面版linux操作系统通常已经预装GTK环境，不需要再安装GTK，只需安装DotNet SDK即可运行本框架。**
 
@@ -50,10 +63,22 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 *查找gtk的安装包目录：
     ldconfig -p | grep gtk
 ```
-linux安装dotnet环境：
+linux安装DotNet环境：
 ```
   安装方法可以查看微软官网教程：https://learn.microsoft.com/zh-cn/dotnet/core/install/linux-scripted-manual
 ```
+
+### 开发教程
+1.  项目工程框架选择“window应用程序”改配置UseWindowsForms为false或“控制台应用程序”，.net6及以上版本
+2.  NulGet安装GtkSharp(3.24.24.95)、GTKSystem.Windows.Forms、GTKSystem.Windows.FormsDesigner
+3.  检查form表单是否有使用图像资源，如使用需新建System.Resources.ResourceManager和System.ComponentModel.ComponentResourceManager，具体请看下面内容。
+4.  编译工程，执行本项目的开发插件菜单“修复窗体设计器”，或者手动在obj目录下创建.designer.runtimeconfig.json，请看下面第5点。
+
+### 如何运行软件
+1. windows下：直接编译发布运行，Debug目录的demo_app.exe文件或demo_app.dll文件都可以直接运行。
+2. linux和macos上：执行命令运行dotnet demo_app.dll。
+3. 使用本框架的工程项目也可以在linux系统上编译发布，可以生成linux系统专用文件（无后缀名的文件），此文件可以直接双击启动应用
+
 ### VisualStudio插件安装
 
 工具一、从NuGet上安装GTKSystem.Windows.FormsDesigner类库，此类库可以在编译工程时修正窗体设计器。
