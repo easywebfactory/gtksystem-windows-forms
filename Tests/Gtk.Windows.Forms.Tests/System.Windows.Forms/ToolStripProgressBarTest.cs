@@ -36,7 +36,7 @@ public class ToolStripProgressBarTests : TestHelper
     [Test]
     public void Constructor ()
     {
-        ToolStripProgressBar tsi = new ToolStripProgressBar ();
+        var tsi = new ToolStripProgressBar ();
 
         Assert.AreEqual (100, tsi.MarqueeAnimationSpeed, "A1");
         Assert.AreEqual (100, tsi.Maximum, "A2");
@@ -54,8 +54,8 @@ public class ToolStripProgressBarTests : TestHelper
     [Test]
     public void PropertyMarqueeAnimationSpeed ()
     {
-        ToolStripProgressBar tsi = new ToolStripProgressBar ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var tsi = new ToolStripProgressBar ();
+        var ew = new EventWatcher (tsi);
 
         tsi.MarqueeAnimationSpeed = 200;
         Assert.AreEqual (200, tsi.MarqueeAnimationSpeed, "B1");
@@ -69,8 +69,8 @@ public class ToolStripProgressBarTests : TestHelper
     [Test]
     public void PropertyMaximum ()
     {
-        ToolStripProgressBar tsi = new ToolStripProgressBar ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var tsi = new ToolStripProgressBar ();
+        var ew = new EventWatcher (tsi);
 
         tsi.Maximum = 200;
         Assert.AreEqual (200, tsi.Maximum, "B1");
@@ -84,8 +84,8 @@ public class ToolStripProgressBarTests : TestHelper
     [Test]
     public void PropertyMinimum ()
     {
-        ToolStripProgressBar tsi = new ToolStripProgressBar ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var tsi = new ToolStripProgressBar ();
+        var ew = new EventWatcher (tsi);
 
         tsi.Minimum = 200;
         Assert.AreEqual (200, tsi.Minimum, "B1");
@@ -99,8 +99,8 @@ public class ToolStripProgressBarTests : TestHelper
     [Test]
     public void PropertyStep ()
     {
-        ToolStripProgressBar tsi = new ToolStripProgressBar ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var tsi = new ToolStripProgressBar ();
+        var ew = new EventWatcher (tsi);
 
         tsi.Step = 200;
         Assert.AreEqual (200, tsi.Step, "B1");
@@ -114,8 +114,8 @@ public class ToolStripProgressBarTests : TestHelper
     [Test]
     public void PropertyStyle ()
     {
-        ToolStripProgressBar tsi = new ToolStripProgressBar ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var tsi = new ToolStripProgressBar ();
+        var ew = new EventWatcher (tsi);
 
         tsi.Style = ProgressBarStyle.Continuous;
         Assert.AreEqual (ProgressBarStyle.Continuous, tsi.Style, "B1");
@@ -129,8 +129,8 @@ public class ToolStripProgressBarTests : TestHelper
     [Test]
     public void PropertyText ()
     {
-        ToolStripProgressBar tsi = new ToolStripProgressBar ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var tsi = new ToolStripProgressBar ();
+        var ew = new EventWatcher (tsi);
 
         tsi.Text = "Hi";
         Assert.AreEqual ("Hi", tsi.Text, "B1");
@@ -145,8 +145,8 @@ public class ToolStripProgressBarTests : TestHelper
     [Test]
     public void PropertyValue ()
     {
-        ToolStripProgressBar tsi = new ToolStripProgressBar ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var tsi = new ToolStripProgressBar ();
+        var ew = new EventWatcher (tsi);
 
         tsi.Value = 30;
         Assert.AreEqual (30, tsi.Value, "B1");
@@ -162,7 +162,7 @@ public class ToolStripProgressBarTests : TestHelper
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            ToolStripProgressBar tsi = new ToolStripProgressBar();
+            var tsi = new ToolStripProgressBar();
 
             tsi.Value = 200;
         });
@@ -171,7 +171,7 @@ public class ToolStripProgressBarTests : TestHelper
     [Test]
     public void BehaviorIncrement ()
     {
-        ToolStripProgressBar tsi = new ToolStripProgressBar ();
+        var tsi = new ToolStripProgressBar ();
 			
         tsi.Increment (14);
         Assert.AreEqual (14, tsi.Value, "B1");
@@ -186,7 +186,7 @@ public class ToolStripProgressBarTests : TestHelper
     [Test]
     public void BehaviorPerformStep ()
     {
-        ToolStripProgressBar tsi = new ToolStripProgressBar ();
+        var tsi = new ToolStripProgressBar ();
 
         tsi.PerformStep ();
         Assert.AreEqual (10, tsi.Value, "B1");

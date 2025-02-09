@@ -34,7 +34,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void DefaultDataSource ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
         Assert.IsTrue (source.List is BindingList<object>, "1");
         Assert.AreEqual (0, source.List.Count, "2");
     }
@@ -42,7 +42,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void DataSource_InitialAddChangingType ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
 
         source.Add ((int)32);
         Assert.IsTrue (source.List is BindingList<int>, "1");
@@ -75,7 +75,7 @@ public class BindingSourceTest : TestHelper
     }
 
     class GenericEnumerable : IEnumerable<int> {
-        int length;
+        readonly int length;
 
         public GenericEnumerable (int length) {
             this.length = length;
@@ -109,7 +109,7 @@ public class BindingSourceTest : TestHelper
         }
 
         public IEnumerator<int> GetEnumerator () {
-            MyEnumerator e = new MyEnumerator ();
+            var e = new MyEnumerator ();
             e.count = length;
 
             return e;
@@ -121,7 +121,7 @@ public class BindingSourceTest : TestHelper
     }
 
     class WorkingEnumerable : IEnumerable {
-        int length;
+        readonly int length;
 
         public WorkingEnumerable (int length) {
             this.length = length;
@@ -148,7 +148,7 @@ public class BindingSourceTest : TestHelper
         }
 
         public IEnumerator GetEnumerator () {
-            MyEnumerator e = new MyEnumerator ();
+            var e = new MyEnumerator ();
             e.count = length;
 
             return e;
@@ -158,7 +158,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void DataSource_ListRelationship ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
 
         // null
         source.DataSource = null;
@@ -223,9 +223,9 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void Filter ()
     {
-        BindingSource source = new BindingSource ();
-        DataTable table = new DataTable ();
-        string filter = "Name = 'Mono'";
+        var source = new BindingSource ();
+        var table = new DataTable ();
+        var filter = "Name = 'Mono'";
         IBindingListView view;
 
         table.Columns.Add ("Id", typeof (int));
@@ -269,10 +269,10 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void Filter_NonBindingListView ()
     {
-        BindingSource source = new BindingSource ();
-        List<int> list = new List<int> ();
+        var source = new BindingSource ();
+        var list = new List<int> ();
         list.AddRange (new int [] { 0, 1, 2 });
-        string filter = "NonExistentColumn = 'A'"; ;
+        var filter = "NonExistentColumn = 'A'"; ;
 
         source.DataSource = list;
         Assert.AreEqual (null, source.Filter, "A1");
@@ -289,7 +289,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void RemoveFilter ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
         source.Filter = "Name = 'Something'";
         source.RemoveFilter ();
 
@@ -299,12 +299,12 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void RemoveSort ()
     {
-        BindingSource source = new BindingSource ();
-        DataTable table = CreateTable ();
+        var source = new BindingSource ();
+        var table = CreateTable ();
         source.DataSource = table;
 
         source.Sort = "Name";
-        IBindingListView view = (IBindingListView)source.List;
+        var view = (IBindingListView)source.List;
         Assert.AreEqual ("Name", source.Sort, "A1");
         Assert.AreEqual ("Name", view.SortProperty.Name, "A2");
 
@@ -323,13 +323,13 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void ResetItem ()
     {
-        BindingSource source = new BindingSource ();
-        bool delegate_reached = false;
-        int old_index = 5;
-        int new_index = 5;
-        ListChangedType type = ListChangedType.Reset;
+        var source = new BindingSource ();
+        var delegate_reached = false;
+        var old_index = 5;
+        var new_index = 5;
+        var type = ListChangedType.Reset;
 
-        source.ListChanged += delegate (object sender, ListChangedEventArgs e) {
+        source.ListChanged += delegate (object _, ListChangedEventArgs e) {
             delegate_reached = true;
             type = e.ListChangedType;
             old_index = e.OldIndex;
@@ -346,7 +346,7 @@ public class BindingSourceTest : TestHelper
 
     DataTable CreateTable ()
     {
-        DataTable table = new DataTable ();
+        var table = new DataTable ();
 
         table.Columns.Add ("Id", typeof (int));
         table.Columns.Add ("Name", typeof (string));
@@ -361,7 +361,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void Sort_IBindingList ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
         BindingList<string> list = new BindingList<string> ();
 
         source.DataSource = list;
@@ -377,8 +377,8 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void Sort_IBindingListView ()
     {
-        BindingSource source = new BindingSource ();
-        DataTable table = CreateTable ();
+        var source = new BindingSource ();
+        var table = CreateTable ();
 
         // 
         // Simple
@@ -386,7 +386,7 @@ public class BindingSourceTest : TestHelper
         source.DataSource = table;
         source.Sort = "Name";
 
-        DataView view = (DataView)((IListSource)table).GetList ();
+        var view = (DataView)((IListSource)table).GetList ();
         Assert.AreEqual ("Name", source.Sort, "A1");
         Assert.AreEqual (ListSortDirection.Ascending, ((IBindingListView) source).SortDirection, "A2");
         Assert.AreEqual (ListSortDirection.Ascending, ((IBindingListView)view).SortDirection, "A3");
@@ -415,7 +415,7 @@ public class BindingSourceTest : TestHelper
         //
         source.Sort = "Name DESC, Id asc";
 
-        ListSortDescriptionCollection desc_coll = ((IBindingListView)view).SortDescriptions;
+        var desc_coll = ((IBindingListView)view).SortDescriptions;
         Assert.AreEqual ("Name DESC, Id asc", source.Sort, "C1");
         Assert.AreEqual (2, desc_coll.Count, "C2");
         Assert.AreEqual (ListSortDirection.Descending, desc_coll [0].SortDirection, "C3");
@@ -427,8 +427,8 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void Sort_NonBindingList ()
     {
-        BindingSource source = new BindingSource ();
-        List<int> list = new List<int> (new int [] { 0, 1, 2, 3 });
+        var source = new BindingSource ();
+        var list = new List<int> (new int [] { 0, 1, 2, 3 });
 
         source.DataSource = list;
         Assert.AreEqual (null, source.Sort, "A1");
@@ -446,8 +446,8 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void Sort_Exceptions ()
     {
-        BindingSource source = new BindingSource ();
-        DataTable table = CreateTable ();
+        var source = new BindingSource ();
+        var table = CreateTable ();
 
         source.DataSource = table;
 
@@ -476,11 +476,11 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void Movement ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
         source.DataSource = new WorkingEnumerable (5);
 
-        int raised = 0;
-        source.PositionChanged += delegate (object sender, EventArgs e) { raised ++; };
+        var raised = 0;
+        source.PositionChanged += delegate (object _, EventArgs _) { raised ++; };
 
         Assert.AreEqual (5, source.Count, "0");
         source.Position = 3;
@@ -504,18 +504,18 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void Position ()
     {
-        BindingSource source = new BindingSource ();
-        CurrencyManager currency_manager = source.CurrencyManager;
+        var source = new BindingSource ();
+        var currency_manager = source.CurrencyManager;
 
         Assert.AreEqual (-1, source.Position, "A1");
         Assert.AreEqual (-1, currency_manager.Position, "A2");
 
         source.DataSource = new WorkingEnumerable (5);
 
-        int raised = 0;
-        int currency_raised = 0;
-        source.PositionChanged += delegate (object sender, EventArgs e) { raised ++; };
-        currency_manager.PositionChanged += delegate (object sender, EventArgs e) { currency_raised++; };
+        var raised = 0;
+        var currency_raised = 0;
+        source.PositionChanged += delegate (object _, EventArgs _) { raised ++; };
+        currency_manager.PositionChanged += delegate (object _, EventArgs _) { currency_raised++; };
 
 
         Assert.AreEqual (0, source.Position, "B1");
@@ -556,16 +556,16 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void ResetCurrentItem ()
     {
-        BindingSource source = new BindingSource ();
-        bool delegate_reached = false;
-        int old_index = 5;
-        int new_index = 5;
-        ListChangedType type = ListChangedType.Reset;
+        var source = new BindingSource ();
+        var delegate_reached = false;
+        var old_index = 5;
+        var new_index = 5;
+        var type = ListChangedType.Reset;
 
         source.DataSource = new WorkingEnumerable (5);
         source.Position = 2;
 
-        source.ListChanged += delegate (object sender, ListChangedEventArgs e) {
+        source.ListChanged += delegate (object _, ListChangedEventArgs e) {
             delegate_reached = true;
             type = e.ListChangedType;
             old_index = e.OldIndex;
@@ -583,7 +583,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void Remove ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
 
         List<string> list = new List<string> ();
         list.Add ("A");
@@ -616,7 +616,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void RemoveCurrent ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
         List<string> list = new List<string> ();
         list.Add ("A");
         list.Add ("B");
@@ -654,14 +654,14 @@ public class BindingSourceTest : TestHelper
     public void ResetBindings ()
     {
         BindingSource source;
-        int event_count = 0;
+        var event_count = 0;
 
-        ListChangedType[] types = new ListChangedType[2];
-        int[] old_index = new int[2];
-        int[] new_index = new int[2];
+        var types = new ListChangedType[2];
+        var old_index = new int[2];
+        var new_index = new int[2];
 
         source = new BindingSource ();
-        source.ListChanged += delegate (object sender, ListChangedEventArgs e) {
+        source.ListChanged += delegate (object _, ListChangedEventArgs e) {
             types[event_count] = e.ListChangedType;
             old_index[event_count] = e.OldIndex;
             new_index[event_count] = e.NewIndex;
@@ -691,7 +691,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void AllowEdit ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
 
         Assert.IsTrue (source.AllowEdit, "1");
 
@@ -704,7 +704,7 @@ public class BindingSourceTest : TestHelper
         source.DataSource = new WorkingEnumerable (5);
         Assert.IsTrue (source.AllowEdit, "4");
 
-        ArrayList al = new ArrayList ();
+        var al = new ArrayList ();
         al.Add (5);
 
         source.DataSource = al;
@@ -717,7 +717,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void AllowRemove ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
 
         Assert.IsTrue (source.AllowRemove, "1");
 
@@ -737,8 +737,8 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void DataMember_ListRelationship ()
     {
-        ListView lv = new ListView ();
-        BindingSource source = new BindingSource ();
+        var lv = new ListView ();
+        var source = new BindingSource ();
 
         // Empty IEnumerable, that also implements IList
         source.DataSource = lv.Items;
@@ -751,7 +751,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void DataMemberNull ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
 
         Assert.AreEqual ("", source.DataMember, "1");
         source.DataMember = null;
@@ -761,12 +761,12 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void DataSourceChanged ()
     {
-        ArrayList list = new ArrayList ();
-        BindingSource source = new BindingSource ();
+        var list = new ArrayList ();
+        var source = new BindingSource ();
 
-        bool event_raised = false;
+        var event_raised = false;
 
-        source.DataSourceChanged += delegate (object sender, EventArgs e) {
+        source.DataSourceChanged += delegate (object _, EventArgs _) {
             event_raised = true;
         };
 
@@ -782,8 +782,8 @@ public class BindingSourceTest : TestHelper
     {
         Assert.Throws<ArgumentException>(() =>
         {
-            ArrayList list = new ArrayList();
-            BindingSource source = new BindingSource();
+            var list = new ArrayList();
+            var source = new BindingSource();
             source.DataSource = list;
             source.DataMember = "hi";
         });
@@ -792,8 +792,8 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void DataMemberBeforeDataSource ()
     {
-        ArrayList list = new ArrayList ();
-        BindingSource source = new BindingSource ();
+        var list = new ArrayList ();
+        var source = new BindingSource ();
         source.DataMember = "hi";
         Assert.AreEqual ("hi", source.DataMember, "1");
         source.DataSource = list;
@@ -803,7 +803,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void DataSourceAssignToDefaultType()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
         source.DataMember = "hi";
         Assert.AreEqual ("hi", source.DataMember, "1");
         Assert.IsTrue (source.List is BindingList<object>, "2");
@@ -814,7 +814,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void DataSourceSetType ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
         source.DataSource = typeof (DateTime);
 
         Assert.IsTrue (source.List is BindingList<DateTime>, "A1");
@@ -825,14 +825,14 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void DataMemberChanged ()
     {
-        ArrayList list = new ArrayList ();
-        BindingSource source = new BindingSource ();
+        var list = new ArrayList ();
+        var source = new BindingSource ();
 
-        bool event_raised = false;
+        var event_raised = false;
 
         list.Add ("hi"); // make the type System.String
 
-        source.DataMemberChanged += delegate (object sender, EventArgs e) {
+        source.DataMemberChanged += delegate (object _, EventArgs _) {
             event_raised = true;
         };
 
@@ -847,7 +847,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void DataMemberNullDataSource ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
 
         source.Add ("hellou");
         source.DataMember = "SomeProperty"; // Should reset the list, even if data source is null
@@ -876,7 +876,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void DataSourceMember_set ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
 
         source.DataSource = new List<string>();
         source.DataMember = "Length";
@@ -894,15 +894,15 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void DataSourceMemberChangedEvents ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
 
-        bool data_source_changed = false;
-        bool data_member_changed = false;
+        var data_source_changed = false;
+        var data_member_changed = false;
 
-        source.DataSourceChanged += delegate (object sender, EventArgs e) {
+        source.DataSourceChanged += delegate (object _, EventArgs _) {
             data_source_changed = true;
         };
-        source.DataMemberChanged += delegate (object sender, EventArgs e) {
+        source.DataMemberChanged += delegate (object _, EventArgs _) {
             data_member_changed = true;
         };
 
@@ -922,8 +922,8 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void IsBindingSuspended ()
     {
-        BindingSource source = new BindingSource ();
-        CurrencyManager currency_manager = source.CurrencyManager;
+        var source = new BindingSource ();
+        var currency_manager = source.CurrencyManager;
         source.DataSource = new object [1];
 
         source.SuspendBinding ();
@@ -947,7 +947,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void Add ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
 
         source.DataSource = new List<string> ();
         source.Add ("A");
@@ -980,7 +980,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void Add_NullDataSource ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
 
         source.Add ("A");
         Assert.AreEqual (1, source.List.Count, "1");
@@ -996,7 +996,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void AddNew ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
         source.AddNew ();
         Assert.AreEqual (1, source.Count, "1");
     }
@@ -1005,7 +1005,7 @@ public class BindingSourceTest : TestHelper
     public void AddNew_NonBindingList ()
     {
         IList list = new List<object> ();
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
         source.DataSource = list;
         Assert.IsTrue (source.List is List<object>, "1");
         source.AddNew ();
@@ -1015,13 +1015,13 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void ApplySort ()
     {
-        BindingSource source = new BindingSource ();
-        DataTable table = CreateTable ();
+        var source = new BindingSource ();
+        var table = CreateTable ();
 
         source.DataSource = table;
-        IBindingListView source_view = ((IBindingListView)source);
-        IBindingListView view = ((IBindingListView)source.List);
-        PropertyDescriptor property = source.GetItemProperties (null) ["Name"];
+        var source_view = ((IBindingListView)source);
+        var view = ((IBindingListView)source.List);
+        var property = source.GetItemProperties (null) ["Name"];
 
         source_view.ApplySort (property, ListSortDirection.Ascending);
 
@@ -1041,7 +1041,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void AllowNew_getter ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
 
         // true because the default datasource is BindingList<object>
         Assert.IsTrue (source.AllowNew, "1");
@@ -1060,7 +1060,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void AllowNew ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
         source.AllowNew = false;
 
         Assert.IsFalse (source.AllowNew, "1");
@@ -1079,7 +1079,7 @@ public class BindingSourceTest : TestHelper
     {
         Assert.Throws<InvalidOperationException>(() =>
         {
-            BindingSource source = new BindingSource();
+            var source = new BindingSource();
             source.DataSource = new object[10];
 
             source.AllowNew = true;
@@ -1110,10 +1110,10 @@ public class BindingSourceTest : TestHelper
     {
         Assert.Throws<InvalidOperationException>(() =>
         {
-            BindingList<int> l = new BindingList<int>();
+            var l = new BindingList<int>();
             l.AllowNew = false;
 
-            BindingSource source = new BindingSource();
+            var source = new BindingSource();
             source.DataSource = l;
             source.AddNew();
             Assert.AreEqual(1, source.Count, "1");
@@ -1126,9 +1126,9 @@ public class BindingSourceTest : TestHelper
     {
         Assert.Throws<InvalidOperationException>(() =>
         {
-            BindingSource source = new BindingSource();
+            var source = new BindingSource();
             source.DataSource = new int[5];
-            object o = source.AddNew();
+            var o = source.AddNew();
             Assert.IsTrue(o is int, "1");
             Assert.AreEqual(6, source.Count, "2");
         });
@@ -1167,11 +1167,11 @@ public class BindingSourceTest : TestHelper
     {
         Assert.Throws<InvalidOperationException>(() =>
         {
-            BindingSource source = new BindingSource();
+            var source = new BindingSource();
             source.DataSource = new ReadOnlyList();
-            object o = source.AddNew();
+            var o = source.AddNew();
 
-            TestHelper.RemoveWarning(o);
+            RemoveWarning(o);
         });
     }
 
@@ -1181,11 +1181,11 @@ public class BindingSourceTest : TestHelper
     {
         Assert.Throws<InvalidOperationException>(() =>
         {
-            BindingSource source = new BindingSource();
+            var source = new BindingSource();
             source.DataSource = new List<string>();
-            object o = source.AddNew();
+            var o = source.AddNew();
 
-            TestHelper.RemoveWarning(o);
+            RemoveWarning(o);
         });
     }
 
@@ -1193,14 +1193,14 @@ public class BindingSourceTest : TestHelper
     public void AddingNew ()
     {
         // Need to use a class missing a default .ctor
-        BindingSource source = new BindingSource ();
-        List<DateTime> list = new List<DateTime> ();
+        var source = new BindingSource ();
+        var list = new List<DateTime> ();
         source.DataSource = list;
 
         Assert.AreEqual (false, source.AllowNew, "A1");
 
         source.AllowNew = true;
-        source.AddingNew += delegate (object o, AddingNewEventArgs args)
+        source.AddingNew += delegate (object _, AddingNewEventArgs args)
         {
             args.NewObject = DateTime.Now;
         };
@@ -1212,8 +1212,8 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void AddingNew_Exceptions ()
     {
-        BindingSource source = new BindingSource ();
-        List<DateTime> list = new List<DateTime> ();
+        var source = new BindingSource ();
+        var list = new List<DateTime> ();
         source.DataSource = list;
 
         Assert.AreEqual (false, source.AllowNew, "A1");
@@ -1229,7 +1229,7 @@ public class BindingSourceTest : TestHelper
 
         // Adding new handled, but AddingNew is false
         source.AllowNew = false;
-        source.AddingNew += delegate (object o, AddingNewEventArgs args)
+        source.AddingNew += delegate (object _, AddingNewEventArgs args)
         {
             args.NewObject = DateTime.Now;
         };
@@ -1244,7 +1244,7 @@ public class BindingSourceTest : TestHelper
         source = new BindingSource ();
         source.DataSource = new List<string> ();
         source.AllowNew = true;
-        source.AddingNew += delegate (object o, AddingNewEventArgs args)
+        source.AddingNew += delegate (object _, AddingNewEventArgs args)
         {
             args.NewObject = 3.1416;
         };
@@ -1259,7 +1259,7 @@ public class BindingSourceTest : TestHelper
         source = new BindingSource ();
         source.DataSource = new List<string> ();
         source.AllowNew = true;
-        source.AddingNew += delegate (object o, AddingNewEventArgs args)
+        source.AddingNew += delegate (object _, AddingNewEventArgs args)
         {
             args.NewObject = null;
         };
@@ -1276,7 +1276,7 @@ public class BindingSourceTest : TestHelper
     {
         // Empty collection as datasource means CurrencyManager will remain
         // as suspended
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
 
         source.DataSource = new List<string>();
 
@@ -1292,9 +1292,9 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void ICancelAddNew ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
         source.DataSource = new List<string> ();
-        source.AddingNew += delegate (object o, AddingNewEventArgs args) { args.NewObject = "A"; };
+        source.AddingNew += delegate (object _, AddingNewEventArgs args) { args.NewObject = "A"; };
         source.AllowNew = true;
 
         // CancelNew
@@ -1375,7 +1375,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void Clear ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
         List<string> list = new List<string> ();
         list.Add ("A");
         list.Add ("B");
@@ -1400,7 +1400,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void Clear_NullDataSource ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
 
         source.Add ("A");
         Assert.AreEqual (1, source.List.Count, "1");
@@ -1420,7 +1420,7 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void CurrencyManager ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
         CurrencyManager curr_manager;
 
         // 
@@ -1465,13 +1465,13 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void GetRelatedCurrencyManagerList ()
     {
-        ListView lv = new ListView ();
+        var lv = new ListView ();
         lv.Columns.Add ("A");
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
         source.DataSource = lv;
 
-        CurrencyManager cm = source.GetRelatedCurrencyManager ("Columns");
-        BindingSource related_source = (BindingSource)cm.List;
+        var cm = source.GetRelatedCurrencyManager ("Columns");
+        var related_source = (BindingSource)cm.List;
         Assert.AreEqual (1, cm.Count, "A1");
         Assert.AreEqual (1, related_source.Count, "A2");
         Assert.AreEqual ("Columns", related_source.DataMember, "A3");
@@ -1491,12 +1491,12 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void GetRelatedCurrencyManagerObject ()
     {
-        BindingSource source = new BindingSource ();
-        ListViewItem item = new ListViewItem ();
+        var source = new BindingSource ();
+        var item = new ListViewItem ();
 
         source.DataSource = item;
-        CurrencyManager font_cm = source.GetRelatedCurrencyManager ("Font");
-        CurrencyManager name_cm = source.GetRelatedCurrencyManager ("Font.Name");
+        var font_cm = source.GetRelatedCurrencyManager ("Font");
+        var name_cm = source.GetRelatedCurrencyManager ("Font.Name");
         Assert.IsNull (name_cm, "A1");
     }
 
@@ -1534,8 +1534,8 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void SupportsFilter ()
     {
-        BindingListViewPoker c = new BindingListViewPoker ();
-        BindingSource source = new BindingSource ();
+        var c = new BindingListViewPoker ();
+        var source = new BindingSource ();
 
         // because the default list is a BindingList<object>
         Assert.IsFalse (source.SupportsFiltering, "1");
@@ -1554,8 +1554,8 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void SupportsAdvancedSorting ()
     {
-        BindingListViewPoker c = new BindingListViewPoker ();
-        BindingSource source = new BindingSource ();
+        var c = new BindingListViewPoker ();
+        var source = new BindingSource ();
 
         // because the default list is a BindingList<object>
         Assert.IsFalse (source.SupportsAdvancedSorting, "1");
@@ -1625,8 +1625,8 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void SupportsSearching ()
     {
-        IBindingListPoker c = new IBindingListPoker ();
-        BindingSource source = new BindingSource ();
+        var c = new IBindingListPoker ();
+        var source = new BindingSource ();
 
         // because the default list is a BindingList<object>
         Assert.IsFalse (source.SupportsSearching, "1");
@@ -1645,8 +1645,8 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void SupportsSorting ()
     {
-        IBindingListPoker c = new IBindingListPoker ();
-        BindingSource source = new BindingSource ();
+        var c = new IBindingListPoker ();
+        var source = new BindingSource ();
 
         // because the default list is a BindingList<object>
         Assert.IsFalse (source.SupportsSorting, "1");
@@ -1665,8 +1665,8 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void SupportsChangeNotification ()
     {
-        IBindingListPoker c = new IBindingListPoker ();
-        BindingSource source = new BindingSource ();
+        var c = new IBindingListPoker ();
+        var source = new BindingSource ();
 
         // because the default list is a BindingList<object>
         Assert.IsTrue (source.SupportsChangeNotification, "1");
@@ -1685,11 +1685,11 @@ public class BindingSourceTest : TestHelper
     [Test]
     public void ISupportInitializeNotification ()
     {
-        BindingSource source = new BindingSource ();
+        var source = new BindingSource ();
         List<string> list = new List<string> ();
 
-        bool initialized_handled = false;
-        ISupportInitializeNotification inotification = (ISupportInitializeNotification)source;
+        var initialized_handled = false;
+        var inotification = (ISupportInitializeNotification)source;
         inotification.Initialized += delegate { initialized_handled = true; };
         Assert.AreEqual (true, inotification.IsInitialized, "A1");
         Assert.AreEqual (false, initialized_handled, "A2");
@@ -1715,7 +1715,7 @@ public class BindingSourceTest : TestHelper
         // 
         // Case 2: use a data source that implements ISupportsInitializeNotification
         //
-        InitializableObject init_obj = new InitializableObject ();
+        var init_obj = new InitializableObject ();
         init_obj.BeginInit ();
         source.DataSource = null;
 
@@ -1797,12 +1797,12 @@ public class BindingSourceTest : TestHelper
         iblist_source = new BindingSource ();
         ilist_source = new BindingSource ();
 
-        iblist_source.ListChanged += delegate (object o, ListChangedEventArgs e)
+        iblist_source.ListChanged += delegate (object _, ListChangedEventArgs e)
         {
             iblist_raised++;
             iblist_changed_args = e;
         };
-        ilist_source.ListChanged += delegate (object o, ListChangedEventArgs e)
+        ilist_source.ListChanged += delegate (object _, ListChangedEventArgs e)
         {
             ilist_raised++;
             ilist_changed_args = e;
@@ -1868,8 +1868,8 @@ public class BindingSourceTest : TestHelper
         Assert.AreEqual (0, ilist_changed_args.NewIndex, "B6");
 
         // AddNew
-        iblist_source.AddingNew += delegate (object o, AddingNewEventArgs e) { e.NewObject = "Z"; };
-        ilist_source.AddingNew += delegate (object o, AddingNewEventArgs e) { e.NewObject = "Z"; };
+        iblist_source.AddingNew += delegate (object _, AddingNewEventArgs e) { e.NewObject = "Z"; };
+        ilist_source.AddingNew += delegate (object _, AddingNewEventArgs e) { e.NewObject = "Z"; };
 
         iblist_source.AllowNew = true;
         ilist_source.AllowNew = true;
@@ -1994,9 +1994,9 @@ public class BindingSourceTest : TestHelper
     [Test] // bug 664833
     public void TestDataMemberValue ()
     {
-        BindingSource bs = new BindingSource ();
+        var bs = new BindingSource ();
         bs.DataMember = "TestField";
-        DataTable table = new DataTable ();
+        var table = new DataTable ();
         table.Columns.Add ("TestField");
         bs.DataSource = table;
 

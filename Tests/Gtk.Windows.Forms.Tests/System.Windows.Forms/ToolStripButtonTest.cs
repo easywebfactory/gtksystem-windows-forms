@@ -38,15 +38,15 @@ public class ToolStripButtonTests : TestHelper
     [Test]
     public void Constructor ()
     {
-        ToolStripButton tsi = new ToolStripButton ();
+        var tsi = new ToolStripButton ();
 
         Assert.AreEqual (true, tsi.AutoToolTip, "A1");
         Assert.AreEqual (false, tsi.Checked, "A3");
         Assert.AreEqual (false, tsi.CheckOnClick, "A4");
         Assert.AreEqual (CheckState.Unchecked, tsi.CheckState, "A5");
 
-        int count = 0;
-        EventHandler oc = new EventHandler (delegate (object sender, EventArgs e) { count++; });
+        var count = 0;
+        var oc = new EventHandler (delegate (object _, EventArgs _) { count++; });
         Image i = new Bitmap (1,1);
 			
     }
@@ -54,7 +54,7 @@ public class ToolStripButtonTests : TestHelper
     [Test]
     public void ProtectedProperties ()
     {
-        ExposeProtectedProperties epp = new ExposeProtectedProperties ();
+        var epp = new ExposeProtectedProperties ();
 
         Assert.AreEqual (true, epp.DefaultAutoToolTip, "C1");
     }
@@ -62,8 +62,8 @@ public class ToolStripButtonTests : TestHelper
     [Test]
     public void PropertyAutoToolTip ()
     {
-        ToolStripButton tsi = new ToolStripButton ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var tsi = new ToolStripButton ();
+        var ew = new EventWatcher (tsi);
 
         tsi.AutoToolTip = true;
         Assert.AreEqual (true, tsi.AutoToolTip, "B1");
@@ -77,8 +77,8 @@ public class ToolStripButtonTests : TestHelper
     [Test]
     public void PropertyChecked ()
     {
-        ToolStripButton tsi = new ToolStripButton ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var tsi = new ToolStripButton ();
+        var ew = new EventWatcher (tsi);
 
         tsi.Checked = true;
         Assert.AreEqual (true, tsi.Checked, "B1");
@@ -92,8 +92,8 @@ public class ToolStripButtonTests : TestHelper
     [Test]
     public void PropertyCheckOnClick ()
     {
-        ToolStripButton tsi = new ToolStripButton ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var tsi = new ToolStripButton ();
+        var ew = new EventWatcher (tsi);
 
         tsi.CheckOnClick = true;
         Assert.AreEqual (true, tsi.CheckOnClick, "B1");
@@ -107,8 +107,8 @@ public class ToolStripButtonTests : TestHelper
     [Test]
     public void PropertyCheckState ()
     {
-        ToolStripButton tsi = new ToolStripButton ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var tsi = new ToolStripButton ();
+        var ew = new EventWatcher (tsi);
 
         tsi.CheckState = CheckState.Checked;
         Assert.AreEqual (CheckState.Checked, tsi.CheckState, "B1");
@@ -124,7 +124,7 @@ public class ToolStripButtonTests : TestHelper
     {
         Assert.Throws<InvalidEnumArgumentException>(() =>
         {
-            ToolStripButton tsi = new ToolStripButton();
+            var tsi = new ToolStripButton();
             tsi.CheckState = (CheckState)42;
         });
     }
@@ -135,8 +135,8 @@ public class ToolStripButtonTests : TestHelper
 			
         public EventWatcher (ToolStripButton tsi)
         {
-            tsi.CheckedChanged += new EventHandler (delegate (Object obj, EventArgs e) { events += ("CheckedChanged;"); });
-            tsi.CheckStateChanged += new EventHandler (delegate (Object obj, EventArgs e) { events += ("CheckStateChanged;"); });
+            tsi.CheckedChanged += new EventHandler (delegate (Object _, EventArgs _) { events += ("CheckedChanged;"); });
+            tsi.CheckStateChanged += new EventHandler (delegate (Object _, EventArgs _) { events += ("CheckStateChanged;"); });
         }
 
         public override string ToString ()

@@ -11,7 +11,6 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
@@ -77,7 +76,7 @@ namespace System.Resources
         public ResXDataNode(string name, object value, Func<Type, string> typeNameConverter)
         {
             //ArgumentNullException.ThrowIfNull(name);
-            if (name.Length == 0)
+            if ((name?.Length??0) == 0)
             {
                 throw (new ArgumentException(nameof(name)));
             }
@@ -186,7 +185,7 @@ namespace System.Resources
             set
             {
                 //ArgumentNullException.ThrowIfNull(value, nameof(Name));
-                if (value.Length == 0)
+                if ((value?.Length??0) == 0)
                 {
                     throw new ArgumentException(nameof(Name));
                 }

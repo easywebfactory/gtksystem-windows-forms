@@ -22,9 +22,9 @@ public class ListBoxDrawItemEvent : TestHelper
     [Test]
     public void DrawItemTest ()
     {
-        Form myform = new Form ();
+        var myform = new Form ();
         myform.ShowInTaskbar = false;
-        ListBox lb1 = new ListBox ();
+        var lb1 = new ListBox ();
         lb1.Items.Add ("A");
         // Test DrawItem Event
         lb1.DrawMode = DrawMode.OwnerDrawFixed;
@@ -47,10 +47,10 @@ public class ListBoxDrawItemEvent : TestHelper
         [Test]
         public void MeasureItemTest ()
         {
-            Form myform = new Form ();
+            var myform = new Form ();
             myform.ShowInTaskbar = false;
             myform.Visible = true;
-            ListBox lb1 = new ListBox ();
+            var lb1 = new ListBox ();
             lb1.Items.Add ("B");
             lb1.Visible = true;
             myform.Controls.Add (lb1);

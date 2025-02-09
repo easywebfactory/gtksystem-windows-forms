@@ -10,8 +10,8 @@ public class NumericUpDownTest : TestHelper
     [Test]
     public void Minimum ()
     {
-        Form f = new Form ();
-        NumericUpDown nud = new NumericUpDown ();
+        var f = new Form ();
+        var nud = new NumericUpDown ();
         nud.Value = 0;
         nud.Minimum = 2;
         nud.Maximum = 4;
@@ -27,8 +27,8 @@ public class NumericUpDownTest : TestHelper
     [Test]
     public void Maximum ()
     {
-        Form f = new Form ();
-        NumericUpDown nud = new NumericUpDown ();
+        var f = new Form ();
+        var nud = new NumericUpDown ();
         nud.BeginInit ();
         nud.Value = 1000;
         nud.Minimum = 2;
@@ -46,9 +46,9 @@ public class NumericUpDownTest : TestHelper
     [Test]
     public void Hexadecimal ()
     {
-        Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo ("en-US");
-        Form f = new Form ();
-        NumericUpDown nud = new NumericUpDown ();
+        Thread.CurrentThread.CurrentCulture = new CultureInfo ("en-US");
+        var f = new Form ();
+        var nud = new NumericUpDown ();
         nud.Maximum = 100000;
         f.Controls.Add (nud);
         f.Show ();
@@ -64,7 +64,7 @@ public class NumericUpDownTest : TestHelper
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            NumericUpDown nud = new NumericUpDown();
+            var nud = new NumericUpDown();
             nud.Maximum = 3;
             nud.Value = 4;
             nud.Dispose();
@@ -76,7 +76,7 @@ public class NumericUpDownTest : TestHelper
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            NumericUpDown nud = new NumericUpDown();
+            var nud = new NumericUpDown();
             nud.BeginInit();
             nud.Maximum = 3;
             nud.BeginInit();

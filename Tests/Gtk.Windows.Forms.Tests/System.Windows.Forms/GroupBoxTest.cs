@@ -18,7 +18,7 @@ public class GroupBoxTest : TestHelper
     [Test]
     public void Constructor ()
     {
-        GroupBox gb = new GroupBox ();
+        var gb = new GroupBox ();
 
         Assert.AreEqual (false, gb.AllowDrop, "A1");
         // Top/Height are dependent on font height
@@ -33,17 +33,17 @@ public class GroupBoxTest : TestHelper
     [Test]
     public void AutoSize ()
     {
-        if (TestHelper.RunningOnUnix)
+        if (RunningOnUnix)
             Assert.Ignore ("Dependent on font height and theme, values are for windows.");
 				
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        GroupBox p = new GroupBox ();
+        var p = new GroupBox ();
         p.AutoSize = true;
         f.Controls.Add (p);
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (200, 200);
         b.Location = new Point (200, 200);
         p.Controls.Add (b);
@@ -61,7 +61,7 @@ public class GroupBoxTest : TestHelper
     [Test]
     public void PropertyDisplayRectangle ()
     {
-        GroupBox gb = new GroupBox ();
+        var gb = new GroupBox ();
         gb.Size = new Size (200, 200);
 			
         Assert.AreEqual (new Padding (3), gb.Padding, "A0");

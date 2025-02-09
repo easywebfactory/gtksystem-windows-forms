@@ -72,7 +72,7 @@ public class CommonDialogsTest : TestHelper
         cd.FullOpen = true;
         Assert.IsTrue (cd.FullOpen, "#10");
 			
-        int[] custom_colors = new int[] {Color.Yellow.ToArgb (), Color.Red.ToArgb ()};
+        var custom_colors = new int[] {Color.Yellow.ToArgb (), Color.Red.ToArgb ()};
         cd.CustomColors = custom_colors;
         Assert.IsNotNull (cd.CustomColors, "#10a");
         Assert.AreEqual (16, cd.CustomColors.Length, "#10aa");
@@ -137,8 +137,8 @@ public class CommonDialogsTest : TestHelper
         Assert.AreEqual ("", ofd.Filter, "#30b");
         Assert.AreEqual (10, ofd.FilterIndex, "#30ba");
 			
-        string current_path = Environment.CurrentDirectory;
-        string current_file = Path.Combine(current_path, "test_file");
+        var current_path = Environment.CurrentDirectory;
+        var current_file = Path.Combine(current_path, "test_file");
         if (!File.Exists (current_file))
             File.Create (current_file);
 			
@@ -222,7 +222,7 @@ at System.Reflection.MonoMethod.Invoke (System.Object obj, BindingFlags invokeAt
 			
         Assert.AreEqual ("System.Windows.Forms.FolderBrowserDialog", fbd.ToString (), "#87");
 			
-        string current_path = Environment.CurrentDirectory;
+        var current_path = Environment.CurrentDirectory;
         fbd.SelectedPath = current_path;
 			
         Assert.AreEqual (current_path, fbd.SelectedPath, "#89");
@@ -243,7 +243,7 @@ at System.Reflection.MonoMethod.Invoke (System.Object obj, BindingFlags invokeAt
     [Test]
     public void CommonDialogPropertyTag ()
     {
-        MyDialog md = new MyDialog ();
+        var md = new MyDialog ();
         object s = "MyString";
 			
         Assert.AreEqual (null, md.Tag, "A1");

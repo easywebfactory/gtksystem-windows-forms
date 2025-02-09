@@ -31,7 +31,7 @@ public class PropertyGrid_GridEntryTest : TestHelper
     [Test]
     public void ITypeDescriptorContextTest()
     {
-        PropertyGrid pg = new PropertyGrid ();
+        var pg = new PropertyGrid ();
 
         var rootObj = new NestedObj0 ();
         rootObj.Property1 = new NestedObj1 ();
@@ -39,15 +39,15 @@ public class PropertyGrid_GridEntryTest : TestHelper
         rootObj.Property1.Property2.Property3 = new NestedObj3 ();
         pg.SelectedObject = rootObj;
 
-        GridItem gridItem_Property1 = pg.GetRootItem ();
+        var gridItem_Property1 = pg.GetRootItem ();
         INestedObj ownerOf_Property1 = rootObj;
         CheckGridItem(ownerOf_Property1, "Property1", gridItem_Property1);
 
-        GridItem gridItem_Property2 = gridItem_Property1.GridItems["Property2"];
+        var gridItem_Property2 = gridItem_Property1.GridItems["Property2"];
         INestedObj ownerOf_Property2 = rootObj.Property1;
         CheckGridItem(ownerOf_Property2, "Property2", gridItem_Property2);
 
-        GridItem gridItem_Property3 = gridItem_Property2.GridItems["Property3"];
+        var gridItem_Property3 = gridItem_Property2.GridItems["Property3"];
         INestedObj ownerOf_Property3 = rootObj.Property1.Property2;
         CheckGridItem(ownerOf_Property3, "Property3", gridItem_Property3);
     }
@@ -55,12 +55,12 @@ public class PropertyGrid_GridEntryTest : TestHelper
     [Test]
     public void CustomExpandableConverterTest()
     {
-        PropertyGrid pg = new PropertyGrid ();
+        var pg = new PropertyGrid ();
 
         var rootObj = new ConverterTestRootObject ();
         pg.SelectedObject = rootObj;
 
-        GridItem customExpandableGridItem = pg.GetRootItem ();
+        var customExpandableGridItem = pg.GetRootItem ();
         Assert.AreEqual ("CustomExpandableProperty", customExpandableGridItem.Label);
 
         var substitutedGridItems = customExpandableGridItem.GridItems;
@@ -74,7 +74,7 @@ public static class PropertyGridExtentions
     // Returns non-Category root `GridItem`.
     public static GridItem GetRootItem (this PropertyGrid pg)
     {
-        GridItem gridItem = pg.SelectedGridItem;
+        var gridItem = pg.SelectedGridItem;
         Assert.NotNull(gridItem, "No one GridItem is Selected in the PropertyGrid");
 
         while (gridItem.Parent != null && gridItem.Parent.GridItemType == GridItemType.Property)
@@ -157,7 +157,7 @@ public class CustomExpandableConverter : TypeConverter
 
     public override PropertyDescriptorCollection GetProperties (ITypeDescriptorContext context, object value, Attribute[] attributes)
     {
-        ConverterTestRootObject testObject = context.Instance as ConverterTestRootObject;
+        var testObject = context.Instance as ConverterTestRootObject;
         return TypeDescriptor.GetProperties (testObject.propertiesHolder);
     }
 }

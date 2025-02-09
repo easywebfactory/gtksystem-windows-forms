@@ -13,9 +13,9 @@ using System.Resources;
 namespace GtkTests.System.Resources;
 
 [TestFixture]
-public class CultureTest : GtkTests.System.Windows.Forms.TestHelper
+public class CultureTest : Windows.Forms.TestHelper
 {
-    string fileName = null;
+    string? fileName;
 
     [SetUp]
     protected override void SetUp ()
@@ -27,7 +27,11 @@ public class CultureTest : GtkTests.System.Windows.Forms.TestHelper
     [TearDown]
     protected override void TearDown ()
     {
-        File.Delete (fileName);
+        if (fileName != null)
+        {
+            File.Delete(fileName);
+        }
+
         base.TearDown ();
     }
 
@@ -37,18 +41,19 @@ public class CultureTest : GtkTests.System.Windows.Forms.TestHelper
         Thread.CurrentThread.CurrentCulture =
             Thread.CurrentThread.CurrentUICulture = new CultureInfo ("de-DE");
 
-        ResXResourceWriter w = new ResXResourceWriter (fileName);
+        var w = new ResXResourceWriter (fileName);
         w.AddResource ("point", new Point (42, 43));
         w.Generate ();
         w.Close ();
 
-        int count = 0;
-        ResXResourceReader r = new ResXResourceReader (fileName);
-        IDictionaryEnumerator e = r.GetEnumerator ();
+        var count = 0;
+        var r = new ResXResourceReader (fileName);
+        var e = r.GetEnumerator ();
+        using var disposable = e as IDisposable;
         while (e.MoveNext ()) {
             if ((string) e.Key == "point") {
-                Assert.AreEqual (typeof (Point), e.Value.GetType (), "#1");
-                Point p = (Point) e.Value;
+                Assert.AreEqual (typeof (Point).FullName, e.Value!.GetType().FullName, "#1");
+                var p = (Point) e.Value;
                 Assert.AreEqual (42, p.X, "#2");
                 Assert.AreEqual (43, p.Y, "#3");
                 count++;

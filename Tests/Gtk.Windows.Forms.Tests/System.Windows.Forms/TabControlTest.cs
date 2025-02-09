@@ -29,9 +29,9 @@ public class TabControlTest : TestHelper
     [Test]
     public void TabControlPropertyTest ()
     {
-        Form myForm = new Form ();
+        var myForm = new Form ();
         myForm.ShowInTaskbar = false;
-        TabControl myTabControl = new TabControl ();
+        var myTabControl = new TabControl ();
         myTabControl.Visible = true;
         myTabControl.Name = "Mono TabControl";
 		
@@ -61,11 +61,11 @@ public class TabControlTest : TestHelper
     [Category ("NotWorking")]
     public void GetTabRectTest ()
     {
-        TabControl myTabControl = new TabControl ();
-        TabPage myTabPage = new TabPage();
+        var myTabControl = new TabControl ();
+        var myTabPage = new TabPage();
         myTabControl.Controls.Add(myTabPage);
         myTabPage.TabIndex = 0;
-        Rectangle myTabRect = myTabControl.GetTabRect (0);
+        var myTabRect = myTabControl.GetTabRect (0);
         Assert.AreEqual (2, myTabRect.X, "#GetT1");
         Assert.AreEqual (2, myTabRect.Y, "#GetT2");
         Assert.AreEqual (42, myTabRect.Width, "#GetT3");
@@ -76,14 +76,14 @@ public class TabControlTest : TestHelper
     [Test]
     public void ToStringTest ()
     {
-        TabControl myTabControl = new TabControl ();
+        var myTabControl = new TabControl ();
         Assert.AreEqual ("System.Windows.Forms.TabControl, TabPages.Count: 0", myTabControl.ToString(), "#1");
     }
 
     [Test]
     public void ItemSizeTest ()
     {
-        TabControl tc = new TabControl ();
+        var tc = new TabControl ();
         Assert.AreEqual (Size.Empty, tc.ItemSize, "#A0");
 
         tc.CreateControl ();
@@ -95,13 +95,13 @@ public class TabControlTest : TestHelper
         Assert.IsTrue (tc.ItemSize.Height > 0, "#C1");
 
         // ItemSize.Height can change, depending on Font
-        Size prev_size = tc.ItemSize;
+        var prev_size = tc.ItemSize;
         tc.Font = new Font (tc.Font.FontFamily, tc.Font.Height * 2);
         Assert.IsTrue (tc.ItemSize.Height > prev_size.Height, "#D0");
 
         // Images can cause a change as well
         prev_size = tc.ItemSize;
-        ImageList image_list = new ImageList ();
+        var image_list = new ImageList ();
         image_list.ImageSize = new Size (image_list.ImageSize.Width, tc.Font.Height * 2);
         Assert.IsTrue (tc.ItemSize.Height > prev_size.Height, "#E0");
     }
@@ -109,7 +109,7 @@ public class TabControlTest : TestHelper
     [Test]
     public void ItemSizeFixedTest ()
     {
-        TabControl tc = new TabControl ();
+        var tc = new TabControl ();
         tc.SizeMode = TabSizeMode.Fixed;
         Assert.AreEqual (Size.Empty, tc.ItemSize, "#A0");
 
@@ -123,7 +123,7 @@ public class TabControlTest : TestHelper
 
         // Height can change automatically depending on Font,
         // but not Width
-        Size prev_size = tc.ItemSize;
+        var prev_size = tc.ItemSize;
         tc.Font = new Font (tc.Font.FontFamily, tc.Font.Height * 2);
         Assert.IsTrue (tc.ItemSize.Width == 96, "#D0");
         Assert.IsTrue (tc.ItemSize.Height > prev_size.Height, "#D1");
@@ -151,7 +151,7 @@ public class TabControlTest : TestHelper
     public void ClearTabPagesTest ()
     {
         // no tab pages
-        TabControl tab = new TabControl ();
+        var tab = new TabControl ();
         tab.TabPages.Clear ();
         Assert.AreEqual (-1, tab.SelectedIndex, "#A1");
         Assert.AreEqual (0, tab.TabPages.Count, "#A2");
@@ -180,10 +180,10 @@ public class TabControlTest : TestHelper
     [Category ("NotWorking")]
     public void Controls_Remove_HandleCreated ()
     {
-        TabControl tab = new TabControl ();
+        var tab = new TabControl ();
         tab.SelectedIndexChanged += new EventHandler (SelectedIndexChanged);
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (tab);
         form.Show ();
@@ -240,7 +240,7 @@ public class TabControlTest : TestHelper
     [Category ("NotWorking")]
     public void Controls_Remove_HandleNotCreated ()
     {
-        TabControl tab = new TabControl ();
+        var tab = new TabControl ();
         tab.SelectedIndexChanged += new EventHandler (SelectedIndexChanged);
         tab.Controls.Add (new TabPage ());
         tab.Controls.Add (new TabPage ());
@@ -287,7 +287,7 @@ public class TabControlTest : TestHelper
         Assert.AreEqual (0, tab.TabPages.Count, "#F2");
         Assert.AreEqual (0, _selected_index_changed, "#F3");
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (tab);
         form.Show ();
@@ -299,7 +299,7 @@ public class TabControlTest : TestHelper
     [Test]
     public void SelectedIndex ()
     {
-        TabControl tab = new TabControl ();
+        var tab = new TabControl ();
         tab.SelectedIndexChanged += new EventHandler (SelectedIndexChanged);
         tab.Controls.Add (new TabPage ());
         tab.Controls.Add (new TabPage ());
@@ -329,7 +329,7 @@ public class TabControlTest : TestHelper
         Assert.AreEqual (0, _selected_index_changed, "#E31");
         Assert.AreEqual (6, tab.SelectedIndex, "#E4");
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (tab);
 
@@ -359,7 +359,7 @@ public class TabControlTest : TestHelper
     [Test] // bug #78395
     public void SelectedIndex_Ignore ()
     {
-        TabControl c = new TabControl ();
+        var c = new TabControl ();
         c.SelectedIndexChanged += new EventHandler (SelectedIndexChanged);
         c.SelectedIndex = 0;
         Assert.AreEqual (0, _selected_index_changed, "#1");
@@ -367,7 +367,7 @@ public class TabControlTest : TestHelper
         c.TabPages.Add (new TabPage ());
         c.TabPages.Add (new TabPage ());
         Assert.AreEqual (0, c.SelectedIndex, "#2");
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
         f.Controls.Add (c);
         f.Show ();
@@ -381,9 +381,9 @@ public class TabControlTest : TestHelper
     [Test]
     public void SelectedIndex_Negative ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        TabControl tab = new TabControl ();
+        var tab = new TabControl ();
         tab.SelectedIndexChanged += new EventHandler (SelectedIndexChanged);
         form.Controls.Add (tab);
 
@@ -435,8 +435,8 @@ public class TabControlTest : TestHelper
     [Test] // bug #79847
     public void NoTabPages ()
     {
-        Form form = new Form ();
-        TabControl tab = new TabControl ();
+        var form = new Form ();
+        var tab = new TabControl ();
         tab.SelectedIndex = 0;
         Assert.AreEqual (0, tab.SelectedIndex, "#A1");
 
@@ -455,9 +455,9 @@ public class TabControlTest : TestHelper
     [Test] // bug #81802. should not throw an exception
     public void NoTabPages2 ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.Font = new Font ("Tahoma", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte) (0)));
-        TabControl tab = new TabControl ();
+        var tab = new TabControl ();
         form.Controls.Add (tab);
         tab.Dispose ();
         form.Dispose ();
@@ -471,17 +471,17 @@ public class TabControlTest : TestHelper
     [Test] // bug #499887
     public void SelectedIndexChangeFiresFocus ()
     {
-        Form f = new Form ();
-        TabControl tc = new TabControl ();
-        TabPage p1 = new TabPage ();
-        TabPage p2 = new TabPage ();
-        string events = string.Empty;
+        var f = new Form ();
+        var tc = new TabControl ();
+        var p1 = new TabPage ();
+        var p2 = new TabPage ();
+        var events = string.Empty;
 
         tc.TabPages.Add (p1);
         tc.TabPages.Add (p2);
         tc.SelectedIndex = 0;
-        Button b1 = new Button ();
-        Button b2 = new Button ();
+        var b1 = new Button ();
+        var b2 = new Button ();
 
         f.Controls.Add (b1);
         f.Controls.Add (b2);
@@ -489,14 +489,14 @@ public class TabControlTest : TestHelper
 
         f.Show ();
         b1.Focus ();
-        b2.GotFocus += new EventHandler (delegate (Object obj, EventArgs e) {
+        b2.GotFocus += new EventHandler (delegate (Object _, EventArgs _) {
             tc.SelectedIndex = 1;
         });
 			
-        tc.GotFocus += new EventHandler(delegate (Object obj, EventArgs e) { events += ("tc_OnGotFocus" + tc.SelectedIndex + ";"); });
-        tc.SelectedIndexChanged += new EventHandler(delegate (Object obj, EventArgs e) { events += ("tc_OnSelectedIndexChanged" + tc.SelectedIndex + ";"); });
-        p2.Enter += new EventHandler(delegate (Object obj, EventArgs e) { events += ("p2_OnEnter" + tc.SelectedIndex + ";"); });
-        p2.Leave += new EventHandler (delegate (Object obj, EventArgs e) { events += ("p2_OnLeave;"); });
+        tc.GotFocus += new EventHandler(delegate (Object _, EventArgs _) { events += ("tc_OnGotFocus" + tc.SelectedIndex + ";"); });
+        tc.SelectedIndexChanged += new EventHandler(delegate (Object _, EventArgs _) { events += ("tc_OnSelectedIndexChanged" + tc.SelectedIndex + ";"); });
+        p2.Enter += new EventHandler(delegate (Object _, EventArgs _) { events += ("p2_OnEnter" + tc.SelectedIndex + ";"); });
+        p2.Leave += new EventHandler (delegate (Object _, EventArgs _) { events += ("p2_OnLeave;"); });
 	
         b2.Focus ();
         Assert.AreEqual ("tc_OnGotFocus0;p2_OnEnter1;tc_OnSelectedIndexChanged1;", events, "A1");
@@ -510,12 +510,12 @@ public class TabControlTest : TestHelper
     [Test]
     public void GotFocusSelectedIndex ()
     {
-        TabControl tc = new TabControl ();
+        var tc = new TabControl ();
         tc.TabPages.Add ("A");
         tc.TabPages.Add ("B");
 
-        Button b = new Button (); // Dummy button to receive focus by default
-        Form f = new Form ();
+        var b = new Button (); // Dummy button to receive focus by default
+        var f = new Form ();
         f.Controls.AddRange (new Control [] { b, tc });
         f.Show ();
 
@@ -539,12 +539,12 @@ public class TabPageCollectionTest : TestHelper
     [Test]
     public void Indexer ()
     {
-        TabControl tab = new TabControl ();
-        TabControl.TabPageCollection tabPages = new TabControl.TabPageCollection (tab);
-        TabPage tabPageA = new TabPage ();
-        TabPage tabPageB = new TabPage ();
-        TabPage tabPageC = new TabPage ();
-        TabPage tabPageD = new TabPage ();
+        var tab = new TabControl ();
+        var tabPages = new TabControl.TabPageCollection (tab);
+        var tabPageA = new TabPage ();
+        var tabPageB = new TabPage ();
+        var tabPageC = new TabPage ();
+        var tabPageD = new TabPage ();
         tabPages.Add (tabPageA);
         Assert.AreSame (tabPageA, tabPages [0], "#1");
         tabPages [0] = tabPageB;
@@ -557,7 +557,7 @@ public class TabPageCollectionTest : TestHelper
         tabPages [0] = tabPageD;
         Assert.AreSame (tabPageD, tabPages [0], "#6");
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (tab);
         form.Show ();

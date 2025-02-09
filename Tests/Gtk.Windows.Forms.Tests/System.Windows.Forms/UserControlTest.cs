@@ -74,7 +74,7 @@ public class UserControlTest : TestHelper
     [Test]
     public void MethodCreateParams ()
     {
-        ExposeProtectedProperties uc = new ExposeProtectedProperties ();
+        var uc = new ExposeProtectedProperties ();
 
         Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_MAXIMIZEBOX | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS | WindowStyles.WS_VISIBLE | WindowStyles.WS_CHILD, (WindowStyles)uc.CreateParams.Style, "D1");
         Assert.AreEqual (WindowExStyles.WS_EX_CONTROLPARENT, (WindowExStyles)uc.CreateParams.ExStyle, "D2");
@@ -88,14 +88,14 @@ public class UserControlTest : TestHelper
     [Test]
     public void AutoSize ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        Panel p = new Panel ();
+        var p = new Panel ();
         p.AutoSize = true;
         f.Controls.Add (p);
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (200, 200);
         b.Location = new Point (200, 200);
         p.Controls.Add (b);
@@ -113,18 +113,18 @@ public class UserControlTest : TestHelper
     [Test]
     public void PreferredSize ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        UserControl p = new UserControl ();
+        var p = new UserControl ();
         f.Controls.Add (p);
 
-        Button b1 = new Button ();
+        var b1 = new Button ();
         b1.Size = new Size (200, 200);
         b1.Dock = DockStyle.Fill;
         p.Controls.Add (b1);
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (100, 100);
         b.Dock = DockStyle.Top;
         p.Controls.Add (b);
@@ -148,7 +148,7 @@ public class UserControlTest : TestHelper
 
         Assert.AreEqual (new Size (100, 200), p.PreferredSize, "A5");
 		
-        Button b2 = new Button ();
+        var b2 = new Button ();
         b2.Size = new Size (50, 50);
         p.Controls.Add (b2);
 

@@ -18,9 +18,9 @@ public class FormThreadTest : TestHelper
     [Test]
     public void TestThreadFormsInit ()
     {
-        Sys_Threading.Thread thread;
+        Thread thread;
 
-        thread = new Sys_Threading.Thread(new ThreadStart(GuiThread));
+        thread = new Thread(new ThreadStart(GuiThread));
         thread.Start();
         thread.Join();
 

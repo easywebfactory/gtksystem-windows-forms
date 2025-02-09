@@ -88,7 +88,7 @@ public class FocusTest  : TestHelper {
             new ControlPoker (), new ControlPoker (), new ControlPoker ()
         };
 
-        for (int i = 0; i < flat_controls.Length; i++)
+        for (var i = 0; i < flat_controls.Length; i++)
             flat_controls [i].Text = i.ToString ();
         base.SetUp ();
     }
@@ -100,7 +100,7 @@ public class FocusTest  : TestHelper {
 //				Assert.Ignore ("Relies on form.Show() synchronously generating WM_ACTIVATE");
 //			}
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
 
         form.Controls.AddRange (flat_controls);
@@ -139,7 +139,7 @@ public class FocusTest  : TestHelper {
     [Test]
     public void SelectNextControlNullTest ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
 
         form.Show ();
@@ -162,7 +162,7 @@ public class FocusTest  : TestHelper {
     [Test]
     public void SelectControlTest ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
 
         form.Show ();
@@ -182,7 +182,7 @@ public class FocusTest  : TestHelper {
     [Test]
     public void EnsureDirectedSelectUsed ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
 
         form.Show ();
@@ -196,9 +196,9 @@ public class FocusTest  : TestHelper {
     [Test]
     public void ContainerSelectDirectedForward ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ContainerPoker cp = new ContainerPoker ("container-a");
+        var cp = new ContainerPoker ("container-a");
 			
         form.Show ();
         form.Controls.Add (cp);
@@ -225,9 +225,9 @@ public class FocusTest  : TestHelper {
     [Test]
     public void ContainerSelectDirectedBackward ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ContainerPoker cp = new ContainerPoker ("container-a");
+        var cp = new ContainerPoker ("container-a");
 			
         form.Show ();
         form.Controls.Add (cp);
@@ -255,9 +255,9 @@ public class FocusTest  : TestHelper {
     [Category ("NotWorking")]
     public void ContainerSelectUndirectedForward ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ContainerPoker cp = new ContainerPoker ("container-a");
+        var cp = new ContainerPoker ("container-a");
 			
         form.Show ();
         form.Controls.Add (cp);
@@ -277,11 +277,11 @@ public class FocusTest  : TestHelper {
     [Test]
     public void GetNextControlFromForm ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ContainerPoker con_a = new ContainerPoker ("container-a");
-        ContainerPoker con_b = new ContainerPoker ("container-b");
-        ContainerPoker con_c = new ContainerPoker ("container-c");
+        var con_a = new ContainerPoker ("container-a");
+        var con_b = new ContainerPoker ("container-b");
+        var con_c = new ContainerPoker ("container-c");
         ControlPoker [] ctrls_a = new ControlPoker [] {
             new ControlPoker (), new ControlPoker (), new ControlPoker ()
         };
@@ -342,11 +342,11 @@ public class FocusTest  : TestHelper {
     [Test]
     public void GetNextControlFromContainerA ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ContainerPoker con_a = new ContainerPoker ("container-a");
-        ContainerPoker con_b = new ContainerPoker ("container-b");
-        ContainerPoker con_c = new ContainerPoker ("container-c");
+        var con_a = new ContainerPoker ("container-a");
+        var con_b = new ContainerPoker ("container-b");
+        var con_c = new ContainerPoker ("container-c");
         ControlPoker [] ctrls_a = new ControlPoker [] {
             new ControlPoker ("ctrls-a-0"), new ControlPoker ("ctrls-a-1"), new ControlPoker ("ctrls-a-2")
         };
@@ -407,11 +407,11 @@ public class FocusTest  : TestHelper {
     [Test]
     public void GetNextControlFromContainerB ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ContainerPoker con_a = new ContainerPoker ("container-a");
-        ContainerPoker con_b = new ContainerPoker ("container-b");
-        ContainerPoker con_c = new ContainerPoker ("container-c");
+        var con_a = new ContainerPoker ("container-a");
+        var con_b = new ContainerPoker ("container-b");
+        var con_c = new ContainerPoker ("container-c");
         ControlPoker [] ctrls_a = new ControlPoker [] {
             new ControlPoker ("ctrls-a-0"), new ControlPoker ("ctrls-a-1"), new ControlPoker ("ctrls-a-2")
         };
@@ -472,11 +472,11 @@ public class FocusTest  : TestHelper {
     [Test]
     public void GetNextControlFromContainerC ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ContainerPoker con_a = new ContainerPoker ("container-a");
-        ContainerPoker con_b = new ContainerPoker ("container-b");
-        ContainerPoker con_c = new ContainerPoker ("container-c");
+        var con_a = new ContainerPoker ("container-a");
+        var con_b = new ContainerPoker ("container-b");
+        var con_c = new ContainerPoker ("container-c");
         ControlPoker [] ctrls_a = new ControlPoker [] {
             new ControlPoker ("ctrls-a-0"), new ControlPoker ("ctrls-a-1"), new ControlPoker ("ctrls-a-2")
         };
@@ -537,18 +537,18 @@ public class FocusTest  : TestHelper {
     [Test]
     public void GetNextControl2FromForm ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ContainerPoker con_a = new ContainerPoker ("container-a");
-        ContainerPoker con_b = new ContainerPoker ("container-b");
-        ContainerPoker con_c = new ContainerPoker ("container-c");
+        var con_a = new ContainerPoker ("container-a");
+        var con_b = new ContainerPoker ("container-b");
+        var con_c = new ContainerPoker ("container-c");
 			
-        TestHelper.RemoveWarning (con_b, con_c);
+        RemoveWarning (con_b, con_c);
 			
         ControlPoker [] ctrls_a = new ControlPoker [] {
             new ControlPoker ("ctrls-a-0"), new ControlPoker ("ctrls-a-1"), new ControlPoker ("ctrls-a-2")
         };
-        ControlPoker ctrl_b = new ControlPoker ("ctrl-b");
+        var ctrl_b = new ControlPoker ("ctrl-b");
 			
         con_a.Controls.AddRange (ctrls_a);
 			
@@ -582,7 +582,7 @@ public class FocusTest  : TestHelper {
     [Test]
     public void GetNextControlFlat ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
 
         form.Controls.AddRange (flat_controls);
@@ -612,9 +612,9 @@ public class FocusTest  : TestHelper {
     [Test]
     public void GetNextGroupBoxControlFlat ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        GroupBoxPoker gbp = new GroupBoxPoker ("group-box");
+        var gbp = new GroupBoxPoker ("group-box");
 
         gbp.Controls.AddRange (flat_controls);
         form.Controls.Add (gbp);
@@ -650,11 +650,11 @@ public class FocusTest  : TestHelper {
     [Test]
     public void GetNextControlFromTabControl ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        TabControl tab = new TabControl ();
-        TabPage page1 = new TabPage ("page one");
-        TabPage page2 = new TabPage ("page two");
+        var tab = new TabControl ();
+        var page1 = new TabPage ("page one");
+        var page2 = new TabPage ("page two");
 
         tab.TabPages.Add (page1);
         tab.TabPages.Add (page2);
@@ -678,14 +678,14 @@ public class FocusTest  : TestHelper {
 
     [Test]
     public void GetNextControlFromTabControl2 () {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        TabControl tab = new TabControl ();
+        var tab = new TabControl ();
 			
-        TabPage page1 = new TabPage ("page one");
+        var page1 = new TabPage ("page one");
         page1.Controls.AddRange (flat_controls);
 
-        TabPage page2 = new TabPage ("page two");
+        var page2 = new TabPage ("page two");
 
         tab.TabPages.Add (page1);
 
@@ -727,11 +727,11 @@ public class FocusTest  : TestHelper {
     [Test]
     public void GetNextControlTabIndex ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         ControlPoker [] ctrls = new ControlPoker [5];
 
-        for (int i = 0; i < 5; i++) {
+        for (var i = 0; i < 5; i++) {
             ctrls [i] = new ControlPoker ();
             ctrls [i].TabIndex = i;
             ctrls [i].Text = "ctrl " + i;
@@ -764,11 +764,11 @@ public class FocusTest  : TestHelper {
     [Test]
     public void GetNextControlDuplicateTabIndex ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         ControlPoker [] ctrls = new ControlPoker [5];
 
-        for (int i = 0; i < 5; i++) {
+        for (var i = 0; i < 5; i++) {
             ctrls [i] = new ControlPoker ();
             ctrls [i].TabIndex = i;
             ctrls [i].Text = "ctrl " + i;
@@ -803,11 +803,11 @@ public class FocusTest  : TestHelper {
     [Test]
     public void GetNextControlComposite ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ControlPoker a = new ControlPoker ("a");
-        ControlPoker b = new ControlPoker ("b");
-        ControlPoker c = new ControlPoker ("c");
+        var a = new ControlPoker ("a");
+        var b = new ControlPoker ("b");
+        var c = new ControlPoker ("c");
 
         form.Controls.Add (a);
         form.Controls.Add (b);
@@ -828,7 +828,7 @@ public class FocusTest  : TestHelper {
 //				Assert.Ignore ("Relies on form.Show() synchronously generating WM_ACTIVATE");
 //			}
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
 
         form.Controls.AddRange (flat_controls);
@@ -846,12 +846,12 @@ public class FocusTest  : TestHelper {
     [Test]
     [Category ("NotWorking")]
     public void ActiveControl2 () {
-        ContainerControl cc = new ContainerControl ();
-        Control c1 = new Control ();
+        var cc = new ContainerControl ();
+        var c1 = new Control ();
         cc.Controls.Add (c1);
-        Control c2 = new Control ();
+        var c2 = new Control ();
         cc.Controls.Add (c2);
-        Control c3 = new Control ();
+        var c3 = new Control ();
         cc.Controls.Add (c3);
         Assert.IsFalse (c1.Focused, "#A1");
         Assert.IsFalse (c2.Focused, "#A2");
@@ -894,7 +894,7 @@ public class FocusTest  : TestHelper {
         Assert.IsFalse (c3.Focused, "#G3");
         Assert.AreSame (c3, cc.ActiveControl, "#G4");
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (cc);
         form.Show ();
@@ -921,7 +921,7 @@ public class FocusTest  : TestHelper {
 
     [Test] // bug #80411
     public void ActiveControl_NoChild () {
-        ContainerControl cc = new ContainerControl ();
+        var cc = new ContainerControl ();
         try {
             cc.ActiveControl = new Control ();
             Assert.Fail ("#1");
@@ -977,23 +977,23 @@ public class FocusTest  : TestHelper {
     [Test]
     public void EnterLeaveFocusEventTest ()
     {
-        if (TestHelper.RunningOnUnix) {
+        if (RunningOnUnix) {
             Assert.Ignore ("Relies on form.Show() synchronously generating WM_ACTIVATE");
         }
 
-        Form f = new Form();
+        var f = new Form();
         f.ShowInTaskbar = false;
 
         f.Name = "Form1";
-        ContainerControl cc0 = new ContainerControl();
+        var cc0 = new ContainerControl();
         cc0.Name = "ContainerControl 0";
-        ContainerControl cc1 = new ContainerControl();
+        var cc1 = new ContainerControl();
         cc1.Name = "ContainerControl 1";
-        ContainerControl cc2 = new ContainerControl();
+        var cc2 = new ContainerControl();
         cc2.Name = "ContainerControl 2";
-        Control c1 = new Control();
+        var c1 = new Control();
         c1.Name = "Control 1";
-        Control c2 = new Control();
+        var c2 = new Control();
         c2.Name = "Control 2";
 
         connect(f);
@@ -1095,18 +1095,18 @@ OnGotFocus: ContainerControl 1 System.Windows.Forms.ContainerControl
     [Test]
     [Category ("NotWorking")]
     public void ActiveControl_Invisible () {
-        ContainerControl cc = new ContainerControl ();
-        Control c1 = new Control ();
+        var cc = new ContainerControl ();
+        var c1 = new Control ();
         c1.Visible = false;
         cc.Controls.Add (c1);
-        Control c2 = new Control ();
+        var c2 = new Control ();
         cc.Controls.Add (c2);
         cc.ActiveControl = c1;
         Assert.IsFalse (c1.Focused, "#A1");
         Assert.IsFalse (c2.Focused, "#A2");
         Assert.AreSame (c1, cc.ActiveControl, "#A3");
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (cc);
         form.Show ();
@@ -1126,18 +1126,18 @@ OnGotFocus: ContainerControl 1 System.Windows.Forms.ContainerControl
     [Test]
     [Category ("NotWorking")]
     public void ActiveControl_Disabled () {
-        ContainerControl cc = new ContainerControl ();
-        Control c1 = new Control ();
+        var cc = new ContainerControl ();
+        var c1 = new Control ();
         c1.Enabled = false;
         cc.Controls.Add (c1);
-        Control c2 = new Control ();
+        var c2 = new Control ();
         cc.Controls.Add (c2);
         cc.ActiveControl = c1;
         Assert.IsFalse (c1.Focused, "#A1");
         Assert.IsFalse (c2.Focused, "#A2");
         Assert.AreSame (c1, cc.ActiveControl, "#A3");
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (cc);
         form.Show ();
@@ -1157,10 +1157,10 @@ OnGotFocus: ContainerControl 1 System.Windows.Forms.ContainerControl
     [Test]
     [Category ("NotWorking")]
     public void ActiveControl_Null () {
-        ContainerControl cc = new ContainerControl ();
-        Control c1 = new Control ();
+        var cc = new ContainerControl ();
+        var c1 = new Control ();
         cc.Controls.Add (c1);
-        Control c2 = new Control ();
+        var c2 = new Control ();
         cc.Controls.Add (c2);
         cc.ActiveControl = c1;
         Assert.IsFalse (c1.Focused, "#A1");
@@ -1172,7 +1172,7 @@ OnGotFocus: ContainerControl 1 System.Windows.Forms.ContainerControl
         Assert.IsFalse (c2.Focused, "#B2");
         Assert.IsNull (cc.ActiveControl, "#B3");
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (cc);
         form.Show ();
@@ -1198,10 +1198,10 @@ OnGotFocus: ContainerControl 1 System.Windows.Forms.ContainerControl
     [Test]
     public void UserControlFocus ()
     {
-        Form form = new Form ();
-        UserControl c = new UserControl ();
-        TextBox t1 = new TextBox ();
-        TextBox t2 = new TextBox ();
+        var form = new Form ();
+        var c = new UserControl ();
+        var t1 = new TextBox ();
+        var t2 = new TextBox ();
         form.Controls.Add (t1);
         c.Controls.Add (t2);
         form.Controls.Add (c);

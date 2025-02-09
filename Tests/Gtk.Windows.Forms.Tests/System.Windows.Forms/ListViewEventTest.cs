@@ -24,9 +24,9 @@ public class ColumnClickEvent : TestHelper
     [Test]
     public void ColumnClickTest ()
     {
-        Form myform = new Form ();
+        var myform = new Form ();
         myform.ShowInTaskbar = false;
-        ListView mylistview = new ListView ();
+        var mylistview = new ListView ();
 
         mylistview.LabelEdit = true ;
         mylistview.ColumnClick += new ColumnClickEventHandler (ColumnClickEventHandler);		
@@ -34,7 +34,7 @@ public class ColumnClickEvent : TestHelper
         mylistview.SetBounds (10, 10, 200, 200, BoundsSpecified.All);
         mylistview.Columns.Add ("A", -2, HorizontalAlignment.Center);
         mylistview.Columns.Add ("B", -2, HorizontalAlignment.Center);
-        ListViewItem item1 = new ListViewItem ("A", -1);
+        var item1 = new ListViewItem ("A", -1);
         mylistview.Items.Add (item1);
         myform.Controls.Add (mylistview);
         myform.ShowDialog ();
@@ -57,9 +57,9 @@ public class  MyEvent : TestHelper
     [Test]
     public void ItemActivateTest ()
     {
-        Form myform = new Form ();
+        var myform = new Form ();
         myform.ShowInTaskbar = false;
-        ListView mylistview = new ListView ();
+        var mylistview = new ListView ();
         mylistview.Activation = ItemActivation.OneClick;
         mylistview.LabelEdit = true ;
         mylistview.ItemActivate += new EventHandler (New_EventHandler);		
@@ -67,7 +67,7 @@ public class  MyEvent : TestHelper
         mylistview.SetBounds (10, 10, 200, 200, BoundsSpecified.All);
         mylistview.Columns.Add ("A", -2, HorizontalAlignment.Center);
         mylistview.Columns.Add ("B", -2, HorizontalAlignment.Center);
-        ListViewItem item1 = new ListViewItem ("A", -1);
+        var item1 = new ListViewItem ("A", -1);
         mylistview.Items.Add (item1);
         myform.Controls.Add (mylistview);
         myform.ShowDialog ();
@@ -78,9 +78,9 @@ public class  MyEvent : TestHelper
     [Test]
     public void SelectedIndexChangedTest ()
     {
-        Form myform = new Form ();
+        var myform = new Form ();
         myform.ShowInTaskbar = false;
-        ListView mylistview = new ListView ();
+        var mylistview = new ListView ();
         mylistview.LabelEdit = true ;
         mylistview.SelectedIndexChanged += new EventHandler (New_EventHandler);		
         eventhandled = false;
@@ -88,7 +88,7 @@ public class  MyEvent : TestHelper
         mylistview.SetBounds (10, 10, 200, 200, BoundsSpecified.All);
         mylistview.Columns.Add ("A", -2, HorizontalAlignment.Center);
         mylistview.Columns.Add ("B", -2, HorizontalAlignment.Center);
-        ListViewItem item1 = new ListViewItem ("A", -1);
+        var item1 = new ListViewItem ("A", -1);
         mylistview.Items.Add (item1);
         myform.Controls.Add (mylistview);
         myform.ShowDialog ();
@@ -111,9 +111,9 @@ public class ItemCheckEvent : TestHelper
     [Test]
     public void ItemCheckTest ()
     {
-        Form myform = new Form ();
+        var myform = new Form ();
         myform.ShowInTaskbar = false;
-        ListView mylistview = new ListView ();
+        var mylistview = new ListView ();
         mylistview.CheckBoxes = true;
         mylistview.LabelEdit = true ;
         mylistview.ItemCheck += new ItemCheckEventHandler (ItemCheckEventHandler);		
@@ -121,7 +121,7 @@ public class ItemCheckEvent : TestHelper
         mylistview.SetBounds (10, 10, 200, 200, BoundsSpecified.All);
         mylistview.Columns.Add ("A", -2, HorizontalAlignment.Center);
         mylistview.Columns.Add ("B", -2, HorizontalAlignment.Center);
-        ListViewItem item1 = new ListViewItem ("A", -1);
+        var item1 = new ListViewItem ("A", -1);
         mylistview.Items.Add (item1);
         myform.Controls.Add (mylistview);
         myform.ShowDialog ();
@@ -150,19 +150,19 @@ public class ListViewSelectedIndexChangedEvent : TestHelper
     [Test] // bug #79849
     public void SelectBeforeCreationOfHandle ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
 
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         lvw.SelectedIndexChanged += new EventHandler (ListView_SelectedIndexChanged);
         lvw.View = View.Details;
-        ListViewItem itemA = new ListViewItem ("A");
+        var itemA = new ListViewItem ("A");
         lvw.Items.Add (itemA);
         Assert.AreEqual (0, selectedIndexChanged, "#A1");
         itemA.Selected = true;
         Assert.AreEqual (0, selectedIndexChanged, "A2");
 
-        ListViewItem itemB = new ListViewItem ("B");
+        var itemB = new ListViewItem ("B");
         lvw.Items.Add (itemB);
         Assert.AreEqual (0, selectedIndexChanged, "#B1");
         itemB.Selected = true;
@@ -178,19 +178,19 @@ public class ListViewSelectedIndexChangedEvent : TestHelper
     [Test]
     public void RemoveSelectedItem ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
 
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         lvw.SelectedIndexChanged += new EventHandler (ListView_SelectedIndexChanged);
         lvw.View = View.Details;
-        ListViewItem itemA = new ListViewItem ("A");
+        var itemA = new ListViewItem ("A");
         lvw.Items.Add (itemA);
         Assert.AreEqual (0, selectedIndexChanged, "#A1");
         itemA.Selected = true;
         Assert.AreEqual (0, selectedIndexChanged, "A2");
 
-        ListViewItem itemB = new ListViewItem ("B");
+        var itemB = new ListViewItem ("B");
         lvw.Items.Add (itemB);
         Assert.AreEqual (0, selectedIndexChanged, "#B1");
         itemB.Selected = true;
@@ -212,22 +212,22 @@ public class ListViewSelectedIndexChangedEvent : TestHelper
     [Test]
     public void AddAndSelectItem ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
 
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         lvw.SelectedIndexChanged += new EventHandler (ListView_SelectedIndexChanged);
         lvw.View = View.Details;
         form.Controls.Add (lvw);
         form.Show ();
 
-        ListViewItem itemA = new ListViewItem ();
+        var itemA = new ListViewItem ();
         lvw.Items.Add (itemA);
         Assert.AreEqual (0, selectedIndexChanged, "#A1");
         itemA.Selected = true;
         Assert.AreEqual (1, selectedIndexChanged, "#A2");
 
-        ListViewItem itemB = new ListViewItem ();
+        var itemB = new ListViewItem ();
         lvw.Items.Add (itemB);
         Assert.AreEqual (1, selectedIndexChanged, "#B1");
         itemB.Selected = true;
@@ -239,15 +239,15 @@ public class ListViewSelectedIndexChangedEvent : TestHelper
     [Test]
     public void InsertSelectedItem ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
 
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         lvw.SelectedIndexChanged += new EventHandler (ListView_SelectedIndexChanged);
         form.Controls.Add (lvw);
         form.Show ();
 
-        ListViewItem item = new ListViewItem ();
+        var item = new ListViewItem ();
         item.Selected = true;
         Assert.AreEqual (0, selectedIndexChanged, "#A1");
         lvw.Items.Insert (0, item);
@@ -259,10 +259,10 @@ public class ListViewSelectedIndexChangedEvent : TestHelper
     [Test]
     public void AddRangeSelectedItems ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
 
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         lvw.SelectedIndexChanged += new EventHandler (ListView_SelectedIndexChanged);
         form.Controls.Add (lvw);
         form.Show ();
@@ -272,7 +272,7 @@ public class ListViewSelectedIndexChangedEvent : TestHelper
             new ListViewItem ("B"),
             new ListViewItem ("C")
         };
-        foreach (ListViewItem item in items)
+        foreach (var item in items)
             item.Selected = true;
 
         Assert.AreEqual (0, selectedIndexChanged, "#A1");

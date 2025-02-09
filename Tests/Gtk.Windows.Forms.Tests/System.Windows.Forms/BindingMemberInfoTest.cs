@@ -32,7 +32,7 @@ public class BindingMemberInfoTest : TestHelper {
     [Test]
     public void CtorNullTest ()
     {
-        BindingMemberInfo bmi = new BindingMemberInfo (null);
+        var bmi = new BindingMemberInfo (null);
 
         Assert.AreEqual (bmi.BindingMember, String.Empty, "CTORNULL1");
         Assert.AreEqual (bmi.BindingField, String.Empty, "CTORNULL2");
@@ -42,7 +42,7 @@ public class BindingMemberInfoTest : TestHelper {
     [Test]
     public void CtorMemberOnly ()
     {
-        BindingMemberInfo bmi = new BindingMemberInfo ("Member");
+        var bmi = new BindingMemberInfo ("Member");
 
         Assert.AreEqual (bmi.BindingMember, "Member", "CTORMEMBER1");
         Assert.AreEqual (bmi.BindingField, "Member", "CTORMEMBER2");
@@ -52,7 +52,7 @@ public class BindingMemberInfoTest : TestHelper {
     [Test]
     public void CtorMemberAndPathOnly ()
     {
-        BindingMemberInfo bmi = new BindingMemberInfo ("Member.Path");
+        var bmi = new BindingMemberInfo ("Member.Path");
 
         Assert.AreEqual (bmi.BindingMember, "Member.Path", "CTMAF1");
         Assert.AreEqual (bmi.BindingPath, "Member", "CTMAF2");
@@ -62,7 +62,7 @@ public class BindingMemberInfoTest : TestHelper {
     [Test]
     public void CtorAll ()
     {
-        BindingMemberInfo bmi = new BindingMemberInfo ("Member.Path.Field");
+        var bmi = new BindingMemberInfo ("Member.Path.Field");
 
         Assert.AreEqual (bmi.BindingMember, "Member.Path.Field", "CTALL1");
         Assert.AreEqual (bmi.BindingPath, "Member.Path", "CTALL2");
@@ -72,7 +72,7 @@ public class BindingMemberInfoTest : TestHelper {
     [Test]
     public void CtorEmpty ()
     {
-        BindingMemberInfo bmi = new BindingMemberInfo ("...");
+        var bmi = new BindingMemberInfo ("...");
 
         Assert.AreEqual (bmi.BindingMember, "...", "CTEMPTY1");
         Assert.AreEqual (bmi.BindingPath, "..", "CTEMPTY2");
@@ -82,7 +82,7 @@ public class BindingMemberInfoTest : TestHelper {
     [Test]
     public void CtorSpecialChars ()
     {
-        BindingMemberInfo bmi = new BindingMemberInfo (",/';.[]-=!.$%&*~");
+        var bmi = new BindingMemberInfo (",/';.[]-=!.$%&*~");
 
         Assert.AreEqual (bmi.BindingMember, ",/';.[]-=!.$%&*~", "CTORSPECIAL1");
         Assert.AreEqual (bmi.BindingPath, ",/';.[]-=!", "CTORSPECIAL2");
@@ -92,8 +92,8 @@ public class BindingMemberInfoTest : TestHelper {
     [Test]
     public void EqualsTest ()
     {
-        BindingMemberInfo a = new BindingMemberInfo ("A.B.C");
-        BindingMemberInfo b = new BindingMemberInfo ("A.B.C");
+        var a = new BindingMemberInfo ("A.B.C");
+        var b = new BindingMemberInfo ("A.B.C");
 
         Assert.AreEqual (a, b, "EQUALS1");
 

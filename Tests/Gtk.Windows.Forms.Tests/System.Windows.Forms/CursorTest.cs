@@ -28,7 +28,7 @@ public class CursorTest : TestHelper
     [Test]
     public void CursorPropertyTag ()
     {
-        Cursor md = Cursor.Current;
+        var md = Cursor.Current;
         object s = "MyString";
 
         Assert.AreEqual (null, md.Tag, "A1");

@@ -34,32 +34,30 @@ public class PrintPreviewControlTest
         if (PrinterSettings.InstalledPrinters.Count == 0)
             Assert.Ignore ("The test depends on printer being available.");
 
-        using (Form f = new Form ())
-        {
-            PrintPreviewControl p = new PrintPreviewControl ();
-            f.Controls.Add (p);
-            f.Show ();
+        using var f = new Form ();
+        var p = new PrintPreviewControl ();
+        f.Controls.Add (p);
+        f.Show ();
 
-            Assert.AreEqual (0, p.StartPage);
-            Assert.AreEqual (1, p.Rows);
-            Assert.AreEqual (1, p.Columns);
-            p.StartPage = 4;
-            Assert.AreEqual (4, p.StartPage);
+        Assert.AreEqual (0, p.StartPage);
+        Assert.AreEqual (1, p.Rows);
+        Assert.AreEqual (1, p.Columns);
+        p.StartPage = 4;
+        Assert.AreEqual (4, p.StartPage);
 
-            PrintDocument document = new PrintDocument ();
-            int page_number = 0;
-            int page_count = 1;
-            document.BeginPrint += (sender, e) => page_number = 0;
-            document.PrintPage += (sender, e) => e.HasMorePages = ++page_number < page_count;
+        var document = new PrintDocument ();
+        var page_number = 0;
+        var page_count = 1;
+        document.BeginPrint += (_, _) => page_number = 0;
+        document.PrintPage += (_, e) => e.HasMorePages = ++page_number < page_count;
 
-            p.Document = document;
-            p.Refresh ();
-            Assert.AreEqual (0, p.StartPage);
+        p.Document = document;
+        p.Refresh ();
+        Assert.AreEqual (0, p.StartPage);
 				
-            page_count = 8;
-            p.InvalidatePreview ();
-            p.Refresh ();
-            Assert.AreEqual (4, p.StartPage);
-        }
+        page_count = 8;
+        p.InvalidatePreview ();
+        p.Refresh ();
+        Assert.AreEqual (4, p.StartPage);
     }
 }

@@ -11,12 +11,12 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestBindingCompleteEventArgs ()
     {
-        Binding b = new Binding ("TestBind", null, "TestMember");
-        BindingCompleteContext c = new BindingCompleteContext ();
-        string errorText = "This is an error!";
+        var b = new Binding ("TestBind", null, "TestMember");
+        var c = new BindingCompleteContext ();
+        var errorText = "This is an error!";
         Exception ex = new ArgumentNullException ();
 
-        BindingCompleteEventArgs e = new BindingCompleteEventArgs (b, BindingCompleteState.Success, c);
+        var e = new BindingCompleteEventArgs (b, BindingCompleteState.Success, c);
 
         Assert.AreEqual (b, e.Binding, "A1");
         Assert.AreEqual (BindingCompleteState.Success, e.BindingCompleteState, "A2");
@@ -25,7 +25,7 @@ public class EventArgsTest : TestHelper
         Assert.AreEqual (String.Empty, e.ErrorText, "A5");
         Assert.AreEqual (null, e.Exception, "A6");
 
-        BindingCompleteEventArgs e2 = new BindingCompleteEventArgs (b, BindingCompleteState.Success, c, errorText);
+        var e2 = new BindingCompleteEventArgs (b, BindingCompleteState.Success, c, errorText);
 
         Assert.AreEqual (b, e2.Binding, "B1");
         Assert.AreEqual (BindingCompleteState.Success, e2.BindingCompleteState, "B2");
@@ -34,7 +34,7 @@ public class EventArgsTest : TestHelper
         Assert.AreEqual (errorText, e2.ErrorText, "B5");
         Assert.AreEqual (null, e2.Exception, "B6");
 
-        BindingCompleteEventArgs e3 = new BindingCompleteEventArgs (b, BindingCompleteState.Success, c, errorText, ex);
+        var e3 = new BindingCompleteEventArgs (b, BindingCompleteState.Success, c, errorText, ex);
 
         Assert.AreEqual (b, e3.Binding, "C1");
         Assert.AreEqual (BindingCompleteState.Success, e3.BindingCompleteState, "C2");
@@ -43,7 +43,7 @@ public class EventArgsTest : TestHelper
         Assert.AreEqual (errorText, e3.ErrorText, "C5");
         Assert.AreEqual (ex, e3.Exception, "C6");
 
-        BindingCompleteEventArgs e4 = new BindingCompleteEventArgs (b, BindingCompleteState.Success, c, errorText, ex, true);
+        var e4 = new BindingCompleteEventArgs (b, BindingCompleteState.Success, c, errorText, ex, true);
 
         Assert.AreEqual (b, e4.Binding, "D1");
         Assert.AreEqual (BindingCompleteState.Success, e4.BindingCompleteState, "D2");
@@ -59,7 +59,7 @@ public class EventArgsTest : TestHelper
     {
         Exception ex = new ArgumentNullException ();
 
-        BindingManagerDataErrorEventArgs e = new BindingManagerDataErrorEventArgs (ex);
+        var e = new BindingManagerDataErrorEventArgs (ex);
 
         Assert.AreEqual (ex, e.Exception, "A1");
     }
@@ -67,10 +67,10 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestCacheVirtualItemsEventArgs ()
     {
-        int start = 7;
-        int end = 26;
+        var start = 7;
+        var end = 26;
 
-        CacheVirtualItemsEventArgs e = new CacheVirtualItemsEventArgs (start, end);
+        var e = new CacheVirtualItemsEventArgs (start, end);
 
         Assert.AreEqual (start, e.StartIndex, "A1");
         Assert.AreEqual (end, e.EndIndex, "A2");
@@ -79,12 +79,12 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestColumnReorderedEventArgs ()
     {
-        int oldindex = 7;
-        int newindex = 26;
-        ColumnHeader ch = new ColumnHeader ();
+        var oldindex = 7;
+        var newindex = 26;
+        var ch = new ColumnHeader ();
         ch.Text = "TestHeader";
 
-        ColumnReorderedEventArgs e = new ColumnReorderedEventArgs (oldindex, newindex, ch);
+        var e = new ColumnReorderedEventArgs (oldindex, newindex, ch);
 
         Assert.AreEqual (oldindex, e.OldDisplayIndex, "A1");
         Assert.AreEqual (newindex, e.NewDisplayIndex, "A2");
@@ -95,9 +95,9 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestColumnWidthChangedEventArgs ()
     {
-        int col = 42;
+        var col = 42;
 
-        ColumnWidthChangedEventArgs e = new ColumnWidthChangedEventArgs (col);
+        var e = new ColumnWidthChangedEventArgs (col);
 
         Assert.AreEqual (col, e.ColumnIndex, "A1");
     }
@@ -105,16 +105,16 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestColumnWidthChangingEventArgs ()
     {
-        int col = 27;
-        int width = 543;
+        var col = 27;
+        var width = 543;
 
-        ColumnWidthChangingEventArgs e = new ColumnWidthChangingEventArgs (col, width);
+        var e = new ColumnWidthChangingEventArgs (col, width);
 
         Assert.AreEqual (col, e.ColumnIndex, "A1");
         Assert.AreEqual (width, e.NewWidth, "A2");
         Assert.AreEqual (false, e.Cancel, "A3");
 
-        ColumnWidthChangingEventArgs e2 = new ColumnWidthChangingEventArgs (col, width, true);
+        var e2 = new ColumnWidthChangingEventArgs (col, width, true);
 
         Assert.AreEqual (col, e2.ColumnIndex, "B1");
         Assert.AreEqual (width, e2.NewWidth, "B2");
@@ -124,9 +124,9 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestFormClosedEventArgs ()
     {
-        CloseReason cr = CloseReason.WindowsShutDown;
+        var cr = CloseReason.WindowsShutDown;
 
-        FormClosedEventArgs e = new FormClosedEventArgs (cr);
+        var e = new FormClosedEventArgs (cr);
 
         Assert.AreEqual (cr, e.CloseReason, "A1");
     }
@@ -134,9 +134,9 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestFormClosingEventArgs ()
     {
-        CloseReason cr = CloseReason.WindowsShutDown;
+        var cr = CloseReason.WindowsShutDown;
 
-        FormClosingEventArgs e = new FormClosingEventArgs (cr, true);
+        var e = new FormClosingEventArgs (cr, true);
 
         Assert.AreEqual (cr, e.CloseReason, "A1");
         Assert.AreEqual (true, e.Cancel, "A2");
@@ -145,9 +145,9 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestItemCheckedEventArgs ()
     {
-        ListViewItem item = new ListViewItem ("TestItem");
+        var item = new ListViewItem ("TestItem");
 
-        ItemCheckedEventArgs e = new ItemCheckedEventArgs (item);
+        var e = new ItemCheckedEventArgs (item);
 
         Assert.AreEqual (item, e.Item, "A1");
     }
@@ -155,11 +155,11 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestListControlConvertEventArgs ()
     {
-        ListViewItem item = new ListViewItem ("TestItem");
-        object value = (object)"TestObject";
-        Type t = typeof (string);
+        var item = new ListViewItem ("TestItem");
+        var value = (object)"TestObject";
+        var t = typeof (string);
 
-        ListControlConvertEventArgs e = new ListControlConvertEventArgs (value, t, item);
+        var e = new ListControlConvertEventArgs (value, t, item);
 
         Assert.AreEqual (item, e.ListItem, "A1");
         Assert.AreEqual (value, e.Value, "A2");
@@ -169,9 +169,9 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestListViewItemMouseHoverEventArgs ()
     {
-        ListViewItem item = new ListViewItem ("TestItem");
+        var item = new ListViewItem ("TestItem");
 
-        ListViewItemMouseHoverEventArgs e = new ListViewItemMouseHoverEventArgs (item);
+        var e = new ListViewItemMouseHoverEventArgs (item);
 
         Assert.AreEqual (item, e.Item, "A1");
     }
@@ -179,11 +179,11 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestListViewItemSelectionChangedEventArgs ()
     {
-        ListViewItem item = new ListViewItem ("TestItem");
-        bool selected = false;
-        int index = 35;
+        var item = new ListViewItem ("TestItem");
+        var selected = false;
+        var index = 35;
 
-        ListViewItemSelectionChangedEventArgs e = new ListViewItemSelectionChangedEventArgs (item, index, selected);
+        var e = new ListViewItemSelectionChangedEventArgs (item, index, selected);
 
         Assert.AreEqual (item, e.Item, "A1");
         Assert.AreEqual (selected, e.IsSelected, "A2");
@@ -193,11 +193,11 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestListViewVirtualItemsSelectionRangeChangedEventArgs ()
     {
-        bool selected = false;
-        int start = 3;
-        int end = 76;
+        var selected = false;
+        var start = 3;
+        var end = 76;
 
-        ListViewVirtualItemsSelectionRangeChangedEventArgs e = new ListViewVirtualItemsSelectionRangeChangedEventArgs (start, end, selected);
+        var e = new ListViewVirtualItemsSelectionRangeChangedEventArgs (start, end, selected);
 
         Assert.AreEqual (selected, e.IsSelected, "A1");
         Assert.AreEqual (start, e.StartIndex, "A2");
@@ -207,10 +207,10 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestMaskInputRejectedEventArgs ()
     {
-        int pos = 2;
-        MaskedTextResultHint hint = MaskedTextResultHint.InvalidInput;
+        var pos = 2;
+        var hint = MaskedTextResultHint.InvalidInput;
 
-        MaskInputRejectedEventArgs e = new MaskInputRejectedEventArgs (pos, hint);
+        var e = new MaskInputRejectedEventArgs (pos, hint);
 
         Assert.AreEqual (pos, e.Position, "A1");
         Assert.AreEqual (hint, e.RejectionHint, "A2");
@@ -221,10 +221,10 @@ public class EventArgsTest : TestHelper
     {
         Control c = new ListBox ();
         IWin32Window w = null;
-        bool balloon = true;
-        Size s = new Size (123, 54);
+        var balloon = true;
+        var s = new Size (123, 54);
 
-        PopupEventArgs e = new PopupEventArgs (w, c, balloon, s);
+        var e = new PopupEventArgs (w, c, balloon, s);
 
         Assert.AreEqual (c, e.AssociatedControl, "A1");
         Assert.AreEqual (w, e.AssociatedWindow, "A2");
@@ -235,9 +235,9 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestPreviewKeyDownEventArgs ()
     {
-        Keys k = (Keys)196674;  // Control-Shift-B
+        var k = (Keys)196674;  // Control-Shift-B
 
-        PreviewKeyDownEventArgs e = new PreviewKeyDownEventArgs (k);
+        var e = new PreviewKeyDownEventArgs (k);
 
         Assert.AreEqual (false, e.Alt, "A1");
         Assert.AreEqual (true, e.Control, "A2");
@@ -256,10 +256,10 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestRetrieveVirtualItemEventArgs()
     {
-        ListViewItem item = new ListViewItem("TestItem");
-        int index = 75;
+        var item = new ListViewItem("TestItem");
+        var index = 75;
 			
-        RetrieveVirtualItemEventArgs e = new RetrieveVirtualItemEventArgs(index);
+        var e = new RetrieveVirtualItemEventArgs(index);
 			
         Assert.AreEqual(index, e.ItemIndex, "A1");
         Assert.AreEqual(null, e.Item, "A2");
@@ -272,12 +272,12 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestSplitterCancelEventArgs()
     {
-        int mx = 23;
-        int my = 33;
-        int sx = 43;
-        int sy = 53;
+        var mx = 23;
+        var my = 33;
+        var sx = 43;
+        var sy = 53;
 			
-        SplitterCancelEventArgs e = new SplitterCancelEventArgs(mx, my, sx, sy);
+        var e = new SplitterCancelEventArgs(mx, my, sx, sy);
 			
         Assert.AreEqual(mx, e.MouseCursorX, "A1");
         Assert.AreEqual(my, e.MouseCursorY, "A2");
@@ -294,11 +294,11 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestTabControlCancelEventArgs()
     {
-        TabControlAction tca = TabControlAction.Deselecting;
-        TabPage tp = new TabPage("HI!");
-        int index = 477;
+        var tca = TabControlAction.Deselecting;
+        var tp = new TabPage("HI!");
+        var index = 477;
 			
-        TabControlCancelEventArgs e = new TabControlCancelEventArgs(tp, index, true, tca);
+        var e = new TabControlCancelEventArgs(tp, index, true, tca);
 			
         Assert.AreEqual(tca, e.Action, "A1");
         Assert.AreEqual(tp, e.TabPage, "A2");
@@ -309,11 +309,11 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestTabControlEventArgs ()
     {
-        TabControlAction tca = TabControlAction.Selected;
-        TabPage tp = new TabPage ("HI!");
-        int index = 477;
+        var tca = TabControlAction.Selected;
+        var tp = new TabPage ("HI!");
+        var index = 477;
 
-        TabControlEventArgs e = new TabControlEventArgs (tp, index, tca);
+        var e = new TabControlEventArgs (tp, index, tca);
 
         Assert.AreEqual (tca, e.Action, "A1");
         Assert.AreEqual (tp, e.TabPage, "A2");
@@ -323,14 +323,14 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestTableLayoutCellPaintEventArgs()
     {
-        Rectangle bounds = new Rectangle(0, 0, 100, 200);
-        Rectangle clip = new Rectangle(50, 50, 50, 50);
-        int col = 54;
-        int row = 77;
-        Bitmap b = new Bitmap(100, 100);
-        Graphics g = Graphics.FromImage(b);
+        var bounds = new Rectangle(0, 0, 100, 200);
+        var clip = new Rectangle(50, 50, 50, 50);
+        var col = 54;
+        var row = 77;
+        var b = new Bitmap(100, 100);
+        var g = Graphics.FromImage(b);
 			
-        TableLayoutCellPaintEventArgs e = new TableLayoutCellPaintEventArgs(g, clip, bounds, col, row);
+        var e = new TableLayoutCellPaintEventArgs(g, clip, bounds, col, row);
 			
         Assert.AreEqual(bounds, e.CellBounds, "A1");
         Assert.AreEqual(col, e.Column, "A2");
@@ -342,13 +342,13 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestTreeNodeMouseClickEventArgs()
     {
-        TreeNode tn = new TreeNode("HI");
-        int clicks = 4;
-        int x = 75;
-        int y = 34;
-        MouseButtons mb = MouseButtons.Right;
+        var tn = new TreeNode("HI");
+        var clicks = 4;
+        var x = 75;
+        var y = 34;
+        var mb = MouseButtons.Right;
 			
-        TreeNodeMouseClickEventArgs e = new TreeNodeMouseClickEventArgs(tn, mb, clicks, x, y);
+        var e = new TreeNodeMouseClickEventArgs(tn, mb, clicks, x, y);
 			
         Assert.AreEqual(tn, e.Node, "A1");
         Assert.AreEqual(clicks, e.Clicks, "A2");
@@ -360,9 +360,9 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestTreeNodeMouseHoverEventArgs ()
     {
-        TreeNode tn = new TreeNode ("HI");
+        var tn = new TreeNode ("HI");
 
-        TreeNodeMouseHoverEventArgs e = new TreeNodeMouseHoverEventArgs (tn);
+        var e = new TreeNodeMouseHoverEventArgs (tn);
 
         Assert.AreEqual (tn, e.Node, "A1");
     }
@@ -370,12 +370,12 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestTypeValidationEventArgs()
     {
-        bool valid = true;
-        string message = "This is a test.";
-        object rv = (object) "MyObject";
-        Type vt = typeof(int);
+        var valid = true;
+        var message = "This is a test.";
+        var rv = (object) "MyObject";
+        var vt = typeof(int);
 			
-        TypeValidationEventArgs e = new TypeValidationEventArgs (vt, valid, rv, message);
+        var e = new TypeValidationEventArgs (vt, valid, rv, message);
 			
         Assert.AreEqual(valid, e.IsValidInput, "A1");
         Assert.AreEqual(message, e.Message, "A2");
@@ -391,9 +391,9 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestWebBrowserDocumentCompletedEventArgs()
     {
-        Uri url = new Uri("http://www.example.com/");
+        var url = new Uri("http://www.example.com/");
 			
-        WebBrowserDocumentCompletedEventArgs e = new WebBrowserDocumentCompletedEventArgs(url);
+        var e = new WebBrowserDocumentCompletedEventArgs(url);
 			
         Assert.AreEqual(url, e.Url, "A1");
     }
@@ -401,9 +401,9 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestWebBrowserNavigatedEventArgs ()
     {
-        Uri url = new Uri ("http://www.example.com/");
+        var url = new Uri ("http://www.example.com/");
 
-        WebBrowserNavigatedEventArgs e = new WebBrowserNavigatedEventArgs (url);
+        var e = new WebBrowserNavigatedEventArgs (url);
 
         Assert.AreEqual (url, e.Url, "A1");
     }
@@ -411,10 +411,10 @@ public class EventArgsTest : TestHelper
     [Test]
     public void TestWebBrowserNavigatingEventArgs ()
     {
-        Uri url = new Uri ("http://www.example.com/");
-        string frame = "TOP";
+        var url = new Uri ("http://www.example.com/");
+        var frame = "TOP";
 
-        WebBrowserNavigatingEventArgs e = new WebBrowserNavigatingEventArgs (url, frame);
+        var e = new WebBrowserNavigatingEventArgs (url, frame);
 
         Assert.AreEqual (url, e.Url, "A1");
         Assert.AreEqual(frame, e.TargetFrameName, "A2");
@@ -426,7 +426,7 @@ public class EventArgsTest : TestHelper
         long current = 3000;
         long max = 5000;
 
-        WebBrowserProgressChangedEventArgs e = new WebBrowserProgressChangedEventArgs (current, max);
+        var e = new WebBrowserProgressChangedEventArgs (current, max);
 
         Assert.AreEqual (current, e.CurrentProgress, "A1");
         Assert.AreEqual (max, e.MaximumProgress, "A2");

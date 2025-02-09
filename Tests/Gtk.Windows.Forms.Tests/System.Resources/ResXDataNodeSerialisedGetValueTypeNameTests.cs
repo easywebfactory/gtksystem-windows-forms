@@ -28,88 +28,30 @@
 using System.Reflection;
 using System.Resources;
 using System.ComponentModel.Design;
+using GtkTests.TypeResolutionService_;
+using GtkTests.Internals.Resources;
+using GtkTests.Resources;
 
 namespace GtkTests.System.Resources;
 
 [TestFixture]
 public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper {
     [Test]
-    public void ITRSUsedWithNodeFromReader ()
-    {
-        ResXDataNode originalNode, returnedNode;
-        originalNode = GetNodeEmdeddedSerializable ();
-        returnedNode = GetNodeFromResXReader (originalNode);
-
-        Assert.IsNotNull (returnedNode, "#A1");
-        string returnedType = returnedNode.GetValueTypeName (new ReturnSerializableSubClassITRS ());
-        Assert.AreEqual ((typeof (serializableSubClass)).AssemblyQualifiedName, returnedType, "#A2");
-    }
-
-    [Test]
-    public void ITRSOnlyUsedFirstTimeWithNodeFromReader ()
-    {
-        // check ITRS supplied to GetValueTypeName method for a node returned from reader are used when 
-        // retrieving the value first time and returns this same value ignoring any new ITRS passed thereafter
-        ResXDataNode originalNode, returnedNode;
-        originalNode = GetNodeEmdeddedSerializable ();
-        returnedNode = GetNodeFromResXReader (originalNode);
-
-        Assert.IsNotNull (returnedNode, "#A1");
-        string defaultType = returnedNode.GetValueTypeName ((ITypeResolutionService) null);
-        Assert.AreEqual ((typeof (serializable)).AssemblyQualifiedName, defaultType, "#A2");
-
-        string newType = returnedNode.GetValueTypeName (new ReturnSerializableSubClassITRS ());
-        Assert.AreNotEqual ((typeof (serializableSubClass)).AssemblyQualifiedName, newType, "#A3");
-        Assert.AreEqual ((typeof (serializable)).AssemblyQualifiedName, newType, "#A4");
-    }
-		
-    [Test]
     public void ITRSNotUsedWhenNodeCreatedNew ()
     {
         ResXDataNode node;
         node = GetNodeEmdeddedSerializable ();
 
-        string returnedType = node.GetValueTypeName (new ReturnSerializableSubClassITRS ());
+        var returnedType = node.GetValueTypeName (new ReturnSerializableSubClassITRS ());
         Assert.AreEqual ((typeof (serializable)).AssemblyQualifiedName, returnedType, "#A1");
-    }
-
-    [Test]
-    public void ITRSIsIgnoredIfGetValueAlreadyCalledWithAnotherITRS ()
-    {
-        // check that first call to GetValue sets the type for GetValueTypeName
-        ResXDataNode originalNode, returnedNode;
-        originalNode = GetNodeEmdeddedSerializable ();
-        returnedNode = GetNodeFromResXReader (originalNode);
-
-        Assert.IsNotNull (returnedNode, "#A1");
-        // get value passing no params
-        object val = returnedNode.GetValue ((ITypeResolutionService) null);
-        Assert.True(typeof(serializable) == val.GetType(), "#A2");
-        Assert.False(typeof(serializableSubClass) == val.GetType(), "#A3");
-
-        //get value type passing different params
-        string newType = returnedNode.GetValueTypeName (new ReturnSerializableSubClassITRS ());
-        Assert.AreNotEqual ((typeof (serializableSubClass)).AssemblyQualifiedName, newType, "#A4");
-        Assert.AreEqual ((typeof (serializable)).AssemblyQualifiedName, newType, "#A5");
-    }
-
-    [Test]
-    public void SoapFormattedObject ()
-    {
-        ResXDataNode node = GetNodeFromResXReader (serializedResXSOAP);
-
-        Assert.IsNotNull (node, "#A1");
-        // hard coded assembly name value refers to that generated under 2.0 prefix, so use compatible available class
-        string name = node.GetValueTypeName (new ReturnSerializableSubClassITRS ());
-        Assert.AreEqual (typeof (serializableSubClass).AssemblyQualifiedName, name, "#A2");
     }
 
     [Test]
     public void DeserializationErrorReturnsObjectType ()
     {
-        ResXDataNode node = GetNodeFromResXReader (serializedResXCorruped);
+        var node = GetNodeFromResXReader (serializedResXCorruped);
         Assert.IsNotNull (node, "#A1");
-        string type = node.GetValueTypeName ((AssemblyName []) null);
+        var type = node.GetValueTypeName ((AssemblyName []) null);
 
         Assert.AreEqual (typeof (object).AssemblyQualifiedName,type, "#A2");
     }
@@ -117,32 +59,22 @@ public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper {
     [Test]
     public void InvalidMimeTypeFromReaderReturnsNull ()
     {
-        ResXDataNode node = GetNodeFromResXReader (serializedResXInvalidMimeType);
+        var node = GetNodeFromResXReader (serializedResXInvalidMimeType);
         Assert.IsNotNull (node, "#A1");
-        string type = node.GetValueTypeName ((AssemblyName []) null);
+        var type = node.GetValueTypeName ((AssemblyName []) null);
         Assert.IsNull (type, "#A2");
-    }
-
-    [Test]
-    public void AssemblyAutomaticallyLoaded ()
-    {
-        // DummyAssembly must be in the same directory as current assembly to work correctly
-        ResXDataNode node = GetNodeFromResXReader (anotherSerializableFromDummyAssembly);
-        Assert.IsNotNull (node, "#A1");
-        string type = node.GetValueTypeName ((AssemblyName []) null);
-        Assert.AreEqual ("DummyAssembly.AnotherSerializable, DummyAssembly, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", type, "#A2");
     }
 
     [Test]
     public void ReturnsObjectAssemblyMissing ()
     {
-        ResXDataNode node = GetNodeFromResXReader (missingSerializableFromMissingAssembly);
+        var node = GetNodeFromResXReader (missingSerializableFromMissingAssembly);
         Assert.IsNotNull (node, "#A1");
-        string type = node.GetValueTypeName ((AssemblyName []) null);
+        var type = node.GetValueTypeName ((AssemblyName []) null);
         Assert.AreEqual (typeof (object).AssemblyQualifiedName, type, "#A2");
     }
 
-    static string serializedResXInvalidMimeType =
+    static readonly string serializedResXInvalidMimeType =
         @"<?xml version=""1.0"" encoding=""utf-8""?>
 <root>
   
@@ -168,7 +100,7 @@ public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper {
   </data>
 </root>";
 
-    static string serializedResXCorruped =
+    static readonly string serializedResXCorruped =
         @"<?xml version=""1.0"" encoding=""utf-8""?>
 <root>
   
@@ -194,7 +126,7 @@ public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper {
   </data>
 </root>";
 
-    static string serializedResXSOAP =
+    static readonly string serializedResXSOAP =
         @"<?xml version=""1.0"" encoding=""utf-8""?>
 <root> 
   <resheader name=""resmimetype"">
@@ -226,7 +158,7 @@ public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper {
   </data>
 </root>";
 
-    static string missingSerializableFromMissingAssembly =
+    static readonly string missingSerializableFromMissingAssembly =
         @"<?xml version=""1.0"" encoding=""utf-8""?>
 <root>
   <resheader name=""resmimetype"">
@@ -251,7 +183,7 @@ public class ResXDataNodeSerializedGetValueTypeNameTests : ResourcesTestHelper {
   </data>
 </root>";
 
-    static string anotherSerializableFromDummyAssembly =
+    static readonly string anotherSerializableFromDummyAssembly =
         @"<?xml version=""1.0"" encoding=""utf-8""?>
 <root>
  

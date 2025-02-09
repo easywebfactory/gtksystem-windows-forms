@@ -29,6 +29,9 @@ using System.Reflection;
 using System.Drawing;
 using System.Resources;
 using System.ComponentModel.Design;
+using GtkTests.TypeResolutionService_;
+using GtkTests.Internals.Resources;
+using GtkTests.Resources;
 
 namespace GtkTests.System.Resources;
 
@@ -39,15 +42,15 @@ public class ResXDataNodeFileRefGetValueTypeNameTests : ResourcesTestHelper {
     {
         ResXDataNode originalNode, returnedNode;
 
-        string aName = this.GetType ().Assembly.FullName;
+        var aName = GetType ().Assembly.FullName;
         AssemblyName [] assemblyNames = new AssemblyName [] { new AssemblyName (aName) };
 
         originalNode = GetNodeFileRefToSerializable ("ser.bbb", false);
         returnedNode = GetNodeFromResXReader (originalNode);
 
         Assert.IsNotNull (returnedNode, "#A1");
-        string typeName = returnedNode.GetValueTypeName (assemblyNames);
-        Assert.AreEqual ("MonoTests.System.Resources.serializable, " + aName, typeName, "#A2");
+        var typeName = returnedNode.GetValueTypeName (assemblyNames);
+        Assert.AreEqual ("GtkTests.Resources.serializable, " + aName, typeName, "#A2");
     }
 
     public void CanGetValueTypeNameWithOnlyFullNameAsType ()
@@ -58,7 +61,7 @@ public class ResXDataNodeFileRefGetValueTypeNameTests : ResourcesTestHelper {
         returnedNode = GetNodeFromResXReader (originalNode);
 
         Assert.IsNotNull (returnedNode, "#A1");
-        string typeName = returnedNode.GetValueTypeName ((AssemblyName []) null);
+        var typeName = returnedNode.GetValueTypeName ((AssemblyName []) null);
         Assert.AreEqual ((typeof (serializable)).FullName, typeName, "#A2");
     }
 
@@ -70,7 +73,7 @@ public class ResXDataNodeFileRefGetValueTypeNameTests : ResourcesTestHelper {
         returnedNode = GetNodeFromResXReader (originalNode);
 
         Assert.IsNotNull (returnedNode, "#A1");
-        string returnedType = returnedNode.GetValueTypeName (new ReturnSerializableSubClassITRS ());
+        var returnedType = returnedNode.GetValueTypeName (new ReturnSerializableSubClassITRS ());
         Assert.AreEqual ((typeof (serializableSubClass)).AssemblyQualifiedName, returnedType, "#A2");
     }
 
@@ -80,27 +83,27 @@ public class ResXDataNodeFileRefGetValueTypeNameTests : ResourcesTestHelper {
         ResXDataNode node;
         node = GetNodeFileRefToSerializable ("ser.bbb",true);
 
-        string returnedType = node.GetValueTypeName (new ReturnSerializableSubClassITRS ());
+        var returnedType = node.GetValueTypeName (new ReturnSerializableSubClassITRS ());
         Assert.AreEqual ((typeof (serializableSubClass)).AssemblyQualifiedName, returnedType, "#A1");
     }
 
     [Test]
     public void IfTypeResolutionFailsReturnsOrigString()
     {
-        ResXFileRef fileRef = new ResXFileRef ("afile.name", "a.type.name");
-        ResXDataNode node = new ResXDataNode ("aname", fileRef);
+        var fileRef = new ResXFileRef ("afile.name", "a.type.name");
+        var node = new ResXDataNode ("aname", fileRef);
 
-        string returnedType = node.GetValueTypeName ((AssemblyName []) null);
+        var returnedType = node.GetValueTypeName ((AssemblyName []) null);
         Assert.AreEqual ("a.type.name", returnedType);
     }
 
     [Test]
     public void AttemptsTypeResolution ()
     {
-        ResXFileRef fileRef = new ResXFileRef ("afile.name", "System.String");
-        ResXDataNode node = new ResXDataNode ("aname", fileRef);
+        var fileRef = new ResXFileRef ("afile.name", "System.String");
+        var node = new ResXDataNode ("aname", fileRef);
 
-        string returnedType = node.GetValueTypeName ((AssemblyName []) null);
+        var returnedType = node.GetValueTypeName ((AssemblyName []) null);
         Assert.AreEqual (typeof (string).AssemblyQualifiedName, returnedType);
     }
 
@@ -109,38 +112,38 @@ public class ResXDataNodeFileRefGetValueTypeNameTests : ResourcesTestHelper {
     [Test]
     public void NullAssemblyNamesOK ()
     {
-        ResXDataNode node = GetNodeFileRefToIcon ();
+        var node = GetNodeFileRefToIcon ();
 
-        string name = node.GetValueTypeName ((AssemblyName []) null);
+        var name = node.GetValueTypeName ((AssemblyName []) null);
         Assert.AreEqual (typeof (Icon).AssemblyQualifiedName, name);
     }
 
     [Test]
     public void NullITRSOK ()
     {
-        ResXDataNode node = GetNodeFileRefToIcon ();
+        var node = GetNodeFileRefToIcon ();
 
-        string name = node.GetValueTypeName ((ITypeResolutionService) null);
+        var name = node.GetValueTypeName ((ITypeResolutionService) null);
         Assert.AreEqual (typeof (Icon).AssemblyQualifiedName, name);
     }
 
     [Test]
     public void WrongITRSOK ()
     {
-        ResXDataNode node = GetNodeFileRefToIcon ();
+        var node = GetNodeFileRefToIcon ();
 
-        string name = node.GetValueTypeName (new DummyITRS ());
+        var name = node.GetValueTypeName (new DummyITRS ());
         Assert.AreEqual (typeof (Icon).AssemblyQualifiedName, name);
     }
 
     [Test]
     public void WrongAssemblyNamesOK ()
     {
-        ResXDataNode node = GetNodeFileRefToIcon ();
+        var node = GetNodeFileRefToIcon ();
         AssemblyName [] ass = new AssemblyName [1];
         ass [0] = new AssemblyName ("DummyAssembly");
 
-        string name = node.GetValueTypeName (ass);
+        var name = node.GetValueTypeName (ass);
         Assert.AreEqual (typeof (Icon).AssemblyQualifiedName, name);
     }
 

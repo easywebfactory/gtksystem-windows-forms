@@ -21,11 +21,11 @@ public class CheckBoxEventTest : TestHelper
     [Test]
     public void CheckedChangedEventTest ()
     {
-        Form myform = new Form ();
+        var myform = new Form ();
         myform.ShowInTaskbar = false;
         eventhandled = false;
         myform.Visible = true;
-        CheckBox chkbox = new CheckBox ();
+        var chkbox = new CheckBox ();
         chkbox.Visible = true;
         myform.Controls.Add (chkbox);
         chkbox.CheckedChanged += new EventHandler (CheckBox_EventHandler);
@@ -37,11 +37,11 @@ public class CheckBoxEventTest : TestHelper
     [Test]
     public void CheckStateChangedEventTest ()
     {
-        Form myform = new Form ();
+        var myform = new Form ();
         myform.ShowInTaskbar = false;
         eventhandled = false;
         myform.Visible = true;
-        CheckBox chkbox = new CheckBox ();
+        var chkbox = new CheckBox ();
         chkbox.Visible = true;
         myform.Controls.Add (chkbox);
         chkbox.CheckStateChanged += new EventHandler (CheckBox_EventHandler);

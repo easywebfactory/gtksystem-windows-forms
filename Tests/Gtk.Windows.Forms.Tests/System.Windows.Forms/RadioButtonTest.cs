@@ -17,7 +17,7 @@ public class RadioButtonTest : TestHelper
     [Test]
     public void RadioButtonPropertyTest ()
     {
-        RadioButton rButton1 = new RadioButton ();
+        var rButton1 = new RadioButton ();
 			
         // S
         Assert.AreEqual (null, rButton1.Site, "#S1");	
@@ -31,7 +31,7 @@ public class RadioButtonTest : TestHelper
     [Test]
     public void CheckedTest ()
     {
-        RadioButton rb = new RadioButton ();
+        var rb = new RadioButton ();
 
         Assert.AreEqual (false, rb.TabStop, "#A1");
         Assert.AreEqual (false, rb.Checked, "#A2");
@@ -49,7 +49,7 @@ public class RadioButtonTest : TestHelper
         // RadioButton is NOT checked, but since it is the only
         // RadioButton instance in Form, when it gets selected (Form.Show)
         // it should acquire the focus
-        Form f = new Form ();
+        var f = new Form ();
         f.Controls.Add (rb);
         rb.CheckedChanged += new EventHandler (rb_checked_changed);
         event_received = false;
@@ -77,7 +77,7 @@ public class RadioButtonTest : TestHelper
     [Test]
     public void TabStopEventTest ()
     {
-        RadioButton rb = new RadioButton ();
+        var rb = new RadioButton ();
 
         rb.TabStopChanged += new EventHandler (rb_tabstop_changed);
         event_received = false;
@@ -90,22 +90,22 @@ public class RadioButtonTest : TestHelper
     [Test]
     public void ToStringTest ()
     {
-        RadioButton rButton1 = new RadioButton ();
+        var rButton1 = new RadioButton ();
         Assert.AreEqual ("System.Windows.Forms.RadioButton, Checked: False" , rButton1.ToString (), "#9");
     }
 
     [Test]
     public void AutoSizeText ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 			
-        RadioButton rb = new RadioButton ();
+        var rb = new RadioButton ();
         rb.AutoSize = true;
         rb.Width = 14;
         f.Controls.Add (rb);
 			
-        int width = rb.Width;
+        var width = rb.Width;
 			
         rb.Text = "Some text that is surely longer than 100 pixels.";
 
@@ -126,9 +126,9 @@ public class RadioButtonEventTestClass : TestHelper
     [Test]
     public void ApperanceChangedTest ()
     {
-        Form myForm = new Form ();
+        var myForm = new Form ();
         myForm.ShowInTaskbar = false;
-        RadioButton rButton1 = new RadioButton ();
+        var rButton1 = new RadioButton ();
         rButton1.Select ();
         rButton1.Visible = true;
         myForm.Controls.Add (rButton1);
@@ -140,9 +140,9 @@ public class RadioButtonEventTestClass : TestHelper
     [Test]
     public void CheckedChangedTest ()
     {
-        Form myForm = new Form ();
+        var myForm = new Form ();
         myForm.ShowInTaskbar = false;
-        RadioButton rButton1 = new RadioButton ();
+        var rButton1 = new RadioButton ();
         rButton1.Select ();
         rButton1.Visible = true;
         myForm.Controls.Add (rButton1);

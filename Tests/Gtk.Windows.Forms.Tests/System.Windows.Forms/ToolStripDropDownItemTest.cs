@@ -38,7 +38,7 @@ public class ToolStripDropDownItemTest
     public void FontTest ()
     {
         var dropdown_item = new ToolStripMenuItem ();
-        ToolStrip tool_strip = new ToolStrip ();
+        var tool_strip = new ToolStrip ();
         tool_strip.Items.Add (dropdown_item);
 
         Assert.AreEqual (tool_strip.Font, dropdown_item.Font, "#A1");

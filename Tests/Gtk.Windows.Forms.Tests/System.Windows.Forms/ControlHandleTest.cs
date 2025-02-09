@@ -17,7 +17,7 @@ public class ControlHandleTest : TestHelper
         // - AccessibilityObject	[get]
         // - Capture			[set]
         // - Handle			[get]
-        Control c = new Control ();
+        var c = new Control ();
         // A
         object o = c.AccessibilityObject;
         Assert.IsTrue (c.IsHandleCreated, "A0");
@@ -232,7 +232,7 @@ public class ControlHandleTest : TestHelper
         o = c.WindowTarget;
         Assert.IsFalse (c.IsHandleCreated, "A71");
 			
-        TestHelper.RemoveWarning (o);
+        RemoveWarning (o);
     }
 		
     [Test]
@@ -240,7 +240,7 @@ public class ControlHandleTest : TestHelper
     {
         // Not a surprise, but none of these cause handle creation.
         // Included just to absolutely certain.
-        ProtectedPropertyControl c = new ProtectedPropertyControl ();
+        var c = new ProtectedPropertyControl ();
 
         object o;
 #if !MONO
@@ -281,10 +281,10 @@ public class ControlHandleTest : TestHelper
         o = c.PublicShowKeyboardCues;
         Assert.IsFalse (c.IsHandleCreated, "A16");
 			
-        TestHelper.RemoveWarning (o);
+        RemoveWarning (o);
     }
-		 
-    Control invokecontrol = new Control ();
+
+    readonly Control invokecontrol = new Control ();
 
     [OneTimeTearDown]
     public void OneTimeTearDown()
@@ -304,7 +304,7 @@ public class ControlHandleTest : TestHelper
         // - PointToScreen ()
         // - RectangleToClient ()
         // - RectangleToScreen ()
-        Control c = new Control ();
+        var c = new Control ();
 			
         c.BringToFront ();
         Assert.IsFalse (c.IsHandleCreated, "A1");
@@ -313,7 +313,7 @@ public class ControlHandleTest : TestHelper
         c.CreateControl ();
         Assert.IsTrue (c.IsHandleCreated, "A3");
         c = new Control ();
-        Graphics g = c.CreateGraphics ();
+        var g = c.CreateGraphics ();
         g.Dispose ();
         Assert.IsTrue (c.IsHandleCreated, "A4");
         c = new Control ();
@@ -400,7 +400,7 @@ public class ControlHandleTest : TestHelper
     [Test]
     public void Show ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         Assert.IsFalse (c.IsHandleCreated, "A1");
         c.HandleCreated += new EventHandler (HandleCreated_WriteStackTrace);
         c.Show ();
@@ -420,7 +420,7 @@ public class ControlHandleTest : TestHelper
     {
         Assert.Throws<InvalidOperationException>(() =>
         {
-            Control c = new Control();
+            var c = new Control();
             c.Invoke(new InvokeDelegate(InvokeMethod));
         });
     }
@@ -439,8 +439,8 @@ public class ControlHandleTest : TestHelper
         public Padding PublicDefaultPadding { get { return base.DefaultPadding; } }
         public Size PublicDefaultSize { get { return base.DefaultSize; } }
         public bool PublicDoubleBuffered { get { return base.DoubleBuffered; } set { base.DoubleBuffered = value; } }
-        public int PublicFontHeight { get { return base.FontHeight; } set { base.FontHeight = value; } }
-        public bool PublicResizeRedraw { get { return base.ResizeRedraw; } set { base.ResizeRedraw = value; } }
+        public int PublicFontHeight { get { return FontHeight; } set { FontHeight = value; } }
+        public bool PublicResizeRedraw { get { return ResizeRedraw; } set { ResizeRedraw = value; } }
 #if !MONO
         public bool PublicScaleChildren { get { return base.ScaleChildren; } }
 #endif

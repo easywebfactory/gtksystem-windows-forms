@@ -18,7 +18,7 @@ public class PanelTest : TestHelper
     [Test]
     public void Constructor ()
     {
-        Panel p = new Panel ();
+        var p = new Panel ();
 
         Assert.AreEqual (false, p.AutoSize, "A1");
         Assert.AreEqual (BorderStyle.None, p.BorderStyle, "A3");
@@ -29,14 +29,14 @@ public class PanelTest : TestHelper
     [Test]
     public void AutoSize ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        Panel p = new Panel ();
+        var p = new Panel ();
         p.AutoSize = true;
         f.Controls.Add (p);
 			
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (200, 200);
         b.Location = new Point (200, 200);
         p.Controls.Add (b);

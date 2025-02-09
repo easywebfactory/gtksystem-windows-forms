@@ -13,13 +13,13 @@ using System.Text;
 namespace GtkTests.System.Resources;
 
 [TestFixture]
-public class ResXFileRefTest : GtkTests.System.Windows.Forms.TestHelper
+public class ResXFileRefTest : Windows.Forms.TestHelper
 {
     [Test]
     public void Constructor1 ()
     {
-        ResXFileRef r = new ResXFileRef ("mono.bmp", "Bitmap");
-        GtkTests.System.Windows.Forms.TestHelper.RemoveWarning (r);
+        var r = new ResXFileRef ("mono.bmp", "Bitmap");
+        RemoveWarning (r);
         Assert.AreEqual ("mono.bmp", r.FileName, "#1");
         Assert.AreEqual ("Bitmap", r.TypeName, "#2");
     }
@@ -28,13 +28,12 @@ public class ResXFileRefTest : GtkTests.System.Windows.Forms.TestHelper
     public void Constructor1_FileName_Null ()
     {
         try {
-            new ResXFileRef ((string) null, "Bitmap");
+            new ResXFileRef ((string?) null, "Bitmap");
             Assert.Fail ("#1");
-        } catch (ArgumentNullException ex) {
-            Assert.AreEqual (typeof (ArgumentNullException), ex.GetType (), "#2");
+        } catch (ArgumentException ex) {
+            Assert.AreEqual (typeof (ArgumentException), ex.GetType (), "#2");
             Assert.IsNotNull (ex.Message, "#3");
-            Assert.IsNotNull (ex.ParamName, "#4");
-            Assert.AreEqual ("fileName", ex.ParamName, "#5");
+            Assert.IsNull (ex.ParamName, "#4");
             Assert.IsNull (ex.InnerException, "#6");
         }
     }
@@ -45,11 +44,10 @@ public class ResXFileRefTest : GtkTests.System.Windows.Forms.TestHelper
         try {
             new ResXFileRef ("mono.bmp", (string) null);
             Assert.Fail ("#1");
-        } catch (ArgumentNullException ex) {
-            Assert.AreEqual (typeof (ArgumentNullException), ex.GetType (), "#2");
+        } catch (ArgumentException ex) {
+            Assert.AreEqual (typeof (ArgumentException), ex.GetType (), "#2");
             Assert.IsNotNull (ex.Message, "#3");
-            Assert.IsNotNull (ex.ParamName, "#4");
-            Assert.AreEqual ("typeName", ex.ParamName, "#5");
+            Assert.IsNull (ex.ParamName, "#4");
             Assert.IsNull (ex.InnerException, "#6");
         }
     }
@@ -57,9 +55,9 @@ public class ResXFileRefTest : GtkTests.System.Windows.Forms.TestHelper
     [Test]
     public void Constructor2 ()
     {
-        Encoding utf8 = Encoding.UTF8;
+        var utf8 = Encoding.UTF8;
 
-        ResXFileRef r = new ResXFileRef ("mono.bmp", "Bitmap", utf8);
+        var r = new ResXFileRef ("mono.bmp", "Bitmap", utf8);
         Assert.AreEqual ("mono.bmp", r.FileName, "#A1");
         Assert.AreSame (utf8, r.TextFileEncoding, "#A2");
         Assert.AreEqual ("Bitmap", r.TypeName, "#A3");
@@ -76,11 +74,10 @@ public class ResXFileRefTest : GtkTests.System.Windows.Forms.TestHelper
         try {
             new ResXFileRef ((string) null, "Bitmap", Encoding.UTF8);
             Assert.Fail ("#1");
-        } catch (ArgumentNullException ex) {
-            Assert.AreEqual (typeof (ArgumentNullException), ex.GetType (), "#2");
+        } catch (ArgumentException ex) {
+            Assert.AreEqual (typeof (ArgumentException), ex.GetType (), "#2");
             Assert.IsNotNull (ex.Message, "#3");
-            Assert.IsNotNull (ex.ParamName, "#4");
-            Assert.AreEqual ("fileName", ex.ParamName, "#5");
+            Assert.IsNull (ex.ParamName, "#4");
             Assert.IsNull (ex.InnerException, "#6");
         }
     }
@@ -91,11 +88,10 @@ public class ResXFileRefTest : GtkTests.System.Windows.Forms.TestHelper
         try {
             new ResXFileRef ("mono.bmp", (string) null, Encoding.UTF8);
             Assert.Fail ("#1");
-        } catch (ArgumentNullException ex) {
-            Assert.AreEqual (typeof (ArgumentNullException), ex.GetType (), "#2");
+        } catch (ArgumentException ex) {
+            Assert.AreEqual (typeof (ArgumentException), ex.GetType (), "#2");
             Assert.IsNotNull (ex.Message, "#3");
-            Assert.IsNotNull (ex.ParamName, "#4");
-            Assert.AreEqual ("typeName", ex.ParamName, "#5");
+            Assert.IsNull (ex.ParamName, "#4");
             Assert.IsNull (ex.InnerException, "#6");
         }
     }
@@ -103,7 +99,7 @@ public class ResXFileRefTest : GtkTests.System.Windows.Forms.TestHelper
     [Test]
     public void ToStringTest ()
     {
-        ResXFileRef r = new ResXFileRef ("mono.bmp", "Bitmap");
+        var r = new ResXFileRef ("mono.bmp", "Bitmap");
         Assert.AreEqual ("mono.bmp;Bitmap", r.ToString (), "#1");
 
         r = new ResXFileRef ("mono.bmp", "Bitmap", Encoding.UTF8);
@@ -115,7 +111,7 @@ public class ResXFileRefTest : GtkTests.System.Windows.Forms.TestHelper
 }
 
 [TestFixture]
-public class ResXFileRefConverterTest : GtkTests.System.Windows.Forms.TestHelper
+public class ResXFileRefConverterTest : Windows.Forms.TestHelper
 {
     [SetUp]
     protected override void SetUp () {
@@ -125,7 +121,7 @@ public class ResXFileRefConverterTest : GtkTests.System.Windows.Forms.TestHelper
             Directory.CreateDirectory (_tempDirectory);
         }
         _tempFileUTF7 = Path.Combine (_tempDirectory, "string_utf7.txt");
-        using (StreamWriter sw = new StreamWriter (_tempFileUTF7, false, Encoding.UTF7)) {
+        using (var sw = new StreamWriter (_tempFileUTF7, false, Encoding.UTF7)) {
             sw.Write ("\u0021\u0026\u002A\u003B");
         }
         base.SetUp ();
@@ -158,7 +154,7 @@ public class ResXFileRefConverterTest : GtkTests.System.Windows.Forms.TestHelper
     public void ConvertFrom_File_DoesNotExist ()
     {
         // file does not exist
-        string fileRef = "doesnotexist.txt;" + typeof (string).AssemblyQualifiedName;
+        var fileRef = "doesnotexist.txt;" + typeof (string).AssemblyQualifiedName;
         try {
             _converter.ConvertFrom (fileRef);
             Assert.Fail ("#A1");
@@ -174,7 +170,7 @@ public class ResXFileRefConverterTest : GtkTests.System.Windows.Forms.TestHelper
     [Test]
     public void ConvertFrom_Type_NotSet ()
     {
-        string fileRef = "doesnotexist.txt";
+        var fileRef = "doesnotexist.txt";
         try {
             _converter.ConvertFrom (fileRef);
             Assert.Fail ("#B1");
@@ -199,8 +195,8 @@ public class ResXFileRefConverterTest : GtkTests.System.Windows.Forms.TestHelper
     public void ConvertFrom_Type_String ()
     {
         // read UTF-7 content without setting encoding
-        string fileRef = _tempFileUTF7 + ";" + typeof (string).AssemblyQualifiedName;
-        string result = _converter.ConvertFrom (fileRef) as string;
+        var fileRef = _tempFileUTF7 + ";" + typeof (string).AssemblyQualifiedName;
+        var result = _converter.ConvertFrom (fileRef) as string;
         Assert.IsNotNull (result, "#A1");
         Assert.IsFalse (result == "\u0021\u0026\u002A\u003B", "#A2");
 
@@ -232,15 +228,15 @@ public class ResXFileRefConverterTest : GtkTests.System.Windows.Forms.TestHelper
             // non-windows test
             return;
 
-        string fileContents = "foobar";
-        string fileName = "foo.txt";
-        string filePath = Path.Combine (_tempDirectory, fileName);
+        var fileContents = "foobar";
+        var fileName = "foo.txt";
+        var filePath = Path.Combine (_tempDirectory, fileName);
         File.WriteAllText (filePath, fileContents);
 
         filePath = _tempDirectory + "\\.\\" + fileName;
 
-        string fileRef = filePath + ";" + typeof (string).AssemblyQualifiedName;
-        string result = _converter.ConvertFrom (fileRef) as string;
+        var fileRef = filePath + ";" + typeof (string).AssemblyQualifiedName;
+        var result = _converter.ConvertFrom (fileRef) as string;
         Assert.IsNotNull (result, "#A1");
         Assert.AreEqual (result, fileContents, "#A2");
     }
@@ -249,25 +245,25 @@ public class ResXFileRefConverterTest : GtkTests.System.Windows.Forms.TestHelper
     public void ConvertFrom_Type_StreamReader ()
     {
         // read UTF-7 content without setting encoding
-        string fileRef = _tempFileUTF7 + ";" + typeof (StreamReader).AssemblyQualifiedName;
-        using (StreamReader sr = (StreamReader) _converter.ConvertFrom (fileRef)) {
-            string result = sr.ReadToEnd ();
+        var fileRef = _tempFileUTF7 + ";" + typeof (StreamReader).AssemblyQualifiedName;
+        using (var sr = (StreamReader) _converter.ConvertFrom (fileRef)) {
+            var result = sr.ReadToEnd ();
             Assert.IsTrue (result.Length > 0, "#D1");
             Assert.IsFalse (result == "\u0021\u0026\u002A\u003B", "#D2");
         }
 
         // UTF-7 encoding is set, but not used
         fileRef = _tempFileUTF7 + ";" + typeof (StreamReader).AssemblyQualifiedName + ";utf-7";
-        using (StreamReader sr = (StreamReader) _converter.ConvertFrom (fileRef)) {
-            string result = sr.ReadToEnd ();
+        using (var sr = (StreamReader) _converter.ConvertFrom (fileRef)) {
+            var result = sr.ReadToEnd ();
             Assert.IsTrue (result.Length > 0, "#F1");
             Assert.IsFalse (result == "\u0021\u0026\u002A\u003B", "#F2");
         }
 
         // invalid encoding is set, no error
         fileRef = _tempFileUTF7 + ";" + typeof (StreamReader).AssemblyQualifiedName + ";utf-99";
-        using (StreamReader sr = (StreamReader) _converter.ConvertFrom (fileRef)) {
-            string result = sr.ReadToEnd ();
+        using (var sr = (StreamReader) _converter.ConvertFrom (fileRef)) {
+            var result = sr.ReadToEnd ();
             Assert.IsTrue (result.Length > 0, "#A1");
             Assert.IsFalse (result == "\u0021\u0026\u002A\u003B", "#A2");
         }
@@ -276,16 +272,15 @@ public class ResXFileRefConverterTest : GtkTests.System.Windows.Forms.TestHelper
     [Test]
     public void ConvertFrom_Type_MemoryStream ()
     {
-        string fileRef = _tempFileUTF7 + ";" + typeof (MemoryStream).AssemblyQualifiedName;
-        using (MemoryStream ms = (MemoryStream) _converter.ConvertFrom (fileRef)) {
-            Assert.IsTrue (ms.Length > 0);
-        }
+        var fileRef = _tempFileUTF7 + ";" + typeof (MemoryStream).AssemblyQualifiedName;
+        using var ms = (MemoryStream) _converter.ConvertFrom (fileRef);
+        Assert.IsTrue (ms.Length > 0);
     }
 
     [Test]
     public void ConvertTo ()
     {
-        ResXFileRef r = new ResXFileRef ("mono.bmp", "Bitmap");
+        var r = new ResXFileRef ("mono.bmp", "Bitmap");
         Assert.AreEqual ("mono.bmp;Bitmap", (string) _converter.ConvertTo (
             r, typeof (string)), "#1");
 

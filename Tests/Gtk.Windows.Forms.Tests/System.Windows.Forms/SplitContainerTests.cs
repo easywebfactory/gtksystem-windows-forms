@@ -9,7 +9,7 @@ public class SplitContainerTests : TestHelper
     [Test]
     public void TestSplitContainerConstruction ()
     {
-        SplitContainer sc = new SplitContainer ();
+        var sc = new SplitContainer ();
 
         Assert.AreEqual (new Size (150, 100), sc.Size, "A1");
         Assert.AreEqual (FixedPanel.None, sc.FixedPanel, "A2");
@@ -24,7 +24,7 @@ public class SplitContainerTests : TestHelper
     [Test]
     public void TestProperties ()
     {
-        SplitContainer sc = new SplitContainer ();
+        var sc = new SplitContainer ();
 			
         sc.BorderStyle = BorderStyle.FixedSingle;
         Assert.AreEqual (BorderStyle.FixedSingle, sc.BorderStyle, "C1");
@@ -51,8 +51,8 @@ public class SplitContainerTests : TestHelper
     [Test]
     public void TestPanelProperties ()
     {
-        SplitContainer sc = new SplitContainer ();
-        SplitterPanel p = sc.Panel1;
+        var sc = new SplitContainer ();
+        var p = sc.Panel1;
 
         Assert.AreEqual (AnchorStyles.Top | AnchorStyles.Left, p.Anchor, "D1");
         p.Anchor = AnchorStyles.None;
@@ -112,8 +112,8 @@ public class SplitContainerTests : TestHelper
     {
         Assert.Throws<NotSupportedException>(() =>
         {
-            SplitContainer sc = new SplitContainer();
-            SplitterPanel p = sc.Panel1;
+            var sc = new SplitContainer();
+            var p = sc.Panel1;
 
             Assert.AreEqual(100, p.Height, "E1");
 
@@ -126,8 +126,8 @@ public class SplitContainerTests : TestHelper
     {
         Assert.Throws<NotSupportedException>(() =>
         {
-            SplitContainer sc = new SplitContainer();
-            SplitterPanel p = sc.Panel1;
+            var sc = new SplitContainer();
+            var p = sc.Panel1;
 
             Assert.AreEqual(50, p.Width, "F1");
 
@@ -140,9 +140,9 @@ public class SplitContainerTests : TestHelper
     {
         Assert.Throws<NotSupportedException>(() =>
         {
-            SplitContainer sc = new SplitContainer();
-            SplitContainer sc2 = new SplitContainer();
-            SplitterPanel p = sc.Panel1;
+            var sc = new SplitContainer();
+            var sc2 = new SplitContainer();
+            var p = sc.Panel1;
 
             Assert.AreEqual(sc, p.Parent, "G1");
 
@@ -153,7 +153,7 @@ public class SplitContainerTests : TestHelper
     [Test]
     public void TestFixedPanelNone ()
     {
-        SplitContainer sc = new SplitContainer ();
+        var sc = new SplitContainer ();
 
         Assert.AreEqual (50, sc.SplitterDistance, "I1");
 
@@ -164,7 +164,7 @@ public class SplitContainerTests : TestHelper
     [Test]
     public void TestFixedPanel1 ()
     {
-        SplitContainer sc = new SplitContainer ();
+        var sc = new SplitContainer ();
         sc.FixedPanel = FixedPanel.Panel1;
 			
         Assert.AreEqual (50, sc.SplitterDistance, "J1");
@@ -176,7 +176,7 @@ public class SplitContainerTests : TestHelper
     [Test]
     public void TestFixedPanel2 ()
     {
-        SplitContainer sc = new SplitContainer ();
+        var sc = new SplitContainer ();
         sc.FixedPanel = FixedPanel.Panel2;
 
         Assert.AreEqual (50, sc.SplitterDistance, "K1");

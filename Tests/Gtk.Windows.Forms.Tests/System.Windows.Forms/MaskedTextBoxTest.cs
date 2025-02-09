@@ -25,7 +25,7 @@ public class MaskedTextBoxTest : TestHelper
     [Test]
     public void InitialProperties ()
     {
-        MaskedTextBox mtb = new MaskedTextBox ();
+        var mtb = new MaskedTextBox ();
         Assert.AreEqual (0, mtb.Lines.Length, "#L1");
         Assert.AreEqual ("", mtb.Mask, "#M1");
         Assert.AreEqual (false, mtb.Multiline, "#M6");
@@ -217,58 +217,55 @@ public class MaskedTextBoxTest : TestHelper
     [Test]
     public void CreateHandleTest ()
     {
-        using (MaskedTextBox mtb = new MaskedTextBox ()) {
-            Assert.AreEqual (false, mtb.IsHandleCreated, "#A1");
-            typeof (MaskedTextBox).GetMethod ("CreateHandle", global::System.Reflection.BindingFlags.Instance | global::System.Reflection.BindingFlags.NonPublic).Invoke (mtb, new object [] { });
-            Assert.AreEqual (true, mtb.IsHandleCreated, "#A2");
-        }
+        using var mtb = new MaskedTextBox ();
+        Assert.AreEqual (false, mtb.IsHandleCreated, "#A1");
+        typeof (MaskedTextBox).GetMethod ("CreateHandle", BindingFlags.Instance | BindingFlags.NonPublic).Invoke (mtb, new object [] { });
+        Assert.AreEqual (true, mtb.IsHandleCreated, "#A2");
     }
 		
     [Test]
     public void IsInputKeyTest ()
     {
-        using (Form f = new Form ()) {
-            using (MaskedTextBox mtb = new MaskedTextBox ()) {
-                f.Controls.Add (mtb);
-                f.Show ();
-                MethodInfo IsInputKey = typeof (MaskedTextBox).GetMethod ("IsInputKey", global::System.Reflection.BindingFlags.NonPublic | global::System.Reflection.BindingFlags.Instance);
+        using var f = new Form ();
+        using var mtb = new MaskedTextBox ();
+        f.Controls.Add (mtb);
+        f.Show ();
+        var IsInputKey = typeof (MaskedTextBox).GetMethod ("IsInputKey", BindingFlags.NonPublic | BindingFlags.Instance);
 				
-                for (int i = 0; i <= 0xFF; i++) {
-                    Keys key = (Keys) i;
-                    Keys key_ALT = key | Keys.Alt;
-                    Keys key_SHIFT = key | Keys.Shift;
-                    Keys key_CTRL = key | Keys.Control;
-                    Keys key_ALT_SHIFT = key | Keys.Alt | Keys.Shift;
-                    Keys key_ALT_CTRL = key | Keys.Alt | Keys.Control;
-                    Keys key_SHIFT_CTLR = key | Keys.Shift | Keys.Control;
-                    Keys key_ALT_SHIFT_CTLR = key | Keys.Alt | Keys.Shift | Keys.Control;
+        for (var i = 0; i <= 0xFF; i++) {
+            var key = (Keys) i;
+            var key_ALT = key | Keys.Alt;
+            var key_SHIFT = key | Keys.Shift;
+            var key_CTRL = key | Keys.Control;
+            var key_ALT_SHIFT = key | Keys.Alt | Keys.Shift;
+            var key_ALT_CTRL = key | Keys.Alt | Keys.Control;
+            var key_SHIFT_CTLR = key | Keys.Shift | Keys.Control;
+            var key_ALT_SHIFT_CTLR = key | Keys.Alt | Keys.Shift | Keys.Control;
 
-                    bool is_input = false;
+            var is_input = false;
 					
-                    switch (key) {
-                        case Keys.PageDown:
-                        case Keys.PageUp:
-                        case Keys.End:
-                        case Keys.Home:
-                        case Keys.Left:
-                        case Keys.Right:
-                        case Keys.Up:
-                        case Keys.Down:
-                        case Keys.Back:
-                            is_input = true;
-                            break;
-                    }
-
-                    Assert.AreEqual (is_input, (bool)IsInputKey.Invoke (mtb, new object [] { key }));
-                    Assert.AreEqual (false, (bool)IsInputKey.Invoke (mtb, new object [] { key_ALT }));
-                    Assert.AreEqual (is_input, (bool)IsInputKey.Invoke (mtb, new object [] { key_SHIFT }));
-                    Assert.AreEqual (is_input, (bool)IsInputKey.Invoke (mtb, new object [] { key_CTRL }));
-                    Assert.AreEqual (false, (bool)IsInputKey.Invoke (mtb, new object [] { key_ALT_SHIFT }));
-                    Assert.AreEqual (false, (bool)IsInputKey.Invoke (mtb, new object [] { key_ALT_CTRL }));
-                    Assert.AreEqual (is_input, (bool)IsInputKey.Invoke (mtb, new object [] { key_SHIFT_CTLR }));
-                    Assert.AreEqual (false, (bool)IsInputKey.Invoke (mtb, new object [] { key_ALT_SHIFT_CTLR }));
-                }
+            switch (key) {
+                case Keys.PageDown:
+                case Keys.PageUp:
+                case Keys.End:
+                case Keys.Home:
+                case Keys.Left:
+                case Keys.Right:
+                case Keys.Up:
+                case Keys.Down:
+                case Keys.Back:
+                    is_input = true;
+                    break;
             }
+
+            Assert.AreEqual (is_input, (bool)IsInputKey.Invoke (mtb, new object [] { key }));
+            Assert.AreEqual (false, (bool)IsInputKey.Invoke (mtb, new object [] { key_ALT }));
+            Assert.AreEqual (is_input, (bool)IsInputKey.Invoke (mtb, new object [] { key_SHIFT }));
+            Assert.AreEqual (is_input, (bool)IsInputKey.Invoke (mtb, new object [] { key_CTRL }));
+            Assert.AreEqual (false, (bool)IsInputKey.Invoke (mtb, new object [] { key_ALT_SHIFT }));
+            Assert.AreEqual (false, (bool)IsInputKey.Invoke (mtb, new object [] { key_ALT_CTRL }));
+            Assert.AreEqual (is_input, (bool)IsInputKey.Invoke (mtb, new object [] { key_SHIFT_CTLR }));
+            Assert.AreEqual (false, (bool)IsInputKey.Invoke (mtb, new object [] { key_ALT_SHIFT_CTLR }));
         }
     }
 		

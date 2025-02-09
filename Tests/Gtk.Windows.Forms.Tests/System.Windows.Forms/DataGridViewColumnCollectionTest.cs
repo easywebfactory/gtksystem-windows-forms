@@ -35,7 +35,7 @@ public class DataGridViewColumnCollectionTest : TestHelper
     {
         Assert.Throws<InvalidOperationException>(() =>
         {
-            DataGridView dgv = new DataGridView();
+            var dgv = new DataGridView();
             dgv.SelectionMode = DataGridViewSelectionMode.FullColumnSelect;
             dgv.Columns.Add("A", "A");
         });
@@ -49,7 +49,7 @@ public class DataGridViewColumnCollectionTest : TestHelper
         c = (new DataGridView ()).Columns;
         c.Add ("A", "B");
 			
-        DataGridViewColumn col = c [0];
+        var col = c [0];
 			
         Assert.AreEqual ("DataGridViewTextBoxColumn { Name=A, Index=0 }", col.ToString (), "T3");
         Assert.AreEqual ("DataGridViewTextBoxColumn", col.GetType ().Name, "G2");
@@ -88,9 +88,9 @@ public class DataGridViewColumnCollectionTest : TestHelper
     [Test]
     public void IndexUpdatedOnColumnCollectionChange ()
     {
-        DataGridView dgv = new DataGridView ();
+        var dgv = new DataGridView ();
 
-        Form f = new Form ();
+        var f = new Form ();
         f.Controls.Add (dgv);
         f.Show ();
 

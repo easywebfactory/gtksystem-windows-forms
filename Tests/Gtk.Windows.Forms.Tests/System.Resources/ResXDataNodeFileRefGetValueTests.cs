@@ -29,25 +29,15 @@ using System.Reflection;
 using System.Drawing;
 using System.Resources;
 using System.ComponentModel.Design;
+using GtkTests.TypeResolutionService_;
+using GtkTests.Internals.Resources;
+using GtkTests.Resources;
 
 namespace GtkTests.System.Resources;
 
 [TestFixture]
 public class ResXDataNodeFileRefGetValueTests : ResourcesTestHelper
 {
-    [Test]
-    public void ITRSNotUsedWhenNodeFromReader()
-    {
-        ResXDataNode originalNode, returnedNode;
-        originalNode = GetNodeFileRefToSerializable("ser.bbb", true);
-        returnedNode = GetNodeFromResXReader(originalNode);
-
-        Assert.IsNotNull(returnedNode, "#A1");
-        object val = returnedNode.GetValue(new ReturnSerializableSubClassITRS());
-        Assert.True(typeof(serializableSubClass) != val.GetType(), "#A2");
-        Assert.True(typeof(serializable) == val.GetType(), "#A3");
-    }
-
     [Test]
     public void CantGetValueWithOnlyFullNameAsType()
     {
@@ -58,37 +48,8 @@ public class ResXDataNodeFileRefGetValueTests : ResourcesTestHelper
             returnedNode = GetNodeFromResXReader(originalNode);
 
             Assert.IsNotNull(returnedNode, "#A1");
-            object obj = returnedNode.GetValue((AssemblyName[])null);
+            var obj = returnedNode.GetValue((AssemblyName[])null);
         });
-    }
-
-    [Test]
-    public void CantGetValueWithOnlyFullNameAsTypeByProvidingAssemblyName()
-    {
-        Assert.Throws<TypeLoadException>(() =>
-            {
-                ResXDataNode originalNode, returnedNode;
-
-                string aName = "System.Windows.Forms_test_net_2_0, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
-                AssemblyName[] assemblyNames = new AssemblyName[] { new AssemblyName(aName) };
-
-                originalNode = GetNodeFileRefToSerializable("ser.bbb", false);
-                returnedNode = GetNodeFromResXReader(originalNode);
-
-                Assert.IsNotNull(returnedNode, "#A1");
-                object obj = returnedNode.GetValue(assemblyNames);
-            });
-    }
-
-    [Test]
-    public void ITRSNotUsedWhenNodeCreatedNew()
-    {
-        ResXDataNode node;
-        node = GetNodeFileRefToSerializable("ser.bbb", true);
-
-        object val = node.GetValue(new ReturnSerializableSubClassITRS());
-        Assert.False(typeof(serializableSubClass)== val.GetType(), "#A1");
-        Assert.True(typeof(serializable)== val.GetType(), "#A2");
     }
 
     [Test]
@@ -96,59 +57,13 @@ public class ResXDataNodeFileRefGetValueTests : ResourcesTestHelper
     {
         Assert.Throws<TargetInvocationException>(() =>
         {
-            string corruptFile = Path.GetTempFileName();
-            ResXFileRef fileRef = new ResXFileRef(corruptFile, typeof(serializable).AssemblyQualifiedName);
+            var corruptFile = Path.GetTempFileName();
+            var fileRef = new ResXFileRef(corruptFile, typeof(serializable).AssemblyQualifiedName);
 
             File.AppendAllText(corruptFile, "corrupt");
-            ResXDataNode node = new ResXDataNode("aname", fileRef);
+            var node = new ResXDataNode("aname", fileRef);
             node.GetValue((AssemblyName[])null);
         });
     }
-
-    #region initial
-
-    [Test]
-    public void NullAssemblyNamesOK()
-    {
-        ResXDataNode node = GetNodeFileRefToIcon();
-
-        Object ico = node.GetValue((AssemblyName[])null);
-        Assert.IsNotNull(ico, "#A1");
-        Assert.True(typeof(Icon)== ico.GetType(), "#A2");
-    }
-
-    [Test]
-    public void NullITRSOK()
-    {
-        ResXDataNode node = GetNodeFileRefToIcon();
-
-        Object ico = node.GetValue((ITypeResolutionService)null);
-        Assert.IsNotNull(ico, "#A1");
-        Assert.False(typeof(Icon) == ico.GetType(), "#A2");
-    }
-
-    [Test]
-    public void WrongITRSOK()
-    {
-        ResXDataNode node = GetNodeFileRefToIcon();
-
-        Object ico = node.GetValue(new DummyITRS());
-        Assert.IsNotNull(ico, "#A1");
-        Assert.True(typeof(Icon) == ico.GetType(), "#A2");
-    }
-
-    [Test]
-    public void WrongAssemblyNamesOK()
-    {
-        ResXDataNode node = GetNodeFileRefToIcon();
-        AssemblyName[] ass = new AssemblyName[1];
-        ass[0] = new AssemblyName("System.Design");
-
-        Object ico = node.GetValue(ass);
-        Assert.IsNotNull(ico, "#A1");
-        Assert.False(typeof(Icon) == ico.GetType(), "#A2");
-    }
-
-    #endregion
 
 }

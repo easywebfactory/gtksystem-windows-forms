@@ -33,10 +33,10 @@ public class BindingTest : TestHelper {
     [Test]
     public void CtorTest ()
     {
-        string prop = "PROPERTY NAME";
-        object data_source = new object ();
-        string data_member = "DATA MEMBER";
-        Binding b = new Binding (prop, data_source, data_member);
+        var prop = "PROPERTY NAME";
+        var data_source = new object ();
+        var data_member = "DATA MEMBER";
+        var b = new Binding (prop, data_source, data_member);
 
         Assert.IsNull (b.BindingManagerBase, "ctor1");
         Assert.IsNotNull (b.BindingMemberInfo, "ctor2");
@@ -55,7 +55,7 @@ public class BindingTest : TestHelper {
     [Test]
     public void CtorNullTest ()
     {
-        Binding b = new Binding (null, null, null);
+        var b = new Binding (null, null, null);
 
         Assert.IsNull (b.PropertyName, "ctornull1");
         Assert.IsNull (b.DataSource, "ctornull2");
@@ -64,8 +64,8 @@ public class BindingTest : TestHelper {
     [Test]
     public void CtorEmptyProperty ()
     {
-        Binding b = new Binding ("Text", 6, String.Empty);
-        Control c = new Control ();
+        var b = new Binding ("Text", 6, String.Empty);
+        var c = new Control ();
         c.BindingContext = new BindingContext ();
         c.CreateControl ();
 
@@ -76,12 +76,12 @@ public class BindingTest : TestHelper {
     [Test]
     public void BindingManagerBaseTest ()
     {
-        if (TestHelper.RunningOnUnix) {
+        if (RunningOnUnix) {
             Assert.Ignore ("Fails at the moment");
         }
 
-        Control c1 = new Control ();
-        Control c2 = new Control ();
+        var c1 = new Control ();
+        var c2 = new Control ();
         Binding binding;
 
         c1.BindingContext = new BindingContext ();
@@ -106,10 +106,10 @@ public class BindingTest : TestHelper {
     /* create control and set binding context */
     public void BindingContextChangedTest ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         // Test BindingContextChanged Event
         c.BindingContextChanged += new EventHandler (Event_Handler1);
-        BindingContext bcG1 = new BindingContext ();
+        var bcG1 = new BindingContext ();
         eventcount = 0;
         c.BindingContext = bcG1;
         Assert.AreEqual (1, eventcount, "A1");
@@ -119,9 +119,9 @@ public class BindingTest : TestHelper {
     /* create control and show control */
     public void BindingContextChangedTest2 ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
-        Control c = new Control ();
+        var c = new Control ();
         f.Controls.Add (c);
 
         c.BindingContextChanged += new EventHandler (Event_Handler1);
@@ -135,10 +135,10 @@ public class BindingTest : TestHelper {
     /* create control, set binding context, and show control */
     public void BindingContextChangedTest3 ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        Control c = new Control ();
+        var c = new Control ();
         f.Controls.Add (c);
 
         c.BindingContextChanged += new EventHandler (Event_Handler1);
@@ -152,12 +152,12 @@ public class BindingTest : TestHelper {
     [Test]
     public void BindingContextChangedTest4 ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        ContainerControl cc = new ContainerControl ();
+        var cc = new ContainerControl ();
 
-        Control c = new Control ();
+        var c = new Control ();
         f.Controls.Add (cc);
         cc.Controls.Add (c);
 
@@ -182,12 +182,12 @@ public class BindingTest : TestHelper {
     [Test]
     public void DataBindingCountTest1 ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         Assert.AreEqual (0, c.DataBindings.Count, "1");
         c.DataBindings.Add (new Binding ("Text", c, "Name"));
         Assert.AreEqual (1, c.DataBindings.Count, "2");
 
-        Binding b = c.DataBindings[0];
+        var b = c.DataBindings[0];
         Assert.AreEqual (c, b.Control, "3");
         Assert.AreEqual (c, b.DataSource, "4");
         Assert.AreEqual ("Text", b.PropertyName, "5");
@@ -197,14 +197,14 @@ public class BindingTest : TestHelper {
     [Test]
     public void DataBindingCountTest2 ()
     {
-        Control c = new Control ();
-        Control c2 = new Control ();
+        var c = new Control ();
+        var c2 = new Control ();
         Assert.AreEqual (0, c.DataBindings.Count, "1");
         c.DataBindings.Add (new Binding ("Text", c2, "Name"));
         Assert.AreEqual (1, c.DataBindings.Count, "2");
         Assert.AreEqual (0, c2.DataBindings.Count, "3");
 
-        Binding b = c.DataBindings[0];
+        var b = c.DataBindings[0];
         Assert.AreEqual (c, b.Control, "4");
         Assert.AreEqual (c2, b.DataSource, "5");
         Assert.AreEqual ("Text", b.PropertyName, "6");
@@ -214,14 +214,14 @@ public class BindingTest : TestHelper {
     [Test]
     public void DataSourceNullTest ()
     {
-        ChildMockItem item = new ChildMockItem ();
-        Control c = new Control ();
+        var item = new ChildMockItem ();
+        var c = new Control ();
         c.Tag = null;
         item.ObjectValue = null;
 
         c.DataBindings.Add ("Tag", item, "ObjectValue");
 
-        Form f = new Form ();
+        var f = new Form ();
         f.Controls.Add (c);
 
         f.Show (); // Need this to init data binding
@@ -237,12 +237,12 @@ public class BindingTest : TestHelper {
     [Test]
     public void DataSourcePropertyChanged ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         c.BindingContext = new BindingContext ();
         c.CreateControl ();
 
-        MockItem item = new MockItem ("A", 0);
-        Binding binding = new Binding ("Text", item, "Text");
+        var item = new MockItem ("A", 0);
+        var binding = new Binding ("Text", item, "Text");
 
         c.DataBindings.Add (binding);
         Assert.AreEqual ("A", c.Text, "#A1");
@@ -254,12 +254,12 @@ public class BindingTest : TestHelper {
     [Test]
     public void DataSourcePropertyChanged_Original ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         c.BindingContext = new BindingContext ();
         c.CreateControl ();
 
-        MockItem item = new MockItem ("A", 0);
-        Binding binding = new Binding ("Text", item, "Text");
+        var item = new MockItem ("A", 0);
+        var binding = new Binding ("Text", item, "Text");
 
         c.DataBindings.Add (binding);
         Assert.AreEqual ("A", c.Text, "#A1");
@@ -271,12 +271,12 @@ public class BindingTest : TestHelper {
     [Test]
     public void DataSourcePropertyChanged_Original_BadName ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         c.BindingContext = new BindingContext ();
         c.CreateControl ();
 
-        MockItem item = new MockItem ("A", 0);
-        Binding binding = new Binding ("Text", item, "xxxxxxTextXXXXX");
+        var item = new MockItem ("A", 0);
+        var binding = new Binding ("Text", item, "xxxxxxTextXXXXX");
 
         try {
             c.DataBindings.Add (binding);
@@ -289,14 +289,14 @@ public class BindingTest : TestHelper {
     [Test]
     public void DataSourcePropertyChanged_OneDeep ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         c.BindingContext = new BindingContext ();
         c.CreateControl ();
 
-        MockItem item = new MockItem ("A", 0);
-        One parent = new One ();
+        var item = new MockItem ("A", 0);
+        var parent = new One ();
         parent.MockItem = item;
-        Binding binding = new Binding ("Text", parent, "MockItem.Text");
+        var binding = new Binding ("Text", parent, "MockItem.Text");
 
         c.DataBindings.Add (binding);
         Assert.AreEqual ("A", c.Text, "#A1");
@@ -308,16 +308,16 @@ public class BindingTest : TestHelper {
     [Test]
     public void DataSourcePropertyChanged_ThreeDeep ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         c.BindingContext = new BindingContext ();
         c.CreateControl ();
 
-        MockItem item = new MockItem ("A", 0);
-        One parent = new One ();
+        var item = new MockItem ("A", 0);
+        var parent = new One ();
         parent.Two = new Two ();
         parent.Two.Three = new Three ();
         parent.Two.Three.MockItem = item;
-        Binding binding = new Binding ("Text", parent, "Two.Three.MockItem.Text");
+        var binding = new Binding ("Text", parent, "Two.Three.MockItem.Text");
 
         c.DataBindings.Add (binding);
         Assert.AreEqual ("A", c.Text, "#A1");
@@ -326,7 +326,7 @@ public class BindingTest : TestHelper {
         Assert.AreEqual ("B", c.Text, "#B1");
 
         Assert.AreEqual (1, c.DataBindings.Count, "c.DataBindings.Count");
-        BindingMemberInfo bmi = c.DataBindings[0].BindingMemberInfo;
+        var bmi = c.DataBindings[0].BindingMemberInfo;
         Assert.AreEqual ("Two.Three.MockItem", bmi.BindingPath, "bmi.BindingPath");
         Assert.AreEqual ("Two.Three.MockItem.Text", bmi.BindingMember, "bmi.BindingMember");
         Assert.AreEqual ("Text", bmi.BindingField, "bmi.BindingField");
@@ -335,27 +335,27 @@ public class BindingTest : TestHelper {
     [Test]
     public void DataSourcePropertyChanged_DataSet ()
     {
-        DataSet ds = new DataSet ();
+        var ds = new DataSet ();
 
-        DataTable table1 = new DataTable ("Customers");
+        var table1 = new DataTable ("Customers");
         table1.Columns.Add ("Id", typeof (int));
         table1.Columns.Add ("Name", typeof (string));
         table1.Rows.Add (new object[] {3, "customer1"});
         table1.Rows.Add (new object[] {7, "customer2"});
         ds.Tables.Add (table1);
 
-        DataTable table2 = new DataTable ("Orders");
+        var table2 = new DataTable ("Orders");
         table2.Columns.Add ("OrderId", typeof (int));
         table2.Columns.Add ("CustomerId", typeof (int));
         table2.Rows.Add (new object[] {56, 7});
         table2.Rows.Add (new object[] {57, 3});
         ds.Tables.Add (table2);
 
-        DataRelation relation = new DataRelation ("CustomerOrders", table1.Columns ["Id"],
+        var relation = new DataRelation ("CustomerOrders", table1.Columns ["Id"],
             table2.Columns ["CustomerId"]);
         ds.Relations.Add (relation);
 
-        Control ctrl = new Control ();
+        var ctrl = new Control ();
         ctrl.BindingContext = new BindingContext ();
         ctrl.CreateControl ();
 
@@ -366,11 +366,11 @@ public class BindingTest : TestHelper {
     [Test]
     public void DataSourcePropertyDifferentType ()
     {
-        Exception exc = new Exception (String.Empty, new ArgumentNullException ("PARAM"));
+        var exc = new Exception (String.Empty, new ArgumentNullException ("PARAM"));
 
         // The type of the property is Exception, but we know that the value
         // is actually an ArgumentException, thus specify the ParamName property
-        Control ctrl = new Control ();
+        var ctrl = new Control ();
         ctrl.BindingContext = new BindingContext ();
         ctrl.CreateControl ();
 
@@ -381,13 +381,13 @@ public class BindingTest : TestHelper {
     [Test]
     public void ReadValueTest ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         c.BindingContext = new BindingContext ();
         c.CreateControl ();
 
-        ChildMockItem item = new ChildMockItem ();
+        var item = new ChildMockItem ();
         item.ObjectValue = "A";
-        Binding binding = new Binding ("Tag", item, "ObjectValue");
+        var binding = new Binding ("Tag", item, "ObjectValue");
         binding.ControlUpdateMode = ControlUpdateMode.Never;
 
         c.DataBindings.Add (binding);
@@ -409,13 +409,13 @@ public class BindingTest : TestHelper {
     [Test]
     public void WriteValueTest ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         c.BindingContext = new BindingContext ();
         c.CreateControl ();
 
-        MockItem item = new MockItem ();
+        var item = new MockItem ();
         item.Text = "A";
-        Binding binding = new Binding ("Text", item, "Text");
+        var binding = new Binding ("Text", item, "Text");
         binding.DataSourceUpdateMode = DataSourceUpdateMode.Never;
 
         c.DataBindings.Add (binding);
@@ -431,10 +431,10 @@ public class BindingTest : TestHelper {
     [Test]
     public void BindableComponentTest ()
     {
-        Control c = new Control ();
+        var c = new Control ();
 
-        MockItem item = new MockItem (String.Empty, 0);
-        Binding binding = new Binding ("Text", item, "Text");
+        var item = new MockItem (String.Empty, 0);
+        var binding = new Binding ("Text", item, "Text");
 
         c.DataBindings.Add (binding);
         Assert.AreEqual (c, binding.Control, "#A1");
@@ -444,9 +444,9 @@ public class BindingTest : TestHelper {
         // Now use IBindableComponent - update binding when property changes
         // since ToolStripItem doesn't have validation at all
         //
-        BindableToolStripItem toolstrip_item = new BindableToolStripItem ();
+        var toolstrip_item = new BindableToolStripItem ();
         toolstrip_item.BindingContext = new BindingContext ();
-        Binding binding2 = new Binding ("Text", item, "Text");
+        var binding2 = new Binding ("Text", item, "Text");
         binding2.DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged;
 
         item.Text = "A";
@@ -462,12 +462,12 @@ public class BindingTest : TestHelper {
     [Test]
     public void ControlUpdateModeTest ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         c.BindingContext = new BindingContext ();
         c.CreateControl ();
 
-        MockItem item = new MockItem ("A", 0);
-        Binding binding = new Binding ("Text", item, "Text");
+        var item = new MockItem ("A", 0);
+        var binding = new Binding ("Text", item, "Text");
         binding.ControlUpdateMode = ControlUpdateMode.Never;
 
         c.DataBindings.Add (binding);
@@ -480,12 +480,12 @@ public class BindingTest : TestHelper {
     [Test]
     public void DataSourceUpdateModeTest ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         c.BindingContext = new BindingContext ();
         c.CreateControl ();
 
-        MockItem item = new MockItem ("A", 0);
-        Binding binding = new Binding ("Text", item, "Text");
+        var item = new MockItem ("A", 0);
+        var binding = new Binding ("Text", item, "Text");
         binding.DataSourceUpdateMode = DataSourceUpdateMode.Never;
 
         c.DataBindings.Add (binding);
@@ -511,13 +511,13 @@ public class BindingTest : TestHelper {
     [Test]
     public void DataSourceNullValueTest ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         c.BindingContext = new BindingContext ();
         c.CreateControl ();
 
-        ChildMockItem item = new ChildMockItem ();
+        var item = new ChildMockItem ();
         item.ObjectValue = "A";
-        Binding binding = new Binding ("Tag", item, "ObjectValue");
+        var binding = new Binding ("Tag", item, "ObjectValue");
         binding.DataSourceNullValue = "NonNull";
 
         c.DataBindings.Add (binding);
@@ -533,17 +533,17 @@ public class BindingTest : TestHelper {
     [Test]
     public void NullValueTest ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         c.BindingContext = new BindingContext ();
         c.CreateControl ();
 
-        DataTable table = new DataTable ();
+        var table = new DataTable ();
         table.Columns.Add ("Name", typeof (string));
         table.Columns.Add ("Id", typeof (int));
         table.Rows.Add (null, DBNull.Value);
 
-        Binding binding = new Binding ("Tag", table, "Name");
-        Binding binding2 = new Binding ("Width", table, "Id");
+        var binding = new Binding ("Tag", table, "Name");
+        var binding2 = new Binding ("Width", table, "Id");
         binding.FormattingEnabled = true;
         binding.NullValue = "non-null";
         binding2.FormattingEnabled = true;
@@ -560,13 +560,13 @@ public class BindingTest : TestHelper {
     [Test]
     public void FormattingEnabledTest ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         c.BindingContext = new BindingContext ();
         c.CreateControl ();
 
-        MockItem item = new MockItem ();
+        var item = new MockItem ();
         item.Value = 666;
-        Binding binding = new Binding ("Text", item, "Value");
+        var binding = new Binding ("Text", item, "Value");
         binding.FormattingEnabled = true;
         binding.FormatString = "p";
 
@@ -583,7 +583,7 @@ public class BindingTest : TestHelper {
     [Test]
     public void FormatStringTest ()
     {
-        Binding binding = new Binding ("Text", null, "Text");
+        var binding = new Binding ("Text", null, "Text");
         binding.FormatString = null;
 
         Assert.AreEqual (String.Empty, binding.FormatString, "#A1");

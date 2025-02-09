@@ -40,12 +40,12 @@ public class DataGridViewCellCollectionTest : TestHelper
 
     [SetUp]
     protected override void SetUp () {
-        DataTable dt = new DataTable ();
+        var dt = new DataTable ();
         dt.Columns.Add ("Date", typeof (DateTime));
         dt.Columns.Add ("Registered", typeof (bool));
         dt.Columns.Add ("Event", typeof (string));
 
-        DataRow row = dt.NewRow ();
+        var row = dt.NewRow ();
         row ["Date"] = new DateTime (2007, 2, 3);
         row ["Event"] = "one";
         row ["Registered"] = false;
@@ -66,28 +66,28 @@ public class DataGridViewCellCollectionTest : TestHelper
     [Category ("NotWorking")]
     public void Indexer_ColumnName ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (_dataGridView);
         form.Show ();
 
-        DataGridViewCellCollection cells = _dataGridView.Rows [0].Cells;
+        var cells = _dataGridView.Rows [0].Cells;
 
-        DataGridViewCell dateCell = cells ["Date"];
+        var dateCell = cells ["Date"];
         Assert.IsNotNull (dateCell, "#A1");
         Assert.IsNotNull (dateCell.OwningColumn, "#A2");
         Assert.AreEqual ("Date", dateCell.OwningColumn.Name, "#A3");
         Assert.IsNotNull (dateCell.Value, "#A4");
         Assert.AreEqual (new DateTime (2007, 2, 3), dateCell.Value, "#A5");
 
-        DataGridViewCell eventCell = cells ["eVeNT"];
+        var eventCell = cells ["eVeNT"];
         Assert.IsNotNull (eventCell, "#B1");
         Assert.IsNotNull (eventCell.OwningColumn, "#B2");
         Assert.AreEqual ("Event", eventCell.OwningColumn.Name, "#B3");
         Assert.IsNotNull (eventCell.Value, "#B4");
         Assert.AreEqual ("one", eventCell.Value, "#B5");
 
-        DataGridViewCell registeredCell = cells ["Registered"];
+        var registeredCell = cells ["Registered"];
         Assert.IsNotNull (registeredCell, "#C1");
         Assert.IsNotNull (registeredCell.OwningColumn, "#C2");
         Assert.AreEqual ("Registered", registeredCell.OwningColumn.Name, "#C3");
@@ -100,15 +100,15 @@ public class DataGridViewCellCollectionTest : TestHelper
     [Test]
     public void Indexer_ColumnName_NotFound ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (_dataGridView);
         form.Show ();
 
-        DataGridViewCellCollection cells = _dataGridView.Rows [0].Cells;
+        var cells = _dataGridView.Rows [0].Cells;
 
         try {
-            DataGridViewCell cell = cells ["DoesNotExist"];
+            var cell = cells ["DoesNotExist"];
             Assert.Fail ("#A1: " + cell);
         } catch (ArgumentException ex) {
             // Column named DoesNotExist cannot be found
@@ -121,7 +121,7 @@ public class DataGridViewCellCollectionTest : TestHelper
         }
 
         try {
-            DataGridViewCell cell = cells [string.Empty];
+            var cell = cells [string.Empty];
             Assert.Fail ("#B1: " + cell);
         } catch (ArgumentException ex) {
             // Column named DoesNotExist cannot be found
@@ -139,15 +139,15 @@ public class DataGridViewCellCollectionTest : TestHelper
     [Test]
     public void Indexer_ColumnName_Null ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (_dataGridView);
         form.Show ();
 
-        DataGridViewCellCollection cells = _dataGridView.Rows [0].Cells;
+        var cells = _dataGridView.Rows [0].Cells;
 
         try {
-            DataGridViewCell cell = cells [(string) null];
+            var cell = cells [(string) null];
             Assert.Fail ("#A1: " + cell);
         } catch (ArgumentNullException ex) {
             Assert.AreEqual (typeof (ArgumentNullException), ex.GetType (), "#A2");
@@ -175,28 +175,28 @@ public class DataGridViewCellCollectionTest : TestHelper
     [Category ("NotWorking")]
     public void Indexer_Index ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (_dataGridView);
         form.Show ();
 
-        DataGridViewCellCollection cells = _dataGridView.Rows [0].Cells;
+        var cells = _dataGridView.Rows [0].Cells;
 
-        DataGridViewCell dateCell = cells [0];
+        var dateCell = cells [0];
         Assert.IsNotNull (dateCell, "#A1");
         Assert.IsNotNull (dateCell.OwningColumn, "#A2");
         Assert.AreEqual ("Date", dateCell.OwningColumn.Name, "#A3");
         Assert.IsNotNull (dateCell.Value, "#A4");
         Assert.AreEqual (new DateTime (2007, 2, 3), dateCell.Value, "#A5");
 
-        DataGridViewCell eventCell = cells [2];
+        var eventCell = cells [2];
         Assert.IsNotNull (eventCell, "#B1");
         Assert.IsNotNull (eventCell.OwningColumn, "#B2");
         Assert.AreEqual ("Event", eventCell.OwningColumn.Name, "#B3");
         Assert.IsNotNull (eventCell.Value, "#B4");
         Assert.AreEqual ("one", eventCell.Value, "#B5");
 
-        DataGridViewCell registeredCell = cells [1];
+        var registeredCell = cells [1];
         Assert.IsNotNull (registeredCell, "#C1");
         Assert.IsNotNull (registeredCell.OwningColumn, "#C2");
         Assert.AreEqual ("Registered", registeredCell.OwningColumn.Name, "#C3");
@@ -209,15 +209,15 @@ public class DataGridViewCellCollectionTest : TestHelper
     [Test]
     public void Indexer_Index_Negative ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (_dataGridView);
         form.Show ();
 
-        DataGridViewCellCollection cells = _dataGridView.Rows [0].Cells;
+        var cells = _dataGridView.Rows [0].Cells;
 
         try {
-            DataGridViewCell cell = cells [-1];
+            var cell = cells [-1];
             Assert.Fail ("#A1:" + cell);
         } catch (ArgumentOutOfRangeException ex) {
             // Index was out of range. Must be non-negative
@@ -248,10 +248,10 @@ public class DataGridViewCellCollectionTest : TestHelper
     [Test]
     public void Indexer_Index_Overflow ()
     {
-        DataGridViewRow row = new DataGridViewRow ();
-        DataGridViewCellCollection cells = row.Cells;
+        var row = new DataGridViewRow ();
+        var cells = row.Cells;
         try {
-            DataGridViewCell cell = cells [0];
+            var cell = cells [0];
             Assert.Fail ("#1:" + cell);
         } catch (ArgumentOutOfRangeException ex) {
             // Index was out of range. Must be non-negative
@@ -267,12 +267,12 @@ public class DataGridViewCellCollectionTest : TestHelper
     [Test]
     public void Indexer_Value_Null ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (_dataGridView);
         form.Show ();
 
-        DataGridViewCellCollection cells = _dataGridView.Rows [0].Cells;
+        var cells = _dataGridView.Rows [0].Cells;
 
         try {
             cells ["Date"] = null;

@@ -29,7 +29,7 @@ namespace GtkTests.System.Windows.Forms;
 [Category("Interactive")]
 public class SendKeysTest  : TestHelper {
 
-    static Queue keys = new Queue();
+    static readonly Queue keys = new Queue();
 
     internal struct Keys {
         public string key;
@@ -84,7 +84,7 @@ public class SendKeysTest  : TestHelper {
         }
         t.Stop();
         Assert.AreEqual(2, keys.Count, "#A1");
-        Keys k = (Keys)keys.Dequeue();
+        var k = (Keys)keys.Dequeue();
         Assert.IsFalse(k.up, "#A2");
         Assert.IsFalse(k.shift, "#A3");
         Assert.IsFalse(k.ctrl, "#A4");
@@ -116,7 +116,7 @@ public class SendKeysTest  : TestHelper {
         }
         Assert.AreEqual(12, keys.Count, "#A1");
 
-        Keys k = (Keys)keys.Dequeue();
+        var k = (Keys)keys.Dequeue();
         Assert.IsFalse(k.up, "#A2");
         Assert.IsTrue(k.shift, "#A3");
         Assert.IsFalse(k.ctrl, "#A4");

@@ -46,7 +46,7 @@ public static class Consts {
 #elif NET_4_5
 				string profile = "net_4_x";
 #else
-                string profile = "netstandard2_0";
+                var profile = "netstandard2_0";
 #endif
                 var corlib = typeof (object).Assembly.Location;
 				var lib = Path.GetDirectoryName (Path.GetDirectoryName (corlib));

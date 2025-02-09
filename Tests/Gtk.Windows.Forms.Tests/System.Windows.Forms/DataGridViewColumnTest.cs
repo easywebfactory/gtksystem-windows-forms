@@ -43,7 +43,7 @@ public class DataGridViewColumnTest : TestHelper
     [Test]
     public void InitialValues ()
     {
-        DataGridViewColumn dvc = new DataGridViewColumn  ();
+        var dvc = new DataGridViewColumn  ();
         Assert.AreEqual (DataGridViewAutoSizeColumnMode.NotSet, dvc.AutoSizeMode, "#A dvc.AutoSizeMode");
         Assert.IsNull (dvc.CellTemplate, "#A dvc.CellTemplate");
         Assert.IsNull (dvc.CellType, "#A dvc.CellType");
@@ -77,7 +77,7 @@ public class DataGridViewColumnTest : TestHelper
     [Test] // bug #80746
     public void HeaderText_NotBound ()
     {
-        DataGridViewColumn dvc = new DataGridViewColumn ();
+        var dvc = new DataGridViewColumn ();
         Assert.AreEqual (string.Empty, dvc.HeaderText, "#A1");
         dvc.Name = "A";
         dvc.HeaderText = "B";
@@ -100,7 +100,7 @@ public class DataGridViewColumnTest : TestHelper
     [Test]
     public void HeaderText_Bound ()
     {
-        DataGridView dataGrid = new DataGridView ();
+        var dataGrid = new DataGridView ();
         DataGridViewColumn dvc = new DataGridViewTextBoxColumn ();
         dataGrid.ColumnNameChanged += new DataGridViewColumnEventHandler (
             DataGridView_ColumnNameChanged);
@@ -129,7 +129,7 @@ public class DataGridViewColumnTest : TestHelper
     [Test]
     public void Name_Bound ()
     {
-        DataGridView dataGrid = new DataGridView ();
+        var dataGrid = new DataGridView ();
         DataGridViewColumn dvc = new DataGridViewTextBoxColumn ();
         dataGrid.ColumnNameChanged += new DataGridViewColumnEventHandler (
             DataGridView_ColumnNameChanged);
@@ -218,7 +218,7 @@ public class DataGridViewColumnTest : TestHelper
     [Test]
     public void CellTemplateDataGridView ()
     {
-        DataGridView dgv = new DataGridView ();
+        var dgv = new DataGridView ();
         DataGridViewColumn dvc = new DataGridViewTextBoxColumn ();
         dgv.Columns.Add (dvc);
         Assert.IsNull (dvc.CellTemplate.DataGridView, "#1");

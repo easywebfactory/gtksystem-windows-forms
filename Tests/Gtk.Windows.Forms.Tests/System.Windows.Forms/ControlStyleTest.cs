@@ -15,12 +15,12 @@ namespace GtkTests.System.Windows.Forms;
 [TestFixture]
 public class TestControlStyle  : TestHelper {
 
-    static Array style_values = Enum.GetValues(typeof(ControlStyles));
-    static string[] style_names = Enum.GetNames(typeof(ControlStyles));
+    static readonly Array style_values = Enum.GetValues(typeof(ControlStyles));
+    static readonly string[] style_names = Enum.GetNames(typeof(ControlStyles));
 
     public void AssertAreEqual(string[] want, string[] got, string name) {
         if (want.Length == got.Length) {
-            for (int i=0; i < want.Length; i++) {
+            for (var i=0; i < want.Length; i++) {
                 if (want[i] != got[i]) {
                     Console.WriteLine("{0}: Expected {1}, got {2}", name, want[i], got[i]);
                 }
@@ -31,15 +31,15 @@ public class TestControlStyle  : TestHelper {
 
     public static void CheckStyles (Control ctrl, string msg, params ControlStyles [] ExpectedStyles)
     {
-        MethodInfo method = ctrl.GetType ().GetMethod ("GetStyle", BindingFlags.ExactBinding | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type [] {typeof(ControlStyles)}, null);
+        var method = ctrl.GetType ().GetMethod ("GetStyle", BindingFlags.ExactBinding | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type [] {typeof(ControlStyles)}, null);
         Assert.IsNotNull (method, "Cannot complete test, didn't find GetStyle method on Control");
 			
-        string failed = "";
+        var failed = "";
 			
         if (ExpectedStyles == null)
             ExpectedStyles = new ControlStyles [0];
         foreach (ControlStyles style in Enum.GetValues (typeof(ControlStyles))) {
-            bool result = (bool) method.Invoke (ctrl, new object [] {style});
+            var result = (bool) method.Invoke (ctrl, new object [] {style});
             if (Array.IndexOf (ExpectedStyles, style) >= 0) {
                 if (!result) 
                     failed += "\t" + "ControlStyles." + style.ToString () + " was expected, but is not set." + Environment.NewLine;
@@ -58,7 +58,7 @@ public class TestControlStyle  : TestHelper {
 
         result = new string[style_names.Length];
 
-        for (int i = 0; i < style_values.Length; i++) {
+        for (var i = 0; i < style_values.Length; i++) {
             result[i] = style_names[i] + "=" + control.GetType().GetMethod("GetStyle", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(control, new object[1] {(ControlStyles)style_values.GetValue(i)});
         }
 
@@ -291,7 +291,7 @@ public class TestControlStyle  : TestHelper {
             "UseTextForAccessibility=True"
         };
 
-        LinkLabel link = new LinkLabel ();
+        var link = new LinkLabel ();
 
         // Test LinkLabel without text and without links
         Assert.AreEqual(LinkLabel_want, GetStyles(link), "#1");
@@ -559,7 +559,7 @@ public class TestControlStyle  : TestHelper {
             "UseTextForAccessibility=True"
         };
 
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
         Assert.AreEqual(Form_want, GetStyles(f), "FormStyles");
         f.Dispose ();

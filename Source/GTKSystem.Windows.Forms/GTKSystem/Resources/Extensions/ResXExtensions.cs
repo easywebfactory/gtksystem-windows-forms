@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Resources;
 
 namespace GTKSystem.Resources.Extensions
 {
@@ -13,7 +8,7 @@ namespace GTKSystem.Resources.Extensions
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new System.Exception("string Is Null Or Empty");
+                throw new System.ArgumentException("string Is Null Or Empty");
             }
             else
                 return value;
@@ -22,7 +17,8 @@ namespace GTKSystem.Resources.Extensions
         {
             if (value == null)
             {
-                throw new System.Exception("string Is Null Or Empty");
+                throw new System.
+                    ArgumentException("string Is Null Or Empty");
             }
             else
                 return value;
@@ -31,7 +27,7 @@ namespace GTKSystem.Resources.Extensions
         {
             if (value == null)
             {
-                throw new System.Exception("string is null");
+                throw new System.ArgumentException("string is null");
             }
             else
                 return value;

@@ -83,7 +83,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyAutoToolTip ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.AutoToolTip = true;
         Assert.AreEqual (true, tsi.AutoToolTip, "B1");
@@ -98,7 +98,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyBackColor ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.BackColor = Color.BurlyWood;
         Assert.AreEqual (Color.BurlyWood, tsi.BackColor, "B1");
@@ -113,7 +113,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyBackgroundImage ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         Image i = new Bitmap (1, 1);
         tsi.BackgroundImage = i;
@@ -129,7 +129,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyBackgroundImageLayout ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.BackgroundImageLayout = ImageLayout.Zoom;
         Assert.AreEqual (ImageLayout.Zoom, tsi.BackgroundImageLayout, "B1");
@@ -144,7 +144,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyDisplayStyle ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.DisplayStyle = ToolStripItemDisplayStyle.Image;
         Assert.AreEqual (ToolStripItemDisplayStyle.Image, tsi.DisplayStyle, "B1");
@@ -159,7 +159,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyEnabled ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.Enabled = false;
         Assert.AreEqual (false, tsi.Enabled, "B1");
@@ -174,9 +174,9 @@ public class ToolStripItemTests : TestHelper
     public void PropertyFont ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
-        Font f = new Font ("Arial", 12);
+        var f = new Font ("Arial", 12);
 
         tsi.Font = f;
         Assert.AreSame (f, tsi.Font, "B1");
@@ -191,7 +191,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyForeColor ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.ForeColor = Color.BurlyWood;
         Assert.AreEqual (Color.BurlyWood, tsi.ForeColor, "B1");
@@ -206,7 +206,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyHeight ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.Height = 42;
         Assert.AreEqual (42, tsi.Height, "B1");
@@ -221,7 +221,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyImage ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         Image i = new Bitmap (1, 1);
         tsi.Image = i;
@@ -237,7 +237,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyImageAlign ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.ImageAlign = ContentAlignment.TopRight;
         Assert.AreEqual (ContentAlignment.TopRight, tsi.ImageAlign, "B1");
@@ -262,7 +262,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyImageIndex ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.ImageIndex = 42;
         Assert.AreEqual (42, tsi.ImageIndex, "B1");
@@ -287,7 +287,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyImageKey ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.ImageKey = "open";
         Assert.AreEqual ("open", tsi.ImageKey, "B1");
@@ -302,7 +302,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyImageScaling ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.ImageScaling = ToolStripItemImageScaling.None;
         Assert.AreEqual (ToolStripItemImageScaling.None, tsi.ImageScaling, "B1");
@@ -317,7 +317,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyImageTransparentColor ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.ImageTransparentColor = Color.BurlyWood;
         Assert.AreEqual (Color.BurlyWood, tsi.ImageTransparentColor, "B1");
@@ -332,7 +332,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyMergeAction ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.MergeAction = MergeAction.Replace;
         Assert.AreEqual (MergeAction.Replace, tsi.MergeAction, "B1");
@@ -357,7 +357,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyMergeIndex ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.MergeIndex = 42;
         Assert.AreEqual (42, tsi.MergeIndex, "B1");
@@ -372,7 +372,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyName ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.Name = "MyName";
         Assert.AreEqual ("MyName", tsi.Name, "B1");
@@ -387,7 +387,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyOverflow ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.Overflow = ToolStripItemOverflow.Never;
         Assert.AreEqual (ToolStripItemOverflow.Never, tsi.Overflow, "B1");
@@ -412,9 +412,9 @@ public class ToolStripItemTests : TestHelper
     public void PropertyOwner ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
-        ToolStrip ts = new ToolStrip ();
+        var ts = new ToolStrip ();
         tsi.Owner = ts;
         Assert.AreSame (ts, tsi.Owner, "B1");
         Assert.AreEqual ("OwnerChanged", ew.ToString (), "B2");
@@ -428,7 +428,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyPadding ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.Padding = new Padding (6);
         Assert.AreEqual (new Padding (6), tsi.Padding, "B1");
@@ -443,7 +443,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyRightToLeft ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.RightToLeft = RightToLeft.No;
         Assert.AreEqual (RightToLeft.No, tsi.RightToLeft, "B1");
@@ -458,7 +458,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyRightToLeftAutoMirrorImage ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.RightToLeftAutoMirrorImage = true;
         Assert.AreEqual (true, tsi.RightToLeftAutoMirrorImage, "B1");
@@ -473,7 +473,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertySize ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.Size = new Size (42, 42);
         Assert.AreEqual (new Size (42, 42), tsi.Size, "B1");
@@ -488,7 +488,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyTag ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.Tag = "tag";
         Assert.AreSame ("tag", tsi.Tag, "B1");
@@ -503,7 +503,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyText ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.Text = "Text";
         Assert.AreEqual ("Text", tsi.Text, "B1");
@@ -518,7 +518,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyTextAlign ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.TextAlign = ContentAlignment.TopRight;
         Assert.AreEqual (ContentAlignment.TopRight, tsi.TextAlign, "B1");
@@ -543,7 +543,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyTextImageRelation ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.TextImageRelation = TextImageRelation.Overlay;
         Assert.AreEqual (TextImageRelation.Overlay, tsi.TextImageRelation, "B1");
@@ -558,7 +558,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyToolTipText ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.ToolTipText = "Text";
         Assert.AreEqual ("Text", tsi.ToolTipText, "B1");
@@ -573,7 +573,7 @@ public class ToolStripItemTests : TestHelper
     public void PropertyWidth ()
     {
         ToolStripItem tsi = new NullToolStripItem ();
-        EventWatcher ew = new EventWatcher (tsi);
+        var ew = new EventWatcher (tsi);
 
         tsi.Width = 42;
         Assert.AreEqual (42, tsi.Width, "B1");
@@ -587,8 +587,8 @@ public class ToolStripItemTests : TestHelper
     [Test]
     public void MethodDispose ()
     {
-        ToolStrip ts = new ToolStrip ();
-        NullToolStripItem tsi = new NullToolStripItem ();
+        var ts = new ToolStrip ();
+        var tsi = new NullToolStripItem ();
 			
         ts.Items.Add (tsi);
 			
@@ -603,7 +603,7 @@ public class ToolStripItemTests : TestHelper
     [Test]
     public void BehaviorBackColor ()
     {
-        ToolStrip ts = new ToolStrip ();
+        var ts = new ToolStrip ();
         ToolStripItem tsi = new NullToolStripItem ();
 
         ts.Items.Add (tsi);
@@ -626,7 +626,7 @@ public class ToolStripItemTests : TestHelper
     [Test]
     public void BehaviorEnabled ()
     {
-        ToolStrip ts = new ToolStrip ();
+        var ts = new ToolStrip ();
         ToolStripItem tsi = new NullToolStripItem ();
 
         ts.Items.Add (tsi);
@@ -657,22 +657,22 @@ public class ToolStripItemTests : TestHelper
         // is set last resets the others to their default state
         ToolStripItem tsi = new NullToolStripItem ();
 			
-        Bitmap i1 = new Bitmap (16, 16);
+        var i1 = new Bitmap (16, 16);
         i1.SetPixel (0, 0, Color.Blue);
-        Bitmap i2 = new Bitmap (16, 16);
+        var i2 = new Bitmap (16, 16);
         i2.SetPixel (0, 0, Color.Red);
-        Bitmap i3 = new Bitmap (16, 16);
+        var i3 = new Bitmap (16, 16);
         i3.SetPixel (0, 0, Color.Green);
 			
         Assert.AreEqual (null, tsi.Image, "D1");
         Assert.AreEqual (-1, tsi.ImageIndex, "D2");
         Assert.AreEqual (string.Empty, tsi.ImageKey, "D3");
 			
-        ImageList il = new ImageList ();
+        var il = new ImageList ();
         il.Images.Add ("i2", i2);
         il.Images.Add ("i3", i3);
 			
-        ToolStrip ts = new ToolStrip ();
+        var ts = new ToolStrip ();
 			
         ts.Items.Add (tsi);
 	
@@ -705,11 +705,11 @@ public class ToolStripItemTests : TestHelper
     [Test]	// This should not crash
     public void BehaviorImageListBadIndex ()
     {
-        Form f = new Form ();
-        ToolStrip ts = new ToolStrip ();
+        var f = new Form ();
+        var ts = new ToolStrip ();
         ts.Items.Add ("Hey").ImageIndex = 3;
 
-        Image i = ts.Items[0].Image;
+        var i = ts.Items[0].Image;
 			
         f.Controls.Add (ts);
 
@@ -723,7 +723,7 @@ public class ToolStripItemTests : TestHelper
 			
         public EventWatcher (ToolStripItem tsi)
         {
-            tsi.Click += new EventHandler (delegate (Object obj, EventArgs e) { events += ("Click;"); });
+            tsi.Click += new EventHandler (delegate (Object _, EventArgs _) { events += ("Click;"); });
         }
 
         public override string ToString ()

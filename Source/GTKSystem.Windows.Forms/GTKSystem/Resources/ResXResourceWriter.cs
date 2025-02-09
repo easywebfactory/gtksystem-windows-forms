@@ -103,42 +103,70 @@ namespace System.Resources
         private bool _initialized;
 
         private readonly Func<Type, string> _typeNameConverter; // no public property to be consistent with ResXDataNode class.
+        private string basePath;
 
         /// <summary>
         ///  Base Path for ResXFileRefs.
         /// </summary>
-        public string BasePath { get; set; }
+        public string BasePath
+        {
+            get => basePath;
+            set
+            {
+                var path = value;
+                path = path.Replace("/", Path.DirectorySeparatorChar.ToString()).Replace("\\", Path.DirectorySeparatorChar.ToString());
+                basePath = path;
+            }
+        }
 
         /// <summary>
         ///  Creates a new ResXResourceWriter that will write to the specified file.
         /// </summary>
-        public ResXResourceWriter(string fileName) => _fileName = fileName;
-
-        public ResXResourceWriter(string fileName, Func<Type, string> typeNameConverter)
+        public ResXResourceWriter(string fileName)
         {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                throw new ArgumentException(nameof(fileName));
+            }
             _fileName = fileName;
+        }
+
+        public ResXResourceWriter(string fileName, Func<Type, string> typeNameConverter): this(fileName)
+        {
             _typeNameConverter = typeNameConverter;
         }
 
         /// <summary>
         ///  Creates a new ResXResourceWriter that will write to the specified stream.
         /// </summary>
-        public ResXResourceWriter(Stream stream) => _stream = stream;
-
-        public ResXResourceWriter(Stream stream, Func<Type, string> typeNameConverter)
+        public ResXResourceWriter(Stream stream)
         {
+            if ((stream?.Length??0) == 0)
+            {
+                throw new ArgumentException(nameof(stream));
+            }
             _stream = stream;
+        }
+
+        public ResXResourceWriter(Stream stream, Func<Type, string> typeNameConverter):this(stream)
+        {
             _typeNameConverter = typeNameConverter;
         }
 
         /// <summary>
         ///  Creates a new ResXResourceWriter that will write to the specified TextWriter.
         /// </summary>
-        public ResXResourceWriter(TextWriter textWriter) => _textWriter = textWriter;
-
-        public ResXResourceWriter(TextWriter textWriter, Func<Type, string> typeNameConverter)
+        public ResXResourceWriter(TextWriter textWriter)
         {
+            if (textWriter == null)
+            {
+                throw new ArgumentNullException(nameof(textWriter));
+            }
             _textWriter = textWriter;
+        }
+
+        public ResXResourceWriter(TextWriter textWriter, Func<Type, string> typeNameConverter):  this(textWriter)
+        {
             _typeNameConverter = typeNameConverter;
         }
 
@@ -333,9 +361,9 @@ namespace System.Resources
 
             if (!string.IsNullOrEmpty(modifiedBasePath))
             {
-                if (!modifiedBasePath.EndsWith("\\"))
+                if (!modifiedBasePath.EndsWith(Path.DirectorySeparatorChar))
                 {
-                    modifiedBasePath += "\\";
+                    modifiedBasePath += Path.DirectorySeparatorChar;
                 }
 
                 fileRef?.MakeFilePathRelative(modifiedBasePath);

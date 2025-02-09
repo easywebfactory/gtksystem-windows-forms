@@ -37,7 +37,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void AddExtension ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         Assert.IsTrue (sfd.AddExtension, "#1");
         sfd.AddExtension = false;
         Assert.IsFalse (sfd.AddExtension, "#2");
@@ -46,7 +46,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void CheckFileExists ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         Assert.IsFalse (sfd.CheckFileExists, "#1");
         sfd.CheckFileExists = true;
         Assert.IsTrue (sfd.CheckFileExists, "#2");
@@ -55,7 +55,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void CheckPathExists ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         Assert.IsTrue (sfd.CheckPathExists, "#1");
         sfd.CheckPathExists = false;
         Assert.IsFalse (sfd.CheckPathExists, "#2");
@@ -64,7 +64,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void DefaultExt ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         Assert.IsNotNull (sfd.DefaultExt, "#A1");
         Assert.AreEqual (string.Empty, sfd.DefaultExt, "#A2");
 
@@ -100,7 +100,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void DereferenceLinks ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         Assert.IsTrue (sfd.DereferenceLinks, "#1");
         sfd.DereferenceLinks = false;
         Assert.IsFalse (sfd.DereferenceLinks, "#2");
@@ -109,7 +109,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void FileName ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         Assert.IsNotNull (sfd.FileName, "#A1");
         Assert.AreEqual (string.Empty, sfd.FileName, "#A2");
 
@@ -129,7 +129,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void FileName_InvalidPathCharacter ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         sfd.FileName = Path.InvalidPathChars [0] + "file";
         Assert.IsNotNull (sfd.FileName, "#1");
         Assert.AreEqual (Path.InvalidPathChars [0] + "file", sfd.FileName, "#2");
@@ -138,7 +138,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void FileNames ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         Assert.IsNotNull (sfd.FileNames, "#A1");
         Assert.AreEqual (0, sfd.FileNames.Length, "#A2");
 
@@ -155,7 +155,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void FileNames_InvalidPathCharacter ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         sfd.FileName = Path.InvalidPathChars [0] + "file";
         Assert.IsNotNull (sfd.FileNames, "#1");
         Assert.AreEqual (1, sfd.FileNames.Length, "#2");
@@ -165,7 +165,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void Filter ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         Assert.IsNotNull (sfd.Filter, "#A1");
         Assert.AreEqual (string.Empty, sfd.Filter, "#A2");
 
@@ -185,7 +185,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void Filter_InvalidFormat ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         try {
             sfd.Filter = "Text files (*.txt)|*.txt|All files (*.*)";
             Assert.Fail ("#1");
@@ -206,7 +206,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void FilterIndex ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         Assert.AreEqual (1, sfd.FilterIndex, "#1");
         sfd.FilterIndex = 99;
         Assert.AreEqual (99, sfd.FilterIndex, "#2");
@@ -217,7 +217,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void InitialDirectory ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         Assert.IsNotNull (sfd.InitialDirectory, "#A1");
         Assert.AreEqual (string.Empty, sfd.InitialDirectory, "#A2");
 
@@ -229,7 +229,7 @@ public class SaveFileDialogTest : TestHelper
         Assert.IsNotNull (sfd.InitialDirectory, "#C1");
         Assert.AreEqual (string.Empty, sfd.InitialDirectory, "#C2");
 
-        string initialDir = Path.Combine (Path.GetTempPath (), 
+        var initialDir = Path.Combine (Path.GetTempPath (), 
             "doesnotexistforsure");
         sfd.InitialDirectory = initialDir;
         Assert.IsNotNull (sfd.InitialDirectory, "#D1");
@@ -240,7 +240,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void Reset ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         sfd.AddExtension = false;
         sfd.CheckFileExists = true;
         sfd.CheckPathExists = false;
@@ -281,7 +281,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void RestoreDirectory ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         Assert.IsFalse (sfd.RestoreDirectory, "#1");
         sfd.RestoreDirectory = true;
         Assert.IsTrue (sfd.RestoreDirectory, "#2");
@@ -290,7 +290,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void ShowHelp ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         Assert.IsFalse (sfd.ShowHelp, "#1");
         sfd.ShowHelp = true;
         Assert.IsTrue (sfd.ShowHelp, "#2");
@@ -299,7 +299,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void Title ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         Assert.IsNotNull (sfd.Title, "#A1");
         Assert.AreEqual (string.Empty, sfd.Title, "#A2");
 
@@ -315,7 +315,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void ToStringTest ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         sfd.CheckFileExists = true;
         sfd.DefaultExt = "txt";
         sfd.DereferenceLinks = false;
@@ -328,7 +328,7 @@ public class SaveFileDialogTest : TestHelper
         sfd.Title = "Saving";
         sfd.ValidateNames = false;
 
-        StringBuilder sb = new StringBuilder ();
+        var sb = new StringBuilder ();
         sb.Append (typeof (SaveFileDialog).FullName);
         sb.Append (": Title: ");
         sb.Append (sfd.Title);
@@ -353,7 +353,7 @@ public class SaveFileDialogTest : TestHelper
     [Test]
     public void ValidateNames ()
     {
-        SaveFileDialog sfd = new SaveFileDialog ();
+        var sfd = new SaveFileDialog ();
         Assert.IsTrue (sfd.ValidateNames, "#1");
         sfd.ValidateNames = false;
         Assert.IsFalse (sfd.ValidateNames, "#2");

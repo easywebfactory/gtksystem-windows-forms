@@ -21,9 +21,9 @@ public class PictureBoxTest : TestHelper
     [Test]
     public void PictureBoxPropertyTest()
     {
-        Form myForm = new Form();
+        var myForm = new Form();
         myForm.ShowInTaskbar = false;
-        PictureBox myPicBox = new PictureBox();
+        var myPicBox = new PictureBox();
         myForm.Controls.Add(myPicBox);
 
         // B 
@@ -43,8 +43,8 @@ public class PictureBoxTest : TestHelper
     [Category("NotWorking")]
     public void ImageLocation_Async()
     {
-        Form f = new Form();
-        PictureBox pb = new PictureBox();
+        var f = new Form();
+        var pb = new PictureBox();
         f.Controls.Add(pb);
         f.Show();
 
@@ -56,7 +56,7 @@ public class PictureBoxTest : TestHelper
         Assert.AreEqual(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"), pb.ImageLocation, "#B1");
         Assert.AreSame(pb.InitialImage, pb.Image, "#B2");
 
-        using (Stream s = TestResourceHelper.GetStreamOfResource("Test/resources/32x32.ico"))
+        using (var s = TestResourceHelper.GetStreamOfResource("Test/resources/32x32.ico"))
         {
             pb.Image = Image.FromStream(s);
         }
@@ -109,7 +109,7 @@ public class PictureBoxTest : TestHelper
         Assert.AreEqual(string.Empty, pb.ImageLocation, "#I1");
         Assert.IsNull(pb.Image, "#I2");
 
-        using (Stream s = TestResourceHelper.GetStreamOfResource("Test/resources/32x32.ico"))
+        using (var s = TestResourceHelper.GetStreamOfResource("Test/resources/32x32.ico"))
         {
             pb.Image = Image.FromStream(s);
         }
@@ -140,8 +140,8 @@ public class PictureBoxTest : TestHelper
     [Test]
     public void ImageLocation_Sync()
     {
-        Form f = new Form();
-        PictureBox pb = new PictureBox();
+        var f = new Form();
+        var pb = new PictureBox();
         f.Controls.Add(pb);
         f.Show();
 
@@ -154,7 +154,7 @@ public class PictureBoxTest : TestHelper
         Assert.AreEqual(60, pb.Image.Height, "#B3");
         Assert.AreEqual(150, pb.Image.Width, "#B4");
 
-        using (Stream s = TestResourceHelper.GetStreamOfResource("Test/resources/32x32.ico"))
+        using (var s = TestResourceHelper.GetStreamOfResource("Test/resources/32x32.ico"))
         {
             pb.Image = Image.FromStream(s);
         }
@@ -190,7 +190,7 @@ public class PictureBoxTest : TestHelper
         Assert.IsNull(pb.ImageLocation, "#G1");
         Assert.IsNull(pb.Image, "#G2");
 
-        using (Stream s = TestResourceHelper.GetStreamOfResource("Test/resources/32x32.ico"))
+        using (var s = TestResourceHelper.GetStreamOfResource("Test/resources/32x32.ico"))
         {
             pb.Image = Image.FromStream(s);
         }
@@ -242,10 +242,10 @@ public class PictureBoxTest : TestHelper
     [Test]
     public void ImagePropertyTest()
     {
-        PictureBox myPicBox = new PictureBox();
+        var myPicBox = new PictureBox();
         // I 
         Assert.IsNull(myPicBox.Image, "#1");
-        Image myImage = Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"));
+        var myImage = Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/resources/M.gif"));
         myPicBox.Image = myImage;
         Assert.AreSame(myImage, myPicBox.Image, "#2");
         Assert.AreEqual(60, myPicBox.Image.Height, "#3");
@@ -259,7 +259,7 @@ public class PictureBoxTest : TestHelper
     [Test] // Load ()
     public void Load_ImageLocation_Empty()
     {
-        PictureBox pb = new PictureBox();
+        var pb = new PictureBox();
         pb.ImageLocation = string.Empty;
 
         try
@@ -279,7 +279,7 @@ public class PictureBoxTest : TestHelper
     [Test] // Load ()
     public void Load_ImageLocation_Null()
     {
-        PictureBox pb = new PictureBox();
+        var pb = new PictureBox();
         pb.ImageLocation = null;
 
         try
@@ -299,7 +299,7 @@ public class PictureBoxTest : TestHelper
     [Test] // Load (String)
     public void Load2_Url_Empty()
     {
-        PictureBox pb = new PictureBox();
+        var pb = new PictureBox();
 
         try
         {
@@ -318,7 +318,7 @@ public class PictureBoxTest : TestHelper
     [Test] // Load (String)
     public void Load2_Url_Null()
     {
-        PictureBox pb = new PictureBox();
+        var pb = new PictureBox();
 
         try
         {
@@ -337,7 +337,7 @@ public class PictureBoxTest : TestHelper
     [Test] // LoadAsync ()
     public void LoadAsync1_ImageLocation_Empty()
     {
-        PictureBox pb = new PictureBox();
+        var pb = new PictureBox();
         pb.ImageLocation = string.Empty;
 
         try
@@ -357,7 +357,7 @@ public class PictureBoxTest : TestHelper
     [Test] // LoadAsync ()
     public void LoadAsync1_ImageLocation_Null()
     {
-        PictureBox pb = new PictureBox();
+        var pb = new PictureBox();
         pb.ImageLocation = null;
 
         try
@@ -377,7 +377,7 @@ public class PictureBoxTest : TestHelper
     [Test] // LoadAsync (String)
     public void LoadASync2_Url_Empty()
     {
-        PictureBox pb = new PictureBox();
+        var pb = new PictureBox();
 
         try
         {
@@ -396,7 +396,7 @@ public class PictureBoxTest : TestHelper
     [Test] // LoadAsync (String)
     public void LoadAsync2_Url_Null()
     {
-        PictureBox pb = new PictureBox();
+        var pb = new PictureBox();
 
         try
         {
@@ -415,14 +415,14 @@ public class PictureBoxTest : TestHelper
     [Test]
     public void ToStringMethodTest()
     {
-        PictureBox myPicBox = new PictureBox();
+        var myPicBox = new PictureBox();
         Assert.AreEqual("System.Windows.Forms.PictureBox, SizeMode: Normal", myPicBox.ToString(), "#T1");
     }
 
     [Test]
     public void Defaults()
     {
-        PictureBox pb = new PictureBox();
+        var pb = new PictureBox();
 
         Assert.IsNotNull(pb.ErrorImage, "A1");
 

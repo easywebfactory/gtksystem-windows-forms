@@ -18,6 +18,8 @@ namespace System.Resources
     [TypeConverter(typeof(Converter))]
     public partial class ResXFileRef
     {
+        private string fileName;
+
         /// <summary>
         ///  Creates a new ResXFileRef that points to the specified file.
         ///  The type refered to by typeName must support a constructor
@@ -44,7 +46,17 @@ namespace System.Resources
             return new ResXFileRef(FileName, TypeName, TextFileEncoding);
         }
 
-        public string FileName { get; private set; }
+        public string FileName
+        {
+            get => fileName;
+            private set
+            {
+                var name = value;
+                name = name.Replace("/", Path.DirectorySeparatorChar.ToString())
+                    .Replace("\\", Path.DirectorySeparatorChar.ToString());
+                fileName = name;
+            }
+        }
 
         public string TypeName { get; }
 

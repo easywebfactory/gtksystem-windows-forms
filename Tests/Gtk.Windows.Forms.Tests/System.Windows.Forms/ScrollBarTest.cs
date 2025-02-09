@@ -20,7 +20,7 @@ public class ScrollBarTest : TestHelper
     [Test]
     public void PubPropTest()
     {
-        MyScrollBar myscrlbar = new MyScrollBar();
+        var myscrlbar = new MyScrollBar();
 
         // B
         myscrlbar.BackColor = Color.Red;
@@ -70,7 +70,7 @@ public class ScrollBarTest : TestHelper
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            MyScrollBar myscrlbar = new MyScrollBar();
+            var myscrlbar = new MyScrollBar();
             myscrlbar.Minimum = 10;
             myscrlbar.Maximum = 20;
             myscrlbar.Value = 9;
@@ -83,7 +83,7 @@ public class ScrollBarTest : TestHelper
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            MyScrollBar myscrlbar = new MyScrollBar();
+            var myscrlbar = new MyScrollBar();
             myscrlbar.SmallChange = -1;
         });
     }
@@ -93,7 +93,7 @@ public class ScrollBarTest : TestHelper
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            MyScrollBar myscrlbar = new MyScrollBar();
+            var myscrlbar = new MyScrollBar();
             myscrlbar.LargeChange = -1;
         });
     }
@@ -101,7 +101,7 @@ public class ScrollBarTest : TestHelper
     [Test]
     public void PubMethodTest()
     {
-        MyScrollBar myscrlbar = new MyScrollBar();
+        var myscrlbar = new MyScrollBar();
         myscrlbar.Text = "New HScrollBar";
         Assert.AreEqual("MonoTests.System.Windows.Forms.MyScrollBar, Minimum: 0, Maximum: 100, Value: 0",
             myscrlbar.ToString(), "T5");
@@ -110,7 +110,7 @@ public class ScrollBarTest : TestHelper
     [Test]
     public void DefaultMarginTest()
     {
-        MyScrollBar s = new MyScrollBar();
+        var s = new MyScrollBar();
         Assert.AreEqual(new Padding(0), s.PublicDefaultMargin, "A1");
     }
 
@@ -206,7 +206,7 @@ public class ScrollBarEventTest : TestHelper
     [Test]
     public void BackColorChangedTest()
     {
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
         ScrollBar myHscrlbar = new HScrollBar();
@@ -221,7 +221,7 @@ public class ScrollBarEventTest : TestHelper
     [Test]
     public void BackgroundImageChangedTest()
     {
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
         ScrollBar myHscrlbar = new HScrollBar();
@@ -236,14 +236,14 @@ public class ScrollBarEventTest : TestHelper
     [Test]
     public void FontChangedTest()
     {
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
         ScrollBar myHscrlbar = new HScrollBar();
         myform.Controls.Add(myHscrlbar);
         myHscrlbar.Font = new Font(FontFamily.GenericMonospace, 10);
         myHscrlbar.FontChanged += new EventHandler(ScrollBar_EventHandler);
-        FontDialog myFontDialog = new FontDialog();
+        var myFontDialog = new FontDialog();
         myHscrlbar.Font = myFontDialog.Font;
         Assert.AreEqual(true, eventhandled, "F2");
         eventhandled = false;
@@ -253,7 +253,7 @@ public class ScrollBarEventTest : TestHelper
     [Test]
     public void ForeColorChangedTest()
     {
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
         ScrollBar myHscrlbar = new HScrollBar();
@@ -269,10 +269,10 @@ public class ScrollBarEventTest : TestHelper
     [Category("NotWorking")]
     public void ScrollTest()
     {
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar myHscrlbar = new MyScrollBar();
+        var myHscrlbar = new MyScrollBar();
         myform.Controls.Add(myHscrlbar);
         myHscrlbar.Scroll += new ScrollEventHandler(ScrollBarScroll_EventHandler);
         myHscrlbar.ScrollNow();
@@ -285,10 +285,10 @@ public class ScrollBarEventTest : TestHelper
     [Test]
     public void TextChangedTest()
     {
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar myHscrlbar = new MyScrollBar();
+        var myHscrlbar = new MyScrollBar();
         myform.Controls.Add(myHscrlbar);
         myHscrlbar.TextChanged += new EventHandler(ScrollBar_EventHandler);
         myHscrlbar.Text = "foo";
@@ -301,10 +301,10 @@ public class ScrollBarEventTest : TestHelper
     [Test]
     public void ValueChangeTest()
     {
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar myHscrlbar = new MyScrollBar();
+        var myHscrlbar = new MyScrollBar();
         myform.Controls.Add(myHscrlbar);
         myHscrlbar.Value = 40;
         myHscrlbar.ValueChanged += new EventHandler(ScrollBar_EventHandler);
@@ -338,7 +338,7 @@ public class MyHScrollBarTest : TestHelper
     [Test]
     public void ProtectedTest()
     {
-        MyHScrollBar msbar = new MyHScrollBar();
+        var msbar = new MyHScrollBar();
 
         Assert.AreEqual(80, msbar.MyDefaultSize.Width, "D1");
         // this is environment dependent.
@@ -369,7 +369,7 @@ public class MyVScrollBarTest : TestHelper
     [Test]
     public void PubMethodTest()
     {
-        MyVScrollBar msbar = new MyVScrollBar();
+        var msbar = new MyVScrollBar();
 
         Assert.AreEqual(RightToLeft.No, msbar.RightToLeft, "R1");
 
@@ -378,7 +378,7 @@ public class MyVScrollBarTest : TestHelper
     [Test]
     public void ProtMethodTest()
     {
-        MyVScrollBar msbar = new MyVScrollBar();
+        var msbar = new MyVScrollBar();
 
         // This is environment dependent.
         //Assert.AreEqual (21, msbar.MyDefaultSize.Width, "D3");
@@ -393,7 +393,7 @@ public class HScrollBarTestEventsOrder : TestHelper
     public string[] ArrayListToString(ArrayList arrlist)
     {
         string[] retval = new string[arrlist.Count];
-        for (int i = 0; i < arrlist.Count; i++)
+        for (var i = 0; i < arrlist.Count; i++)
             retval[i] = (string)arrlist[i];
         return retval;
     }
@@ -406,10 +406,10 @@ public class HScrollBarTestEventsOrder : TestHelper
             "OnBindingContextChanged",
             "OnBindingContextChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar s = new MyScrollBar();
+        var s = new MyScrollBar();
         myform.Controls.Add(s);
 
         Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
@@ -426,10 +426,10 @@ public class HScrollBarTestEventsOrder : TestHelper
             "OnBackColorChanged",
             "OnInvalidated"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar s = new MyScrollBar();
+        var s = new MyScrollBar();
         myform.Controls.Add(s);
         s.BackColor = Color.Aqua;
 
@@ -447,10 +447,10 @@ public class HScrollBarTestEventsOrder : TestHelper
             "OnBackgroundImageChanged",
             "OnInvalidated"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar s = new MyScrollBar();
+        var s = new MyScrollBar();
         myform.Controls.Add(s);
         s.BackgroundImage = Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/System.Windows.Forms/bitmaps/a.png"));
 
@@ -504,12 +504,12 @@ public class HScrollBarTestEventsOrder : TestHelper
             "OnBindingContextChanged",
             "OnBindingContextChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar s = new MyScrollBar();
+        var s = new MyScrollBar();
         myform.Controls.Add(s);
-        FontDialog myFontDialog = new FontDialog();
+        var myFontDialog = new FontDialog();
         s.Font = myFontDialog.Font;
 
         Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
@@ -526,10 +526,10 @@ public class HScrollBarTestEventsOrder : TestHelper
             "OnForeColorChanged",
             "OnInvalidated"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar s = new MyScrollBar();
+        var s = new MyScrollBar();
         myform.Controls.Add(s);
         s.ForeColor = Color.Aqua;
 
@@ -546,10 +546,10 @@ public class HScrollBarTestEventsOrder : TestHelper
             "OnBindingContextChanged",
             "OnImeModeChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar s = new MyScrollBar();
+        var s = new MyScrollBar();
         myform.Controls.Add(s);
         s.ImeMode = ImeMode.Katakana;
 
@@ -566,10 +566,10 @@ public class HScrollBarTestEventsOrder : TestHelper
             "OnBindingContextChanged",
             "OnInvalidated"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar s = new MyScrollBar();
+        var s = new MyScrollBar();
         myform.Controls.Add(s);
         s.Visible = true;
         s.Refresh();
@@ -587,10 +587,10 @@ public class HScrollBarTestEventsOrder : TestHelper
             "OnScroll",
             "OnValueChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar s = new MyScrollBar();
+        var s = new MyScrollBar();
         myform.Controls.Add(s);
         s.ScrollNow();
 
@@ -607,10 +607,10 @@ public class HScrollBarTestEventsOrder : TestHelper
             "OnBindingContextChanged",
             "OnTextChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar s = new MyScrollBar();
+        var s = new MyScrollBar();
         myform.Controls.Add(s);
         s.Text = "foobar";
 
@@ -627,10 +627,10 @@ public class HScrollBarTestEventsOrder : TestHelper
             "OnBindingContextChanged",
             "OnValueChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar s = new MyScrollBar();
+        var s = new MyScrollBar();
         myform.Controls.Add(s);
         s.Value = 10;
 
@@ -644,27 +644,27 @@ public class MyScrollBar2 : HScrollBar
     protected ArrayList results = new ArrayList();
     public MyScrollBar2() : base()
     {
-        this.HandleCreated += new EventHandler(HandleCreated_Handler);
-        this.BackColorChanged += new EventHandler(BackColorChanged_Handler);
-        this.BackgroundImageChanged += new EventHandler(BackgroundImageChanged_Handler);
-        this.BindingContextChanged += new EventHandler(BindingContextChanged_Handler);
-        this.Click += new EventHandler(Click_Handler);
-        this.DoubleClick += new EventHandler(DoubleClick_Handler);
-        this.FontChanged += new EventHandler(FontChanged_Handler);
-        this.ForeColorChanged += new EventHandler(ForeColorChanged_Handler);
-        this.ImeModeChanged += new EventHandler(ImeModeChanged_Handler);
-        this.MouseDown += new MouseEventHandler(MouseDown_Handler);
-        this.MouseMove += new MouseEventHandler(MouseMove_Handler);
-        this.MouseUp += new MouseEventHandler(MouseUp_Handler);
-        this.Invalidated += new InvalidateEventHandler(Invalidated_Handler);
-        this.Resize += new EventHandler(Resize_Handler);
-        this.SizeChanged += new EventHandler(SizeChanged_Handler);
-        this.Layout += new LayoutEventHandler(Layout_Handler);
-        this.VisibleChanged += new EventHandler(VisibleChanged_Handler);
-        this.Paint += new PaintEventHandler(Paint_Handler);
-        this.Scroll += new ScrollEventHandler(Scroll_Handler);
-        this.TextChanged += new EventHandler(TextChanged_Handler);
-        this.ValueChanged += new EventHandler(ValueChanged_Handler);
+        HandleCreated += new EventHandler(HandleCreated_Handler);
+        BackColorChanged += new EventHandler(BackColorChanged_Handler);
+        BackgroundImageChanged += new EventHandler(BackgroundImageChanged_Handler);
+        BindingContextChanged += new EventHandler(BindingContextChanged_Handler);
+        Click += new EventHandler(Click_Handler);
+        DoubleClick += new EventHandler(DoubleClick_Handler);
+        FontChanged += new EventHandler(FontChanged_Handler);
+        ForeColorChanged += new EventHandler(ForeColorChanged_Handler);
+        ImeModeChanged += new EventHandler(ImeModeChanged_Handler);
+        MouseDown += new MouseEventHandler(MouseDown_Handler);
+        MouseMove += new MouseEventHandler(MouseMove_Handler);
+        MouseUp += new MouseEventHandler(MouseUp_Handler);
+        Invalidated += new InvalidateEventHandler(Invalidated_Handler);
+        Resize += new EventHandler(Resize_Handler);
+        SizeChanged += new EventHandler(SizeChanged_Handler);
+        Layout += new LayoutEventHandler(Layout_Handler);
+        VisibleChanged += new EventHandler(VisibleChanged_Handler);
+        Paint += new PaintEventHandler(Paint_Handler);
+        Scroll += new ScrollEventHandler(Scroll_Handler);
+        TextChanged += new EventHandler(TextChanged_Handler);
+        ValueChanged += new EventHandler(ValueChanged_Handler);
     }
 
     protected void HandleCreated_Handler(object sender, EventArgs e)
@@ -868,16 +868,16 @@ public class MyScrollBar2 : HScrollBar
         m = new Message();
 
         m.Msg = 8468;
-        m.HWnd = this.Handle;
+        m.HWnd = Handle;
         m.WParam = (IntPtr)0x1;
         m.LParam = (IntPtr)0x1a051a;
-        this.WndProc(ref m);
+        WndProc(ref m);
 
         m.Msg = 233;
-        m.HWnd = this.Handle;
+        m.HWnd = Handle;
         m.WParam = (IntPtr)0x1;
         m.LParam = (IntPtr)0x12eb34;
-        this.WndProc(ref m);
+        WndProc(ref m);
     }
 }
 
@@ -888,7 +888,7 @@ public class HScrollBarTestEventsOrder2 : TestHelper
     public string[] ArrayListToString(ArrayList arrlist)
     {
         string[] retval = new string[arrlist.Count];
-        for (int i = 0; i < arrlist.Count; i++)
+        for (var i = 0; i < arrlist.Count; i++)
             retval[i] = (string)arrlist[i];
         return retval;
     }
@@ -901,10 +901,10 @@ public class HScrollBarTestEventsOrder2 : TestHelper
             "BindingContextChanged",
             "BindingContextChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar2 s = new MyScrollBar2();
+        var s = new MyScrollBar2();
         myform.Controls.Add(s);
 
         Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
@@ -921,10 +921,10 @@ public class HScrollBarTestEventsOrder2 : TestHelper
             "Invalidated",
             "BackColorChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar2 s = new MyScrollBar2();
+        var s = new MyScrollBar2();
         myform.Controls.Add(s);
         s.BackColor = Color.Aqua;
 
@@ -943,10 +943,10 @@ public class HScrollBarTestEventsOrder2 : TestHelper
             "BackgroundImageChanged"
 
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar2 s = new MyScrollBar2();
+        var s = new MyScrollBar2();
         myform.Controls.Add(s);
         s.BackgroundImage = Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/System.Windows.Forms/bitmaps/a.png"));
 
@@ -1000,12 +1000,12 @@ public class HScrollBarTestEventsOrder2 : TestHelper
             "BindingContextChanged",
             "BindingContextChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar2 s = new MyScrollBar2();
+        var s = new MyScrollBar2();
         myform.Controls.Add(s);
-        FontDialog myFontDialog = new FontDialog();
+        var myFontDialog = new FontDialog();
         s.Font = myFontDialog.Font;
 
         Assert.AreEqual(EventsWanted, ArrayListToString(s.Results));
@@ -1022,10 +1022,10 @@ public class HScrollBarTestEventsOrder2 : TestHelper
             "Invalidated",
             "ForeColorChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar2 s = new MyScrollBar2();
+        var s = new MyScrollBar2();
         myform.Controls.Add(s);
         s.ForeColor = Color.Aqua;
 
@@ -1042,10 +1042,10 @@ public class HScrollBarTestEventsOrder2 : TestHelper
             "BindingContextChanged",
             "ImeModeChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar2 s = new MyScrollBar2();
+        var s = new MyScrollBar2();
         myform.Controls.Add(s);
         s.ImeMode = ImeMode.Katakana;
 
@@ -1062,10 +1062,10 @@ public class HScrollBarTestEventsOrder2 : TestHelper
             "BindingContextChanged",
             "Invalidated"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar2 s = new MyScrollBar2();
+        var s = new MyScrollBar2();
         myform.Controls.Add(s);
         s.Visible = true;
         s.Refresh();
@@ -1084,10 +1084,10 @@ public class HScrollBarTestEventsOrder2 : TestHelper
             "Scroll",
             "ValueChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar2 s = new MyScrollBar2();
+        var s = new MyScrollBar2();
         myform.Controls.Add(s);
         s.ScrollNow();
 
@@ -1104,10 +1104,10 @@ public class HScrollBarTestEventsOrder2 : TestHelper
             "BindingContextChanged",
             "TextChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar2 s = new MyScrollBar2();
+        var s = new MyScrollBar2();
         myform.Controls.Add(s);
         s.Text = "foobar";
 
@@ -1124,10 +1124,10 @@ public class HScrollBarTestEventsOrder2 : TestHelper
             "BindingContextChanged",
             "ValueChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyScrollBar2 s = new MyScrollBar2();
+        var s = new MyScrollBar2();
         myform.Controls.Add(s);
         s.Value = 10;
 
@@ -1142,7 +1142,7 @@ public class ScrollEventArgsTest : TestHelper
     [Test]
     public void Defaults()
     {
-        ScrollEventArgs e = new ScrollEventArgs(ScrollEventType.EndScroll, 5);
+        var e = new ScrollEventArgs(ScrollEventType.EndScroll, 5);
 
         Assert.AreEqual(5, e.NewValue, "A1");
         Assert.AreEqual(-1, e.OldValue, "A2");
@@ -1174,7 +1174,7 @@ public class ScrollEventArgsTest : TestHelper
 
 public class MyScrollBar : HScrollBar
 {
-    private ArrayList results = new ArrayList();
+    private readonly ArrayList results = new ArrayList();
 
     public MyScrollBar() : base()
     {
@@ -1423,15 +1423,15 @@ public class MyScrollBar : HScrollBar
         m = new Message();
 
         m.Msg = 8468;
-        m.HWnd = this.Handle;
+        m.HWnd = Handle;
         m.WParam = (IntPtr)0x1;
         m.LParam = (IntPtr)0x1a051a;
-        this.WndProc(ref m);
+        WndProc(ref m);
 
         m.Msg = 233;
-        m.HWnd = this.Handle;
+        m.HWnd = Handle;
         m.WParam = (IntPtr)0x1;
         m.LParam = (IntPtr)0x12eb34;
-        this.WndProc(ref m);
+        WndProc(ref m);
     }
 }

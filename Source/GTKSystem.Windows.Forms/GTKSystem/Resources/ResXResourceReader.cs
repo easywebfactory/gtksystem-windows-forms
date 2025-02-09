@@ -90,7 +90,7 @@ namespace System.Resources
 
         internal ResXResourceReader(Stream stream, ITypeResolutionService typeResolver, IAliasResolver aliasResolver)
         {
-            _stream = stream;
+            _stream = stream ?? throw new ArgumentException(nameof(stream));
             _typeResolver = typeResolver;
             _aliasResolver = aliasResolver ?? new ReaderAliasResolver();
         }

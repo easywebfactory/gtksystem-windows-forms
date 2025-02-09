@@ -8,15 +8,15 @@ public class ControlCollectionTest : TestHelper
     [Test]
     public void ControlCollectionTests ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         c.Name = "A";
-        Control c2 = new Control ();
+        var c2 = new Control ();
         c2.Name = "B";
-        Control c3 = new Control ();
+        var c3 = new Control ();
         c3.Name = "a";
-        Control c4 = new Control ();
+        var c4 = new Control ();
         c4.Name = "B";
-        Control c5 = new Control ();
+        var c5 = new Control ();
         c5.Name = "a";
 			
         c.Controls.Add (c2);
@@ -66,7 +66,7 @@ public class ControlCollectionTest : TestHelper
     {
         Assert.Throws<ArgumentNullException>(() =>
         {
-            Control c = new Control();
+            var c = new Control();
             c.Controls.Find("", false);
         });
     }

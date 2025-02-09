@@ -58,20 +58,20 @@ public class DataGridViewCellStyleTest  : TestHelper {
 
     [Test]
     public void TestApplyStyle () {
-        DataGridViewCellStyle style_aux = new DataGridViewCellStyle();
+        var style_aux = new DataGridViewCellStyle();
         style.ApplyStyle(style_aux);
         Assert.AreEqual (style_aux, style, "#B1");
     }
 
     [Test]
     public void TestClone () {
-        DataGridViewCellStyle style_aux = (DataGridViewCellStyle) style.Clone();
+        var style_aux = (DataGridViewCellStyle) style.Clone();
         Assert.AreEqual (style_aux, style, "#C1");
     }
 
     [Test]
     public void TestEquals () {
-        DataGridViewCellStyle style_aux = (DataGridViewCellStyle) style.Clone();
+        var style_aux = (DataGridViewCellStyle) style.Clone();
         Assert.AreEqual (true, (style_aux.Equals(style)), "#D1");
     }
 
@@ -96,8 +96,8 @@ public class DataGridViewCellStyleTest  : TestHelper {
     [Test]
     public void FormatProvider ()
     {
-        CultureInfo orignalCulture = CultureInfo.CurrentCulture;
-        CultureInfo orignalUICulture = CultureInfo.CurrentUICulture;
+        var orignalCulture = CultureInfo.CurrentCulture;
+        var orignalUICulture = CultureInfo.CurrentUICulture;
 
         try {
             Thread.CurrentThread.CurrentCulture = new CultureInfo ("nl-BE");
@@ -120,7 +120,7 @@ public class DataGridViewCellStyleTest  : TestHelper {
     [Test]
     public void IsFormatProviderDefault ()
     {
-        CultureInfo orignalCulture = CultureInfo.CurrentCulture;
+        var orignalCulture = CultureInfo.CurrentCulture;
 
         try {
             Assert.IsTrue (style.IsFormatProviderDefault, "#1");

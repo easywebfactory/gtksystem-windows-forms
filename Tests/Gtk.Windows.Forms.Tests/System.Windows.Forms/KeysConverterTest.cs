@@ -30,7 +30,7 @@ public class KeysConverterTest : TestHelper
     [Test]
     public void CanConvertTo ()
     {
-        KeysConverter c = new KeysConverter ();
+        var c = new KeysConverter ();
 
         Assert.AreEqual (true, c.CanConvertTo (null, typeof (string)), "A1");
         Assert.AreEqual (false, c.CanConvertTo (null, typeof (int)), "A2");

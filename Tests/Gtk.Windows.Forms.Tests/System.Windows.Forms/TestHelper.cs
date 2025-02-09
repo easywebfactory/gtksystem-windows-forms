@@ -24,13 +24,13 @@ public class TestHelper
 		
     [TearDown]
     protected virtual void TearDown () {
-        int c = Application.OpenForms.Count;
+        var c = Application.OpenForms.Count;
         if (c > 0) {
             Console.WriteLine ("HEY! You created " + c.ToString () + " form(s) and you didn't dispose of them!");
             Console.WriteLine ("Please modify your test to shut me up.");
-            Console.WriteLine ("Test: " + NUnit.Framework.TestContext.CurrentContext.Test.FullName);
+            Console.WriteLine ("Test: " + TestContext.CurrentContext.Test.FullName);
         }
-        for (int i = Application.OpenForms.Count - 1; i >= 0; i--) {
+        for (var i = Application.OpenForms.Count - 1; i >= 0; i--) {
             Application.OpenForms[i].Dispose ();
         }
     }		
@@ -39,15 +39,15 @@ public class TestHelper
 		
     public class FormWatcher : Form
     {
-        int[] watches;
+        readonly int[] watches;
         public FormWatcher (int[] watches) : base () {
             this.watches = watches;
         }
         protected override void WndProc (ref Message m)
         {
-            foreach (int i in watches) {
+            foreach (var i in watches) {
                 if ((int)m.Msg == i) {
-                    Console.WriteLine ((this.Name != "" && this.Name != null ? this.Name : "FormWatcher") + " received message " + m.ToString ());
+                    Console.WriteLine ((Name != "" && Name != null ? Name : "FormWatcher") + " received message " + m.ToString ());
                     break;
                 }
             }
@@ -57,15 +57,15 @@ public class TestHelper
 		
     public class ControlWatcher : Control
     {
-        int[] watches;
+        readonly int[] watches;
         public ControlWatcher (int[] watches) : base () {
             this.watches = watches;
         }
         protected override void WndProc (ref Message m)
         {				
-            foreach (int i in watches) {
+            foreach (var i in watches) {
                 if ((int)m.Msg == i) {
-                    Console.WriteLine ((this.Name != "" && this.Name != null ? this.Name : "ControlWatcher") + " received message " + m.ToString ());
+                    Console.WriteLine ((Name != "" && Name != null ? Name : "ControlWatcher") + " received message " + m.ToString ());
                     break;
                 }
             }
@@ -75,19 +75,19 @@ public class TestHelper
 
     public class ButtonWatcher : Button
     {
-        int[] watches;
+        readonly int[] watches;
         public ButtonWatcher (int[] watches) : base () {
             this.watches = watches;
-            foreach (int i in this.watches) {
+            foreach (var i in this.watches) {
                 Console.WriteLine ("Listening to " + Enum.GetName (typeof(Msg), i));
             }
         }
 			
         protected override void WndProc (ref Message m)
         {
-            foreach (int i in watches) {
+            foreach (var i in watches) {
                 if ((int)m.Msg == i) {
-                    Console.WriteLine ((this.Name != "" && this.Name != null ? this.Name : "ButtonWatcher") + " received message " + m.ToString ());
+                    Console.WriteLine ((Name != "" && Name != null ? Name : "ButtonWatcher") + " received message " + m.ToString ());
                     break;
                 }
             }
@@ -107,11 +107,10 @@ public class TestHelper
 
     public static void DumpObject (object obj, Type objType, string objName, string prefix, int maxrecursive)
     {
-        using (StringWriter writer = new StringWriter ()) {
-            DumpObject (obj, objType, objName, writer, 0, prefix, new ArrayList (), maxrecursive, 0);
-            Debug.WriteLine (writer.ToString ());
-            //return writer.ToString ();
-        }
+        using var writer = new StringWriter ();
+        DumpObject (obj, objType, objName, writer, 0, prefix, new ArrayList (), maxrecursive, 0);
+        Debug.WriteLine (writer.ToString ());
+        //return writer.ToString ();
     }
 		
     public static void DumpObject (object obj, Type objType, string objName, StringWriter writer, int tabs, string prefix, ArrayList done, int maxrecursive, int level)
@@ -119,7 +118,7 @@ public class TestHelper
         if (obj == null)
             return;
 
-        for (int j = 0; j < done.Count; j++) {
+        for (var j = 0; j < done.Count; j++) {
             if (!(obj.GetType ().IsClass || obj.GetType ().IsInterface))
                 continue;
             if (done [j] == obj)
@@ -132,10 +131,10 @@ public class TestHelper
         PropertyInfo [] properties = objType.GetProperties (BindingFlags.Public | BindingFlags.Instance);
         FieldInfo [] fields = objType.GetFields (BindingFlags.Public | BindingFlags.Instance);
 			
-        Hashtable values = new Hashtable ();
-        Hashtable members = new Hashtable ();
+        var values = new Hashtable ();
+        var members = new Hashtable ();
 			
-        foreach (PropertyInfo property in properties) {
+        foreach (var property in properties) {
             MethodInfo getter;
             object value;
 				
@@ -162,7 +161,7 @@ public class TestHelper
             values.Add (property.Name, value);
         }
 
-        foreach (FieldInfo field in fields) {
+        foreach (var field in fields) {
             object value;
 				
             try {
@@ -182,18 +181,18 @@ public class TestHelper
         }
 			
         string [] sorted = new string [values.Count];
-        int i = 0;
+        var i = 0;
         foreach (DictionaryEntry entry in values) {
             sorted [i++] = (string) entry.Key;
         }
         Array.Sort (sorted);
 
-        string showName = objName;
-        for (int j = 0; j < sorted.Length; j++) {
-            string name = sorted [j];
-            object value = values [name];
-            string message = prefix + showName + "." + name;
-            string tab = new string ('\t', tabs);
+        var showName = objName;
+        for (var j = 0; j < sorted.Length; j++) {
+            var name = sorted [j];
+            var value = values [name];
+            var message = prefix + showName + "." + name;
+            var tab = new string ('\t', tabs);
 				
             if (value == null) {
                 writer.WriteLine ("{0}Assert.IsNull ({1}.{2}, \"{3}\");", tab, showName, name, message);
@@ -218,7 +217,7 @@ public class TestHelper
                 case TypeCode.UInt64:
                     if (value.GetType ().IsEnum) {
                         string [] flags = value.ToString ().Split (',');
-                        for (int k = 0; k < flags.Length; k++)
+                        for (var k = 0; k < flags.Length; k++)
                             flags [k] = value.GetType ().Name + "." + flags [k].Trim ();
                         code = string.Join (" | ", flags);
                     } else {
@@ -274,17 +273,17 @@ public class TestHelper
 		
     public static CreateParams GetCreateParams (Control control)
     {
-        CreateParams cp = (CreateParams) control.GetType().GetProperty("CreateParams", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(control, null);
+        var cp = (CreateParams) control.GetType().GetProperty("CreateParams", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(control, null);
         return cp;
     }
 
     public static bool IsStyleSet (Control control, WindowStyles style) {
-        CreateParams cp = GetCreateParams (control);
+        var cp = GetCreateParams (control);
         return ((cp.Style & (int) style) == (int) style);
     }
 		
     public static bool IsExStyleSet (Control control, WindowExStyles style) {
-        CreateParams cp = GetCreateParams (control);
+        var cp = GetCreateParams (control);
         return ((cp.ExStyle & (int) style) == (int) style);
     }
 
@@ -292,7 +291,7 @@ public class TestHelper
         get {
             // check for Unix platforms - see FAQ for more details
             // http://www.mono-project.com/FAQ:_Technical#How_to_detect_the_execution_platform_.3F
-            int platform = (int) Environment.OSVersion.Platform;
+            var platform = (int) Environment.OSVersion.Platform;
             return ((platform == 4) || (platform == 128) || (platform == 6));
         }
     }

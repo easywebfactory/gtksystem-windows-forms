@@ -19,7 +19,7 @@ public class ProgressBarTest : TestHelper
     [Test]
     public void ProgressBarPropertyTest ()
     {
-        ProgressBar myProgressBar = new ProgressBar ();
+        var myProgressBar = new ProgressBar ();
 			
         // A
         Assert.AreEqual (false, myProgressBar.AllowDrop, "#A1");
@@ -27,7 +27,7 @@ public class ProgressBarTest : TestHelper
         // B
         Assert.AreEqual ("Control", myProgressBar.BackColor.Name, "#B1");
         Assert.AreEqual (null, myProgressBar.BackgroundImage, "#B3");
-        string gif = TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif");
+        var gif = TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif");
         myProgressBar.BackgroundImage = Image.FromFile (gif);
         // comparing image objects fails on MS .Net so using Size property
         Assert.AreEqual (Image.FromFile(gif, true).Size, myProgressBar.BackgroundImage.Size, "#B4");
@@ -57,14 +57,14 @@ public class ProgressBarTest : TestHelper
     [Test]
     public void ForeColorTest ()
     {
-        ProgressBar progressBar = new ProgressBar ();
+        var progressBar = new ProgressBar ();
         Assert.AreEqual (SystemColors.Highlight, progressBar.ForeColor, "#A1");
         progressBar.ForeColor = Color.Red;
         Assert.AreEqual (Color.Red, progressBar.ForeColor, "#A2");
         progressBar.ForeColor = Color.White;
         Assert.AreEqual (Color.White, progressBar.ForeColor, "#A3");
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (progressBar);
         form.Show ();
@@ -83,7 +83,7 @@ public class ProgressBarTest : TestHelper
     [Test]
     public void ResetForeColor ()
     {
-        ProgressBar progressBar = new ProgressBar ();
+        var progressBar = new ProgressBar ();
         progressBar.ForeColor = Color.Red;
         progressBar.ResetForeColor ();
         Assert.AreEqual (SystemColors.Highlight, progressBar.ForeColor);
@@ -94,7 +94,7 @@ public class ProgressBarTest : TestHelper
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            ProgressBar myProgressBar = new ProgressBar();
+            var myProgressBar = new ProgressBar();
             myProgressBar.Value = -1;
             myProgressBar.Value = 100;
         });
@@ -106,7 +106,7 @@ public class ProgressBarTest : TestHelper
         Type expectedArgExType;
         expectedArgExType = typeof (ArgumentOutOfRangeException);
         //
-        ProgressBar c = new ProgressBar ();
+        var c = new ProgressBar ();
         Assert.AreEqual (0, c.Minimum, "default_min");
         Assert.AreEqual (100, c.Maximum, "default_max");
         Assert.AreEqual (0, c.Value, "default_value");
@@ -175,7 +175,7 @@ public class ProgressBarTest : TestHelper
     [Test]
     public void PerformStepAndIncrement ()
     {
-        ProgressBar c = new ProgressBar ();
+        var c = new ProgressBar ();
         //
         c.Value = 10;
         c.Step = 30;
@@ -233,7 +233,7 @@ public class ProgressBarTest : TestHelper
     [Test]
     public void Styles ()
     {
-        ProgressBar c = new ProgressBar ();
+        var c = new ProgressBar ();
         //--
         Assert.AreEqual(ProgressBarStyle.Blocks, c.Style, "orig=blocks");
         //--
@@ -277,7 +277,7 @@ public class ProgressBarTest : TestHelper
     [Test]
     public void ToStringMethodTest () 
     {
-        ProgressBar myProgressBar = new ProgressBar ();
+        var myProgressBar = new ProgressBar ();
         myProgressBar.Text = "New ProgressBar";
         Assert.AreEqual ("System.Windows.Forms.ProgressBar, Minimum: 0, Maximum: 100, Value: 0", myProgressBar.ToString (), "#T3");
     }

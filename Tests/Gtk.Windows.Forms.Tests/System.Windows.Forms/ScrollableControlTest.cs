@@ -123,10 +123,10 @@ public class ScrollableControlTest : TestHelper
     [Test]
     public void ResizeAnchoredTest ()
     {
-        ScrollableControl sc = new ScrollableControl ();
+        var sc = new ScrollableControl ();
         object h = sc.Handle;
         sc.Size = new Size (23, 45);
-        Label lbl = new Label ();
+        var lbl = new Label ();
         lbl.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         lbl.Size = sc.ClientSize;
         sc.Controls.Add (lbl);
@@ -135,12 +135,12 @@ public class ScrollableControlTest : TestHelper
         Assert.AreEqual (lbl.Location, Point.Empty, "#1");
         Assert.AreEqual (lbl.Size, sc.ClientSize, "#2");
 			
-        TestHelper.RemoveWarning (h);
+        RemoveWarning (h);
     }
     [Test]
     public void AutoScroll ()
     {
-        ScrollableControl sc = new ScrollableControl ();
+        var sc = new ScrollableControl ();
         Assert.IsFalse (sc.AutoScroll, "#A1");
         Assert.AreEqual (0, sc.Controls.Count, "#A2");
 
@@ -156,7 +156,7 @@ public class ScrollableControlTest : TestHelper
     [Test]
     public void AutoScrollMinSize ()
     {
-        ScrollableControl sc = new ScrollableControl ();
+        var sc = new ScrollableControl ();
         Assert.AreEqual (Size.Empty, sc.AutoScrollMinSize, "#A1");
         Assert.IsFalse (sc.AutoScroll, "#A2");
 
@@ -200,7 +200,7 @@ public class ScrollableControlTest : TestHelper
     [Test]
     public void Padding ()
     {
-        ScrollableControl c = new ScrollableControl ();
+        var c = new ScrollableControl ();
         c.Dock = DockStyle.Fill;
         c.Padding = new Padding (40);
 
@@ -208,10 +208,10 @@ public class ScrollableControlTest : TestHelper
         c.Padding = new Padding (40, 40, 40, 40);
 
         Assert.AreEqual (40, c.Padding.Right, "A5");
-        Form f = new Form ();
+        var f = new Form ();
         f.Controls.Add (c);
 			
-        Button b = new Button ();
+        var b = new Button ();
         c.Controls.Add (b);
 			
         f.Show ();
@@ -230,44 +230,38 @@ public class ScrollableControlTest : TestHelper
     [Test]
     public void DisplayRectangle_SamePadding ()
     {
-        using (var c = new ScrollableControl ())
-        {
-            c.Size = new Size (100, 100);
-            c.Padding = new Padding (4);
-            Assert.AreEqual (new Rectangle (0, 0, 100, 100), c.ClientRectangle);
-            Assert.AreEqual (new Rectangle (4, 4, 92, 92), c.DisplayRectangle);
-        }
+        using var c = new ScrollableControl ();
+        c.Size = new Size (100, 100);
+        c.Padding = new Padding (4);
+        Assert.AreEqual (new Rectangle (0, 0, 100, 100), c.ClientRectangle);
+        Assert.AreEqual (new Rectangle (4, 4, 92, 92), c.DisplayRectangle);
     }
 
     [Test]
     public void DisplayRectangle_DifferentPadding ()
     {
-        using (var c = new ScrollableControl ())
-        {
-            c.Size = new Size (100, 100);
-            c.Padding = new Padding (1, 2, 3, 4);
-            Assert.AreEqual (new Rectangle (0, 0, 100, 100), c.ClientRectangle);
-            Assert.AreEqual (new Rectangle (1, 2, 96, 94), c.DisplayRectangle);
-        }
+        using var c = new ScrollableControl ();
+        c.Size = new Size (100, 100);
+        c.Padding = new Padding (1, 2, 3, 4);
+        Assert.AreEqual (new Rectangle (0, 0, 100, 100), c.ClientRectangle);
+        Assert.AreEqual (new Rectangle (1, 2, 96, 94), c.DisplayRectangle);
     }
 
     [Test]
     public void DisplayRectangeTest ()
     {
-        using (var sc = new ScrollableControl ())
-        {
-            sc.Size = new Size (100, 100);
-            sc.AutoScroll = true;
+        using var sc = new ScrollableControl ();
+        sc.Size = new Size (100, 100);
+        sc.AutoScroll = true;
 
-            Control c;
-            c = new Control ();
-            c.Location = new Point (0, 0);
-            c.Size = new Size (200, 200);
-            sc.Controls.Add (c);
-            Assert.AreEqual (new Rectangle (0, 0, 200, 200), sc.DisplayRectangle);
+        Control c;
+        c = new Control ();
+        c.Location = new Point (0, 0);
+        c.Size = new Size (200, 200);
+        sc.Controls.Add (c);
+        Assert.AreEqual (new Rectangle (0, 0, 200, 200), sc.DisplayRectangle);
 
-            c.Visible = false;
-            Assert.AreEqual (new Rectangle (0, 0, 100, 100), sc.DisplayRectangle);
-        }
+        c.Visible = false;
+        Assert.AreEqual (new Rectangle (0, 0, 100, 100), sc.DisplayRectangle);
     }
 }

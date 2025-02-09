@@ -17,14 +17,14 @@ public class LinkLabelTest : TestHelper
     [Test]
     public void LinkLabelAccessibility ()
     {
-        LinkLabel l = new LinkLabel ();
+        var l = new LinkLabel ();
         Assert.IsNotNull (l.AccessibilityObject, "#1");
     }
 
     [Test]
     public void TestTabStop ()
     {
-        LinkLabel l = new LinkLabel();
+        var l = new LinkLabel();
 
         Assert.IsFalse (l.TabStop, "#1");
         l.Text = "Hello";
@@ -36,14 +36,14 @@ public class LinkLabelTest : TestHelper
     [Test] // bug #344012
     public void InvalidateManualLinks ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
 
-        LinkLabel l = new LinkLabel ();
+        var l = new LinkLabel ();
         l.Text = "linkLabel1";
         form.Controls.Add (l);
 
-        LinkLabel.Link link = new LinkLabel.Link (2, 5);
+        var link = new LinkLabel.Link (2, 5);
         l.Links.Add (link);
 
         form.Show ();
@@ -58,7 +58,7 @@ public class LinkTest : TestHelper
     [Test]
     public void Constructor ()
     {
-        LinkLabel.Link l = new LinkLabel.Link ();
+        var l = new LinkLabel.Link ();
 			
         Assert.AreEqual (null, l.Description, "A1");
         Assert.AreEqual (null, l.LinkData, "A4");
@@ -81,12 +81,12 @@ public class LinkCollectionTest : TestHelper
     [Test] // ctor (LinkLabel)
     public void Constructor1 ()
     {
-        LinkLabel l = new LinkLabel ();
+        var l = new LinkLabel ();
         l.Text = "Managed Windows Forms";
 
-        LinkLabel.LinkCollection links1 = new LinkLabel.LinkCollection (
+        var links1 = new LinkLabel.LinkCollection (
             l);
-        LinkLabel.LinkCollection links2 = new LinkLabel.LinkCollection (
+        var links2 = new LinkLabel.LinkCollection (
             l);
 
         Assert.AreEqual (1, links1.Count, "#A1");
@@ -111,22 +111,22 @@ public class LinkCollectionTest : TestHelper
     [Test] // Add (LinkLabel.Link)
     public void Add1 ()
     {
-        LinkLabel l = new LinkLabel ();
+        var l = new LinkLabel ();
         l.Text = "Managed Windows Forms";
 
-        LinkLabel.LinkCollection links1 = new LinkLabel.LinkCollection (
+        var links1 = new LinkLabel.LinkCollection (
             l);
-        LinkLabel.LinkCollection links2 = new LinkLabel.LinkCollection (
+        var links2 = new LinkLabel.LinkCollection (
             l);
 
-        LinkLabel.Link linkA = new LinkLabel.Link (0, 7);
+        var linkA = new LinkLabel.Link (0, 7);
         Assert.AreEqual (0, links1.Add (linkA), "#A1");
         Assert.AreEqual (1, links1.Count, "#A2");
         Assert.AreEqual (1, links2.Count, "#A3");
         Assert.AreSame (linkA, links1 [0], "#A6");
         Assert.AreSame (linkA, links2 [0], "#A7");
 
-        LinkLabel.Link linkB = new LinkLabel.Link (8, 7);
+        var linkB = new LinkLabel.Link (8, 7);
         Assert.AreEqual (1, links1.Add (linkB), "#B1");
         Assert.AreEqual (2, links1.Count, "#B2");
         Assert.AreEqual (2, links2.Count, "#B3");
@@ -135,7 +135,7 @@ public class LinkCollectionTest : TestHelper
         Assert.AreSame (linkB, links1 [1], "#B8");
         Assert.AreSame (linkB, links2 [1], "#B9");
 
-        LinkLabel.LinkCollection links3 = new LinkLabel.LinkCollection (
+        var links3 = new LinkLabel.LinkCollection (
             l);
         Assert.AreEqual (2, links3.Count, "#C1");
         Assert.AreSame (linkA, links3 [0], "#C3");
@@ -145,18 +145,18 @@ public class LinkCollectionTest : TestHelper
     [Test] // Add (LinkLabel.Link)
     public void Add1_Overlap ()
     {
-        LinkLabel l = new LinkLabel ();
+        var l = new LinkLabel ();
         l.Text = "Managed Windows Forms";
 
-        LinkLabel.LinkCollection links = new LinkLabel.LinkCollection (
+        var links = new LinkLabel.LinkCollection (
             l);
 
-        LinkLabel.Link linkA = new LinkLabel.Link (0, 7);
+        var linkA = new LinkLabel.Link (0, 7);
         links.Add (linkA);
         Assert.AreEqual (1, links.Count, "#A1");
         Assert.AreSame (linkA, links [0], "#A3");
 
-        LinkLabel.Link linkB = new LinkLabel.Link (5, 4);
+        var linkB = new LinkLabel.Link (5, 4);
         try {
             links.Add (linkB);
             Assert.Fail ("#B1");
@@ -171,7 +171,7 @@ public class LinkCollectionTest : TestHelper
         Assert.AreSame (linkA, links [0], "#B7");
         Assert.AreSame (linkB, links [1], "#B8");
 
-        LinkLabel.Link linkC = new LinkLabel.Link (14, 3);
+        var linkC = new LinkLabel.Link (14, 3);
         try {
             links.Add (linkC);
             Assert.Fail ("#C1");
@@ -191,10 +191,10 @@ public class LinkCollectionTest : TestHelper
     [Test] // Add (LinkLabel.Link)
     public void Add1_Value_Null ()
     {
-        LinkLabel l = new LinkLabel ();
+        var l = new LinkLabel ();
         l.Text = "Managed Windows Forms";
 
-        LinkLabel.LinkCollection links = new LinkLabel.LinkCollection (
+        var links = new LinkLabel.LinkCollection (
             l);
         try {
             links.Add ((LinkLabel.Link) null);

@@ -39,8 +39,8 @@ public class ListBindingHelperTest : TestHelper
     [Test]
     public void GetListTest ()
     {
-        ListSource lsource = new ListSource (true);
-        Stack stack = new Stack ();
+        var lsource = new ListSource (true);
+        var stack = new Stack ();
         stack.Push (3);
 
 
@@ -57,19 +57,19 @@ public class ListBindingHelperTest : TestHelper
         // Then we need a parameterized IEnumerable, which returns null.
         // *Observation: if it is empty and it doesn't implement IList,
         // it doesn't have a way to get the properties, and will throw an exc
-        StringCollection str_coll = new StringCollection ();
+        var str_coll = new StringCollection ();
 
         // IEnumerable that returns instances of ICustomTypeDescriptor
         // Use DataTable as source, which returns, when enumerating,
         // instances of DataRowView, which in turn implement ICustomTypeDescriptor
-        DataTable table = new DataTable ();
+        var table = new DataTable ();
         table.Columns.Add ("Id", typeof (int));
         table.Rows.Add (666);
     }
 
     internal class ListSource : IListSource
     {
-        bool contains_collection;
+        readonly bool contains_collection;
 
         public ListSource (bool containsCollection)
         {

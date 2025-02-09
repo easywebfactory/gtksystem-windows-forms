@@ -28,6 +28,8 @@
 
 using System.Resources;
 using System.ComponentModel.Design;
+using GtkTests.TypeResolutionService_;
+using GtkTests.Internals.Resources;
 
 namespace GtkTests.System.Resources;
 
@@ -42,7 +44,7 @@ public class ResXDataNodeByteArrayTests : ResourcesTestHelper {
         returnedNode = GetNodeFromResXReader (originalNode);
 
         Assert.IsNotNull (returnedNode, "#A1");
-        object val = returnedNode.GetValue (new ReturnIntITRS ());
+        var val = returnedNode.GetValue (new ReturnIntITRS ());
         Assert.True (typeof (byte[])== val.GetType(), "#A2");
     }
 
@@ -53,7 +55,7 @@ public class ResXDataNodeByteArrayTests : ResourcesTestHelper {
         node = GetNodeEmdeddedBytes1To10 ();
 
         //would raise exception if param used
-        Object obj = node.GetValue (new ExceptionalITRS ());
+        var obj = node.GetValue (new ExceptionalITRS ());
         Assert.True (typeof(byte[]) == obj.GetType(), "#A1");
     }
 
@@ -65,7 +67,7 @@ public class ResXDataNodeByteArrayTests : ResourcesTestHelper {
         returnedNode = GetNodeFromResXReader (originalNode);
 
         Assert.IsNotNull (returnedNode, "#A1");
-        string returnedType = returnedNode.GetValueTypeName (new ReturnIntITRS ());
+        var returnedType = returnedNode.GetValueTypeName (new ReturnIntITRS ());
         Assert.AreEqual ((typeof (int)).AssemblyQualifiedName, returnedType, "#A2");
     }
 
@@ -77,8 +79,8 @@ public class ResXDataNodeByteArrayTests : ResourcesTestHelper {
         returnedNode = GetNodeFromResXReader (originalNode);
 
         Assert.IsNotNull (returnedNode, "#A1");
-        object obj = returnedNode.GetValue ((ITypeResolutionService) null);
-        string returnedType = returnedNode.GetValueTypeName (new ReturnIntITRS ());
+        var obj = returnedNode.GetValue ((ITypeResolutionService) null);
+        var returnedType = returnedNode.GetValueTypeName (new ReturnIntITRS ());
         Assert.AreEqual ((typeof (int)).AssemblyQualifiedName, returnedType, "#A2");
     }
 
@@ -88,7 +90,7 @@ public class ResXDataNodeByteArrayTests : ResourcesTestHelper {
         ResXDataNode node;
         node = GetNodeEmdeddedBytes1To10 ();
 
-        string returnedType = node.GetValueTypeName (new ReturnIntITRS ());
+        var returnedType = node.GetValueTypeName (new ReturnIntITRS ());
         Assert.AreEqual ((typeof (byte[])).AssemblyQualifiedName, returnedType, "#A1");
     }
 }

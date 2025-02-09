@@ -18,8 +18,8 @@ public class PropertyGridTest : TestHelper
     [Test]
     public void SelectedObject ()
     {
-        PropertyGrid pg = new PropertyGrid ();
-        Button button1 = new Button ();
+        var pg = new PropertyGrid ();
+        var button1 = new Button ();
         Assert.IsNull (pg.SelectedObject, "#A1");
         Assert.IsNotNull (pg.SelectedObjects, "#A2");
         Assert.AreEqual (0, pg.SelectedObjects.Length, "#A3");
@@ -35,7 +35,7 @@ public class PropertyGridTest : TestHelper
     [Test] // bug #81796
     public void SelectedObject_NoProperties ()
     {
-        PropertyGrid propertyGrid = new PropertyGrid ();
+        var propertyGrid = new PropertyGrid ();
         propertyGrid.SelectedObject = new Button ();
         propertyGrid.SelectedObject = new object ();
         propertyGrid.SelectedObject = new Button ();
@@ -44,7 +44,7 @@ public class PropertyGridTest : TestHelper
     [Test]
     public void SelectedObject_Null ()
     {
-        PropertyGrid pg = new PropertyGrid ();
+        var pg = new PropertyGrid ();
         Assert.IsNull (pg.SelectedObject, "#A1");
         Assert.IsNotNull (pg.SelectedObjects, "#A2");
         Assert.AreEqual (0, pg.SelectedObjects.Length, "#A3");
@@ -57,7 +57,7 @@ public class PropertyGridTest : TestHelper
     [Test]
     public void SelectedGridItem_Null ()
     {
-        PropertyGrid pg = new PropertyGrid ();
+        var pg = new PropertyGrid ();
         pg.SelectedObject = new TextBox ();
         Assert.IsNotNull (pg.SelectedGridItem, "#1");
         try {
@@ -76,10 +76,10 @@ public class PropertyGridTest : TestHelper
     [Test] // bug #79615
     public void SelectedObjects_Multiple ()
     {
-        Button button1 = new Button ();
-        Button button2 = new Button ();
+        var button1 = new Button ();
+        var button2 = new Button ();
 
-        PropertyGrid pg = new PropertyGrid ();
+        var pg = new PropertyGrid ();
         pg.SelectedObjects = new object [] { button1, button2 };
         Assert.IsNotNull (pg.SelectedObjects, "#1");
         Assert.AreEqual (2, pg.SelectedObjects.Length, "#2");
@@ -92,8 +92,8 @@ public class PropertyGridTest : TestHelper
     [Test]
     public void SelectedObjects_Null ()
     {
-        PropertyGrid pg = new PropertyGrid ();
-        Button button1 = new Button ();
+        var pg = new PropertyGrid ();
+        var button1 = new Button ();
         pg.SelectedObjects = new object [] { button1 };
         Assert.IsNotNull (pg.SelectedObjects, "#A1");
         Assert.AreEqual (1, pg.SelectedObjects.Length, "#A2");
@@ -110,8 +110,8 @@ public class PropertyGridTest : TestHelper
     {
         Assert.Throws<ArgumentException>(() =>
         {
-            PropertyGrid pg = new PropertyGrid();
-            Button button1 = new Button();
+            var pg = new PropertyGrid();
+            var button1 = new Button();
             pg.SelectedObjects = new object[] { button1, null };
         });
     }
@@ -120,7 +120,7 @@ public class PropertyGridTest : TestHelper
     [Category ("NotWorking")]
     public void PropertyGrid_MergedTest ()
     {
-        PropertyGrid pg = new PropertyGrid ();
+        var pg = new PropertyGrid ();
         pg.SelectedObjects = new object[] { new Button (), new Label () };
 
         Assert.IsNotNull (pg.SelectedGridItem, "1");
@@ -133,7 +133,7 @@ public class PropertyGridTest : TestHelper
     public void PropertyGrid_MergedRootTest ()
     {
         object[] selected_objects = new object[] { new Button (), new Label () };
-        PropertyGrid pg = new PropertyGrid ();
+        var pg = new PropertyGrid ();
 
         pg.SelectedObjects = selected_objects;
 
@@ -148,11 +148,11 @@ public class PropertyGridTest : TestHelper
 
     class ArrayTest_object
     {
-        int[] array;
+        readonly int[] array;
         public ArrayTest_object ()
         {
             array = new int[10];
-            for (int i = 0; i < array.Length; i ++)
+            for (var i = 0; i < array.Length; i ++)
                 array[i] = array.Length - i;
         }
         public int[] Array {
@@ -163,7 +163,7 @@ public class PropertyGridTest : TestHelper
     [Test]
     public void PropertyGrid_ArrayTest ()
     {
-        PropertyGrid pg = new PropertyGrid ();
+        var pg = new PropertyGrid ();
 
         pg.SelectedObject = new ArrayTest_object ();
 
@@ -177,7 +177,7 @@ public class PropertyGridTest : TestHelper
     [Test]
     public void PropertyGrid_ArrayParentTest ()
     {
-        PropertyGrid pg = new PropertyGrid ();
+        var pg = new PropertyGrid ();
 
         pg.SelectedObject = new ArrayTest_object ();
 
@@ -191,8 +191,8 @@ public class PropertyGridTest : TestHelper
     [Test]
     public void PropertyGrid_ArrayRootTest ()
     {
-        ArrayTest_object obj = new ArrayTest_object ();
-        PropertyGrid pg = new PropertyGrid ();
+        var obj = new ArrayTest_object ();
+        var pg = new PropertyGrid ();
 
         pg.SelectedObject = obj;
 
@@ -209,7 +209,7 @@ public class PropertyGridTest : TestHelper
     [Test]
     public void PropertyGrid_ArrayChildrenTest ()
     {
-        PropertyGrid pg = new PropertyGrid ();
+        var pg = new PropertyGrid ();
 
         pg.SelectedObject = new ArrayTest_object ();
 
@@ -223,14 +223,14 @@ public class PropertyGridTest : TestHelper
     [Test]
     public void PropertyGrid_ItemSelectTest ()
     {
-        PropertyGrid pg = new PropertyGrid ();
+        var pg = new PropertyGrid ();
 
         pg.SelectedObject = new ArrayTest_object ();
 
         // the selected grid item is the "Array" property item.
-        GridItem array_item = pg.SelectedGridItem;
-        GridItem misc_item = array_item.Parent;
-        GridItem root_item = misc_item.Parent;
+        var array_item = pg.SelectedGridItem;
+        var misc_item = array_item.Parent;
+        var root_item = misc_item.Parent;
 
         Assert.AreEqual (array_item, pg.SelectedGridItem, "1");
 

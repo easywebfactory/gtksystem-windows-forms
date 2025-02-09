@@ -38,7 +38,7 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ColumnHeaderCollectionTest_PropertiesTest ()
     {
-        ListView listview = new ListView ();
+        var listview = new ListView ();
 
         // Properties
         Assert.AreEqual (false, listview.Columns.IsReadOnly, "ColumnHeaderCollectionTest_PropertiesTest#1");
@@ -51,9 +51,9 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ColumnHeaderCollectionTest_AddTest ()
     {
-        ListView listview = new ListView ();
-        ColumnHeader colA = new ColumnHeader ();
-        ColumnHeader colB = new ColumnHeader ();
+        var listview = new ListView ();
+        var colA = new ColumnHeader ();
+        var colB = new ColumnHeader ();
 
         // Duplicated elements with same text added
         listview.Columns.Add (colA);
@@ -67,9 +67,9 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ColumnHeaderCollectionTest_ClearTest ()
     {
-        ListView listview = new ListView ();
-        ColumnHeader colA = new ColumnHeader ();
-        ColumnHeader colB = new ColumnHeader ();
+        var listview = new ListView ();
+        var colA = new ColumnHeader ();
+        var colB = new ColumnHeader ();
         listview.Columns.Add (colA);
         listview.Columns.Add (colB);
         listview.Columns.Clear ();
@@ -81,10 +81,10 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ColumnHeaderCollectionTest_Remove ()
     {
-        ListView listview = new ListView ();
-        ColumnHeader colA = new ColumnHeader ();
-        ColumnHeader colB = new ColumnHeader ();
-        ColumnHeader colC = new ColumnHeader ();
+        var listview = new ListView ();
+        var colA = new ColumnHeader ();
+        var colB = new ColumnHeader ();
+        var colC = new ColumnHeader ();
         listview.Columns.Add (colA);
         listview.Columns.Add (colB);
         listview.Columns.Add (colC);
@@ -123,10 +123,10 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ColumnHeaderCollectionTest_RemoveAt ()
     {
-        ListView listview = new ListView ();
-        ColumnHeader colA = new ColumnHeader ();
-        ColumnHeader colB = new ColumnHeader ();
-        ColumnHeader colC = new ColumnHeader ();
+        var listview = new ListView ();
+        var colA = new ColumnHeader ();
+        var colB = new ColumnHeader ();
+        var colC = new ColumnHeader ();
         listview.Columns.Add (colA);
         listview.Columns.Add (colB);
         listview.Columns.Add (colC);
@@ -159,7 +159,7 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void CheckedIndexCollectionTest_PropertiesTest ()
     {
-        ListView listview = new ListView ();
+        var listview = new ListView ();
 
         // Properties
         Assert.AreEqual (false, ((ICollection)listview.CheckedIndices).IsSynchronized, "CheckedIndexCollectionTest_PropertiesTest#2");
@@ -171,7 +171,7 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void CheckedItemCollectionTest_PropertiesTest ()
     {
-        ListView listview = new ListView ();
+        var listview = new ListView ();
 
         // Properties
         Assert.AreEqual (false, ((ICollection)listview.CheckedItems).IsSynchronized, "CheckedItemCollectionTest_PropertiesTest#2");
@@ -184,16 +184,16 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void CheckedItemCollectionTest_Order ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         lvw.CheckBoxes = true;
         form.Controls.Add (lvw);
-        ListViewItem itemA = lvw.Items.Add ("A");
+        var itemA = lvw.Items.Add ("A");
         itemA.Checked = true;
-        ListViewItem itemB = lvw.Items.Add ("B");
+        var itemB = lvw.Items.Add ("B");
         itemB.Checked = true;
-        ListViewItem itemC = lvw.Items.Add ("C");
+        var itemC = lvw.Items.Add ("C");
         itemC.Checked = true;
 
         Assert.AreEqual (3, lvw.CheckedItems.Count, "#A1");
@@ -234,7 +234,7 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedIndexCollectionTest_PropertiesTest ()
     {
-        ListView listview = new ListView ();
+        var listview = new ListView ();
 
         // Properties
         Assert.AreEqual (false, ((IList)listview.SelectedIndices).IsFixedSize, "SelectedIndexCollectionTest_PropertiesTest#4");
@@ -246,7 +246,7 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedIndexCollectionTest_ClearTest ()
     {
-        ListView listview = new ListView ();
+        var listview = new ListView ();
         listview.Items.Add ("A");
         listview.Items.Add ("B");
         listview.Items.Add ("C");
@@ -277,7 +277,7 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedIndexCollectionTest_ClearTest_VirtualMode ()
     {
-        ListView listview = new ListView ();
+        var listview = new ListView ();
         CreateVirtualItems (3);
 
         // Force to create the handle
@@ -304,11 +304,11 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedIndexCollectionTest_IndexOfTest ()
     {
-        ListView listview = new ListView ();
-        ListViewItem item1 = listview.Items.Add ("A");
-        ListViewItem item2 = listview.Items.Add ("B");
-        ListViewItem item3 = listview.Items.Add ("C");
-        ListViewItem item4 = listview.Items.Add ("D");
+        var listview = new ListView ();
+        var item1 = listview.Items.Add ("A");
+        var item2 = listview.Items.Add ("B");
+        var item3 = listview.Items.Add ("C");
+        var item4 = listview.Items.Add ("D");
 
         listview.SelectedIndices.Add (0);
         listview.SelectedIndices.Add (3);
@@ -334,7 +334,7 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedIndexCollectionTest_IndexOfTest_VirtualMode ()
     {
-        ListView listview = new ListView ();
+        var listview = new ListView ();
         CreateVirtualItems (4);
 
         // Force to create the handle
@@ -357,7 +357,7 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedIndexCollectionTest_RemoveTest ()
     {
-        ListView listview = new ListView ();
+        var listview = new ListView ();
         listview.Items.Add ("A");
 
         listview.SelectedIndices.Add (0);
@@ -378,7 +378,7 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedIndexCollectionTest_RemoveTest_VirtualMode ()
     {
-        ListView listview = new ListView ();
+        var listview = new ListView ();
         CreateVirtualItems (5);
 
         // Force to create the handle
@@ -423,7 +423,7 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedIndexCollectionTest_Add_ExceptionTest ()
     {
-        ListView listview = new ListView ();
+        var listview = new ListView ();
         try {
             listview.SelectedIndices.Add (-1);
             Assert.Fail ("SelectedIndexCollectionTest_Add_ExceptionTest#1");
@@ -443,7 +443,7 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedItemCollectionTest_PropertiesTest ()
     {
-        ListView listview = new ListView ();
+        var listview = new ListView ();
 
         // Properties
         Assert.AreEqual (false, ((ICollection)listview.SelectedItems).IsSynchronized, "SelectedItemCollectionTest_PropertiesTest#2");
@@ -456,11 +456,11 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedItemCollectionTest_Clear ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         form.Controls.Add (lvw);
-        ListViewItem item = lvw.Items.Add ("Title");
+        var item = lvw.Items.Add ("Title");
         item.Selected = true;
 
         lvw.SelectedItems.Clear ();
@@ -487,13 +487,13 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedItemCollectionTest_Contains ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         form.Controls.Add (lvw);
-        ListViewItem item = lvw.Items.Add ("Title");
+        var item = lvw.Items.Add ("Title");
         item.Selected = true;
-        IList list = (IList) lvw.SelectedItems;
+        var list = (IList) lvw.SelectedItems;
 
         Assert.IsFalse (lvw.SelectedItems.Contains (item), "#A1");
         Assert.IsFalse (lvw.SelectedItems.Contains (new ListViewItem ()), "#A2");
@@ -512,13 +512,13 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedItemCollectionTest_CopyTo ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         form.Controls.Add (lvw);
-        ListViewItem item = lvw.Items.Add ("Title");
+        var item = lvw.Items.Add ("Title");
         item.Selected = true;
-        IList list = (IList) lvw.SelectedItems;
+        var list = (IList) lvw.SelectedItems;
         Assert.IsNotNull (list, "#A1");
         ListViewItem [] items = new ListViewItem [1];
 
@@ -541,11 +541,11 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedItemCollectionTest_Count ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         form.Controls.Add (lvw);
-        ListViewItem item = lvw.Items.Add ("Title");
+        var item = lvw.Items.Add ("Title");
         item.Selected = true;
 
         Assert.AreEqual (0, lvw.SelectedItems.Count, "#1");
@@ -557,11 +557,11 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedItemCollectionTest_GetEnumerator ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         form.Controls.Add (lvw);
-        ListViewItem item = lvw.Items.Add ("Title");
+        var item = lvw.Items.Add ("Title");
         item.Selected = true;
 
         Assert.IsFalse (lvw.SelectedItems.GetEnumerator ().MoveNext (), "#A1");
@@ -576,22 +576,22 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedItemCollectionTest_Indexer ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         form.Controls.Add (lvw);
-        ListViewItem item = lvw.Items.Add ("Title");
+        var item = lvw.Items.Add ("Title");
         item.Selected = true;
-        IList list = (IList) lvw.SelectedItems;
+        var list = (IList) lvw.SelectedItems;
 
         try  {
-            ListViewItem x = lvw.SelectedItems [0];
+            var x = lvw.SelectedItems [0];
             Assert.Fail ("#A1: " + x.ToString ());
         } catch (ArgumentOutOfRangeException) {
         }
 
         try {
-            ListViewItem x = list [0] as ListViewItem;
+            var x = list [0] as ListViewItem;
             Assert.Fail ("#A2: " + x.ToString ());
         } catch (ArgumentOutOfRangeException) {
         }
@@ -607,13 +607,13 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedItemCollectionTest_IndexOf ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         form.Controls.Add (lvw);
-        ListViewItem item = lvw.Items.Add ("Title");
+        var item = lvw.Items.Add ("Title");
         item.Selected = true;
-        IList list = (IList) lvw.SelectedItems;
+        var list = (IList) lvw.SelectedItems;
 
         Assert.AreEqual (-1, lvw.SelectedItems.IndexOf (item), "#A1");
         Assert.AreEqual (-1, lvw.SelectedItems.IndexOf (new ListViewItem ()), "#A2");
@@ -633,20 +633,20 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedItemCollectionTest_IndexOfKey ()
     {
-        ListView lvw = new ListView ();
-        ListViewItem lvi1 = new ListViewItem ("A");
+        var lvw = new ListView ();
+        var lvi1 = new ListViewItem ("A");
         lvi1.Name = "A name";
         lvi1.Selected = true;
-        ListViewItem lvi2 = new ListViewItem ("B");
+        var lvi2 = new ListViewItem ("B");
         lvi2.Name = "Same name";
         lvi2.Selected = false;
-        ListViewItem lvi3 = new ListViewItem ("C");
+        var lvi3 = new ListViewItem ("C");
         lvi3.Name = "Same name";
         lvi3.Selected = true;
-        ListViewItem lvi4 = new ListViewItem ("D");
+        var lvi4 = new ListViewItem ("D");
         lvi4.Name = String.Empty;
         lvi4.Selected = true;
-        ListViewItem lvi5 = new ListViewItem ("E");
+        var lvi5 = new ListViewItem ("E");
         lvi5.Name = "E name";
         lvi5.Selected = false;
         lvw.Items.AddRange (new ListViewItem [] { lvi1, lvi2, lvi3, lvi4, lvi5 });
@@ -656,7 +656,7 @@ public class ListViewCollectionsTest : TestHelper
 
         Assert.AreEqual (3, lvw.SelectedItems.Count, "#A1");
 
-        ListViewItem lvi6 = new ListViewItem ("F");
+        var lvi6 = new ListViewItem ("F");
         lvw.Items.Add (lvi6);
         lvi6.Selected = true;
         lvi6.Name = "F name";
@@ -668,20 +668,20 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedItemCollectionTest_Indexer2 ()
     {
-        ListView lvw = new ListView ();
-        ListViewItem lvi1 = new ListViewItem ("A");
+        var lvw = new ListView ();
+        var lvi1 = new ListViewItem ("A");
         lvi1.Name = "A name";
         lvi1.Selected = true;
-        ListViewItem lvi2 = new ListViewItem ("B");
+        var lvi2 = new ListViewItem ("B");
         lvi2.Name = "Same name";
         lvi2.Selected = false;
-        ListViewItem lvi3 = new ListViewItem ("C");
+        var lvi3 = new ListViewItem ("C");
         lvi3.Name = "Same name";
         lvi3.Selected = true;
-        ListViewItem lvi4 = new ListViewItem ("D");
+        var lvi4 = new ListViewItem ("D");
         lvi4.Name = String.Empty;
         lvi4.Selected = true;
-        ListViewItem lvi5 = new ListViewItem ("E");
+        var lvi5 = new ListViewItem ("E");
         lvi5.Name = "E name";
         lvi5.Selected = false;
         lvw.Items.AddRange (new ListViewItem [] { lvi1, lvi2, lvi3, lvi4, lvi5 });
@@ -691,7 +691,7 @@ public class ListViewCollectionsTest : TestHelper
 
         Assert.AreEqual (3, lvw.SelectedItems.Count, "#A1");
 
-        ListViewItem lvi6 = new ListViewItem ("F");
+        var lvi6 = new ListViewItem ("F");
         lvw.Items.Add (lvi6);
         lvi6.Selected = true;
         lvi6.Name = "F name";
@@ -703,16 +703,16 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void SelectedItemCollectionTest_Order ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         lvw.MultiSelect = true;
         form.Controls.Add (lvw);
-        ListViewItem itemA = lvw.Items.Add ("A");
+        var itemA = lvw.Items.Add ("A");
         itemA.Selected = true;
-        ListViewItem itemB = lvw.Items.Add ("B");
+        var itemB = lvw.Items.Add ("B");
         itemB.Selected = true;
-        ListViewItem itemC = lvw.Items.Add ("C");
+        var itemC = lvw.Items.Add ("C");
         itemC.Selected = true;
 
         form.Show ();
@@ -752,9 +752,9 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewItemCollectionTest_Add_Group ()
     {
-        ListView lvw = new ListView ();
-        ListViewGroup lvg = new ListViewGroup ();
-        ListViewItem lvi = new ListViewItem ("A");
+        var lvw = new ListView ();
+        var lvg = new ListViewGroup ();
+        var lvi = new ListViewItem ("A");
 
         lvg.Items.Add (lvi);
         Assert.AreEqual (lvg, lvi.Group, "#A1");
@@ -811,7 +811,7 @@ public class ListViewCollectionsTest : TestHelper
         Assert.AreEqual (1, lvg.Items.Count, "#F1");
         Assert.AreEqual (lvg, lvi.Group, "#F2");
 
-        ListViewGroup lvg2 = new ListViewGroup ();
+        var lvg2 = new ListViewGroup ();
         lvg2.Items.Add (lvi);
 		
         Assert.AreEqual (0, lvg.Items.Count, "#G1");
@@ -822,56 +822,56 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewItemCollectionTest_Add_Junk ()
     {
-        ListView lv1 = new ListView ();
+        var lv1 = new ListView ();
 
-        ListViewItem item4 = lv1.Items.Add("Item4", 4);
+        var item4 = lv1.Items.Add("Item4", 4);
         Assert.AreEqual(item4, lv1.Items[0], "#D1");
         Assert.AreEqual(string.Empty, lv1.Items[0].Name, "#D2");
         Assert.AreEqual("Item4", lv1.Items[0].Text, "#D3");
         Assert.AreEqual(4, lv1.Items[0].ImageIndex, "#D4");
 
         string text = null;
-        ListViewItem item5 = lv1.Items.Add(text);
+        var item5 = lv1.Items.Add(text);
         Assert.AreEqual(item5, lv1.Items[1], "#E1");
         Assert.AreEqual(string.Empty, lv1.Items[1].Name, "#E2");
         Assert.AreEqual(string.Empty, lv1.Items[1].Text, "#E3");
 
-        ListViewItem item6 = lv1.Items.Add(null, 5);
+        var item6 = lv1.Items.Add(null, 5);
         Assert.AreEqual(item6, lv1.Items[2], "#F1");
         Assert.AreEqual(string.Empty, lv1.Items[2].Name, "#F2");
         Assert.AreEqual(string.Empty, lv1.Items[2].Text, "#F3");
         Assert.AreEqual(5, lv1.Items[2].ImageIndex, "#F4");
-        ListViewItem item1 = lv1.Items.Add("ItemKey1", "Item1", 1);
+        var item1 = lv1.Items.Add("ItemKey1", "Item1", 1);
         Assert.AreEqual(item1, lv1.Items[3], "#A1");
         Assert.AreEqual("ItemKey1", lv1.Items[3].Name, "#A2");
         Assert.AreEqual("Item1", lv1.Items[3].Text, "#A3");
         Assert.AreEqual(1, lv1.Items[3].ImageIndex, "#A4");
 
-        ListViewItem item2 = lv1.Items.Add("ItemKey2", "Item2", "Image2");
+        var item2 = lv1.Items.Add("ItemKey2", "Item2", "Image2");
         Assert.AreEqual(item2, lv1.Items[4], "#B1");
         Assert.AreEqual("ItemKey2", lv1.Items[4].Name, "#B2");
         Assert.AreEqual("Item2", lv1.Items[4].Text, "#B3");
         Assert.AreEqual("Image2", lv1.Items[4].ImageKey, "#B4");
 
-        ListViewItem item3 = lv1.Items.Add("Item3", "Image3");
+        var item3 = lv1.Items.Add("Item3", "Image3");
         Assert.AreEqual(item3, lv1.Items[5], "#C1");
         Assert.AreEqual(string.Empty, lv1.Items[5].Name, "#C2");
         Assert.AreEqual("Item3", lv1.Items[5].Text, "#C3");
         Assert.AreEqual("Image3", lv1.Items[5].ImageKey, "#C4");
 
-        ListViewItem item7 = lv1.Items.Add(null, "Item6", 6);
+        var item7 = lv1.Items.Add(null, "Item6", 6);
         Assert.AreEqual(item7, lv1.Items[6], "#G1");
         Assert.AreEqual(string.Empty, lv1.Items[6].Name, "#G2");
         Assert.AreEqual("Item6", lv1.Items[6].Text, "#G3");
         Assert.AreEqual(6, lv1.Items[6].ImageIndex, "#G4");
 
-        ListViewItem item8 = lv1.Items.Add("ItemKey7", null, 7);
+        var item8 = lv1.Items.Add("ItemKey7", null, 7);
         Assert.AreEqual(item8, lv1.Items[7], "#H1");
         Assert.AreEqual("ItemKey7", lv1.Items[7].Name, "#H2");
         Assert.AreEqual(string.Empty, lv1.Items[7].Text, "#H3");
         Assert.AreEqual(7, lv1.Items[7].ImageIndex, "#H4");
 
-        ListViewItem item9 = lv1.Items.Add("ItemKey8", "Item8", null);
+        var item9 = lv1.Items.Add("ItemKey8", "Item8", null);
         Assert.AreEqual(item9, lv1.Items[8], "#I1");
         Assert.AreEqual("ItemKey8", lv1.Items[8].Name, "#I2");
         Assert.AreEqual("Item8", lv1.Items[8].Text, "#I3");
@@ -881,10 +881,10 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewItemCollectionTest_AddRange ()
     {
-        ListView lv1 = new ListView ();
-        ListViewItem item1 = new ListViewItem ("Item1");
-        ListViewItem item2 = new ListViewItem ("Item2");
-        ListViewItem item3 = new ListViewItem ("Item3");
+        var lv1 = new ListView ();
+        var item1 = new ListViewItem ("Item1");
+        var item2 = new ListViewItem ("Item2");
+        var item3 = new ListViewItem ("Item3");
         lv1.Items.AddRange (new ListViewItem[] { item1, item2, item3 });
 
         Assert.AreSame (item1, lv1.Items[0], "#A1");
@@ -903,10 +903,10 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewItemCollectionTest_AddRange_Count ()
     {
-        ListView lv1 = new ListView ();
-        ListViewItem item1 = new ListViewItem ("Item1");
-        ListViewItem item2 = new ListViewItem ("Item2");
-        ListViewItem item3 = new ListViewItem ("Item3");
+        var lv1 = new ListView ();
+        var item1 = new ListViewItem ("Item1");
+        var item2 = new ListViewItem ("Item2");
+        var item3 = new ListViewItem ("Item3");
 
         lv1.Items.Add ("Item4");
         Assert.AreEqual (1, lv1.Items.Count, "#A1");
@@ -917,9 +917,9 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewItemCollectionTest_Clear ()
     {
-        ListView lvw = new ListView ();
-        ListViewItem itemA = lvw.Items.Add ("A");
-        ListViewItem itemB = lvw.Items.Add ("B");
+        var lvw = new ListView ();
+        var itemA = lvw.Items.Add ("A");
+        var itemB = lvw.Items.Add ("B");
 
         Assert.AreEqual (2, lvw.Items.Count, "#A1");
         Assert.AreSame (lvw, itemA.ListView, "#A2");
@@ -934,10 +934,10 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewItemCollectionTest_Clear_Groups ()
     {
-        ListViewGroup lvg = new ListViewGroup ();
-        ListViewItem itemA = new ListViewItem ();
-        ListViewItem itemB = new ListViewItem ();
-        ListViewItem itemC = new ListViewItem ();
+        var lvg = new ListViewGroup ();
+        var itemA = new ListViewItem ();
+        var itemB = new ListViewItem ();
+        var itemC = new ListViewItem ();
 
         lvg.Items.Add (itemA);
         lvg.Items.Add (itemB);
@@ -948,7 +948,7 @@ public class ListViewCollectionsTest : TestHelper
         Assert.AreEqual (lvg, itemB.Group, "#A3");
         Assert.AreEqual (lvg, itemC.Group, "#A4");
 
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         lvw.Groups.Add (lvg);
 
         Assert.AreEqual (3, lvg.Items.Count, "#B1");
@@ -1001,9 +1001,9 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewItemCollectionTest_Insert_Group ()
     {
-        ListView lvw = new ListView ();
-        ListViewGroup lvg = new ListViewGroup ();
-        ListViewItem lvi = new ListViewItem ("A");
+        var lvw = new ListView ();
+        var lvg = new ListViewGroup ();
+        var lvi = new ListViewItem ("A");
 
         lvg.Items.Insert (0, lvi);
         Assert.AreEqual (lvg, lvi.Group, "#A1");
@@ -1060,7 +1060,7 @@ public class ListViewCollectionsTest : TestHelper
         Assert.AreEqual (1, lvg.Items.Count, "#F1");
         Assert.AreEqual (lvg, lvi.Group, "#F2");
 
-        ListViewGroup lvg2 = new ListViewGroup ();
+        var lvg2 = new ListViewGroup ();
         lvg2.Items.Insert (0, lvi);
 		
         Assert.AreEqual (0, lvg.Items.Count, "#G1");
@@ -1071,19 +1071,19 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewItemCollectionTest_Remove ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         form.Controls.Add (lvw);
         lvw.MultiSelect = true;
         lvw.CheckBoxes = true;
 
         form.Show ();
 
-        ListViewItem itemA = lvw.Items.Add ("A");
-        ListViewItem itemB = lvw.Items.Add ("B");
+        var itemA = lvw.Items.Add ("A");
+        var itemB = lvw.Items.Add ("B");
         lvw.Items.Add ("C");
-        ListViewItem itemD = lvw.Items.Add ("D");
+        var itemD = lvw.Items.Add ("D");
 
         Assert.AreEqual (4, lvw.Items.Count, "#A1");
         Assert.AreEqual (0, lvw.SelectedItems.Count, "#A2");
@@ -1133,8 +1133,8 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewItemCollectionTest_Remove_Groups ()
     {
-        ListViewGroup lvg = new ListViewGroup ();
-        ListViewItem itemA = new ListViewItem ();
+        var lvg = new ListViewGroup ();
+        var itemA = new ListViewItem ();
 
         lvg.Items.Add (itemA);
 
@@ -1144,7 +1144,7 @@ public class ListViewCollectionsTest : TestHelper
         Assert.AreEqual (null, itemA.Group, "#A3");
 
         lvg.Items.Add (itemA);
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         lvw.Groups.Add (lvg);
 
         Assert.AreEqual (1, lvg.Items.Count, "#B1");
@@ -1186,17 +1186,17 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewItemCollectionTest_RemoveAt ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         form.Controls.Add (lvw);
         lvw.MultiSelect = true;
         lvw.CheckBoxes = true;
 
-        ListViewItem itemA = lvw.Items.Add ("A");
-        ListViewItem itemB = lvw.Items.Add ("B");
-        ListViewItem itemC = lvw.Items.Add ("C");
-        ListViewItem itemD = lvw.Items.Add ("D");
+        var itemA = lvw.Items.Add ("A");
+        var itemB = lvw.Items.Add ("B");
+        var itemC = lvw.Items.Add ("C");
+        var itemD = lvw.Items.Add ("D");
 
         form.Show ();
 
@@ -1249,13 +1249,13 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void DeleteFromEnumerator ()	// bug 425342
     {
-        ListView lv = new ListView ();
+        var lv = new ListView ();
 			
         lv.Items.Add ("A");
         lv.Items.Add ("B");
         lv.Items.Add ("C");
 			
-        foreach (ListViewItem lvi in lv.Items)
+        foreach (var lvi in lv.Items)
             if (lvi.Text == "B")
                 lv.Items.Remove (lvi);
 					
@@ -1265,16 +1265,16 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewItemCollectionTest_RemoveByKey ()
     {
-        ListView lvw = new ListView ();
-        ListViewItem lvi1 = new ListViewItem ("A");
+        var lvw = new ListView ();
+        var lvi1 = new ListViewItem ("A");
         lvi1.Name = "A name";
-        ListViewItem lvi2 = new ListViewItem ("B");
+        var lvi2 = new ListViewItem ("B");
         lvi2.Name = "B name";
-        ListViewItem lvi3 = new ListViewItem ("C");
+        var lvi3 = new ListViewItem ("C");
         lvi3.Name = "Same name";
-        ListViewItem lvi4 = new ListViewItem ("D");
+        var lvi4 = new ListViewItem ("D");
         lvi4.Name = "Same name";
-        ListViewItem lvi5 = new ListViewItem ("E");
+        var lvi5 = new ListViewItem ("E");
         lvi5.Name = String.Empty;
         lvw.Items.AddRange (new ListViewItem [] { lvi1, lvi2, lvi3, lvi4, lvi5 });
 
@@ -1313,14 +1313,14 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewItemCollectionTest_IndexOfKey ()
     {
-        ListView lvw = new ListView ();
-        ListViewItem lvi1 = new ListViewItem ("A");
+        var lvw = new ListView ();
+        var lvi1 = new ListViewItem ("A");
         lvi1.Name = "A name";
-        ListViewItem lvi2 = new ListViewItem ("B");
+        var lvi2 = new ListViewItem ("B");
         lvi2.Name = "Same name";
-        ListViewItem lvi3 = new ListViewItem ("C");
+        var lvi3 = new ListViewItem ("C");
         lvi3.Name = "Same name";
-        ListViewItem lvi4 = new ListViewItem ("D");
+        var lvi4 = new ListViewItem ("D");
         lvi4.Name = String.Empty;
         lvw.Items.AddRange (new ListViewItem [] { lvi1, lvi2, lvi3, lvi4 });
 
@@ -1331,7 +1331,7 @@ public class ListViewCollectionsTest : TestHelper
         Assert.AreEqual (0, lvw.Items.IndexOfKey ("a NAME"), "#A5");
         Assert.AreEqual (1, lvw.Items.IndexOfKey ("Same name"), "#A6");
 
-        ListViewItem lvi5 = new ListViewItem ("E");
+        var lvi5 = new ListViewItem ("E");
         lvw.Items.Add (lvi5);
         lvi5.Name = "E name";
 
@@ -1341,14 +1341,14 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewItemCollectionTest_Indexer ()
     {
-        ListView lvw = new ListView ();
-        ListViewItem lvi1 = new ListViewItem ("A");
+        var lvw = new ListView ();
+        var lvi1 = new ListViewItem ("A");
         lvi1.Name = "A name";
-        ListViewItem lvi2 = new ListViewItem ("B");
+        var lvi2 = new ListViewItem ("B");
         lvi2.Name = "Same name";
-        ListViewItem lvi3 = new ListViewItem ("C");
+        var lvi3 = new ListViewItem ("C");
         lvi3.Name = "Same name";
-        ListViewItem lvi4 = new ListViewItem ("D");
+        var lvi4 = new ListViewItem ("D");
         lvi4.Name = String.Empty;
         lvw.Items.AddRange (new ListViewItem [] { lvi1, lvi2, lvi3, lvi4 });
 
@@ -1359,7 +1359,7 @@ public class ListViewCollectionsTest : TestHelper
         Assert.AreSame (lvi1, lvw.Items ["a NAME"], "#A5");
         Assert.AreSame (lvi2, lvw.Items ["Same name"], "#A6");
 
-        ListViewItem lvi5 = new ListViewItem ("E");
+        var lvi5 = new ListViewItem ("E");
         lvw.Items.Add (lvi5);
         lvi5.Name = "E name";
 
@@ -1369,12 +1369,12 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewItemCollectionTest_ContainsKey ()
     {
-        ListView lvw = new ListView();
-        ListViewItem lvi1 = new ListViewItem("A");
+        var lvw = new ListView();
+        var lvi1 = new ListViewItem("A");
         lvi1.Name = "A name";
-        ListViewItem lvi2 = new ListViewItem("B");
+        var lvi2 = new ListViewItem("B");
         lvi2.Name = "B name";
-        ListViewItem lvi3 = new ListViewItem("D");
+        var lvi3 = new ListViewItem("D");
         lvi3.Name = String.Empty;
         lvw.Items.AddRange(new ListViewItem[] { lvi1, lvi2, lvi3 });
 
@@ -1385,7 +1385,7 @@ public class ListViewCollectionsTest : TestHelper
         Assert.AreEqual(true, lvw.Items.ContainsKey ("a NAME"), "#A5");
         Assert.AreEqual(true, lvw.Items.ContainsKey ("B name"), "#A6");
 
-        ListViewItem lvi5 = new ListViewItem("E");
+        var lvi5 = new ListViewItem("E");
         lvw.Items.Add(lvi5);
         lvi5.Name = "E name";
 
@@ -1395,16 +1395,16 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewItemCollectionTest_Find ()
     {
-        ListView lvw = new ListView ();
-        ListViewItem lvi1 = new ListViewItem ("A");
+        var lvw = new ListView ();
+        var lvi1 = new ListViewItem ("A");
         lvi1.Name = "A name";
-        ListViewItem lvi2 = new ListViewItem ("B");
+        var lvi2 = new ListViewItem ("B");
         lvi2.Name = "a NAME";
-        ListViewItem lvi3 = new ListViewItem ("C");
+        var lvi3 = new ListViewItem ("C");
         lvi3.Name = "a NAME";
-        ListViewItem lvi4 = new ListViewItem ("D");
+        var lvi4 = new ListViewItem ("D");
         lvi4.Name = String.Empty;
-        ListViewItem lvi5 = new ListViewItem ("F");
+        var lvi5 = new ListViewItem ("F");
         lvi5.Name = String.Empty;
         lvw.Items.AddRange (new ListViewItem [] { lvi1, lvi2, lvi3, lvi4, lvi5 });
 
@@ -1427,12 +1427,12 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewSubItemCollectionTest_ContainsKey ()
     {
-        ListViewItem lvi = new ListViewItem ("A");
-        ListViewItem.ListViewSubItem si1 = new ListViewItem.ListViewSubItem ();
+        var lvi = new ListViewItem ("A");
+        var si1 = new ListViewItem.ListViewSubItem ();
         si1.Name = "A name";
-        ListViewItem.ListViewSubItem si2 = new ListViewItem.ListViewSubItem ();
+        var si2 = new ListViewItem.ListViewSubItem ();
         si2.Name = "B name";
-        ListViewItem.ListViewSubItem si3 = new ListViewItem.ListViewSubItem ();
+        var si3 = new ListViewItem.ListViewSubItem ();
         si3.Name = String.Empty;
         lvi.SubItems.AddRange (new ListViewItem.ListViewSubItem [] { si1, si2, si3 });
 
@@ -1443,7 +1443,7 @@ public class ListViewCollectionsTest : TestHelper
         Assert.AreEqual (true, lvi.SubItems.ContainsKey ("a NAME"), "#A5");
         Assert.AreEqual (true, lvi.SubItems.ContainsKey ("B name"), "#A6");
 
-        ListViewItem.ListViewSubItem si5 = new ListViewItem.ListViewSubItem ();
+        var si5 = new ListViewItem.ListViewSubItem ();
         lvi.SubItems.Add (si5);
         si5.Name = "E name";
 
@@ -1453,14 +1453,14 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewSubItemCollectionTest_IndexOfKey ()
     {
-        ListViewItem lvi = new ListViewItem ();
-        ListViewItem.ListViewSubItem si1 = new ListViewItem.ListViewSubItem ();
+        var lvi = new ListViewItem ();
+        var si1 = new ListViewItem.ListViewSubItem ();
         si1.Name = "A name";
-        ListViewItem.ListViewSubItem si2 = new ListViewItem.ListViewSubItem ();
+        var si2 = new ListViewItem.ListViewSubItem ();
         si2.Name = "Same name";
-        ListViewItem.ListViewSubItem si3 = new ListViewItem.ListViewSubItem ();
+        var si3 = new ListViewItem.ListViewSubItem ();
         si3.Name = "Same name";
-        ListViewItem.ListViewSubItem si4 = new ListViewItem.ListViewSubItem ();
+        var si4 = new ListViewItem.ListViewSubItem ();
         si4.Name = String.Empty;
         lvi.SubItems.AddRange (new ListViewItem.ListViewSubItem [] { si1, si2, si3, si4 });
 
@@ -1471,7 +1471,7 @@ public class ListViewCollectionsTest : TestHelper
         Assert.AreEqual (1, lvi.SubItems.IndexOfKey ("a NAME"), "#A5");
         Assert.AreEqual (2, lvi.SubItems.IndexOfKey ("Same name"), "#A6");
 
-        ListViewItem.ListViewSubItem si5 = new ListViewItem.ListViewSubItem ();
+        var si5 = new ListViewItem.ListViewSubItem ();
         lvi.SubItems.Add (si5);
         si5.Name = "E name";
 
@@ -1481,16 +1481,16 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewSubItemCollectionTest_RemoveByKey ()
     {
-        ListViewItem lvi = new ListViewItem ();
-        ListViewItem.ListViewSubItem si1 = new ListViewItem.ListViewSubItem ();
+        var lvi = new ListViewItem ();
+        var si1 = new ListViewItem.ListViewSubItem ();
         si1.Name = "A name";
-        ListViewItem.ListViewSubItem si2 = new ListViewItem.ListViewSubItem ();
+        var si2 = new ListViewItem.ListViewSubItem ();
         si2.Name = "B name";
-        ListViewItem.ListViewSubItem si3 = new ListViewItem.ListViewSubItem ();
+        var si3 = new ListViewItem.ListViewSubItem ();
         si3.Name = "Same name";
-        ListViewItem.ListViewSubItem si4 = new ListViewItem.ListViewSubItem ();
+        var si4 = new ListViewItem.ListViewSubItem ();
         si4.Name = "Same name";
-        ListViewItem.ListViewSubItem si5 = new ListViewItem.ListViewSubItem ();
+        var si5 = new ListViewItem.ListViewSubItem ();
         si5.Name = String.Empty;
         lvi.SubItems.AddRange (new ListViewItem.ListViewSubItem [] { si1, si2, si3, si4, si5 });
 
@@ -1523,14 +1523,14 @@ public class ListViewCollectionsTest : TestHelper
     [Test]
     public void ListViewSubItemCollectionTest_Indexer ()
     {
-        ListViewItem lvi = new ListViewItem ();
-        ListViewItem.ListViewSubItem si1 = new ListViewItem.ListViewSubItem ();
+        var lvi = new ListViewItem ();
+        var si1 = new ListViewItem.ListViewSubItem ();
         si1.Name = "A name";
-        ListViewItem.ListViewSubItem si2 = new ListViewItem.ListViewSubItem ();
+        var si2 = new ListViewItem.ListViewSubItem ();
         si2.Name = "Same name";
-        ListViewItem.ListViewSubItem si3 = new ListViewItem.ListViewSubItem ();
+        var si3 = new ListViewItem.ListViewSubItem ();
         si3.Name = "Same name";
-        ListViewItem.ListViewSubItem si4 = new ListViewItem.ListViewSubItem ();
+        var si4 = new ListViewItem.ListViewSubItem ();
         si4.Name = String.Empty;
         lvi.SubItems.AddRange (new ListViewItem.ListViewSubItem [] { si1, si2, si3, si4 });
 
@@ -1541,7 +1541,7 @@ public class ListViewCollectionsTest : TestHelper
         Assert.AreEqual (si1, lvi.SubItems ["a NAME"], "#A5");
         Assert.AreEqual (si2, lvi.SubItems ["Same name"], "#A6");
 
-        ListViewItem.ListViewSubItem si5 = new ListViewItem.ListViewSubItem ();
+        var si5 = new ListViewItem.ListViewSubItem ();
         lvi.SubItems.Add (si5);
         si5.Name = "E name";
 
@@ -1553,7 +1553,7 @@ public class ListViewCollectionsTest : TestHelper
     void CreateVirtualItems (int count)
     {
         items = new ListViewItem [count];
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
             items [i] = new ListViewItem ();
     }
 

@@ -33,8 +33,8 @@ public class DragEventArgsTest : TestHelper
     [Test]
     public void EffectTest ()
     {
-        DragDropEffects allowed_effects = DragDropEffects.Copy | DragDropEffects.Link;
-        DragEventArgs args = new DragEventArgs (null, 0, 0, 0, allowed_effects, DragDropEffects.Copy);
+        var allowed_effects = DragDropEffects.Copy | DragDropEffects.Link;
+        var args = new DragEventArgs (null, 0, 0, 0, allowed_effects, DragDropEffects.Copy);
 
         Assert.AreEqual (allowed_effects, args.AllowedEffect, "#A1");
         Assert.AreEqual (DragDropEffects.Copy, args.Effect, "#A2");

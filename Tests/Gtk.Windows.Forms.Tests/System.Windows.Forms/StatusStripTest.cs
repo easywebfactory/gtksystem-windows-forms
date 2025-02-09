@@ -38,7 +38,7 @@ public class StatusStripTests : TestHelper
     [Test]
     public void Constructor ()
     {
-        StatusStrip ts = new StatusStrip ();
+        var ts = new StatusStrip ();
 
         Assert.AreEqual (new Rectangle (1, 0, 185, 22), ts.DisplayRectangle, "A2");
         Assert.AreEqual (DockStyle.Bottom, ts.Dock, "A3");
@@ -55,7 +55,7 @@ public class StatusStripTests : TestHelper
     [Test]
     public void PropertyDock ()
     {
-        StatusStrip ts = new StatusStrip ();
+        var ts = new StatusStrip ();
 			
         ts.Dock = DockStyle.Top;
         Assert.AreEqual (DockStyle.Top, ts.Dock, "B1");
@@ -66,7 +66,7 @@ public class StatusStripTests : TestHelper
     {
         Assert.Throws<InvalidEnumArgumentException>(() =>
         {
-            StatusStrip ts = new StatusStrip();
+            var ts = new StatusStrip();
             ts.Dock = (DockStyle)42;
         });
     }
@@ -74,7 +74,7 @@ public class StatusStripTests : TestHelper
     [Test]
     public void PropertyLayoutStyle ()
     {
-        StatusStrip ts = new StatusStrip ();
+        var ts = new StatusStrip ();
 
         ts.LayoutStyle = ToolStripLayoutStyle.VerticalStackWithOverflow;
         Assert.AreEqual (ToolStripLayoutStyle.VerticalStackWithOverflow, ts.LayoutStyle, "B1");
@@ -85,7 +85,7 @@ public class StatusStripTests : TestHelper
     {
         Assert.Throws<InvalidEnumArgumentException>(() =>
         {
-            StatusStrip ts = new StatusStrip();
+            var ts = new StatusStrip();
 
             ts.LayoutStyle = (ToolStripLayoutStyle)42;
         });
@@ -94,7 +94,7 @@ public class StatusStripTests : TestHelper
     [Test]
     public void PropertyPadding ()
     {
-        StatusStrip ts = new StatusStrip ();
+        var ts = new StatusStrip ();
 
         ts.Padding = new Padding (7);
         Assert.AreEqual (new Padding (7), ts.Padding, "B1");
@@ -103,7 +103,7 @@ public class StatusStripTests : TestHelper
     [Test]
     public void PropertyShowItemToolTips ()
     {
-        StatusStrip ts = new StatusStrip ();
+        var ts = new StatusStrip ();
 
         ts.ShowItemToolTips = true;
         Assert.AreEqual (true, ts.ShowItemToolTips, "B1");
@@ -112,7 +112,7 @@ public class StatusStripTests : TestHelper
     [Test]
     public void PropertySizingGrip ()
     {
-        StatusStrip ts = new StatusStrip ();
+        var ts = new StatusStrip ();
 
         ts.SizingGrip = false;
         Assert.AreEqual (false, ts.SizingGrip, "B1");
@@ -121,7 +121,7 @@ public class StatusStripTests : TestHelper
     [Test]
     public void PropertyStretch ()
     {
-        StatusStrip ts = new StatusStrip ();
+        var ts = new StatusStrip ();
 
         ts.Stretch = false;
         Assert.AreEqual (false, ts.Stretch, "B1");
@@ -130,7 +130,7 @@ public class StatusStripTests : TestHelper
     [Test]
     public void Layout ()
     {
-        StatusStrip ss = new StatusStrip();
+        var ss = new StatusStrip();
         ToolStripStatusLabel label;
 
         ss.SuspendLayout ();

@@ -36,7 +36,7 @@ public class ToolStripDropDownTests : TestHelper
     [Test]
     public void Constructor ()
     {
-        ToolStripDropDown tsdd = new ToolStripDropDown ();
+        var tsdd = new ToolStripDropDown ();
 
         Assert.AreEqual (null, tsdd.OwnerItem, "A8");
         Assert.AreEqual (null, tsdd.Region, "A9");

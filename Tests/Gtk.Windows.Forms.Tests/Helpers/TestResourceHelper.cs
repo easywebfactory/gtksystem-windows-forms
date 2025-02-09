@@ -26,14 +26,15 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Diagnostics;
 using System.Reflection;
 
 namespace GtkTests.Helpers;
 
 public static class TestResourceHelper
 {
-    static string tempFolder;
-    static Assembly currentAssembly;
+    static readonly string tempFolder;
+    static readonly Assembly currentAssembly;
 
     static TestResourceHelper()
     {
@@ -42,28 +43,33 @@ public static class TestResourceHelper
         Directory.CreateDirectory(tempFolder);
 
         currentAssembly = Assembly.GetExecutingAssembly();
-        foreach (string resourceName in currentAssembly.GetManifestResourceNames())
+        foreach (var resourceName in currentAssembly.GetManifestResourceNames())
         {
             // skip non-test assets
-            if (!resourceName.StartsWith("Test/"))
+            if (!resourceName.StartsWith("GtkTests."))
                 continue;
 
             // persist the resource to disk
-            var stream = currentAssembly.GetManifestResourceStream(resourceName);
-            var resourcePath = Path.Combine(tempFolder, resourceName);
-            Directory.CreateDirectory(Path.GetDirectoryName(resourcePath));
+            var stream = currentAssembly.GetManifestResourceStream(resourceName)!;
+            var resourcePath = Path.Combine(tempFolder, Path.ChangeExtension(resourceName, ".resx"));
+            Directory.CreateDirectory(Path.GetDirectoryName(resourcePath)!);
 
-            using (var file = File.Create(resourcePath))
-            {
-                stream.CopyTo(file);
-            }
+            using var reader = new StreamReader(stream);
+            var content = reader.ReadToEnd();
+            File.WriteAllText(resourcePath, content);
         }
 
         // delete the temp directory at the end of the test process
-        AppDomain.CurrentDomain.ProcessExit += (s, e) =>
+        AppDomain.CurrentDomain.ProcessExit += (_, _) =>
         {
-            try { Directory.Delete(tempFolder, true); }
-            catch { }
+            try
+            {
+                Directory.Delete(tempFolder, true);
+            }
+            catch (Exception exception)
+            {
+                Trace.WriteLine(exception);
+            }
         };
     }
 
@@ -74,6 +80,6 @@ public static class TestResourceHelper
 
     public static Stream GetStreamOfResource(string resourceName)
     {
-        return currentAssembly.GetManifestResourceStream(resourceName);
+        return currentAssembly.GetManifestResourceStream(resourceName)!;
     }
 }

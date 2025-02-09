@@ -37,7 +37,7 @@ public class MenuStripTest : TestHelper
     [Test]
     public void Constructor ()
     {
-        MenuStrip ms = new MenuStrip ();
+        var ms = new MenuStrip ();
 
         Assert.AreEqual (false, ms.CanSelect, "A0");
         Assert.AreEqual (ToolStripLayoutStyle.HorizontalStackWithOverflow, ms.LayoutStyle, "A6");
@@ -48,7 +48,7 @@ public class MenuStripTest : TestHelper
     [Test]
     public void ProtectedProperties ()
     {
-        ExposeProtectedProperties epp = new ExposeProtectedProperties ();
+        var epp = new ExposeProtectedProperties ();
 
         Assert.AreEqual (new Padding (6, 2, 0, 2), epp.DefaultPadding, "C2");
         Assert.AreEqual (new Size (200, 24), epp.DefaultSize, "C4");
@@ -57,7 +57,7 @@ public class MenuStripTest : TestHelper
     [Test]
     public void PropertyShowItemToolTips ()
     {
-        StatusStrip ts = new StatusStrip ();
+        var ts = new StatusStrip ();
 
         ts.ShowItemToolTips = true;
         Assert.AreEqual (true, ts.ShowItemToolTips, "B1");
@@ -66,7 +66,7 @@ public class MenuStripTest : TestHelper
     [Test]
     public void PropertyStretch ()
     {
-        StatusStrip ts = new StatusStrip ();
+        var ts = new StatusStrip ();
 
         ts.Stretch = false;
         Assert.AreEqual (false, ts.Stretch, "B1");

@@ -55,7 +55,7 @@ public class ListViewGroupTest : TestHelper
         Assert.AreEqual (0, lv.Groups.Count, "#A3");
 
         //default ListViewGroup properties
-        ListViewGroup lg1 = new ListViewGroup ();
+        var lg1 = new ListViewGroup ();
         Assert.AreEqual ("ListViewGroup", lg1.Header, "#A4");
         Assert.AreEqual (null, lg1.Name, "#A5");
         Assert.AreEqual (HorizontalAlignment.Left, lg1.HeaderAlignment, "#A6");
@@ -68,7 +68,7 @@ public class ListViewGroupTest : TestHelper
     [Test]
     public void AddTest ()
     {
-        ListViewGroup lg1 = new ListViewGroup ();
+        var lg1 = new ListViewGroup ();
         lg1.Items.Add ("Item1");
         Assert.AreEqual (1, lg1.Items.Count, "#B1");
         Assert.AreEqual (null, lg1.Items[0].ListView, "#B2");
@@ -77,7 +77,7 @@ public class ListViewGroupTest : TestHelper
         Assert.AreEqual (null, lg1.Items[0].ListView, "#B3");
         Assert.AreEqual (false, lv.Items.Contains(lg1.Items[0]), "#B4");
 
-        ListViewItem lvi = lg1.Items.Add ("Item1");
+        var lvi = lg1.Items.Add ("Item1");
         Assert.AreEqual (null, lvi.ListView, "#C1");
         Assert.AreEqual (lg1, lvi.Group, "#C2");
     }
@@ -85,7 +85,7 @@ public class ListViewGroupTest : TestHelper
     [Test]
     public void RemoveTest ()
     {
-        ListViewGroup lg1 = new ListViewGroup ();
+        var lg1 = new ListViewGroup ();
         lg1.Items.Add ("Item1");
         lv.Groups.Add (lg1);
         lv.Groups.Remove (lg1);
@@ -96,7 +96,7 @@ public class ListViewGroupTest : TestHelper
 
         lg1.Items.Clear ();
         lv.Groups.Add (lg1);
-        ListViewItem lvi = lv.Items.Add ("Item1");
+        var lvi = lv.Items.Add ("Item1");
         lg1.Items.Add (lvi);
 
         Assert.AreEqual (1, lg1.Items.Count, "#D1");

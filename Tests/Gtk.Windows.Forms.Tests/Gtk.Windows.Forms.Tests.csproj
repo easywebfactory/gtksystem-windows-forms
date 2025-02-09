@@ -8,9 +8,19 @@
 		<AssemblyOriginatorKeyFile>..\..\GtkForms.snk</AssemblyOriginatorKeyFile>
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
-		<RootNamespace>Gtk</RootNamespace>
+		<RootNamespace>GtkTests</RootNamespace>
 		<LangVersion>latest</LangVersion>
+		<NoWarn>NUnit2005</NoWarn>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="System.Resources\compat_1_1.txt">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="System.Resources\compat_2_0.txt">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="coverlet.collector" Version="6.0.0" />

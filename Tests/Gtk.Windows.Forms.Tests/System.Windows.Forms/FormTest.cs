@@ -47,28 +47,28 @@ public class FormTest : TestHelper
         d2 = 6;
 
 
-        Size size = new Size (200, 200);
+        var size = new Size (200, 200);
 			
         // Universal theme??
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             f.FormBorderStyle = FormBorderStyle.FixedSingle;
             f.Visible = true;
             d2 = f.Size.Width - f.ClientSize.Width;
             title_bar = f.Size.Height - f.ClientSize.Height - d2;
         }
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             f.FormBorderStyle = FormBorderStyle.Sizable;
             f.Visible = true;
             sizeable_factor = f.Size.Width - f.ClientSize.Width - d2;
         }
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             f.ClientSize = size;
             f.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             //f.Visible = true;
             tool_border = f.Size.Width - f.ClientSize.Width;
             tool_bar = f.Size.Height - f.ClientSize.Height - tool_border;
         }
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             f.FormBorderStyle = FormBorderStyle.Fixed3D;
             f.Visible = true;
             d3 = f.Size.Width - f.ClientSize.Width; 
@@ -80,7 +80,7 @@ public class FormTest : TestHelper
         //Console.WriteLine ("Universal theme says: d2={0}, d3={1}, title_bar={2}, sizeable_factor={3}, tool_border={4}, tool_bar={5}", d2, d3, title_bar, sizeable_factor, tool_border, tool_bar);
 			
         // Changing client size, then FormBorderStyle.
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.FixedToolWindow;
             //Console.WriteLine ("Created form, size: {0}, clientsize: {1}", f.Size, f.ClientSize);
             f.ClientSize = size;
@@ -95,7 +95,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width + tool_border, size.Height + tool_border + tool_bar).ToString (), f.Size.ToString (), style.ToString () + "-A4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.SizableToolWindow;
             f.ClientSize = size;
             f.FormBorderStyle = style;
@@ -106,7 +106,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width + tool_border + sizeable_factor, size.Height + tool_border + tool_bar + sizeable_factor).ToString (), f.Size.ToString (), style.ToString () + "-A4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.Fixed3D;
             f.ClientSize = size;
             f.FormBorderStyle = style;
@@ -117,7 +117,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width + d3, size.Height + title_bar + d3).ToString (), f.Size.ToString (), style.ToString () + "-A4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.FixedDialog;
             f.ClientSize = size;
             f.FormBorderStyle = style;
@@ -129,7 +129,7 @@ public class FormTest : TestHelper
 			
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.FixedSingle;
             f.ClientSize = size;
             f.FormBorderStyle = style;
@@ -140,7 +140,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width + d2, size.Height + title_bar + d2).ToString (), f.Size.ToString (), style.ToString () + "-A4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.None;
             f.ClientSize = size;
             f.FormBorderStyle = style;
@@ -151,7 +151,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-A4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.Sizable;
             f.ClientSize = size;
             f.FormBorderStyle = style;
@@ -164,7 +164,7 @@ public class FormTest : TestHelper
 			
 			
         // Changing size, then FormBorderStyle.
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.FixedToolWindow;
             f.Size = size;
             f.FormBorderStyle = style;
@@ -175,7 +175,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width - tool_border, size.Height - tool_border - tool_bar).ToString (), f.ClientSize.ToString (), style.ToString () + "-B4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.SizableToolWindow;
             f.Size = size;
             f.FormBorderStyle = style;
@@ -186,7 +186,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width - tool_border - sizeable_factor, size.Height - tool_border - tool_bar - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-B4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.Fixed3D;
             f.Size = size;
             f.FormBorderStyle = style;
@@ -197,7 +197,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width - d3, size.Height - title_bar - d3).ToString (), f.ClientSize.ToString (), style.ToString () + "-B4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.FixedDialog;
             f.Size = size;
             f.FormBorderStyle = style;
@@ -209,7 +209,7 @@ public class FormTest : TestHelper
 
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.FixedSingle;
             f.Size = size;
             f.FormBorderStyle = style;
@@ -220,7 +220,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width - d2, size.Height - title_bar - d2).ToString (), f.ClientSize.ToString (), style.ToString () + "-B4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.None;
             f.Size = size;
             f.FormBorderStyle = style;
@@ -231,7 +231,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (size.ToString (), f.ClientSize.ToString (), style.ToString () + "-B4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.Sizable;
             f.Size = size;
             f.FormBorderStyle = style;
@@ -245,7 +245,7 @@ public class FormTest : TestHelper
 
 
         // Changing FormBorderStyle, then client size
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.FixedToolWindow;
             f.FormBorderStyle = style;
             f.ClientSize = size;
@@ -256,7 +256,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width + tool_border, size.Height + tool_border + tool_bar).ToString (), f.Size.ToString (), style.ToString () + "-C4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.SizableToolWindow;
             f.FormBorderStyle = style;
             f.ClientSize = size;
@@ -267,7 +267,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width + tool_border + sizeable_factor, size.Height + tool_border + tool_bar + sizeable_factor).ToString (), f.Size.ToString (), style.ToString () + "-C4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.Fixed3D;
             f.FormBorderStyle = style;
             f.ClientSize = size;
@@ -278,7 +278,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width + d3, size.Height + title_bar + d3).ToString (), f.Size.ToString (), style.ToString () + "-C4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.FixedDialog;
             f.FormBorderStyle = style;
             f.ClientSize = size;
@@ -290,7 +290,7 @@ public class FormTest : TestHelper
 
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.FixedSingle;
             f.FormBorderStyle = style;
             f.ClientSize = size;
@@ -301,7 +301,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width + d2, size.Height + title_bar + d2).ToString (), f.Size.ToString (), style.ToString () + "-C4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.None;
             f.FormBorderStyle = style;
             f.ClientSize = size;
@@ -312,7 +312,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-C4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.Sizable;
             f.FormBorderStyle = style;
             f.ClientSize = size;
@@ -325,7 +325,7 @@ public class FormTest : TestHelper
 
 
         // Changing FormBorderStyle, then size
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.FixedToolWindow;
             f.FormBorderStyle = style;
             f.Size = size;
@@ -336,7 +336,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width - tool_border, size.Height - tool_border - tool_bar).ToString (), f.ClientSize.ToString (), style.ToString () + "-D4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.SizableToolWindow;
             f.FormBorderStyle = style;
             f.Size = size;
@@ -347,7 +347,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width - tool_border - sizeable_factor, size.Height - tool_border - tool_bar - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-D4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.Fixed3D;
             f.FormBorderStyle = style;
             f.Size = size;
@@ -358,7 +358,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width - d3, size.Height - title_bar - d3).ToString (), f.ClientSize.ToString (), style.ToString () + "-D4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.FixedDialog;
             f.FormBorderStyle = style;
             f.Size = size;
@@ -370,7 +370,7 @@ public class FormTest : TestHelper
 
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.FixedSingle;
             f.FormBorderStyle = style;
             f.Size = size;
@@ -381,7 +381,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width - d2, size.Height - title_bar - d2).ToString (), f.ClientSize.ToString (), style.ToString () + "-D4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.None;
             f.FormBorderStyle = style;
             f.Size = size;
@@ -392,7 +392,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (size.ToString (), f.Size.ToString (), style.ToString () + "-D4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.Sizable;
             f.FormBorderStyle = style;
             f.Size = size;
@@ -406,7 +406,7 @@ public class FormTest : TestHelper
 
 
         // Set clientsize, then change size, then FormBorderStyle.
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.FixedToolWindow;
             f.ClientSize = f.ClientSize;
             f.Size = size;
@@ -420,7 +420,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.SizableToolWindow;
             f.ClientSize = f.ClientSize;
             f.Size = size;
@@ -432,7 +432,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.Fixed3D;
             f.ClientSize = f.ClientSize;
             f.Size = size;
@@ -444,7 +444,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.FixedDialog;
             f.ClientSize = f.ClientSize;
             f.Size = size;
@@ -457,7 +457,7 @@ public class FormTest : TestHelper
 
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.FixedSingle;
             f.ClientSize = f.ClientSize;
             f.Size = size;
@@ -469,7 +469,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.None;
             f.ClientSize = f.ClientSize;
             f.Size = size;
@@ -481,7 +481,7 @@ public class FormTest : TestHelper
             Assert.AreEqual (new Size (size.Width - d2 - sizeable_factor, size.Height - title_bar - d2 - sizeable_factor).ToString (), f.ClientSize.ToString (), style.ToString () + "-E4");
         }
 
-        using (Form f = new Form ()) {
+        using (var f = new Form ()) {
             style = FormBorderStyle.Sizable;
             f.ClientSize = f.ClientSize;
             f.Size = size;
@@ -501,33 +501,33 @@ public class FormTest : TestHelper
     [Test] // bug 81969
     public void StartPositionClosedForm ()
     {
-        using (Form form = new Form ()) {
+        using (var form = new Form ()) {
             form.StartPosition = FormStartPosition.CenterParent;
             form.Load += new EventHandler (CenterDisposedForm_Load);
             form.Show ();
         }
 
-        using (Form form = new Form ()) {
+        using (var form = new Form ()) {
             form.StartPosition = FormStartPosition.CenterScreen;
             form.Load += new EventHandler (CenterDisposedForm_Load);
             form.Show ();
         }
 
 
-        using (Form form = new Form ()) {
+        using (var form = new Form ()) {
             form.StartPosition = FormStartPosition.Manual;
             form.Load += new EventHandler (CenterDisposedForm_Load);
             form.Show ();
         }
 
 
-        using (Form form = new Form ()) {
+        using (var form = new Form ()) {
             form.StartPosition = FormStartPosition.WindowsDefaultBounds;
             form.Load += new EventHandler (CenterDisposedForm_Load);
             form.Show ();
         }
 
-        using (Form form = new Form ()) {
+        using (var form = new Form ()) {
             form.StartPosition = FormStartPosition.WindowsDefaultLocation;
             form.Load += new EventHandler (CenterDisposedForm_Load);
             form.Show ();
@@ -541,14 +541,14 @@ public class FormTest : TestHelper
 
     void Form_VisibleChanged1 (object sender, EventArgs e)
     {
-        TimeBombedForm f = (TimeBombedForm) sender;
+        var f = (TimeBombedForm) sender;
         f.Reason = "VisibleChanged";
         f.Visible = false;
     }
 
     void Form_VisibleChanged2 (object sender, EventArgs e)
     {
-        TimeBombedForm f = (TimeBombedForm) sender;
+        var f = (TimeBombedForm) sender;
         f.Reason = "VisibleChanged";
         f.Visible = false;
         f.DialogResult = DialogResult.OK;
@@ -559,35 +559,33 @@ public class FormTest : TestHelper
     [Category ("NotWorking")]
     public void FormStartupPositionChangeTest ()
     {
-        using (Form frm = new Form ())
-        {
-            frm.ShowInTaskbar = false;
-            frm.StartPosition = FormStartPosition.Manual;
-            frm.Location = new Point (0, 0);
-            frm.Show ();
+        using var frm = new Form ();
+        frm.ShowInTaskbar = false;
+        frm.StartPosition = FormStartPosition.Manual;
+        frm.Location = new Point (0, 0);
+        frm.Show ();
 
-            // On X there seem to be pending messages in the queue aren't processed
-            // before Show returns, so process them. Otherwise the Location returns
-            // something like (5,23)
-            Application.DoEvents ();
+        // On X there seem to be pending messages in the queue aren't processed
+        // before Show returns, so process them. Otherwise the Location returns
+        // something like (5,23)
+        Application.DoEvents ();
 				
-            Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#01");
+        Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#01");
 
-            frm.StartPosition = FormStartPosition.CenterParent;
-            Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#02");
+        frm.StartPosition = FormStartPosition.CenterParent;
+        Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#02");
 
-            frm.StartPosition = FormStartPosition.CenterScreen;
-            Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#03");
+        frm.StartPosition = FormStartPosition.CenterScreen;
+        Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#03");
 
-            frm.StartPosition = FormStartPosition.Manual;
-            Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#04");
+        frm.StartPosition = FormStartPosition.Manual;
+        Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#04");
 
-            frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
-            Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#05");
+        frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
+        Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#05");
 
-            frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
-            Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#06");
-        }
+        frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
+        Assert.AreEqual ("{X=0,Y=0}", frm.Location.ToString (), "#06");
     }
 		
     [Test]
@@ -595,67 +593,67 @@ public class FormTest : TestHelper
     {
         CreateParams cp;
 			
-        using (Form frm = new Form ())
+        using (var frm = new Form ())
         {
-            cp = TestHelper.GetCreateParams (frm);
+            cp = GetCreateParams (frm);
             Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$01");
             Assert.AreEqual (new Point (int.MinValue, int.MinValue).ToString (), new Point (cp.X, cp.Y).ToString (), "#01");
 
             frm.StartPosition = FormStartPosition.CenterParent;
-            cp = TestHelper.GetCreateParams (frm);
+            cp = GetCreateParams (frm);
             Assert.AreEqual (FormStartPosition.CenterParent, frm.StartPosition, "$01");
             Assert.AreEqual (new Point (int.MinValue, int.MinValue).ToString (), new Point (cp.X, cp.Y).ToString (), "#02");
 
             frm.StartPosition = FormStartPosition.CenterScreen;
-            cp = TestHelper.GetCreateParams (frm);
+            cp = GetCreateParams (frm);
             Assert.AreEqual (FormStartPosition.CenterScreen, frm.StartPosition, "$01");
 
             frm.StartPosition = FormStartPosition.Manual;
-            cp = TestHelper.GetCreateParams (frm);
+            cp = GetCreateParams (frm);
             Assert.AreEqual (FormStartPosition.Manual, frm.StartPosition, "$01");
             Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#04");
 
             frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
-            cp = TestHelper.GetCreateParams (frm);
+            cp = GetCreateParams (frm);
             Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, frm.StartPosition, "$01");
             Assert.AreEqual (new Point (int.MinValue, int.MinValue).ToString (), new Point (cp.X, cp.Y).ToString (), "#05");
 
             frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
-            cp = TestHelper.GetCreateParams (frm);
+            cp = GetCreateParams (frm);
             Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$01");
             Assert.AreEqual (new Point (int.MinValue, int.MinValue).ToString (), new Point (cp.X, cp.Y).ToString (), "#06");
 				
         }
 
 
-        using (Form frm = new Form ()) {
+        using (var frm = new Form ()) {
             frm.Location = new Point (23, 45);
 
-            cp = TestHelper.GetCreateParams (frm);
+            cp = GetCreateParams (frm);
             Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$A1");
             Assert.AreEqual (new Point (int.MinValue, int.MinValue).ToString (), new Point (cp.X, cp.Y).ToString (), "#A1");
 
             frm.StartPosition = FormStartPosition.CenterParent;
-            cp = TestHelper.GetCreateParams (frm);
+            cp = GetCreateParams (frm);
             Assert.AreEqual (FormStartPosition.CenterParent, frm.StartPosition, "$A2");
             Assert.AreEqual (new Point (int.MinValue, int.MinValue).ToString (), new Point (cp.X, cp.Y).ToString (), "#A2");
 
             frm.StartPosition = FormStartPosition.CenterScreen;
-            cp = TestHelper.GetCreateParams (frm);
+            cp = GetCreateParams (frm);
             Assert.AreEqual (FormStartPosition.CenterScreen, frm.StartPosition, "$A3");
 
             frm.StartPosition = FormStartPosition.Manual;
-            cp = TestHelper.GetCreateParams (frm);
+            cp = GetCreateParams (frm);
             Assert.AreEqual (FormStartPosition.Manual, frm.StartPosition, "$A4");
             Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A4");
 
             frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
-            cp = TestHelper.GetCreateParams (frm);
+            cp = GetCreateParams (frm);
             Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, frm.StartPosition, "$A5");
             Assert.AreEqual (new Point (int.MinValue, int.MinValue).ToString (), new Point (cp.X, cp.Y).ToString (), "#A5");
 
             frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
-            cp = TestHelper.GetCreateParams (frm);
+            cp = GetCreateParams (frm);
             Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$A6");
             Assert.AreEqual (new Point (int.MinValue, int.MinValue).ToString (), new Point (cp.X, cp.Y).ToString (), "#A6");
         }
@@ -665,161 +663,160 @@ public class FormTest : TestHelper
     public void ParentedFormStartupPositionTest ()
     {
         CreateParams cp;
-        using (Form Main = new Form ()) {
-            Main.ShowInTaskbar = false;
-            Main.Show ();
+        using var Main = new Form ();
+        Main.ShowInTaskbar = false;
+        Main.Show ();
 
-            using (Form frm = new Form ()) {
-                Main.Controls.Add (frm);
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$01");
-                Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#01");
+        using (var frm = new Form ()) {
+            Main.Controls.Add (frm);
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$01");
+            Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#01");
 
-                frm.StartPosition = FormStartPosition.CenterParent;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.CenterParent, frm.StartPosition, "$02");
-                Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#02");
+            frm.StartPosition = FormStartPosition.CenterParent;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.CenterParent, frm.StartPosition, "$02");
+            Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#02");
 
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.CenterScreen, frm.StartPosition, "$03");
-                Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#03");
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.CenterScreen, frm.StartPosition, "$03");
+            Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#03");
 
-                frm.StartPosition = FormStartPosition.Manual;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.Manual, frm.StartPosition, "$04");
-                Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#04");
+            frm.StartPosition = FormStartPosition.Manual;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.Manual, frm.StartPosition, "$04");
+            Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#04");
 
-                frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, frm.StartPosition, "$05");
-                Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#05");
+            frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, frm.StartPosition, "$05");
+            Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#05");
 
-                frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$06");
-                Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#06");
-                frm.Show ();
-            }
+            frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$06");
+            Assert.AreEqual (new Point (0, 0).ToString (), new Point (cp.X, cp.Y).ToString (), "#06");
+            frm.Show ();
+        }
 
-            using (Form frm = new Form ()) {
-                Main.Controls.Add (frm);
-                frm.Location = new Point (23, 45);
+        using (var frm = new Form ()) {
+            Main.Controls.Add (frm);
+            frm.Location = new Point (23, 45);
 
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$A1");
-                Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A1");
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$A1");
+            Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A1");
 
-                frm.StartPosition = FormStartPosition.CenterParent;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.CenterParent, frm.StartPosition, "$A2");
-                Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A2");
+            frm.StartPosition = FormStartPosition.CenterParent;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.CenterParent, frm.StartPosition, "$A2");
+            Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A2");
 
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.CenterScreen, frm.StartPosition, "$A3");
-                Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A3");
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.CenterScreen, frm.StartPosition, "$A3");
+            Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A3");
 
-                frm.StartPosition = FormStartPosition.Manual;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.Manual, frm.StartPosition, "$A4");
-                Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A4");
+            frm.StartPosition = FormStartPosition.Manual;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.Manual, frm.StartPosition, "$A4");
+            Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A4");
 
-                frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, frm.StartPosition, "$A5");
-                Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A5");
+            frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, frm.StartPosition, "$A5");
+            Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A5");
 
-                frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$A6");
-                Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A6");
+            frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$A6");
+            Assert.AreEqual (new Point (23, 45).ToString (), new Point (cp.X, cp.Y).ToString (), "#A6");
 
-                frm.Show ();
-            }
+            frm.Show ();
+        }
 
-            using (Form frm = new Form ()) {
-                Main.Controls.Add (frm);
-                frm.Location = new Point (34, 56);
+        using (var frm = new Form ()) {
+            Main.Controls.Add (frm);
+            frm.Location = new Point (34, 56);
 
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$B1");
-                Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B1");
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$B1");
+            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B1");
 
-                frm.StartPosition = FormStartPosition.CenterParent;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.CenterParent, frm.StartPosition, "$B2");
-                Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B2");
+            frm.StartPosition = FormStartPosition.CenterParent;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.CenterParent, frm.StartPosition, "$B2");
+            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B2");
 
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.CenterScreen, frm.StartPosition, "$B3");
-                Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B3");
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.CenterScreen, frm.StartPosition, "$B3");
+            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B3");
 
-                frm.StartPosition = FormStartPosition.Manual;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.Manual, frm.StartPosition, "$B4");
-                Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B4");
+            frm.StartPosition = FormStartPosition.Manual;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.Manual, frm.StartPosition, "$B4");
+            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B4");
 
-                frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, frm.StartPosition, "$B5");
-                Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B5");
+            frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, frm.StartPosition, "$B5");
+            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B5");
 
-                frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$B6");
-                Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B6");
+            frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$B6");
+            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#B6");
 
-                frm.Show ();
-            }
+            frm.Show ();
+        }
 
-            Main.Size = new Size (600, 600);
-            using (Form frm = new Form ()) {
-                Main.Controls.Add (frm);
-                frm.Location = new Point (34, 56);
+        Main.Size = new Size (600, 600);
+        using (var frm = new Form ()) {
+            Main.Controls.Add (frm);
+            frm.Location = new Point (34, 56);
 
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$C1");
-                Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C1");
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$C1");
+            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C1");
 
-                frm.StartPosition = FormStartPosition.CenterParent;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.CenterParent, frm.StartPosition, "$C2");
-                Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C2");
+            frm.StartPosition = FormStartPosition.CenterParent;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.CenterParent, frm.StartPosition, "$C2");
+            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C2");
 
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.CenterScreen, frm.StartPosition, "$C3");
-                Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C3");
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.CenterScreen, frm.StartPosition, "$C3");
+            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C3");
 
-                frm.StartPosition = FormStartPosition.Manual;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.Manual, frm.StartPosition, "$C4");
-                Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C4");
+            frm.StartPosition = FormStartPosition.Manual;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.Manual, frm.StartPosition, "$C4");
+            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C4");
 
-                frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, frm.StartPosition, "$C5");
-                Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C5");
+            frm.StartPosition = FormStartPosition.WindowsDefaultBounds;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.WindowsDefaultBounds, frm.StartPosition, "$C5");
+            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C5");
 
-                frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
-                cp = TestHelper.GetCreateParams (frm);
-                Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$C6");
-                Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C6");
+            frm.StartPosition = FormStartPosition.WindowsDefaultLocation;
+            cp = GetCreateParams (frm);
+            Assert.AreEqual (FormStartPosition.WindowsDefaultLocation, frm.StartPosition, "$C6");
+            Assert.AreEqual (new Point (34, 56).ToString (), new Point (cp.X, cp.Y).ToString (), "#C6");
 
-                frm.Show ();
-            }
+            frm.Show ();
         }
     }
 		
     [Test]
     public void UnparentForm ()
     {
-        Form f1 = new Form ();
+        var f1 = new Form ();
         f1.Show ();
 
-        Form f2 = new Form ();
+        var f2 = new Form ();
         f2.Parent = f1;
         Assert.AreSame (f1, f2.Parent, "#1");
         f2.Show ();
@@ -833,7 +830,7 @@ public class FormTest : TestHelper
     [Test] // bug #80791
     public void ClientSizeTest ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         Assert.IsFalse (form.ClientSize == form.Size);
     }
 
@@ -841,9 +838,9 @@ public class FormTest : TestHelper
     [Category ("NotWorking")]
     public void FormBorderStyleTest ()
     {
-        Form form = new Form ();
-        Rectangle boundsBeforeBorderStyleChange = form.Bounds;
-        Rectangle clientRectangleBeforeBorderStyleChange = form.ClientRectangle;
+        var form = new Form ();
+        var boundsBeforeBorderStyleChange = form.Bounds;
+        var clientRectangleBeforeBorderStyleChange = form.ClientRectangle;
         form.FormBorderStyle = FormBorderStyle.None;
         Assert.AreEqual (form.Bounds, boundsBeforeBorderStyleChange, "#A1");
         Assert.AreEqual (form.ClientRectangle, clientRectangleBeforeBorderStyleChange, "#A2");
@@ -866,171 +863,171 @@ public class FormTest : TestHelper
     }
 
     [Test]
-    [NUnit.Framework.Category ("NotWorking")]
+    [Category ("NotWorking")]
     public void FormCreateParamsStyleTest ()
     {
         Form frm;
 			
         using (frm = new Form ()) {
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles) TestHelper.GetCreateParams (frm).Style), "#01-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles) TestHelper.GetCreateParams (frm).ExStyle), "#01-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles) GetCreateParams (frm).Style), "#01-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles) GetCreateParams (frm).ExStyle), "#01-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.AllowDrop = !frm.AllowDrop;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#02-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#02-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#02-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#02-ExStyle");
         }
 
         using (frm = new Form ()) {
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#03-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_LAYERED, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#03-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#03-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_LAYERED, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#03-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.Opacity = 0.50;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#04-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_LAYERED, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#04-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#04-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_LAYERED, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#04-ExStyle");
         }
 
         using (frm = new Form ()) {
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#05-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_LAYERED, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#05-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#05-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW | WindowExStyles.WS_EX_LAYERED, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#05-ExStyle");
         }
 			
         using (frm = new Form ()) {
             frm.CausesValidation = !frm.CausesValidation;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#06-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#06-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#06-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#06-ExStyle");
         }
 
         using (frm = new Form ()) {
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_BORDER | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#07-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#07-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_BORDER | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#07-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#07-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.Enabled = true;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#08-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#08-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#08-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#08-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.FormBorderStyle = FormBorderStyle.Fixed3D;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#10-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CLIENTEDGE | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#10-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#10-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CLIENTEDGE | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#10-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.FormBorderStyle = FormBorderStyle.FixedDialog;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#11-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_DLGMODALFRAME | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#11-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#11-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_DLGMODALFRAME | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#11-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.FormBorderStyle = FormBorderStyle.FixedSingle;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#12-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#12-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#12-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#12-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.FormBorderStyle = FormBorderStyle.FixedToolWindow;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#13-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_TOOLWINDOW | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#13-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#13-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_TOOLWINDOW | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#13-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.FormBorderStyle = FormBorderStyle.None;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#14-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#14-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#14-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#14-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.FormBorderStyle = FormBorderStyle.Sizable;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#15-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#15-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#15-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#15-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.FormBorderStyle = FormBorderStyle.SizableToolWindow;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#16-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_TOOLWINDOW | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#16-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#16-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_TOOLWINDOW | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#16-ExStyle");
         }
 
         using (frm = new Form ()) {
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#17-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#17-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#17-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#17-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.Icon = null;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#18-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#18-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#18-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#18-ExStyle");
         }
 
         using (frm = new Form ()) {
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#19-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#19-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#19-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#19-ExStyle");
         }
 
         using (frm = new Form ()) {
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#20-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#20-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#20-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#20-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.MaximizeBox = !frm.MaximizeBox;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_GROUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#21-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#21-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_GROUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#21-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#21-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.MinimizeBox = !frm.MinimizeBox;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#22-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#22-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_SYSMENU | WindowStyles.WS_CAPTION | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#22-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#22-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.ShowIcon = !frm.ShowIcon;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#23-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_DLGMODALFRAME | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#23-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#23-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_DLGMODALFRAME | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#23-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.ShowInTaskbar = !frm.ShowInTaskbar;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#24-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#24-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#24-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#24-ExStyle");
         }
 
 
         using (frm = new Form ()) {
             frm.TabStop = !frm.TabStop;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#25-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#25-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#25-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#25-ExStyle");
         }
 
         using (frm = new Form ()) {
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS | WindowStyles.WS_CHILD, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#26-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#26-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS | WindowStyles.WS_CHILD, ((WindowStyles)GetCreateParams (frm).Style), "#26-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#26-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.Visible = !frm.Visible;
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#27-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#27-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#27-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#27-ExStyle");
         }
 
         using (frm = new Form ()) {
             frm.Text = "";
-            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_BORDER | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)TestHelper.GetCreateParams (frm).Style), "#28-Style");
-            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)TestHelper.GetCreateParams (frm).ExStyle), "#28-ExStyle");
+            Assert.AreEqual (WindowStyles.WS_TILED | WindowStyles.WS_TABSTOP | WindowStyles.WS_GROUP | WindowStyles.WS_THICKFRAME | WindowStyles.WS_BORDER | WindowStyles.WS_CLIPCHILDREN, ((WindowStyles)GetCreateParams (frm).Style), "#28-Style");
+            Assert.AreEqual (WindowExStyles.WS_EX_LEFT | WindowExStyles.WS_EX_RIGHTSCROLLBAR | WindowExStyles.WS_EX_CONTROLPARENT | WindowExStyles.WS_EX_APPWINDOW, ((WindowExStyles)GetCreateParams (frm).ExStyle), "#28-ExStyle");
         }
     }
 		
     [Test]
     public void FormPropertyTest ()
     {
-        Form myform = new Form ();
+        var myform = new Form ();
         myform.Visible = true;
         myform.Text = "NewForm";
         myform.Name = "FormTest";
@@ -1058,7 +1055,7 @@ public class FormTest : TestHelper
     [Category ("NotWorking")]
     public void ActivateTest ()
     {
-        Form myform = new Form ();
+        var myform = new Form ();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
         myform.Text = "NewForm";
@@ -1071,7 +1068,7 @@ public class FormTest : TestHelper
     [Test]
     public void SetDialogResultOutOfRange ()
     {
-        Form myform = new Form ();
+        var myform = new Form ();
         myform.ShowInTaskbar = false;
         try {
             myform.DialogResult = (DialogResult) (-1);
@@ -1089,14 +1086,14 @@ public class FormTest : TestHelper
 
     void myform_set_dialogresult (object sender, EventArgs e)
     {
-        Form f = (Form)sender;
+        var f = (Form)sender;
 
         f.DialogResult = DialogResult.OK;
     }
 
     void myform_close (object sender, EventArgs e)
     {
-        Form f = (Form)sender;
+        var f = (Form)sender;
 
         f.Close();
     }
@@ -1104,7 +1101,7 @@ public class FormTest : TestHelper
     [Test]
     public void SetDialogResult ()
     {
-        Form myform = new Form ();
+        var myform = new Form ();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
 
@@ -1150,7 +1147,7 @@ public class FormTest : TestHelper
         // CenterParent
         // 
 
-        Form formA = new Form ();
+        var formA = new Form ();
         formA.ShowInTaskbar = false;
         formA.StartPosition = FormStartPosition.CenterParent;
         formA.Location = new Point (151, 251);
@@ -1172,7 +1169,7 @@ public class FormTest : TestHelper
         // CenterScreen
         // 
 
-        Form formB = new Form ();
+        var formB = new Form ();
         formB.ShowInTaskbar = false;
         formB.StartPosition = FormStartPosition.CenterScreen;
         formB.Location = new Point (151, 251);
@@ -1194,7 +1191,7 @@ public class FormTest : TestHelper
         // Manual
         // 
 
-        Form formC = new Form ();
+        var formC = new Form ();
         formC.ShowInTaskbar = false;
         formC.StartPosition = FormStartPosition.Manual;
         formC.Location = new Point (151, 251);
@@ -1216,7 +1213,7 @@ public class FormTest : TestHelper
         // WindowsDefaultBounds
         // 
 
-        Form formD = new Form ();
+        var formD = new Form ();
         formD.ShowInTaskbar = false;
         formD.StartPosition = FormStartPosition.WindowsDefaultBounds;
         formD.Location = new Point (151, 251);
@@ -1238,7 +1235,7 @@ public class FormTest : TestHelper
         // WindowsDefaultLocation
         // 
 
-        Form formE = new Form ();
+        var formE = new Form ();
         formE.ShowInTaskbar = false;
         formE.Location = new Point (151, 251);
         formE.Show ();
@@ -1276,7 +1273,7 @@ public class FormTest : TestHelper
     {
         Assert.Throws<ObjectDisposedException>(() =>
         {
-            Form myform = new Form();
+            var myform = new Form();
             myform.ShowInTaskbar = false;
 
             myform.Show();
@@ -1294,7 +1291,7 @@ public class FormTest : TestHelper
     [Test]
     public void FormClose ()
     {
-        Form myform = new Form ();
+        var myform = new Form ();
         myform.ShowInTaskbar = false;
 
         Assert.IsFalse (myform.Visible, "A1");
@@ -1308,7 +1305,7 @@ public class FormTest : TestHelper
     [Test]
     public void FormClose2 ()
     {
-        WMCloseWatcher f = new WMCloseWatcher ();
+        var f = new WMCloseWatcher ();
         f.ShowInTaskbar = false;
 
         f.close_count = 0;
@@ -1335,10 +1332,8 @@ public class FormTest : TestHelper
     {
         Assert.Throws<InvalidOperationException>(() =>
         {
-            using (Form f = new Form())
-            {
-                f.Show(f);
-            }
+            using var f = new Form();
+            f.Show(f);
         });
     }
 		
@@ -1348,7 +1343,7 @@ public class FormTest : TestHelper
     {
         // Marked NotWorking because the ClientSize is dependent on the WM.
         // The values below match XP Luna to make sure our behavior is the same.
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
         f.Show ();
 
@@ -1394,7 +1389,7 @@ public class FormTest : TestHelper
     {
         // Marked NotWorking because the ClientSize is dependent on the WM.
         // The values below match XP Luna to make sure our behavior is the same.
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
         Assert.AreEqual (false, f.IsHandleCreated, "A0");
@@ -1437,7 +1432,7 @@ public class FormTest : TestHelper
     {
         // Marked NotWorking because the ClientSize is dependent on the WM.
         // The values below match XP Luna to make sure our behavior is the same.
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
         f.Show ();
@@ -1456,7 +1451,7 @@ public class FormTest : TestHelper
     [Test]  // bug #438866
     public void MinMaxSize ()
     {
-        Form f = new Form ();
+        var f = new Form ();
 			
         f.MinimumSize = new Size (200, 200);
         f.MaximumSize = new Size (150, 150);
@@ -1475,7 +1470,7 @@ public class FormTest : TestHelper
     [Test]
     public void MinSizeIssue ()
     {
-        Form f = new Form ();
+        var f = new Form ();
 
         f.MinimumSize = new Size (100, 100);
 
@@ -1494,7 +1489,7 @@ public class FormTest : TestHelper
     [Test]
     public void Bug82470 ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.Load += new EventHandler (Form_LoadAndHide);
         f.Show ();
 			
@@ -1511,16 +1506,14 @@ public class FormTest : TestHelper
     [Test]
     public void Bug686486 ()
     {
-        using (Form f = new Bug686486Form ())
+        using Form f = new Bug686486Form ();
+        try
         {
-            try
-            {
-                f.ShowDialog ();
-            }
-            catch (StackOverflowException)
-            {
-                Assert.Fail ("Setting DialogResult in FormClosing Event causes endless loop: StackOverflowException");
-            }
+            f.ShowDialog ();
+        }
+        catch (StackOverflowException)
+        {
+            Assert.Fail ("Setting DialogResult in FormClosing Event causes endless loop: StackOverflowException");
         }
     }
 
@@ -1528,24 +1521,24 @@ public class FormTest : TestHelper
     {
         public Bug686486Form ()
         {
-            this.FormClosing += SetDialogResultOK;
-            this.Load += SetDialogResultOK;
+            FormClosing += SetDialogResultOK;
+            Load += SetDialogResultOK;
         }
 
         private void SetDialogResultOK (object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            DialogResult = DialogResult.OK;
         }
     }
 
     [Test]
     public void AutoSizeGrowOnly ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
         f.AutoSize = true;
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (200, 200);
         b.Location = new Point (200, 200);
         f.Controls.Add (b);
@@ -1563,17 +1556,17 @@ public class FormTest : TestHelper
     [Test]
     public void AutoSizeReset ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (200, 200);
         b.Location = new Point (200, 200);
         f.Controls.Add (b);
 
         f.Show ();
 
-        Size start_size = f.ClientSize;
+        var start_size = f.ClientSize;
 
         f.AutoSize = true;
         Assert.AreEqual (new Size (403, 403), f.ClientSize, "A1");
@@ -1586,7 +1579,7 @@ public class FormTest : TestHelper
     [Test]
     public void AutoSizeGrowAndShrink ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
         f.AutoSize = true;
 
@@ -1596,7 +1589,7 @@ public class FormTest : TestHelper
         Assert.IsTrue (f.ClientSize.Width < 150, "A1");
         Assert.IsTrue (f.ClientSize.Height < 150, "A1-2");
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (200, 200);
         b.Location = new Point (0, 0);
         f.Controls.Add (b);
@@ -1609,7 +1602,7 @@ public class FormTest : TestHelper
     [Test]
     public void SettingIconToNull ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         Assert.IsNotNull (form.Icon, "1");
         form.Icon = null;
         Assert.IsNotNull (form.Icon, "2");

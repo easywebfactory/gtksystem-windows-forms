@@ -46,8 +46,8 @@ public class ToolStripItemCollectionTests : TestHelper
     [Test]
     public void Clear ()
     {
-        ToolStrip ts = new ToolStrip ();
-        ToolStripItemCollection coll = ts.Items;
+        var ts = new ToolStrip ();
+        var coll = ts.Items;
         ToolStripItem item1 = new ToolStripLabel ("a");
         ToolStripItem item2 = new ToolStripLabel ("b");
         ToolStripItem item3 = new ToolStripLabel ("c");

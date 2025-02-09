@@ -35,8 +35,8 @@ public class ControlBindingsCollectionTest  : TestHelper {
     {
         Assert.Throws<ArgumentException>(() =>
         {
-            Control c1 = new Control();
-            Control c2 = new Control();
+            var c1 = new Control();
+            var c2 = new Control();
 
             c2.DataBindings.Add("Text", c1, "Text");
             c2.DataBindings.Add("Text", c1, "Text");
@@ -46,8 +46,8 @@ public class ControlBindingsCollectionTest  : TestHelper {
     [Test]
     public void CtorTest ()
     {
-        BindableToolStripItem item = new BindableToolStripItem ();
-        ControlBindingsCollection data_bindings = new ControlBindingsCollection (item);
+        var item = new BindableToolStripItem ();
+        var data_bindings = new ControlBindingsCollection (item);
 
         Assert.AreEqual (item, data_bindings.BindableComponent, "#A1");
         Assert.AreEqual (null, data_bindings.Control, "#A2");
@@ -56,18 +56,18 @@ public class ControlBindingsCollectionTest  : TestHelper {
     [Test]
     public void DefaultDataSourceUpdateModeTest ()
     {
-        Control c = new Control ();
-        MockItem item = new MockItem ("A", -1);
+        var c = new Control ();
+        var item = new MockItem ("A", -1);
 
         Assert.AreEqual (DataSourceUpdateMode.OnValidation, c.DataBindings.DefaultDataSourceUpdateMode, "#A1");
 
         c.DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.Never;
 
         c.DataBindings.Add (new Binding ("Name", item, "Text"));
-        Binding b2 = c.DataBindings.Add ("Text", item, "Text");
-        Binding b3 = c.DataBindings.Add ("Width", item, "Value");
-        Binding b4 = c.DataBindings.Add ("Height", item, "Value", true, DataSourceUpdateMode.Never);
-        Binding b1 = c.DataBindings [0];
+        var b2 = c.DataBindings.Add ("Text", item, "Text");
+        var b3 = c.DataBindings.Add ("Width", item, "Value");
+        var b4 = c.DataBindings.Add ("Height", item, "Value", true, DataSourceUpdateMode.Never);
+        var b1 = c.DataBindings [0];
 
         Assert.AreEqual (b1.DataSourceUpdateMode, DataSourceUpdateMode.OnValidation, "#B1");
         Assert.AreEqual (b2.DataSourceUpdateMode, DataSourceUpdateMode.Never, "#B2");

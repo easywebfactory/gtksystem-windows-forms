@@ -6,19 +6,12 @@
 // build of this assembly should still have asserts fire.  To achieve that, we need to define DEBUG here.
 // We do not do the registry override in retail because that would require shipping a test hook.  We
 // do not generally ship test hooks today.
-#if DEBUG
-#define DEBUG_FOR_REALS
-#else
-#define DEBUG
-#endif
 
-namespace System.Runtime;
-
-using System;
 using System.Diagnostics;
-using System.Security;
 using System.Runtime.Versioning;
+using System.Security;
 
+namespace GtkTests.System.Runtime;
 
 static class AssertHelper
 {
@@ -43,7 +36,7 @@ static class AssertHelper
     {
         try
         {
-            string debugMessage = "Assert fired! --> " + message + "\r\n";
+            var debugMessage = "Assert fired! --> " + message + "\r\n";
             if (Debugger.IsAttached)
             {
                 Debugger.Log(0, Debugger.DefaultCategory, debugMessage);
@@ -53,7 +46,7 @@ static class AssertHelper
         }
         catch (Exception exception)
         {
-            string newMessage = "Exception during FireAssert!";
+            var newMessage = "Exception during FireAssert!";
             try
             {
                 newMessage = string.Concat(newMessage, " [", exception.GetType().Name, ": ", exception.Message, "] --> ", message);

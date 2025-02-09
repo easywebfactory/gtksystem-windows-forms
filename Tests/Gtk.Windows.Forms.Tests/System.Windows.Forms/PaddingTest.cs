@@ -36,7 +36,7 @@ public class PaddingTest : TestHelper
     [Test]
     public void PaddingPropertiesTest()
     {
-        Padding pad = new Padding();
+        var pad = new Padding();
         Assert.AreEqual(-1, pad.All, "#A1");
         Assert.AreEqual(0, pad.Top, "#A2");
         Assert.AreEqual(0, pad.Left, "#A3");
@@ -47,7 +47,7 @@ public class PaddingTest : TestHelper
         Assert.AreEqual("{Left=0,Top=0,Right=0,Bottom=0}", pad.ToString(), "#A8");
         Assert.AreEqual(new Size(0,0), pad.Size, "#A9");
 
-        Padding pad2 = new Padding(5);
+        var pad2 = new Padding(5);
         Assert.AreEqual(5, pad2.All, "#B1");
         Assert.AreEqual(5, pad2.Top, "#B2");
         Assert.AreEqual(5, pad2.Left, "#B3");
@@ -58,7 +58,7 @@ public class PaddingTest : TestHelper
         Assert.AreEqual("{Left=5,Top=5,Right=5,Bottom=5}", pad2.ToString(), "#B8");
         Assert.AreEqual(new Size(10, 10), pad2.Size, "#B9");
 
-        Padding pad3 = new Padding(5, 5, 10, 10);
+        var pad3 = new Padding(5, 5, 10, 10);
         Assert.AreEqual(-1, pad3.All, "#C1");
         Assert.AreEqual(5, pad3.Top, "#C2");
         Assert.AreEqual(5, pad3.Left, "#C3");
@@ -69,10 +69,10 @@ public class PaddingTest : TestHelper
         Assert.AreEqual("{Left=5,Top=5,Right=10,Bottom=10}", pad3.ToString(), "#C8");
         Assert.AreEqual(new Size(15, 15), pad3.Size, "#C9");
 
-        Padding pad4 = new Padding(10, 10, 10, 10);
+        var pad4 = new Padding(10, 10, 10, 10);
         Assert.AreEqual(10, pad4.All, "#D1");
 
-        Padding pad5 = Padding.Empty;
+        var pad5 = Padding.Empty;
         Assert.AreEqual(0, pad5.All, "#E1");
         Assert.AreEqual(0, pad5.Top, "#E2");
         Assert.AreEqual(0, pad5.Left, "#E3");
@@ -87,12 +87,12 @@ public class PaddingTest : TestHelper
     [Test]
     public void PaddingOperatorTest()
     {
-        Padding pad = new Padding(0);
+        var pad = new Padding(0);
         Assert.AreEqual(Padding.Empty, pad, "#A1");
 
-        Padding pad1 = new Padding(2, 4, 6, 8);
-        Padding pad2 = new Padding(5, 5, 10, 11);
-        Padding pad3 = pad1 + pad2;
+        var pad1 = new Padding(2, 4, 6, 8);
+        var pad2 = new Padding(5, 5, 10, 11);
+        var pad3 = pad1 + pad2;
         Assert.AreEqual(-1, pad3.All, "#B1");
         Assert.AreEqual("{Left=7,Top=9,Right=16,Bottom=19}", pad3.ToString(), "#B2");
 
@@ -100,7 +100,7 @@ public class PaddingTest : TestHelper
         Assert.AreEqual(-1, pad3.All, "#C1");
         Assert.AreEqual("{Left=7,Top=9,Right=16,Bottom=19}", pad3.ToString(), "#C2");
 
-        Padding pad4 = pad3 - pad1;
+        var pad4 = pad3 - pad1;
         Assert.AreEqual(-1, pad4.All, "#D1");
         Assert.AreEqual("{Left=5,Top=5,Right=10,Bottom=11}", pad4.ToString(), "#D2");
 

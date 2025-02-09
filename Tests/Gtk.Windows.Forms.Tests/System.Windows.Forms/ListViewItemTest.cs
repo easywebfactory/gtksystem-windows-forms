@@ -35,11 +35,11 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void ListViewItemConstructors ()
     {
-        Font fnt = new Font ("Arial", 12);
-        ListViewItem item1 = new ListViewItem ("Hello folks");
+        var fnt = new Font ("Arial", 12);
+        var item1 = new ListViewItem ("Hello folks");
         Assert.AreEqual ("Hello folks", item1.Text, "Constructor#1");
 
-        ListViewItem item2 = new ListViewItem (new string [] {"Element1", "Element2"},
+        var item2 = new ListViewItem (new string [] {"Element1", "Element2"},
             -1, Color.Blue, Color.Red, fnt);
 
         Assert.AreEqual (item2.ForeColor, Color.Blue, "Constructor#2");
@@ -52,19 +52,19 @@ public class ListViewItemTest : TestHelper
         Assert.AreEqual ("Element1", item2.SubItems[0].Text, "Constructor#8");
         Assert.AreEqual ("Element2", item2.SubItems[1].Text, "Constructor#12");
 
-        ListViewItem item3 = new ListViewItem ((string)null);
+        var item3 = new ListViewItem ((string)null);
         Assert.AreEqual (String.Empty, item3.Text, "Constructor#13");
 
-        ListViewItem item4 = new ListViewItem ((string)null, -99);
+        var item4 = new ListViewItem ((string)null, -99);
         Assert.AreEqual (String.Empty, item4.Text, "Constructor#14");
         Assert.AreEqual (-99, item4.ImageIndex, "Constructor#15");
 
-        ListViewItem item5 = new ListViewItem (new string [2]);
+        var item5 = new ListViewItem (new string [2]);
         Assert.AreEqual (2, item5.SubItems.Count, "Constructor#16");
         Assert.IsNotNull (item5.SubItems [0], "Constructor#17");
         Assert.IsNotNull (item5.SubItems [1], "Constructor#18");
 
-        ListViewItem item6 = new ListViewItem (new string [2], -1, Color.Blue, Color.Red,
+        var item6 = new ListViewItem (new string [2], -1, Color.Blue, Color.Red,
             fnt);
         Assert.AreEqual (2, item6.SubItems.Count, "Constructor#19");
         Assert.IsNotNull (item6.SubItems [0], "Constructor#20");
@@ -80,7 +80,7 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void Constructor2_Text_Null ()
     {
-        ListViewItem item = new ListViewItem ((string) null);
+        var item = new ListViewItem ((string) null);
         Assert.AreEqual (-1, item.ImageIndex, "#1");
         Assert.AreEqual (1, item.SubItems.Count, "#2");
         Assert.IsNotNull (item.SubItems [0].Text, "#3");
@@ -90,7 +90,7 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void Constructor3_Items_Empty ()
     {
-        ListViewItem item = new ListViewItem (new string [3]);
+        var item = new ListViewItem (new string [3]);
         Assert.AreEqual (-1, item.ImageIndex, "#1");
         Assert.AreEqual (3, item.SubItems.Count, "#2");
         Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#3");
@@ -101,7 +101,7 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void Constructor3_Items_Null ()
     {
-        ListViewItem item = new ListViewItem ((string []) null);
+        var item = new ListViewItem ((string []) null);
         Assert.AreEqual (-1, item.ImageIndex, "#1");
         Assert.AreEqual (1, item.SubItems.Count, "#2");
         Assert.IsNotNull (item.SubItems [0].Text, "#3");
@@ -129,7 +129,7 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void Constructor5_Text_Null ()
     {
-        ListViewItem item = new ListViewItem ((string) null, 2);
+        var item = new ListViewItem ((string) null, 2);
         Assert.AreEqual (2, item.ImageIndex, "#1");
         Assert.AreEqual (1, item.SubItems.Count, "#2");
         Assert.IsNotNull (item.SubItems [0].Text, "#3");
@@ -139,7 +139,7 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void Constructor6_Items_Empty ()
     {
-        ListViewItem item = new ListViewItem (new string [3], 5);
+        var item = new ListViewItem (new string [3], 5);
         Assert.AreEqual (5, item.ImageIndex, "#1");
         Assert.AreEqual (3, item.SubItems.Count, "#2");
         Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#3");
@@ -150,7 +150,7 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void Constructor6_Items_Null ()
     {
-        ListViewItem item = new ListViewItem ((string []) null, 3);
+        var item = new ListViewItem ((string []) null, 3);
         Assert.AreEqual (3, item.ImageIndex, "#1");
         Assert.AreEqual (1, item.SubItems.Count, "#2");
         Assert.IsNotNull (item.SubItems [0].Text, "#3");
@@ -160,9 +160,9 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void Constructor7_Items_Empty ()
     {
-        Font font = new Font (FontFamily.GenericSansSerif, 6);
+        var font = new Font (FontFamily.GenericSansSerif, 6);
 
-        ListViewItem item = new ListViewItem (new string [2], 3, Color.Red,
+        var item = new ListViewItem (new string [2], 3, Color.Red,
             Color.Blue, font);
         Assert.AreEqual (Color.Blue, item.BackColor, "#1");
         Assert.AreEqual (Color.Red, item.ForeColor, "#2");
@@ -178,9 +178,9 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void Constructor7_Items_Null ()
     {
-        Font font = new Font (FontFamily.GenericSansSerif, 6);
+        var font = new Font (FontFamily.GenericSansSerif, 6);
 
-        ListViewItem item = new ListViewItem ((string []) null, 3, Color.Red,
+        var item = new ListViewItem ((string []) null, 3, Color.Red,
             Color.Blue, font);
         Assert.AreEqual (Color.Blue, item.BackColor, "#1");
         Assert.AreEqual (Color.Red, item.ForeColor, "#2");
@@ -194,7 +194,7 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void Constructor9_Text_Null ()
     {
-        ListViewItem item = new ListViewItem ((string) null, "key");
+        var item = new ListViewItem ((string) null, "key");
         Assert.AreEqual (-1, item.ImageIndex, "#1");
         Assert.IsNotNull (item.ImageKey, "#2");
         Assert.AreEqual ("key", item.ImageKey, "#3");
@@ -206,7 +206,7 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void Constructor9_ImageKey_Null ()
     {
-        ListViewItem item = new ListViewItem ("name", (string) null);
+        var item = new ListViewItem ("name", (string) null);
         Assert.AreEqual (-1, item.ImageIndex, "#1");
         Assert.IsNotNull (item.ImageKey, "#2");
         Assert.AreEqual (string.Empty, item.ImageKey, "#3");
@@ -236,12 +236,12 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void Constructor10_ImageKey_Null ()
     {
-        ListViewItem.ListViewSubItem subItemA = new ListViewItem.ListViewSubItem ();
+        var subItemA = new ListViewItem.ListViewSubItem ();
         subItemA.Text = "A";
-        ListViewItem.ListViewSubItem subItemB = new ListViewItem.ListViewSubItem ();
+        var subItemB = new ListViewItem.ListViewSubItem ();
         subItemB.Text = "B";
 
-        ListViewItem item = new ListViewItem (new ListViewItem.ListViewSubItem [] {
+        var item = new ListViewItem (new ListViewItem.ListViewSubItem [] {
             subItemA, subItemB }, (string) null);
         Assert.AreEqual (-1, item.ImageIndex, "#1");
         Assert.IsNotNull (item.ImageKey, "#2");
@@ -256,13 +256,13 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void Constructor_Groups ()
     {
-        ListViewItem itemA = new ListViewItem ((ListViewGroup) null);
+        var itemA = new ListViewItem ((ListViewGroup) null);
         Assert.AreEqual (null, itemA.Group, "#A1");
 
-        ListViewGroup group = new ListViewGroup ("Group A");
+        var group = new ListViewGroup ("Group A");
         group.Items.Add (itemA);
 
-        ListViewItem itemB = new ListViewItem ("B", group);
+        var itemB = new ListViewItem ("B", group);
         Assert.AreEqual (group, itemB.Group, "#B1");
         Assert.AreEqual (2, group.Items.Count, "#B2");
         Assert.AreEqual (itemB, group.Items [1], "#B3");
@@ -271,7 +271,7 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void ListViewItemDefaultValues ()
     {
-        ListViewItem item = new ListViewItem ();
+        var item = new ListViewItem ();
 
         Assert.IsFalse (item.Focused, "DefaultValues#3");
         Assert.IsFalse (item.Checked, "DefaultValues#4");
@@ -287,9 +287,9 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void ListViewItemBackColor ()
     {
-        ListViewItem item = new ListViewItem ();
+        var item = new ListViewItem ();
 
-        ListView lv = new ListView ();
+        var lv = new ListView ();
         lv.Items.Add (item);
         lv.BackColor = Color.Orange;
         Assert.AreEqual (lv.BackColor, item.BackColor, "BackColor#1");
@@ -307,9 +307,9 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void ListViewItemForeColor ()
     {
-        ListViewItem item = new ListViewItem ();
+        var item = new ListViewItem ();
 
-        ListView lv = new ListView ();
+        var lv = new ListView ();
         lv.Items.Add (item);
         lv.ForeColor = Color.Orange;
         Assert.AreEqual (lv.ForeColor, item.ForeColor, "ForeColor#1");
@@ -327,13 +327,13 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void ListViewItemFocused ()
     {
-        ListView lv = new ListView ();
-        ListViewItem item1 = lv.Items.Add ("A");
-        ListViewItem item2 = lv.Items.Add ("B");
-        ListViewItem item3 = lv.Items.Add ("C");
+        var lv = new ListView ();
+        var item1 = lv.Items.Add ("A");
+        var item2 = lv.Items.Add ("B");
+        var item3 = lv.Items.Add ("C");
 
         // Need to show form
-        Form form = new Form ();
+        var form = new Form ();
         lv.Parent = form;
         form.Show ();
 
@@ -358,7 +358,7 @@ public class ListViewItemTest : TestHelper
         Assert.IsFalse (item3.Focused, "#D3");
 
         // Test Focused for Items without owner
-        ListViewItem item4 = new ListViewItem ();
+        var item4 = new ListViewItem ();
         Assert.IsFalse (item4.Focused);
         item4.Focused = true;
 
@@ -372,7 +372,7 @@ public class ListViewItemTest : TestHelper
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            ListViewItem item = new ListViewItem();
+            var item = new ListViewItem();
             item.IndentCount = -1;
         });
     }
@@ -380,14 +380,14 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void ListViewItemPosition ()
     {
-        ListViewItem itemA = new ListViewItem ();
-        ListViewItem itemB = new ListViewItem ();
-        Point initial_pos = new Point (-1, -1);
+        var itemA = new ListViewItem ();
+        var itemB = new ListViewItem ();
+        var initial_pos = new Point (-1, -1);
 
         Assert.AreEqual (itemA.Position, initial_pos, "#A1");
         Assert.AreEqual (itemB.Position, initial_pos, "#A2");
 
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         lvw.Items.AddRange (new ListViewItem [] { itemA, itemB });
 
         Assert.AreEqual (itemA.Position, initial_pos, "#B1");
@@ -396,8 +396,8 @@ public class ListViewItemTest : TestHelper
         // Create handle for lvw
         lvw.CreateControl ();
 
-        Point itemA_pos = itemA.Position;
-        Point itemB_pos = itemB.Position;
+        var itemA_pos = itemA.Position;
+        var itemB_pos = itemB.Position;
 
         Assert.IsTrue (itemA_pos != initial_pos, "#C1");
         Assert.IsTrue (itemB_pos != initial_pos, "#C2");
@@ -437,13 +437,13 @@ public class ListViewItemTest : TestHelper
     [Test] // bug #330415 and #331643
     public void RemoveFocusedItem ()
     {
-        ListView lv = new ListView ();
-        ListViewItem itemA = lv.Items.Add ("ItemA");
-        ListViewItem itemB = lv.Items.Add ("ItemB");
-        ListViewItem itemC = lv.Items.Add ("ItemC");
-        ListViewItem itemD = lv.Items.Add ("ItemD");
+        var lv = new ListView ();
+        var itemA = lv.Items.Add ("ItemA");
+        var itemB = lv.Items.Add ("ItemB");
+        var itemC = lv.Items.Add ("ItemC");
+        var itemD = lv.Items.Add ("ItemD");
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (lv);
         form.Show ();
@@ -500,7 +500,7 @@ public class ListViewItemTest : TestHelper
         Assert.IsFalse (itemC.Focused, "#G3");
         Assert.IsFalse (itemD.Focused, "#G4");
 
-        ListViewItem itemE = lv.Items.Add ("ItemE");
+        var itemE = lv.Items.Add ("ItemE");
 
         Assert.IsFalse (itemA.Focused, "#H1");
         Assert.IsFalse (itemB.Focused, "#H2");
@@ -514,9 +514,9 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void ListViewItemGroup ()
     {
-        ListViewGroup lvg1 = new ListViewGroup ();
-        ListViewGroup lvg2 = new ListViewGroup ();
-        ListViewItem lvi = new ListViewItem ();
+        var lvg1 = new ListViewGroup ();
+        var lvg2 = new ListViewGroup ();
+        var lvi = new ListViewItem ();
 		
         lvg1.Items.Add (lvi);
 		
@@ -532,13 +532,13 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void ListViewItemUseItemStyleForSubItems ()
     {
-        ListViewItem item = new ListViewItem ();
+        var item = new ListViewItem ();
         Assert.AreEqual (1, item.SubItems.Count);
 
         // UseitemStyleForSubItems works at draw level
         item.UseItemStyleForSubItems = true;
 
-        ListViewItem.ListViewSubItem subitem0 = item.SubItems [0];
+        var subitem0 = item.SubItems [0];
         var subitem0_back_color = subitem0.BackColor = Color.Black;
         var subitem0_fore_color = subitem0.ForeColor = Color.White;
 
@@ -547,7 +547,7 @@ public class ListViewItemTest : TestHelper
         Assert.AreEqual (item.BackColor, item.SubItems [0].BackColor, "UseItemStyleForSubItems#3");
         Assert.AreEqual (item.ForeColor, item.SubItems [0].ForeColor, "UseItemStyleForSubItems#4");
 
-        ListViewItem.ListViewSubItem subitem1 = item.SubItems.Add ("SubItem");
+        var subitem1 = item.SubItems.Add ("SubItem");
         var subitem1_back_color = subitem1.BackColor = Color.Blue;
         var subitem1_fore_color = subitem1.ForeColor = Color.Gray;
 
@@ -558,11 +558,11 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void ListViewItemTestClone ()
     {
-        Form f = new Form ();
-        ListView lv = new ListView ();
+        var f = new Form ();
+        var lv = new ListView ();
         lv.Parent = f;
 
-        ListViewItem item1 = lv.Items.Add ("Hello");
+        var item1 = lv.Items.Add ("Hello");
         item1.ForeColor = Color.Blue;
         item1.BackColor = Color.Red;
         item1.Font = new Font ("Arial", 14);
@@ -571,7 +571,7 @@ public class ListViewItemTest : TestHelper
 
         f.Show ();
 
-        ListViewItem item2 =  (ListViewItem) item1.Clone ();
+        var item2 =  (ListViewItem) item1.Clone ();
         Assert.AreEqual (Color.Blue, item2.ForeColor, "#1");
         Assert.AreEqual (Color.Red, item2.BackColor, "#2");
         Assert.AreEqual ("Hello", item2.Text, "#3");
@@ -591,7 +591,7 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void ListViewItemTestImageIndex()
     {
-        ListViewItem item1 = new ListViewItem();
+        var item1 = new ListViewItem();
 
         item1.ImageKey = "Key1";
         item1.ImageIndex = 0;
@@ -613,7 +613,7 @@ public class ListViewItemTest : TestHelper
     [Test]
     public void ListViewItemToolTipText ()
     {
-        ListViewItem item1 = new ListViewItem();
+        var item1 = new ListViewItem();
         item1.ToolTipText = null;
         Assert.AreEqual (String.Empty, item1.ToolTipText, "ToolTipText#1");
     }
@@ -623,11 +623,11 @@ public class ListViewItemTest : TestHelper
     [TestCase(CheckState.Unchecked, CheckState.Checked, CheckState.Unchecked)]
     public void ListViewItemCheckEventChangesValue (CheckState currentValue, CheckState newValue, CheckState overrideNewValue)
     {
-        ListView lv = new ListView ();
-        ListViewItem item1 = lv.Items.Add ("Item 1");
+        var lv = new ListView ();
+        var item1 = lv.Items.Add ("Item 1");
         item1.Checked = currentValue == CheckState.Checked;
 
-        ItemCheckEventHandler checkEventHandler = (object sender, ItemCheckEventArgs args) => {
+        ItemCheckEventHandler checkEventHandler = (object _, ItemCheckEventArgs args) => {
             Assert.AreEqual (currentValue, args.CurrentValue, "#1");
             Assert.AreEqual (newValue, args.NewValue, "#2");
             args.NewValue = overrideNewValue;
@@ -649,7 +649,7 @@ public class ListViewSubItemTest : TestHelper
     [Test] // ctor ()
     public void Constructor1 ()
     {
-        ListViewItem.ListViewSubItem subItem = new ListViewItem.ListViewSubItem ();
+        var subItem = new ListViewItem.ListViewSubItem ();
         Assert.AreEqual (string.Empty, subItem.Text, "#1");
         Assert.AreEqual (SystemColors.Window, subItem.BackColor, "#2");
         Assert.AreEqual (SystemColors.WindowText, subItem.ForeColor, "#3");
@@ -659,7 +659,7 @@ public class ListViewSubItemTest : TestHelper
     public void Constructor2 ()
     {
         ListViewItem.ListViewSubItem subItem;
-        ListViewItem item = new ListViewItem ();
+        var item = new ListViewItem ();
 			
         subItem = new ListViewItem.ListViewSubItem (null, null);
         Assert.IsNotNull (subItem.Font, "#A1");
@@ -678,8 +678,8 @@ public class ListViewSubItemTest : TestHelper
     public void Constructor3 ()
     {
         ListViewItem.ListViewSubItem subItem;
-        Font font = new Font ("Arial", 12);
-        ListViewItem item = new ListViewItem ();
+        var font = new Font ("Arial", 12);
+        var item = new ListViewItem ();
 
         subItem = new ListViewItem.ListViewSubItem (null, null,
             Color.Blue, Color.Red, null);
@@ -703,7 +703,7 @@ public class ListViewSubItemTest : TestHelper
     [Test]
     public void Name ()
     {
-        ListViewItem.ListViewSubItem subItem = new ListViewItem.ListViewSubItem ();
+        var subItem = new ListViewItem.ListViewSubItem ();
         subItem.Name = "foo";
         Assert.AreEqual ("foo", subItem.Name, "#1");
         subItem.Name = null;
@@ -719,7 +719,7 @@ public class ListViewSubItemTest : TestHelper
     [Test]
     public void Tag ()
     {
-        ListViewItem.ListViewSubItem subItem = new ListViewItem.ListViewSubItem ();
+        var subItem = new ListViewItem.ListViewSubItem ();
         subItem.Tag = "foo";
         Assert.AreEqual ("foo", subItem.Tag, "#1");
         subItem.Tag = null;
@@ -731,7 +731,7 @@ public class ListViewSubItemTest : TestHelper
     [Test]
     public void Text ()
     {
-        ListViewItem.ListViewSubItem subItem = new ListViewItem.ListViewSubItem ();
+        var subItem = new ListViewItem.ListViewSubItem ();
         subItem.Text = "foo";
         Assert.AreEqual ("foo", subItem.Text, "#1");
         subItem.Text = null;
@@ -1097,7 +1097,7 @@ public class ListViewSubItemCollectionTest : TestHelper
     [Test]
     public void Ctor ()
     {
-        ListViewItem item = new ListViewItem ();
+        var item = new ListViewItem ();
         item.Text = "MAIN";
 
         ListViewItem.ListViewSubItemCollection sub_items;
@@ -1115,16 +1115,16 @@ public class ListViewSubItemCollectionTest : TestHelper
     [Test]
     public void AddRange1 ()
     {
-        ListViewItem item = new ListViewItem ();
-        ListViewItem.ListViewSubItem subItemA = item.SubItems.Add ("A");
+        var item = new ListViewItem ();
+        var subItemA = item.SubItems.Add ("A");
 
         Assert.AreEqual (2, item.SubItems.Count, "#A1");
         Assert.IsNotNull (item.SubItems [0], "#A2");
         Assert.AreEqual (string.Empty, item.SubItems [0].Text, "#A3");
 
-        ListViewItem.ListViewSubItem subItemB = new ListViewItem.ListViewSubItem ();
+        var subItemB = new ListViewItem.ListViewSubItem ();
         subItemB.Text = "B";
-        ListViewItem.ListViewSubItem subItemC = new ListViewItem.ListViewSubItem ();
+        var subItemC = new ListViewItem.ListViewSubItem ();
         subItemB.Text = "C";
 
         item.SubItems.AddRange (new ListViewItem.ListViewSubItem [] {
@@ -1143,7 +1143,7 @@ public class ListViewSubItemCollectionTest : TestHelper
     [Test]
     public void AddRange1_Null ()
     {
-        ListViewItem item = new ListViewItem ();
+        var item = new ListViewItem ();
         try {
             item.SubItems.AddRange ((ListViewItem.ListViewSubItem []) null);
             Assert.Fail ("#1");
@@ -1159,11 +1159,11 @@ public class ListViewSubItemCollectionTest : TestHelper
     [Test]
     public void AddRange2 ()
     {
-        string subItemAText = "A";
-        string subItemBText = "B";
-        string subItemCText = "B";
+        var subItemAText = "A";
+        var subItemBText = "B";
+        var subItemCText = "B";
 
-        ListViewItem item = new ListViewItem ();
+        var item = new ListViewItem ();
         item.SubItems.Add (subItemAText);
 
         Assert.AreEqual (2, item.SubItems.Count, "#A1");
@@ -1187,7 +1187,7 @@ public class ListViewSubItemCollectionTest : TestHelper
     [Test]
     public void AddRange2_Null ()
     {
-        ListViewItem item = new ListViewItem ();
+        var item = new ListViewItem ();
         try {
             item.SubItems.AddRange ((string []) null);
             Assert.Fail ("#1");
@@ -1203,12 +1203,12 @@ public class ListViewSubItemCollectionTest : TestHelper
     [Test]
     public void AddRange3 ()
     {
-        string subItemAText = "A";
-        string subItemBText = "B";
-        string subItemCText = "B";
-        Font font = new Font ("Arial", 14);
+        var subItemAText = "A";
+        var subItemBText = "B";
+        var subItemCText = "B";
+        var font = new Font ("Arial", 14);
 
-        ListViewItem item = new ListViewItem ();
+        var item = new ListViewItem ();
         item.SubItems.Add (subItemAText);
 
         Assert.AreEqual (2, item.SubItems.Count, "#A1");
@@ -1239,7 +1239,7 @@ public class ListViewSubItemCollectionTest : TestHelper
     [Test]
     public void AddRange3_Items_Null ()
     {
-        ListViewItem item = new ListViewItem ();
+        var item = new ListViewItem ();
         try {
             item.SubItems.AddRange ((string []) null, Color.Blue, Color.Red,
                 new Font ("Arial", 14));
@@ -1256,7 +1256,7 @@ public class ListViewSubItemCollectionTest : TestHelper
     [Test]
     public void AddRange4 ()
     {
-        ListViewItem item = new ListViewItem ();
+        var item = new ListViewItem ();
         Assert.AreEqual (1, item.SubItems.Count, "#1");
 
         item.SubItems.AddRange (new string [3]);
@@ -1269,7 +1269,7 @@ public class ListViewSubItemCollectionTest : TestHelper
     [Test]
     public void Clear ()
     {
-        ListViewItem item = new ListViewItem ();
+        var item = new ListViewItem ();
         item.SubItems.AddRange (new string [] { "A", "B", "C" });
         item.SubItems.Clear ();
         Assert.AreEqual (1, item.SubItems.Count, "#1");
@@ -1280,7 +1280,7 @@ public class ListViewSubItemCollectionTest : TestHelper
     [Test]
     public void RemoveAt ()
     {
-        ListViewItem item = new ListViewItem ();
+        var item = new ListViewItem ();
         item.SubItems.AddRange (new string [] { "A", "B" });
         Assert.AreEqual (3, item.SubItems.Count, "#A1");
         Assert.IsNotNull (item.SubItems [0].Text, "#A2");

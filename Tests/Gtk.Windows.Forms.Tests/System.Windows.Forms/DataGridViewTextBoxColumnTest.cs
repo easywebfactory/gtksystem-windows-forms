@@ -34,7 +34,7 @@ public class DataGridViewTextBoxColumnTest : TestHelper
     [Test]
     public void InitialValues ()
     {
-        DataGridViewTextBoxColumn col = new DataGridViewTextBoxColumn ();
+        var col = new DataGridViewTextBoxColumn ();
 
         Assert.AreEqual ("DataGridViewTextBoxColumn { Name=, Index=-1 }", col.ToString (), "T3");
         Assert.AreEqual ("DataGridViewTextBoxColumn", col.GetType ().Name, "G2");

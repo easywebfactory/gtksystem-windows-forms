@@ -9,7 +9,7 @@ class LogGenerator
 		static int Main2(string[] args)
     {
         Type type = null;
-        System.Text.StringBuilder code = new StringBuilder ();
+        var code = new StringBuilder ();
 			
         try {
             //if (args.Length >= 1 && args [0].ToLower () == "all") {
@@ -30,7 +30,7 @@ class LogGenerator
                 return 1;
             }
 				
-            Assembly a = typeof(System.Windows.Forms.Control).Assembly;
+            var a = typeof(System.Windows.Forms.Control).Assembly;
             type = a.GetType (args [0]);
 				
             if (type == null)
@@ -49,11 +49,10 @@ class LogGenerator
                 code.Append (event_logger.GenerateLog (type));
             }
 
-            if (args.Length > 2) {
-                using (System.IO.StreamWriter writer = new System.IO.StreamWriter(args[2], false))
-                {
-                    writer.Write(code);
-                }
+            if (args.Length > 2)
+            {
+                using var writer = new StreamWriter(args[2], false);
+                writer.Write(code);
             } else {
                 Console.WriteLine(code);
             }
@@ -72,9 +71,9 @@ class override_logger
 {
     public static string GenerateLog (Type type)
     {
-        StringBuilder members = new StringBuilder ();
+        var members = new StringBuilder ();
 
-        string code =
+        var code =
             @"
 #region {0}OverrideLogger
 using System;
@@ -101,7 +100,7 @@ namespace GtkTests.System.Windows.Forms
 }}
 ";
 
-        string method_impl =
+        var method_impl =
             @"
 		{1} override {2} {0}({3})
 		{{
@@ -110,14 +109,14 @@ namespace GtkTests.System.Windows.Forms
 		}}
 ";
 
-        string property_impl =
+        var property_impl =
             @"
 		{1} override {2} {0}
 		{{{3}{4}}}
 
 ";
 
-        string get_impl =
+        var get_impl =
             @"
 			get {{
 				{1};
@@ -125,7 +124,7 @@ namespace GtkTests.System.Windows.Forms
 			}}
 ";
 
-        string set_impl =
+        var set_impl =
             @"
 			set {{
 				{1};
@@ -134,7 +133,7 @@ namespace GtkTests.System.Windows.Forms
 ";
 
 
-        foreach (MemberInfo member in type.GetMembers (BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)) {
+        foreach (var member in type.GetMembers (BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)) {
             switch (member.MemberType) {
                 case MemberTypes.Constructor:
                 case MemberTypes.Event:
@@ -150,12 +149,12 @@ namespace GtkTests.System.Windows.Forms
                     continue;
             }
 
-            MethodInfo method = member as MethodInfo;
-            PropertyInfo property = member as PropertyInfo;
+            var method = member as MethodInfo;
+            var property = member as PropertyInfo;
             string returnType;
             string access;
             string parameters;
-            string message = "";
+            var message = "";
             string membercode;
             string basecall;
 
@@ -165,10 +164,10 @@ namespace GtkTests.System.Windows.Forms
                 membercode = string.Format (method_impl, method.Name, access, returnType, parameters, message, basecall);
 
             } else {
-                string getstr = "";
-                string setstr = "";
+                var getstr = "";
+                var setstr = "";
 
-                MethodInfo get = (property.CanRead ? property.GetGetMethod () : null);
+                var get = (property.CanRead ? property.GetGetMethod () : null);
 
                 if (get == null)
                     continue;
@@ -237,13 +236,13 @@ namespace GtkTests.System.Windows.Forms
         else
             access = "?";
 
-        string msgParams = "";
-        string baseParams = "";
-        string formatParams = "";
+        var msgParams = "";
+        var baseParams = "";
+        var formatParams = "";
         ParameterInfo [] ps = method.GetParameters ();
         parameters = "";
-        for (int i = 0; i < ps.Length; i++) {
-            ParameterInfo param = ps [i];
+        for (var i = 0; i < ps.Length; i++) {
+            var param = ps [i];
 
             if (parameters != "") {
                 parameters += ", ";
@@ -293,10 +292,10 @@ class event_logger
 {
     public static string GenerateLog (Type type)
     {
-        StringBuilder adders = new StringBuilder ();
-        StringBuilder handlers = new StringBuilder ();
+        var adders = new StringBuilder ();
+        var handlers = new StringBuilder ();
 
-        string code =
+        var code =
             @"
 #region {0}EventLogger
 using System;
@@ -326,7 +325,7 @@ namespace GtkTests.System.Windows.Forms
 #endregion
 ";
 
-        string method =
+        var method =
             @"
 		void _obj_{0} ({1} sender, {2} e)
 		{{
@@ -334,7 +333,7 @@ namespace GtkTests.System.Windows.Forms
 		}}
 ";
 
-        foreach (EventInfo ev in type.GetEvents ()) {
+        foreach (var ev in type.GetEvents ()) {
             string handler;
             string adder;
 

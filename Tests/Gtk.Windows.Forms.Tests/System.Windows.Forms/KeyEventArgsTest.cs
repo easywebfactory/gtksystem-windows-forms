@@ -16,7 +16,7 @@ public class KeyEventArgsTest : TestHelper
     [Test]
     public void SuppressKeyPressTest ()
     {
-        KeyEventArgs kea = new KeyEventArgs (Keys.L);
+        var kea = new KeyEventArgs (Keys.L);
 			
         Assert.IsFalse (kea.SuppressKeyPress, "#01");
         Assert.IsFalse (kea.Handled, "#02");

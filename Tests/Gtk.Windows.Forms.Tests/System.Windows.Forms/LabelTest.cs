@@ -19,18 +19,18 @@ public class LabelTest : TestHelper
     [Test]
     public void LabelAccessibility()
     {
-        Label l = new Label();
+        var l = new Label();
         Assert.IsNotNull(l.AccessibilityObject, "1");
     }
 
     [Test]
     public void SizesTest()
     {
-        Form myform = new Form();
-        Label l1 = new Label(); l1.Text = "Test";
-        Label l2 = new Label(); l2.Text = "Test";
-        Label l3 = new Label(); l3.Text = "Test three";
-        Label l4 = new Label(); l4.Text = String.Format("Test four{0}with line breaks", Environment.NewLine);
+        var myform = new Form();
+        var l1 = new Label(); l1.Text = "Test";
+        var l2 = new Label(); l2.Text = "Test";
+        var l3 = new Label(); l3.Text = "Test three";
+        var l4 = new Label(); l4.Text = String.Format("Test four{0}with line breaks", Environment.NewLine);
         myform.Controls.Add(l1);
         myform.Controls.Add(l2);
         myform.Controls.Add(l3);
@@ -69,35 +69,35 @@ public class LabelTest : TestHelper
     [Test]
     public void StyleTest()
     {
-        Label l = new Label();
+        var l = new Label();
 
-        Assert.IsFalse(TestHelper.IsStyleSet(l, WindowStyles.WS_BORDER), "#1");
-        Assert.IsFalse(TestHelper.IsExStyleSet(l, WindowExStyles.WS_EX_CLIENTEDGE), "#2");
-        Assert.IsFalse(TestHelper.IsExStyleSet(l, WindowExStyles.WS_EX_STATICEDGE), "#3");
+        Assert.IsFalse(IsStyleSet(l, WindowStyles.WS_BORDER), "#1");
+        Assert.IsFalse(IsExStyleSet(l, WindowExStyles.WS_EX_CLIENTEDGE), "#2");
+        Assert.IsFalse(IsExStyleSet(l, WindowExStyles.WS_EX_STATICEDGE), "#3");
 
         l.BorderStyle = BorderStyle.None;
 
-        Assert.IsFalse(TestHelper.IsStyleSet(l, WindowStyles.WS_BORDER), "#4");
-        Assert.IsFalse(TestHelper.IsExStyleSet(l, WindowExStyles.WS_EX_CLIENTEDGE), "#5");
-        Assert.IsFalse(TestHelper.IsExStyleSet(l, WindowExStyles.WS_EX_STATICEDGE), "#6");
+        Assert.IsFalse(IsStyleSet(l, WindowStyles.WS_BORDER), "#4");
+        Assert.IsFalse(IsExStyleSet(l, WindowExStyles.WS_EX_CLIENTEDGE), "#5");
+        Assert.IsFalse(IsExStyleSet(l, WindowExStyles.WS_EX_STATICEDGE), "#6");
 
         l.BorderStyle = BorderStyle.FixedSingle;
 
-        Assert.IsTrue(TestHelper.IsStyleSet(l, WindowStyles.WS_BORDER), "#7");
-        Assert.IsFalse(TestHelper.IsExStyleSet(l, WindowExStyles.WS_EX_CLIENTEDGE), "#8");
-        Assert.IsFalse(TestHelper.IsExStyleSet(l, WindowExStyles.WS_EX_STATICEDGE), "#9");
+        Assert.IsTrue(IsStyleSet(l, WindowStyles.WS_BORDER), "#7");
+        Assert.IsFalse(IsExStyleSet(l, WindowExStyles.WS_EX_CLIENTEDGE), "#8");
+        Assert.IsFalse(IsExStyleSet(l, WindowExStyles.WS_EX_STATICEDGE), "#9");
 
         l.BorderStyle = BorderStyle.Fixed3D;
 
-        Assert.IsFalse(TestHelper.IsStyleSet(l, WindowStyles.WS_BORDER), "#10");
-        Assert.IsFalse(TestHelper.IsExStyleSet(l, WindowExStyles.WS_EX_CLIENTEDGE), "#11");
-        Assert.IsTrue(TestHelper.IsExStyleSet(l, WindowExStyles.WS_EX_STATICEDGE), "#12");
+        Assert.IsFalse(IsStyleSet(l, WindowStyles.WS_BORDER), "#10");
+        Assert.IsFalse(IsExStyleSet(l, WindowExStyles.WS_EX_CLIENTEDGE), "#11");
+        Assert.IsTrue(IsExStyleSet(l, WindowExStyles.WS_EX_STATICEDGE), "#12");
     }
 
     [Test]
     public void BoundsTest()
     {
-        Label l = new Label();
+        var l = new Label();
 
         Assert.AreEqual(new Rectangle(0, 0, 100, 23), l.Bounds, "1");
         Assert.AreEqual(new Rectangle(0, 0, 100, 23), l.ClientRectangle, "2");
@@ -107,7 +107,7 @@ public class LabelTest : TestHelper
     [Test]
     public void PubPropTest()
     {
-        Label l = new Label();
+        var l = new Label();
 
         Assert.IsFalse(l.AutoSize, "#3");
 
@@ -156,8 +156,8 @@ public class LabelTest : TestHelper
     [Test]
     public void LabelEqualsTest()
     {
-        Label s1 = new Label();
-        Label s2 = new Label();
+        var s1 = new Label();
+        var s2 = new Label();
         s1.Text = "abc";
         s2.Text = "abc";
         Assert.IsFalse(s1.Equals(s2), "#69");
@@ -167,7 +167,7 @@ public class LabelTest : TestHelper
     [Test]
     public void LabelScaleTest()
     {
-        Label r1 = new Label();
+        var r1 = new Label();
         r1.Width = 40;
         r1.Height = 20;
         r1.Scale(2);
@@ -179,7 +179,7 @@ public class LabelTest : TestHelper
     [Test]
     public void ToStringTest()
     {
-        Label l = new Label();
+        var l = new Label();
 
         l.Text = "My Label";
 
@@ -189,17 +189,17 @@ public class LabelTest : TestHelper
     [Test]
     public void AutoSizeExplicitSize()
     {
-        Form f = new Form();
+        var f = new Form();
         f.ShowInTaskbar = false;
 
-        Label l = new Label();
+        var l = new Label();
         l.Size = new Size(5, 5);
         l.AutoSize = true;
         l.Text = "My Label";
 
         f.Controls.Add(l);
 
-        Size s = l.Size;
+        var s = l.Size;
 
         l.Width = 10;
         Assert.AreEqual(s, l.Size, "A1");
@@ -217,34 +217,34 @@ public class LabelTest : TestHelper
     [Test]
     public void SelfSizingTest()
     {
-        TableLayoutPanel p1 = new TableLayoutPanel();
-        Label l1 = new Label();
+        var p1 = new TableLayoutPanel();
+        var l1 = new Label();
         l1.AutoSize = true;
         p1.Controls.Add(l1);
         p1.SuspendLayout();
-        Size l1_saved_size = l1.Size;
+        var l1_saved_size = l1.Size;
         l1.Text = "Text";
         Assert.AreEqual(l1_saved_size, l1.Size, "#1");
         p1.ResumeLayout();
         Assert.AreNotEqual(l1_saved_size, l1.Size, "#1a");
 
-        FlowLayoutPanel p2 = new FlowLayoutPanel();
-        Label l2 = new Label();
+        var p2 = new FlowLayoutPanel();
+        var l2 = new Label();
         l2.AutoSize = true;
         p2.Controls.Add(l2);
         p2.SuspendLayout();
-        Size l2_saved_size = l2.Size;
+        var l2_saved_size = l2.Size;
         l2.Text = "Text";
         Assert.AreEqual(l2_saved_size, l2.Size, "#2");
         p2.ResumeLayout();
         Assert.AreNotEqual(l2_saved_size, l2.Size, "#2a");
 
-        Panel p3 = new Panel();
-        Label l3 = new Label();
+        var p3 = new Panel();
+        var l3 = new Label();
         l3.AutoSize = true;
         p3.Controls.Add(l3);
         p3.SuspendLayout();
-        Size l3_saved_size = l3.Size;
+        var l3_saved_size = l3.Size;
         l3.Text = "Text";
         Assert.AreNotEqual(l3_saved_size, l3.Size, "#2");
         p3.ResumeLayout();
@@ -269,10 +269,10 @@ public class LabelEventTest : TestHelper
     [Test]
     public void AutoSizeChangedChangedTest()
     {
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        Label l = new Label();
+        var l = new Label();
         l.Visible = true;
         myform.Controls.Add(l);
         l.AutoSizeChanged += new EventHandler(Label_EventHandler);
@@ -285,10 +285,10 @@ public class LabelEventTest : TestHelper
     [Test]
     public void BackgroundImageChangedTest()
     {
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        Label l = new Label();
+        var l = new Label();
         l.Visible = true;
         myform.Controls.Add(l);
         l.BackgroundImageChanged += new EventHandler(Label_EventHandler);
@@ -301,10 +301,10 @@ public class LabelEventTest : TestHelper
     [Test]
     public void ImeModeChangedTest()
     {
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        Label l = new Label();
+        var l = new Label();
         l.Visible = true;
         myform.Controls.Add(l);
         l.ImeModeChanged += new EventHandler(Label_EventHandler);
@@ -317,10 +317,10 @@ public class LabelEventTest : TestHelper
     [Test]
     public void KeyDownTest()
     {
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel l = new MyLabel();
+        var l = new MyLabel();
         l.Visible = true;
         myform.Controls.Add(l);
         l.KeyDown += new KeyEventHandler(Label_KeyDownEventHandler);
@@ -334,10 +334,10 @@ public class LabelEventTest : TestHelper
     [Test]
     public void TabStopChangedTest()
     {
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        Label l = new Label();
+        var l = new Label();
         l.Visible = true;
         myform.Controls.Add(l);
         l.TabStopChanged += new EventHandler(Label_EventHandler);
@@ -359,7 +359,7 @@ public class MyLabelInvalidate : MyLabel
 
     protected void OnInvalidated(object sender, InvalidateEventArgs e)
     {
-        string res = (string)results[results.Count - 1];
+        var res = (string)results[results.Count - 1];
         results[results.Count - 1] = string.Concat(res, "," + e.InvalidRect.ToString());
         //results.Add ("OnInvalidate," + e.InvalidRect.ToString ());
     }
@@ -469,22 +469,22 @@ public class MyLabel : Label
         m = new Message();
 
         m.Msg = (int)WndMsg.WM_KEYDOWN;
-        m.HWnd = this.Handle;
+        m.HWnd = Handle;
         m.WParam = (IntPtr)0x41;
         m.LParam = (IntPtr)0x1e0001;
-        this.WndProc(ref m);
+        WndProc(ref m);
 
         m.Msg = (int)WndMsg.WM_CHAR;
-        m.HWnd = this.Handle;
+        m.HWnd = Handle;
         m.WParam = (IntPtr)0x61;
         m.LParam = (IntPtr)0x1e0001;
-        this.WndProc(ref m);
+        WndProc(ref m);
 
         m.Msg = (int)WndMsg.WM_KEYUP;
-        m.HWnd = this.Handle;
+        m.HWnd = Handle;
         m.WParam = (IntPtr)0x41;
         m.LParam = (IntPtr)unchecked((int)0xC01e0001);
-        this.WndProc(ref m);
+        WndProc(ref m);
     }
 
     public void KeyDownA()
@@ -494,16 +494,16 @@ public class MyLabel : Label
         m = new Message();
 
         m.Msg = (int)WndMsg.WM_KEYDOWN;
-        m.HWnd = this.Handle;
+        m.HWnd = Handle;
         m.WParam = (IntPtr)0x41;
         m.LParam = (IntPtr)0x1e0001;
-        this.WndProc(ref m);
+        WndProc(ref m);
 
         m.Msg = (int)WndMsg.WM_CHAR;
-        m.HWnd = this.Handle;
+        m.HWnd = Handle;
         m.WParam = (IntPtr)0x61;
         m.LParam = (IntPtr)0x1e0001;
-        this.WndProc(ref m);
+        WndProc(ref m);
     }
 
     public void KeyUpA()
@@ -513,10 +513,10 @@ public class MyLabel : Label
         m = new Message();
 
         m.Msg = (int)WndMsg.WM_KEYUP;
-        m.HWnd = this.Handle;
+        m.HWnd = Handle;
         m.WParam = (IntPtr)0x41;
         m.LParam = (IntPtr)unchecked((int)0xC01e0001);
-        this.WndProc(ref m);
+        WndProc(ref m);
     }
 
     public ArrayList Results
@@ -532,7 +532,7 @@ public class LabelTestEventsOrder : TestHelper
     public string[] ArrayListToString(ArrayList arrlist)
     {
         string[] retval = new string[arrlist.Count];
-        for (int i = 0; i < arrlist.Count; i++)
+        for (var i = 0; i < arrlist.Count; i++)
             retval[i] = (string)arrlist[i];
         return retval;
     }
@@ -562,7 +562,7 @@ public class LabelTestEventsOrder : TestHelper
     public void PrintList(string name, ArrayList list)
     {
         Console.WriteLine("{0}", name);
-        for (int i = 0; i < list.Count; i++)
+        for (var i = 0; i < list.Count; i++)
         {
             Console.WriteLine("   {0}", list[i]);
         }
@@ -578,10 +578,10 @@ public class LabelTestEventsOrder : TestHelper
             "OnBindingContextChanged",
             "OnBindingContextChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel l = new MyLabel();
+        var l = new MyLabel();
         myform.Controls.Add(l);
 
         Assert.AreEqual(EventsWanted, ArrayListToString(l.Results));
@@ -600,10 +600,10 @@ public class LabelTestEventsOrder : TestHelper
             "OnInvalidated",
             "OnLayout"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel l = new MyLabel();
+        var l = new MyLabel();
         myform.Controls.Add(l);
         l.Size = new Size(150, 20);
 
@@ -624,10 +624,10 @@ public class LabelTestEventsOrder : TestHelper
             "OnLayout",
             "OnAutoSizeChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel l = new MyLabel();
+        var l = new MyLabel();
         myform.Controls.Add(l);
         l.AutoSize = true;
 
@@ -645,10 +645,10 @@ public class LabelTestEventsOrder : TestHelper
             "OnBackgroundImageChanged",
             "OnInvalidated"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel l = new MyLabel();
+        var l = new MyLabel();
         myform.Controls.Add(l);
         l.BackgroundImage = Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/System.Windows.Forms/bitmaps/a.png"));
 
@@ -665,10 +665,10 @@ public class LabelTestEventsOrder : TestHelper
             "OnBindingContextChanged",
             "OnImeModeChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel l = new MyLabel();
+        var l = new MyLabel();
         myform.Controls.Add(l);
         l.ImeMode = ImeMode.Katakana;
 
@@ -687,10 +687,10 @@ public class LabelTestEventsOrder : TestHelper
             "OnKeyPress,a",
             "OnKeyUp,A"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel l = new MyLabel();
+        var l = new MyLabel();
         myform.Controls.Add(l);
         l.KeyPressA();
 
@@ -706,10 +706,10 @@ public class LabelTestEventsOrder : TestHelper
             "OnBindingContextChanged",
             "OnBindingContextChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel l = new MyLabel();
+        var l = new MyLabel();
         myform.Controls.Add(l);
         l.TabStop = true;
         PrintList("TabStopChanged", l.Results);
@@ -726,10 +726,10 @@ public class LabelTestEventsOrder : TestHelper
             "OnBindingContextChanged",
             "OnInvalidated"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel l = new MyLabel();
+        var l = new MyLabel();
         myform.Controls.Add(l);
         l.TextAlign = ContentAlignment.TopRight;
 
@@ -740,12 +740,12 @@ public class LabelTestEventsOrder : TestHelper
     [Test]
     public void InvalidateEventsOrder()
     {
-        Rectangle rect = new Rectangle(new Point(0, 0), new Size(2, 2));
+        var rect = new Rectangle(new Point(0, 0), new Size(2, 2));
 
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabelInvalidate l = new MyLabelInvalidate();
+        var l = new MyLabelInvalidate();
         myform.Controls.Add(l);
         l.TextAlign = ContentAlignment.TopRight;
 
@@ -774,10 +774,10 @@ public class LabelTestEventsOrder : TestHelper
             "OnInvalidated",
             "OnPaint"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel l = new MyLabel();
+        var l = new MyLabel();
         myform.Controls.Add(l);
         l.TextAlign = ContentAlignment.TopRight;
         l.Refresh();
@@ -792,20 +792,20 @@ public class MyLabel2 : Label
     protected ArrayList results = new ArrayList();
     public MyLabel2() : base()
     {
-        this.AutoSizeChanged += new EventHandler(AutoSizeChanged_Handler);
-        this.HandleCreated += new EventHandler(HandleCreated_Handler);
-        this.BindingContextChanged += new EventHandler(BindingContextChanged_Handler);
-        this.BackgroundImageChanged += new EventHandler(BackgroundImageChanged_Handler);
-        this.ImeModeChanged += new EventHandler(ImeModeChanged_Handler);
-        this.KeyDown += new KeyEventHandler(KeyDown_Handler);
-        this.KeyPress += new KeyPressEventHandler(KeyPress_Handler);
-        this.KeyUp += new KeyEventHandler(KeyUp_Handler);
-        this.Invalidated += new InvalidateEventHandler(Invalidated_Handler);
-        this.Resize += new EventHandler(Resize_Handler);
-        this.SizeChanged += new EventHandler(SizeChanged_Handler);
-        this.Layout += new LayoutEventHandler(Layout_Handler);
-        this.VisibleChanged += new EventHandler(VisibleChanged_Handler);
-        this.Paint += new PaintEventHandler(Paint_Handler);
+        AutoSizeChanged += new EventHandler(AutoSizeChanged_Handler);
+        HandleCreated += new EventHandler(HandleCreated_Handler);
+        BindingContextChanged += new EventHandler(BindingContextChanged_Handler);
+        BackgroundImageChanged += new EventHandler(BackgroundImageChanged_Handler);
+        ImeModeChanged += new EventHandler(ImeModeChanged_Handler);
+        KeyDown += new KeyEventHandler(KeyDown_Handler);
+        KeyPress += new KeyPressEventHandler(KeyPress_Handler);
+        KeyUp += new KeyEventHandler(KeyUp_Handler);
+        Invalidated += new InvalidateEventHandler(Invalidated_Handler);
+        Resize += new EventHandler(Resize_Handler);
+        SizeChanged += new EventHandler(SizeChanged_Handler);
+        Layout += new LayoutEventHandler(Layout_Handler);
+        VisibleChanged += new EventHandler(VisibleChanged_Handler);
+        Paint += new PaintEventHandler(Paint_Handler);
     }
 
     protected void AutoSizeChanged_Handler(object sender, EventArgs e)
@@ -885,22 +885,22 @@ public class MyLabel2 : Label
         m = new Message();
 
         m.Msg = (int)WndMsg.WM_KEYDOWN;
-        m.HWnd = this.Handle;
+        m.HWnd = Handle;
         m.WParam = (IntPtr)0x41;
         m.LParam = (IntPtr)0x1e0001;
-        this.WndProc(ref m);
+        WndProc(ref m);
 
         m.Msg = (int)WndMsg.WM_CHAR;
-        m.HWnd = this.Handle;
+        m.HWnd = Handle;
         m.WParam = (IntPtr)0x61;
         m.LParam = (IntPtr)0x1e0001;
-        this.WndProc(ref m);
+        WndProc(ref m);
 
         m.Msg = (int)WndMsg.WM_KEYUP;
-        m.HWnd = this.Handle;
+        m.HWnd = Handle;
         m.WParam = (IntPtr)0x41;
         m.LParam = (IntPtr)unchecked((int)0xC01e0001);
-        this.WndProc(ref m);
+        WndProc(ref m);
     }
 
     public void KeyDownA()
@@ -910,16 +910,16 @@ public class MyLabel2 : Label
         m = new Message();
 
         m.Msg = (int)WndMsg.WM_KEYDOWN;
-        m.HWnd = this.Handle;
+        m.HWnd = Handle;
         m.WParam = (IntPtr)0x41;
         m.LParam = (IntPtr)0x1e0001;
-        this.WndProc(ref m);
+        WndProc(ref m);
 
         m.Msg = (int)WndMsg.WM_CHAR;
-        m.HWnd = this.Handle;
+        m.HWnd = Handle;
         m.WParam = (IntPtr)0x61;
         m.LParam = (IntPtr)0x1e0001;
-        this.WndProc(ref m);
+        WndProc(ref m);
     }
 
     public void KeyUpA()
@@ -929,10 +929,10 @@ public class MyLabel2 : Label
         m = new Message();
 
         m.Msg = (int)WndMsg.WM_KEYUP;
-        m.HWnd = this.Handle;
+        m.HWnd = Handle;
         m.WParam = (IntPtr)0x41;
         m.LParam = (IntPtr)unchecked((int)0xC01e0001);
-        this.WndProc(ref m);
+        WndProc(ref m);
     }
 
     public ArrayList Results
@@ -948,7 +948,7 @@ public class LabelTestEventsOrder2 : TestHelper
     public string[] ArrayListToString(ArrayList arrlist)
     {
         string[] retval = new string[arrlist.Count];
-        for (int i = 0; i < arrlist.Count; i++)
+        for (var i = 0; i < arrlist.Count; i++)
             retval[i] = (string)arrlist[i];
         return retval;
     }
@@ -961,10 +961,10 @@ public class LabelTestEventsOrder2 : TestHelper
             "BindingContextChanged",
             "BindingContextChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel2 l = new MyLabel2();
+        var l = new MyLabel2();
         myform.Controls.Add(l);
 
         Assert.AreEqual(EventsWanted, ArrayListToString(l.Results));
@@ -983,10 +983,10 @@ public class LabelTestEventsOrder2 : TestHelper
             "Resize",
             "SizeChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel2 l = new MyLabel2();
+        var l = new MyLabel2();
         myform.Controls.Add(l);
         l.Size = new Size(150, 20);
 
@@ -1007,10 +1007,10 @@ public class LabelTestEventsOrder2 : TestHelper
             "SizeChanged",
             "AutoSizeChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel2 l = new MyLabel2();
+        var l = new MyLabel2();
         myform.Controls.Add(l);
         l.AutoSize = true;
 
@@ -1028,10 +1028,10 @@ public class LabelTestEventsOrder2 : TestHelper
             "Invalidated",
             "BackgroundImageChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel2 l = new MyLabel2();
+        var l = new MyLabel2();
         myform.Controls.Add(l);
         l.BackgroundImage = Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/System.Windows.Forms/bitmaps/a.png"));
 
@@ -1048,10 +1048,10 @@ public class LabelTestEventsOrder2 : TestHelper
             "BindingContextChanged",
             "ImeModeChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel2 l = new MyLabel2();
+        var l = new MyLabel2();
         myform.Controls.Add(l);
         l.ImeMode = ImeMode.Katakana;
 
@@ -1070,10 +1070,10 @@ public class LabelTestEventsOrder2 : TestHelper
             "KeyPress,a",
             "KeyUp,A"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel2 l = new MyLabel2();
+        var l = new MyLabel2();
         myform.Controls.Add(l);
         l.KeyPressA();
 
@@ -1089,10 +1089,10 @@ public class LabelTestEventsOrder2 : TestHelper
             "BindingContextChanged",
             "BindingContextChanged"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel2 l = new MyLabel2();
+        var l = new MyLabel2();
         myform.Controls.Add(l);
         l.TabStop = true;
 
@@ -1109,10 +1109,10 @@ public class LabelTestEventsOrder2 : TestHelper
             "BindingContextChanged",
             "Invalidated"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel2 l = new MyLabel2();
+        var l = new MyLabel2();
         myform.Controls.Add(l);
         l.TextAlign = ContentAlignment.TopRight;
 
@@ -1131,10 +1131,10 @@ public class LabelTestEventsOrder2 : TestHelper
             "Invalidated",
             "Paint"
         };
-        Form myform = new Form();
+        var myform = new Form();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        MyLabel2 l = new MyLabel2();
+        var l = new MyLabel2();
         myform.Controls.Add(l);
         l.TextAlign = ContentAlignment.TopRight;
         l.Refresh();

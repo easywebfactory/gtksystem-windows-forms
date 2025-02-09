@@ -38,7 +38,7 @@ public static class DataGridViewCommon
     /// <returns></returns>
     public static DataGridView CreateAndFill ()
     {
-        DataGridView dgv = new DataGridView ();
+        var dgv = new DataGridView ();
         dgv.Columns.Add ("A", "A");
         dgv.Columns.Add ("B", "B");
         dgv.Rows.Add ("Cell A1", "Cell B1");
@@ -55,14 +55,14 @@ public static class DataGridViewCommon
     /// <returns></returns>
     public static DataGridView CreateAndFillBig ()
     {
-        DataGridView dgv = new DataGridView ();
-        for (int c = 0; c < 10; c++) {
-            string A = (((char) ((int) 'A') + c)).ToString ();
+        var dgv = new DataGridView ();
+        for (var c = 0; c < 10; c++) {
+            var A = (((char) ((int) 'A') + c)).ToString ();
             dgv.Columns.Add (A, A);
         }
-        for (int r = 0; r < 10; r++) {
+        for (var r = 0; r < 10; r++) {
             List<object> cells = new List<object> ();
-            for (int c = 0; c < 10; c++) {
+            for (var c = 0; c < 10; c++) {
                 cells.Add (string.Format ("Cell {0}{1}", dgv.Columns [c].Name, r));
             }
             dgv.Rows.Add (cells);

@@ -36,12 +36,12 @@ public class DataSetBindingTest : TestHelper
     public void TestDataSet ()
     {
         // Binding to a DataSet doesn't work unless you specify DataMember
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 			
-        DataSet ds = new DataSet ();
+        var ds = new DataSet ();
 			
-        DataTable dt = ds.Tables.Add ("Muppets");
+        var dt = ds.Tables.Add ("Muppets");
 
         dt.Columns.Add ("ID");
         dt.Columns.Add ("Name");
@@ -51,7 +51,7 @@ public class DataSetBindingTest : TestHelper
         dt.Rows.Add (2, "Miss Piggy", "Female");
         dt.Rows.Add (3, "Gonzo", "Male");
 			
-        DataGridView dgv = new DataGridView ();
+        var dgv = new DataGridView ();
         dgv.DataSource = ds;
 	
         f.Controls.Add (dgv);
@@ -70,12 +70,12 @@ public class DataSetBindingTest : TestHelper
     public void TestBasic ()
     {
         // Binding to a basic DataTable
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 			
-        DataSet ds = new DataSet ();
+        var ds = new DataSet ();
 
-        DataTable dt = ds.Tables.Add ("Muppets");
+        var dt = ds.Tables.Add ("Muppets");
 
         dt.Columns.Add ("ID");
         dt.Columns.Add ("Name");
@@ -85,7 +85,7 @@ public class DataSetBindingTest : TestHelper
         dt.Rows.Add (2, "Miss Piggy", "Female");
         dt.Rows.Add (3, "Gonzo", "Male");
 
-        DataGridView dgv = new DataGridView ();
+        var dgv = new DataGridView ();
         dgv.DataSource = dt;
 
         f.Controls.Add (dgv);
@@ -145,12 +145,12 @@ public class DataSetBindingTest : TestHelper
     public void TestCheckBoxColumn ()
     {
         // Binding to a basic DataTable with a boolean value
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        DataSet ds = new DataSet ();
+        var ds = new DataSet ();
 
-        DataTable dt = ds.Tables.Add ("Muppets");
+        var dt = ds.Tables.Add ("Muppets");
 
         dt.Columns.Add ("ID");
         dt.Columns.Add ("Name");
@@ -166,7 +166,7 @@ public class DataSetBindingTest : TestHelper
         dt.Rows.Add (8, "Sweedish Chef", 1);
         dt.Rows.Add (9, "Rolf", 0);
 
-        DataGridView dgv = new DataGridView ();
+        var dgv = new DataGridView ();
         dgv.DataSource = dt;
 
         f.Controls.Add (dgv);
@@ -206,12 +206,12 @@ public class DataSetBindingTest : TestHelper
     public void TestAutoGenerateColumns ()
     {
         // Binding when AutoGenerateColumns is false
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        DataSet ds = new DataSet ();
+        var ds = new DataSet ();
 
-        DataTable dt = ds.Tables.Add ("Muppets");
+        var dt = ds.Tables.Add ("Muppets");
 
         dt.Columns.Add ("ID");
         dt.Columns.Add ("Name");
@@ -220,7 +220,7 @@ public class DataSetBindingTest : TestHelper
         dt.Rows.Add (2, "Miss Piggy");
         dt.Rows.Add (3, "Gonzo");
 
-        DataGridView dgv = new DataGridView ();
+        var dgv = new DataGridView ();
         dgv.DataSource = dt;
 
         f.Controls.Add (dgv);
@@ -231,7 +231,7 @@ public class DataSetBindingTest : TestHelper
 
         dgv.DataSource = null;
 			
-        DataGridViewTextBoxColumn col1 = new DataGridViewTextBoxColumn ();
+        var col1 = new DataGridViewTextBoxColumn ();
         col1.DataPropertyName = "Name";
         dgv.Columns.Add (col1);
 
@@ -244,7 +244,7 @@ public class DataSetBindingTest : TestHelper
 
         dgv.DataSource = null;
 
-        DataGridViewTextBoxColumn col2 = new DataGridViewTextBoxColumn ();
+        var col2 = new DataGridViewTextBoxColumn ();
         col2.DataPropertyName = "id";
         dgv.Columns.Add (col2);
 
@@ -264,19 +264,19 @@ public class DataSetBindingTest : TestHelper
     {
         // Binding when AutoGenerateColumns is false
         // and adding rows to the dataset
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        DataSet ds = new DataSet ();
+        var ds = new DataSet ();
 
-        DataTable dt = ds.Tables.Add ("Muppets");
+        var dt = ds.Tables.Add ("Muppets");
 
         dt.Columns.Add ("ID");
         dt.Columns.Add ("Name");
 
-        DataGridView dgv = new DataGridView ();
+        var dgv = new DataGridView ();
 			
-        DataGridViewTextBoxColumn col1 = new DataGridViewTextBoxColumn ();
+        var col1 = new DataGridViewTextBoxColumn ();
         col1.DataPropertyName = "Name";
         dgv.Columns.Add (col1);
 
@@ -300,19 +300,19 @@ public class DataSetBindingTest : TestHelper
     {
         // Binding when AutoGenerateColumns is false
         // and deleting rows from the dataset and DGV
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        DataSet ds = new DataSet ();
+        var ds = new DataSet ();
 
-        DataTable dt = ds.Tables.Add ("Muppets");
+        var dt = ds.Tables.Add ("Muppets");
 
         dt.Columns.Add ("ID");
         dt.Columns.Add ("Name");
 
-        DataGridView dgv = new DataGridView ();
+        var dgv = new DataGridView ();
 
-        DataGridViewTextBoxColumn col1 = new DataGridViewTextBoxColumn ();
+        var col1 = new DataGridViewTextBoxColumn ();
         col1.DataPropertyName = "Name";
         dgv.Columns.Add (col1);
 
@@ -342,21 +342,21 @@ public class DataSetBindingTest : TestHelper
     {
         // Binding when AutoGenerateColumns is false
         // and deleting rows from the dataset and DGV
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        DataSet ds = new DataSet ();
+        var ds = new DataSet ();
 
-        DataGridView dgv = new DataGridView ();
+        var dgv = new DataGridView ();
 
-        DataGridViewTextBoxColumn col1 = new DataGridViewTextBoxColumn ();
+        var col1 = new DataGridViewTextBoxColumn ();
         col1.DataPropertyName = "Name";
         dgv.Columns.Add (col1);
 
         dgv.DataSource = ds;
         dgv.DataMember = "Muppets";
 
-        DataTable dt = ds.Tables.Add ("Muppets");
+        var dt = ds.Tables.Add ("Muppets");
 
         dt.Columns.Add ("ID");
         dt.Columns.Add ("Name");
@@ -384,12 +384,12 @@ public class DataSetBindingTest : TestHelper
     public void TestClearing ()
     {
         // Binding to a DataSet doesn't work unless you specify DataMember
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        DataSet ds = new DataSet ();
+        var ds = new DataSet ();
 
-        DataTable dt = ds.Tables.Add ("Muppets");
+        var dt = ds.Tables.Add ("Muppets");
 
         dt.Columns.Add ("ID");
         dt.Columns.Add ("Name");
@@ -399,7 +399,7 @@ public class DataSetBindingTest : TestHelper
         dt.Rows.Add (2, "Miss Piggy", "Female");
         dt.Rows.Add (3, "Gonzo", "Male");
 
-        DataGridView dgv = new DataGridView ();
+        var dgv = new DataGridView ();
         dgv.DataSource = ds;
 
         f.Controls.Add (dgv);
@@ -422,12 +422,12 @@ public class DataSetBindingTest : TestHelper
     public void TestCreatingColumnsAfterBind ()
     {
         // When columns are added, we need to rebind.
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        DataSet ds = new DataSet ();
+        var ds = new DataSet ();
 
-        DataTable dt = ds.Tables.Add ("Muppets");
+        var dt = ds.Tables.Add ("Muppets");
 
         dt.Columns.Add ("ID");
         dt.Columns.Add ("Name");
@@ -437,7 +437,7 @@ public class DataSetBindingTest : TestHelper
         dt.Rows.Add (2, "Miss Piggy", "Female");
         dt.Rows.Add (3, "Gonzo", "Male");
 
-        DataGridView dgv = new DataGridView ();
+        var dgv = new DataGridView ();
         dgv.DataSource = ds;
         dgv.DataMember = "Muppets";
 
@@ -462,13 +462,13 @@ public class BindingListTest : TestHelper
     [Test]	// bug #325239
     public void TestNullItemInList ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
         // The list contains one object, but the object is null
         IList<Customer> list = new Customer[1];
 
-        DataGridView dgv = new DataGridView ();
+        var dgv = new DataGridView ();
         dgv.DataSource = new BindingList<Customer> (list);
 
         f.Controls.Add (dgv);
@@ -498,13 +498,13 @@ public class ArrayTest : TestHelper
     public void TestNestedCollections ()
     {
         // The grid should not accept collection properties, like Names
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
         Array customers = new Customer[1];
         customers.SetValue (new Customer (), 0);
 			
-        DataGridView dgv = new DataGridView ();
+        var dgv = new DataGridView ();
         dgv.DataSource = customers;
 
         f.Controls.Add (dgv);
@@ -530,12 +530,12 @@ public class BindingSourceTest : TestHelper
     public void TestBindingSource ()
     {
         // The grid has to extract the List from the BindingSource
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        BindingSource BindingSource = new BindingSource ();
+        var BindingSource = new BindingSource ();
 
-        DataSet dataSet1 = new DataSet ();
+        var dataSet1 = new DataSet ();
 
         dataSet1.Tables.Add ();
         dataSet1.Tables[0].Columns.Add ();
@@ -547,7 +547,7 @@ public class BindingSourceTest : TestHelper
 
         BindingSource.DataSource = dataSet1.Tables[0];
 
-        DataGridView dgv = new DataGridView ();
+        var dgv = new DataGridView ();
         dgv.DataSource = BindingSource;
 
         f.Controls.Add (dgv);

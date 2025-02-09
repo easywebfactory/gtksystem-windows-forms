@@ -31,7 +31,7 @@ public class RowStyleTest : TestHelper {
     [Test]
     public void CtorTest1 ()
     {
-        RowStyle rs = new RowStyle ();
+        var rs = new RowStyle ();
         Assert.AreEqual (0.0f, rs.Height, "1");
         Assert.AreEqual (SizeType.AutoSize, rs.SizeType, "2");
     }
@@ -39,7 +39,7 @@ public class RowStyleTest : TestHelper {
     [Test]
     public void CtorTest2 ()
     {
-        RowStyle rs = new RowStyle (SizeType.Absolute);
+        var rs = new RowStyle (SizeType.Absolute);
 			
         Assert.AreEqual (0.0f, rs.Height, "1");
         Assert.AreEqual (SizeType.Absolute, rs.SizeType, "2");
@@ -48,7 +48,7 @@ public class RowStyleTest : TestHelper {
     [Test]
     public void CtorTest3 ()
     {
-        RowStyle rs = new RowStyle (SizeType.Absolute, 5.0f);
+        var rs = new RowStyle (SizeType.Absolute, 5.0f);
 			
         Assert.AreEqual (5.0, rs.Height, "1");
         Assert.AreEqual (SizeType.Absolute, rs.SizeType, "2");
@@ -59,16 +59,16 @@ public class RowStyleTest : TestHelper {
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            RowStyle rs = new RowStyle(SizeType.Absolute, -1.0f);
+            var rs = new RowStyle(SizeType.Absolute, -1.0f);
 
-            TestHelper.RemoveWarning(rs);
+            RemoveWarning(rs);
         });
     }
 
     [Test]
     public void HeightTest1 ()
     {
-        RowStyle rs = new RowStyle ();
+        var rs = new RowStyle ();
         rs.Height = 1.0f;
         Assert.AreEqual (1.0f, rs.Height, "1");
     }
@@ -78,7 +78,7 @@ public class RowStyleTest : TestHelper {
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            RowStyle rs = new RowStyle();
+            var rs = new RowStyle();
             rs.Height = -1.0f;
         });
     }

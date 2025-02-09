@@ -21,7 +21,7 @@ public class ImageListTest : TestHelper
     [Test]
     public void ImageListPropertyTest ()
     {
-        ImageList myimagelist = new ImageList ();
+        var myimagelist = new ImageList ();
 
         // C
         Assert.AreEqual (ColorDepth.Depth8Bit, myimagelist.ColorDepth, "#C1");
@@ -35,7 +35,7 @@ public class ImageListTest : TestHelper
         Assert.AreEqual ("System.IntPtr", myimagelist.Handle.GetType ().FullName, "#H3");
 		
         // I
-        Image myImage =	Image.FromFile(TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif"));
+        var myImage =	Image.FromFile(TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif"));
         myimagelist.Images.Add (myImage);
         Assert.AreEqual (1, myimagelist.Images.Count, "#I1");
         Assert.AreEqual (16, myimagelist.ImageSize.Height, "#I2");
@@ -50,12 +50,12 @@ public class ImageListTest : TestHelper
     [Test]
     public void ImageListComponentModelTest ()
     {
-        PropertyDescriptor colordepth_prop = TypeDescriptor.GetProperties (typeof (ImageList))["ColorDepth"];
-        PropertyDescriptor imagesize_prop = TypeDescriptor.GetProperties (typeof (ImageList))["ImageSize"];
-        PropertyDescriptor transparentcolor_prop = TypeDescriptor.GetProperties (typeof (ImageList))["TransparentColor"];
+        var colordepth_prop = TypeDescriptor.GetProperties (typeof (ImageList))["ColorDepth"];
+        var imagesize_prop = TypeDescriptor.GetProperties (typeof (ImageList))["ImageSize"];
+        var transparentcolor_prop = TypeDescriptor.GetProperties (typeof (ImageList))["TransparentColor"];
 
         // create a blank ImageList
-        ImageList il = new ImageList ();
+        var il = new ImageList ();
 
         // test its defaults
         Assert.IsTrue (colordepth_prop.ShouldSerializeValue (il), "1");
@@ -109,7 +109,7 @@ public class ImageListTest : TestHelper
     [Test]
     public void ToStringMethodTest () 
     {
-        ImageList myimagelist = new ImageList ();
+        var myimagelist = new ImageList ();
         Assert.AreEqual ("System.Windows.Forms.ImageList Images.Count: 0, ImageSize: {Width=16, Height=16}",
             myimagelist.ToString (), "#T3");
     }
@@ -117,12 +117,12 @@ public class ImageListTest : TestHelper
     [Test] // bug #409169
     public void ICollection_CopyTo ()
     {
-        ImageList imgList = new ImageList ();
-        ImageList.ImageCollection coll = imgList.Images;
+        var imgList = new ImageList ();
+        var coll = imgList.Images;
 
-        Image gif = Image.FromFile (TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif"));
+        var gif = Image.FromFile (TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif"));
         coll.Add (gif);
-        Bitmap bmp = new Bitmap (10, 10);
+        var bmp = new Bitmap (10, 10);
         coll.Add (bmp);
 
         const int dstOffset = 5;
@@ -135,10 +135,10 @@ public class ImageListTest : TestHelper
         Assert.IsNull (dst [3], "#4");
         Assert.IsNull (dst [4], "#5");
         Assert.IsNotNull (dst [5], "#6a");
-        Assert.IsFalse (object.ReferenceEquals (gif, dst [5]), "#6b");
+        Assert.IsFalse (ReferenceEquals (gif, dst [5]), "#6b");
         Assert.AreEqual (typeof (Bitmap), dst [5].GetType (), "#6c");
         Assert.IsNotNull (dst [6], "#7a");
-        Assert.IsFalse (object.ReferenceEquals (bmp, dst [6]), "#7b");
+        Assert.IsFalse (ReferenceEquals (bmp, dst [6]), "#7b");
         Assert.AreEqual (typeof (Bitmap), dst [6].GetType (), "#7c");
         Assert.IsNull (dst [7], "#8");
 
@@ -161,11 +161,11 @@ public class ImageListTest : TestHelper
         [Test]
         public void RecreateHandleEvenTest ()
         {
-            Form myform = new Form ();
+            var myform = new Form ();
             myform.ShowInTaskbar = false;
             Graphics mygraphics = null;
-            ImageList myimagelist = new ImageList ();
-            Image myImage =	Image.FromFile(TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif"));
+            var myimagelist = new ImageList ();
+            var myImage =	Image.FromFile(TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif"));
             myimagelist.Images.Add (myImage);
             myimagelist.ColorDepth = ColorDepth.Depth8Bit;
             myimagelist.ImageSize = new Size (50,50);

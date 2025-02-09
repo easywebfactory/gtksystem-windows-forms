@@ -67,7 +67,7 @@ public class ListBoxTest : TestHelper
     {
         listBox.Items.Clear ();
 
-        for (int i = 0; i < 3; i++)
+        for (var i = 0; i < 3; i++)
             listBox.Items.Add (i.ToString ());
 
         // need to create control to actually test the invalidation
@@ -87,7 +87,7 @@ public class ListBoxTest : TestHelper
         //
         listBox.ClearSelected ();
         listBox.Items.Clear ();
-        for (int i = 0; i < 3; i++)
+        for (var i = 0; i < 3; i++)
             listBox.Items.Add (i.ToString ());
 
         listBox.SelectionMode = SelectionMode.MultiSimple;
@@ -143,7 +143,7 @@ public class ListBoxTest : TestHelper
         listBox.Visible = true;
         form.Controls.Add (listBox);
         listBox.BeginUpdate ();
-        for (int x = 1; x < 5000; x++)
+        for (var x = 1; x < 5000; x++)
         {
             listBox.Items.Add ("Item " + x.ToString ());
         }
@@ -217,7 +217,7 @@ public class ListBoxTest : TestHelper
     public void IndexFromPointTest ()
     {
         listBox.Items.Add ("A");
-        Point pt = new Point (100,100);
+        var pt = new Point (100,100);
         listBox.IndexFromPoint (pt);
         Assert.AreEqual (-1, listBox.IndexFromPoint (100,100), "#32");
     }
@@ -226,10 +226,10 @@ public class ListBoxTest : TestHelper
     public void FindStringTest ()
     {
         listBox.FindString ("Hola", -5); // No exception, it's empty
-        int x = listBox.FindString ("Hello");
+        var x = listBox.FindString ("Hello");
         Assert.AreEqual (-1, x, "#19");
         listBox.Items.AddRange(new object[] {"ACBD", "ABDC", "ACBD", "ABCD"});
-        String myString = "ABC";
+        var myString = "ABC";
         x = listBox.FindString (myString);
         Assert.AreEqual (3, x, "#191");
         x = listBox.FindString (string.Empty);
@@ -251,10 +251,10 @@ public class ListBoxTest : TestHelper
     public void FindStringExactTest ()
     {
         listBox.FindStringExact ("Hola", -5); // No exception, it's empty
-        int x = listBox.FindStringExact ("Hello");
+        var x = listBox.FindStringExact ("Hello");
         Assert.AreEqual (-1, x, "#20");
         listBox.Items.AddRange (new object[] {"ABCD","ABC","ABDC"});
-        String myString = "ABC";
+        var myString = "ABC";
         x = listBox.FindStringExact (myString);
         Assert.AreEqual (1, x, "#201");
         x = listBox.FindStringExact (string.Empty);
@@ -325,8 +325,8 @@ public class ListBoxTest : TestHelper
     [Test] // bug #80696
     public void SelectedIndex_Created ()
     {
-        Form form = new Form ();
-        ListBox listBox = new ListBox ();
+        var form = new Form ();
+        var listBox = new ListBox ();
         listBox.Items.Add ("A");
         listBox.Items.Add ("B");
         form.Controls.Add (listBox);
@@ -346,7 +346,7 @@ public class ListBoxTest : TestHelper
     [Test] // bug #80753
     public void SelectedIndex_NotCreated ()
     {
-        ListBox listBox = new ListBox ();
+        var listBox = new ListBox ();
         listBox.Items.Add ("A");
         listBox.Items.Add ("B");
         Assert.AreEqual (-1, listBox.SelectedIndex, "#1");
@@ -361,7 +361,7 @@ public class ListBoxTest : TestHelper
     [Test]
     public void SelectedIndex_Removed ()
     {
-        ListBox listBox = new ListBox ();
+        var listBox = new ListBox ();
         listBox.Items.Add ("A");
         listBox.Items.Add ("B");
         listBox.Items.Add ("C");
@@ -570,9 +570,9 @@ public class ListBoxTest : TestHelper
     [Test]	// Bug #80466
     public void ListBoxHeight ()
     {
-        ListBox l = new ListBox ();
+        var l = new ListBox ();
 			
-        for (int h = 0; h < 100; h++) {
+        for (var h = 0; h < 100; h++) {
             l.Height = h;
 				
             if (l.Height != h)
@@ -583,8 +583,8 @@ public class ListBoxTest : TestHelper
     [Test]
     public void HeightAndIntegralHeight ()
     {
-        ListBox a = new ListBox();
-        Size defaultSize = new Size(120, 96);
+        var a = new ListBox();
+        var defaultSize = new Size(120, 96);
         Assert.AreEqual (defaultSize, a.Size, "A1");
         a.CreateControl();
         Assert.AreEqual (0, (a.ClientSize.Height % a.ItemHeight), "A2");
@@ -593,11 +593,11 @@ public class ListBoxTest : TestHelper
         a.IntegralHeight = true;
         Assert.AreEqual (0, (a.ClientSize.Height % a.ItemHeight), "A4");
 
-        Size clientSizeI = new Size(200, a.ItemHeight * 5);
-        Size clientSize = clientSizeI + new Size(0, a.ItemHeight / 2);
-        Size borderSize = new Size(a.Width - a.ClientSize.Width, a.Height - a.ClientSize.Height);
-        Size totalSizeI = clientSizeI + borderSize;
-        Size totalSize = clientSize + borderSize;
+        var clientSizeI = new Size(200, a.ItemHeight * 5);
+        var clientSize = clientSizeI + new Size(0, a.ItemHeight / 2);
+        var borderSize = new Size(a.Width - a.ClientSize.Width, a.Height - a.ClientSize.Height);
+        var totalSizeI = clientSizeI + borderSize;
+        var totalSize = clientSize + borderSize;
 
         a = new ListBox();
         a.ClientSize = clientSize;
@@ -640,11 +640,11 @@ public class ListBoxTest : TestHelper
     [Test]
     public void PropertyTopIndex ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
         f.Show ();
 			
-        ListBox l = new ListBox ();
+        var l = new ListBox ();
         l.Height = 100;
         f.Controls.Add (l);
 			
@@ -683,54 +683,52 @@ public class ListBoxTest : TestHelper
     [Test]
     public void SelectedIndexUpdated () // Xamarin bug 4921
     {
-        using (Form f = new Form ()) {
-            f.ShowInTaskbar = false;
+        using var f = new Form ();
+        f.ShowInTaskbar = false;
 
-            ListBox l = new ListBox ();
-            l.Sorted = true;
-            f.Controls.Add (l);
+        var l = new ListBox ();
+        l.Sorted = true;
+        f.Controls.Add (l);
 
-            l.Items.Add ("B");
-            l.SelectedIndex = 0;
+        l.Items.Add ("B");
+        l.SelectedIndex = 0;
 
-            Assert.AreEqual (0, l.SelectedIndex);
+        Assert.AreEqual (0, l.SelectedIndex);
 
-            l.Items.Add ("A");
-            Assert.AreEqual (1, l.SelectedIndex);
-        }
+        l.Items.Add ("A");
+        Assert.AreEqual (1, l.SelectedIndex);
     }
 
     [Test]
     public void SelectedIndexUpdated_MultiSelect () // Xamarin bug 4921
     {
-        using (Form f = new Form ()) {
-            f.ShowInTaskbar = false;
+        using var f = new Form ();
+        f.ShowInTaskbar = false;
 
-            ListBox l = new ListBox ();
-            l.Sorted = true;
-            l.SelectionMode = SelectionMode.MultiSimple;
-            f.Controls.Add (l);
+        var l = new ListBox ();
+        l.Sorted = true;
+        l.SelectionMode = SelectionMode.MultiSimple;
+        f.Controls.Add (l);
 
-            l.Items.Add ("B");
-            l.Items.Add ("C");
-            l.SelectedIndex = 0;
-            l.SelectedIndex = 1;
+        l.Items.Add ("B");
+        l.Items.Add ("C");
+        l.SelectedIndex = 0;
+        l.SelectedIndex = 1;
 
-            Assert.AreEqual (2, l.SelectedIndices.Count);
-            Assert.AreEqual (0, l.SelectedIndices [0]);
-            Assert.AreEqual (1, l.SelectedIndices [1]);
-            Assert.AreEqual (2, l.SelectedItems.Count);
-            Assert.AreEqual ("B", l.SelectedItems [0]);
-            Assert.AreEqual ("C", l.SelectedItems [1]);
+        Assert.AreEqual (2, l.SelectedIndices.Count);
+        Assert.AreEqual (0, l.SelectedIndices [0]);
+        Assert.AreEqual (1, l.SelectedIndices [1]);
+        Assert.AreEqual (2, l.SelectedItems.Count);
+        Assert.AreEqual ("B", l.SelectedItems [0]);
+        Assert.AreEqual ("C", l.SelectedItems [1]);
 
-            l.Items.Add ("A");
-            Assert.AreEqual (2, l.SelectedIndices.Count);
-            Assert.AreEqual (1, l.SelectedIndices[0]);
-            Assert.AreEqual (2, l.SelectedIndices[1]);
-            Assert.AreEqual (2, l.SelectedItems.Count);
-            Assert.AreEqual ("B", l.SelectedItems [0]);
-            Assert.AreEqual ("C", l.SelectedItems [1]);
-        }
+        l.Items.Add ("A");
+        Assert.AreEqual (2, l.SelectedIndices.Count);
+        Assert.AreEqual (1, l.SelectedIndices[0]);
+        Assert.AreEqual (2, l.SelectedIndices[1]);
+        Assert.AreEqual (2, l.SelectedItems.Count);
+        Assert.AreEqual ("B", l.SelectedItems [0]);
+        Assert.AreEqual ("C", l.SelectedItems [1]);
     }
 }
 
@@ -992,7 +990,7 @@ public class ListBoxIntegerCollectionTest : TestHelper
     [Test] // AddRange (ListBox.IntegerCollection)
     public void AddRange2 ()
     {
-        ListBox.IntegerCollection ints = new ListBox.IntegerCollection (
+        var ints = new ListBox.IntegerCollection (
             listBox);
         ints.Add (3);
         ints.Add (1);
@@ -1055,7 +1053,7 @@ public class ListBoxIntegerCollectionTest : TestHelper
     [Test]
     public void CopyTo ()
     {
-        int [] copy = new int [5] { 9, 4, 6, 2, 8 };
+        var copy = new int [5] { 9, 4, 6, 2, 8 };
 			
         col.Add (3);
         col.Add (7);
@@ -1100,7 +1098,7 @@ public class ListBoxIntegerCollectionTest : TestHelper
     [Test]
     public void CopyTo_Index_Negative ()
     {
-        int [] copy = new int [5] { 9, 4, 6, 2, 8 };
+        var copy = new int [5] { 9, 4, 6, 2, 8 };
 
         col.CopyTo (copy, -5);
         col.Add (3);
@@ -1231,21 +1229,21 @@ public class ListBoxIntegerCollectionTest : TestHelper
     [Test]
     public void ICollection_IsSynchronized ()
     {
-        ICollection collection = (ICollection) col;
+        var collection = (ICollection) col;
         Assert.IsTrue (collection.IsSynchronized);
     }
 
     [Test]
     public void ICollection_SyncRoot ()
     {
-        ICollection collection = (ICollection) col;
+        var collection = (ICollection) col;
         Assert.AreSame (collection, collection.SyncRoot);
     }
 
     [Test]
     public void IList_Add ()
     {
-        IList list = (IList) col;
+        var list = (IList) col;
         list.Add (5);
         Assert.AreEqual (1, list.Count, "#1");
         list.Add (7);
@@ -1259,7 +1257,7 @@ public class ListBoxIntegerCollectionTest : TestHelper
     [Test]
     public void IList_Add_Item_Invalid ()
     {
-        IList list = (IList) col;
+        var list = (IList) col;
 
         try {
             list.Add (null);
@@ -1285,7 +1283,7 @@ public class ListBoxIntegerCollectionTest : TestHelper
     [Test]
     public void IList_Clear ()
     {
-        IList list = (IList) col;
+        var list = (IList) col;
         list.Add (5);
         list.Add (7);
         list.Clear ();
@@ -1295,7 +1293,7 @@ public class ListBoxIntegerCollectionTest : TestHelper
     [Test]
     public void IList_Contains ()
     {
-        IList list = (IList) col;
+        var list = (IList) col;
         list.Add (5);
         list.Add (7);
         Assert.IsTrue (list.Contains (5), "#1");
@@ -1308,7 +1306,7 @@ public class ListBoxIntegerCollectionTest : TestHelper
     [Test]
     public void IList_Indexer ()
     {
-        IList list = (IList) col;
+        var list = (IList) col;
         list.Add (5);
         list.Add (7);
         Assert.AreEqual (7, list [1], "#1");
@@ -1321,7 +1319,7 @@ public class ListBoxIntegerCollectionTest : TestHelper
     [Test]
     public void IList_IndexOf ()
     {
-        IList list = (IList) col;
+        var list = (IList) col;
         list.Add (5);
         list.Add (7);
         Assert.AreEqual (0, list.IndexOf (5), "#1");
@@ -1334,7 +1332,7 @@ public class ListBoxIntegerCollectionTest : TestHelper
     [Test]
     public void IList_Insert ()
     {
-        IList list = (IList) col;
+        var list = (IList) col;
         list.Add (5);
 
         try {
@@ -1363,21 +1361,21 @@ public class ListBoxIntegerCollectionTest : TestHelper
     [Test]
     public void IList_IsFixedSize ()
     {
-        IList list = (IList) col;
+        var list = (IList) col;
         Assert.IsFalse (list.IsFixedSize);
     }
 
     [Test]
     public void IList_IsReadOnly ()
     {
-        IList list = (IList) col;
+        var list = (IList) col;
         Assert.IsFalse (list.IsReadOnly);
     }
 
     [Test]
     public void IList_Remove ()
     {
-        IList list = (IList) col;
+        var list = (IList) col;
         list.Add (5);
         list.Add (3);
         list.Remove (5);
@@ -1394,7 +1392,7 @@ public class ListBoxIntegerCollectionTest : TestHelper
     [Test]
     public void IList_Remove_Value_Invalid ()
     {
-        IList list = (IList) col;
+        var list = (IList) col;
         list.Add (5);
 
         try {
@@ -1421,7 +1419,7 @@ public class ListBoxIntegerCollectionTest : TestHelper
     [Test]
     public void IList_RemoveAt ()
     {
-        IList list = (IList) col;
+        var list = (IList) col;
         list.Add (5);
         list.Add (3);
         list.Add (7);
@@ -1439,7 +1437,7 @@ public class ListBoxIntegerCollectionTest : TestHelper
     [Test]
     public void IList_RemoveAt_Index_Negative ()
     {
-        IList list = (IList) col;
+        var list = (IList) col;
         list.Add (5);
 
         try {
@@ -1460,7 +1458,7 @@ public class ListBoxIntegerCollectionTest : TestHelper
     [NUnit.Framework.Category ("NotDotNet")] // https://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=363276
     public void IList_RemoveAt_Index_Overflow ()
     {
-        IList list = (IList) col;
+        var list = (IList) col;
         list.Add (5);
 
         try {

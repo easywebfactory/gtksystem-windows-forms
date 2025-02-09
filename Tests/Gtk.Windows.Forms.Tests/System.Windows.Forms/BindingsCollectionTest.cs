@@ -42,7 +42,7 @@ public class BindingsCollectionTest : TestHelper
 
     void CollectionChangingHandler (object o, CollectionChangeEventArgs args)
     {
-        BindingsCollection coll = (BindingsCollection)o;
+        var coll = (BindingsCollection)o;
 
         collection_changing_called = true;
         Assert.AreEqual (collection_expected_count, coll.Count, collection_expected_assert + "-0");
@@ -53,14 +53,14 @@ public class BindingsCollectionTest : TestHelper
     [Test]
     public void CollectionChangingTest ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         c.BindingContext = new BindingContext ();
         c.CreateControl ();
 
-        ControlBindingsCollection binding_coll = c.DataBindings;
+        var binding_coll = c.DataBindings;
 
-        Binding binding = new Binding ("Text", new MockItem ("A", 0), "Text");
-        Binding binding2 = new Binding ("Name", new MockItem ("B", 0), "Text");
+        var binding = new Binding ("Text", new MockItem ("A", 0), "Text");
+        var binding2 = new Binding ("Name", new MockItem ("B", 0), "Text");
         binding_coll.Add (binding);
 
         binding_coll.CollectionChanging += CollectionChangingHandler;

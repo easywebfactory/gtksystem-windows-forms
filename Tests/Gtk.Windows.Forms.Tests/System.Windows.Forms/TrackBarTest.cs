@@ -17,7 +17,7 @@ public class TrackBarBaseTest : TestHelper
     [Test]
     public void TrackBarPropertyTest ()
     {
-        TrackBar myTrackBar = new TrackBar ();
+        var myTrackBar = new TrackBar ();
 			
         // A
         Assert.AreEqual (true, myTrackBar.AutoSize, "#A1");
@@ -48,7 +48,7 @@ public class TrackBarBaseTest : TestHelper
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            TrackBar myTrackBar = new TrackBar();
+            var myTrackBar = new TrackBar();
             myTrackBar.LargeChange = -1;
         });
     }
@@ -56,7 +56,7 @@ public class TrackBarBaseTest : TestHelper
     [Test]
     public void ToStringMethodTest () 
     {
-        TrackBar myTrackBar = new TrackBar ();
+        var myTrackBar = new TrackBar ();
         myTrackBar.Text = "New TrackBar";
         Assert.AreEqual ("System.Windows.Forms.TrackBar, Minimum: 0, Maximum: 10, Value: 0", myTrackBar.ToString (), "#T3");
     }
@@ -67,10 +67,10 @@ public class TrackBarBaseTest : TestHelper
         IntPtr handle;
         int width;
         int height ;
-        int default_height = 45;
-        int default_height2 = 42;
+        var default_height = 45;
+        var default_height2 = 42;
 
-        using (TrackBar myTrackBar = new TrackBar()) {
+        using (var myTrackBar = new TrackBar()) {
             width = myTrackBar.Width;
             height = myTrackBar.Height;
             myTrackBar.Orientation = Orientation.Vertical;
@@ -78,8 +78,8 @@ public class TrackBarBaseTest : TestHelper
             Assert.AreEqual(height, myTrackBar.Height, "#OS2");
         }
 			
-        using (Form myForm = new Form()) {
-            using ( TrackBar myTrackBar = new TrackBar()) {
+        using (var myForm = new Form()) {
+            using ( var myTrackBar = new TrackBar()) {
                 width = myTrackBar.Width;
                 height = myTrackBar.Height;
                 myForm.Controls.Add(myTrackBar);
@@ -90,8 +90,8 @@ public class TrackBarBaseTest : TestHelper
             }
         }
 
-        using (Form myForm = new Form()) {
-            using ( TrackBar myTrackBar = new TrackBar()) {
+        using (var myForm = new Form()) {
+            using ( var myTrackBar = new TrackBar()) {
                 myForm.Controls.Add(myTrackBar);
                 handle = myTrackBar.Handle; // causes the handle to be created.
                 myTrackBar.Width = 200;
@@ -115,10 +115,10 @@ public class TrackBarBaseTest : TestHelper
     public void SizeTestSettingOrientation ()
     {
         IntPtr handle;
-        int default_height = 45;
-        int default_height2 = 42;
+        var default_height = 45;
+        var default_height2 = 42;
 
-        using (TrackBar myTrackBar = new TrackBar()) {
+        using (var myTrackBar = new TrackBar()) {
             myTrackBar.Width = 200;
             myTrackBar.Height = 250;
             myTrackBar.Orientation = Orientation.Vertical;
@@ -126,7 +126,7 @@ public class TrackBarBaseTest : TestHelper
             Assert.AreEqual(250, myTrackBar.Height, "#SIZE04");
         }
 
-        using (TrackBar myTrackBar = new TrackBar()) {
+        using (var myTrackBar = new TrackBar()) {
             myTrackBar.AutoSize = false;
             myTrackBar.Width = 200;
             myTrackBar.Height = 250;
@@ -135,7 +135,7 @@ public class TrackBarBaseTest : TestHelper
             Assert.AreEqual(250, myTrackBar.Height, "#SIZE08");
         }
 
-        using (TrackBar myTrackBar = new TrackBar()) {
+        using (var myTrackBar = new TrackBar()) {
             myTrackBar.Width = 200;
             myTrackBar.Height = 250;
             myTrackBar.AutoSize = false;
@@ -144,8 +144,8 @@ public class TrackBarBaseTest : TestHelper
             Assert.AreEqual(250, myTrackBar.Height, "#SIZE12");
         }
 
-        using (TrackBar myTrackBar = new TrackBar()) {
-            using (Form myForm = new Form()) {
+        using (var myTrackBar = new TrackBar()) {
+            using (var myForm = new Form()) {
                 myForm.Controls.Add(myTrackBar);
                 myTrackBar.Width = 200;
                 myTrackBar.Height = 250;
@@ -157,8 +157,8 @@ public class TrackBarBaseTest : TestHelper
             }
         }
 
-        using (TrackBar myTrackBar = new TrackBar()) {
-            using (Form myForm = new Form()) {
+        using (var myTrackBar = new TrackBar()) {
+            using (var myForm = new Form()) {
                 myForm.Controls.Add(myTrackBar);
                 myTrackBar.Width = 200;
                 myTrackBar.Height = 250;
@@ -170,8 +170,8 @@ public class TrackBarBaseTest : TestHelper
             }
         }
 
-        using (TrackBar myTrackBar = new TrackBar()) {
-            using (Form myForm = new Form()) {
+        using (var myTrackBar = new TrackBar()) {
+            using (var myForm = new Form()) {
                 myForm.Controls.Add(myTrackBar);
                 myTrackBar.Width = 200;
                 myTrackBar.Height = 250;
@@ -185,7 +185,7 @@ public class TrackBarBaseTest : TestHelper
             }
         }
 
-        using (TrackBar myTrackBar = new TrackBar()) {
+        using (var myTrackBar = new TrackBar()) {
             myTrackBar.AutoSize = false;
             myTrackBar.Height = 50;
             myTrackBar.Width = 80;
@@ -195,7 +195,7 @@ public class TrackBarBaseTest : TestHelper
             Assert.AreEqual(50, myTrackBar.Height, "#SIZE2_1");
             Assert.AreEqual(100, myTrackBar.Width, "#SIZE2_2");
 				
-            using (Form myForm = new Form()){
+            using (var myForm = new Form()){
                 myForm.Controls.Add(myTrackBar);
                 myForm.Show();
 					
@@ -211,17 +211,17 @@ public class TrackBarBaseTest : TestHelper
     public void SizeTest ()
     {
         IntPtr handle;
-        int default_height = 45;
-        int default_height2 = 42;
+        var default_height = 45;
+        var default_height2 = 42;
 			
-        using (TrackBar myTrackBar = new TrackBar()) {
+        using (var myTrackBar = new TrackBar()) {
             myTrackBar.Width = 200;
             myTrackBar.Height = 250;
             Assert.AreEqual(200, myTrackBar.Width, "#SIZE01");
             AreEqual(default_height, default_height2, myTrackBar.Height, "#SIZE02");
         }
 			
-        using (TrackBar myTrackBar = new TrackBar()) {
+        using (var myTrackBar = new TrackBar()) {
             myTrackBar.AutoSize = false;
             myTrackBar.Width = 200;
             myTrackBar.Height = 250;
@@ -229,7 +229,7 @@ public class TrackBarBaseTest : TestHelper
             Assert.AreEqual(250, myTrackBar.Height, "#SIZE06");
         }
 
-        using (TrackBar myTrackBar = new TrackBar()) {
+        using (var myTrackBar = new TrackBar()) {
             myTrackBar.Width = 200;
             myTrackBar.Height = 250;
             myTrackBar.AutoSize = false;
@@ -237,8 +237,8 @@ public class TrackBarBaseTest : TestHelper
             AreEqual(default_height, default_height2, myTrackBar.Height, "#SIZE10");
         }
 
-        using (TrackBar myTrackBar = new TrackBar()) {
-            using (Form myForm = new Form()) {
+        using (var myTrackBar = new TrackBar()) {
+            using (var myForm = new Form()) {
                 myForm.Controls.Add(myTrackBar);
                 myTrackBar.Width = 200;
                 myTrackBar.Height = 250;

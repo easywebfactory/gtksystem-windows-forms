@@ -40,7 +40,7 @@ public class ColumnHeaderTest : TestHelper
     [Test]
     public void DefaultValuesTest ()
     {
-        ColumnHeader col = new ColumnHeader ();
+        var col = new ColumnHeader ();
 
         Assert.IsNull (col.ListView, "1");
         Assert.AreEqual (-1, col.Index, "2");
@@ -57,18 +57,18 @@ public class ColumnHeaderTest : TestHelper
     [Test]
     public void DisplayIndex_ListView_Created ()
     {
-        ColumnHeader colA = new ColumnHeader ();
-        ColumnHeader colB = new ColumnHeader ();
-        ColumnHeader colC = new ColumnHeader ();
-        ColumnHeader colD = new ColumnHeader ();
+        var colA = new ColumnHeader ();
+        var colB = new ColumnHeader ();
+        var colC = new ColumnHeader ();
+        var colD = new ColumnHeader ();
         colA.DisplayIndex = 2;
         colD.DisplayIndex = 0;
         colB.DisplayIndex = 3;
         colC.DisplayIndex = 1;
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lv = new ListView ();
+        var lv = new ListView ();
         lv.ColumnReordered += new ColumnReorderedEventHandler (ColumnReordered);
         lv.View = View.Details;
         lv.Columns.Add (colA);
@@ -119,13 +119,13 @@ public class ColumnHeaderTest : TestHelper
     [Test]
     public void DisplayIndex_ListView_Disposed ()
     {
-        ListView lv = new ListView ();
+        var lv = new ListView ();
         lv.View = View.Details;
-        ColumnHeader colA = new ColumnHeader ();
+        var colA = new ColumnHeader ();
         lv.Columns.Add (colA);
-        ColumnHeader colB = new ColumnHeader ();
+        var colB = new ColumnHeader ();
         lv.Columns.Add (colB);
-        ColumnHeader colC = new ColumnHeader ();
+        var colC = new ColumnHeader ();
         lv.Columns.Add (colC);
         Assert.AreEqual (0, colA.DisplayIndex, "#A1");
         Assert.AreEqual (1, colB.DisplayIndex, "#A2");
@@ -145,21 +145,21 @@ public class ColumnHeaderTest : TestHelper
     [Test]
     public void DisplayIndex_ListView_NotCreated ()
     {
-        ColumnHeader colA = new ColumnHeader ();
+        var colA = new ColumnHeader ();
         colA.DisplayIndex = -66;
         Assert.AreEqual (-66, colA.DisplayIndex, "#A1");
         colA.DisplayIndex = 66;
         Assert.AreEqual (66, colA.DisplayIndex, "#A2");
 
-        ColumnHeader colB = new ColumnHeader ();
+        var colB = new ColumnHeader ();
         colB.DisplayIndex = 0;
         Assert.AreEqual (0, colB.DisplayIndex, "#A3");
 
-        ColumnHeader colC = new ColumnHeader ();
+        var colC = new ColumnHeader ();
         colC.DisplayIndex = 1;
         Assert.AreEqual (1, colC.DisplayIndex, "#A4");
 
-        ListView lv = new ListView ();
+        var lv = new ListView ();
         lv.ColumnReordered += new ColumnReorderedEventHandler (ColumnReordered);
         lv.View = View.Details;
         lv.Columns.Add (colA);
@@ -197,7 +197,7 @@ public class ColumnHeaderTest : TestHelper
     [Test]
     public void ImageIndex_Invalid ()
     {
-        ColumnHeader col = new ColumnHeader ();
+        var col = new ColumnHeader ();
         col.ImageIndex = 2;
         try {
             col.ImageIndex = -2;
@@ -215,7 +215,7 @@ public class ColumnHeaderTest : TestHelper
     [Test]
     public void ImageKey ()
     {
-        ColumnHeader col = new ColumnHeader ();
+        var col = new ColumnHeader ();
         Assert.AreEqual (string.Empty, col.ImageKey, "#1");
         col.ImageKey = "test";
         Assert.AreEqual ("test", col.ImageKey, "#2");
@@ -226,7 +226,7 @@ public class ColumnHeaderTest : TestHelper
     [Test]
     public void ImageKeyAndImageIndexInteraction ()
     {
-        ColumnHeader col = new ColumnHeader ();
+        var col = new ColumnHeader ();
         col.ImageIndex = 1;
         Assert.AreEqual (1, col.ImageIndex, "#A1");
         Assert.AreEqual (string.Empty, col.ImageKey, "#A2");
@@ -244,14 +244,14 @@ public class ColumnHeaderTest : TestHelper
     [Test]
     public void ImageList ()
     {
-        ColumnHeader col = new ColumnHeader ();
+        var col = new ColumnHeader ();
         Assert.IsNull (col.ImageList, "#1");
 
-        ListView lv = new ListView ();
+        var lv = new ListView ();
         lv.View = View.Details;
-        ImageList small = new ImageList ();
+        var small = new ImageList ();
         lv.SmallImageList = small;
-        ImageList large = new ImageList ();
+        var large = new ImageList ();
         lv.LargeImageList = large;
         lv.Columns.Add (col);
         Assert.IsNotNull (col.ImageList, "#2");
@@ -261,13 +261,13 @@ public class ColumnHeaderTest : TestHelper
     [Test]
     public void ImageList_ListView_Disposed ()
     {
-        ListView lv = new ListView ();
+        var lv = new ListView ();
         lv.View = View.Details;
-        ImageList small = new ImageList ();
+        var small = new ImageList ();
         lv.SmallImageList = small;
-        ImageList large = new ImageList ();
+        var large = new ImageList ();
         lv.LargeImageList = large;
-        ColumnHeader col = new ColumnHeader ();
+        var col = new ColumnHeader ();
         lv.Columns.Add (col);
         lv.Dispose ();
         Assert.IsNull (col.ImageList);
@@ -276,11 +276,11 @@ public class ColumnHeaderTest : TestHelper
     [Test]
     public void Index_ListView_Disposed ()
     {
-        ListView lv = new ListView ();
+        var lv = new ListView ();
         lv.View = View.Details;
-        ColumnHeader colA = new ColumnHeader ();
+        var colA = new ColumnHeader ();
         lv.Columns.Add (colA);
-        ColumnHeader colB = new ColumnHeader ();
+        var colB = new ColumnHeader ();
         lv.Columns.Add (colB);
         lv.Dispose ();
         Assert.AreEqual (-1, colA.Index, "#1");
@@ -290,7 +290,7 @@ public class ColumnHeaderTest : TestHelper
     [Test]
     public void Name ()
     {
-        ColumnHeader col = new ColumnHeader ();
+        var col = new ColumnHeader ();
         Assert.AreEqual (string.Empty, col.Name, "#1");
         col.Name = "Address";
         Assert.AreEqual ("Address", col.Name, "#2");
@@ -301,7 +301,7 @@ public class ColumnHeaderTest : TestHelper
     [Test]
     public void Tag ()
     {
-        ColumnHeader col = new ColumnHeader ();
+        var col = new ColumnHeader ();
         Assert.IsNull (col.Tag, "#1");
         col.Tag = "whatever";
         Assert.AreEqual ("whatever", col.Tag, "#2");
@@ -312,9 +312,9 @@ public class ColumnHeaderTest : TestHelper
     [Test]
     public void Text_ListView_Disposed ()
     {
-        ListView lv = new ListView ();
+        var lv = new ListView ();
         lv.View = View.Details;
-        ColumnHeader col = new ColumnHeader ();
+        var col = new ColumnHeader ();
         lv.Columns.Add (col);
         lv.Dispose ();
         col.Text = "whatever";
@@ -324,9 +324,9 @@ public class ColumnHeaderTest : TestHelper
     [Test]
     public void TextAlign_ListView_Disposed ()
     {
-        ListView lv = new ListView ();
+        var lv = new ListView ();
         lv.View = View.Details;
-        ColumnHeader col = new ColumnHeader ();
+        var col = new ColumnHeader ();
         lv.Columns.Add (col);
         lv.Dispose ();
         col.TextAlign = HorizontalAlignment.Right;
@@ -336,9 +336,9 @@ public class ColumnHeaderTest : TestHelper
     [Test]
     public void ToStringTest ()
     {
-        ListView lv = new ListView ();
+        var lv = new ListView ();
         lv.SmallImageList = new ImageList ();
-        ColumnHeader col = new ColumnHeader ();
+        var col = new ColumnHeader ();
         col.DisplayIndex = 3;
         col.ImageIndex = 2;
         col.Name = "address_col";
@@ -354,16 +354,16 @@ public class ColumnHeaderTest : TestHelper
     [Category ("NotWorking")]
     public void WidthDefault ()
     {
-        ColumnHeader col = new ColumnHeader ();
+        var col = new ColumnHeader ();
         Assert.AreEqual (60, col.Width);
     }
 
     [Test]
     public void Width_ListView_Disposed ()
     {
-        ListView lv = new ListView ();
+        var lv = new ListView ();
         lv.View = View.Details;
-        ColumnHeader col = new ColumnHeader ();
+        var col = new ColumnHeader ();
         lv.Columns.Add (col);
         lv.Dispose ();
         col.Width = 10;
@@ -374,11 +374,11 @@ public class ColumnHeaderTest : TestHelper
     [Test]
     public void Width_AutoResize_Expand ()
     {
-        ListView lv = new ListView ();
+        var lv = new ListView ();
         lv.BeginUpdate ();
         lv.View = View.Details;
-        ColumnHeader col1 = new ColumnHeader ("One");
-        ColumnHeader col2 = new ColumnHeader ("Two");
+        var col1 = new ColumnHeader ("One");
+        var col2 = new ColumnHeader ("Two");
         lv.Columns.AddRange (new ColumnHeader [] { col1, col2 });
         lv.EndUpdate ();
 

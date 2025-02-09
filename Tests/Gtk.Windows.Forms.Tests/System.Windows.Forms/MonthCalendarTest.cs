@@ -18,9 +18,9 @@ public class MonthCalendarTest : TestHelper
     [Test]
     public void MonthCalendarPropertyTest()
     {
-        Form myfrm = new Form();
+        var myfrm = new Form();
         myfrm.ShowInTaskbar = false;
-        MonthCalendar myMonthCal1 = new MonthCalendar();
+        var myMonthCal1 = new MonthCalendar();
         //MonthCalendar myMonthCal2 = new MonthCalendar ();
         myMonthCal1.Name = "MonthCendar";
         myMonthCal1.TabIndex = 1;
@@ -49,14 +49,14 @@ public class MonthCalendarTest : TestHelper
     [Test]
     public void InitialSizeTest()
     {
-        MonthCalendar cal = new MonthCalendar();
+        var cal = new MonthCalendar();
         Assert.IsTrue(cal.Size != Size.Empty, "#01");
     }
 
     [Test]
     public void MonthCalMaxDateException()
     {
-        MonthCalendar myMonthCal1 = new MonthCalendar();
+        var myMonthCal1 = new MonthCalendar();
 
         try
         {
@@ -76,7 +76,7 @@ public class MonthCalendarTest : TestHelper
     [Test]
     public void MonthCalMinDateException()
     {
-        MonthCalendar myMonthCal1 = new MonthCalendar();
+        var myMonthCal1 = new MonthCalendar();
 
         try
         {
@@ -112,7 +112,7 @@ public class MonthCalendarTest : TestHelper
     {
         Assert.Throws<ArgumentException>(() =>
         {
-            MonthCalendar myMonthCal1 = new MonthCalendar();
+            var myMonthCal1 = new MonthCalendar();
             myMonthCal1.SelectionRange = new SelectionRange(new DateTime(1752, 01, 01), new DateTime(1752, 01, 02));
         });
     }
@@ -122,7 +122,7 @@ public class MonthCalendarTest : TestHelper
     {
         Assert.Throws<ArgumentException>(() =>
         {
-            MonthCalendar myMonthCal1 = new MonthCalendar();
+            var myMonthCal1 = new MonthCalendar();
             myMonthCal1.SelectionRange = new SelectionRange(new DateTime(9999, 12, 30), new DateTime(9999, 12, 31));
         });
     }

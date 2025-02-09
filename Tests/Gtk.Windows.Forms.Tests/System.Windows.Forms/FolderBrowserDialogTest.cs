@@ -18,7 +18,7 @@ public class FolderBrowserDialogTest : TestHelper
     [Test]
     public void Description ()
     {
-        FolderBrowserDialog fbd = new FolderBrowserDialog ();
+        var fbd = new FolderBrowserDialog ();
         Assert.AreEqual (string.Empty, fbd.Description, "#1");
         fbd.Description = null;
         Assert.AreEqual (string.Empty, fbd.Description, "#2");
@@ -31,7 +31,7 @@ public class FolderBrowserDialogTest : TestHelper
     [Test]
     public void SelectedPath ()
     {
-        FolderBrowserDialog fbd = new FolderBrowserDialog ();
+        var fbd = new FolderBrowserDialog ();
         Assert.AreEqual (string.Empty, fbd.SelectedPath, "#1");
         fbd.SelectedPath = null;
         Assert.AreEqual (string.Empty, fbd.SelectedPath, "#2");
@@ -44,7 +44,7 @@ public class FolderBrowserDialogTest : TestHelper
     [Test]
     public void ShowNewFolderButton ()
     {
-        FolderBrowserDialog fbd = new FolderBrowserDialog ();
+        var fbd = new FolderBrowserDialog ();
         Assert.IsTrue (fbd.ShowNewFolderButton, "#1");
         fbd.ShowNewFolderButton = false;
         Assert.IsFalse (fbd.ShowNewFolderButton, "#2");
@@ -55,7 +55,7 @@ public class FolderBrowserDialogTest : TestHelper
     [Test]
     public void RootFolder ()
     {
-        FolderBrowserDialog fbd = new FolderBrowserDialog ();
+        var fbd = new FolderBrowserDialog ();
         Assert.AreEqual (Environment.SpecialFolder.Desktop, fbd.RootFolder, "#1");
         fbd.RootFolder = Environment.SpecialFolder.Personal;
         Assert.AreEqual (Environment.SpecialFolder.Personal, fbd.RootFolder, "#2");
@@ -64,7 +64,7 @@ public class FolderBrowserDialogTest : TestHelper
     [Test]
     public void RootFolder_Invalid ()
     {
-        FolderBrowserDialog fbd = new FolderBrowserDialog ();
+        var fbd = new FolderBrowserDialog ();
         try {
             fbd.RootFolder = (Environment.SpecialFolder) 666;
             Assert.Fail ("#1");

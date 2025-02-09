@@ -49,7 +49,7 @@ public class ListControlTest : TestHelper
     // Bug 80794
     public void DataBindingsTest ()
     {
-        string table =
+        var table =
             @"<?xml version=""1.0"" standalone=""yes""?>
 <DOK>
 <DOK>
@@ -57,7 +57,7 @@ public class ListControlTest : TestHelper
 </DOK>
 </DOK>
 ";
-        string lookup =
+        var lookup =
             @"<?xml version=""1.0"" standalone=""yes""?>
 <klient>
 <klient>
@@ -70,32 +70,31 @@ public class ListControlTest : TestHelper
 </klient>
 </klient>";
 
-        using (Form frm = new Form ()) {
-            frm.ShowInTaskbar = false;
-            DataSet dsTable = new DataSet ();
-            dsTable.ReadXml (new StringReader (table));
-            DataSet dsLookup = new DataSet ();
-            dsLookup.ReadXml (new StringReader (lookup));
-            ComboBox cb = new ComboBox ();
-            cb.DataSource = dsLookup.Tables [0];
-            cb.DisplayMember = "nimi";
-            cb.ValueMember = "kood";
-            cb.DataBindings.Add ("SelectedValue", dsTable.Tables [0], "klient");
-            frm.Controls.Add (cb);
-            Assert.AreEqual ("", cb.Text, "#01");
-            frm.Show ();
-            Assert.AreEqual ("SUCCESS", cb.Text, "#02");
-        }
+        using var frm = new Form ();
+        frm.ShowInTaskbar = false;
+        var dsTable = new DataSet ();
+        dsTable.ReadXml (new StringReader (table));
+        var dsLookup = new DataSet ();
+        dsLookup.ReadXml (new StringReader (lookup));
+        var cb = new ComboBox ();
+        cb.DataSource = dsLookup.Tables [0];
+        cb.DisplayMember = "nimi";
+        cb.ValueMember = "kood";
+        cb.DataBindings.Add ("SelectedValue", dsTable.Tables [0], "klient");
+        frm.Controls.Add (cb);
+        Assert.AreEqual ("", cb.Text, "#01");
+        frm.Show ();
+        Assert.AreEqual ("SUCCESS", cb.Text, "#02");
     }
 
     [Test]
     public void GetItemText ()
     {
-        MockItem itemA = new MockItem ("A", 1);
-        MockItem itemB = new MockItem ("B", 2);
-        object itemC = new object ();
+        var itemA = new MockItem ("A", 1);
+        var itemB = new MockItem ("B", 2);
+        var itemC = new object ();
 
-        ListControlChild lc = new ListControlChild ();
+        var lc = new ListControlChild ();
         lc.DisplayMember = "Text";
 
         // No DataSource available
@@ -128,7 +127,7 @@ public class ListControlTest : TestHelper
     [Test]
     public void DisplayMemberNullTest ()
     {
-        ListControlChild lc = new ListControlChild ();
+        var lc = new ListControlChild ();
         lc.DisplayMember = null;
         Assert.AreEqual (String.Empty, lc.DisplayMember, "#1");
     }
@@ -136,17 +135,17 @@ public class ListControlTest : TestHelper
     [Test]
     public void DataSource1 ()
     {
-        ArrayList list1 = new ArrayList ();
+        var list1 = new ArrayList ();
         list1.Add ("item 1");
-        ArrayList list2 = new ArrayList ();
+        var list2 = new ArrayList ();
 
-        ListControlChild lc = new ListControlChild ();
+        var lc = new ListControlChild ();
         lc.DataSourceChanged += new EventHandler (ListControl_DataSourceChanged);
         lc.DataSource = list1;
         Assert.AreEqual (1, dataSourceChanged, "#A1");
         Assert.AreSame (list1, lc.DataSource, "#A2");
 
-        Form form = new Form ();
+        var form = new Form ();
         form.Controls.Add (lc);
 
         Assert.AreEqual (1, dataSourceChanged, "#B1");
@@ -172,14 +171,14 @@ public class ListControlTest : TestHelper
     [Test]
     public void DataSource2 ()
     {
-        ArrayList list1 = new ArrayList ();
+        var list1 = new ArrayList ();
         list1.Add ("item 1");
-        ArrayList list2 = new ArrayList ();
+        var list2 = new ArrayList ();
 
-        ListControlChild lc = new ListControlChild ();
+        var lc = new ListControlChild ();
         lc.DataSourceChanged += new EventHandler (ListControl_DataSourceChanged);
 
-        Form form = new Form ();
+        var form = new Form ();
         form.Controls.Add (lc);
 
         Assert.AreEqual (0, dataSourceChanged, "#1");
@@ -205,12 +204,12 @@ public class ListControlTest : TestHelper
     [Test]
     public void SelectedValue ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
-        ListControlChild lc = new ListControlChild ();
+        var lc = new ListControlChild ();
         f.Controls.Add (lc);
 
-        ArrayList list = new ArrayList ();
+        var list = new ArrayList ();
         list.Add (new MockItem ("TextA", 1));
         list.Add (new MockItem (String.Empty, 4));
         list.Add (new MockItem ("TextC", 9));
@@ -244,18 +243,18 @@ public class ListControlTest : TestHelper
     [Test]
     public void SelectedValue2 ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
-        ListControlChild child = new ListControlChild ();
+        var child = new ListControlChild ();
 
-        ArrayList list = new ArrayList ();
+        var list = new ArrayList ();
         list.Add (new MockItem ("A", 0));
         list.Add (new MockItem ("B", 1));
         list.Add (new MockItem ("C", 2));
         child.DataSource = list;
         child.ValueMember = "Text";
 
-        MockItem item = new MockItem (String.Empty, 0);
+        var item = new MockItem (String.Empty, 0);
         child.DataBindings.Add ("SelectedValue", item, "Text");
 
         Assert.AreEqual (-1, child.SelectedIndex, "#A1");
@@ -277,13 +276,13 @@ public class ListControlTest : TestHelper
         list1.Add ("item 1");
         BindingList<string> list2 = new BindingList<string> ();
 
-        ListControlChild lc = new ListControlChild ();
+        var lc = new ListControlChild ();
         lc.DataSourceChanged += new EventHandler (ListControl_DataSourceChanged);
         lc.DataSource = list1;
         Assert.AreEqual (1, dataSourceChanged, "#A1");
         Assert.AreSame (list1, lc.DataSource, "#A2");
 
-        Form form = new Form ();
+        var form = new Form ();
         form.Controls.Add (lc);
 
         Assert.AreEqual (1, dataSourceChanged, "#B1");
@@ -308,10 +307,10 @@ public class ListControlTest : TestHelper
         list1.Add ("item 1");
         BindingList<string> list2 = new BindingList<string> ();
 
-        ListControlChild lc = new ListControlChild ();
+        var lc = new ListControlChild ();
         lc.DataSourceChanged += new EventHandler (ListControl_DataSourceChanged);
 
-        Form form = new Form ();
+        var form = new Form ();
         form.Controls.Add (lc);
 
         Assert.AreEqual (0, dataSourceChanged, "#1");
@@ -335,7 +334,7 @@ public class ListControlTest : TestHelper
     public void BehaviorFormatting ()
     {
         ListControl lc = new ListControlChild ();
-        DateTime dt = new DateTime (1, 2, 3, 4, 5, 6);
+        var dt = new DateTime (1, 2, 3, 4, 5, 6);
 
         Assert.AreEqual (false, lc.FormattingEnabled, "A1");
         Assert.AreEqual (null, lc.FormatInfo, "A2");
@@ -360,9 +359,9 @@ public class ListControlTest : TestHelper
     [Test]
     public void FormattingChanges ()
     {
-        bool refresh_items_called = false;
+        var refresh_items_called = false;
 
-        ListControlChild lc = new ListControlChild ();
+        var lc = new ListControlChild ();
         lc.RefreshingItems += delegate
         {
             refresh_items_called = true;
@@ -389,14 +388,14 @@ public class ListControlTest : TestHelper
     public void FormatEventValueType ()
     {
         string event_log = null;
-        ComboBox comboBox = new ComboBox ();
+        var comboBox = new ComboBox ();
         comboBox.FormattingEnabled = true;
-        comboBox.Format += delegate(object sender, ListControlConvertEventArgs e)
+        comboBox.Format += delegate(object _, ListControlConvertEventArgs e)
         {
             event_log = e.Value.GetType ().Name;
         };
 			
-        int [] objects = new int [] { 1, 2, 3 };
+        var objects = new int [] { 1, 2, 3 };
         comboBox.DataSource = objects;
         comboBox.GetItemText (1);
 

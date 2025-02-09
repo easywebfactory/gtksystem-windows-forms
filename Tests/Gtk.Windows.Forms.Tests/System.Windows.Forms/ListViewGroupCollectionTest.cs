@@ -63,8 +63,8 @@ public class ListViewGroupCollectionTest : TestHelper
     [Test]
     public void AddTest ()
     {
-        ListViewGroup group1 = new ListViewGroup ("Item1");
-        ListViewGroup group2 = new ListViewGroup ("Item2");
+        var group1 = new ListViewGroup ("Item1");
+        var group2 = new ListViewGroup ("Item2");
         grpCol.Add (group1);
         grpCol.Add (group2);
 
@@ -76,8 +76,8 @@ public class ListViewGroupCollectionTest : TestHelper
     [Test]
     public void ClearTest ()
     {
-        ListViewGroup group1 = new ListViewGroup ("Item1");
-        ListViewGroup group2 = new ListViewGroup ("Item2");
+        var group1 = new ListViewGroup ("Item1");
+        var group2 = new ListViewGroup ("Item2");
         grpCol.Add (group1);
         grpCol.Add (group2);
         grpCol.Clear ();
@@ -90,8 +90,8 @@ public class ListViewGroupCollectionTest : TestHelper
     [Test]
     public void ContainsTest ()
     {
-        ListViewGroup obj = new ListViewGroup ("Item1");
-        ListViewGroup obj2 = new ListViewGroup ("Item2");
+        var obj = new ListViewGroup ("Item1");
+        var obj2 = new ListViewGroup ("Item2");
         grpCol.Add (obj);
         Assert.AreEqual (true, grpCol.Contains (obj), "#D1");
         Assert.AreEqual (false, grpCol.Contains (obj2), "#D2");
@@ -100,8 +100,8 @@ public class ListViewGroupCollectionTest : TestHelper
     [Test]
     public void IndexOfTest ()
     {
-        ListViewGroup obj = new ListViewGroup ("Item1");
-        ListViewGroup obj2 = new ListViewGroup ("Item2");
+        var obj = new ListViewGroup ("Item1");
+        var obj2 = new ListViewGroup ("Item2");
         grpCol.Add (obj);
         grpCol.Add (obj2);
         Assert.AreEqual (1, grpCol.IndexOf (obj2), "#E1");
@@ -110,8 +110,8 @@ public class ListViewGroupCollectionTest : TestHelper
     [Test]
     public void RemoveTest ()
     {
-        ListViewGroup obj = new ListViewGroup ("Item1");
-        ListViewGroup obj2 = new ListViewGroup ("Item2");
+        var obj = new ListViewGroup ("Item1");
+        var obj2 = new ListViewGroup ("Item2");
         grpCol.Add (obj);
         grpCol.Add (obj2);
         grpCol.Remove (obj);
@@ -123,8 +123,8 @@ public class ListViewGroupCollectionTest : TestHelper
     [Test]
     public void RemoveAtTest ()
     {
-        ListViewGroup obj = new ListViewGroup ("Item1");
-        ListViewGroup obj2 = new ListViewGroup ("Item2");
+        var obj = new ListViewGroup ("Item1");
+        var obj2 = new ListViewGroup ("Item2");
         grpCol.Add (obj);
         grpCol.Add (obj2);
         grpCol.RemoveAt (0);
@@ -137,7 +137,7 @@ public class ListViewGroupCollectionTest : TestHelper
     [Test]
     public void IndexerTest ()
     {
-        ListViewGroup group1 = new ListViewGroup ("Item1");
+        var group1 = new ListViewGroup ("Item1");
 
         grpCol.Add (group1);
         Assert.AreEqual (group1, grpCol [0], "#A1");
@@ -148,7 +148,7 @@ public class ListViewGroupCollectionTest : TestHelper
         Assert.AreEqual (null, grpCol [0], "#A4");
         Assert.AreEqual (1, grpCol.Count, "#A5");
 
-        ListViewGroup group2 = new ListViewGroup ("Item2");
+        var group2 = new ListViewGroup ("Item2");
         grpCol [0] = group2;
         Assert.AreEqual (group2, grpCol [0], "#A6");
         Assert.AreEqual (null, group2.ListView, "#A7");
@@ -158,7 +158,7 @@ public class ListViewGroupCollectionTest : TestHelper
     [Test]
     public void IndexerNullTest ()
     {
-        ListViewGroup group1 = new ListViewGroup ("Item1");
+        var group1 = new ListViewGroup ("Item1");
         grpCol.Add (group1);
         grpCol [0] = null;
 
@@ -171,9 +171,9 @@ public class ListViewGroupCollectionTest : TestHelper
     [Test]
     public void IndexerKeyTest ()
     {
-        ListViewGroup group1 = new ListViewGroup ("Item1");
-        ListViewGroup group2 = new ListViewGroup ("Item2");
-        ListViewGroup group3 = new ListViewGroup ("Item3");
+        var group1 = new ListViewGroup ("Item1");
+        var group2 = new ListViewGroup ("Item2");
+        var group3 = new ListViewGroup ("Item3");
         grpCol.Add (group1);
         grpCol.Add (group2);
         grpCol.Add (group3);
@@ -187,7 +187,7 @@ public class ListViewGroupCollectionTest : TestHelper
         Assert.AreEqual (group2, grpCol ["A"], "#A3");
         Assert.AreEqual (null, grpCol ["a"], "#A4"); /* Inconsistent, again */
 
-        ListViewGroup group4 = new ListViewGroup ("Item4");
+        var group4 = new ListViewGroup ("Item4");
         group4.Name = "A";
 
         grpCol [String.Empty] = group4;

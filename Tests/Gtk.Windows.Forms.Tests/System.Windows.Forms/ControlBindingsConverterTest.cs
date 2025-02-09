@@ -18,16 +18,16 @@ public class ControlBindingsConverterTest : TestHelper
     [NUnit.Framework.Category ("NotWorking")]
     public void TestProperties ()
     {
-        Control c = new Control ();
-        ControlBindingsCollection col = c.DataBindings;
+        var c = new Control ();
+        var col = c.DataBindings;
 
-        TypeConverter cvt = TypeDescriptor.GetConverter (col);
+        var cvt = TypeDescriptor.GetConverter (col);
 
         Assert.IsNotNull (cvt, "1");
 
         Assert.IsTrue (cvt.GetPropertiesSupported (null), "2");
 			
-        PropertyDescriptorCollection props = cvt.GetProperties (null, col, null);
+        var props = cvt.GetProperties (null, col, null);
 			
         Assert.AreEqual (3, props.Count, "3");
 
@@ -58,7 +58,7 @@ public class ControlBindingsConverterTest : TestHelper
         Assert.AreEqual ("(Advanced)", props[2].Name, "6");
         Console.WriteLine (props[2].GetType());
         Console.WriteLine ("advanced value = {0}", props[2].GetValue (col));
-        TypeConverter propcvt = props[2].Converter;
+        var propcvt = props[2].Converter;
         Console.WriteLine ("advanced converter = {0}", propcvt.GetType());
         Console.WriteLine ("");
         if (null == propcvt.GetProperties(props[2].GetValue (col)))

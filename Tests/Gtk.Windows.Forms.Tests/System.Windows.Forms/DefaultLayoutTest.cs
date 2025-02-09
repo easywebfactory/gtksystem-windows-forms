@@ -98,12 +98,12 @@ public class DefaultLayoutTest : TestHelper
     [Test]
     public void AnchorTopLeftTest ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
         f.Size = new Size (200, 200);
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (100, 100);
         b.Anchor = AnchorStyles.Top | AnchorStyles.Left;
 
@@ -122,12 +122,12 @@ public class DefaultLayoutTest : TestHelper
     [Test]
     public void AnchorTopRightTest ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
         f.Size = new Size (200, 200);
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (100, 100);
         b.Anchor = AnchorStyles.Top | AnchorStyles.Right;
 
@@ -147,12 +147,12 @@ public class DefaultLayoutTest : TestHelper
     [Test]
     public void AnchorLeftRightTest ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
         f.Size = new Size (200, 200);
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (100, 100);
         b.Anchor = AnchorStyles.Left | AnchorStyles.Right;
 
@@ -172,12 +172,12 @@ public class DefaultLayoutTest : TestHelper
     [Test]
     public void AnchorBottomLeftTest ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
         f.Size = new Size (200, 200);
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (100, 100);
         b.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
 
@@ -197,12 +197,12 @@ public class DefaultLayoutTest : TestHelper
     [Test]
     public void AnchorBottomRightTest ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
         f.Size = new Size (200, 200);
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (100, 100);
         b.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
 
@@ -222,12 +222,12 @@ public class DefaultLayoutTest : TestHelper
     [Test]
     public void AnchorTopBottomTest ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
         f.Size = new Size (200, 200);
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (100, 100);
         b.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
 
@@ -248,12 +248,12 @@ public class DefaultLayoutTest : TestHelper
     [Test]
     public void AnchorSuspendLayoutTest ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
         f.SuspendLayout ();
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (100, 100);
 
         f.Controls.Add (b);
@@ -284,10 +284,10 @@ public class DefaultLayoutTest : TestHelper
     [Test]
     public void AnchorSuspendLayoutTest2 ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (100, 100);
 
         f.Controls.Add (b);
@@ -318,10 +318,10 @@ public class DefaultLayoutTest : TestHelper
     [Test]
     public void AnchorSuspendLayoutTest3 ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (100, 100);
 
         f.Controls.Add (b);
@@ -346,7 +346,7 @@ public class DefaultLayoutTest : TestHelper
     [Test]
     public void TestAnchorDockInteraction ()
     {
-        Panel p = new Panel ();
+        var p = new Panel ();
         p.DockChanged += new EventHandler (DockChanged_Handler);
 
         Assert.AreEqual (AnchorStyles.Top | AnchorStyles.Left, p.Anchor, "A1");
@@ -395,7 +395,7 @@ public class DefaultLayoutTest : TestHelper
     [Test]	// bug #80917
     public void BehaviorOverriddenDisplayRectangle ()
     {
-        Control c = new Control ();
+        var c = new Control ();
         c.Anchor |= AnchorStyles.Bottom;
         c.Size = new Size (100, 100);
 
@@ -420,10 +420,10 @@ public class DefaultLayoutTest : TestHelper
     [Test]  // bug 80912
     public void AnchoredControlWithZeroWidthAndHeight ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 			
-        Control c = new Control ();
+        var c = new Control ();
         c.Anchor = AnchorStyles.Left | AnchorStyles.Right;
         f.Controls.Add (c);
 
@@ -433,7 +433,7 @@ public class DefaultLayoutTest : TestHelper
     [Test] // bug 81694
     public void TestNestedControls ()
     {
-        MainForm f = new MainForm ();
+        var f = new MainForm ();
         f.ShowInTaskbar = false;
 			
         f.Show ();
@@ -445,12 +445,12 @@ public class DefaultLayoutTest : TestHelper
     [Test] // bug 81695
     public void TestNestedControls2 ()
     {
-        MainForm f = new MainForm ();
+        var f = new MainForm ();
         f.ShowInTaskbar = false;
 
         f.Show ();
 			
-        Size s = f.Size;
+        var s = f.Size;
         f.Size = new Size (10, 10);
         f.Size = s;
 			
@@ -461,7 +461,7 @@ public class DefaultLayoutTest : TestHelper
 
     private class MainForm : Form
     {
-        public UserControl1 _userControl;
+        public readonly UserControl1 _userControl;
 			
         public MainForm ()
         {
@@ -489,8 +489,8 @@ public class DefaultLayoutTest : TestHelper
 		
     private class UserControl1 : UserControl
     {
-        private Button _button1;
-        public Button _button2;
+        private readonly Button _button1;
+        public readonly Button _button2;
 
         public UserControl1 ()
         {
@@ -526,11 +526,11 @@ public class DefaultLayoutTest : TestHelper
     [Test]
     public void TestDockFillWithPadding ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
         f.Padding = new Padding (15, 15, 15, 15);
 
-        Control c = new Control ();
+        var c = new Control ();
         c.Dock = DockStyle.Fill;
         f.Controls.Add (c);
 
@@ -543,11 +543,11 @@ public class DefaultLayoutTest : TestHelper
     [Test]
     public void Bug82762 ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
         f.ClientSize = new Size (284, 264);
 			
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (100, 100);
         b.Anchor = AnchorStyles.None;
         f.Controls.Add (b);
@@ -567,9 +567,9 @@ public class DefaultLayoutTest : TestHelper
     [Test]
     public void Bug82805 ()
     {
-        Control c1 = new Control ();
+        var c1 = new Control ();
         c1.Size = new Size (100, 100);
-        Control c2 = new Control ();
+        var c2 = new Control ();
         c2.Size = new Size (100, 100);
 
         c2.SuspendLayout ();
@@ -584,10 +584,10 @@ public class DefaultLayoutTest : TestHelper
     [Test]
     public void DockedAutoSizeControls ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 			
-        Button b = new Button ();
+        var b = new Button ();
         b.Text = "Yo";
         b.AutoSize = true;
         b.Width = 200;
@@ -606,10 +606,10 @@ public class DefaultLayoutTest : TestHelper
     [Test]  // bug #81199
     public void NestedControls ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 			
-        MyUserControl c = new MyUserControl ();
+        var c = new MyUserControl ();
         c.Dock = DockStyle.Fill;
         c.Size = new Size (500, 500);
 			
@@ -626,7 +626,7 @@ public class DefaultLayoutTest : TestHelper
 		
     private class MyUserControl : UserControl
     {
-        public ListView lv;
+        public readonly ListView lv;
 			
         public MyUserControl ()
         {
@@ -697,11 +697,11 @@ public class DockingTests : TestHelper
     [Test]
     public void TestDockFillFirst ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        Panel b1 = new Panel ();
-        Panel b2 = new Panel ();
+        var b1 = new Panel ();
+        var b2 = new Panel ();
 
         b1.Dock = DockStyle.Fill;
         b2.Dock = DockStyle.Left;
@@ -718,11 +718,11 @@ public class DockingTests : TestHelper
     [Test]
     public void TestDockFillLast ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        Panel b1 = new Panel ();
-        Panel b2 = new Panel ();
+        var b1 = new Panel ();
+        var b2 = new Panel ();
 
         b1.Dock = DockStyle.Fill;
         b2.Dock = DockStyle.Left;
@@ -739,15 +739,15 @@ public class DockingTests : TestHelper
     [Test]  // bug #81397
     public void TestDockingWithCustomDisplayRectangle ()
     {
-        MyControl mc = new MyControl ();
+        var mc = new MyControl ();
         mc.Size = new Size (200, 200);
 			
-        Control c = new Control ();
+        var c = new Control ();
         c.Dock = DockStyle.Fill;
 			
         mc.Controls.Add (c);
 			
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 			
         f.Controls.Add (mc);
@@ -762,18 +762,18 @@ public class DockingTests : TestHelper
     private class MyControl : Control
     {
         public override Rectangle DisplayRectangle { 
-            get { return new Rectangle (20, 20, this.Width - 40, this.Height - 40); }
+            get { return new Rectangle (20, 20, Width - 40, Height - 40); }
         }
     }
 
     [Test]
     public void DockingPreferredSize ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
         f.ClientSize = new Size (300, 300);
 
-        C1 c1 = new C1 ();
+        var c1 = new C1 ();
         c1.Size = new Size (100, 100);
         c1.Dock = DockStyle.Left;
 
@@ -783,7 +783,7 @@ public class DockingTests : TestHelper
         Assert.AreEqual (new Size (100, 300), c1.Size, "A1");
 
         f.Controls.Clear ();
-        C2 c2 = new C2 ();
+        var c2 = new C2 ();
         c2.Size = new Size (100, 100);
         c2.Dock = DockStyle.Left;
 
@@ -813,11 +813,11 @@ public class DockingTests : TestHelper
     [Test]
     public void ResettingDockToNone ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
         f.ClientSize = new Size (300, 300);
 			
-        Control c = new Control ();
+        var c = new Control ();
         c.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 			
         f.Controls.Add (c);

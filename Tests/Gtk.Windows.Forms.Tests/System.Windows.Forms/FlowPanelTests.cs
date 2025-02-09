@@ -9,7 +9,7 @@ public class FlowPanelTests : TestHelper
     [Test]
     public void TestConstruction()
     {
-        FlowLayoutPanel p = new FlowLayoutPanel();
+        var p = new FlowLayoutPanel();
 			
         Assert.AreEqual(FlowDirection.LeftToRight, p.FlowDirection, "A1");
         Assert.AreEqual(true, p.WrapContents, "A2");
@@ -25,8 +25,8 @@ public class FlowPanelTests : TestHelper
     [Test]
     public void TestExtenderProvider()
     {
-        FlowLayoutPanel p = new FlowLayoutPanel ();
-        Button b = new Button();
+        var p = new FlowLayoutPanel ();
+        var b = new Button();
 			
         Assert.AreEqual(false, p.GetFlowBreak(b), "B1");
 			
@@ -40,7 +40,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest1 ()
     {
         // 2 Normal Buttons
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
 
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -53,7 +53,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest2 ()
     {
         // Dock Fill and Normal
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -66,7 +66,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest3 ()
     {
         // Anchored: Top/Bottom and Normal
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Bottom));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -79,7 +79,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest4 ()
     {
         // Anchored: Top/Bottom and Dock Fill
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Bottom));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -92,7 +92,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest5 ()
     {
         // 2 Anchored: Top/Bottom
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Bottom));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Bottom));
@@ -105,7 +105,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest6 ()
     {
         // 2 Dock Fill
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -118,7 +118,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest7 ()
     {
         // Dock Top
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.Top, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -131,7 +131,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest8 ()
     {
         // Dock Bottom
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.Bottom, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -144,7 +144,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest9 ()
     {
         // Anchor Bottom
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Bottom));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -157,7 +157,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest10 ()
     {
         // No Dock or Anchor
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.None));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -170,7 +170,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest11 ()
     {
         // WrapContents = true
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -187,7 +187,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest12 ()
     {
         // WrapContents = false
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.WrapContents = false;
 			
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -205,7 +205,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest13 ()
     {
         // SetFlowBreak 1, 3
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
 
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -228,7 +228,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest14 ()
     {
         // Margins
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
 
         p.Controls.Add (CreateButton (50, 50, false, DockStyle.None, new Padding (1,3,5,2), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (50, 50, false, DockStyle.None, new Padding (7,3,12,5), AnchorStyles.Left | AnchorStyles.Top));
@@ -246,7 +246,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest15 ()
     {
         // Margins and Different Sizes
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
 
         p.Controls.Add (CreateButton (25, 45, false, DockStyle.None, new Padding (6), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (60, 20, false, DockStyle.None, new Padding (9), AnchorStyles.Left | AnchorStyles.Top));
@@ -264,7 +264,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest16 ()
     {
         // Random Complex Layout 1
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
 
         p.Controls.Add (CreateButton (25, 45, false, DockStyle.None, new Padding (6), AnchorStyles.Right | AnchorStyles.Top));
         p.Controls.Add (CreateButton (60, 20, false, DockStyle.Fill, new Padding (9), AnchorStyles.Bottom | AnchorStyles.Top));
@@ -286,7 +286,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest17 ()
     {
         // Random Complex Layout 2
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
 
         p.Controls.Add (CreateButton (12, 345, false, DockStyle.Bottom, new Padding (1, 2, 3, 4), AnchorStyles.Left | AnchorStyles.Top));
         p.Controls.Add (CreateButton (9, 44, false, DockStyle.Top, new Padding (6, 3, 2, 7), AnchorStyles.Right | AnchorStyles.Top));
@@ -310,7 +310,7 @@ public class FlowPanelTests : TestHelper
     public void LeftToRightLayoutTest18 ()
     {
         // SetFlowBreak has no effect when WrapContents = false
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.WrapContents = false;
 
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -328,7 +328,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest1 ()
     {
         // 2 Normal Buttons
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.FlowDirection = FlowDirection.RightToLeft;
 			
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -342,7 +342,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest2 ()
     {
         // Dock Fill and Normal
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.FlowDirection = FlowDirection.RightToLeft;
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -356,7 +356,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest3 ()
     {
         // Anchored: Top/Bottom and Normal
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.FlowDirection = FlowDirection.RightToLeft;
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Bottom));
@@ -370,7 +370,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest4 ()
     {
         // Anchored: Top/Bottom and Dock Fill
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.FlowDirection = FlowDirection.RightToLeft;
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Bottom));
@@ -384,7 +384,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest5 ()
     {
         // 2 Anchored: Top/Bottom
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.FlowDirection = FlowDirection.RightToLeft;
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Top | AnchorStyles.Bottom));
@@ -398,7 +398,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest6 ()
     {
         // 2 Dock Fill
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.FlowDirection = FlowDirection.RightToLeft;
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.Fill, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -412,7 +412,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest7 ()
     {
         // Dock Top
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.FlowDirection = FlowDirection.RightToLeft;
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.Top, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -426,7 +426,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest8 ()
     {
         // Dock Bottom
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.FlowDirection = FlowDirection.RightToLeft;
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.Bottom, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -440,7 +440,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest9 ()
     {
         // Anchor Bottom
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.FlowDirection = FlowDirection.RightToLeft;
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Bottom));
@@ -454,7 +454,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest10 ()
     {
         // No Dock or Anchor
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.FlowDirection = FlowDirection.RightToLeft;
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.None));
@@ -468,7 +468,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest11 ()
     {
         // WrapContents = true
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.FlowDirection = FlowDirection.RightToLeft;
 
         p.Controls.Add (CreateButton (100, 50, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -486,7 +486,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest12 ()
     {
         // WrapContents = false
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.WrapContents = false;
         p.FlowDirection = FlowDirection.RightToLeft;
 
@@ -505,7 +505,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest13 ()
     {
         // SetFlowBreak 1, 3
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.FlowDirection = FlowDirection.RightToLeft;
 
         p.Controls.Add (CreateButton (100, 100, false, DockStyle.None, new Padding (), AnchorStyles.Left | AnchorStyles.Top));
@@ -526,7 +526,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest14 ()
     {
         // Margins
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.FlowDirection = FlowDirection.RightToLeft;
 
         p.Controls.Add (CreateButton (50, 50, false, DockStyle.None, new Padding (1, 3, 5, 2), AnchorStyles.Left | AnchorStyles.Top));
@@ -544,7 +544,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest15 ()
     {
         // Margins and Different Sizes
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.FlowDirection = FlowDirection.RightToLeft;
 
         p.Controls.Add (CreateButton (25, 45, false, DockStyle.None, new Padding (6), AnchorStyles.Left | AnchorStyles.Top));
@@ -562,7 +562,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest16 ()
     {
         // Random Complex Layout 1
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.FlowDirection = FlowDirection.RightToLeft;
 
         p.Controls.Add (CreateButton (25, 45, false, DockStyle.None, new Padding (6), AnchorStyles.Right | AnchorStyles.Top));
@@ -584,7 +584,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest17 ()
     {
         // Random Complex Layout 2
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.FlowDirection = FlowDirection.RightToLeft;
 
         p.Controls.Add (CreateButton (12, 345, false, DockStyle.Bottom, new Padding (1, 2, 3, 4), AnchorStyles.Left | AnchorStyles.Top));
@@ -609,7 +609,7 @@ public class FlowPanelTests : TestHelper
     public void RightToLeftLayoutTest18 ()
     {
         // SetFlowBreak has no effect when WrapContents = false
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.WrapContents = false;
         p.FlowDirection = FlowDirection.RightToLeft;
 
@@ -628,7 +628,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest1 ()
     {
         // 2 Normal Buttons
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.TopDown;
 
@@ -643,7 +643,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest2 ()
     {
         // Dock Fill and Normal
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.TopDown;
 
@@ -658,7 +658,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest3 ()
     {
         // Anchored: Left/Right and Normal
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.TopDown;
 
@@ -673,7 +673,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest4 ()
     {
         // Anchored: Left/Right and Dock Fill
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.TopDown;
 
@@ -688,7 +688,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest5 ()
     {
         // 2 Anchored: Left/Right
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.TopDown;
 
@@ -703,7 +703,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest6 ()
     {
         // 2 Dock Fill
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.TopDown;
 
@@ -718,7 +718,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest7 ()
     {
         // Dock Left
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.TopDown;
 
@@ -733,7 +733,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest8 ()
     {
         // Dock Right
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.TopDown;
 
@@ -748,7 +748,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest9 ()
     {
         // Anchor Right
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.TopDown;
 
@@ -763,7 +763,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest10 ()
     {
         // No Dock or Anchor
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.TopDown;
 
@@ -778,7 +778,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest11 ()
     {
         // WrapContents = true
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.TopDown;
 
@@ -797,7 +797,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest12 ()
     {
         // WrapContents = false
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.WrapContents = false;
         p.FlowDirection = FlowDirection.TopDown;
@@ -817,7 +817,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest13 ()
     {
         // SetFlowBreak 1, 3
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.TopDown;
 
@@ -839,7 +839,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest14 ()
     {
         // Margins
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.TopDown;
 
@@ -858,7 +858,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest15 ()
     {
         // Margins and Different Sizes
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.TopDown;
 
@@ -877,7 +877,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest16 ()
     {
         // Random Complex Layout 1
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.TopDown;
 
@@ -900,7 +900,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest17 ()
     {
         // Random Complex Layout 2
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.TopDown;
 
@@ -926,7 +926,7 @@ public class FlowPanelTests : TestHelper
     public void TopDownLayoutTest18 ()
     {
         // SetFlowBreak has no effect when WrapContents = false
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.WrapContents = false;
         p.FlowDirection = FlowDirection.TopDown;
@@ -946,7 +946,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest1 ()
     {
         // 2 Normal Buttons
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.BottomUp;
 
@@ -961,7 +961,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest2 ()
     {
         // Dock Fill and Normal
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.BottomUp;
 
@@ -976,7 +976,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest3 ()
     {
         // Anchored: Left/Right and Normal
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.BottomUp;
 
@@ -991,7 +991,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest4 ()
     {
         // Anchored: Left/Right and Dock Fill
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.BottomUp;
 
@@ -1006,7 +1006,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest5 ()
     {
         // 2 Anchored: Left/Right
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.BottomUp;
 
@@ -1021,7 +1021,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest6 ()
     {
         // 2 Dock Fill
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.BottomUp;
 
@@ -1036,7 +1036,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest7 ()
     {
         // Dock Left
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.BottomUp;
 
@@ -1051,7 +1051,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest8 ()
     {
         // Dock Right
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.BottomUp;
 
@@ -1066,7 +1066,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest9 ()
     {
         // Anchor Right
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.BottomUp;
 
@@ -1081,7 +1081,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest10 ()
     {
         // No Dock or Anchor
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.BottomUp;
 
@@ -1096,7 +1096,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest11 ()
     {
         // WrapContents = true
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.BottomUp;
 
@@ -1115,7 +1115,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest12 ()
     {
         // WrapContents = false
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.WrapContents = false;
         p.FlowDirection = FlowDirection.BottomUp;
@@ -1135,7 +1135,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest13 ()
     {
         // SetFlowBreak 1, 3
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.BottomUp;
 
@@ -1157,7 +1157,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest14 ()
     {
         // Margins
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.BottomUp;
 
@@ -1176,7 +1176,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest15 ()
     {
         // Margins and Different Sizes
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.BottomUp;
 
@@ -1195,7 +1195,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest16 ()
     {
         // Random Complex Layout 1
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.BottomUp;
 
@@ -1218,7 +1218,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest17 ()
     {
         // Random Complex Layout 2
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.FlowDirection = FlowDirection.BottomUp;
 
@@ -1244,7 +1244,7 @@ public class FlowPanelTests : TestHelper
     public void BottomUpLayoutTest18 ()
     {
         // SetFlowBreak has no effect when WrapContents = false
-        FlowLayoutPanel p = new FlowLayoutPanel ();
+        var p = new FlowLayoutPanel ();
         p.Size = new Size (100, 200);
         p.WrapContents = false;
         p.FlowDirection = FlowDirection.BottomUp;
@@ -1261,7 +1261,7 @@ public class FlowPanelTests : TestHelper
 
     private Button CreateButton (int width, int height, bool autosize, DockStyle dock, Padding margin, AnchorStyles anchor)
     {
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size(width, height);
         b.AutoSize = autosize;
         b.Anchor = anchor;
@@ -1275,7 +1275,7 @@ public class FlowPanelTests : TestHelper
     [Test]
     public void PreferredSize ()
     {
-        FlowLayoutPanel panel = new FlowLayoutPanel ();
+        var panel = new FlowLayoutPanel ();
         panel.Controls.AddRange (new Control [] { new PreferredSizeControl (), new PreferredSizeControl () });
         Assert.AreEqual (new Size (212, 106), panel.PreferredSize, "1");
         Assert.AreEqual (new Size (106, 212), panel.GetPreferredSize (new Size (150, 150)), "2");
@@ -1307,16 +1307,16 @@ public class FlowPanelTests : TestHelper
     [Test]
     public void Padding ()
     {
-        Form f = new Form ();
+        var f = new Form ();
 			
-        FlowLayoutPanel flp = new FlowLayoutPanel ();
+        var flp = new FlowLayoutPanel ();
         flp.Padding = new Padding (20);
         flp.Size = new Size (100, 100);
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (50, 50);
 
-        Button b2 = new Button ();
+        var b2 = new Button ();
         b2.Size = new Size (50, 50);
 
         flp.Controls.Add (b);

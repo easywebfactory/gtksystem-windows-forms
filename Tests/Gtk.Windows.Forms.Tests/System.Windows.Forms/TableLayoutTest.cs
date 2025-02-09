@@ -37,7 +37,7 @@ public class TableLayoutTests : TestHelper
     [Test]
     public void TestConstruction ()
     {
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
 
         Assert.AreEqual (BorderStyle.None, p.BorderStyle, "A1");
         Assert.AreEqual (TableLayoutPanelCellBorderStyle.None, p.CellBorderStyle, "A2");
@@ -53,7 +53,7 @@ public class TableLayoutTests : TestHelper
     [Test]
     public void TestPropertySetters ()
     {
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
 
         p.BorderStyle = BorderStyle.Fixed3D;
         p.CellBorderStyle = TableLayoutPanelCellBorderStyle.OutsetDouble;
@@ -71,7 +71,7 @@ public class TableLayoutTests : TestHelper
     [Test]
     public void TestExtenderMethods ()
     {
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c = new Button ();
 
         Assert.AreEqual (new TableLayoutPanelCellPosition (-1, -1), p.GetCellPosition (c), "A1");
@@ -105,7 +105,7 @@ public class TableLayoutTests : TestHelper
     [Test]
     public void TestColumnStyles ()
     {
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
 
         p.ColumnStyles.Add (new ColumnStyle ());
         p.ColumnStyles.Add (new ColumnStyle (SizeType.Absolute));
@@ -131,7 +131,7 @@ public class TableLayoutTests : TestHelper
     [Test]
     public void TestRowStyles ()
     {
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
 
         p.RowStyles.Add (new RowStyle ());
         p.RowStyles.Add (new RowStyle (SizeType.Absolute));
@@ -158,7 +158,7 @@ public class TableLayoutTests : TestHelper
     public void TestColumnStyles3 ()
     {
         // Don't lose the 2nd style
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
 
         p.ColumnCount = 2;
         p.ColumnStyles.Add (new ColumnStyle (SizeType.Absolute, 20F));
@@ -173,7 +173,7 @@ public class TableLayoutTests : TestHelper
     public void TestColumnStyles2 ()
     {
         // Don't lose the 2nd style
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
 
         p.ColumnCount = 1;
         p.ColumnStyles.Add (new ColumnStyle (SizeType.Absolute, 20F));
@@ -187,7 +187,7 @@ public class TableLayoutTests : TestHelper
     public void TestCellPositioning ()
     {
         // Standard Add
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -211,7 +211,7 @@ public class TableLayoutTests : TestHelper
     public void TestCellPositioning2 ()
     {
         // Growstyle = Add Rows
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -241,7 +241,7 @@ public class TableLayoutTests : TestHelper
     public void TestCellPositioning3 ()
     {
         // Growstyle = Add Columns
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         p.GrowStyle = TableLayoutPanelGrowStyle.AddColumns;
 
         Control c1 = new Button ();
@@ -275,7 +275,7 @@ public class TableLayoutTests : TestHelper
         Assert.Throws<ArgumentException>(() =>
         {
             // Growstyle = Fixed Size
-            TableLayoutPanel p = new TableLayoutPanel();
+            var p = new TableLayoutPanel();
             p.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
 
             Control c1 = new Button();
@@ -299,7 +299,7 @@ public class TableLayoutTests : TestHelper
     public void TestCellPositioning5 ()
     {
         // One control have fixed position
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -325,7 +325,7 @@ public class TableLayoutTests : TestHelper
     public void TestCellPositioning6 ()
     {
         // One control has fixed column, it should be ignored
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -351,7 +351,7 @@ public class TableLayoutTests : TestHelper
     public void TestCellPositioning7 ()
     {
         // One control has fixed column and row
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -378,7 +378,7 @@ public class TableLayoutTests : TestHelper
     public void TestCellPositioning8 ()
     {
         // Column span
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -401,7 +401,7 @@ public class TableLayoutTests : TestHelper
     public void TestCellPositioning9 ()
     {
         // Row span
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -425,7 +425,7 @@ public class TableLayoutTests : TestHelper
     {
         // Column span = 2, but control is in the last column, forces control back into 1st column, next row
         // I have no clue why c3 shouldn't be in (1,0), but MS says it's not
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -448,7 +448,7 @@ public class TableLayoutTests : TestHelper
     public void TestCellPositioning11 ()
     {
         // Row span = 2, but control is in the last row, creates new row
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -471,7 +471,7 @@ public class TableLayoutTests : TestHelper
     public void TestCellPositioning12 ()
     {
         // Requesting a column greater than ColumnCount, request is ignored
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -494,7 +494,7 @@ public class TableLayoutTests : TestHelper
     public void TestCellPositioning13 ()
     {
         // Row span = 2, but control is in the last row, creates new row
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -517,7 +517,7 @@ public class TableLayoutTests : TestHelper
     public void TestCellPositioning14 ()
     {
         // Col span = 3, fixed grow style
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         p.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
         Control c1 = new Button ();
 
@@ -536,7 +536,7 @@ public class TableLayoutTests : TestHelper
     {
         // Column span = 2, but control is in the last column, forces control back into 1st column, next row
         // I have no clue why c3 shouldn't be in (1,0), but MS says it's not
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -560,7 +560,7 @@ public class TableLayoutTests : TestHelper
     public void TestCellPositioning16 ()
     {
         // Row span = 2, but control is in the last row, creates new row
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -586,7 +586,7 @@ public class TableLayoutTests : TestHelper
         // ColumnCount == RowCount == 0, but control is added at > 0.
         // The columns and rows are created, but ColumnCount and RowCount remains 0
         //
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         p.ColumnCount = 0;
         p.RowCount = 0;
         Control c1 = new Button ();
@@ -601,7 +601,7 @@ public class TableLayoutTests : TestHelper
         // A control with both rowspan and columnspan > 1 was getting
         // other controls put into its extent (i.e. c3 was ending up
         // at (1,1) instead of (2,1).
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -629,7 +629,7 @@ public class TableLayoutTests : TestHelper
     public void TestRowColumnSizes1 ()
     {
         // Row span = 2, but control is in the last row, creates new row
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -651,7 +651,7 @@ public class TableLayoutTests : TestHelper
     public void TestRowColumnSizes2 ()
     {
         // Row span = 2, but control is in the last row, creates new row
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -673,7 +673,7 @@ public class TableLayoutTests : TestHelper
     public void TestRowColumnSizes3 ()
     {
         // Row span = 2, but control is in the last row, creates new row
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -700,7 +700,7 @@ public class TableLayoutTests : TestHelper
     public void TestRowColumnSizes4 ()
     {
         // Row span = 2, but control is in the last row, creates new row
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -732,7 +732,7 @@ public class TableLayoutTests : TestHelper
     public void TestRowColumnSizes5 ()
     {
         // 2 Absolute Columns/Rows
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -759,7 +759,7 @@ public class TableLayoutTests : TestHelper
     public void TestRowColumnSizes6 ()
     {
         // 2 50% Columns/Rows
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -786,7 +786,7 @@ public class TableLayoutTests : TestHelper
     public void TestRowColumnSizes7 ()
     {
         // 1 Absolute and 2 Percent Columns/Rows
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -817,7 +817,7 @@ public class TableLayoutTests : TestHelper
     public void TestRowColumnSizes8 ()
     {
         // 1 Absolute and 2 Percent Columns/Rows (with total percents > 100)
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -848,7 +848,7 @@ public class TableLayoutTests : TestHelper
     public void TestRowColumnSizes9 ()
     {
         // 1 Absolute and 2 Percent Columns/Rows (with total percents > 100)
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -879,7 +879,7 @@ public class TableLayoutTests : TestHelper
     public void TestRowColumnSizes10 ()
     {
         // 2 AutoSize Columns/Rows
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -908,7 +908,7 @@ public class TableLayoutTests : TestHelper
         // AutoSize Columns/Rows, and column-spanning controls, but
         // no control starts in column 1.
         // Mono's old behavior was for column 1 to have a zero width.
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         Control c1 = new Button ();
         Control c2 = new Button ();
         Control c3 = new Button ();
@@ -945,7 +945,7 @@ public class TableLayoutTests : TestHelper
     [Test]
     public void Bug81843 ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 			
         TableLayoutPanel tableLayoutPanel1;
@@ -1004,10 +1004,10 @@ public class TableLayoutTests : TestHelper
     [Test]  // From bug #81884
     public void CellBorderStyle ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        TableLayoutPanel p = new TableLayoutPanel ();
+        var p = new TableLayoutPanel ();
         p = new TableLayoutPanel ();
         p.ColumnCount = 3;
         p.ColumnStyles.Add (new ColumnStyle ());
@@ -1020,37 +1020,37 @@ public class TableLayoutTests : TestHelper
         p.RowStyles.Add (new RowStyle (SizeType.Percent, 50F));
         f.Controls.Add (p);
 
-        Label _labelA = new Label ();
+        var _labelA = new Label ();
         _labelA.Dock = DockStyle.Fill;
         _labelA.Size = new Size (95, 20);
         _labelA.Text = "A";
         p.Controls.Add (_labelA, 0, 0);
 
-        Label _labelB = new Label ();
+        var _labelB = new Label ();
         _labelB.Dock = DockStyle.Fill;
         _labelB.Size = new Size (95, 20);
         _labelB.Text = "B";
         p.Controls.Add (_labelB, 1, 0);
 
-        Label _labelC = new Label ();
+        var _labelC = new Label ();
         _labelC.Dock = DockStyle.Fill;
         _labelC.Size = new Size (95, 20);
         _labelC.Text = "C";
         p.Controls.Add (_labelC, 2, 0);
 
-        Label _labelD = new Label ();
+        var _labelD = new Label ();
         _labelD.Dock = DockStyle.Fill;
         _labelD.Size = new Size (95, 20);
         _labelD.Text = "D";
         p.Controls.Add (_labelD, 0, 1);
 
-        Label _labelE = new Label ();
+        var _labelE = new Label ();
         _labelE.Dock = DockStyle.Fill;
         _labelE.Size = new Size (95, 20);
         _labelE.Text = "E";
         p.Controls.Add (_labelE, 1, 1);
 
-        Label _labelF = new Label ();
+        var _labelF = new Label ();
         _labelF.Dock = DockStyle.Fill;
         _labelF.Size = new Size (95, 20);
         _labelF.Text = "F";
@@ -1126,7 +1126,7 @@ public class TableLayoutTests : TestHelper
     [Test]
     public void Bug81936 ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
         TableLayoutPanel tableLayoutPanel1;
@@ -1175,12 +1175,12 @@ public class TableLayoutTests : TestHelper
     [Test]
     public void Bug82605 ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 			
-        Label l = new Label ();
+        var l = new Label ();
 
-        TableLayoutPanel table = new TableLayoutPanel ();
+        var table = new TableLayoutPanel ();
         table.ColumnCount = 1;
         table.ColumnStyles.Add (new ColumnStyle (SizeType.Percent, 100F));
 
@@ -1211,10 +1211,10 @@ public class TableLayoutTests : TestHelper
     [Test] // bug #82040
     public void ShowNoChildren ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
 
-        TableLayoutPanel tableLayoutPanel = new TableLayoutPanel ();
+        var tableLayoutPanel = new TableLayoutPanel ();
         tableLayoutPanel.ColumnCount = 3;
         tableLayoutPanel.Dock = DockStyle.Fill;
         tableLayoutPanel.RowCount = 11;
@@ -1228,10 +1228,10 @@ public class TableLayoutTests : TestHelper
     [Test] // bug #82041
     public void DontCallResumeLayout ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
 
-        TableLayoutPanel tableLayoutPanel = new TableLayoutPanel ();
+        var tableLayoutPanel = new TableLayoutPanel ();
         form.Controls.Add (tableLayoutPanel);
         tableLayoutPanel.SuspendLayout ();
         tableLayoutPanel.ColumnCount = 3;
@@ -1247,10 +1247,10 @@ public class TableLayoutTests : TestHelper
     [Test] // bug #346246
     public void AutoSizePanelVertical ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 			
-        TableLayoutPanel tlp = new TableLayoutPanel ();
+        var tlp = new TableLayoutPanel ();
         tlp.AutoSize = true;
         tlp.ColumnCount = 1;
         tlp.ColumnStyles.Add (new ColumnStyle (SizeType.Percent, 100F));
@@ -1264,11 +1264,11 @@ public class TableLayoutTests : TestHelper
 
         f.Controls.Add (tlp);
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (100, 100);
         tlp.Controls.Add (b, 0, 0);
 
-        PictureBox p = new PictureBox ();
+        var p = new PictureBox ();
         p.Size = new Size (100, 100);
         tlp.Controls.Add (p,0,1);
 			
@@ -1298,10 +1298,10 @@ public class TableLayoutTests : TestHelper
     [Test] // bug #346246
     public void AutoSizePanelHorizontal ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        TableLayoutPanel tlp = new TableLayoutPanel ();
+        var tlp = new TableLayoutPanel ();
         tlp.AutoSize = true;
         tlp.ColumnCount = 2;
         tlp.ColumnStyles.Add (new ColumnStyle (SizeType.Percent, 50F));
@@ -1315,11 +1315,11 @@ public class TableLayoutTests : TestHelper
 
         f.Controls.Add (tlp);
 
-        Button b = new Button ();
+        var b = new Button ();
         b.Size = new Size (100, 100);
         tlp.Controls.Add (b, 0, 0);
 
-        PictureBox p = new PictureBox ();
+        var p = new PictureBox ();
         p.Size = new Size (100, 100);
         tlp.Controls.Add (p, 1, 0);
 
@@ -1349,19 +1349,19 @@ public class TableLayoutTests : TestHelper
     [Test]
     public void Bug354676 ()
     {
-        Form f = new Form ();
+        var f = new Form ();
 
-        TableLayoutPanel tlp = new TableLayoutPanel ();
+        var tlp = new TableLayoutPanel ();
         tlp.Dock = DockStyle.Fill;
         tlp.Padding = new Padding (40);
         tlp.RowCount = 2;
         tlp.ColumnCount = 1;
         f.Controls.Add (tlp);
 
-        Button b1 = new Button ();
+        var b1 = new Button ();
         tlp.Controls.Add (b1);
 
-        Button b2 = new Button ();
+        var b2 = new Button ();
         tlp.Controls.Add (b2);
 
         f.Show ();
@@ -1376,22 +1376,22 @@ public class TableLayoutTests : TestHelper
     [Test]
     public void Bug355408 ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ClientSize = new Size (300, 300);
 			
-        TableLayoutPanel tlp = new TableLayoutPanel ();
+        var tlp = new TableLayoutPanel ();
         tlp.Dock = DockStyle.Fill;
         tlp.RowCount = 2;
         tlp.ColumnCount = 2;
         f.Controls.Add (tlp);
 
-        Button b1 = new Button ();
+        var b1 = new Button ();
         tlp.Controls.Add (b1);
 
-        Button b2 = new Button ();
+        var b2 = new Button ();
         tlp.Controls.Add (b2);
 			
-        Button b3 = new Button ();
+        var b3 = new Button ();
         b3.Dock = DockStyle.Fill;
         b3.Width = 250;
         tlp.SetColumnSpan (b3, 2);
@@ -1410,22 +1410,22 @@ public class TableLayoutTests : TestHelper
     [Test]
     public void Bug402651 ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ClientSize = new Size (300, 300);
 
-        TableLayoutPanel tlp = new TableLayoutPanel ();
+        var tlp = new TableLayoutPanel ();
         tlp.Dock = DockStyle.Fill;
         tlp.RowCount = 2;
         tlp.RowStyles.Add (new RowStyle (SizeType.Percent, 100F));
         tlp.RowStyles.Add (new RowStyle (SizeType.AutoSize));
         f.Controls.Add (tlp);
 
-        Button b1 = new Button ();
+        var b1 = new Button ();
         b1.Text = String.Empty;
         b1.Dock = DockStyle.Fill;
         tlp.Controls.Add (b1, 0, 0);
 
-        Button b2 = new Button ();
+        var b2 = new Button ();
         b2.Text = String.Empty;
         b2.Size = new Size (100, 100);
         b2.Anchor = AnchorStyles.None;
@@ -1449,20 +1449,20 @@ public class TableLayoutTests : TestHelper
     [Test]
     public void Bug354672 ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ClientSize = new Size (300, 300);
 
-        TableLayoutPanel tlp = new TableLayoutPanel ();
+        var tlp = new TableLayoutPanel ();
         tlp.AutoSize = true;
         tlp.ColumnCount = 2;
         tlp.RowCount = 1;
         f.Controls.Add (tlp);
 
-        TextBox t1 = new TextBox ();
+        var t1 = new TextBox ();
         t1.Dock = DockStyle.Fill;
         tlp.Controls.Add (t1);
 
-        TextBox t2 = new TextBox ();
+        var t2 = new TextBox ();
         t2.Dock = DockStyle.Fill;
         tlp.Controls.Add (t2);
 
@@ -1474,10 +1474,10 @@ public class TableLayoutTests : TestHelper
     [Test]
     public void Bug354672More ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ClientSize = new Size (300, 300);
 
-        TableLayoutPanel tlp = new TableLayoutPanel ();
+        var tlp = new TableLayoutPanel ();
         tlp.AutoSize = true;
         tlp.ColumnCount = 2;
         tlp.RowCount = 1;
@@ -1486,11 +1486,11 @@ public class TableLayoutTests : TestHelper
 			
         f.Controls.Add (tlp);
 
-        TextBox t1 = new TextBox ();
+        var t1 = new TextBox ();
         t1.Dock = DockStyle.Fill;
         tlp.Controls.Add (t1);
 
-        TextBox t2 = new TextBox ();
+        var t2 = new TextBox ();
         t2.Dock = DockStyle.Fill;
         tlp.Controls.Add (t2);
 
@@ -1504,11 +1504,11 @@ public class TableLayoutTests : TestHelper
     {
         // Setting a colspan greater than the number of columns was
         // causing an IOORE, this test just should not exception
-        TableLayoutPanel LayoutPanel = new TableLayoutPanel ();
+        var LayoutPanel = new TableLayoutPanel ();
         LayoutPanel.ColumnCount = 1;
         LayoutPanel.RowCount = 2;
 
-        Button OkButton = new Button ();
+        var OkButton = new Button ();
         OkButton.Text = "OK";
         LayoutPanel.Controls.Add (OkButton);
         LayoutPanel.SetColumnSpan (OkButton, 3);
@@ -1521,22 +1521,22 @@ public class TableLayoutTests : TestHelper
         // we arrange the controls, we have 1 row.  GetPreferredSize (for
         // AutoSize) was using 0 instead of 1.
 
-        Form f = new Form ();
+        var f = new Form ();
         f.ClientSize = new Size (300, 300);
         f.ShowInTaskbar = false;
 
-        TableLayoutPanel tlp = new TableLayoutPanel ();
+        var tlp = new TableLayoutPanel ();
         tlp.AutoSize = true;
         tlp.ColumnCount = 2;
         tlp.RowCount = 0;
 
         f.Controls.Add (tlp);
 
-        TextBox t1 = new TextBox ();
+        var t1 = new TextBox ();
         t1.Dock = DockStyle.Fill;
         tlp.Controls.Add (t1);
 
-        TextBox t2 = new TextBox ();
+        var t2 = new TextBox ();
         t2.Dock = DockStyle.Fill;
         tlp.Controls.Add (t2);
 
@@ -1553,21 +1553,21 @@ public class TableLayoutTests : TestHelper
     {
         // We were not taking the CellBorderStyle into account when calculating
         // the preferred size.
-        Form f = new Form ();
+        var f = new Form ();
         f.ClientSize = new Size (300, 300);
         f.ShowInTaskbar = false;
 
-        TableLayoutPanel tlp = new TableLayoutPanel ();
+        var tlp = new TableLayoutPanel ();
         tlp.AutoSize = true;
         tlp.ColumnCount = 2;
         tlp.RowCount = 1;
 
         f.Controls.Add (tlp);
 
-        Button t1 = new Button ();
+        var t1 = new Button ();
         tlp.Controls.Add (t1);
 
-        Button t2 = new Button ();
+        var t2 = new Button ();
         tlp.Controls.Add (t2);
 
         f.Show ();
@@ -1586,11 +1586,11 @@ public class TableLayoutTests : TestHelper
     {
         // It would seem that AutoSizeMode for a TableLayoutPanel is always
         // treated as GrowAndShrink
-        Form f = new Form ();
+        var f = new Form ();
         f.ClientSize = new Size (300, 300);
         f.ShowInTaskbar = false;
 
-        TableLayoutPanel tlp = new TableLayoutPanel ();
+        var tlp = new TableLayoutPanel ();
         tlp.AutoSize = true;
         tlp.Dock = DockStyle.Top;
         tlp.ColumnCount = 1;
@@ -1598,7 +1598,7 @@ public class TableLayoutTests : TestHelper
 
         f.Controls.Add (tlp);
 
-        Button t1 = new Button ();
+        var t1 = new Button ();
         tlp.Controls.Add (t1);
 
         f.Show ();
@@ -1614,10 +1614,10 @@ public class TableLayoutTests : TestHelper
     public void TestTableLayoutStyleOwned ()
     {
         try {
-            ColumnStyle style = new ColumnStyle ();
-            TableLayoutColumnStyleCollection coll = new TableLayoutPanel ().ColumnStyles;
+            var style = new ColumnStyle ();
+            var coll = new TableLayoutPanel ().ColumnStyles;
             coll.Add (style);
-            TableLayoutColumnStyleCollection coll2 = new TableLayoutPanel ().ColumnStyles;
+            var coll2 = new TableLayoutPanel ().ColumnStyles;
             coll2.Add (style);
             Assert.Fail ("#1");
         } catch (ArgumentException ex) {
@@ -1625,10 +1625,10 @@ public class TableLayoutTests : TestHelper
         }
 
         try {
-            RowStyle style = new RowStyle ();
-            TableLayoutRowStyleCollection coll = new TableLayoutPanel ().RowStyles;
+            var style = new RowStyle ();
+            var coll = new TableLayoutPanel ().RowStyles;
             coll.Add (style);
-            TableLayoutRowStyleCollection coll2 = new TableLayoutPanel ().RowStyles;
+            var coll2 = new TableLayoutPanel ().RowStyles;
             coll2.Add (style);
             Assert.Fail ("#2");
         } catch (ArgumentException ex) {
@@ -1640,7 +1640,7 @@ public class TableLayoutTests : TestHelper
     public void XamarinBug18638 ()
     {
         // Spanning items should not have their entire width assigned to the first column in the span.
-        TableLayoutPanel tlp = new TableLayoutPanel ();
+        var tlp = new TableLayoutPanel ();
         tlp.SuspendLayout ();
         tlp.Size = new Size(291, 100);
         tlp.AutoSize = true;
@@ -1672,7 +1672,7 @@ public class TableLayoutTests : TestHelper
     private void AddTableRow(TableLayoutPanel tlp, string label, string text)
     {
         tlp.SuspendLayout ();
-        int row = tlp.RowCount;
+        var row = tlp.RowCount;
         tlp.RowStyles.Add (new RowStyle (SizeType.AutoSize));
         var first = new Label {AutoSize = true, Dock = DockStyle.Fill, Text = label};
         tlp.Controls.Add (first, 0, row);

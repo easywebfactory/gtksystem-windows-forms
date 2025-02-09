@@ -21,7 +21,7 @@ public class TimerTest : TestHelper
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            Timer timer = new Timer();
+            var timer = new Timer();
             timer.Interval = 0;
         });
     }
@@ -31,7 +31,7 @@ public class TimerTest : TestHelper
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            Timer timer = new Timer();
+            var timer = new Timer();
             timer.Interval = -1;
         });
     }
@@ -39,7 +39,7 @@ public class TimerTest : TestHelper
     [Test ()]
     public void IntervalException3 ()
     {
-        Timer timer = new Timer ();
+        var timer = new Timer ();
         timer.Interval = int.MaxValue;
     }
 
@@ -48,7 +48,7 @@ public class TimerTest : TestHelper
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
         {
-            Timer timer = new Timer();
+            var timer = new Timer();
             timer.Interval = int.MinValue;
         });
     }
@@ -59,38 +59,36 @@ public class TimerTest : TestHelper
     {
         // This test fails about 50% of the time on the buildbots.
         Ticked = false;
-        using (Timer timer = new Timer ()) {
-            timer.Tick += new EventHandler (TickHandler);
-            timer.Start ();
-            Sys_Threading.Thread.Sleep (500);
-            Application.DoEvents ();
-            Assert.AreEqual (true, timer.Enabled, "1");
-            Assert.AreEqual (true, Ticked, "2");
-        }
+        using var timer = new Timer ();
+        timer.Tick += new EventHandler (TickHandler);
+        timer.Start ();
+        Thread.Sleep (500);
+        Application.DoEvents ();
+        Assert.AreEqual (true, timer.Enabled, "1");
+        Assert.AreEqual (true, Ticked, "2");
     }
 
     [Test]
     public void StopTest ()
     {
         Ticked = false;
-        using (Timer timer = new Timer ()) {
-            timer.Tick += new EventHandler (TickHandler);
-            timer.Interval = 200;
-            timer.Start ();
-            Assert.AreEqual (true, timer.Enabled, "1");
-            Assert.AreEqual (false, Ticked, "2");
-            timer.Stop ();
-            Assert.AreEqual (false, Ticked, "3"); // This may fail if we are running on a very slow machine...
-            Assert.AreEqual (false, timer.Enabled, "4");
-            Sys_Threading.Thread.Sleep (500);
-            Assert.AreEqual (false, Ticked, "5");
-        }
+        using var timer = new Timer ();
+        timer.Tick += new EventHandler (TickHandler);
+        timer.Interval = 200;
+        timer.Start ();
+        Assert.AreEqual (true, timer.Enabled, "1");
+        Assert.AreEqual (false, Ticked, "2");
+        timer.Stop ();
+        Assert.AreEqual (false, Ticked, "3"); // This may fail if we are running on a very slow machine...
+        Assert.AreEqual (false, timer.Enabled, "4");
+        Thread.Sleep (500);
+        Assert.AreEqual (false, Ticked, "5");
     }
 		
     [Test]
     public void TagTest ()
     {
-        Timer timer = new Timer ();
+        var timer = new Timer ();
         timer.Tag = "a";
         Assert.AreEqual ("a", timer.Tag, "1");
     }
@@ -131,7 +129,7 @@ public class TimerTest : TestHelper
     [Test]
     public void DefaultProperties ()
     {
-        Timer timer = new Timer ();
+        var timer = new Timer ();
         Assert.AreEqual (null, timer.Container, "C1");
         Assert.AreEqual (false, timer.Enabled, "E1");
         Assert.AreEqual (100, timer.Interval, "I1");
@@ -160,7 +158,7 @@ public class TimerTest : TestHelper
 
         void Form_Load (object sender, EventArgs e)
         {
-            Thread t = new Thread (new ThreadStart (Run));
+            var t = new Thread (new ThreadStart (Run));
             t.IsBackground = true;
             t.Start ();
             t.Join ();
@@ -194,7 +192,7 @@ public class TimerTest : TestHelper
             Close ();
         }
 
-        private Label _label;
-        private Timer _timer;
+        private readonly Label _label;
+        private readonly Timer _timer;
     }
 }

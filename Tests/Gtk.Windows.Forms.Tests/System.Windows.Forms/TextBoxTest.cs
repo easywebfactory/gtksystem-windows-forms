@@ -41,7 +41,7 @@ public class TextBoxTest : TestHelper
         textBox.Multiline = true;
         Assert.AreEqual (true, textBox.AutoSize, "#2");
         Assert.AreEqual (null, textBox.BackgroundImage, "#4a");
-        string gif = TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif");
+        var gif = TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif");
         textBox.BackgroundImage = Image.FromFile (gif);
         // comparing image objects fails on MS .Net so using Size property
         Assert.AreEqual (Image.FromFile(gif, true).Size, textBox.BackgroundImage.Size, "#4b");
@@ -67,12 +67,12 @@ public class TextBoxTest : TestHelper
     [Test]
     public void AppendTextTest ()
     {
-        Form f = new Form (); 
+        var f = new Form (); 
         f.ShowInTaskbar = false;
         f.Visible = true;
         textBox.Visible = true;
         textBox.Text = "TextBox1";
-        TextBox textBox2 = new TextBox ();
+        var textBox2 = new TextBox ();
         textBox2.Visible = true;
         f.Controls.Add (textBox);
         f.Controls.Add (textBox2);
@@ -84,7 +84,7 @@ public class TextBoxTest : TestHelper
     [Test]
     public void AppendTextTest2 ()
     {
-        TextBox textBox2 = new TextBox ();
+        var textBox2 = new TextBox ();
         textBox2.AppendText ("hi");
         textBox2.AppendText ("ho");
         Assert.AreEqual ("hiho", textBox2.Text, "#1");
@@ -96,7 +96,7 @@ public class TextBoxTest : TestHelper
     [Test]
     public void AppendText_Multiline_CRLF ()
     {
-        TextBox textBox = new TextBox ();
+        var textBox = new TextBox ();
         textBox.Text = "ha";
         textBox.AppendText ("hi\r\n\r\n");
         textBox.AppendText ("ho\r\n");
@@ -125,7 +125,7 @@ public class TextBoxTest : TestHelper
     [Test]
     public void AppendText_Multiline_LF ()
     {
-        TextBox textBox = new TextBox ();
+        var textBox = new TextBox ();
 
         textBox.Text = "ha";
         textBox.AppendText ("hi\n\n");
@@ -163,7 +163,7 @@ public class TextBoxTest : TestHelper
         Assert.AreEqual (0, _invalidated, "#A4");
         Assert.AreEqual (0, _paint, "#A5");
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (textBox);
         form.Show ();
@@ -232,7 +232,7 @@ public class TextBoxTest : TestHelper
         Assert.AreEqual (0, _invalidated, "#A4");
         Assert.AreEqual (0, _paint, "#A5");
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (textBox);
         form.Show ();
@@ -263,7 +263,7 @@ public class TextBoxTest : TestHelper
         Assert.IsTrue (textBox.ReadOnly, "#A1");
         Assert.AreEqual (SystemColors.Control, textBox.BackColor, "#A2");
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (textBox);
         form.Show ();
@@ -310,7 +310,7 @@ public class TextBoxTest : TestHelper
         Assert.IsTrue (textBox.ReadOnly, "#A1");
         Assert.AreEqual (Color.Blue, textBox.BackColor, "#A2");
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
         form.Controls.Add (textBox);
         form.Show ();
@@ -375,14 +375,14 @@ public class TextBoxTest : TestHelper
     [Test] // bug #79851
     public void WrappedText ()
     {
-        string text = "blabla blablabalbalbalbalbalbal blabla blablabl bal " +
-                      "bal bla bal balajkdhfk dskfk ersd dsfjksdhf sdkfjshd f";
+        var text = "blabla blablabalbalbalbalbalbal blabla blablabl bal " +
+                   "bal bla bal balajkdhfk dskfk ersd dsfjksdhf sdkfjshd f";
 
         textBox.Multiline = true;
         textBox.Size = new Size (30, 168);
         textBox.Text = text;
 
-        Form form = new Form ();
+        var form = new Form ();
         form.Controls.Add (textBox);
         form.ShowInTaskbar = false;
         form.Show ();
@@ -395,12 +395,12 @@ public class TextBoxTest : TestHelper
     [Test] // bug #79909
     public void MultilineText ()
     {
-        string text = "line1\n\nline2\nline3\r\nline4";
+        var text = "line1\n\nline2\nline3\r\nline4";
 
         textBox.Size = new Size (300, 168);
         textBox.Text = text;
 
-        Form form = new Form ();
+        var form = new Form ();
         form.Controls.Add (textBox);
         form.ShowInTaskbar = false;
         form.Show ();
@@ -422,10 +422,10 @@ public class TextBoxTest : TestHelper
     [Test]
     public void Bug82749 ()
     {
-        Form f = new Form ();
+        var f = new Form ();
         f.ShowInTaskbar = false;
 
-        TextBox _textBox = new TextBox ();
+        var _textBox = new TextBox ();
         _textBox.Dock = DockStyle.Top;
         _textBox.Height = 100;
         _textBox.Multiline = true;
@@ -448,7 +448,7 @@ public class TextBoxTest : TestHelper
     [Test]
     public void Bug6357 ()
     {
-        Form f = new Form (); 
+        var f = new Form (); 
         f.ShowInTaskbar = false;
         f.Visible = true;
         f.ClientSize = new Size (300, 130);

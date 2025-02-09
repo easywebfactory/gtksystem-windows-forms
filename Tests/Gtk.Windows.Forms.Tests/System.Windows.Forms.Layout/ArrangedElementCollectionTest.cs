@@ -38,7 +38,7 @@ public class ArrangedElementCollectionTest : TestHelper
     {
         Assert.Throws<NotSupportedException>(() =>
         {
-            ArrangedElementCollection c = (ArrangedElementCollection)typeof(ArrangedElementCollection).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null).Invoke(null);
+            var c = (ArrangedElementCollection)typeof(ArrangedElementCollection).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null).Invoke(null);
             IList list = c;
 
             list.Insert(0, new object());

@@ -19,7 +19,7 @@ public class ListViewTest : TestHelper
     [Test]
     public void ListViewPropertyTest ()
     {
-        ListView mylistview = new ListView ();
+        var mylistview = new ListView ();
         Assert.AreEqual (ItemActivation.Standard, mylistview.Activation, "#1");
         Assert.AreEqual (ListViewAlignment.Top, mylistview.Alignment, "#2");
         Assert.AreEqual (false, mylistview.AllowColumnReorder, "#3");
@@ -33,7 +33,7 @@ public class ListViewTest : TestHelper
         Assert.AreEqual (ColumnHeaderStyle.Clickable, mylistview.HeaderStyle, "#13");
         Assert.AreEqual (true, mylistview.HideSelection, "#14");
         Assert.AreEqual (false, mylistview.HoverSelection, "#15");
-        ListViewItem item1 = new ListViewItem ("A", -1);
+        var item1 = new ListViewItem ("A", -1);
         mylistview.Items.Add (item1);
         Assert.AreEqual (1, mylistview.Items.Count, "#16");
         Assert.AreEqual (false, mylistview.LabelEdit, "#17");
@@ -56,9 +56,9 @@ public class ListViewTest : TestHelper
     [Test]
     public void ArrangeIconsTest ()
     {
-        Form myform = new Form ();
+        var myform = new Form ();
         myform.ShowInTaskbar = false;
-        ListView mylistview = new ListView ();
+        var mylistview = new ListView ();
         myform.Controls.Add (mylistview);
         mylistview.Items.Add ("Item 1");
         mylistview.Items.Add ("Item 2");
@@ -70,15 +70,15 @@ public class ListViewTest : TestHelper
     [Test]
     public void BeginEndUpdateTest ()
     {
-        Form myform = new Form ();
+        var myform = new Form ();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        ListView mylistview = new ListView();
+        var mylistview = new ListView();
         mylistview.Items.Add ("A");
         mylistview.Visible = true;
         myform.Controls.Add (mylistview);
         mylistview.BeginUpdate ();
-        for(int x = 1 ; x < 5000 ; x++){
+        for(var x = 1 ; x < 5000 ; x++){
             mylistview.Items.Add ("Item " + x.ToString());   
         }
         mylistview.EndUpdate ();
@@ -88,12 +88,12 @@ public class ListViewTest : TestHelper
     [Test]
     public void CheckBoxes ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         form.Controls.Add (lvw);
         lvw.Items.Add ("A");
-        ListViewItem itemB = lvw.Items.Add ("B");
+        var itemB = lvw.Items.Add ("B");
         lvw.Items.Add ("C");
         itemB.Checked = true;
 
@@ -131,12 +131,12 @@ public class ListViewTest : TestHelper
     [Test]
     public void ClearTest ()
     {
-        Form myform = new Form ();
+        var myform = new Form ();
         myform.ShowInTaskbar = false;
         myform.Visible = true;
-        ListView mylistview = new ListView ();
-        ListViewItem itemA = mylistview.Items.Add ("A");
-        ColumnHeader colA = mylistview.Columns.Add ("Item Column", -2, HorizontalAlignment.Left);
+        var mylistview = new ListView ();
+        var itemA = mylistview.Items.Add ("A");
+        var colA = mylistview.Columns.Add ("Item Column", -2, HorizontalAlignment.Left);
         Assert.AreSame (mylistview, itemA.ListView, "#1");
         Assert.AreSame (mylistview, colA.ListView, "#2");
         mylistview.Visible = true;
@@ -154,7 +154,7 @@ public class ListViewTest : TestHelper
     [Test] // bug #80620
     public void ClientRectangle_Borders ()
     {
-        ListView lv = new ListView ();
+        var lv = new ListView ();
         lv.CreateControl ();
         Assert.AreEqual (lv.ClientRectangle, new ListView ().ClientRectangle);
     }
@@ -162,16 +162,16 @@ public class ListViewTest : TestHelper
     [Test]
     public void DisposeTest ()
     {
-        ListView lv = new ListView ();
+        var lv = new ListView ();
         lv.View = View.Details;
 
         lv.LargeImageList = new ImageList ();
         lv.SmallImageList = new ImageList ();
 
-        ListViewItem lvi = new ListViewItem ();
+        var lvi = new ListViewItem ();
         lv.Items.Add (lvi);
 
-        ColumnHeader col = new ColumnHeader ();
+        var col = new ColumnHeader ();
         lv.Columns.Add (col);
 
         lv.Dispose ();
@@ -189,8 +189,8 @@ public class ListViewTest : TestHelper
     [Test]
     public void DisposeLayoutTest ()
     {
-        Form f = new Form ();
-        ListView lv = new ListView ();
+        var f = new Form ();
+        var lv = new ListView ();
         f.Controls.Add (lv);
         f.Show ();
 
@@ -210,10 +210,10 @@ public class ListViewTest : TestHelper
     [Test]
     public void GetItemRectTest ()
     {
-        ListView mylistview = new ListView ();
+        var mylistview = new ListView ();
         mylistview.Items.Add ("Item 1");
         mylistview.Items.Add ("Item 2");
-        Rectangle r = mylistview.GetItemRect (1);
+        var r = mylistview.GetItemRect (1);
         Assert.AreEqual (0, r.Top, "#35a");
         Assert.IsTrue (r.Bottom > 0, "#35b");
         Assert.IsTrue (r.Right > 0, "#35c");
@@ -225,13 +225,13 @@ public class ListViewTest : TestHelper
     [Test]
     public void bug79076 ()
     {
-        ListView entryList = new ListView ();
+        var entryList = new ListView ();
         entryList.Sorting = SortOrder.Descending;
 
         entryList.BeginUpdate ();
         entryList.Columns.Add ("Type", 100, HorizontalAlignment.Left);
 
-        ListViewItem item = new ListViewItem (new string [] { "A" });
+        var item = new ListViewItem (new string [] { "A" });
         entryList.Items.Add (item);
         item = new ListViewItem (new string [] { "B" });
         entryList.Items.Add (item);
@@ -240,9 +240,9 @@ public class ListViewTest : TestHelper
     [Test] // bug #79416
     public void MultiSelect ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = CreateListView (View.Details);
+        var lvw = CreateListView (View.Details);
         form.Controls.Add (lvw);
         lvw.MultiSelect = true;
         lvw.Items [0].Selected = true;
@@ -324,9 +324,9 @@ public class ListViewTest : TestHelper
     [Test]
     public void Selected ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = CreateListView (View.Details);
+        var lvw = CreateListView (View.Details);
         form.Controls.Add (lvw);
         lvw.MultiSelect = true;
         lvw.Items [0].Selected = true;
@@ -349,11 +349,11 @@ public class ListViewTest : TestHelper
     [Test]
     public void FindItemWithText ()
     {
-        ListView lvw = new ListView();
-        ListViewItem lvi1 = new ListViewItem (String.Empty);
-        ListViewItem lvi2 = new ListViewItem ("angle bracket");
-        ListViewItem lvi3 = new ListViewItem ("bracket holder");
-        ListViewItem lvi4 = new ListViewItem ("bracket");
+        var lvw = new ListView();
+        var lvi1 = new ListViewItem (String.Empty);
+        var lvi2 = new ListViewItem ("angle bracket");
+        var lvi3 = new ListViewItem ("bracket holder");
+        var lvi4 = new ListViewItem ("bracket");
         lvw.Items.AddRange (new ListViewItem [] { lvi1, lvi2, lvi3, lvi4 });
 
         Assert.AreEqual (lvi1, lvw.FindItemWithText (String.Empty), "#A1");
@@ -395,7 +395,7 @@ public class ListViewTest : TestHelper
     [Test]
     public void FindItemWithText_Exceptions ()
     {
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
 
         // Shouldn't throw any exception
         lvw.FindItemWithText (null);
@@ -559,11 +559,11 @@ public class ListViewTest : TestHelper
 
     private void AssertSortIcon_Created (View view)
     {
-        int compareCount = 0;
+        var compareCount = 0;
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = CreateListView (view);
+        var lvw = CreateListView (view);
         form.Controls.Add (lvw);
         Assert.IsNull (lvw.ListViewItemSorter, "#A");
 
@@ -643,7 +643,7 @@ public class ListViewTest : TestHelper
         Assert.AreEqual ("C", lvw.Items [4].Text, "#K6");
 
         // assign a custom comparer
-        MockComparer mc = new MockComparer (false);
+        var mc = new MockComparer (false);
         lvw.ListViewItemSorter = mc;
 
         // when a custom IComparer is assigned, the collection is immediately
@@ -820,9 +820,9 @@ public class ListViewTest : TestHelper
 
     private void AssertSortIcon_NotCreated (View view)
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = CreateListView (view);
+        var lvw = CreateListView (view);
         form.Controls.Add (lvw);
 
         Assert.IsNull (lvw.ListViewItemSorter, "#A1");
@@ -858,7 +858,7 @@ public class ListViewTest : TestHelper
         Assert.AreEqual ("BB", lvw.Items [3].Text, "#E5");
 
         // assign a custom comparer
-        MockComparer mc = new MockComparer (false);
+        var mc = new MockComparer (false);
         lvw.ListViewItemSorter = mc;
 
         // assigning a custom IComparer has no effect
@@ -967,11 +967,11 @@ public class ListViewTest : TestHelper
 
     private void AssertSortNoIcon_Created (View view)
     {
-        int compareCount = 0;
+        var compareCount = 0;
 
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = CreateListView (view);
+        var lvw = CreateListView (view);
         form.Controls.Add (lvw);
         Assert.IsNull (lvw.ListViewItemSorter, "#A");
 
@@ -1033,7 +1033,7 @@ public class ListViewTest : TestHelper
         Assert.AreEqual ("C", lvw.Items [4].Text, "#I6");
 
         // assign a custom comparer
-        MockComparer mc = new MockComparer (false);
+        var mc = new MockComparer (false);
         lvw.ListViewItemSorter = mc;
 
         // when a custom IComparer is assigned, the collection is immediately
@@ -1246,9 +1246,9 @@ public class ListViewTest : TestHelper
 
     private void AssertSortNoIcon_NotCreated (View view)
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = CreateListView (view);
+        var lvw = CreateListView (view);
         form.Controls.Add (lvw);
 
         Assert.IsNull (lvw.ListViewItemSorter, "#A1");
@@ -1296,7 +1296,7 @@ public class ListViewTest : TestHelper
         Assert.AreEqual ("BB", lvw.Items [3].Text, "#G5");
 
         // assign a custom comparer
-        MockComparer mc = new MockComparer (false);
+        var mc = new MockComparer (false);
         lvw.ListViewItemSorter = mc;
 
         // assigning a custom IComparer has no effect
@@ -1429,9 +1429,9 @@ public class ListViewTest : TestHelper
 
     private void AssertSort_Checked (View view)
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = CreateListView (view);
+        var lvw = CreateListView (view);
         lvw.CheckBoxes = true;
         form.Controls.Add (lvw);
 
@@ -1456,7 +1456,7 @@ public class ListViewTest : TestHelper
 
         // add an item, which ends up before the selected item after the
         // sort operation
-        ListViewItem item = lvw.Items.Add ("D");
+        var item = lvw.Items.Add ("D");
         Assert.AreEqual (1, lvw.CheckedItems.Count, "#D1");
         Assert.AreEqual (1, lvw.CheckedIndices.Count, "#D2");
         Assert.AreEqual ("C", lvw.CheckedItems [0].Text, "#D3");
@@ -1477,7 +1477,7 @@ public class ListViewTest : TestHelper
         Assert.AreEqual (1, lvw.CheckedIndices [0], "#F4");
 
         // assign a custom comparer
-        MockComparer mc = new MockComparer (false);
+        var mc = new MockComparer (false);
         lvw.ListViewItemSorter = mc;
 
         // items are re-sorted automatically
@@ -1498,9 +1498,9 @@ public class ListViewTest : TestHelper
 
     private void AssertSort_Selected (View view)
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = CreateListView (view);
+        var lvw = CreateListView (view);
         form.Controls.Add (lvw);
 
         form.Show ();
@@ -1524,7 +1524,7 @@ public class ListViewTest : TestHelper
 
         // add an item, which ends up before the selected item after the
         // sort operation
-        ListViewItem item = lvw.Items.Add ("D");
+        var item = lvw.Items.Add ("D");
         Assert.AreEqual (1, lvw.SelectedItems.Count, "#D1");
         Assert.AreEqual (1, lvw.SelectedIndices.Count, "#D2");
         Assert.AreEqual ("C", lvw.SelectedItems [0].Text, "#D3");
@@ -1545,7 +1545,7 @@ public class ListViewTest : TestHelper
         Assert.AreEqual (1, lvw.SelectedIndices [0], "#F4");
 
         // assign a custom comparer
-        MockComparer mc = new MockComparer (false);
+        var mc = new MockComparer (false);
         lvw.ListViewItemSorter = mc;
 
         // items are re-sorted automatically
@@ -1566,7 +1566,7 @@ public class ListViewTest : TestHelper
 
     private ListView CreateListView (View view)
     {
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         lvw.View = view;
         lvw.Items.Add ("B");
         lvw.Items.Add ("A");
@@ -1577,7 +1577,7 @@ public class ListViewTest : TestHelper
     private class MockComparer : IComparer
     {
         int _compareCount;
-        bool _throwException;
+        readonly bool _throwException;
 
         public MockComparer (bool throwException)
         {
@@ -1594,9 +1594,9 @@ public class ListViewTest : TestHelper
             if (_throwException)
                 throw new InvalidOperationException ();
 
-            ListViewItem item_x = x as ListViewItem;
-            ListViewItem item_y = y as ListViewItem;
-            SortOrder sortOrder = item_x.ListView.Sorting;
+            var item_x = x as ListViewItem;
+            var item_y = y as ListViewItem;
+            var sortOrder = item_x.ListView.Sorting;
 
             // we'll actually perform a reverse-sort
             if (sortOrder == SortOrder.Ascending)
@@ -1609,10 +1609,10 @@ public class ListViewTest : TestHelper
     [Test]  // Should not throw IndexOutOfBoundsException
     public void ReaddingItem ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw1 = new ListView ();
-        ListView lvw2 = new ListView ();
+        var lvw1 = new ListView ();
+        var lvw2 = new ListView ();
         lvw1.View = View.Details;
         lvw2.View = View.Details;
         lvw1.Columns.Add (new ColumnHeader ("1"));
@@ -1621,11 +1621,11 @@ public class ListViewTest : TestHelper
         form.Controls.Add (lvw2);
         form.Show ();
 
-        for (int i = 0; i < 50; i++)
+        for (var i = 0; i < 50; i++)
             lvw1.Items.Add ("A");
         lvw2.Items.Add ("B1");
 
-        ListViewItem item = lvw1.Items [lvw1.Items.Count - 1];
+        var item = lvw1.Items [lvw1.Items.Count - 1];
         item.Selected = true;
         item.Remove ();
         lvw2.Items.Add (item);
@@ -1641,13 +1641,13 @@ public class ListViewTest : TestHelper
     [Test]  // Should not throw ArgumentOutOfRangeException
     public void DeleteNotFocusedItem ()
     {
-        Form form = new Form ();
+        var form = new Form ();
         form.ShowInTaskbar = false;
-        ListView lvw = new ListView ();
+        var lvw = new ListView ();
         form.Controls.Add (lvw);
         form.Show ();
 
-        for (int i = 0; i < 3; i++)
+        for (var i = 0; i < 3; i++)
             lvw.Items.Add ("A");
 
         lvw.Items [lvw.Items.Count - 1].Focused = true;

@@ -46,7 +46,7 @@ public class PaintEventArgsTest : TestHelper {
     [SetUp]
     public void FixtureSetUp ()
     {
-        Bitmap bmp = new Bitmap (200, 200);
+        var bmp = new Bitmap (200, 200);
         default_graphics = Graphics.FromImage (bmp);
         default_rect = new Rectangle (Int32.MinValue, Int32.MinValue, Int32.MaxValue, Int32.MaxValue);
     }
@@ -62,7 +62,7 @@ public class PaintEventArgsTest : TestHelper {
     [Test]
     public void Constructor ()
     {
-        PaintEventArgs pea = new PaintEventArgs (default_graphics, default_rect);
+        var pea = new PaintEventArgs (default_graphics, default_rect);
         Assert.AreSame (default_graphics, pea.Graphics, "Graphics");
         Assert.AreEqual (default_rect, pea.ClipRectangle);
     }
@@ -70,7 +70,7 @@ public class PaintEventArgsTest : TestHelper {
     [Test]
     public void Dispose ()
     {
-        PaintEventArgs pea = new PaintEventArgs (default_graphics, default_rect);
+        var pea = new PaintEventArgs (default_graphics, default_rect);
         pea.Dispose ();
         // uho, under 2.0 we not really disposing the stuff - it means it's not ours to dispose!
         Assert.IsTrue (pea.Graphics.Transform.IsIdentity, "Graphics.Transform");
@@ -79,11 +79,11 @@ public class PaintEventArgsTest : TestHelper {
     [Test]
     public void IDisposable_IDispose ()
     {
-        Bitmap bmp = new Bitmap (1, 1);
-        Graphics default_graphics = Graphics.FromImage (bmp);
-        Rectangle default_rect = new Rectangle (Int32.MinValue, Int32.MinValue, Int32.MaxValue, Int32.MaxValue);
+        var bmp = new Bitmap (1, 1);
+        var default_graphics = Graphics.FromImage (bmp);
+        var default_rect = new Rectangle (Int32.MinValue, Int32.MinValue, Int32.MaxValue, Int32.MaxValue);
 
-        PaintEventArgs pea = new PaintEventArgs (default_graphics, default_rect);
+        var pea = new PaintEventArgs (default_graphics, default_rect);
         (pea as IDisposable).Dispose ();
         // uho, under 2.0 we not really disposing the stuff - it means it's not ours to dispose!
         Assert.IsTrue (pea.Graphics.Transform.IsIdentity, "Graphics");
@@ -94,7 +94,7 @@ public class PaintEventArgsTest : TestHelper {
     {
         Assert.Throws<ArgumentException>(() =>
         {
-            PaintEventArgs pea = new PaintEventArgs(default_graphics, default_rect);
+            var pea = new PaintEventArgs(default_graphics, default_rect);
             pea.Graphics.Dispose();
             // a disposed graphics won't accept to return it's transformation matrix
             Assert.IsTrue(pea.Graphics.Transform.IsIdentity, "Graphics");
@@ -121,11 +121,11 @@ public class PaintEventArgsTest : TestHelper {
     {
         Assert.Throws<ArgumentException>(() =>
         {
-            Bitmap bmp = new Bitmap(1, 1);
-            Graphics default_graphics = Graphics.FromImage(bmp);
-            Rectangle default_rect = new Rectangle(Int32.MinValue, Int32.MinValue, Int32.MaxValue, Int32.MaxValue);
+            var bmp = new Bitmap(1, 1);
+            var default_graphics = Graphics.FromImage(bmp);
+            var default_rect = new Rectangle(Int32.MinValue, Int32.MinValue, Int32.MaxValue, Int32.MaxValue);
 
-            PaintEventArgsTester pea = new PaintEventArgsTester(default_graphics, default_rect);
+            var pea = new PaintEventArgsTester(default_graphics, default_rect);
             pea.Graphics.Dispose();
             pea.DisposeBool(true);
             Assert.IsTrue(pea.Graphics.Transform.IsIdentity, "Graphics.Transform");
@@ -139,11 +139,11 @@ public class PaintEventArgsTest : TestHelper {
     {
         Assert.Throws<ArgumentException>(() =>
         {
-            Bitmap bmp = new Bitmap(1, 1);
-            Graphics default_graphics = Graphics.FromImage(bmp);
-            Rectangle default_rect = new Rectangle(Int32.MinValue, Int32.MinValue, Int32.MaxValue, Int32.MaxValue);
+            var bmp = new Bitmap(1, 1);
+            var default_graphics = Graphics.FromImage(bmp);
+            var default_rect = new Rectangle(Int32.MinValue, Int32.MinValue, Int32.MaxValue, Int32.MaxValue);
 
-            PaintEventArgsTester pea = new PaintEventArgsTester(default_graphics, default_rect);
+            var pea = new PaintEventArgsTester(default_graphics, default_rect);
             pea.Graphics.Dispose();
             pea.DisposeBool(false);
             Assert.IsTrue(pea.Graphics.Transform.IsIdentity, "Graphics.Transform");
