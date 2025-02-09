@@ -34,12 +34,10 @@ namespace System.Windows.Forms
         {
             get
             {
-                return new Point(self.MarginStart, self.MarginTop);
+                return new Point(0, 0);
             }
             set
             {
-                self.MarginStart = 0;
-                self.MarginTop = 0;
             }
         }
         public new DockStyle Dock
@@ -70,5 +68,7 @@ namespace System.Windows.Forms
                 self.Content.MarginBottom = value.Bottom;
             }
         }
+        private Size _size;
+        public override Size Size { get => _size; set { _size = value; } }
     }
 }
