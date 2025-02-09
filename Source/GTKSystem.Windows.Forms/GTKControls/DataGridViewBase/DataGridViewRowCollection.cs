@@ -22,6 +22,9 @@ namespace System.Windows.Forms
         {
             this.dataGridView = dataGridView;
         }
+
+        public int Count => items.Count;
+
         private TreeIter AddGtkStore(List<CellValue> values)
         {
             int columnscount = this.dataGridView.Store.NColumns;

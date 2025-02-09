@@ -373,6 +373,10 @@ namespace System.Windows.Forms
                 return strc;
             }
         }
+
+        public int ColumnCount => Columns.Count;
+        public int RowCount => Rows.SharedList.Count;
+
         public bool NativeRowGetSelected(int rowindex)
         {
             switch (SelectionMode)

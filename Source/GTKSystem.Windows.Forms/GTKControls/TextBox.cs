@@ -12,7 +12,7 @@ using System.Linq;
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class TextBox: Control
+    public partial class TextBox : Control
     {
         public readonly TextBoxBase self = new TextBoxBase();
         public override object GtkControl => self;
@@ -26,6 +26,11 @@ namespace System.Windows.Forms
             self.Changed += Self_Changed;
             self.TextInserted += Self_TextInserted;
             self.KeyPressEvent += Self_KeyPressEvent;
+        }
+
+        public void AppendText(string text)
+        {
+            Text += text ?? string.Empty;
         }
 
         private void Self_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
@@ -48,10 +53,11 @@ namespace System.Windows.Forms
                 string keytext = args.NewText.ToUpper();
                 if (char.IsNumber(args.NewText[0]))
                     keytext = "D" + keytext;
-                var keyv = Enum.GetValues<Keys>().Where(k=> {  
+                var keyv = Enum.GetValues<Keys>().Where(k =>
+                {
                     return Enum.GetName(k) == keytext;
                 });
-                foreach(var key in keyv) 
+                foreach (var key in keyv)
                     KeyDown(this, new KeyEventArgs(key));
             }
         }
@@ -61,11 +67,17 @@ namespace System.Windows.Forms
             if (TextChanged != null && self.IsVisible) { TextChanged(this, EventArgs.Empty); }
         }
 
+        public string[] Lines => string.IsNullOrEmpty(Text) ? new string[0] : Text.Replace("\r\n", "\n").Split("\n");
         public string PlaceholderText { get { return self.PlaceholderText; } set { self.PlaceholderText = value ?? ""; } }
         public override string Text { get { return self.Text; } set { self.Text = value ?? ""; } }
         public virtual char PasswordChar { get => self.InvisibleChar; set { self.InvisibleChar = value; self.Visibility = false; } }
-        public virtual bool ReadOnly { get { return self.IsEditable == false; } set { self.IsEditable = value == false;  } }
+        public virtual bool ReadOnly { get { return self.IsEditable == false; } set { self.IsEditable = value == false; } }
         public override event EventHandler TextChanged;
         public bool Multiline { get; set; }
+
+        public void Clear()
+        {
+            Text = string.Empty;
+        }
     }
 }

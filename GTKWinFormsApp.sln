@@ -9,16 +9,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{F6BA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTKSystem.Windows.Forms", "Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj", "{99043664-0431-4398-92A6-55A45736D2F6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Resources.Extensions", "Source\System.Resources.Extensions\System.Resources.Extensions.csproj", "{1154F095-54D8-48FA-A61E-1E4587E2CF6C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTKWinFormsApp", "Samples\GTKWinFormsApp\GTKWinFormsApp.csproj", "{A963833A-1053-4321-9BCF-3FB7C58F0601}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "licenses", "licenses", "{FA74C15D-95F5-4B11-A721-308659F09D90}"
 	ProjectSection(SolutionItems) = preProject
 		Source\licenses\LICENSE.txt = Source\licenses\LICENSE.txt
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{56631C54-2CE5-44E4-A931-4788557760B4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readme", "readme", "{7674FDFE-A432-492E-AC63-C24377F85870}"
 EndProject
@@ -28,6 +24,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F6B3621B-A93E-4C1F-8037-468866A31B1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gtk.Windows.Forms.Tests", "Tests\Gtk.Windows.Forms.Tests\Gtk.Windows.Forms.Tests.csproj", "{F48E2FEE-1244-4EA1-B7BF-B0F4001634DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +39,6 @@ Global
 		{99043664-0431-4398-92A6-55A45736D2F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99043664-0431-4398-92A6-55A45736D2F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99043664-0431-4398-92A6-55A45736D2F6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1154F095-54D8-48FA-A61E-1E4587E2CF6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1154F095-54D8-48FA-A61E-1E4587E2CF6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1154F095-54D8-48FA-A61E-1E4587E2CF6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1154F095-54D8-48FA-A61E-1E4587E2CF6C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A963833A-1053-4321-9BCF-3FB7C58F0601}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A963833A-1053-4321-9BCF-3FB7C58F0601}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A963833A-1053-4321-9BCF-3FB7C58F0601}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,14 +47,19 @@ Global
 		{ED029673-302D-4E58-B33E-1472BD96B19C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED029673-302D-4E58-B33E-1472BD96B19C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED029673-302D-4E58-B33E-1472BD96B19C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F48E2FEE-1244-4EA1-B7BF-B0F4001634DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F48E2FEE-1244-4EA1-B7BF-B0F4001634DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F48E2FEE-1244-4EA1-B7BF-B0F4001634DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F48E2FEE-1244-4EA1-B7BF-B0F4001634DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{1154F095-54D8-48FA-A61E-1E4587E2CF6C} = {3BF22CCD-4FE4-42BD-960A-EAD8617880B9}
+		{99043664-0431-4398-92A6-55A45736D2F6} = {3BF22CCD-4FE4-42BD-960A-EAD8617880B9}
 		{A963833A-1053-4321-9BCF-3FB7C58F0601} = {F6BAC321-6965-4B7A-8C35-34B3F226C1AE}
 		{ED029673-302D-4E58-B33E-1472BD96B19C} = {F6BAC321-6965-4B7A-8C35-34B3F226C1AE}
+		{F48E2FEE-1244-4EA1-B7BF-B0F4001634DA} = {F6B3621B-A93E-4C1F-8037-468866A31B1E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8B2528BB-EDE2-4992-83A6-3C0C3FDA43DE}

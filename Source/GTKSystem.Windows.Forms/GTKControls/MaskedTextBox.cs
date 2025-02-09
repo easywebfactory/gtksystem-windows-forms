@@ -8,9 +8,9 @@ using System.Text.RegularExpressions;
 
 namespace System.Windows.Forms
 {
-    public class MaskedTextBox: TextBox
+    public class MaskedTextBox : TextBox
     {
-        public MaskedTextBox():base()
+        public MaskedTextBox() : base()
         {
             self.AddClass("MaskedTextBox");
             self.Backspace += Control_Backspace;
@@ -24,7 +24,7 @@ namespace System.Windows.Forms
             self.TextInserted += Control_TextInserted;
             self.Shown += Control_Shown;
         }
-        public override string Text { get { return self.Text; } set { IsMasking = false; self.Text = value??""; IsMasking = true; } }
+        public override string Text { get { return self.Text; } set { IsMasking = false; self.Text = value ?? ""; IsMasking = true; } }
         private void Control_Shown(object sender, EventArgs e)
         {
             if (_PasswordChar != '\0')
@@ -58,17 +58,17 @@ namespace System.Windows.Forms
                 string new_text = args.NewText;
                 if (IsMaskPassword == true)
                 {
-                    if(new_text.Length > 1 || self.Text.Length != correctText.Length + 1)
+                    if (new_text.Length > 1 || self.Text.Length != correctText.Length + 1)
                     {
                         if (correctText != null)
                             self.Text = correctText;
                     }
                     else if (correctText.Length > position && new_text.Length == 1)
                     {
-                        if (IsNumberText(correctText.Substring(position-1, 1)) && IsNumberText(new_text))
+                        if (IsNumberText(correctText.Substring(position - 1, 1)) && IsNumberText(new_text))
                         {
                             //正常
-                            self.DeleteText(position, position+1);
+                            self.DeleteText(position, position + 1);
                         }
                         else
                         {
@@ -112,7 +112,7 @@ namespace System.Windows.Forms
 
         private bool IsNumberText(string text)
         {
-            foreach(char w in text)
+            foreach (char w in text)
             {
                 if (!IsNumberChar(w))
                     return false;
@@ -134,5 +134,7 @@ namespace System.Windows.Forms
         {
             get { return !string.IsNullOrWhiteSpace(Mask) && IsMasking; }
         }
+
+        public string[] Lines => string.IsNullOrEmpty(Text) ? new string[0] : Text.Replace("\r\n", "\n").Split("\n");
     }
 }
