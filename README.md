@@ -16,22 +16,20 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 ### 安装教程
 默认的情况下，visual studio从Nuget引用GtkSharp编译时，就会自动下载Gtk.zip运行时安装包，并自动解压安装。本开源项目下载包也包含Gtk.zip包，可手动安装。以下是三种环境安装方法：
 
-1. 安装GtkSharp后，编译你的工程项目，自动安装（此库不是最新的，有些功能可能有Bug）。
-
+1. 安装GtkSharp后，编译你的工程项目，自动安装（此库不是最新的，有些功能可能有Bug）  
 安装GtkSharp后，编译你的工程项目时，会自动下载gtk.zip解压到目录$(LOCALAPPDATA)\Gtk\3.24.24配置Gtk环境，目前国内网络限制，可能会出现无法下载的错误。
 如果无法自动下载，本项目提供下载 https://gitee.com/easywebfactory/gtksystem-windows-forms/blob/master/Dependencies/gtk-3.24.24.zip。
 也可以下载https://github.com/GtkSharp/Dependencies，把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24目录即可。
 ps: $(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData\Local\Gtk\3.24.24
 
-2. 下载exe安装包安装（建议使用此方法下载安装，获取最新库）
-
+2. 下载exe安装包安装（建议使用此方法下载安装，获取最新库）  
 上面方法在国内可能会有网络障碍，并且是比较旧的运行时库，可能有Bug，建议用以下方法获取最新版本安装：下载https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer，安装后配置电脑变量环境：
-
+```
 你可以打开电脑属性配置，或者执行以下.bat命令：
 @set GTK3R_PREFIX=C:\Program Files\GTK3-Runtime Win64
 @echo set PATH=%GTK3R_PREFIX%;%%PATH%%
 @set PATH=%GTK3R_PREFIX%;%PATH%
-
+```
 3. 使用MSYS软件平台安装，具体操作请网上查询（可以获取最新库）
 
 windows安装DotNet环境：
