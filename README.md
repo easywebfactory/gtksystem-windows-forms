@@ -22,7 +22,7 @@ C#桌面应用程序跨平台（windows、linux、macos）界面开发组件，�
 也可以下载https://github.com/GtkSharp/Dependencies，把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24目录即可。
 ps: $(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData\Local\Gtk\3.24.24
 
-2、下载exe安装包安装（建议使用此方法下载安装，获取最新库）  
+2、下载exe安装包安装（建议使用此方法下载安装，获取最新库，本项目下载包已经包含此安装包）  
 上面方法在国内可能会有网络障碍，并且是比较旧的运行时库，可能有Bug，建议用以下方法获取最新版本安装：下载[https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer)，安装后配置电脑变量环境：
 ```
 你可以打开电脑属性配置，或者执行以下.bat命令：
