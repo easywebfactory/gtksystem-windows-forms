@@ -14,7 +14,7 @@ namespace System.Windows.Forms
     [DesignerCategory("Form")]
     [DefaultEvent(nameof(Load)),
     InitializationEvent(nameof(Load))]
-    public partial class Form: ContainerControl, IWin32Window
+    public partial class Form : ContainerControl, IWin32Window
     {
         private Gtk.Application app = Application.Init();
         public FormBase self = new FormBase();
@@ -136,16 +136,32 @@ namespace System.Windows.Forms
             add { self.Scroll += value; }
             remove { self.Scroll += value; }
         }
+
         private void OnLoadHandler()
         {
-            if (Load != null)
-                Load(this, EventArgs.Empty);
+            var e = EventArgs.Empty;
+            OnLoad(e);
         }
+
         private void OnShownHandler()
         {
-            if (Shown != null)
-                Shown(this, EventArgs.Empty);
+            var e = EventArgs.Empty;
+            OnShown(e);
         }
+
+        protected internal virtual void OnShown(EventArgs e)
+        {
+            Shown?.Invoke(this, e);
+            if (!BindingContextSet)
+            {
+                OnBindingContextChanged(e);
+            }
+            foreach (Control control in Controls)
+            {
+                control.OnLoad(e);
+            }
+        }
+
         public override void Show()
         {
             this.Show(null);
@@ -293,7 +309,8 @@ namespace System.Windows.Forms
         public FormBorderStyle FormBorderStyle
         {
             get { return formBorderStyle; }
-            set {
+            set
+            {
                 formBorderStyle = value;
                 self.Resizable = value == FormBorderStyle.Sizable || value == FormBorderStyle.SizableToolWindow;
                 if (value == FormBorderStyle.None)
@@ -319,10 +336,12 @@ namespace System.Windows.Forms
         }
         public FormStartPosition StartPosition { get; set; }
         private FormWindowState _WindowState = FormWindowState.Normal;
-        public FormWindowState WindowState {
-            get { 
+        public FormWindowState WindowState
+        {
+            get
+            {
                 return _WindowState;
-            } 
+            }
             set
             {
                 _WindowState = value;
@@ -337,10 +356,11 @@ namespace System.Windows.Forms
                         self.Iconify();
                     }
                 }
-            } 
+            }
         }
         public DialogResult DialogResult { get; set; }
-        public void Close() {
+        public void Close()
+        {
             if (self != null)
             {
                 self.CloseWindow();

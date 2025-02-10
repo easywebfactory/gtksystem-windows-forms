@@ -402,7 +402,7 @@ public class ControlHandleTest : TestHelper
     {
         var c = new Control ();
         Assert.IsFalse (c.IsHandleCreated, "A1");
-        c.HandleCreated += new EventHandler (HandleCreated_WriteStackTrace);
+        c.HandleCreated += HandleCreated_WriteStackTrace;
         c.Show ();
         Assert.IsFalse (c.IsHandleCreated, "A2");
     }

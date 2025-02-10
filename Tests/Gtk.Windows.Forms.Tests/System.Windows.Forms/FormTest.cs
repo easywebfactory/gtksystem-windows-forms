@@ -503,33 +503,33 @@ public class FormTest : TestHelper
     {
         using (var form = new Form ()) {
             form.StartPosition = FormStartPosition.CenterParent;
-            form.Load += new EventHandler (CenterDisposedForm_Load);
+            form.Load += CenterDisposedForm_Load;
             form.Show ();
         }
 
         using (var form = new Form ()) {
             form.StartPosition = FormStartPosition.CenterScreen;
-            form.Load += new EventHandler (CenterDisposedForm_Load);
+            form.Load += CenterDisposedForm_Load;
             form.Show ();
         }
 
 
         using (var form = new Form ()) {
             form.StartPosition = FormStartPosition.Manual;
-            form.Load += new EventHandler (CenterDisposedForm_Load);
+            form.Load += CenterDisposedForm_Load;
             form.Show ();
         }
 
 
         using (var form = new Form ()) {
             form.StartPosition = FormStartPosition.WindowsDefaultBounds;
-            form.Load += new EventHandler (CenterDisposedForm_Load);
+            form.Load += CenterDisposedForm_Load;
             form.Show ();
         }
 
         using (var form = new Form ()) {
             form.StartPosition = FormStartPosition.WindowsDefaultLocation;
-            form.Load += new EventHandler (CenterDisposedForm_Load);
+            form.Load += CenterDisposedForm_Load;
             form.Show ();
         }
     }
@@ -1119,7 +1119,7 @@ public class FormTest : TestHelper
 
         myform = new Form ();
         myform.ShowInTaskbar = false;
-        myform.VisibleChanged += new EventHandler (myform_set_dialogresult);
+        myform.VisibleChanged += myform_set_dialogresult;
         result = myform.ShowDialog ();
 
         Assert.AreEqual (result, DialogResult.OK, "A5");
@@ -1129,7 +1129,7 @@ public class FormTest : TestHelper
 			
         myform = new Form ();
         myform.ShowInTaskbar = false;
-        myform.VisibleChanged += new EventHandler (myform_close);
+        myform.VisibleChanged += myform_close;
         result = myform.ShowDialog ();
 
         Assert.AreEqual (result, DialogResult.Cancel, "A8");
@@ -1490,7 +1490,7 @@ public class FormTest : TestHelper
     public void Bug82470 ()
     {
         var f = new Form ();
-        f.Load += new EventHandler (Form_LoadAndHide);
+        f.Load += Form_LoadAndHide;
         f.Show ();
 			
         Assert.AreEqual (true, f.Visible, "A1");
@@ -1619,7 +1619,7 @@ public class TimeBombedForm : Form
     {
         timer = new Timer ();
         timer.Interval = 500;
-        timer.Tick += new EventHandler (timer_Tick);
+        timer.Tick += timer_Tick;
         timer.Start ();
     }
 

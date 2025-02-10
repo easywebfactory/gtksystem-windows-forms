@@ -20,7 +20,7 @@ public class FormThreadTest : TestHelper
     {
         Thread thread;
 
-        thread = new Thread(new ThreadStart(GuiThread));
+        thread = new Thread(GuiThread);
         thread.Start();
         thread.Join();
 

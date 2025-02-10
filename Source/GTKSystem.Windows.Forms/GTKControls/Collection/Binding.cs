@@ -61,10 +61,12 @@ namespace System.Windows.Forms
             get;
             internal set;
         }
+
         [DefaultValue(false)]
-		public bool FormattingEnabled
-		{
-            get; set;
+        public bool FormattingEnabled
+        {
+            get;
+            set;
         }
 
 		[DefaultValue(null)]
@@ -73,20 +75,22 @@ namespace System.Windows.Forms
             get; set;
         }
 
-		public string FormatString
-		{
-            get; set;
-        }
+        public string FormatString
+        {
+            get;
+            set;
+        } = string.Empty;
 
 		public object NullValue
 		{
             get; set;
         }
 
-		public object DataSourceNullValue
-		{
-            get; set;
-        }
+        public object DataSourceNullValue
+        {
+            get;
+            set;
+        } = Convert.DBNull;
 
 		public ControlUpdateMode ControlUpdateMode
 		{
@@ -133,7 +137,7 @@ namespace System.Windows.Forms
             FormattingEnabled = formattingEnabled;
 			DataSourceUpdateMode = dataSourceUpdateMode;
 			NullValue = nullValue;
-			FormatString = formatString;
+			FormatString = formatString??string.Empty;
 			FormatInfo = formatInfo;
         }
         //更新数据源

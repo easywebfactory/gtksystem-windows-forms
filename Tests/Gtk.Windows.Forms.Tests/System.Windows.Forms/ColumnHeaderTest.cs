@@ -69,7 +69,7 @@ public class ColumnHeaderTest : TestHelper
         var form = new Form ();
         form.ShowInTaskbar = false;
         var lv = new ListView ();
-        lv.ColumnReordered += new ColumnReorderedEventHandler (ColumnReordered);
+        lv.ColumnReordered += ColumnReordered;
         lv.View = View.Details;
         lv.Columns.Add (colA);
         lv.Columns.Add (colB);
@@ -160,7 +160,7 @@ public class ColumnHeaderTest : TestHelper
         Assert.AreEqual (1, colC.DisplayIndex, "#A4");
 
         var lv = new ListView ();
-        lv.ColumnReordered += new ColumnReorderedEventHandler (ColumnReordered);
+        lv.ColumnReordered += ColumnReordered;
         lv.View = View.Details;
         lv.Columns.Add (colA);
         lv.Columns.Add (colB);

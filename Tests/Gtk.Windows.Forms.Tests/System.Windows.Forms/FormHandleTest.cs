@@ -642,7 +642,7 @@ public class FormHandleTest : TestHelper
     {
         var c = new Form ();
         Assert.IsFalse (c.IsHandleCreated, "A1");
-        c.HandleCreated += new EventHandler (HandleCreated_WriteStackTrace);
+        c.HandleCreated += HandleCreated_WriteStackTrace;
         c.Show ();
         Assert.IsTrue (c.IsHandleCreated, "A2");
         c.Dispose ();

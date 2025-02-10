@@ -966,21 +966,17 @@ public class FocusTest  : TestHelper {
     }
 
     void connect(Control c) {
-        c.Enter += new EventHandler(enter);
-        c.Leave += new EventHandler(leave);
-        c.GotFocus += new EventHandler(gotfocus);
-        c.LostFocus += new EventHandler(lostfocus);
-        c.Validating += new CancelEventHandler(validating);
-        c.Validated += new EventHandler(validated);
+        c.Enter += enter;
+        c.Leave += leave;
+        c.GotFocus += gotfocus;
+        c.LostFocus += lostfocus;
+        c.Validating += validating;
+        c.Validated += validated;
     }
 
     [Test]
     public void EnterLeaveFocusEventTest ()
     {
-        if (RunningOnUnix) {
-            Assert.Ignore ("Relies on form.Show() synchronously generating WM_ACTIVATE");
-        }
-
         var f = new Form();
         f.ShowInTaskbar = false;
 

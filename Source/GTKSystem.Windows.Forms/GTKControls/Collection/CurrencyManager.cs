@@ -151,7 +151,6 @@ namespace System.Windows.Forms
 
 		internal CurrencyManager(object dataSource)
 		{
-			throw null;
 		}
 
 		private protected override void SetDataSource(object dataSource)

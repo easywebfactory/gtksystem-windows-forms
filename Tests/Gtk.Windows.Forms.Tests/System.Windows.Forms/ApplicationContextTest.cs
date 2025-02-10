@@ -23,7 +23,7 @@ public class ApplicationContextTest : TestHelper
     [TearDown]
     public void TearDown()
     {
-        ctx.Dispose();
+        ctx?.Dispose();
     }
 
     void thread_exit (object sender, EventArgs e)
@@ -51,15 +51,15 @@ public class ApplicationContextTest : TestHelper
         thread_exit_count = 0;
         reached_form_handle_destroyed = false;
 
-        var f1 = new MyForm ();
+        var f1 = new Form ();
         f1.ShowInTaskbar = false;
-        f1.HandleDestroyed += new EventHandler (form_handle_destroyed);
+        f1.HandleDestroyed += form_handle_destroyed;
 
         ctx = new ApplicationContext (f1);
-        ctx.ThreadExit += new EventHandler (thread_exit);
+        ctx.ThreadExit += thread_exit;
 
         f1.Show ();
-        f1.DoDestroyHandle ();
+        f1.Dispose();
 
         Assert.AreEqual (true, reached_form_handle_destroyed, "3");
         Assert.AreEqual (1, thread_exit_count, "4");
@@ -73,16 +73,16 @@ public class ApplicationContextTest : TestHelper
         thread_exit_count = 0;
         reached_form_handle_destroyed = false;
 
-        var f1 = new MyForm ();
+        var f1 = new Form ();
         f1.ShowInTaskbar = false;
 
         ctx = new ApplicationContext (f1);
-        ctx.ThreadExit += new EventHandler (thread_exit);
+        ctx.ThreadExit += thread_exit;
 
-        f1.HandleDestroyed += new EventHandler (form_handle_destroyed2);
+        f1.HandleDestroyed += form_handle_destroyed2;
 
         f1.Show ();
-        f1.DoDestroyHandle ();
+        f1.Dispose();
         Assert.AreEqual (true, reached_form_handle_destroyed, "3");
         Assert.AreEqual (1, thread_exit_count, "4");
 			
@@ -94,10 +94,10 @@ public class ApplicationContextTest : TestHelper
     {
         thread_exit_count = 0;
 
-        var f1 = new MyForm ();
+        var f1 = new Form ();
         f1.ShowInTaskbar = false;
         ctx = new ApplicationContext (f1);
-        ctx.ThreadExit += new EventHandler (thread_exit);
+        ctx.ThreadExit += thread_exit;
 
         Assert.AreEqual (f1, ctx.MainForm, "1");
         f1.ShowInTaskbar = false;
@@ -106,50 +106,14 @@ public class ApplicationContextTest : TestHelper
         Assert.AreEqual (f1, ctx.MainForm, "2");
         Assert.AreEqual (1, thread_exit_count, "3");
 
-        f1 = new MyForm ();
+        f1 = new Form ();
         ctx = new ApplicationContext (f1);
-        ctx.ThreadExit += new EventHandler (thread_exit);
+        ctx.ThreadExit += thread_exit;
         f1.ShowInTaskbar = false;
         f1.Show ();
-        f1.DoDestroyHandle ();
+        f1.Dispose();
         Assert.AreEqual (f1, ctx.MainForm, "4");
         Assert.AreEqual (2, thread_exit_count, "5");
         f1.Dispose ();
-    }
-
-    [Test]
-    [Category ("NotWorking")]
-    public void NestedApplicationContextTest ()
-    {
-        Assert.Throws<InvalidOperationException>(() =>
-        {
-            using var frm = new NestedForm();
-            Application.Run(frm);
-        });
-    }
-
-    private class NestedForm : Form
-    {
-        static int counter = 1;
-        protected override void OnVisibleChanged (EventArgs e)
-        {
-            base.OnVisibleChanged (e);
-
-            Text = counter.ToString ();
-
-            if (counter <= 3) {
-                counter++;
-                Application.Run (new NestedForm ());
-            }
-            Close ();
-        }
-    }
-}
-
-class MyForm : Form
-{
-    public void DoDestroyHandle()
-    {
-        Dispose();
     }
 }

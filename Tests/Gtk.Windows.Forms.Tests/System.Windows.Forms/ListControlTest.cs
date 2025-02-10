@@ -140,7 +140,7 @@ public class ListControlTest : TestHelper
         var list2 = new ArrayList ();
 
         var lc = new ListControlChild ();
-        lc.DataSourceChanged += new EventHandler (ListControl_DataSourceChanged);
+        lc.DataSourceChanged += ListControl_DataSourceChanged;
         lc.DataSource = list1;
         Assert.AreEqual (1, dataSourceChanged, "#A1");
         Assert.AreSame (list1, lc.DataSource, "#A2");
@@ -176,7 +176,7 @@ public class ListControlTest : TestHelper
         var list2 = new ArrayList ();
 
         var lc = new ListControlChild ();
-        lc.DataSourceChanged += new EventHandler (ListControl_DataSourceChanged);
+        lc.DataSourceChanged += ListControl_DataSourceChanged;
 
         var form = new Form ();
         form.Controls.Add (lc);
@@ -277,7 +277,7 @@ public class ListControlTest : TestHelper
         BindingList<string> list2 = new BindingList<string> ();
 
         var lc = new ListControlChild ();
-        lc.DataSourceChanged += new EventHandler (ListControl_DataSourceChanged);
+        lc.DataSourceChanged += ListControl_DataSourceChanged;
         lc.DataSource = list1;
         Assert.AreEqual (1, dataSourceChanged, "#A1");
         Assert.AreSame (list1, lc.DataSource, "#A2");
@@ -308,7 +308,7 @@ public class ListControlTest : TestHelper
         BindingList<string> list2 = new BindingList<string> ();
 
         var lc = new ListControlChild ();
-        lc.DataSourceChanged += new EventHandler (ListControl_DataSourceChanged);
+        lc.DataSourceChanged += ListControl_DataSourceChanged;
 
         var form = new Form ();
         form.Controls.Add (lc);
@@ -347,7 +347,7 @@ public class ListControlTest : TestHelper
 
         Assert.AreEqual ("02/03", lc.GetItemText (dt), "A5");
 
-        lc.Format += new ListControlConvertEventHandler (lc_Format);
+        lc.Format += lc_Format;
         Assert.AreEqual ("Monkey!", lc.GetItemText (dt), "A6");
     }
 

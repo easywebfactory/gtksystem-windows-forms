@@ -60,7 +60,7 @@ public class TimerTest : TestHelper
         // This test fails about 50% of the time on the buildbots.
         Ticked = false;
         using var timer = new Timer ();
-        timer.Tick += new EventHandler (TickHandler);
+        timer.Tick += TickHandler;
         timer.Start ();
         Thread.Sleep (500);
         Application.DoEvents ();
@@ -73,7 +73,7 @@ public class TimerTest : TestHelper
     {
         Ticked = false;
         using var timer = new Timer ();
-        timer.Tick += new EventHandler (TickHandler);
+        timer.Tick += TickHandler;
         timer.Interval = 200;
         timer.Start ();
         Assert.AreEqual (true, timer.Enabled, "1");
@@ -153,12 +153,12 @@ public class TimerTest : TestHelper
     {
         public Bug325033Form ()
         {
-            Load += new EventHandler (Form_Load);
+            Load += Form_Load;
         }
 
         void Form_Load (object sender, EventArgs e)
         {
-            var t = new Thread (new ThreadStart (Run));
+            var t = new Thread (Run);
             t.IsBackground = true;
             t.Start ();
             t.Join ();
@@ -181,7 +181,7 @@ public class TimerTest : TestHelper
             _label.Text = "It should close automatically.";
             Controls.Add (_label);
             _timer = new Timer ();
-            _timer.Tick += new EventHandler (Timer_Tick);
+            _timer.Tick += Timer_Tick;
             _timer.Interval = 500;
             _timer.Start ();
         }

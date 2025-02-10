@@ -723,7 +723,7 @@ public class ToolStripItemTests : TestHelper
 			
         public EventWatcher (ToolStripItem tsi)
         {
-            tsi.Click += new EventHandler (delegate (Object _, EventArgs _) { events += ("Click;"); });
+            tsi.Click += delegate (Object _, EventArgs _) { events += ("Click;"); };
         }
 
         public override string ToString ()

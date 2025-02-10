@@ -102,8 +102,7 @@ public class DataGridViewColumnTest : TestHelper
     {
         var dataGrid = new DataGridView ();
         DataGridViewColumn dvc = new DataGridViewTextBoxColumn ();
-        dataGrid.ColumnNameChanged += new DataGridViewColumnEventHandler (
-            DataGridView_ColumnNameChanged);
+        dataGrid.ColumnNameChanged += DataGridView_ColumnNameChanged;
         dataGrid.Columns.Add (dvc);
         Assert.AreEqual (string.Empty, dvc.HeaderText, "#A1");
         Assert.AreEqual (string.Empty, dvc.Name, "#A3");
@@ -131,8 +130,7 @@ public class DataGridViewColumnTest : TestHelper
     {
         var dataGrid = new DataGridView ();
         DataGridViewColumn dvc = new DataGridViewTextBoxColumn ();
-        dataGrid.ColumnNameChanged += new DataGridViewColumnEventHandler (
-            DataGridView_ColumnNameChanged);
+        dataGrid.ColumnNameChanged += DataGridView_ColumnNameChanged;
         dataGrid.Columns.Add (dvc);
         Assert.AreEqual (string.Empty, dvc.HeaderText, "#A1");
         Assert.AreEqual (string.Empty, dvc.Name, "#A3");

@@ -7,6 +7,7 @@
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -19,7 +20,7 @@ namespace System.Windows.Forms
     [DefaultProperty("Text")]
     [Designer(typeof(ControlDesigner))]
     [ToolboxItemFilter("System.Windows.Forms")]
-    public partial class Control : Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize, IArrangedElement
+    public partial class Control : Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize, IArrangedElement, IBindableComponent
     {
         private Gtk.Application app = Application.Init();
         public string unique_key { get; protected set; }
@@ -30,6 +31,8 @@ namespace System.Windows.Forms
         public virtual object GtkControl { get; set; }
         public Control()
         {
+            Controls = new ControlCollection(this);
+            DataBindings = new ControlBindingsCollection(this);
             this.unique_key = Guid.NewGuid().ToString().ToLower();
             Gtk.Widget widget = this.Widget;
             if (widget != null)
@@ -97,8 +100,32 @@ namespace System.Windows.Forms
             {
                 WidgetRealized = true;
                 InitStyle((Gtk.Widget)sender);
-                if (Load != null)
-                    Load(this, e);
+                OnLoad(e);
+                foreach (Control control in Controls)
+                {
+                    control.OnLoad(e);
+                }
+            }
+        }
+
+        protected internal void OnBindingContextChanged(EventArgs e)
+        {
+            BindingContextChanged?.Invoke(this, e);
+        }
+
+        private bool _loaded;
+
+        protected internal virtual void OnLoad(EventArgs e)
+        {
+            if (_loaded)
+            {
+                return;
+            }
+            _loaded = true;
+            Load?.Invoke(this, e);
+            if (!BindingContextSet)
+            {
+                OnBindingContextChanged(e);
             }
         }
 
@@ -133,7 +160,7 @@ namespace System.Windows.Forms
                 if (MouseClick != null)
                     MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
             }
-            
+
         }
         private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
         {
@@ -227,7 +254,7 @@ namespace System.Windows.Forms
                 if (args.Event is Gdk.EventKey eventkey)
                 {
                     Keys keys = (Keys)eventkey.HardwareKeycode;
-                    if(eventkey.State.HasFlag(Gdk.ModifierType.Mod1Mask))
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.Mod1Mask))
                         keys |= Keys.Alt;
                     if (eventkey.State.HasFlag(Gdk.ModifierType.ControlMask))
                         keys |= Keys.Control;
@@ -259,7 +286,7 @@ namespace System.Windows.Forms
         //===================
         protected virtual void InitStyle(Gtk.Widget widget)
         {
-             SetStyle(widget);
+            SetStyle(widget);
         }
         protected virtual void UpdateStyle()
         {
@@ -396,7 +423,7 @@ namespace System.Windows.Forms
                     string color = $"rgba({backColor.R},{backColor.G},{backColor.B},{backColor.A})";
                     style.AppendFormat("background-color:{0};background:{0};", color);
                 }
-                
+
                 if (this.ForeColor.Name != "0")
                 {
                     Color foreColor = this.ForeColor;
@@ -488,7 +515,8 @@ namespace System.Windows.Forms
                 else
                     return Color.FromName("0");
             }
-            set {
+            set
+            {
                 ISelf.Override.BackColor = value;
                 ISelf.Override.OnAddClass();
                 UpdateStyle();
@@ -509,14 +537,16 @@ namespace System.Windows.Forms
         public virtual AccessibleRole AccessibleRole { get; set; }
         public virtual bool AllowDrop { get; set; }
         private AnchorStyles _anchor;
-        public virtual AnchorStyles Anchor { 
-            get=> _anchor; 
-            set {
+        public virtual AnchorStyles Anchor
+        {
+            get => _anchor;
+            set
+            {
                 _anchor = value;
                 SetAnchorStyles(Widget, _anchor);
                 if (AnchorChanged != null)
                     AnchorChanged(this, EventArgs.Empty);
-            } 
+            }
         }
         private void SetAnchorStyles(Gtk.Widget widget, AnchorStyles anchorStyles)
         {
@@ -556,8 +586,25 @@ namespace System.Windows.Forms
         }
         public virtual Point AutoScrollOffset { get; set; }
         public virtual bool AutoSize { get; set; }
-        public virtual BindingContext BindingContext { get; set; }
-        public virtual Rectangle Bounds { get=> new Rectangle(Widget.Clip.X, this.Widget.Clip.Y, this.Widget.Clip.Width, this.Widget.Clip.Height); set { SetBounds(value.X, value.Y, value.Width, value.Height); } }
+
+        internal bool BindingContextSet;
+
+        public virtual BindingContext BindingContext
+        {
+            get => bindingContext;
+            set
+            {
+                if (bindingContext != value)
+                {
+                    var e = EventArgs.Empty;
+                    OnBindingContextChanged(e);
+                }
+                bindingContext = value;
+                BindingContextSet = true;
+            }
+        }
+
+        public virtual Rectangle Bounds { get => new Rectangle(Widget.Clip.X, this.Widget.Clip.Y, this.Widget.Clip.Width, this.Widget.Clip.Height); set { SetBounds(value.X, value.Y, value.Width, value.Height); } }
 
         public virtual bool CanFocus { get { return this.Widget.CanFocus; } }
 
@@ -633,7 +680,8 @@ namespace System.Windows.Forms
 
         public virtual bool Focused { get { return this.Widget.IsFocus; } }
         private Font _Font;
-        public virtual Font Font {
+        public virtual Font Font
+        {
             get
             {
                 if (_Font == null)
@@ -648,9 +696,10 @@ namespace System.Windows.Forms
             set { _Font = value; UpdateStyle(); }
         }
         private Color _ForeColor;
-        public virtual Color ForeColor { 
+        public virtual Color ForeColor
+        {
             get { return _ForeColor; }
-            set { _ForeColor = value; UpdateStyle(); } 
+            set { _ForeColor = value; UpdateStyle(); }
         }
 
         public virtual bool HasChildren { get; }
@@ -661,7 +710,7 @@ namespace System.Windows.Forms
 
         public virtual bool IsAccessible { get; set; }
 
-        public virtual bool IsDisposed { get; }
+        public virtual bool IsDisposed { get; private set; }
 
         public virtual bool IsHandleCreated { get => true; }
 
@@ -683,7 +732,8 @@ namespace System.Windows.Forms
         public virtual int Left
         {
             get => this.Widget.MarginStart;
-            set { 
+            set
+            {
                 this.Widget.MarginStart = value;
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
@@ -691,7 +741,8 @@ namespace System.Windows.Forms
                     AnchorChanged(this, EventArgs.Empty);
             }
         }
-        public virtual int Right {
+        public virtual int Right
+        {
             get => this.Widget.MarginEnd;
         }
         public virtual int Bottom
@@ -773,7 +824,8 @@ namespace System.Windows.Forms
                 }
                 return this.Widget.WidthRequest == -1 ? this.Widget.AllocatedWidth : this.Widget.WidthRequest;
             }
-            set {
+            set
+            {
                 this.Widget.WidthRequest = Math.Max(-1, value);
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
@@ -784,7 +836,7 @@ namespace System.Windows.Forms
         public virtual int TabIndex { get; set; }
         public virtual bool TabStop { get; set; }
         public virtual object Tag { get; set; }
-        public virtual string Text { get; set; }
+        public virtual string Text { get; set; } = string.Empty;
         public virtual Control TopLevelControl { get; }
         public virtual bool UseWaitCursor { get; set; }
         public virtual bool Visible { get { return this.Widget.Visible; } set { this.Widget.Visible = value; this.Widget.NoShowAll = value == false; } }
@@ -1002,8 +1054,9 @@ namespace System.Windows.Forms
                 this.Widget.IsFocus = true;
                 return this.Widget.IsFocus;
             }
-            else { 
-                return false; 
+            else
+            {
+                return false;
             }
         }
 
@@ -1025,10 +1078,10 @@ namespace System.Windows.Forms
         public virtual Control GetNextControl(Control ctl, bool forward)
         {
             Control prev = null;
-            Control next= null;
+            Control next = null;
             bool finded = false;
- 
-            foreach(var obj in this.Controls) 
+
+            foreach (var obj in this.Controls)
             {
                 if (obj is Control control)
                 {
@@ -1038,7 +1091,7 @@ namespace System.Windows.Forms
                     if (control.Widget.Handle == ctl.Widget.Handle)
                     {
                         finded = true;
-                    } 
+                    }
                     if (finded == true)
                     {
                         if (forward == false && prev != null)
@@ -1113,7 +1166,8 @@ namespace System.Windows.Forms
         public virtual object Invoke(Delegate method, params object[] args)
         {
             object result = null;
-            GLib.Idle.Add(() => {
+            GLib.Idle.Add(() =>
+            {
                 result = method.DynamicInvoke(args);
                 return false;
             });
@@ -1121,7 +1175,8 @@ namespace System.Windows.Forms
         }
         public virtual void Invoke(Action method)
         {
-            GLib.Idle.Add(() => {
+            GLib.Idle.Add(() =>
+            {
                 method.Invoke();
                 return false;
             });
@@ -1129,7 +1184,8 @@ namespace System.Windows.Forms
         public virtual ENTRY Invoke<ENTRY>(Func<ENTRY> method)
         {
             ENTRY result = default(ENTRY);
-            GLib.Idle.Add(() => {
+            GLib.Idle.Add(() =>
+            {
                 result = method.Invoke();
                 return false;
             });
@@ -1256,7 +1312,7 @@ namespace System.Windows.Forms
 
         public virtual void ResumeLayout(bool performLayout)
         {
-            _Created = true; 
+            _Created = true;
         }
         public virtual void Scale(float ratio)
         {
@@ -1341,12 +1397,15 @@ namespace System.Windows.Forms
         public virtual Size MaximumSize { get; set; }
         public virtual Size MinimumSize { get; set; }
         private BorderStyle _BorderStyle;
+        private BindingContext bindingContext;
+
         public virtual BorderStyle BorderStyle
         {
             get { return _BorderStyle; }
-            set {
+            set
+            {
                 _BorderStyle = value;
-                if(value==BorderStyle.FixedSingle)
+                if (value == BorderStyle.FixedSingle)
                 {
                     this.Widget.StyleContext.AddClass("BorderFixedSingle");
                 }
@@ -1418,7 +1477,7 @@ namespace System.Windows.Forms
 
         }
 
-        public new void Dispose()
+        public new virtual void Dispose()
         {
             Dispose(true);
             base.Dispose();
@@ -1426,13 +1485,18 @@ namespace System.Windows.Forms
 
         protected override void Dispose(bool disposing)
         {
+            if (IsDisposed)
+            {
+                return;
+            }
+            IsDisposed = true;
             try
             {
                 if (image != null)
                     image.Dispose();
-                if(surface != null) 
+                if (surface != null)
                     surface.Dispose();
-                if(context != null) 
+                if (context != null)
                     context.Dispose();
 
                 if (this.Widget != null)
@@ -1441,8 +1505,9 @@ namespace System.Windows.Forms
                     this.GtkControl = null;
                 }
             }
-            catch { }
+            catch (Exception ex) { Trace.WriteLine(ex); }
             base.Dispose(disposing);
+            HandleDestroyed?.Invoke(this, EventArgs.Empty);
         }
 
         protected virtual CreateParams CreateParams

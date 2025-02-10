@@ -9,6 +9,7 @@ namespace System.Windows.Forms
     [DefaultEvent("CollectionChanged")]
     public class ControlBindingsCollection : BindingsCollection
     {
+        private readonly IBindableComponent _bindableComponent;
         private Control _owner;
         public ControlBindingsCollection(Control owner) : base()
         {
@@ -54,12 +55,14 @@ namespace System.Windows.Forms
             set;
         }
 
-        public ControlBindingsCollection(IBindableComponent control)
+        public ControlBindingsCollection(IBindableComponent bindableComponent)
         {
+            this._bindableComponent = bindableComponent;
         }
-        public new void Add(Binding binding)
+        public new virtual void Add(Binding binding)
         {
             binding.Control = this.Control;
+            binding.BindableComponent = this.Control??this._bindableComponent;
             if (binding.DataSource is INotifyPropertyChanged notify)
             {
                 notify.PropertyChanged += (object sender, PropertyChangedEventArgs e) => {

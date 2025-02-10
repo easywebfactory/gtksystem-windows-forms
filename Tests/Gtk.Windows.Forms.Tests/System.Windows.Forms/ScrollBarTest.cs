@@ -211,7 +211,7 @@ public class ScrollBarEventTest : TestHelper
         myform.Visible = true;
         ScrollBar myHscrlbar = new HScrollBar();
         myform.Controls.Add(myHscrlbar);
-        myHscrlbar.BackColorChanged += new EventHandler(ScrollBar_EventHandler);
+        myHscrlbar.BackColorChanged += ScrollBar_EventHandler;
         myHscrlbar.BackColor = Color.Red;
         Assert.AreEqual(true, eventhandled, "B4");
         eventhandled = false;
@@ -226,7 +226,7 @@ public class ScrollBarEventTest : TestHelper
         myform.Visible = true;
         ScrollBar myHscrlbar = new HScrollBar();
         myform.Controls.Add(myHscrlbar);
-        myHscrlbar.BackgroundImageChanged += new EventHandler(ScrollBar_EventHandler);
+        myHscrlbar.BackgroundImageChanged += ScrollBar_EventHandler;
         myHscrlbar.BackgroundImage = Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/System.Windows.Forms/bitmaps/a.png"));
         Assert.AreEqual(true, eventhandled, "B5");
         eventhandled = false;
@@ -242,7 +242,7 @@ public class ScrollBarEventTest : TestHelper
         ScrollBar myHscrlbar = new HScrollBar();
         myform.Controls.Add(myHscrlbar);
         myHscrlbar.Font = new Font(FontFamily.GenericMonospace, 10);
-        myHscrlbar.FontChanged += new EventHandler(ScrollBar_EventHandler);
+        myHscrlbar.FontChanged += ScrollBar_EventHandler;
         var myFontDialog = new FontDialog();
         myHscrlbar.Font = myFontDialog.Font;
         Assert.AreEqual(true, eventhandled, "F2");
@@ -258,7 +258,7 @@ public class ScrollBarEventTest : TestHelper
         myform.Visible = true;
         ScrollBar myHscrlbar = new HScrollBar();
         myform.Controls.Add(myHscrlbar);
-        myHscrlbar.ForeColorChanged += new EventHandler(ScrollBar_EventHandler);
+        myHscrlbar.ForeColorChanged += ScrollBar_EventHandler;
         myHscrlbar.ForeColor = Color.Azure;
         Assert.AreEqual(true, eventhandled, "F3");
         eventhandled = false;
@@ -274,7 +274,7 @@ public class ScrollBarEventTest : TestHelper
         myform.Visible = true;
         var myHscrlbar = new MyScrollBar();
         myform.Controls.Add(myHscrlbar);
-        myHscrlbar.Scroll += new ScrollEventHandler(ScrollBarScroll_EventHandler);
+        myHscrlbar.Scroll += ScrollBarScroll_EventHandler;
         myHscrlbar.ScrollNow();
 
         Assert.AreEqual(true, eventhandled, "S4");
@@ -290,7 +290,7 @@ public class ScrollBarEventTest : TestHelper
         myform.Visible = true;
         var myHscrlbar = new MyScrollBar();
         myform.Controls.Add(myHscrlbar);
-        myHscrlbar.TextChanged += new EventHandler(ScrollBar_EventHandler);
+        myHscrlbar.TextChanged += ScrollBar_EventHandler;
         myHscrlbar.Text = "foo";
 
         Assert.AreEqual(true, eventhandled, "T6");
@@ -307,7 +307,7 @@ public class ScrollBarEventTest : TestHelper
         var myHscrlbar = new MyScrollBar();
         myform.Controls.Add(myHscrlbar);
         myHscrlbar.Value = 40;
-        myHscrlbar.ValueChanged += new EventHandler(ScrollBar_EventHandler);
+        myHscrlbar.ValueChanged += ScrollBar_EventHandler;
         myHscrlbar.Value = 50;
         Assert.AreEqual(true, eventhandled, "V3");
         eventhandled = false;
@@ -644,27 +644,27 @@ public class MyScrollBar2 : HScrollBar
     protected ArrayList results = new ArrayList();
     public MyScrollBar2() : base()
     {
-        HandleCreated += new EventHandler(HandleCreated_Handler);
-        BackColorChanged += new EventHandler(BackColorChanged_Handler);
-        BackgroundImageChanged += new EventHandler(BackgroundImageChanged_Handler);
-        BindingContextChanged += new EventHandler(BindingContextChanged_Handler);
-        Click += new EventHandler(Click_Handler);
-        DoubleClick += new EventHandler(DoubleClick_Handler);
-        FontChanged += new EventHandler(FontChanged_Handler);
-        ForeColorChanged += new EventHandler(ForeColorChanged_Handler);
-        ImeModeChanged += new EventHandler(ImeModeChanged_Handler);
-        MouseDown += new MouseEventHandler(MouseDown_Handler);
-        MouseMove += new MouseEventHandler(MouseMove_Handler);
-        MouseUp += new MouseEventHandler(MouseUp_Handler);
-        Invalidated += new InvalidateEventHandler(Invalidated_Handler);
-        Resize += new EventHandler(Resize_Handler);
-        SizeChanged += new EventHandler(SizeChanged_Handler);
-        Layout += new LayoutEventHandler(Layout_Handler);
-        VisibleChanged += new EventHandler(VisibleChanged_Handler);
-        Paint += new PaintEventHandler(Paint_Handler);
-        Scroll += new ScrollEventHandler(Scroll_Handler);
-        TextChanged += new EventHandler(TextChanged_Handler);
-        ValueChanged += new EventHandler(ValueChanged_Handler);
+        HandleCreated += HandleCreated_Handler;
+        BackColorChanged += BackColorChanged_Handler;
+        BackgroundImageChanged += BackgroundImageChanged_Handler;
+        BindingContextChanged += BindingContextChanged_Handler;
+        Click += Click_Handler;
+        DoubleClick += DoubleClick_Handler;
+        FontChanged += FontChanged_Handler;
+        ForeColorChanged += ForeColorChanged_Handler;
+        ImeModeChanged += ImeModeChanged_Handler;
+        MouseDown += MouseDown_Handler;
+        MouseMove += MouseMove_Handler;
+        MouseUp += MouseUp_Handler;
+        Invalidated += Invalidated_Handler;
+        Resize += Resize_Handler;
+        SizeChanged += SizeChanged_Handler;
+        Layout += Layout_Handler;
+        VisibleChanged += VisibleChanged_Handler;
+        Paint += Paint_Handler;
+        Scroll += Scroll_Handler;
+        TextChanged += TextChanged_Handler;
+        ValueChanged += ValueChanged_Handler;
     }
 
     protected void HandleCreated_Handler(object sender, EventArgs e)

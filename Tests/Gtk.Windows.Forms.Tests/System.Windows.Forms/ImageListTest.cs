@@ -169,7 +169,7 @@ public class ImageListTest : TestHelper
             myimagelist.Images.Add (myImage);
             myimagelist.ColorDepth = ColorDepth.Depth8Bit;
             myimagelist.ImageSize = new Size (50,50);
-            myimagelist.RecreateHandle += new EventHandler (RecreateHandle_EventHandler);
+            myimagelist.RecreateHandle += RecreateHandle_EventHandler;
             mygraphics = Graphics.FromHwnd(myform.Handle);
             myimagelist.Draw(mygraphics, new Point(5, 5), 0);
             myimagelist.ImageSize = new Size (100,100);

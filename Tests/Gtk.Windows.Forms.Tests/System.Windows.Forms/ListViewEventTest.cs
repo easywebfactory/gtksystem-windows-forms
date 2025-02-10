@@ -29,7 +29,7 @@ public class ColumnClickEvent : TestHelper
         var mylistview = new ListView ();
 
         mylistview.LabelEdit = true ;
-        mylistview.ColumnClick += new ColumnClickEventHandler (ColumnClickEventHandler);		
+        mylistview.ColumnClick += ColumnClickEventHandler;		
         mylistview.View = View.Details;
         mylistview.SetBounds (10, 10, 200, 200, BoundsSpecified.All);
         mylistview.Columns.Add ("A", -2, HorizontalAlignment.Center);
@@ -62,7 +62,7 @@ public class  MyEvent : TestHelper
         var mylistview = new ListView ();
         mylistview.Activation = ItemActivation.OneClick;
         mylistview.LabelEdit = true ;
-        mylistview.ItemActivate += new EventHandler (New_EventHandler);		
+        mylistview.ItemActivate += New_EventHandler;		
         mylistview.View = View.Details;
         mylistview.SetBounds (10, 10, 200, 200, BoundsSpecified.All);
         mylistview.Columns.Add ("A", -2, HorizontalAlignment.Center);
@@ -82,7 +82,7 @@ public class  MyEvent : TestHelper
         myform.ShowInTaskbar = false;
         var mylistview = new ListView ();
         mylistview.LabelEdit = true ;
-        mylistview.SelectedIndexChanged += new EventHandler (New_EventHandler);		
+        mylistview.SelectedIndexChanged += New_EventHandler;		
         eventhandled = false;
         mylistview.View = View.Details;
         mylistview.SetBounds (10, 10, 200, 200, BoundsSpecified.All);
@@ -116,7 +116,7 @@ public class ItemCheckEvent : TestHelper
         var mylistview = new ListView ();
         mylistview.CheckBoxes = true;
         mylistview.LabelEdit = true ;
-        mylistview.ItemCheck += new ItemCheckEventHandler (ItemCheckEventHandler);		
+        mylistview.ItemCheck += ItemCheckEventHandler;		
         mylistview.View = View.Details;
         mylistview.SetBounds (10, 10, 200, 200, BoundsSpecified.All);
         mylistview.Columns.Add ("A", -2, HorizontalAlignment.Center);
@@ -154,7 +154,7 @@ public class ListViewSelectedIndexChangedEvent : TestHelper
         form.ShowInTaskbar = false;
 
         var lvw = new ListView ();
-        lvw.SelectedIndexChanged += new EventHandler (ListView_SelectedIndexChanged);
+        lvw.SelectedIndexChanged += ListView_SelectedIndexChanged;
         lvw.View = View.Details;
         var itemA = new ListViewItem ("A");
         lvw.Items.Add (itemA);
@@ -182,7 +182,7 @@ public class ListViewSelectedIndexChangedEvent : TestHelper
         form.ShowInTaskbar = false;
 
         var lvw = new ListView ();
-        lvw.SelectedIndexChanged += new EventHandler (ListView_SelectedIndexChanged);
+        lvw.SelectedIndexChanged += ListView_SelectedIndexChanged;
         lvw.View = View.Details;
         var itemA = new ListViewItem ("A");
         lvw.Items.Add (itemA);
@@ -216,7 +216,7 @@ public class ListViewSelectedIndexChangedEvent : TestHelper
         form.ShowInTaskbar = false;
 
         var lvw = new ListView ();
-        lvw.SelectedIndexChanged += new EventHandler (ListView_SelectedIndexChanged);
+        lvw.SelectedIndexChanged += ListView_SelectedIndexChanged;
         lvw.View = View.Details;
         form.Controls.Add (lvw);
         form.Show ();
@@ -243,7 +243,7 @@ public class ListViewSelectedIndexChangedEvent : TestHelper
         form.ShowInTaskbar = false;
 
         var lvw = new ListView ();
-        lvw.SelectedIndexChanged += new EventHandler (ListView_SelectedIndexChanged);
+        lvw.SelectedIndexChanged += ListView_SelectedIndexChanged;
         form.Controls.Add (lvw);
         form.Show ();
 
@@ -263,7 +263,7 @@ public class ListViewSelectedIndexChangedEvent : TestHelper
         form.ShowInTaskbar = false;
 
         var lvw = new ListView ();
-        lvw.SelectedIndexChanged += new EventHandler (ListView_SelectedIndexChanged);
+        lvw.SelectedIndexChanged += ListView_SelectedIndexChanged;
         form.Controls.Add (lvw);
         form.Show ();
 

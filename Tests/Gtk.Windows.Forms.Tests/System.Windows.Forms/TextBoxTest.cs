@@ -28,9 +28,9 @@ public class TextBoxTest : TestHelper
     [SetUp]
     protected override void SetUp () {
         textBox = new TextBox();
-        textBox.Invalidated += new InvalidateEventHandler (TextBox_Invalidated);
-        textBox.Paint += new PaintEventHandler (TextBox_Paint);
-        textBox.TextChanged += new EventHandler (TextBox_TextChanged);
+        textBox.Invalidated += TextBox_Invalidated;
+        textBox.Paint += TextBox_Paint;
+        textBox.TextChanged += TextBox_TextChanged;
         Reset ();
         base.SetUp ();
     }

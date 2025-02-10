@@ -33,9 +33,6 @@ public class GroupBoxTest : TestHelper
     [Test]
     public void AutoSize ()
     {
-        if (RunningOnUnix)
-            Assert.Ignore ("Dependent on font height and theme, values are for windows.");
-				
         var f = new Form ();
         f.ShowInTaskbar = false;
 

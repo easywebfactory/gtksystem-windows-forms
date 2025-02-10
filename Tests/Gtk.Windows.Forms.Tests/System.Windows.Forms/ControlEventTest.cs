@@ -18,7 +18,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test BackColorChanged Event
-        c.BackColorChanged += new EventHandler (Event_Handler1);
+        c.BackColorChanged += Event_Handler1;
         c.BackColor = Color.Black;
         Assert.AreEqual (true, eventhandled, "#A1");
 
@@ -29,7 +29,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test BackgroundImageChanged Event
-        c.BackgroundImageChanged += new EventHandler (Event_Handler1);
+        c.BackgroundImageChanged += Event_Handler1;
         var abc = TestResourceHelper.GetFullPathOfResource ("Test/resources/M.gif");
         eventhandled = false;
         c.BackgroundImage = Image.FromFile (abc);
@@ -41,7 +41,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test BindingContextChanged Event
-        c.BindingContextChanged += new EventHandler (Event_Handler1);
+        c.BindingContextChanged += Event_Handler1;
         var bcG1 = new BindingContext ();
         eventhandled = false;
         c.BindingContext = bcG1;
@@ -54,7 +54,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test CausesValidationChanged Event
-        c.CausesValidationChanged += new EventHandler (Event_Handler1);
+        c.CausesValidationChanged += Event_Handler1;
         eventhandled = false;
         c.CausesValidation = false;
         Assert.AreEqual (true, eventhandled, "#A4");
@@ -66,7 +66,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test CursorChanged Event
-        c.CursorChanged += new EventHandler (Event_Handler1);
+        c.CursorChanged += Event_Handler1;
         eventhandled = false;
         c.Cursor = Cursors.Hand;
         Assert.AreEqual (true, eventhandled, "#A6");
@@ -77,7 +77,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test Disposed Event
-        c.Disposed += new EventHandler (Event_Handler1);
+        c.Disposed += Event_Handler1;
         eventhandled = false;
         c.Dispose ();
         Assert.AreEqual (true, eventhandled, "#A7");
@@ -88,7 +88,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test DockChanged Event
-        c.DockChanged += new EventHandler (Event_Handler1);
+        c.DockChanged += Event_Handler1;
         eventhandled = false;
         c.Dock = DockStyle.Bottom;
         Assert.AreEqual (true, eventhandled, "#A8");
@@ -99,7 +99,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test EnabledChanged Event
-        c.EnabledChanged += new EventHandler (Event_Handler1);
+        c.EnabledChanged += Event_Handler1;
         eventhandled = false;
         c.Enabled = false;
         Assert.AreEqual (true, eventhandled, "#A9");
@@ -110,7 +110,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test FontChanged Event
-        c.FontChanged += new EventHandler (Event_Handler1);
+        c.FontChanged += Event_Handler1;
         eventhandled = false;
         c.Font = new Font (c.Font, FontStyle.Bold);
         Assert.AreEqual (true, eventhandled, "#A11");
@@ -121,7 +121,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test ForeColorChanged Event
-        c.ForeColorChanged += new EventHandler (Event_Handler1);
+        c.ForeColorChanged += Event_Handler1;
         eventhandled = false;
         c.ForeColor = Color.Red;
         Assert.AreEqual (true, eventhandled, "#A12");
@@ -132,7 +132,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test HandleCreated Event
-        c.HandleCreated += new EventHandler (Event_Handler1);
+        c.HandleCreated += Event_Handler1;
         eventhandled = false;
         c.Handle.GetType ();
         Assert.AreEqual (true, eventhandled, "#A15");
@@ -143,7 +143,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test ImeModeChanged Event
-        c.ImeModeChanged += new EventHandler (Event_Handler1);
+        c.ImeModeChanged += Event_Handler1;
         eventhandled = false;
         c.ImeMode = ImeMode.Off;
         Assert.AreEqual (true, eventhandled, "#A19");
@@ -154,7 +154,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test LocationChanged Event
-        c.LocationChanged += new EventHandler (Event_Handler1);
+        c.LocationChanged += Event_Handler1;
         eventhandled = false;
         c.Left = 20;
         Assert.AreEqual (true, eventhandled, "#A20");
@@ -165,7 +165,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test Resize Event
-        c.Resize += new EventHandler (Event_Handler1);
+        c.Resize += Event_Handler1;
         eventhandled = false;
         c.Height = 20;
         Assert.AreEqual (true, eventhandled, "#A22");
@@ -176,7 +176,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test RightToLeftChanged Event
-        c.RightToLeftChanged += new EventHandler (Event_Handler1);
+        c.RightToLeftChanged += Event_Handler1;
         eventhandled = false;
         c.RightToLeft = RightToLeft.Yes;
         Assert.AreEqual (true, eventhandled, "#A23");
@@ -187,7 +187,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test SizeChanged Event
-        c.SizeChanged += new EventHandler (Event_Handler1);
+        c.SizeChanged += Event_Handler1;
         eventhandled = false;
         c.Height = 80;
         Assert.AreEqual (true, eventhandled, "#A24");
@@ -198,7 +198,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test TabIndexChanged Event
-        c.TabIndexChanged += new EventHandler (Event_Handler1);
+        c.TabIndexChanged += Event_Handler1;
         eventhandled = false;
         c.TabIndex = 1;
         Assert.AreEqual (true, eventhandled, "#A27");
@@ -209,7 +209,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test TabStopChanged Event
-        c.TabStopChanged += new EventHandler (Event_Handler1);
+        c.TabStopChanged += Event_Handler1;
         eventhandled = false;
         c.TabStop = false;
         Assert.AreEqual (true, eventhandled, "#A28");
@@ -220,7 +220,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test TextChanged Event
-        c.TextChanged += new EventHandler (Event_Handler1);
+        c.TextChanged += Event_Handler1;
         eventhandled = false;
         c.Text = "some Text";
         Assert.AreEqual (true, eventhandled, "#A29");
@@ -231,7 +231,7 @@ public class EventClass : TestHelper
     {
         var c = new Control ();
         // Test VisibleChanged Event
-        c.VisibleChanged += new EventHandler (Event_Handler1);
+        c.VisibleChanged += Event_Handler1;
         eventhandled = false;
         c.Visible = false;
         Assert.AreEqual (true, eventhandled, "#A30");
@@ -252,7 +252,7 @@ public class LayoutEventClass
     public void LayoutTest ()
     {
         var c = new Control ();
-        c.Layout += new LayoutEventHandler (LayoutEvent);
+        c.Layout += LayoutEvent;
         eventhandled = false;
         c.Visible = true;
         c.Height = 100;
@@ -283,9 +283,9 @@ public class LayoutEventClass
     public void LayoutResizeTest ()
     {
         var c = new Control ();
-        c.Layout += new LayoutEventHandler (layout);
-        c.Resize += new EventHandler (resize);
-        c.SizeChanged += new EventHandler (size_changed);
+        c.Layout += layout;
+        c.Resize += resize;
+        c.SizeChanged += size_changed;
         c.Size = new Size (100, 100);
         Assert.AreEqual (1, layout_event, "1");
         Assert.AreEqual (2, resize_event, "2");
@@ -306,7 +306,7 @@ public class ControlAddRemoveEventClass
     public void ControlAddedTest ()
     {
         var c = new Control ();
-        c.ControlAdded += new ControlEventHandler (ControlEvent);
+        c.ControlAdded += ControlEvent;
         var TB = new TextBox ();
         eventhandled = false;
         c.Controls.Add (TB);
@@ -317,7 +317,7 @@ public class ControlAddRemoveEventClass
     public void ControlRemovedTest ()
     {
         var c = new Control ();
-        c.ControlRemoved += new ControlEventHandler (ControlEvent);
+        c.ControlRemoved += ControlEvent;
         var TB = new TextBox ();
         c.Controls.Add (TB);
         eventhandled = false;
@@ -339,7 +339,7 @@ public class ControlRefresh : TestHelper
     public void HandleNotCreated ()
     {
         var c = new Control ();
-        c.Invalidated += new InvalidateEventHandler (Control_Invalidated);
+        c.Invalidated += Control_Invalidated;
 
         c.Visible = true;
         c.Refresh ();
@@ -355,7 +355,7 @@ public class ControlRefresh : TestHelper
     public void Visible ()
     {
         var c = new Control ();
-        c.Invalidated += new InvalidateEventHandler (Control_Invalidated);
+        c.Invalidated += Control_Invalidated;
         c.Visible = true;
 
         var form = new Form ();
@@ -376,7 +376,7 @@ public class ControlRefresh : TestHelper
     public void NotVisible ()
     {
         var c = new Control ();
-        c.Invalidated += new InvalidateEventHandler (Control_Invalidated);
+        c.Invalidated += Control_Invalidated;
         c.Visible = false;
 
         var form = new Form ();

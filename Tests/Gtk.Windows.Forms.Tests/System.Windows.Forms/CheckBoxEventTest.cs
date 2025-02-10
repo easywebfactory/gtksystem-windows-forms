@@ -28,7 +28,7 @@ public class CheckBoxEventTest : TestHelper
         var chkbox = new CheckBox ();
         chkbox.Visible = true;
         myform.Controls.Add (chkbox);
-        chkbox.CheckedChanged += new EventHandler (CheckBox_EventHandler);
+        chkbox.CheckedChanged += CheckBox_EventHandler;
         chkbox.CheckState = CheckState.Indeterminate;
         Assert.AreEqual (true, eventhandled, "#A2");
         myform.Dispose ();
@@ -44,7 +44,7 @@ public class CheckBoxEventTest : TestHelper
         var chkbox = new CheckBox ();
         chkbox.Visible = true;
         myform.Controls.Add (chkbox);
-        chkbox.CheckStateChanged += new EventHandler (CheckBox_EventHandler);
+        chkbox.CheckStateChanged += CheckBox_EventHandler;
         chkbox.CheckState = CheckState.Checked;
         Assert.AreEqual (true, eventhandled, "#A3");
         myform.Dispose ();

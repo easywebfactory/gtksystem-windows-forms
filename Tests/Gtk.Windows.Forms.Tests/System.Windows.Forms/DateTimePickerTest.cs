@@ -39,13 +39,6 @@ public class DateTimePickerTest : TestHelper {
 		
     private static void CheckCulture ()
     {
-        if (!RunningOnUnix) {
-            var LCID = GetUserDefaultLCID ();
-            if ((new CultureInfo ("en-US")).LCID != LCID) {
-                Assert.Ignore ("Must be called with us-english locale, current locale is: " + new CultureInfo (LCID).Name);
-            }
-        }
-			
         if (Thread.CurrentThread.CurrentCulture.Name != "en-US") {
             Assert.Ignore ("Must be called with us-english locale, current locale is: " + Thread.CurrentThread.CurrentCulture.Name);
         }

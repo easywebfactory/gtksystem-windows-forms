@@ -27,7 +27,7 @@ public class DefaultLayoutTest : TestHelper
         b = new Button ();
         p.Controls.Add (b);
 
-        p.Layout += new LayoutEventHandler (p_Layout);
+        p.Layout += p_Layout;
 
         /* set the button's anchor to something different */
         b.Anchor = AnchorStyles.Bottom;
@@ -347,7 +347,7 @@ public class DefaultLayoutTest : TestHelper
     public void TestAnchorDockInteraction ()
     {
         var p = new Panel ();
-        p.DockChanged += new EventHandler (DockChanged_Handler);
+        p.DockChanged += DockChanged_Handler;
 
         Assert.AreEqual (AnchorStyles.Top | AnchorStyles.Left, p.Anchor, "A1");
         Assert.AreEqual (DockStyle.None, p.Dock, "A2");
@@ -681,7 +681,7 @@ public class DockingTests : TestHelper
     [Test]
     public void TestDockSizeChangedEvent ()
     {
-        panel.SizeChanged += new EventHandler (IncrementEventCount);
+        panel.SizeChanged += IncrementEventCount;
         panel.Dock = DockStyle.Bottom;
         Assert.AreEqual (1, event_count);
     }
@@ -689,7 +689,7 @@ public class DockingTests : TestHelper
     [Test]
     public void TestDockLocationChangedEvent ()
     {
-        panel.LocationChanged += new EventHandler (IncrementEventCount);
+        panel.LocationChanged += IncrementEventCount;
         panel.Dock = DockStyle.Bottom;
         Assert.AreEqual (1, event_count);
     }

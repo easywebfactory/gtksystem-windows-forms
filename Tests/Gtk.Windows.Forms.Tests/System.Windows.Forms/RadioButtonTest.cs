@@ -51,7 +51,7 @@ public class RadioButtonTest : TestHelper
         // it should acquire the focus
         var f = new Form ();
         f.Controls.Add (rb);
-        rb.CheckedChanged += new EventHandler (rb_checked_changed);
+        rb.CheckedChanged += rb_checked_changed;
         event_received = false;
 
         f.ActiveControl = rb;
@@ -79,7 +79,7 @@ public class RadioButtonTest : TestHelper
     {
         var rb = new RadioButton ();
 
-        rb.TabStopChanged += new EventHandler (rb_tabstop_changed);
+        rb.TabStopChanged += rb_tabstop_changed;
         event_received = false;
 
         rb.TabStop = true;
@@ -148,7 +148,7 @@ public class RadioButtonEventTestClass : TestHelper
         myForm.Controls.Add (rButton1);
         rButton1.Checked = false;
         eventhandled = false;
-        rButton1.CheckedChanged += new EventHandler (RadioButton_EventHandler);
+        rButton1.CheckedChanged += RadioButton_EventHandler;
         rButton1.Checked = true;
         Assert.AreEqual (true, eventhandled, "#3");
         myForm.Dispose ();

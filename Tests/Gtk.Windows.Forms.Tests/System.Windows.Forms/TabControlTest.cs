@@ -181,7 +181,7 @@ public class TabControlTest : TestHelper
     public void Controls_Remove_HandleCreated ()
     {
         var tab = new TabControl ();
-        tab.SelectedIndexChanged += new EventHandler (SelectedIndexChanged);
+        tab.SelectedIndexChanged += SelectedIndexChanged;
 
         var form = new Form ();
         form.ShowInTaskbar = false;
@@ -241,7 +241,7 @@ public class TabControlTest : TestHelper
     public void Controls_Remove_HandleNotCreated ()
     {
         var tab = new TabControl ();
-        tab.SelectedIndexChanged += new EventHandler (SelectedIndexChanged);
+        tab.SelectedIndexChanged += SelectedIndexChanged;
         tab.Controls.Add (new TabPage ());
         tab.Controls.Add (new TabPage ());
         tab.Controls.Add (new TabPage ());
@@ -300,7 +300,7 @@ public class TabControlTest : TestHelper
     public void SelectedIndex ()
     {
         var tab = new TabControl ();
-        tab.SelectedIndexChanged += new EventHandler (SelectedIndexChanged);
+        tab.SelectedIndexChanged += SelectedIndexChanged;
         tab.Controls.Add (new TabPage ());
         tab.Controls.Add (new TabPage ());
 
@@ -360,7 +360,7 @@ public class TabControlTest : TestHelper
     public void SelectedIndex_Ignore ()
     {
         var c = new TabControl ();
-        c.SelectedIndexChanged += new EventHandler (SelectedIndexChanged);
+        c.SelectedIndexChanged += SelectedIndexChanged;
         c.SelectedIndex = 0;
         Assert.AreEqual (0, _selected_index_changed, "#1");
 
@@ -384,7 +384,7 @@ public class TabControlTest : TestHelper
         var form = new Form ();
         form.ShowInTaskbar = false;
         var tab = new TabControl ();
-        tab.SelectedIndexChanged += new EventHandler (SelectedIndexChanged);
+        tab.SelectedIndexChanged += SelectedIndexChanged;
         form.Controls.Add (tab);
 
         Assert.AreEqual (-1, tab.SelectedIndex, "#A1");
@@ -489,14 +489,14 @@ public class TabControlTest : TestHelper
 
         f.Show ();
         b1.Focus ();
-        b2.GotFocus += new EventHandler (delegate (Object _, EventArgs _) {
+        b2.GotFocus += delegate (Object _, EventArgs _) {
             tc.SelectedIndex = 1;
-        });
+        };
 			
-        tc.GotFocus += new EventHandler(delegate (Object _, EventArgs _) { events += ("tc_OnGotFocus" + tc.SelectedIndex + ";"); });
-        tc.SelectedIndexChanged += new EventHandler(delegate (Object _, EventArgs _) { events += ("tc_OnSelectedIndexChanged" + tc.SelectedIndex + ";"); });
-        p2.Enter += new EventHandler(delegate (Object _, EventArgs _) { events += ("p2_OnEnter" + tc.SelectedIndex + ";"); });
-        p2.Leave += new EventHandler (delegate (Object _, EventArgs _) { events += ("p2_OnLeave;"); });
+        tc.GotFocus += delegate (Object _, EventArgs _) { events += ("tc_OnGotFocus" + tc.SelectedIndex + ";"); };
+        tc.SelectedIndexChanged += delegate (Object _, EventArgs _) { events += ("tc_OnSelectedIndexChanged" + tc.SelectedIndex + ";"); };
+        p2.Enter += delegate (Object _, EventArgs _) { events += ("p2_OnEnter" + tc.SelectedIndex + ";"); };
+        p2.Leave += delegate (Object _, EventArgs _) { events += ("p2_OnLeave;"); };
 	
         b2.Focus ();
         Assert.AreEqual ("tc_OnGotFocus0;p2_OnEnter1;tc_OnSelectedIndexChanged1;", events, "A1");

@@ -275,7 +275,7 @@ public class LabelEventTest : TestHelper
         var l = new Label();
         l.Visible = true;
         myform.Controls.Add(l);
-        l.AutoSizeChanged += new EventHandler(Label_EventHandler);
+        l.AutoSizeChanged += Label_EventHandler;
         l.AutoSize = true;
         Assert.AreEqual(true, eventhandled, "B4");
         eventhandled = false;
@@ -291,7 +291,7 @@ public class LabelEventTest : TestHelper
         var l = new Label();
         l.Visible = true;
         myform.Controls.Add(l);
-        l.BackgroundImageChanged += new EventHandler(Label_EventHandler);
+        l.BackgroundImageChanged += Label_EventHandler;
         l.BackgroundImage = Image.FromFile(TestResourceHelper.GetFullPathOfResource("Test/System.Windows.Forms/bitmaps/a.png"));
         Assert.AreEqual(true, eventhandled, "B4");
         eventhandled = false;
@@ -307,7 +307,7 @@ public class LabelEventTest : TestHelper
         var l = new Label();
         l.Visible = true;
         myform.Controls.Add(l);
-        l.ImeModeChanged += new EventHandler(Label_EventHandler);
+        l.ImeModeChanged += Label_EventHandler;
         l.ImeMode = ImeMode.Katakana;
         Assert.AreEqual(true, eventhandled, "I16");
         eventhandled = false;
@@ -323,7 +323,7 @@ public class LabelEventTest : TestHelper
         var l = new MyLabel();
         l.Visible = true;
         myform.Controls.Add(l);
-        l.KeyDown += new KeyEventHandler(Label_KeyDownEventHandler);
+        l.KeyDown += Label_KeyDownEventHandler;
         l.KeyPressA();
 
         Assert.AreEqual(true, eventhandled, "K1");
@@ -340,7 +340,7 @@ public class LabelEventTest : TestHelper
         var l = new Label();
         l.Visible = true;
         myform.Controls.Add(l);
-        l.TabStopChanged += new EventHandler(Label_EventHandler);
+        l.TabStopChanged += Label_EventHandler;
         l.TabStop = true;
         Assert.AreEqual(true, eventhandled, "T3");
         eventhandled = false;
@@ -792,20 +792,20 @@ public class MyLabel2 : Label
     protected ArrayList results = new ArrayList();
     public MyLabel2() : base()
     {
-        AutoSizeChanged += new EventHandler(AutoSizeChanged_Handler);
-        HandleCreated += new EventHandler(HandleCreated_Handler);
-        BindingContextChanged += new EventHandler(BindingContextChanged_Handler);
-        BackgroundImageChanged += new EventHandler(BackgroundImageChanged_Handler);
-        ImeModeChanged += new EventHandler(ImeModeChanged_Handler);
-        KeyDown += new KeyEventHandler(KeyDown_Handler);
-        KeyPress += new KeyPressEventHandler(KeyPress_Handler);
-        KeyUp += new KeyEventHandler(KeyUp_Handler);
-        Invalidated += new InvalidateEventHandler(Invalidated_Handler);
-        Resize += new EventHandler(Resize_Handler);
-        SizeChanged += new EventHandler(SizeChanged_Handler);
-        Layout += new LayoutEventHandler(Layout_Handler);
-        VisibleChanged += new EventHandler(VisibleChanged_Handler);
-        Paint += new PaintEventHandler(Paint_Handler);
+        AutoSizeChanged += AutoSizeChanged_Handler;
+        HandleCreated += HandleCreated_Handler;
+        BindingContextChanged += BindingContextChanged_Handler;
+        BackgroundImageChanged += BackgroundImageChanged_Handler;
+        ImeModeChanged += ImeModeChanged_Handler;
+        KeyDown += KeyDown_Handler;
+        KeyPress += KeyPress_Handler;
+        KeyUp += KeyUp_Handler;
+        Invalidated += Invalidated_Handler;
+        Resize += Resize_Handler;
+        SizeChanged += SizeChanged_Handler;
+        Layout += Layout_Handler;
+        VisibleChanged += VisibleChanged_Handler;
+        Paint += Paint_Handler;
     }
 
     protected void AutoSizeChanged_Handler(object sender, EventArgs e)

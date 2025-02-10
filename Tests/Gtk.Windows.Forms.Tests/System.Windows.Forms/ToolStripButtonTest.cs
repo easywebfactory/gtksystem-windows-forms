@@ -135,8 +135,8 @@ public class ToolStripButtonTests : TestHelper
 			
         public EventWatcher (ToolStripButton tsi)
         {
-            tsi.CheckedChanged += new EventHandler (delegate (Object _, EventArgs _) { events += ("CheckedChanged;"); });
-            tsi.CheckStateChanged += new EventHandler (delegate (Object _, EventArgs _) { events += ("CheckStateChanged;"); });
+            tsi.CheckedChanged += delegate (Object _, EventArgs _) { events += ("CheckedChanged;"); };
+            tsi.CheckStateChanged += delegate (Object _, EventArgs _) { events += ("CheckStateChanged;"); };
         }
 
         public override string ToString ()

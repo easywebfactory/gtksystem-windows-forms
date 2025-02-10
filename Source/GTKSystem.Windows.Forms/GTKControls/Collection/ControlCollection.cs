@@ -24,8 +24,11 @@ namespace System.Windows.Forms
             {
                 __ownerControl = owner.GtkControl as Gtk.Container;
                 __owner = owner;
-                __ownerControl.Mapped += __ownerControl_Mapped;
-                __ownerControl.ResizeChecked += __ownerControl_ResizeChecked;
+                if (__ownerControl != null)
+                {
+                    __ownerControl.Mapped += __ownerControl_Mapped;
+                    __ownerControl.ResizeChecked += __ownerControl_ResizeChecked;
+                }
             }
 
             public ControlCollection(Control owner, Gtk.Container ownerContainer)
@@ -64,12 +67,16 @@ namespace System.Windows.Forms
                 {
                     if (item is Control control)
                     {
-                        control.Widget.MarginStart = Math.Max(0, control.Widget.MarginStart + Offset.X);
-                        control.Widget.MarginTop = Math.Max(0, control.Widget.MarginTop + Offset.Y);
-                        int w = control.Widget.WidthRequest == -1 ? control.Widget.AllocatedWidth : control.Widget.WidthRequest;
-                        int h = control.Widget.HeightRequest == -1 ? control.Widget.AllocatedHeight : control.Widget.HeightRequest;
-                        laywidth = Math.Max(2, Math.Max(laywidth, control.Widget.MarginStart + w + control.Widget.MarginEnd));
-                        layheight = Math.Max(2, Math.Max(layheight, control.Widget.MarginTop + h + control.Widget.MarginBottom));
+                        var widget = control.Widget;
+                        if (widget != null)
+                        {
+                            widget.MarginStart = Math.Max(0, widget.MarginStart + Offset.X);
+                            widget.MarginTop = Math.Max(0, widget.MarginTop + Offset.Y);
+                            int w = widget.WidthRequest == -1 ? widget.AllocatedWidth : widget.WidthRequest;
+                            int h = widget.HeightRequest == -1 ? widget.AllocatedHeight : widget.HeightRequest;
+                            laywidth = Math.Max(2, Math.Max(laywidth, widget.MarginStart + w + widget.MarginEnd));
+                            layheight = Math.Max(2, Math.Max(layheight, widget.MarginTop + h + widget.MarginBottom));
+                        }
                     }
                     else if (item is Gtk.Widget widget)
                     {
@@ -123,9 +130,10 @@ namespace System.Windows.Forms
                         }
                         else if (item is Control control)
                         {
-                            lay.AddOverlay(control.Widget);
-                            lay.WidthRequest = Math.Max(2, Math.Max(lay.WidthRequest, control.Widget.MarginStart + control.Widget.WidthRequest + control.Widget.MarginEnd));
-                            lay.HeightRequest = Math.Max(2, Math.Max(lay.HeightRequest, control.Widget.MarginTop + control.Widget.HeightRequest + control.Widget.MarginBottom));
+                            var widget = control.Widget;
+                            lay.AddOverlay(widget);
+                            lay.WidthRequest = Math.Max(2, Math.Max(lay.WidthRequest, (widget?.MarginStart??0) + (widget?.WidthRequest??0) + widget?.MarginEnd??0));
+                            lay.HeightRequest = Math.Max(2, Math.Max(lay.HeightRequest, (widget?.MarginTop??0) + (widget?.HeightRequest??0) + (widget?.MarginBottom??0)));
                             control.DockChanged += Control_DockChanged;
                             control.AnchorChanged += Control_AnchorChanged;
                             SetMarginEnd(lay, control);
@@ -166,7 +174,7 @@ namespace System.Windows.Forms
                 }
                 finally
                 {
-                    if (__ownerControl.IsRealized)
+                    if (__ownerControl?.IsRealized??false)
                     {
                         if (item is Control con)
                             con.Widget.ShowAll();
@@ -211,12 +219,12 @@ namespace System.Windows.Forms
                 if (lay.IsMapped == true)
                 {
                     Gtk.Widget widget = control.Widget;
-                    if (widget.Halign == Gtk.Align.End || widget.Halign == Gtk.Align.Fill)
+                    if (widget != null && (widget.Halign == Gtk.Align.End || widget.Halign == Gtk.Align.Fill))
                     {
                         if (widget.WidthRequest > 0)
                             widget.MarginEnd = Math.Max(0, lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
                     }
-                    if (widget.Valign == Gtk.Align.End || widget.Valign == Gtk.Align.Fill)
+                    if (widget != null && (widget.Valign == Gtk.Align.End || widget.Valign == Gtk.Align.Fill))
                     {
                         if (widget.HeightRequest > 0)
                             widget.MarginBottom = Math.Max(0, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
