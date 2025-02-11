@@ -304,7 +304,7 @@ namespace System.Windows.Forms
         public void ResetSelectedProperty()
         {
         }
-        public void SaveState(RegistryKey key)
+        void IComPropertyBrowser.SaveState(RegistryKey key)
         {
             throw new NotImplementedException();
         }

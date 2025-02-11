@@ -21,7 +21,7 @@ namespace System.Windows.Forms
         }
 
         private static string appDataDirectory { get {
-                string[] assemblyFullName = Assembly.GetEntryAssembly().FullName.Split(",");
+                string[] assemblyFullName = Assembly.GetEntryAssembly().FullName.Split([","], StringSplitOptions.None);
                 string _namespace = assemblyFullName[0];
                 AssemblyName assembly = Assembly.GetExecutingAssembly().GetName();
                 return Path.Combine(_namespace, assembly.Name, assembly.Version.ToString());
@@ -216,7 +216,7 @@ namespace System.Windows.Forms
                 if (File.Exists(themesetuppath))
                 {
                     string[] setuptheme = File.ReadAllLines(themesetuppath, Text.Encoding.UTF8);
-                    Dictionary<string,string> nameValue = setuptheme.Where(w=>w.Contains("=")).ToDictionary(k => k.Split('=')[0],v=>v.Split("=")[1]);
+                    Dictionary<string,string> nameValue = setuptheme.Where(w=>w.Contains("=")).ToDictionary(k => k.Split('=')[0],v=>v.Split(["="], StringSplitOptions.None)[1]);
                     nameValue.TryGetValue("UseDefaultStyle", out string usedef);
                     if (usedef != "false")
                         cssBuilder.AppendLine(css_style);

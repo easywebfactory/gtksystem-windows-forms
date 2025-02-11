@@ -48,8 +48,8 @@ namespace System.Windows.Forms
                 string keytext = args.NewText.ToUpper();
                 if (char.IsNumber(args.NewText[0]))
                     keytext = "D" + keytext;
-                var keyv = Enum.GetValues<Keys>().Where(k=> {  
-                    return Enum.GetName(k) == keytext;
+                var keyv = Enum.GetValues(typeof(Keys)).Cast<Keys>().Where(k=> {  
+                    return Enum.GetName(typeof(Keys), k) == keytext;
                 });
                 foreach(var key in keyv) 
                     KeyDown(this, new KeyEventArgs(key));
