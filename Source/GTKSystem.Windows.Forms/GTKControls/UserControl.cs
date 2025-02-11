@@ -38,6 +38,18 @@ namespace System.Windows.Forms
             self.Override.Paint += Override_Paint;
             self.ParentSet += Self_ParentSet;
         }
+        public override Padding Padding
+        {
+            get => base.Padding;
+            set
+            {
+                base.Padding = value;
+                contaner.MarginStart = value.Left;
+                contaner.MarginTop = value.Top;
+                contaner.MarginEnd = value.Right;
+                contaner.MarginBottom = value.Bottom;
+            }
+        }
         private void Self_ParentSet(object o, ParentSetArgs args)
         {
             OnParentChanged(EventArgs.Empty);

@@ -19,7 +19,7 @@ namespace System.Windows.Forms
         private Gtk.Application app = Application.Init();
         public FormBase self = new FormBase();
         public override object GtkControl { get => self; }
-        private Gtk.Overlay _body = new Gtk.Overlay();
+        private Gtk.Overlay contanter = new Gtk.Overlay();
         private ObjectCollection _ObjectCollection;
         public override event EventHandler SizeChanged;
 
@@ -34,15 +34,15 @@ namespace System.Windows.Forms
         private void Init()
         {
             this.SetScrolledWindow(self);
-            _body.Valign = Gtk.Align.Fill;
-            _body.Halign = Gtk.Align.Fill;
-            _body.Hexpand = true;
-            _body.Vexpand = true;
-            _body.MarginBottom = 0;
-            _body.MarginEnd = 0;
-            _body.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
-            self.ScrollView.Child = _body;
-            _ObjectCollection = new ObjectCollection(this, _body);
+            contanter.Valign = Gtk.Align.Fill;
+            contanter.Halign = Gtk.Align.Fill;
+            contanter.Hexpand = true;
+            contanter.Vexpand = true;
+            contanter.MarginBottom = 0;
+            contanter.MarginEnd = 0;
+            contanter.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
+            self.ScrollView.Child = contanter;
+            _ObjectCollection = new ObjectCollection(this, contanter);
             self.ResizeChecked += Self_ResizeChecked;
             self.Shown += Control_Shown;
             self.CloseWindowEvent += Self_CloseWindowEvent;
@@ -381,10 +381,10 @@ namespace System.Windows.Forms
             set
             {
                 base.Padding = value;
-                _body.MarginStart = value.Left;
-                _body.MarginTop = value.Top;
-                _body.MarginEnd = value.Right;
-                _body.MarginBottom = value.Bottom;
+                contanter.MarginStart = value.Left;
+                contanter.MarginTop = value.Top;
+                contanter.MarginEnd = value.Right;
+                contanter.MarginBottom = value.Bottom;
             }
         }
         public bool MaximizeBox { get; set; } = true;

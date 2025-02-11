@@ -10,15 +10,11 @@ namespace System.Windows.Forms
         public static readonly string defaultListViewGroupKey = "_DefaultListViewGroup_";
         ListView.ListViewItemCollection _items;
         internal Gtk.Box _groupbox { get; set; }
-        private static ListViewGroup _defaultGroup;
-        public static ListViewGroup GetDefaultListViewGroup() {
-            if (_defaultGroup == null)
-            {
-                _defaultGroup = new ListViewGroup("default", HorizontalAlignment.Left);
-                _defaultGroup.Header = "default";
-                _defaultGroup.Name = ListViewGroup.defaultListViewGroupKey;
-                _defaultGroup.Subtitle = "";
-            }
+        public static ListViewGroup CreateDefaultListViewGroup() {
+            ListViewGroup _defaultGroup = new ListViewGroup("default", HorizontalAlignment.Left);
+            _defaultGroup.Header = "default";
+            _defaultGroup.Name = ListViewGroup.defaultListViewGroupKey;
+            _defaultGroup.Subtitle = "";
             return _defaultGroup;
         }
         public ListViewGroup() : this("", "")

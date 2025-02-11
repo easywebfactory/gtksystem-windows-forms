@@ -8,7 +8,6 @@
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
-using static Gtk.Paned;
 
 
 namespace System.Windows.Forms
@@ -27,7 +26,6 @@ namespace System.Windows.Forms
             self.Pack1(_panel1.Widget, false, true);
             self.Pack2(_panel2.Widget, true, true);
         }
-
         private SplitterPanel _panel1;
         private SplitterPanel _panel2;
         public SplitterPanel Panel1
@@ -68,8 +66,8 @@ namespace System.Windows.Forms
             set {
                 _fixedPanel = value;
                 bool resize = value == FixedPanel.Panel2;
-                ((PanedChild)self[_panel1.Widget]).Resize = resize;
-                ((PanedChild)self[_panel2.Widget]).Resize = !resize;
+                ((Paned.PanedChild)self[_panel1.Widget]).Resize = resize;
+                ((Paned.PanedChild)self[_panel2.Widget]).Resize = !resize;
             } 
         }
     }

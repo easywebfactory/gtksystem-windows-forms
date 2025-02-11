@@ -32,7 +32,8 @@ namespace System.Windows.Forms
         private ColumnHeaderCollection _columns;
         internal Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
         internal Gtk.Box flowBoxContainer = new Gtk.Box(Gtk.Orientation.Vertical, 0);
-        internal Gtk.Box header = new Gtk.Box(Gtk.Orientation.Horizontal,0);
+        internal Gtk.Box header = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
+        internal Gtk.Layout headerView;
         private int __headerheight = 30;
         public ListView() : base()
         {
@@ -45,21 +46,39 @@ namespace System.Windows.Forms
             header.Spacing = 0;
             header.BorderWidth = 0;
             header.Halign = Gtk.Align.Fill;
-            header.Valign = Gtk.Align.Start;
+            header.Valign = Gtk.Align.Fill;
             header.HeightRequest = __headerheight;
             // header.WidthRequest = 500;
             header.Homogeneous = false;
             header.NoShowAll = true;
             header.Visible = false;
             header.Hide();
-            self.box.PackStart(header, false, true, 0);
 
             flowBoxContainer.Halign = Gtk.Align.Fill;
             flowBoxContainer.Valign = Gtk.Align.Start;
+            scrolledWindow.Halign = Gtk.Align.Fill;
+            scrolledWindow.Valign = Gtk.Align.Fill;
             scrolledWindow.Add(flowBoxContainer);
-            self.box.PackStart(scrolledWindow, true, true, 0);
+            scrolledWindow.OverlayScrolling = false;
+            scrolledWindow.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
+            headerView = new Gtk.Layout(null, null);
+            headerView.Halign = Gtk.Align.Fill;
+            headerView.Valign = Gtk.Align.Start;
+            headerView.Hexpand = true;
+            headerView.Vexpand = false;
+            headerView.HeightRequest = __headerheight;
+            headerView.Width = 100000;
+            headerView.Add(header);
+            self.box.PackStart(headerView, false, true, 0);
+            self.box.PackStart(scrolledWindow, false, true, 0);
             this.BorderStyle = BorderStyle.Fixed3D;
         }
+
+        private void Hadjustment_ValueChanged(object sender, EventArgs e)
+        {
+            headerView.Hadjustment.Value = scrolledWindow.Hadjustment.Value;
+        }
+
         private bool ControlRealized = false;
         private void Control_Realized(object sender, EventArgs e)
         {
@@ -73,12 +92,12 @@ namespace System.Windows.Forms
 
                     foreach (ColumnHeader col in Columns)
                     {
-                        LabelBase label = new LabelBase(col.Text) { Xalign=0, Xpad = 5, WidthRequest = col.Width, MaxWidthChars = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.End, Ellipsize = Pango.EllipsizeMode.End, Wrap = false, LineWrap = false };
+                        LabelBase label = new LabelBase(col.Text) { Xalign = 0, Xpad = 5, WidthRequest = col.Width, MaxWidthChars = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.End, Ellipsize = Pango.EllipsizeMode.End, Wrap = false, LineWrap = false };
                         label.TooltipText = col.Text;
                         label.Markup = col.Text;
                         label.Data.Add("ColumnIndex", col.DisplayIndex);
                         label.Override.DrawnBackground += Override_DrawnBackground;
-                        var columbt = new Gtk.Button(label) { MarginStart=0, WidthRequest = col.Width, HeightRequest = __headerheight, Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill };
+                        var columbt = new Gtk.Button(label) { MarginStart = 0, WidthRequest = col.Width, HeightRequest = __headerheight, Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill };
                         columbt.ActionTargetValue = new GLib.Variant(col.DisplayIndex);
                         columbt.Data.Add("ColumnIndex", col.DisplayIndex);
                         columbt.Clicked += Columbt_Clicked;
@@ -98,7 +117,6 @@ namespace System.Windows.Forms
 
                 MultiSelect = MultiSelect == true;
                 self.ShowAll();
-                
             }
         }
 
@@ -252,7 +270,8 @@ namespace System.Windows.Forms
         }
         internal void NativeGroupsClear()
         {
-            foreach(var  group in flowBoxContainer.Children) {
+            foreach (var group in flowBoxContainer.Children)
+            {
                 flowBoxContainer.Remove(group);
                 group.Dispose();
             }
@@ -315,7 +334,7 @@ namespace System.Windows.Forms
         {
             if (item._flowBoxChild != null && item._flowBoxChild.Parent is Gtk.FlowBox flowBox)
             {
-                if(isselected==true)
+                if (isselected == true)
                     flowBox.SelectChild(item._flowBoxChild);
                 else
                     flowBox.UnselectChild(item._flowBoxChild);
@@ -386,7 +405,7 @@ namespace System.Windows.Forms
                     else
                         boxitem.Data.Add(col.DisplayIndex, string.Empty);
                 }
-          
+
                 boxitem.Add(hBox);
 
                 Gtk.FlowBox flowBox = DefaultGroup.FlowBox;
@@ -568,7 +587,7 @@ namespace System.Windows.Forms
                                     ItemChecked(sender, new ItemCheckedEventArgs(thisitem));
                                 }
                             }
-                        }; 
+                        };
                         hBox.PackStart(checkBox.self, false, true, 5);
                     }
                     if (this.View == View.SmallIcon)
@@ -892,7 +911,7 @@ namespace System.Windows.Forms
             {
                 if (_defaultGroup == null)
                 {
-                    _defaultGroup = ListViewGroup.GetDefaultListViewGroup();
+                    _defaultGroup = ListViewGroup.CreateDefaultListViewGroup();
                 }
                 return _defaultGroup;
             }
@@ -1101,59 +1120,59 @@ namespace System.Windows.Forms
         }
 
         [ListBindable(false)]
-		public class ListViewItemCollection : List<ListViewItem>, IList
-		{
+        public class ListViewItemCollection : List<ListViewItem>, IList
+        {
             ListView _owner;
-			public virtual ListViewItem this[string key]
-			{
-				get
-				{
-					return base.Find(w => w.Name == key);
-				}
-			}
+            public virtual ListViewItem this[string key]
+            {
+                get
+                {
+                    return base.Find(w => w.Name == key);
+                }
+            }
 
             public ListViewItemCollection(ListView owner)
-			{
-				_owner = owner;
+            {
+                _owner = owner;
             }
 
             public new void Add(ListViewItem item)
             {
                 AddCore(item, -1);
             }
-			public virtual ListViewItem Add(string text)
-			{
-				return Add("", text, -1);
+            public virtual ListViewItem Add(string text)
+            {
+                return Add("", text, -1);
             }
 
-			public virtual ListViewItem Add(string text, int imageIndex)
-			{
+            public virtual ListViewItem Add(string text, int imageIndex)
+            {
                 return Add("", text, imageIndex);
             }
 
-			public virtual ListViewItem Add(string text, string imageKey)
+            public virtual ListViewItem Add(string text, string imageKey)
             {
                 return Add("", text, imageKey);
             }
 
-			public virtual ListViewItem Add(string key, string text, string imageKey)
-			{
-				ListViewItem item = new ListViewItem(text,imageKey);
+            public virtual ListViewItem Add(string key, string text, string imageKey)
+            {
+                ListViewItem item = new ListViewItem(text, imageKey);
                 item.Name = key;
-				item.Text = text;
+                item.Text = text;
                 AddCore(item, -1);
                 return item;
             }
 
-			public virtual ListViewItem Add(string key, string text, int imageIndex)
-			{
-                ListViewItem item = new ListViewItem(text,imageIndex);
+            public virtual ListViewItem Add(string key, string text, int imageIndex)
+            {
+                ListViewItem item = new ListViewItem(text, imageIndex);
                 item.Name = key;
                 AddCore(item, -1);
                 return item;
             }
             private void AddCore(ListViewItem item, int position)
-			{
+            {
                 item._listView = _owner;
                 item.Index = Count;
                 if (item.Group == null)
@@ -1167,101 +1186,101 @@ namespace System.Windows.Forms
                 foreach (ListViewItem item in items)
                 {
                     AddCore(item, -1);
-                }   
+                }
             }
 
-			public void AddRange(ListViewItemCollection items)
-			{
-				 foreach(ListViewItem item in items)
-                    AddCore(item,-1);
-			}
-
-			public virtual bool ContainsKey(string key)
-			{
-				return base.FindIndex(w => w.Name == key) > -1;
+            public void AddRange(ListViewItemCollection items)
+            {
+                foreach (ListViewItem item in items)
+                    AddCore(item, -1);
             }
 
-			public void CopyTo(Array dest, int index)
-			{
-				throw null;
-			}
+            public virtual bool ContainsKey(string key)
+            {
+                return base.FindIndex(w => w.Name == key) > -1;
+            }
 
-			public ListViewItem[] Find(string key, bool searchAllSubItems)
-			{
-				if(searchAllSubItems)
-					return base.FindAll(w => w.Name == key && w.SubItems.ContainsKey(key)).ToArray();
-				else
+            public void CopyTo(Array dest, int index)
+            {
+                throw null;
+            }
+
+            public ListViewItem[] Find(string key, bool searchAllSubItems)
+            {
+                if (searchAllSubItems)
+                    return base.FindAll(w => w.Name == key && w.SubItems.ContainsKey(key)).ToArray();
+                else
                     return base.FindAll(w => w.Name == key).ToArray();
             }
 
-			public virtual int IndexOfKey(string key)
-			{
-				return base.FindIndex(w => w.Name == key);
-			}
+            public virtual int IndexOfKey(string key)
+            {
+                return base.FindIndex(w => w.Name == key);
+            }
 
-			public ListViewItem Insert(int index, string text)
-			{
+            public ListViewItem Insert(int index, string text)
+            {
                 return Insert(index, "", text, -1);
             }
 
-			public ListViewItem Insert(int index, string text, int imageIndex)
-			{
+            public ListViewItem Insert(int index, string text, int imageIndex)
+            {
                 return Insert(index, "", text, imageIndex);
             }
 
-			public ListViewItem Insert(int index, string text, string imageKey)
-			{
-				return Insert(index, "", text, imageKey);
+            public ListViewItem Insert(int index, string text, string imageKey)
+            {
+                return Insert(index, "", text, imageKey);
             }
 
-			public virtual ListViewItem Insert(int index, string key, string text, string imageKey)
-			{
+            public virtual ListViewItem Insert(int index, string key, string text, string imageKey)
+            {
                 ListViewItem item = new ListViewItem(text, imageKey);
                 item.Name = key;
                 base.Insert(index, item);
                 return item;
             }
 
-			public virtual ListViewItem Insert(int index, string key, string text, int imageIndex)
-			{
+            public virtual ListViewItem Insert(int index, string key, string text, int imageIndex)
+            {
                 ListViewItem item = new ListViewItem(text, imageIndex);
                 item.Name = key;
-				base.Insert(index, item);
-				return item;
-			}
+                base.Insert(index, item);
+                return item;
+            }
 
-			public virtual void RemoveByKey(string key)
-			{
-				base.Remove(base.Find(w => w.Name == key));
-			}
+            public virtual void RemoveByKey(string key)
+            {
+                base.Remove(base.Find(w => w.Name == key));
+            }
             public new void Clear()
             {
                 if (_owner != null)
                     _owner.NativeItemsClear();
                 base.Clear();
             }
-		}
+        }
 
-		[ListBindable(false)]
-		public class SelectedIndexCollection : List<int>
-		{
-			
-		}
-
-		[ListBindable(false)]
-		public class SelectedListViewItemCollection : List<ListViewItem>
+        [ListBindable(false)]
+        public class SelectedIndexCollection : List<int>
         {
-		
-		}
 
-		public ItemActivation Activation { get; set; }
+        }
+
+        [ListBindable(false)]
+        public class SelectedListViewItemCollection : List<ListViewItem>
+        {
+
+        }
+
+        public ItemActivation Activation { get; set; }
 
         public bool CheckBoxes { get; set; }
 
         public CheckedIndexCollection CheckedIndices
-		{
-			get
-			{
+        {
+            get
+            {
                 CheckedIndexCollection selecteditems = new CheckedIndexCollection(this);
                 foreach (ListViewItem item in CheckedItems)
                 {
@@ -1269,14 +1288,14 @@ namespace System.Windows.Forms
                 }
                 return selecteditems;
             }
-		}
+        }
 
-		public CheckedListViewItemCollection CheckedItems
-		{
-			get
-			{
+        public CheckedListViewItemCollection CheckedItems
+        {
+            get
+            {
                 CheckedListViewItemCollection selecteditems = new CheckedListViewItemCollection(this);
-                foreach(ListViewItem item in this.Items)
+                foreach (ListViewItem item in this.Items)
                 {
                     if (item.Checked)
                     {
@@ -1285,58 +1304,58 @@ namespace System.Windows.Forms
                 }
                 return selecteditems;
             }
-		}
-		public ColumnHeaderCollection Columns
-		{
-			get
-			{
-				return _columns;
-			}
-		}
+        }
+        public ColumnHeaderCollection Columns
+        {
+            get
+            {
+                return _columns;
+            }
+        }
 
-		public bool FullRowSelect { get; set; }
+        public bool FullRowSelect { get; set; }
 
         public ListViewGroupCollection Groups
-		{
-			get
-			{
+        {
+            get
+            {
                 return _groups;
             }
-		}
+        }
 
-		public ListViewItemCollection Items
-		{
-			get
-			{
+        public ListViewItemCollection Items
+        {
+            get
+            {
                 return _items;
             }
-		}
+        }
 
-		public IComparer ListViewItemSorter
-		{
-			get;
-			set;
-		}
+        public IComparer ListViewItemSorter
+        {
+            get;
+            set;
+        }
 
-		public SelectedIndexCollection SelectedIndices
-		{
-			get
-			{
+        public SelectedIndexCollection SelectedIndices
+        {
+            get
+            {
                 SelectedIndexCollection selecteditems = new SelectedIndexCollection();
-                foreach(ListViewItem item in SelectedItems)
+                foreach (ListViewItem item in SelectedItems)
                 {
                     selecteditems.Add(item.Index);
                 }
-               
+
                 return selecteditems;
             }
-		}
+        }
 
-		public SelectedListViewItemCollection SelectedItems
-		{
-			get
-			{
-				SelectedListViewItemCollection selecteditems = new SelectedListViewItemCollection();
+        public SelectedListViewItemCollection SelectedItems
+        {
+            get
+            {
+                SelectedListViewItemCollection selecteditems = new SelectedListViewItemCollection();
                 foreach (ListViewItem item in this.Items)
                 {
                     if (item.Selected)
@@ -1346,25 +1365,25 @@ namespace System.Windows.Forms
                 }
                 return selecteditems;
             }
-		}
+        }
 
         public ListViewItem FindItemWithText(string text)
-		{
+        {
             return Items.Find(w => w.Text == text);
         }
 
-		public ListViewItem FindItemWithText(string text, bool includeSubItemsInSearch, int startIndex)
-		{
+        public ListViewItem FindItemWithText(string text, bool includeSubItemsInSearch, int startIndex)
+        {
             int idx = Items.FindIndex(startIndex, w => w.Text == text);
             return idx == -1 ? null : Items[idx];
         }
 
-		public ListViewItem FindItemWithText(string text, bool includeSubItemsInSearch, int startIndex, bool isPrefixSearch)
-		{
+        public ListViewItem FindItemWithText(string text, bool includeSubItemsInSearch, int startIndex, bool isPrefixSearch)
+        {
             int idx = Items.FindIndex(startIndex, w => w.Text == text);
             return idx == -1 ? null : Items[idx];
         }
-       // public override event MouseEventHandler MouseDown;
+        // public override event MouseEventHandler MouseDown;
         public ListViewItem GetItemAt(int x, int y)
         {
             foreach (Gtk.Box vbox in flowBoxContainer.Children)
@@ -1389,17 +1408,17 @@ namespace System.Windows.Forms
         }
 
         public Drawing.Rectangle GetItemRect(int index)
-		{
+        {
             throw null;
-		}
+        }
 
         public event ColumnClickEventHandler ColumnClick;
         public event ColumnReorderedEventHandler ColumnReordered;
         public event ItemCheckEventHandler ItemCheck;
         public event ItemCheckedEventHandler ItemChecked;
         public event ListViewItemSelectionChangedEventHandler ItemSelectionChanged;
-		public event EventHandler SelectedIndexChanged;
-		//public override event EventHandler Click;
-		public event EventHandler ItemActivate;
+        public event EventHandler SelectedIndexChanged;
+        //public override event EventHandler Click;
+        public event EventHandler ItemActivate;
     }
 }
