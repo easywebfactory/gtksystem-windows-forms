@@ -1,13 +1,10 @@
-﻿
-using Gdk;
-using Gtk;
+﻿using Gtk;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -21,7 +18,7 @@ namespace System.Windows.Forms
         }
 
         private static string appDataDirectory { get {
-                string[] assemblyFullName = Assembly.GetEntryAssembly().FullName.Split(",");
+                string[] assemblyFullName = Assembly.GetEntryAssembly().FullName.Split(',');
                 string _namespace = assemblyFullName[0];
                 AssemblyName assembly = Assembly.GetExecutingAssembly().GetName();
                 return Path.Combine(_namespace, assembly.Name, assembly.Version.ToString());
@@ -216,7 +213,7 @@ namespace System.Windows.Forms
                 if (File.Exists(themesetuppath))
                 {
                     string[] setuptheme = File.ReadAllLines(themesetuppath, Text.Encoding.UTF8);
-                    Dictionary<string,string> nameValue = setuptheme.Where(w=>w.Contains("=")).ToDictionary(k => k.Split('=')[0],v=>v.Split("=")[1]);
+                    Dictionary<string,string> nameValue = setuptheme.Where(w=>w.Contains("=")).ToDictionary(k => k.Split('=')[0],v=>v.Split('=')[1]);
                     nameValue.TryGetValue("UseDefaultStyle", out string usedef);
                     if (usedef != "false")
                         cssBuilder.AppendLine(css_style);

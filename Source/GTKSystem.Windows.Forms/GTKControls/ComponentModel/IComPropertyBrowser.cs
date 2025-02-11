@@ -9,7 +9,7 @@ namespace System.Windows.Forms.ComponentModel.Com2Interop;
 /// <summary>
 ///  Allows Visual Studio to communicate internally with the PropertyGrid control.
 /// </summary>
-public interface IComPropertyBrowser
+internal interface IComPropertyBrowser
 {
     /// <summary>
     ///  Closes andy open drop-down controls on the <see cref="PropertyGrid"/> control.

@@ -165,7 +165,7 @@ namespace System.Windows.Forms
             //    throw new InvalidOperationException(SR.ImageListStreamerSaveFailed);
             //}
 
-            ReadOnlySpan<byte> buffer = stream.GetBuffer().AsSpan()[..(int)stream.Length];
+            ReadOnlySpan<byte> buffer = stream.GetBuffer().AsSpan(0, (int)stream.Length);
             return Compress(buffer);
         }
 

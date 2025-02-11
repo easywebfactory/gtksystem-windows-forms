@@ -12,6 +12,16 @@ namespace System.Windows.Forms
         private record TabInfo(PropertyTab Tab, PropertyTabScope Scope, ToolStripButton Button)
         {
             public Type TabType => Tab.GetType();
+            public PropertyTab Tab { get; } = Tab;
+            public PropertyTabScope Scope { get; } = Scope;
+            public ToolStripButton Button { get; } = Button;
+
+            public void Deconstruct(out PropertyTab Tab, out PropertyTabScope Scope, out ToolStripButton Button)
+            {
+                Tab = this.Tab;
+                Scope = this.Scope;
+                Button = this.Button;
+            }
         }
     }
 }

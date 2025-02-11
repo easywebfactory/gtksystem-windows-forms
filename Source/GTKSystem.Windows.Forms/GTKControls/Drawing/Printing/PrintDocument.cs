@@ -40,7 +40,8 @@ namespace System.Drawing.Printing
                 PageSettings pageSettings = DefaultPageSettings;
                 pageSettings.Landscape = value.Orientation == Gtk.PageOrientation.Landscape || value.Orientation == Gtk.PageOrientation.ReverseLandscape;
                 pageSettings.Margins = new Margins((int)value.GetLeftMargin(Unit.Points), (int)value.GetTopMargin(Unit.Points), (int)value.GetRightMargin(Unit.Points), (int)value.GetBottomMargin(Unit.Points));
-                pageSettings.PaperSize = new System.Drawing.Printing.PaperSize(Enum.Parse<PaperKind>(value.PaperSize.DisplayName), value.PaperSize.Name, (int)value.PaperSize.GetWidth(Unit.Points), (int)value.PaperSize.GetHeight(Unit.Points));
+                Enum.TryParse(value.PaperSize.DisplayName, out PaperKind paperKind);
+                pageSettings.PaperSize = new System.Drawing.Printing.PaperSize(paperKind, value.PaperSize.Name, (int)value.PaperSize.GetWidth(Unit.Points), (int)value.PaperSize.GetHeight(Unit.Points));
                 _userSetPageSettings = true;
             }
         }

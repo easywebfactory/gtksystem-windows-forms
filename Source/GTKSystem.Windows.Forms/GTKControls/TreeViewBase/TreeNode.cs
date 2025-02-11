@@ -20,6 +20,7 @@ namespace System.Windows.Forms
         internal Gtk.TreeIter TreeIter = Gtk.TreeIter.Zero;
         private TreeNode parent;
         internal TreeView treeView;
+
         internal TreeView TreeView
         {
             get
@@ -52,6 +53,12 @@ namespace System.Windows.Forms
             this.parent = node;
             this.treeView = node.TreeView;
         }
+        public TreeNode(string text, int pImageIndex, int pSelectedImageIndex) : this(text)
+        {
+            ImageIndex = pImageIndex;
+            SelectedImageIndex = pSelectedImageIndex;
+        }
+
         public TreeNodeCollection Nodes
         {
             get
@@ -152,6 +159,8 @@ namespace System.Windows.Forms
         public string SelectedImageKey { get; set; }
         public int StateImageIndex { get; set; }
         public string StateImageKey { get; set; }
+        public object Tag { get; set; }
+
         public void Expand(){
             TreeView?.SetExpandNode(this, false);
         }
@@ -162,6 +171,10 @@ namespace System.Windows.Forms
         public void Collapse()
         {
             TreeView?.SetCollapseNode(this);
+        }
+        public void Remove()
+        {
+            TreeView?.RemoveNode(this);
         }
         public object Clone()
         {

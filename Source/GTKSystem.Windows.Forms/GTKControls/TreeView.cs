@@ -253,6 +253,10 @@ namespace System.Windows.Forms
         {
             return self.TreeView.GetRowExpanded(_store.GetPath(node.TreeIter));
         }
+        internal void RemoveNode(TreeNode node)
+        {
+            _store.Remove(ref node.TreeIter);
+        }
         public bool ShowLines { get=> self.TreeView.EnableTreeLines; set { self.TreeView.EnableTreeLines = true; self.TreeView.EnableGridLines = Gtk.TreeViewGridLines.Horizontal; } }
         public bool ShowNodeToolsTips { get; set; }
         public bool ShowPlusMinus { get; set; } = true;

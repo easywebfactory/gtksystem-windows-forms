@@ -124,8 +124,8 @@ namespace System.Drawing
 					if (propertyItem2 != null)
 					{
 						byte[] value2 = propertyItem2.Value;
-						_loopCount = BitConverter.ToInt16(value2);
-					}
+						_loopCount = BitConverter.ToInt16(value2, 0);
+                    }
 					else
 					{
 						_loopCount = 0;
