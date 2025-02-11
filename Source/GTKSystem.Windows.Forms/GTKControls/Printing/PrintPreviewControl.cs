@@ -226,7 +226,7 @@ namespace System.Windows.Forms
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override void ResetBackColor() => BackColor = SystemColors.AppWorkspace;
+        public override void ResetBackColor() => BackColor = GtkSystemColors.AppWorkspace;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override void ResetForeColor() => ForeColor = Color.White;

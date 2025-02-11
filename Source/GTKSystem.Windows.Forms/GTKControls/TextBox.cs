@@ -53,9 +53,8 @@ namespace System.Windows.Forms
                 string keytext = args.NewText.ToUpper();
                 if (char.IsNumber(args.NewText[0]))
                     keytext = "D" + keytext;
-                var keyv = Enum.GetValues<Keys>().Where(k =>
-                {
-                    return Enum.GetName(k) == keytext;
+                var keyv = Enum.GetValues(typeof(Keys)).Cast<Keys>().Where(k=> {  
+                    return Enum.GetName(typeof(Keys), k) == keytext;
                 });
                 foreach (var key in keyv)
                     KeyDown(this, new KeyEventArgs(key));
@@ -67,7 +66,7 @@ namespace System.Windows.Forms
             if (TextChanged != null && self.IsVisible) { TextChanged(this, EventArgs.Empty); }
         }
 
-        public string[] Lines => string.IsNullOrEmpty(Text) ? new string[0] : Text.Replace("\r\n", "\n").Split("\n");
+        public string[] Lines => string.IsNullOrEmpty(Text) ? new string[0] : Text.Replace("\r\n", "\n").Split('\n');
         public string PlaceholderText { get { return self.PlaceholderText; } set { self.PlaceholderText = value ?? ""; } }
         public override string Text { get { return self.Text; } set { self.Text = value ?? ""; } }
         public virtual char PasswordChar { get => self.InvisibleChar; set { self.InvisibleChar = value; self.Visibility = false; } }

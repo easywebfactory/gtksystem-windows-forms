@@ -155,7 +155,7 @@ public class TextBoxTest : TestHelper
     [Test]
     public void BackColorTest ()
     {
-        Assert.AreEqual (SystemColors.Window, textBox.BackColor, "#A1");
+        Assert.AreEqual (GtkSystemColors.Window, textBox.BackColor, "#A1");
         textBox.BackColor = Color.Red;
         Assert.AreEqual (Color.Red, textBox.BackColor, "#A2");
         textBox.BackColor = Color.White;
@@ -187,7 +187,7 @@ public class TextBoxTest : TestHelper
         Assert.AreEqual (2, _invalidated, "#B11");
         Assert.AreEqual (0, _paint, "#B12");
         textBox.BackColor = Color.Empty;
-        Assert.AreEqual (SystemColors.Window, textBox.BackColor, "#B13");
+        Assert.AreEqual (GtkSystemColors.Window, textBox.BackColor, "#B13");
         Assert.AreEqual (3, _invalidated, "#B14");
         Assert.AreEqual (0, _paint, "#B15");
 			
@@ -224,7 +224,7 @@ public class TextBoxTest : TestHelper
     [Test]		
     public void ForeColorTest ()
     {
-        Assert.AreEqual (SystemColors.WindowText, textBox.ForeColor, "#A1");
+        Assert.AreEqual (GtkSystemColors.WindowText, textBox.ForeColor, "#A1");
         textBox.ForeColor = Color.Red;
         Assert.AreEqual (Color.Red, textBox.ForeColor, "#A2");
         textBox.ForeColor = Color.White;
@@ -261,7 +261,7 @@ public class TextBoxTest : TestHelper
     {
         textBox.ReadOnly = true;
         Assert.IsTrue (textBox.ReadOnly, "#A1");
-        Assert.AreEqual (SystemColors.Control, textBox.BackColor, "#A2");
+        Assert.AreEqual (GtkSystemColors.Control, textBox.BackColor, "#A2");
 
         var form = new Form ();
         form.ShowInTaskbar = false;
@@ -269,19 +269,19 @@ public class TextBoxTest : TestHelper
         form.Show ();
 
         Assert.IsTrue (textBox.ReadOnly, "#B1");
-        Assert.AreEqual (SystemColors.Control, textBox.BackColor, "#B2");
+        Assert.AreEqual (GtkSystemColors.Control, textBox.BackColor, "#B2");
 
         textBox.ResetBackColor ();
         Assert.IsTrue (textBox.ReadOnly, "#C1");
-        Assert.AreEqual (SystemColors.Control, textBox.BackColor, "#C2");
+        Assert.AreEqual (GtkSystemColors.Control, textBox.BackColor, "#C2");
 
         textBox.ReadOnly = false;
         Assert.IsFalse (textBox.ReadOnly, "#D1");
-        Assert.AreEqual (SystemColors.Window, textBox.BackColor, "#D2");
+        Assert.AreEqual (GtkSystemColors.Window, textBox.BackColor, "#D2");
 
         textBox.ReadOnly = true;
         Assert.IsTrue (textBox.ReadOnly, "#E1");
-        Assert.AreEqual (SystemColors.Control, textBox.BackColor, "#E2");
+        Assert.AreEqual (GtkSystemColors.Control, textBox.BackColor, "#E2");
 
         textBox.BackColor = Color.Red;
         Assert.IsTrue (textBox.ReadOnly, "#F1");
@@ -297,7 +297,7 @@ public class TextBoxTest : TestHelper
 
         textBox.ResetBackColor ();
         Assert.IsTrue (textBox.ReadOnly, "#I1");
-        Assert.AreEqual (SystemColors.Control, textBox.BackColor, "#I2");
+        Assert.AreEqual (GtkSystemColors.Control, textBox.BackColor, "#I2");
 
         form.Close ();
     }
@@ -337,7 +337,7 @@ public class TextBoxTest : TestHelper
         textBox.ReadOnly = true;
         textBox.ResetBackColor ();
         Assert.IsTrue (textBox.ReadOnly, "#G1");
-        Assert.AreEqual (SystemColors.Control, textBox.BackColor, "#G2");
+        Assert.AreEqual (GtkSystemColors.Control, textBox.BackColor, "#G2");
 
         form.Dispose ();
 
@@ -361,7 +361,7 @@ public class TextBoxTest : TestHelper
 
         textBox.ResetBackColor ();
         Assert.IsFalse (textBox.ReadOnly, "#K1");
-        Assert.AreEqual (SystemColors.Window, textBox.BackColor, "#K2");
+        Assert.AreEqual (GtkSystemColors.Window, textBox.BackColor, "#K2");
 			
         form.Close ();
     }

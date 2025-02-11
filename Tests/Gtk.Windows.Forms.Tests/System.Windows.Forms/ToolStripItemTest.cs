@@ -42,14 +42,14 @@ public class ToolStripItemTests : TestHelper
         ToolStripItem tsi = new NullToolStripItem ();
 
         Assert.AreEqual (false, tsi.AutoToolTip, "A5");
-        Assert.AreEqual (SystemColors.Control, tsi.BackColor, "A7");
+        Assert.AreEqual (GtkSystemColors.Control, tsi.BackColor, "A7");
         Assert.AreEqual (null, tsi.BackgroundImage, "A8");
         Assert.AreEqual (ImageLayout.Tile, tsi.BackgroundImageLayout, "A9");
         Assert.AreEqual (new Rectangle (0,0,23,23), tsi.Bounds, "A10");
         Assert.AreEqual (ToolStripItemDisplayStyle.ImageAndText, tsi.DisplayStyle, "A13");
         Assert.AreEqual (true, tsi.Enabled, "A16");
         //Assert.AreEqual (new Font ("Tahoma", 8.25f), tsi.Font, "A17");
-        Assert.AreEqual (SystemColors.ControlText, tsi.ForeColor, "A18");
+        Assert.AreEqual (GtkSystemColors.ControlText, tsi.ForeColor, "A18");
         Assert.AreEqual (23, tsi.Height, "A19");
         Assert.AreEqual (null, tsi.Image, "A20");
         Assert.AreEqual (ContentAlignment.MiddleCenter, tsi.ImageAlign, "A21");
@@ -608,13 +608,13 @@ public class ToolStripItemTests : TestHelper
 
         ts.Items.Add (tsi);
 
-        Assert.AreEqual (SystemColors.Control, ts.BackColor, "C1");
-        Assert.AreEqual (SystemColors.Control, tsi.BackColor, "C2");
+        Assert.AreEqual (GtkSystemColors.Control, ts.BackColor, "C1");
+        Assert.AreEqual (GtkSystemColors.Control, tsi.BackColor, "C2");
 
         ts.BackColor = Color.BlueViolet;
 
         Assert.AreEqual (Color.BlueViolet, ts.BackColor, "C3");
-        Assert.AreEqual (SystemColors.Control, tsi.BackColor, "C4");
+        Assert.AreEqual (GtkSystemColors.Control, tsi.BackColor, "C4");
 
         tsi.BackColor = Color.Snow;
 

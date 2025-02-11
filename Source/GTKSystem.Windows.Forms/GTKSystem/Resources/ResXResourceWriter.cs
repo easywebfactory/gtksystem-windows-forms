@@ -361,7 +361,7 @@ namespace System.Resources
 
             if (!string.IsNullOrEmpty(modifiedBasePath))
             {
-                if (!modifiedBasePath.EndsWith(Path.DirectorySeparatorChar))
+                if (!modifiedBasePath.EndsWith(Path.DirectorySeparatorChar.ToString()))
                 {
                     modifiedBasePath += Path.DirectorySeparatorChar;
                 }

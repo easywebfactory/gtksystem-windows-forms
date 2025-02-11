@@ -29,7 +29,7 @@ namespace System.Windows.Forms
         ///  Creates a new DrawItemEventArgs with the given parameters.
         /// </summary>
         public DrawItemEventArgs(Graphics graphics, Font? font, Rectangle rect, int index, DrawItemState state)
-            : this(graphics, font, rect, index, state, SystemColors.WindowText, SystemColors.Window)
+            : this(graphics, font, rect, index, state, GtkSystemColors.WindowText, GtkSystemColors.Window)
         { }
 
         /// <summary>
@@ -91,10 +91,10 @@ namespace System.Windows.Forms
         ///  depending on whether this item is selected.
         /// </summary>
         public Color ForeColor
-            => (State & DrawItemState.Selected) == DrawItemState.Selected ? SystemColors.HighlightText : _foreColor;
+            => (State & DrawItemState.Selected) == DrawItemState.Selected ? GtkSystemColors.HighlightText : _foreColor;
 
         public Color BackColor
-            => (State & DrawItemState.Selected) == DrawItemState.Selected ? SystemColors.Highlight : _backColor;
+            => (State & DrawItemState.Selected) == DrawItemState.Selected ? GtkSystemColors.Highlight : _backColor;
 
         public void Dispose()
         {

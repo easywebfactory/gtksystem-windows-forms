@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+	  <TargetFrameworks>netstandard2.0</TargetFrameworks>
       <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	  <Authors>chenhongjin</Authors>
 	  <Company>chenhongjin</Company>
@@ -26,7 +26,7 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
 	  <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 	  <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	  <SignAssembly>False</SignAssembly>
-
+	  <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -39,10 +39,13 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="GTKControls\Internal\**" />
     <Compile Remove="Resources\Forms_ico\**" />
     <Compile Remove="Resources\icons\**" />
+    <EmbeddedResource Remove="GTKControls\Internal\**" />
     <EmbeddedResource Remove="Resources\Forms_ico\**" />
     <EmbeddedResource Remove="Resources\icons\**" />
+    <None Remove="GTKControls\Internal\**" />
     <None Remove="Resources\Forms_ico\**" />
     <None Remove="Resources\icons\**" />
   </ItemGroup>
@@ -223,7 +226,6 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="GTKControls\Internal\" />
     <Folder Include="obj\Debug\" />
   </ItemGroup>
 

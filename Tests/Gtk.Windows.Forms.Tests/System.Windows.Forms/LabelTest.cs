@@ -126,7 +126,7 @@ public class LabelTest : TestHelper
         Assert.IsTrue(l.Enabled, "#29");
 
         Assert.IsFalse(l.Focused, "#31");
-        Assert.AreEqual(SystemColors.ControlText, l.ForeColor, "#33");
+        Assert.AreEqual(GtkSystemColors.ControlText, l.ForeColor, "#33");
 
         Assert.IsFalse(l.HasChildren, "#35");
 

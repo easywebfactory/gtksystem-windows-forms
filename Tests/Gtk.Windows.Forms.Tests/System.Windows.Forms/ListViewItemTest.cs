@@ -651,8 +651,8 @@ public class ListViewSubItemTest : TestHelper
     {
         var subItem = new ListViewItem.ListViewSubItem ();
         Assert.AreEqual (string.Empty, subItem.Text, "#1");
-        Assert.AreEqual (SystemColors.Window, subItem.BackColor, "#2");
-        Assert.AreEqual (SystemColors.WindowText, subItem.ForeColor, "#3");
+        Assert.AreEqual (GtkSystemColors.Window, subItem.BackColor, "#2");
+        Assert.AreEqual (GtkSystemColors.WindowText, subItem.ForeColor, "#3");
     }
 
     [Test] // ctor (ListViewItem, String)

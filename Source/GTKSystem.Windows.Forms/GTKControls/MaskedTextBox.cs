@@ -135,6 +135,6 @@ namespace System.Windows.Forms
             get { return !string.IsNullOrWhiteSpace(Mask) && IsMasking; }
         }
 
-        public string[] Lines => string.IsNullOrEmpty(Text) ? new string[0] : Text.Replace("\r\n", "\n").Split("\n");
+        public string[] Lines => string.IsNullOrEmpty(Text) ? new string[0] : Text.Replace("\r\n", "\n").Split('\n');
     }
 }

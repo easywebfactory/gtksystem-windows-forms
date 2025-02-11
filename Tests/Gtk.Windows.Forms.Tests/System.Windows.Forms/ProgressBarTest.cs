@@ -58,7 +58,7 @@ public class ProgressBarTest : TestHelper
     public void ForeColorTest ()
     {
         var progressBar = new ProgressBar ();
-        Assert.AreEqual (SystemColors.Highlight, progressBar.ForeColor, "#A1");
+        Assert.AreEqual (GtkSystemColors.Highlight, progressBar.ForeColor, "#A1");
         progressBar.ForeColor = Color.Red;
         Assert.AreEqual (Color.Red, progressBar.ForeColor, "#A2");
         progressBar.ForeColor = Color.White;
@@ -86,7 +86,7 @@ public class ProgressBarTest : TestHelper
         var progressBar = new ProgressBar ();
         progressBar.ForeColor = Color.Red;
         progressBar.ResetForeColor ();
-        Assert.AreEqual (SystemColors.Highlight, progressBar.ForeColor);
+        Assert.AreEqual (GtkSystemColors.Highlight, progressBar.ForeColor);
     }
 
     [Test]

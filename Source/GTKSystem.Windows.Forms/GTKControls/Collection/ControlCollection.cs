@@ -299,7 +299,10 @@ namespace System.Windows.Forms
             [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
             public virtual void AddRange(params Control[] controls)
             {
-                ArgumentNullException.ThrowIfNull(controls);
+                if (controls == null)
+                {
+                    throw new ArgumentNullException(nameof(controls));
+                }
 
                 if (controls.Length == 0)
                 {

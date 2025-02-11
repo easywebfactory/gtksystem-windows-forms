@@ -106,7 +106,7 @@ namespace System.Resources
                 }
             }
 
-            return string.Concat(relPath.ToString(), path2.AsSpan(si + 1));
+            return string.Concat(relPath.ToString(), path2.Substring(si + 1));
         }
 
         internal void MakeFilePathRelative(string basePath)
