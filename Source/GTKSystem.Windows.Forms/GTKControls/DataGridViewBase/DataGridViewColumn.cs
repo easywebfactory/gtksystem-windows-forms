@@ -58,7 +58,6 @@ namespace System.Windows.Forms
             {
                 CellRendererToggleValue tggle = (CellRendererToggleValue)o;
                 val.Value = tggle.Active == false;
-                model.SetValue(iter, this.DisplayIndex, val);
                 _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices.Last(), val);
             }
         }
@@ -102,7 +101,6 @@ namespace System.Windows.Forms
             {
                 CellRendererToggleValue tggle = (CellRendererToggleValue)o;
                 val.Value = tggle.Active == false;
-                model.SetValue(iter, this.DisplayIndex, val);
                 _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices.Last(), val);
             }
         }
@@ -152,7 +150,6 @@ namespace System.Windows.Forms
             if (cell is CellValue val)
             {
                 val.Value = args.NewText;
-                model.SetValue(iter, this.DisplayIndex, val);
                 _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices.Last(), val);
             }
         }
@@ -330,7 +327,6 @@ namespace System.Windows.Forms
             if (cell is CellValue val)
             {
                 val.Value = args.NewText;
-                model.SetValue(iter, this.DisplayIndex, val);
                 _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices.Last(), val);
             }
         }

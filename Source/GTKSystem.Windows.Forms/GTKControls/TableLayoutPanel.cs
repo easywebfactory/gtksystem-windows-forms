@@ -39,6 +39,7 @@ namespace System.Windows.Forms
         {
             Size size = this.Size;
             int ridx = 0;
+            self.WidthRequest = size.Width;
             foreach (RowStyle rs in RowStyles)
             {
                 if (rs.SizeType == SizeType.Absolute)
@@ -63,7 +64,7 @@ namespace System.Windows.Forms
                 }
                 else if (cs.SizeType == SizeType.Percent)
                 {
-                    for (int r = 0; r < ColumnCount; r++)
+                    for (int r = 0; r < RowCount; r++)
                     {
                         self.GetChildAt(cidx, r).WidthRequest = Convert.ToInt32(size.Width * cs.Width * 0.01);
                     }
@@ -97,13 +98,13 @@ namespace System.Windows.Forms
             get => _ColumnCount;
             set
             {
-                for (int r = 0; r < RowCount; r++)
+                for (int r = 0; r < _RowCount; r++)
                 {
                     for (int c = 0; c < value; c++)
                     {
                         if (self.GetChildAt(c, r) == null)
                         {
-                            self.Attach(new Gtk.Viewport() { Vexpand = false, Hexpand = false }, c, r, 1, 1);
+                            self.Attach(new Gtk.Viewport() { Vexpand = false, Hexpand = false, BorderWidth = 0, Valign = Gtk.Align.Fill, Halign = Gtk.Align.Fill }, c, r, 1, 1);
                         }
                     }
                 }
@@ -130,11 +131,11 @@ namespace System.Windows.Forms
             {
                 for (int r = 0; r < value; r++)
                 {
-                    for (int c = 0; c < ColumnCount; c++)
+                    for (int c = 0; c < _ColumnCount; c++)
                     {
                         if (self.GetChildAt(c, r) == null)
                         {
-                            self.Attach(new Gtk.Viewport() { Vexpand = false, Hexpand = false }, c, r, 1, 1);
+                            self.Attach(new Gtk.Viewport() { Vexpand = true, Hexpand = false, BorderWidth = 0, Valign = Gtk.Align.Fill, Halign = Gtk.Align.Fill }, c, r, 1, 1);
                         }
                     }
                 }

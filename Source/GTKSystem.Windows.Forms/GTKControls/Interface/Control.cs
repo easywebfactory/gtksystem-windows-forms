@@ -1455,13 +1455,14 @@ namespace System.Windows.Forms
             }
         }
 
-        public bool ParticipatesInLayout => throw new NotImplementedException();
+        public bool ParticipatesInLayout => false;
 
         PropertyStore IArrangedElement.Properties => throw new NotImplementedException();
 
         IArrangedElement IArrangedElement.Container => throw new NotImplementedException();
 
-        public ArrangedElementCollection Children => throw new NotImplementedException();
+        private ArrangedElementCollection arrangedElementCollection;
+        public ArrangedElementCollection Children => arrangedElementCollection;
 
         protected virtual void OnKeyDown(KeyEventArgs e)
         {
