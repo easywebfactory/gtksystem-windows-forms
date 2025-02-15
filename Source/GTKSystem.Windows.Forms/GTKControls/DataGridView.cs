@@ -48,7 +48,6 @@ namespace System.Windows.Forms
         private List<int> _selectedBandIndexes = new List<int>();
         private void Selection_Changed(object sender, EventArgs e)
         {
-            SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             _selectedBandIndexes.Clear();
             TreePath[] treePaths = GridView.Selection.GetSelectedRows();
             foreach (TreePath path in treePaths)
@@ -106,8 +105,55 @@ namespace System.Windows.Forms
         {
             GridView.CollapseRow(Store.GetPath(row.TreeIter));
         }
-        public bool MultiSelect { get => !GridView.ActivateOnSingleClick; set { GridView.ActivateOnSingleClick = !value; } }
-        public DataGridViewSelectionMode SelectionMode { get; set; }
+        private bool _MultiSelect = true;
+        public bool MultiSelect { 
+            get => _MultiSelect; 
+            set {
+                _MultiSelect = value;
+                GridView.ActivateOnSingleClick = !_MultiSelect;
+                if (_SelectionMode == DataGridViewSelectionMode.CellSelect)
+                {
+                    GridView.Selection.Mode = Gtk.SelectionMode.None;
+                }
+                else
+                {
+                    if (_MultiSelect == true)
+                        GridView.Selection.Mode = Gtk.SelectionMode.Multiple;
+                    else
+                        GridView.Selection.Mode = Gtk.SelectionMode.Single;
+                }
+            } 
+        }
+
+        private DataGridViewSelectionMode _SelectionMode = DataGridViewSelectionMode.RowHeaderSelect;
+        public DataGridViewSelectionMode SelectionMode {
+            get => _SelectionMode;
+            set {
+                _SelectionMode = value;
+                switch (_SelectionMode)
+                {
+                    case DataGridViewSelectionMode.CellSelect:
+                        {
+                            GridView.Selection.Mode = Gtk.SelectionMode.None;
+                            break;
+                        }
+
+                    case DataGridViewSelectionMode.FullColumnSelect:
+                    case DataGridViewSelectionMode.ColumnHeaderSelect:
+                        {
+                            GridView.Selection.Mode = Gtk.SelectionMode.Multiple;
+                            break;
+                        }
+
+                    case DataGridViewSelectionMode.FullRowSelect:
+                    case DataGridViewSelectionMode.RowHeaderSelect:
+                        {
+                            GridView.Selection.Mode = Gtk.SelectionMode.Multiple;
+                            break;
+                        }
+                }
+                
+            } }
         public string Markup { get; set; } = "...";
         public bool ReadOnly { get; set; }
         public int RowHeadersWidth { get; set; }
