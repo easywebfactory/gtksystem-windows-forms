@@ -30,6 +30,10 @@ namespace System.Windows.Forms
         public new void Add(DataGridViewColumn column)
         {
             column.DataGridView = __owner;
+            column.Index = Count;
+            column.DisplayIndex = column.Index;
+            column.SetGridViewDefaultStyle(__owner.DefaultCellStyle);
+
             DataGridViewCellStyle _cellStyle = column.DefaultCellStyle;
             if (__owner.ColumnHeadersDefaultCellStyle != null)
                 _cellStyle = __owner.ColumnHeadersDefaultCellStyle;
@@ -111,26 +115,22 @@ namespace System.Windows.Forms
             {
                 __owner.GridView.Model = __owner.Store;
             }
-            if (__owner.GridView.Columns.Length <= __owner.Store.NColumns)
+            for(int i=0;i < __owner.Store.NColumns; i++)
             {
-                int idx = 0;
-                foreach (DataGridViewColumn column in this)
+                __owner.Store.SetSortFunc(i, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
                 {
-                    column.Index = idx;
-                    column.DisplayIndex = column.Index;
-                    column.DataGridView = __owner;
-                    column.Clear();
-                    column.Renderer();
-                    __owner.Store.SetSortFunc(idx, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
-                    {
-                        __owner.Store.GetSortColumnId(out int sortid, out Gtk.SortType order);
-                        if (m.GetValue(t1, sortid) == null || m.GetValue(t2, sortid) == null)
-                            return 0;
-                        else
-                            return m.GetValue(t1, sortid).ToString().CompareTo(m.GetValue(t2, sortid).ToString());
-                    }));
-                    idx++;
-                }
+                    __owner.Store.GetSortColumnId(out int sortid, out Gtk.SortType order);
+                    CellValue v1= m.GetValue(t1, sortid) as CellValue;
+                    CellValue v2 = m.GetValue(t2, sortid) as CellValue;
+                    if (v1?.Text == null || v2?.Text == null)
+                        return 0;
+                    else if(int.TryParse(v1.Text,out int rv1) && int.TryParse(v2.Text, out int rv2))
+                        return (rv2 - rv1);
+                    else if (DateTime.TryParse(v1.Text, out DateTime rd1) && DateTime.TryParse(v2.Text, out DateTime rd2))
+                        return (int)((rd2 - rd1).TotalSeconds);
+                    else
+                        return v2.Text.CompareTo(v1.Text);
+                }));
             }
         }
         public int GetColumnCount(DataGridViewElementStates includeFilter)

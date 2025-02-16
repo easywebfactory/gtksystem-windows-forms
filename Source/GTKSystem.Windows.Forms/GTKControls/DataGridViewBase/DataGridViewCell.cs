@@ -92,6 +92,9 @@ namespace System.Windows.Forms
     public class DataGridViewCheckBoxCell : DataGridViewCell
     {
     }
+    public class DataGridViewRadioCell : DataGridViewCell
+    {
+    }
     public class DataGridViewComboBoxCell : DataGridViewCell
     {
     }

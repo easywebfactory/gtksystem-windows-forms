@@ -226,11 +226,11 @@ namespace System.Windows.Forms
                 if (_columns.Exists(m => m.DataPropertyName == col.ColumnName) == false)
                 {
                     if (col.DataType.Name == "Boolean")
-                        _columns.Add(new DataGridViewCheckBoxColumn() { Name = col.ColumnName, HeaderText = col.ColumnName, DataPropertyName = col.ColumnName, ValueType = col.DataType });
+                        _columns.Add(new DataGridViewCheckBoxColumn(this) { Name = col.ColumnName, HeaderText = col.ColumnName, DataPropertyName = col.ColumnName, ValueType = col.DataType });
                     else if (col.DataType.Name == "Image" || col.DataType.Name == "Bitmap")
-                        _columns.Add(new DataGridViewImageColumn() { Name = col.ColumnName, HeaderText = col.ColumnName, DataPropertyName = col.ColumnName, ValueType = col.DataType });
+                        _columns.Add(new DataGridViewImageColumn(this) { Name = col.ColumnName, HeaderText = col.ColumnName, DataPropertyName = col.ColumnName, ValueType = col.DataType });
                     else
-                        _columns.Add(new DataGridViewColumn() { Name = col.ColumnName, HeaderText = col.ColumnName, DataPropertyName = col.ColumnName, ValueType = col.DataType });
+                        _columns.Add(new DataGridViewColumn(this) { Name = col.ColumnName, HeaderText = col.ColumnName, DataPropertyName = col.ColumnName, ValueType = col.DataType });
                 }
             }
             _columns.Invalidate();
@@ -274,11 +274,11 @@ namespace System.Windows.Forms
                     if (_columns.Exists(m => m.DataPropertyName == pro.Name) == false)
                     {
                         if (pro.PropertyType.Name == "Boolean")
-                            _columns.Add(new DataGridViewCheckBoxColumn() { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
+                            _columns.Add(new DataGridViewCheckBoxColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
                         else if (pro.PropertyType.Name == "Image" || pro.PropertyType.Name == "Bitmap")
-                            _columns.Add(new DataGridViewImageColumn() { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
+                            _columns.Add(new DataGridViewImageColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
                         else
-                            _columns.Add(new DataGridViewColumn() { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
+                            _columns.Add(new DataGridViewColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
                     }
                 }
                 _columns.Invalidate();

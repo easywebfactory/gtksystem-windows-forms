@@ -7,11 +7,26 @@
 using Gdk;
 using GLib;
 using Gtk;
+using Pango;
 using System.Diagnostics.CodeAnalysis;
 
 namespace System.Windows.Forms.GtkRender
 {
-    public class CellRendererValue : CellRendererText
+    public interface ICellRenderer
+    {
+        CellValue CellValue { set; }
+        DataGridViewCellStyle DefaultStyle { set; }
+        Pango.WrapMode WrapMode { get; set; }
+        int WrapWidth { get; set; }
+        int WidthChars { get; set; }
+        int Height { get; set; }
+        string Markup { get; set; }
+        bool Editable { get; set; }
+        bool Activatable { get; set; }
+        Gtk.CellRendererMode Mode { get; set; }
+    }
+
+    public class CellRendererValue : CellRendererText, ICellRenderer
     {
         DataGridViewColumn Column;
         public CellRendererValue(DataGridViewColumn view)
@@ -25,12 +40,29 @@ namespace System.Windows.Forms.GtkRender
             {
                 if (value != null)
                 {
-                    value.SetTextWithStyle(Column, this);
+                    value.SetTextWithStyle(this);
                 }
             }
         }
+        public DataGridViewCellStyle DefaultStyle
+        {
+            set
+            {
+                if (value?.WrapMode == DataGridViewTriState.True)
+                {
+                    this.WrapMode = Pango.WrapMode.WordChar;
+                    this.WrapWidth = 0;
+                    this.WidthChars = 0;
+                }
+                CellValue cellValue = new CellValue();
+                cellValue.SetTextWithStyle(value, this);
+            }
+        }
+
+        public bool Activatable { get; set; }
+        string ICellRenderer.Markup { get; set; }
     }
-    public class CellRendererToggleValue : CellRendererToggle
+    public class CellRendererToggleValue : CellRendererToggle, ICellRenderer
     {
         DataGridViewColumn Column;
         public CellRendererToggleValue(DataGridViewColumn view)
@@ -45,12 +77,31 @@ namespace System.Windows.Forms.GtkRender
                 if (value != null)
                 {
                     this.Active = (value.Text == "1" || value.Text?.ToLower() == "true");
-                    value.SetControlWithStyle(Column, this);
+                    value.SetControlWithStyle(this);
                 }
             }
         }
+        public DataGridViewCellStyle DefaultStyle {
+            set
+            {
+                if (value?.WrapMode == DataGridViewTriState.True)
+                {
+                    this.WrapMode = Pango.WrapMode.WordChar;
+                    this.WrapWidth = 0;
+                    this.WidthChars = 0;
+                }
+                CellValue cellValue = new CellValue();
+                cellValue.SetControlWithStyle(value, this);
+            }
+        }
+
+        public Pango.WrapMode WrapMode { get; set; }
+        public int WrapWidth { get; set; }
+        public int WidthChars { get; set; }
+        public string Markup { get; set; }
+        public bool Editable { get; set; }
     }
-    public class CellRendererComboValue : CellRendererCombo
+    public class CellRendererComboValue : CellRendererCombo, ICellRenderer
     {
         DataGridViewColumn Column;
         public CellRendererComboValue(DataGridViewColumn view)
@@ -64,12 +115,28 @@ namespace System.Windows.Forms.GtkRender
             {
                 if (value != null)
                 {
-                    value.SetTextWithStyle(Column, this);
+                    value.SetTextWithStyle(this);
                 }
             }
         }
+        public DataGridViewCellStyle DefaultStyle
+        {
+            set
+            {
+                if (value?.WrapMode == DataGridViewTriState.True)
+                {
+                    this.WrapMode = Pango.WrapMode.WordChar;
+                    this.WrapWidth = 0;
+                    this.WidthChars = 0;
+                }
+                CellValue cellValue = new CellValue();
+                cellValue.SetTextWithStyle(value, this);
+            }
+        }
+        public bool Activatable { get; set; }
+        string ICellRenderer.Markup { get; set; }
     }
-    public class CellRendererPixbufValue : CellRendererPixbuf
+    public class CellRendererPixbufValue : CellRendererPixbuf, ICellRenderer
     {
         DataGridViewColumn Column;
         public CellRendererPixbufValue(DataGridViewColumn view)
@@ -85,7 +152,7 @@ namespace System.Windows.Forms.GtkRender
                 {
                     try
                     {
-                        value.SetControlWithStyle(Column, this);
+                        value.SetControlWithStyle(this);
                         if (typeof(Drawing.Image).Equals(value.ValueType) || typeof(Drawing.Bitmap).Equals(value.ValueType))
                         {
                             this.Pixbuf = ((Drawing.Image)value.Value).Pixbuf;
@@ -106,8 +173,28 @@ namespace System.Windows.Forms.GtkRender
                 }
             }
         }
+        public DataGridViewCellStyle DefaultStyle
+        {
+            set
+            {
+                if (value?.WrapMode == DataGridViewTriState.True)
+                {
+                    this.WrapMode = Pango.WrapMode.WordChar;
+                    this.WrapWidth = 0;
+                    this.WidthChars = 0;
+                }
+                CellValue cellValue = new CellValue();
+                cellValue.SetControlWithStyle(value, this);
+            }
+        }
+        public Pango.WrapMode WrapMode { get; set; }
+        public int WrapWidth { get; set; }
+        public int WidthChars { get; set; }
+        public string Markup { get; set; }
+        public bool Editable { get; set; }
+        public bool Activatable { get; set; }
     }
-    public class CellRendererButtonValue : CellRendererText
+    public class CellRendererButtonValue : CellRendererText, ICellRenderer
     {
         DataGridViewColumn Column;
         public CellRendererButtonValue(DataGridViewColumn view)
@@ -123,13 +210,30 @@ namespace System.Windows.Forms.GtkRender
             {
                 if (value != null)
                 {
-                    value.SetTextWithStyle(Column, this);
+                    value.SetTextWithStyle(this);
                 }
             }
         }
+        public DataGridViewCellStyle DefaultStyle
+        {
+            set
+            {
+                if (value?.WrapMode == DataGridViewTriState.True)
+                {
+                    this.WrapMode = Pango.WrapMode.WordChar;
+                    this.WrapWidth = 0;
+                    this.WidthChars = 0;
+                }
+                CellValue cellValue = new CellValue();
+                cellValue.SetTextWithStyle(value, this);
+            }
+        }
+        public bool Activatable { get; set; }
+        string ICellRenderer.Markup { get; set; }
+
         protected override void OnRender(Cairo.Context cr, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
         {
-            widget.StyleContext.AddClass("button");
+            //widget.StyleContext.AddClass("button");
             widget.StyleContext.AddClass("GridViewCell-Button");
             widget.StyleContext.Save();
             int height = cell_area.Height;
@@ -153,66 +257,71 @@ namespace System.Windows.Forms.GtkRender
         private object _value;
         public object Value { get=> _value; set { _value = value; ValueType = value?.GetType(); } }
         public string Text { get => _value?.ToString(); }
-        internal void SetControlWithStyle(DataGridViewColumn Column, CellRenderer cell) {
-            if (Column.DefaultCellStyle != null)
-                _style = Column.DefaultCellStyle;
-            if (_style != null)
+        public string Path { get; set; }
+        internal void SetControlWithStyle( CellRenderer cell) {
+            SetControlWithStyle(_style, cell);
+        }
+        internal void SetControlWithStyle(DataGridViewCellStyle cellstyle, CellRenderer cell)
+        {
+            if (cellstyle != null)
             {
-                if (_style.BackColor.Name != "0")
-                    cell.CellBackgroundRgba = new Gdk.RGBA() { Alpha = _style.BackColor.A / 255f, Blue = _style.BackColor.B / 255f, Green = _style.BackColor.G / 255f, Red = _style.BackColor.R / 255f };
-                if (_style.Alignment == DataGridViewContentAlignment.TopLeft)
+                if (cellstyle.BackColor.Name != "0")
+                    cell.CellBackgroundRgba = new Gdk.RGBA() { Alpha = cellstyle.BackColor.A / 255f, Blue = cellstyle.BackColor.B / 255f, Green = cellstyle.BackColor.G / 255f, Red = cellstyle.BackColor.R / 255f };
+                if (cellstyle.Alignment == DataGridViewContentAlignment.TopLeft)
                     cell.SetAlignment(0, 0);
-                else if (_style.Alignment == DataGridViewContentAlignment.TopCenter)
+                else if (cellstyle.Alignment == DataGridViewContentAlignment.TopCenter)
                     cell.SetAlignment(0.5f, 0);
-                else if (_style.Alignment == DataGridViewContentAlignment.TopRight)
+                else if (cellstyle.Alignment == DataGridViewContentAlignment.TopRight)
                     cell.SetAlignment(1.0f, 0);
-                else if (_style.Alignment == DataGridViewContentAlignment.MiddleLeft)
+                else if (cellstyle.Alignment == DataGridViewContentAlignment.MiddleLeft)
                     cell.SetAlignment(0, 0.5f);
-                else if (_style.Alignment == DataGridViewContentAlignment.MiddleCenter)
+                else if (cellstyle.Alignment == DataGridViewContentAlignment.MiddleCenter)
                     cell.SetAlignment(0.5f, 0.5f);
-                else if (_style.Alignment == DataGridViewContentAlignment.MiddleRight)
+                else if (cellstyle.Alignment == DataGridViewContentAlignment.MiddleRight)
                     cell.SetAlignment(1.0f, 0.5f);
-                else if (_style.Alignment == DataGridViewContentAlignment.BottomLeft)
+                else if (cellstyle.Alignment == DataGridViewContentAlignment.BottomLeft)
                     cell.SetAlignment(0, 1f);
-                else if (_style.Alignment == DataGridViewContentAlignment.BottomCenter)
+                else if (cellstyle.Alignment == DataGridViewContentAlignment.BottomCenter)
                     cell.SetAlignment(0.5f, 1f);
-                else if (_style.Alignment == DataGridViewContentAlignment.BottomRight)
+                else if (cellstyle.Alignment == DataGridViewContentAlignment.BottomRight)
                     cell.SetAlignment(1.0f, 1f);
             }
         }
-        internal void SetTextWithStyle(DataGridViewColumn Column, CellRendererText cell)
+        internal void SetTextWithStyle(CellRendererText cell)
         {
-            if (Column.DefaultCellStyle != null)
-                _style = Column.DefaultCellStyle;
-            if (_style != null)
+             SetTextWithStyle(_style, cell);
+            cell.Text = GetFormatText(_value);
+        }
+        internal void SetTextWithStyle(DataGridViewCellStyle cellstyle, CellRendererText cell)
+        {
+            if (cellstyle != null)
             {
-                if (_style.ForeColor.Name != "0")
-                    cell.ForegroundRgba = new Gdk.RGBA() { Alpha = _style.ForeColor.A / 255f, Blue = _style.ForeColor.B / 255f, Green = _style.ForeColor.G / 255f, Red = _style.ForeColor.R / 255f };
-                if (_style.BackColor.Name != "0")
-                    cell.CellBackgroundRgba = new Gdk.RGBA() { Alpha = _style.BackColor.A / 255f, Blue = _style.BackColor.B / 255f, Green = _style.BackColor.G / 255f, Red = _style.BackColor.R / 255f };
-                if (_style.Alignment == DataGridViewContentAlignment.TopLeft)
+                if (cellstyle.ForeColor.Name != "0")
+                    cell.ForegroundRgba = new Gdk.RGBA() { Alpha = cellstyle.ForeColor.A / 255f, Blue = cellstyle.ForeColor.B / 255f, Green = cellstyle.ForeColor.G / 255f, Red = cellstyle.ForeColor.R / 255f };
+                if (cellstyle.BackColor.Name != "0")
+                    cell.CellBackgroundRgba = new Gdk.RGBA() { Alpha = cellstyle.BackColor.A / 255f, Blue = cellstyle.BackColor.B / 255f, Green = cellstyle.BackColor.G / 255f, Red = cellstyle.BackColor.R / 255f };
+                if (cellstyle.Alignment == DataGridViewContentAlignment.TopLeft)
                     cell.SetAlignment(0, 0);
-                else if (_style.Alignment == DataGridViewContentAlignment.TopCenter)
+                else if (cellstyle.Alignment == DataGridViewContentAlignment.TopCenter)
                     cell.SetAlignment(0.5f, 0);
-                else if (_style.Alignment == DataGridViewContentAlignment.TopRight)
+                else if (cellstyle.Alignment == DataGridViewContentAlignment.TopRight)
                     cell.SetAlignment(1.0f, 0);
-                else if (_style.Alignment == DataGridViewContentAlignment.MiddleLeft)
+                else if (cellstyle.Alignment == DataGridViewContentAlignment.MiddleLeft)
                     cell.SetAlignment(0, 0.5f);
-                else if (_style.Alignment == DataGridViewContentAlignment.MiddleCenter)
+                else if (cellstyle.Alignment == DataGridViewContentAlignment.MiddleCenter)
                     cell.SetAlignment(0.5f, 0.5f);
-                else if (_style.Alignment == DataGridViewContentAlignment.MiddleRight)
+                else if (cellstyle.Alignment == DataGridViewContentAlignment.MiddleRight)
                     cell.SetAlignment(1.0f, 0.5f);
-                else if (_style.Alignment == DataGridViewContentAlignment.BottomLeft)
+                else if (cellstyle.Alignment == DataGridViewContentAlignment.BottomLeft)
                     cell.SetAlignment(0, 1f);
-                else if (_style.Alignment == DataGridViewContentAlignment.BottomCenter)
+                else if (cellstyle.Alignment == DataGridViewContentAlignment.BottomCenter)
                     cell.SetAlignment(0.5f, 1f);
-                else if (_style.Alignment == DataGridViewContentAlignment.BottomRight)
+                else if (cellstyle.Alignment == DataGridViewContentAlignment.BottomRight)
                     cell.SetAlignment(1.0f, 1f);
 
-                if (_style.WrapMode != DataGridViewTriState.NotSet)
-                    cell.WrapMode = _style.WrapMode == DataGridViewTriState.True ? Pango.WrapMode.WordChar : Pango.WrapMode.Word;
+                if (cellstyle.WrapMode != DataGridViewTriState.NotSet)
+                    cell.WrapMode = cellstyle.WrapMode == DataGridViewTriState.True ? Pango.WrapMode.WordChar : Pango.WrapMode.Word;
             }
-            cell.Text = GetFormatText(_value);
         }
         internal string GetFormatText(object text)
         {

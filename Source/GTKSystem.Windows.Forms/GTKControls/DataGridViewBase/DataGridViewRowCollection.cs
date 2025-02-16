@@ -45,11 +45,13 @@ namespace System.Windows.Forms
             {
                 row.DataGridView = dataGridView;
                 row.Index = rowindex;
-                DataGridViewCellStyle _cellStyle = row.DefaultCellStyle;
+                DataGridViewCellStyle _cellStyle = dataGridView.DefaultCellStyle;
                 if (dataGridView.RowsDefaultCellStyle != null)
                     _cellStyle = dataGridView.RowsDefaultCellStyle;
                 if (rowindex % 2 != 0 && dataGridView.AlternatingRowsDefaultCellStyle != null)
                     _cellStyle = dataGridView.AlternatingRowsDefaultCellStyle;
+                if (row.DefaultCellStyle != null)
+                    _cellStyle = row.DefaultCellStyle;
 
                 row.TreeIter = AddGtkStore(row.Cells.ConvertAll(c =>
                 {
@@ -67,11 +69,13 @@ namespace System.Windows.Forms
         {
             row.Index = rowindex;
             row.DataGridView = dataGridView;
-            DataGridViewCellStyle _cellStyle = row.DefaultCellStyle;
+            DataGridViewCellStyle _cellStyle = dataGridView.DefaultCellStyle;
             if (dataGridView.RowsDefaultCellStyle != null)
                 _cellStyle = dataGridView.RowsDefaultCellStyle;
             if (rowindex % 2 != 0 && dataGridView.AlternatingRowsDefaultCellStyle != null)
                 _cellStyle = dataGridView.AlternatingRowsDefaultCellStyle;
+            if (row.DefaultCellStyle != null)
+                _cellStyle = row.DefaultCellStyle;
 
             row.TreeIter = AddGtkStore(parent, row.Cells.ConvertAll(c =>
             {
