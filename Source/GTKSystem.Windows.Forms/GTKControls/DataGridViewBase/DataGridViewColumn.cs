@@ -155,18 +155,11 @@ namespace System.Windows.Forms
             renderer.Editable = false;
             renderer.Mode = CellRendererMode.Activatable;
             renderer.Height = RowHeight;
+            renderer.SetAlignment(0.5f, 0.5f);
             base.PackStart(renderer, false);
             base.SortMode = DataGridViewColumnSortMode.NotSortable;
             base.Sizing = TreeViewColumnSizing.GrowOnly;
             _cellRenderer = renderer;
-            if (base.DefaultCellStyle == null)
-            {
-                base.DefaultCellStyle = new DataGridViewCellStyle() { Alignment = DataGridViewContentAlignment.MiddleCenter };
-            }
-            else if (base.DefaultCellStyle.Alignment == null || base.DefaultCellStyle.Alignment == DataGridViewContentAlignment.NotSet)
-            {
-                base.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            }
         }
         private void TreeView_RowActivated(object o, RowActivatedArgs args)
         {

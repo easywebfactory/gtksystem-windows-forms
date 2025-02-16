@@ -211,6 +211,7 @@ namespace System.Windows.Forms.GtkRender
                 if (value != null)
                 {
                     value.SetTextWithStyle(this);
+                    base.SetAlignment(0.5f, 0.5f);
                 }
             }
         }
@@ -226,6 +227,7 @@ namespace System.Windows.Forms.GtkRender
                 }
                 CellValue cellValue = new CellValue();
                 cellValue.SetTextWithStyle(value, this);
+                base.SetAlignment(0.5f, 0.5f);
             }
         }
         public bool Activatable { get; set; }
