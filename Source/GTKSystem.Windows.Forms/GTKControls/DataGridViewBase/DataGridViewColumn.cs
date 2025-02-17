@@ -46,12 +46,12 @@ namespace System.Windows.Forms
             TreePath path = new TreePath(args.Path);
             var model = _treeView.Model;
             model.GetIter(out TreeIter iter, path);
-            object cell = model.GetValue(iter, this.DisplayIndex);
+            object cell = model.GetValue(iter, this.Index);
             if (cell is CellValue val)
             {
                 CellRendererToggleValue tggle = (CellRendererToggleValue)o;
                 val.Value = tggle.Active == false;
-                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices.Last(), val);
+                _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last(), val);
             }
         }
     }
@@ -81,12 +81,12 @@ namespace System.Windows.Forms
             TreePath path = new TreePath(args.Path);
             var model = _treeView.Model;
             model.GetIter(out TreeIter iter, path);
-            object cell = model.GetValue(iter, this.DisplayIndex);
+            object cell = model.GetValue(iter, this.Index);
             if (cell is CellValue val)
             {
                 CellRendererToggleValue tggle = (CellRendererToggleValue)o;
                 val.Value = tggle.Active == false;
-                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices.Last(), val);
+                _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last(), val);
             }
         }
     }
@@ -117,11 +117,11 @@ namespace System.Windows.Forms
             TreePath path = new TreePath(args.Path);
             var model = _treeView.Model;
             model.GetIter(out TreeIter iter, path);
-            object cell = model.GetValue(iter, this.DisplayIndex);
+            object cell = model.GetValue(iter, this.Index);
             if (cell is CellValue val)
             {
                 val.Value = args.NewText;
-                _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices.Last(), val);
+                _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last(), val);
             }
         }
         public ObjectCollection Items => _items;
@@ -169,7 +169,7 @@ namespace System.Windows.Forms
                 if (args.Column.Cells[0] is CellRendererText cell)
                 {
                     TreePath path = args.Path;
-                    _gridview.CellValueChanagedHandler(this.DisplayIndex, path.Indices.Last(), new CellValue() { Value = cell.Text });
+                    _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last(), new CellValue() { Value = cell.Text });
                 }
             }
         }
@@ -433,7 +433,6 @@ namespace System.Windows.Forms
         //protected override void Dispose(bool disposing) {  }
         private int _index;
         public int Index { get => _index; internal set { _index = value; base.SortColumnId = value; foreach (var cell in base.Cells) { base.AddAttribute(cell, "cellvalue", _index); } } }
-        //public int Index { get => _index; internal set { _index = value; if (_gridview.Store.NColumns > value) { base.SortColumnId = value; foreach (var cell in base.Cells) { base.AddAttribute(cell, "cellvalue", _index); } } } }
 
     }
 
