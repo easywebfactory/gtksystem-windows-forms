@@ -706,6 +706,5 @@ namespace System.Windows.Forms
         public event DataGridViewRowEventHandler UserDeletedRow;
         [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewRowEventHandler UserAddedRow;
-
     }
 }

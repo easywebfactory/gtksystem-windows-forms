@@ -127,12 +127,11 @@ namespace System.Windows.Forms
         protected DataGridView DataGridView { get { return dataGridView; } }
         internal ArrayList SharedList => items;
         protected ArrayList List { get { return items; } }
-
+        public int Count => items.Count;
         bool IList.IsFixedSize => false;
 
         bool IList.IsReadOnly => false;
 
-        int ICollection.Count => items.Count;
 
         bool ICollection.IsSynchronized => false;
 

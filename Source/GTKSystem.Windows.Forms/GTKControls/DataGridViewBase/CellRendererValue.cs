@@ -58,7 +58,6 @@ namespace System.Windows.Forms.GtkRender
                 cellValue.SetTextWithStyle(value, this);
             }
         }
-
         public bool Activatable { get; set; }
         string ICellRenderer.Markup { get; set; }
     }
@@ -208,6 +207,7 @@ namespace System.Windows.Forms.GtkRender
         {
             set
             {
+                _value = value;
                 if (value != null)
                 {
                     value.SetTextWithStyle(this);
@@ -215,6 +215,7 @@ namespace System.Windows.Forms.GtkRender
                 }
             }
         }
+        private CellValue _value;
         public DataGridViewCellStyle DefaultStyle
         {
             set
@@ -232,7 +233,6 @@ namespace System.Windows.Forms.GtkRender
         }
         public bool Activatable { get; set; }
         string ICellRenderer.Markup { get; set; }
-
         protected override void OnRender(Cairo.Context cr, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
         {
             //widget.StyleContext.AddClass("button");

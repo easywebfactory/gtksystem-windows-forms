@@ -7,6 +7,7 @@
 using Gtk;
 using System.Collections;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms.GtkRender;
 
 namespace System.Windows.Forms
@@ -181,7 +182,7 @@ namespace System.Windows.Forms
         }
         public DataGridViewImageColumn(DataGridView ownerGridView) : base(0, ownerGridView, new DataGridViewImageCell())
         {
-            ValueType = typeof(Image);
+            ValueType = typeof(Drawing.Image);
             var renderer = new CellRendererPixbufValue(this);
             //renderer.IconName = "face-smile";
             renderer.Height = RowHeight;
