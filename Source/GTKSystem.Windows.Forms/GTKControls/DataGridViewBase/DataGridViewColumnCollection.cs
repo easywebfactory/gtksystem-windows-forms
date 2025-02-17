@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/*
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * author:chenhongjin
+ */
 using System.ComponentModel;
-using System.Text;
 using System.Windows.Forms.GtkRender;
 
 namespace System.Windows.Forms
 {
     public class DataGridViewColumnCollection : List<DataGridViewColumn>
     {
+        public event CollectionChangeEventHandler CollectionChanged;
         private DataGridView __owner;
         private Gtk.TreeView GridView;
         public DataGridViewColumnCollection(DataGridView dataGridView)
@@ -19,9 +23,7 @@ namespace System.Windows.Forms
         public virtual DataGridViewColumn this[string columnName] { get { return base.Find(m => m.Name == columnName); } }
 
         protected DataGridView DataGridView { get { return __owner; } }
-        [Obsolete("此事件未实现，gtksystem.windows.forms提供vip开发服务")]
-        public event CollectionChangeEventHandler CollectionChanged;
-
+        
         public void Add(string columnName, string headerText)
         {
             DataGridViewColumn column = new DataGridViewColumn() { Name = columnName, HeaderText = headerText };
@@ -85,8 +87,14 @@ namespace System.Windows.Forms
                         break;
                 }
             }
-            GridView.AppendColumn(column);
+
             base.Add(column);
+            if (__owner.self.IsRealized)
+            {
+                Invalidate();
+            }
+            GridView.AppendColumn(column);
+            OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, column));
         }
         public new void AddRange(IEnumerable<DataGridViewColumn> columns)
         {
@@ -95,18 +103,30 @@ namespace System.Windows.Forms
                 Add(column);
             }
         }
+        public new bool Remove(DataGridViewColumn column)
+        {
+            __owner.GridView.RemoveColumn(column);
+            bool ir= base.Remove(column);
+            OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Remove, column));
+            return ir;
+        }
+        public new void RemoveAt(int index)
+        {
+            this.Remove(this[index]);
+        }
         public new void Clear()
         {
             base.Clear();
             foreach (var wik in GridView.Columns)
                 GridView.RemoveColumn(wik);
 
+            OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, __owner));
         }
         public void Invalidate()
         {
-            if (__owner.GridView.Columns.Length > __owner.Store.NColumns)
+            if (Count > __owner.Store.NColumns)
             {
-                CellValue[] columnTypes = new CellValue[__owner.GridView.Columns.Length];
+                CellValue[] columnTypes = new CellValue[Count];
                 __owner.Store.Clear();
                 __owner.Store = new Gtk.TreeStore(Array.ConvertAll(columnTypes, o => typeof(CellValue)));
                 __owner.GridView.Model = __owner.Store;
@@ -119,7 +139,7 @@ namespace System.Windows.Forms
             {
                 __owner.Store.SetSortFunc(i, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
                 {
-                    __owner.Store.GetSortColumnId(out int sortid, out Gtk.SortType order);
+                    ((Gtk.TreeStore)m).GetSortColumnId(out int sortid, out Gtk.SortType order);
                     CellValue v1= m.GetValue(t1, sortid) as CellValue;
                     CellValue v2 = m.GetValue(t2, sortid) as CellValue;
                     if (v1?.Text == null || v2?.Text == null)
@@ -164,7 +184,6 @@ namespace System.Windows.Forms
             int ix = FindIndex(m => m.Name == dataGridViewColumnStart.Name && m.State == includeFilter && m.State == excludeFilter);
             return ix < Count ? base[ix] : null;
         }
-
         protected virtual void OnCollectionChanged(CollectionChangeEventArgs e)
         {
             if (CollectionChanged != null)

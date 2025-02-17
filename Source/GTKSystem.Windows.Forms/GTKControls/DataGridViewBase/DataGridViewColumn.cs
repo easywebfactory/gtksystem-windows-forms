@@ -432,7 +432,9 @@ namespace System.Windows.Forms
         public override string ToString() { return this.GetType().Name; }
         //protected override void Dispose(bool disposing) {  }
         private int _index;
-        public int Index { get => _index; internal set { _index = value; base.SortColumnId = value; foreach (var cell in base.Cells) { base.AddAttribute(cell, "cellvalue", this.Index); } } }
+        public int Index { get => _index; internal set { _index = value; base.SortColumnId = value; foreach (var cell in base.Cells) { base.AddAttribute(cell, "cellvalue", _index); } } }
+        //public int Index { get => _index; internal set { _index = value; if (_gridview.Store.NColumns > value) { base.SortColumnId = value; foreach (var cell in base.Cells) { base.AddAttribute(cell, "cellvalue", _index); } } } }
+
     }
 
 

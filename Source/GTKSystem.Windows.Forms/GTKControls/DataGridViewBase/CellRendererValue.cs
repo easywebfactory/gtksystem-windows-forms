@@ -7,8 +7,6 @@
 using Gdk;
 using GLib;
 using Gtk;
-using Pango;
-using System.Diagnostics.CodeAnalysis;
 
 namespace System.Windows.Forms.GtkRender
 {
@@ -207,7 +205,7 @@ namespace System.Windows.Forms.GtkRender
         {
             set
             {
-                _value = value;
+                //_value = value;
                 if (value != null)
                 {
                     value.SetTextWithStyle(this);
@@ -215,7 +213,7 @@ namespace System.Windows.Forms.GtkRender
                 }
             }
         }
-        private CellValue _value;
+        //private CellValue _value;
         public DataGridViewCellStyle DefaultStyle
         {
             set
@@ -235,7 +233,6 @@ namespace System.Windows.Forms.GtkRender
         string ICellRenderer.Markup { get; set; }
         protected override void OnRender(Cairo.Context cr, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
         {
-            //widget.StyleContext.AddClass("button");
             widget.StyleContext.AddClass("GridViewCell-Button");
             widget.StyleContext.Save();
             int height = cell_area.Height;
@@ -251,16 +248,20 @@ namespace System.Windows.Forms.GtkRender
             base.OnRender(cr, widget, new Gdk.Rectangle(background_area.X, background_area.Y, background_area.Width, background_area.Height), new Gdk.Rectangle(cell_area.X, cell_area.Y, cell_area.Width, cell_area.Height), flags);
         }
     }
-    public class CellValue : IComparable, IComparable<CellValue>, IEquatable<CellValue>
+    public class CellValue
     {
         private DataGridViewCellStyle _style;
         public DataGridViewCellStyle Style { get => _style; set => _style = value; }
-        public Type ValueType { get; set; }
+        private Type _valueType;
+        public Type ValueType { get { return _valueType == null ? _value?.GetType() : _valueType; } set { _valueType = value; } }
         private object _value;
-        public object Value { get=> _value; set { _value = value; ValueType = value?.GetType(); } }
+        public object Value { get => _value; set { _value = value; } }
         public string Text { get => _value?.ToString(); }
         public string Path { get; set; }
-        internal void SetControlWithStyle( CellRenderer cell) {
+        public int RowIndex { get; set; }
+        public int ColumnIndex { get; set; }
+        internal void SetControlWithStyle(CellRenderer cell)
+        {
             SetControlWithStyle(_style, cell);
         }
         internal void SetControlWithStyle(DataGridViewCellStyle cellstyle, CellRenderer cell)
@@ -291,7 +292,7 @@ namespace System.Windows.Forms.GtkRender
         }
         internal void SetTextWithStyle(CellRendererText cell)
         {
-             SetTextWithStyle(_style, cell);
+            SetTextWithStyle(_style, cell);
             cell.Text = GetFormatText(_value);
         }
         internal void SetTextWithStyle(DataGridViewCellStyle cellstyle, CellRendererText cell)
@@ -334,29 +335,6 @@ namespace System.Windows.Forms.GtkRender
             else
                 return text?.ToString();
         }
-        public int CompareTo(object obj)
-        {
-            if (obj is CellValue cell)
-                return CompareTo(cell);
-            else
-                return -1;
-        }
-
-        public int CompareTo([AllowNull] CellValue other)
-        {
-            if(other != null)
-            {
-                if (this._value == other.Value && this._style != null && other.Style != null)
-                    return this._style.GetHashCode().CompareTo(other.Style.GetHashCode());
-            }
-            return -1;
-        }
-
-        public bool Equals([AllowNull] CellValue other)
-        {
-            return CompareTo(other) == 0;
-        }
-
         public override string ToString()
         {
             return _value?.ToString();
