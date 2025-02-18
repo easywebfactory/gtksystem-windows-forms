@@ -1,22 +1,27 @@
 ﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class TableLayoutPanelBase : Gtk.Grid, IControlGtk
+    public sealed class TableLayoutPanelBase : ScrollableBoxBase, IControlGtk
     {
-        public GtkControlOverride Override { get; set; }
+        public Gtk.Grid grid = new Gtk.Grid();
         public TableLayoutPanelBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("TableLayoutPanel");
-            this.RowHomogeneous = false;
-            this.ColumnHomogeneous = false;
-            this.BorderWidth = 1;
-            this.BaselineRow = 0;
-            this.ColumnSpacing = 0;
-            this.RowSpacing = 0;
-            this.Halign = Gtk.Align.Start;
-            this.Valign = Gtk.Align.Start;
+            grid.RowHomogeneous = false;
+            grid.ColumnHomogeneous = false;
+            grid.BaselineRow = 0;
+            grid.ColumnSpacing = 0;
+            grid.RowSpacing = 0;
+            grid.BorderWidth = 0;
+            grid.Halign = Gtk.Align.Fill;
+            grid.Valign = Gtk.Align.Fill;
+            this.BorderWidth = 0;
             this.Vexpand = false;
             this.Hexpand = false;
+            this.HscrollbarPolicy = Gtk.PolicyType.External;
+            this.VscrollbarPolicy = Gtk.PolicyType.External;
+
+            this.Add(this.grid);
         }
         public void AddClass(string cssClass)
         {

@@ -555,7 +555,13 @@ namespace System.Windows.Forms
             }
         }
         public virtual Point AutoScrollOffset { get; set; }
-        public virtual bool AutoSize { get; set; }
+        private bool _autoSize;
+        public virtual bool AutoSize { 
+            get => _autoSize; 
+            set { _autoSize = value;
+                if (_autoSize == true) { this.Widget.WidthRequest = -1; this.Widget.HeightRequest = -1; } else { Size = _size; } 
+            } 
+        }
         public virtual BindingContext BindingContext { get; set; }
         public virtual Rectangle Bounds { get=> new Rectangle(Widget.Clip.X, this.Widget.Clip.Y, this.Widget.Clip.Width, this.Widget.Clip.Height); set { SetBounds(value.X, value.Y, value.Width, value.Height); } }
 
@@ -724,23 +730,28 @@ namespace System.Windows.Forms
         public virtual Drawing.Region Region { get; set; }
 
         public virtual RightToLeft RightToLeft { get; set; }
+        private Size _size;
         public virtual Size Size
         {
             get
             {
-                return new Size(Width, Height);
+                return _size;
             }
             set
             {
-                if (this.Widget is Gtk.Button)
+                _size = value;
+                if (AutoSize == false)
                 {
-                    Width = value.Width > 6 ? value.Width - 6 : value.Width;
-                    Height = value.Height > 6 ? value.Height - 6 : value.Height;
-                }
-                else
-                {
-                    Width = value.Width;
-                    Height = value.Height;
+                    if (this.Widget is Gtk.Button)
+                    {
+                        Width = value.Width > 6 ? value.Width - 6 : value.Width;
+                        Height = value.Height > 6 ? value.Height - 6 : value.Height;
+                    }
+                    else
+                    {
+                        Width = value.Width;
+                        Height = value.Height;
+                    }
                 }
             }
         }

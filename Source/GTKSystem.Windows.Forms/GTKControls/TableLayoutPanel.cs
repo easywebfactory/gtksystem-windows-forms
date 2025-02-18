@@ -4,6 +4,7 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+ 
 using GLib;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace System.Windows.Forms
         private TableLayoutControlCollection _controls;
 		private TableLayoutColumnStyleCollection _columnStyles;
 		private TableLayoutRowStyleCollection _rowStyles;
+        public Gtk.Grid grid => self.grid;
         public TableLayoutPanel():base()
         {
             _controls=new TableLayoutControlCollection(this);
@@ -37,40 +39,8 @@ namespace System.Windows.Forms
 
         public override void PerformLayout()
         {
-            Size size = this.Size;
-            int ridx = 0;
-            self.WidthRequest = size.Width;
-            foreach (RowStyle rs in RowStyles)
-            {
-                if (rs.SizeType == SizeType.Absolute)
-                {
-                    for (int c = 0; c < ColumnCount; c++)
-                        self.GetChildAt(c, ridx).HeightRequest = Convert.ToInt32(rs.Height);
-                }
-                else if (rs.SizeType == SizeType.Percent)
-                {
-                    for (int c = 0; c < ColumnCount; c++)
-                        self.GetChildAt(c, ridx).HeightRequest = Convert.ToInt32(size.Height * rs.Height * 0.01);
-                }
-                ridx++;
-            }
-            int cidx = 0;
-            foreach (ColumnStyle cs in ColumnStyles)
-            {
-                if (cs.SizeType == SizeType.Absolute)
-                {
-                    for (int r = 0; r < RowCount; r++)
-                        self.GetChildAt(cidx, r).WidthRequest = Convert.ToInt32(cs.Width);
-                }
-                else if (cs.SizeType == SizeType.Percent)
-                {
-                    for (int r = 0; r < RowCount; r++)
-                    {
-                        self.GetChildAt(cidx, r).WidthRequest = Convert.ToInt32(size.Width * cs.Width * 0.01);
-                    }
-                }
-                cidx++;
-            }
+            SetColumnsStyles();
+            SetRowsStyles();
         }
 
         [Browsable(false)]
@@ -102,17 +72,18 @@ namespace System.Windows.Forms
                 {
                     for (int c = 0; c < value; c++)
                     {
-                        if (self.GetChildAt(c, r) == null)
+                        if (grid.GetChildAt(c, r) == null)
                         {
-                            self.Attach(new Gtk.Viewport() { Vexpand = false, Hexpand = false, BorderWidth = 0, Valign = Gtk.Align.Fill, Halign = Gtk.Align.Fill }, c, r, 1, 1);
+                            grid.Attach(new Gtk.Viewport() { Vexpand = true, Hexpand = true, BorderWidth = 0, Valign = Gtk.Align.Fill, Halign = Gtk.Align.Fill }, c, r, 1, 1);
                         }
                     }
                 }
                 for (int c = value; c < _ColumnCount; c++)
                 {
-                    self.RemoveColumn(value);
+                    grid.RemoveColumn(value);
                 }
                 _ColumnCount = value;
+                SetColumnsStyles();
             }
         }
 
@@ -133,17 +104,18 @@ namespace System.Windows.Forms
                 {
                     for (int c = 0; c < _ColumnCount; c++)
                     {
-                        if (self.GetChildAt(c, r) == null)
+                        if (grid.GetChildAt(c, r) == null)
                         {
-                            self.Attach(new Gtk.Viewport() { Vexpand = true, Hexpand = false, BorderWidth = 0, Valign = Gtk.Align.Fill, Halign = Gtk.Align.Fill }, c, r, 1, 1);
+                            grid.Attach(new Gtk.Viewport() { Vexpand = true, Hexpand = true, BorderWidth = 0, Valign = Gtk.Align.Fill, Halign = Gtk.Align.Fill }, c, r, 1, 1);
                         }
                     }
                 }
                 for (int r = value; r < _RowCount; r++)
                 {
-                    self.RemoveRow(value);
+                    grid.RemoveRow(value);
                 }
                 _RowCount = value;
+                SetRowsStyles();
             }
         }
 
@@ -165,7 +137,56 @@ namespace System.Windows.Forms
             get => base.Size;
             set {
                 base.Size = value;
-                PerformLayout();
+                SetColumnsStyles();
+                SetRowsStyles();
+            }
+        }
+        private void SetColumnsStyles()
+        {
+            Size size = this.Size;
+            int cidx = 0;
+            foreach (ColumnStyle cs in ColumnStyles)
+            {
+                if (cidx < ColumnCount)
+                {
+                    if (cs.SizeType == SizeType.Absolute)
+                    {
+                        for (int r = 0; r < RowCount; r++)
+                            grid.GetChildAt(cidx, r).WidthRequest = Convert.ToInt32(cs.Width);
+                    }
+                    else if (cs.SizeType == SizeType.Percent)
+                    {
+                        for (int r = 0; r < RowCount; r++)
+                        {
+                            grid.GetChildAt(cidx, r).WidthRequest = Convert.ToInt32(size.Width * cs.Width * 0.01);
+                        }
+                    }
+                    cidx++;
+                }
+            }
+        }
+        private void SetRowsStyles()
+        {
+            Size size = this.Size;
+            int ridx = 0;
+            foreach (RowStyle rs in RowStyles)
+            {
+                if (ridx < RowCount)
+                {
+                    if (rs.SizeType == SizeType.Absolute)
+                    {
+                        Console.WriteLine(ColumnCount);
+                        Console.WriteLine(Convert.ToInt32(rs.Height));
+                        for (int c = 0; c < ColumnCount; c++)
+                            grid.GetChildAt(c, ridx).HeightRequest = Convert.ToInt32(rs.Height);
+                    }
+                    else if (rs.SizeType == SizeType.Percent)
+                    {
+                        for (int c = 0; c < ColumnCount; c++)
+                            grid.GetChildAt(c, ridx).HeightRequest = Convert.ToInt32(size.Height * rs.Height * 0.01);
+                    }
+                    ridx++;
+                }
             }
         }
         bool IExtenderProvider.CanExtend(object obj)
@@ -203,19 +224,19 @@ namespace System.Windows.Forms
 		[DisplayName("Row")]
 		public int GetRow(Control control)
 		{
-            return ((Gtk.Grid.GridChild)self[control.Widget.Parent]).TopAttach;
+            return ((Gtk.Grid.GridChild)grid[control.Widget.Parent]).TopAttach;
         }
 
 		public void SetRow(Control control, int row)
 		{
-            ((Gtk.Grid.GridChild)self[control.Widget.Parent]).TopAttach = row;
+            ((Gtk.Grid.GridChild)grid[control.Widget.Parent]).TopAttach = row;
         }
 
 		[DisplayName("Cell")]
 		public TableLayoutPanelCellPosition GetCellPosition(Control control)
 		{
             TableLayoutPanelCellPosition cellPosition = new TableLayoutPanelCellPosition(-1, -1);
-            if (self[control.Widget.Parent] is Gtk.Grid.GridChild cell)
+            if (grid[control.Widget.Parent] is Gtk.Grid.GridChild cell)
             {
                 cellPosition.Column = cell.LeftAttach;
                 cellPosition.Row = cell.TopAttach;
@@ -225,7 +246,7 @@ namespace System.Windows.Forms
 
 		public void SetCellPosition(Control control, TableLayoutPanelCellPosition position)
 		{
-            if (self[control.Widget.Parent] is Gtk.Grid.GridChild cell)
+            if (grid[control.Widget.Parent] is Gtk.Grid.GridChild cell)
             {
                 cell.LeftAttach = position.Column;
                 cell.TopAttach = position.Row;
@@ -236,25 +257,25 @@ namespace System.Windows.Forms
 		[DisplayName("Column")]
 		public int GetColumn(Control control)
 		{
-            return ((Gtk.Grid.GridChild)self[control.Widget.Parent]).LeftAttach;
+            return ((Gtk.Grid.GridChild)grid[control.Widget.Parent]).LeftAttach;
         }
 
 		public void SetColumn(Control control, int column)
 		{
-            if (self[control.Widget.Parent] is Gtk.Grid.GridChild child)
+            if (grid[control.Widget.Parent] is Gtk.Grid.GridChild child)
                 child.LeftAttach = column;
 
         }
 
 		public Control GetControlFromPosition(int column, int row)
 		{
-            return self.GetChildAt(column, row).Data["Control"] as Control;
+            return grid.GetChildAt(column, row).Data["Control"] as Control;
 		}
 
         public TableLayoutPanelCellPosition GetPositionFromControl(Control control)
         {
             TableLayoutPanelCellPosition cellPosition = new TableLayoutPanelCellPosition(-1, -1);
-            if (self[control.Widget.Parent] is Gtk.Grid.GridChild cell)
+            if (grid[control.Widget.Parent] is Gtk.Grid.GridChild cell)
             {
                 cellPosition.Column = cell.LeftAttach;
                 cellPosition.Row = cell.TopAttach;
@@ -270,7 +291,7 @@ namespace System.Windows.Forms
             if (RowCount > 0)
             {
                 for (int c = 0; c < ColumnCount; c++)
-                    list.Add(self.GetChildAt(c, 0).WidthRequest);
+                    list.Add(grid.GetChildAt(c, 0).WidthRequest);
             }
             return list.ToArray();
 		}
@@ -282,7 +303,7 @@ namespace System.Windows.Forms
             if (ColumnCount > 0)
             {
                 for (int r = 0; r < RowCount; r++)
-                    list.Add(self.GetChildAt(0, r).WidthRequest);
+                    list.Add(grid.GetChildAt(0, r).WidthRequest);
             }
             return list.ToArray();
         }

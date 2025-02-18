@@ -25,7 +25,7 @@ namespace System.Windows.Forms
             control.Widget.Valign = Align.Start;
             control.Widget.Halign = Align.Start;
             control.Widget.Hexpand = false;
-            if (Container.self.GetChildAt(column, row) is Gtk.Viewport view)
+            if (Container.grid.GetChildAt(column, row) is Gtk.Viewport view)
             {
                 view.Child = control.Widget;
             }
@@ -36,7 +36,7 @@ namespace System.Windows.Forms
                 viewport.Halign = Align.Fill;
                 viewport.BorderWidth = 0;
                 viewport.Child = control.Widget;
-                Container.self.Attach(viewport, column, row, 1, 1);
+                Container.grid.Attach(viewport, column, row, 1, 1);
             }
             base.Add(control);
             Container.SetColumn(control, column);
