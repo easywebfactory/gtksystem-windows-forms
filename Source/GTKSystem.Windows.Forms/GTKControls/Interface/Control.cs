@@ -1359,14 +1359,20 @@ namespace System.Windows.Forms
                 _BorderStyle = value;
                 if(value==BorderStyle.FixedSingle)
                 {
+                    this.Widget.StyleContext.RemoveClass("BorderFixed3D");
+                    this.Widget.StyleContext.RemoveClass("BorderNone");
                     this.Widget.StyleContext.AddClass("BorderFixedSingle");
                 }
                 else if (value == BorderStyle.Fixed3D)
                 {
+                    this.Widget.StyleContext.RemoveClass("BorderFixedSingle");
+                    this.Widget.StyleContext.RemoveClass("BorderNone");
                     this.Widget.StyleContext.AddClass("BorderFixed3D");
                 }
                 else
                 {
+                    this.Widget.StyleContext.RemoveClass("BorderFixedSingle");
+                    this.Widget.StyleContext.RemoveClass("BorderFixed3D");
                     this.Widget.StyleContext.AddClass("BorderNone");
                 }
             }
