@@ -396,14 +396,12 @@ namespace System.Windows.Forms
 
                 foreach (ColumnHeader col in Columns)
                 {
-                    if (col.DisplayIndex == 0)
-                        boxitem.Data.Add(0, item.Text);
-                    else if (item.SubItems != null && item.SubItems.Count > col.DisplayIndex - 1)
+                    if (item.SubItems != null && item.SubItems.Count > col.Index)
                     {
-                        boxitem.Data.Add(col.DisplayIndex, item.SubItems[col.DisplayIndex - 1].Text);
+                        boxitem.Data.Add(col.Index, item.SubItems[col.Index].Text);
                     }
                     else
-                        boxitem.Data.Add(col.DisplayIndex, string.Empty);
+                        boxitem.Data.Add(col.Index, string.Empty);
                 }
 
                 boxitem.Add(hBox);
@@ -524,9 +522,9 @@ namespace System.Windows.Forms
                             sublayout.Halign = Gtk.Align.Start;
                             sublayout.Valign = Gtk.Align.Fill;
                             sublayout.WidthRequest = col.Width;
-                            if (item.SubItems != null && item.SubItems.Count > index - 1)
+                            if (item.SubItems != null && item.SubItems.Count > index)
                             {
-                                ListViewSubItem subitem = item.SubItems[index - 1];
+                                ListViewSubItem subitem = item.SubItems[index];
                                 Gtk.Label sublabel = new Gtk.Label();
                                 subitem._label = sublabel;
                                 Pango.AttrList subattributes = new Pango.AttrList();
@@ -1257,6 +1255,11 @@ namespace System.Windows.Forms
             {
                 if (_owner != null)
                     _owner.NativeItemsClear();
+
+                foreach (var item in this)
+                {
+                    item.SubItems.Clear();
+                }
                 base.Clear();
             }
         }
@@ -1394,7 +1397,7 @@ namespace System.Windows.Forms
                     {
                         if (flow is Gtk.FlowBox _flow)
                         {
-                            int top2 = _flow.Allocation.Top;
+                            int top2 = _flow.Allocation.Top - __headerheight;
                             FlowBoxChild child = _flow.GetChildAtPos(x, y - top2);
                             if (child != null)
                             {

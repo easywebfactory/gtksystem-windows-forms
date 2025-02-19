@@ -1,16 +1,11 @@
+
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
-using System.Drawing.Design;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 namespace System.Windows.Forms
 {
-	
-	public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
+
+    public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
 	{
 		private ListViewSubItemCollection _subitems;
         public class ListViewSubItem
@@ -351,8 +346,7 @@ namespace System.Windows.Forms
 		
 		public ListViewSubItemCollection SubItems
 		{
-            get;
-            internal set;
+            get => _subitems;
         }
 
 		
@@ -431,9 +425,7 @@ namespace System.Windows.Forms
 
 		public ListViewItem(ListViewSubItem[] subItems, int imageIndex)
 		{
-            foreach (ListViewSubItem item in subItems)
-                _subitems.Add(item);
-            InitListViewItem("", imageIndex, "", null, null, null, null);
+            InitListViewItem(subItems, imageIndex, "", null, null, null, null);
         }
 
 		public ListViewItem(ListViewGroup group)
@@ -468,9 +460,7 @@ namespace System.Windows.Forms
 
 		public ListViewItem(ListViewSubItem[] subItems, int imageIndex, ListViewGroup group)
 		{
-            foreach (ListViewSubItem item in subItems)
-                _subitems.Add(item);
-            InitListViewItem(new string[0], imageIndex, "", null, null, null, group);
+            InitListViewItem(subItems, imageIndex, "", null, null, null, group);
         }
 
 		public ListViewItem(string text, string imageKey)
@@ -490,9 +480,7 @@ namespace System.Windows.Forms
 
 		public ListViewItem(ListViewSubItem[] subItems, string imageKey)
 		{
-            foreach (ListViewSubItem item in subItems)
-                _subitems.Add(item);
-            InitListViewItem(new string[0], -1, imageKey, null, null, null, null);
+            InitListViewItem(subItems, -1, imageKey, null, null, null, null);
         }
 
 		public ListViewItem(string text, string imageKey, ListViewGroup group)
@@ -512,14 +500,12 @@ namespace System.Windows.Forms
 
 		public ListViewItem(ListViewSubItem[] subItems, string imageKey, ListViewGroup group)
 		{
-			 foreach(ListViewSubItem item in subItems)
-				_subitems.Add(item);
-			InitListViewItem("", -1, imageKey, null, null, null, group);
+            InitListViewItem(subItems, -1, imageKey, null, null, null, group);
         }
         internal void InitListViewItem(string text, int imageIndex, string imageKey, Color? foreColor, Color? backColor, Font font, ListViewGroup group)
         {
             _subitems = new ListViewSubItemCollection(this);
-			SubItems = _subitems;
+            _subitems.Add(text);
             this.Text = text;
 			this.ImageIndex = imageIndex;
             this.ImageKey = imageKey;
@@ -530,12 +516,18 @@ namespace System.Windows.Forms
         }
         internal void InitListViewItem(string[] items, int imageIndex, string imageKey, Color? foreColor, Color? backColor, Font font, ListViewGroup group)
         {
-			InitListViewItem(items[0], imageIndex, imageKey, foreColor, backColor, font, group);
-            foreach (string item in items.Skip(1))
+			InitListViewItem(items.Length > 0 ? items[0] : "", imageIndex, imageKey, foreColor, backColor, font, group);
+            foreach (string item in items)
                 _subitems.Add(item);
 
         }
-		//internal string RelateFlowBoxChildKey { get; set; }
+        internal void InitListViewItem(ListViewSubItem[] subItems, int imageIndex, string imageKey, Color? foreColor, Color? backColor, Font font, ListViewGroup group)
+        {
+            InitListViewItem(subItems.Length > 0 ? subItems[0].Text : "", imageIndex, imageKey, foreColor, backColor, font, group);
+            foreach (ListViewSubItem item in subItems)
+                _subitems.Add(item);
+        }
+        //internal string RelateFlowBoxChildKey { get; set; }
         public void BeginEdit()
 		{
 			 

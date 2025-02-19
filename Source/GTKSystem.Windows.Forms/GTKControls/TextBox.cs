@@ -67,5 +67,12 @@ namespace System.Windows.Forms
         public virtual bool ReadOnly { get { return self.IsEditable == false; } set { self.IsEditable = value == false;  } }
         public override event EventHandler TextChanged;
         public bool Multiline { get; set; }
+        public int SelectionStart { get{ return self.CursorPosition; } }
+        public void InsertTextAtCursor(string text)
+        {
+            if(text == null) return;
+            int posi = self.CursorPosition;
+            self.InsertText(text,ref posi);
+        }
     }
 }

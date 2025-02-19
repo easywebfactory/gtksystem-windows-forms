@@ -46,5 +46,11 @@ namespace System.Windows.Forms
         {
             get { return self.TextView.Buffer.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); }
         }
+        public int SelectionStart { get { return self.TextView.Buffer.CursorPosition; } }
+        public void InsertTextAtCursor(string text)
+        {
+            if (text == null) return;
+            self.TextView.Buffer.InsertAtCursor(text);
+        }
     }
 }
