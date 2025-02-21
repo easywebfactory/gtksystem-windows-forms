@@ -44,8 +44,8 @@ namespace System.Windows.Forms
         public DataGridViewColumn OwningColumn { get; }
 
         public bool IsInEditMode { get; }
-
-        public DataGridViewCellStyle InheritedStyle { get; }
+        internal DataGridViewCellStyle RowStyle { get; set; }
+        public DataGridViewCellStyle InheritedStyle { get => RowStyle; }
 
         public AccessibleObject AccessibilityObject { get; }
         public int ColumnIndex { get; }
@@ -80,8 +80,9 @@ namespace System.Windows.Forms
         public bool HasStyle { get; }
 
         public DataGridViewElementStates InheritedState { get; }
-
-        public virtual Type ValueType { get; set; }
+        private Type _valueType;
+        public virtual Type ValueType { get { return _valueType == null ? Value?.GetType() : _valueType; } set { _valueType = value; } }
+        
     }
     public class DataGridViewTextBoxCell : DataGridViewCell
     {

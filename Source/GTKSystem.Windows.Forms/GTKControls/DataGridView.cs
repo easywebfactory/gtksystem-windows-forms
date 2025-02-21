@@ -25,7 +25,7 @@ namespace System.Windows.Forms
         private DataGridViewColumnCollection _columns;
         private DataGridViewRowCollection _rows;
         private ControlBindingsCollection _collect;
-        internal Gtk.TreeStore Store = new TreeStore(typeof(CellValue));
+        internal Gtk.TreeStore Store = new TreeStore(typeof(DataGridViewCell));
         public Gtk.TreeView GridView { get { return self.GridView; } }
         public DataGridView():base()
         {
@@ -83,14 +83,8 @@ namespace System.Windows.Forms
         }
         public event EventHandler SelectionChanged;
         public event DataGridViewCellEventHandler CellClick;
-        internal void CellValueChanagedHandler(int column, int row, CellValue val)
+        internal void CellValueChanagedHandler(int column, int row)
         {
-            var cells = _rows[row].Cells;
-            if (cells.Count > column)
-            {
-                cells[column].Value = val?.Text;
-            }
-
             if (CellValueChanged != null)
             {
                 CellValueChanged(this, new DataGridViewCellEventArgs(column, row));
@@ -194,8 +188,8 @@ namespace System.Windows.Forms
             _rows.Clear();
             if (_DataSource != null)
             {
-                Store = new Gtk.TreeStore(Array.ConvertAll(GridView.Columns, o => typeof(CellValue)));
-                GridView.Model = Store;
+                //Store = new Gtk.TreeStore(Array.ConvertAll(GridView.Columns, o => typeof(object)));
+                //GridView.Model = Store;
                 if (_DataSource is DataTable dtable)
                 {
                     LoadDataTableSource(dtable);

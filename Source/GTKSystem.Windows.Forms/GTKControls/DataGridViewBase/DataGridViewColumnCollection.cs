@@ -126,9 +126,9 @@ namespace System.Windows.Forms
         {
             if (Count > __owner.Store.NColumns)
             {
-                CellValue[] columnTypes = new CellValue[Count];
+                object[] columnTypes = new object[Count];
                 __owner.Store.Clear();
-                __owner.Store = new Gtk.TreeStore(Array.ConvertAll(columnTypes, o => typeof(CellValue)));
+                __owner.Store = new Gtk.TreeStore(Array.ConvertAll(columnTypes, o => typeof(DataGridViewCell)));
                 __owner.GridView.Model = __owner.Store;
             }
             else if (__owner.GridView.Model == null)
@@ -140,16 +140,16 @@ namespace System.Windows.Forms
                 __owner.Store.SetSortFunc(i, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
                 {
                     ((Gtk.TreeStore)m).GetSortColumnId(out int sortid, out Gtk.SortType order);
-                    CellValue v1= m.GetValue(t1, sortid) as CellValue;
-                    CellValue v2 = m.GetValue(t2, sortid) as CellValue;
-                    if (v1?.Text == null || v2?.Text == null)
+                    DataGridViewCell v1 = m.GetValue(t1, sortid) as DataGridViewCell;
+                    DataGridViewCell v2 = m.GetValue(t2, sortid) as DataGridViewCell;
+                    if (v1?.Value == null || v2?.Value == null)
                         return 0;
-                    else if(int.TryParse(v1.Text,out int rv1) && int.TryParse(v2.Text, out int rv2))
+                    else if(int.TryParse(v1.Value.ToString(), out int rv1) && int.TryParse(v2.Value.ToString(), out int rv2))
                         return (rv2 - rv1);
-                    else if (DateTime.TryParse(v1.Text, out DateTime rd1) && DateTime.TryParse(v2.Text, out DateTime rd2))
+                    else if (DateTime.TryParse(v1.Value.ToString(), out DateTime rd1) && DateTime.TryParse(v2.Value.ToString(), out DateTime rd2))
                         return (int)((rd2 - rd1).TotalSeconds);
                     else
-                        return v2.Text.CompareTo(v1.Text);
+                        return v2.Value.ToString().CompareTo(v1.Value.ToString());
                 }));
             }
         }

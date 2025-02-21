@@ -10,7 +10,7 @@ namespace System.Windows.Forms
     public class DataGridViewCellCollection : BaseCollection, IList, ICollection, IEnumerable
     {
         private ArrayList items = new ArrayList();
-
+        protected override ArrayList List => items;
         private DataGridViewRow owner;
         public DataGridViewRow Row { set => owner = value; get => owner; }
         public bool IsFixedSize => false;
@@ -101,7 +101,7 @@ namespace System.Windows.Forms
         {
             items.CopyTo(array, index);
         }
-        IEnumerator IEnumerable.GetEnumerator()
+        public override IEnumerator GetEnumerator()
         {
             return items.GetEnumerator();
         }

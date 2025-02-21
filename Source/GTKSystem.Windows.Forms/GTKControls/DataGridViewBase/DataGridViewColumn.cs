@@ -8,7 +8,10 @@ using Gtk;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
+using System.Reflection;
+using System.Runtime.Serialization.Json;
 using System.Windows.Forms.GtkRender;
+using System.Xml.Serialization;
 
 namespace System.Windows.Forms
 {
@@ -47,11 +50,11 @@ namespace System.Windows.Forms
             var model = _treeView.Model;
             model.GetIter(out TreeIter iter, path);
             object cell = model.GetValue(iter, this.Index);
-            if (cell is CellValue val)
+            if (cell is DataGridViewCell val)
             {
                 CellRendererToggleValue tggle = (CellRendererToggleValue)o;
                 val.Value = tggle.Active == false;
-                _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last(), val);
+                _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last());
             }
         }
     }
@@ -82,11 +85,11 @@ namespace System.Windows.Forms
             var model = _treeView.Model;
             model.GetIter(out TreeIter iter, path);
             object cell = model.GetValue(iter, this.Index);
-            if (cell is CellValue val)
+            if (cell is DataGridViewCell val)
             {
                 CellRendererToggleValue tggle = (CellRendererToggleValue)o;
                 val.Value = tggle.Active == false;
-                _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last(), val);
+                _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last());
             }
         }
     }
@@ -118,10 +121,10 @@ namespace System.Windows.Forms
             var model = _treeView.Model;
             model.GetIter(out TreeIter iter, path);
             object cell = model.GetValue(iter, this.Index);
-            if (cell is CellValue val)
+            if (cell is DataGridViewCell val)
             {
                 val.Value = args.NewText;
-                _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last(), val);
+                _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last());
             }
         }
         public ObjectCollection Items => _items;
@@ -169,7 +172,7 @@ namespace System.Windows.Forms
                 if (args.Column.Cells[0] is CellRendererText cell)
                 {
                     TreePath path = args.Path;
-                    _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last(), new CellValue() { Value = cell.Text });
+                    _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last());
                 }
             }
         }
@@ -248,10 +251,10 @@ namespace System.Windows.Forms
             var model = _treeView.Model;
             model.GetIter(out TreeIter iter, path);
             object cell = model.GetValue(iter, this.Index);
-            if (cell is CellValue val)
+            if (cell is DataGridViewCell val)
             {
                 val.Value = args.NewText;
-                _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last(), val);
+                _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last());
             }
         }
         public void SetGridViewDefaultStyle(DataGridViewCellStyle cellStyle)
@@ -389,7 +392,7 @@ namespace System.Windows.Forms
         [Browsable(true)]
         public DataGridViewCellStyle DefaultCellStyle { 
             get=> _DefaultCellStyle; 
-            set { _DefaultCellStyle = value; _cellRenderer.DefaultStyle = value; }
+            set { _DefaultCellStyle = value; _cellRenderer.ColumnStyle = value; }
         }
         [Browsable(true)]
         [DefaultValue("")]
@@ -403,7 +406,20 @@ namespace System.Windows.Forms
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public virtual DataGridViewCell CellTemplate { get => _cellTemplate; set => _cellTemplate = value; }
+        public virtual DataGridViewCell CellTemplate {
+            get
+            {
+                Type celltype = _cellTemplate.GetType();
+                DataGridViewCell newcell=Activator.CreateInstance(celltype) as DataGridViewCell;
+                var propertys = celltype.GetProperties(Reflection.BindingFlags.Public | Reflection.BindingFlags.Instance);
+                foreach (PropertyInfo property in propertys)
+                    if (property.CanRead && property.CanWrite)
+                        property.SetValue(newcell, property.GetValue(_cellTemplate));
+
+                return newcell;
+            }
+            set => _cellTemplate = value;
+        }
 
 
         [DefaultValue(DataGridViewAutoSizeColumnMode.NotSet)]
