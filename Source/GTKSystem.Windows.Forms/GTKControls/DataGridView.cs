@@ -188,8 +188,6 @@ namespace System.Windows.Forms
             _rows.Clear();
             if (_DataSource != null)
             {
-                //Store = new Gtk.TreeStore(Array.ConvertAll(GridView.Columns, o => typeof(object)));
-                //GridView.Model = Store;
                 if (_DataSource is DataTable dtable)
                 {
                     LoadDataTableSource(dtable);
