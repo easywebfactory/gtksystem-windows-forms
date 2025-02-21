@@ -46,7 +46,20 @@ namespace System.Windows.Forms
         {
             get { return self.TextView.Buffer.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); }
         }
-        public int SelectionStart { get { return self.TextView.Buffer.CursorPosition; } }
+        public int SelectionStart { get { if (self.TextView.Buffer.HasSelection) { self.TextView.Buffer.GetSelectionBounds(out TextIter start, out TextIter end); return start.Offset; } else { return self.TextView.Buffer.CursorPosition; } } }
+        
+        [System.ComponentModel.Browsable(false)]
+        public virtual int SelectionLength
+        {
+            get { self.TextView.Buffer.GetSelectionBounds(out TextIter start, out TextIter end); return end.Offset - start.Offset; }
+            set
+            {
+                
+                TextIter start = self.TextView.Buffer.GetIterAtOffset(self.TextView.Buffer.CursorPosition);
+                TextIter end = self.TextView.Buffer.GetIterAtOffset(self.TextView.Buffer.CursorPosition + value);
+                self.TextView.Buffer.SelectRange(start, end);
+            }
+        }
         public void InsertTextAtCursor(string text)
         {
             if (text == null) return;
