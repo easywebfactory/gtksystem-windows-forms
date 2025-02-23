@@ -1,27 +1,35 @@
 {
   "format": 1,
   "restore": {
-    "D:\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj": {}
+    "D:\\CommonLibrary\\GtkWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj": {}
   },
   "projects": {
-    "D:\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj": {
+    "D:\\CommonLibrary\\GtkWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj",
+        "projectUniqueName": "D:\\CommonLibrary\\GtkWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj",
         "projectName": "System.Resources.Extensions",
-        "projectPath": "D:\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj",
-        "packagesPath": "C:\\Users\\auto_\\.nuget\\packages\\",
-        "outputPath": "D:\\GTK\\GTKSystemWindowsForms\\Source\\System.Resources.Extensions\\obj\\",
+        "projectPath": "D:\\CommonLibrary\\GtkWindowsForms\\Source\\System.Resources.Extensions\\System.Resources.Extensions.csproj",
+        "packagesPath": "C:\\Users\\Piero\\.nuget\\packages\\",
+        "outputPath": "D:\\CommonLibrary\\GtkWindowsForms\\Source\\System.Resources.Extensions\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\auto_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "D:\\CommonLibrary\\NuGet.Config",
+          "C:\\Users\\Piero\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "D:\\Starb\\Packages": {},
+          "https://api.nuget.org/v3/index.json": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -38,8 +46,9 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "direct"
-        }
+          "auditMode": "all"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net6.0": {
@@ -60,7 +69,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     }

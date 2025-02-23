@@ -638,7 +638,7 @@
           }
         }
       },
-      "GTKSystem.Windows.Forms/1.3.24.54": {
+      "GTKSystem.Windows.Forms/1.3.24.60": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
@@ -825,12 +825,11 @@
       ]
     },
     "Microsoft.NETCore.Targets/1.1.0": {
-      "sha512": "aOZA3BWfz9RXjpzt0sRJJMjAscAUm3Hoa4UWAfceV9UTYxgwZ1lZt5nO2myFf+/jetYQo4uTP7zS8sJY67BBxg==",
+      "sha512": "3PA4nAG/siJI4PAE4PFZPXao7p5bA56bwOHE9g6BoUrYjccNDWGtXh0U0xIJDTuB3g1NKJh/SrxWOHW/UVTrYw==",
       "type": "package",
       "path": "microsoft.netcore.targets/1.1.0",
       "files": [
         ".nupkg.metadata",
-        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.0/_._",
@@ -840,7 +839,7 @@
       ]
     },
     "Microsoft.Win32.Registry/4.3.0": {
-      "sha512": "Lw1/VwLH1yxz6SfFEjVRCN0pnflLEsWgnV4qsdJ512/HhTwnKXUG+zDQ4yTO3K/EJQemGoNaBHX5InISNKTzUQ==",
+      "sha512": "6DBYskpgwvATDXUlPWprSIUAgsp87MNAs26eg/l/1b4m3Eb24alFxAuaSEqkIkZYwmRksWlMaanLXRcJgRfgnA==",
       "type": "package",
       "path": "microsoft.win32.registry/4.3.0",
       "files": [
@@ -911,7 +910,7 @@
       ]
     },
     "System.Collections/4.3.0": {
-      "sha512": "3Dcj85/TBdVpL5Zr+gEEBUuFe2icOnLalmEh9hfck1PTYbbyWuZgh4fmm2ysCLTrqLQw6t3TgTyJ+VLp+Qb+Lw==",
+      "sha512": "dRcbAM+Wh3a57HG6s4VgcjoOy4CkS13wvJJv9FGa6sSZ10dE27TiGsSRbyDe8ALLCZsbXwcQBXHru8nPaHolDA==",
       "type": "package",
       "path": "system.collections/4.3.0",
       "files": [
@@ -1066,7 +1065,7 @@
       ]
     },
     "System.Globalization/4.3.0": {
-      "sha512": "kYdVd2f2PAdFGblzFswE4hkNANJBKRmsfa2X5LG2AcWE1c7/4t0pYae1L8vfZ5xvE2nK/R9JprtToA61OSHWIg==",
+      "sha512": "5EQOslYrkxj1XnzZWrYYUZzkTtpFoYXPnftuprkeWHNbl9KE3XdUgCgu1VCTDjamZAmVp7qNlohv4gqLlu1shQ==",
       "type": "package",
       "path": "system.globalization/4.3.0",
       "files": [
@@ -1317,7 +1316,7 @@
       ]
     },
     "System.Reflection.Primitives/4.3.0": {
-      "sha512": "5RXItQz5As4xN2/YUDxdpsEkMhvw3e6aNveFXUn4Hl/udNTCNhnKp8lT9fnc3MhvGKh1baak5CovpuQUXHAlIA==",
+      "sha512": "Xr7KwQMymxJcqojyVBR4GnIa+vQynqCW04AcGprQThYWEDS1eJup1QSioiGhZC2JWcnBA658/4g0h02Oi2m1lA==",
       "type": "package",
       "path": "system.reflection.primitives/4.3.0",
       "files": [
@@ -1402,7 +1401,7 @@
       ]
     },
     "System.Resources.ResourceManager/4.3.0": {
-      "sha512": "/zrcPkkWdZmI4F92gL/TPumP98AVDu/Wxr3CSJGQQ+XN6wbRZcyfSKVoPo17ilb3iOr0cCRqJInGwNMolqhS8A==",
+      "sha512": "V/MXaLShThkgiin9osi5BGL0zdEZXUYv1rw1mBZ3l2yaLgruYSka5/hqaKb8Fi5hAs8U0UYcWhROEu8wRIgG9Q==",
       "type": "package",
       "path": "system.resources.resourcemanager/4.3.0",
       "files": [
@@ -1582,7 +1581,7 @@
       ]
     },
     "System.Runtime.Extensions/4.3.0": {
-      "sha512": "guW0uK0fn5fcJJ1tJVXYd7/1h5F+pea1r7FLSOz/f8vPEqbR2ZAknuRDvTQ8PzAilDveOxNjSfr0CHfIQfFk8g==",
+      "sha512": "vIRdaBu77OT+W9zznNSI5KcdD8tKgY8wa6CR/onJqZp0xGQtvPfHVA8BGgZNCjbL+rIY4sQhZ78Bt0cax+k8Yw==",
       "type": "package",
       "path": "system.runtime.extensions/4.3.0",
       "files": [
@@ -1662,7 +1661,7 @@
       ]
     },
     "System.Runtime.Handles/4.3.0": {
-      "sha512": "OKiSUN7DmTWeYb3l51A7EYaeNMnvxwE249YtZz7yooT4gOZhmTjIn48KgSsw2k2lYdLgTKNJw/ZIfSElwDRVgg==",
+      "sha512": "sAkKQYWOLHXwD7kBFJzbnzNtvVAZ4UG+2HHLRKj9tn4XQNoCLIsRCAKIBBQ2lEk1eWEtJ799zKGqBvU4zFRMWQ==",
       "type": "package",
       "path": "system.runtime.handles/4.3.0",
       "files": [
@@ -1699,7 +1698,7 @@
       ]
     },
     "System.Runtime.InteropServices/4.3.0": {
-      "sha512": "uv1ynXqiMK8mp1GM3jDqPCFN66eJ5w5XNomaK2XD+TuCroNTLFGeZ+WCmBMcBDyTFKou3P6cR6J/QsaqDp7fGQ==",
+      "sha512": "xKinTwTZxAEguliZZqax4UPh69HyWH/en6UMncMJPfbaOmPZc3pQ+Dn1A9Mb2EuNUtzkSpJgxSGtoACIYRVawQ==",
       "type": "package",
       "path": "system.runtime.interopservices/4.3.0",
       "files": [
@@ -2069,7 +2068,7 @@
       ]
     },
     "System.Threading/4.0.11": {
-      "sha512": "N+3xqIcg3VDKyjwwCGaZ9HawG9aC6cSDI+s7ROma310GQo8vilFZa86hqKppwTHleR/G0sfOzhvgnUxWCR/DrQ==",
+      "sha512": "ZC6hp+g5+OPPxZ+r82h2WVxR9AUgMUi3BpK7lPj9fwn7WOBYI15X7mPxrMe5BLmplP5UvWV0NNxUuM1ytH7REA==",
       "type": "package",
       "path": "system.threading/4.0.11",
       "files": [
@@ -2139,7 +2138,7 @@
       ]
     },
     "System.Threading.Tasks/4.3.0": {
-      "sha512": "LbSxKEdOUhVe8BezB/9uOGGppt+nZf6e1VFyw6v3DN6lqitm0OSn2uXMOdtP0M3W4iMcqcivm2J6UgqiwwnXiA==",
+      "sha512": "X0mzmISTFLQJ/0mAHPxTcCVrf3uD6lV6TJ7ExznG4NOSnQWn7ycanQnrV33k0tZPQgUvcVuJ8bD+YOoecQoc4w==",
       "type": "package",
       "path": "system.threading.tasks/4.3.0",
       "files": [
@@ -2226,7 +2225,7 @@
         "version.txt"
       ]
     },
-    "GTKSystem.Windows.Forms/1.3.24.54": {
+    "GTKSystem.Windows.Forms/1.3.24.60": {
       "type": "project",
       "path": "../../Source/GTKSystem.Windows.Forms/GTKSystem.Windows.Forms.csproj",
       "msbuildProject": "../../Source/GTKSystem.Windows.Forms/GTKSystem.Windows.Forms.csproj"
@@ -2234,40 +2233,50 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "GTKSystem.Windows.Forms >= 1.3.24.54",
+      "GTKSystem.Windows.Forms >= 1.3.24.60",
       "GTKSystem.Windows.FormsDesigner >= 1.0.0.4",
       "GtkSharp >= 3.24.24.95"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\auto_\\.nuget\\packages\\": {}
+    "C:\\Users\\Piero\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
+      "projectUniqueName": "D:\\CommonLibrary\\GtkWindowsForms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
       "projectName": "GTKWinFormsApp",
-      "projectPath": "D:\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
-      "packagesPath": "C:\\Users\\auto_\\.nuget\\packages\\",
-      "outputPath": "D:\\GTK\\GTKSystemWindowsForms\\Samples\\GTKWinFormsApp\\obj\\",
+      "projectPath": "D:\\CommonLibrary\\GtkWindowsForms\\Samples\\GTKWinFormsApp\\GTKWinFormsApp.csproj",
+      "packagesPath": "C:\\Users\\Piero\\.nuget\\packages\\",
+      "outputPath": "D:\\CommonLibrary\\GtkWindowsForms\\Samples\\GTKWinFormsApp\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\auto_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "D:\\CommonLibrary\\NuGet.Config",
+        "C:\\Users\\Piero\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "D:\\Starb\\Packages": {},
+        "https://api.nuget.org/v3/index.json": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {
-              "projectPath": "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj"
+            "D:\\CommonLibrary\\GtkWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {
+              "projectPath": "D:\\CommonLibrary\\GtkWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj"
             }
           }
         }
@@ -2280,8 +2289,9 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "direct"
-      }
+        "auditMode": "all"
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -2312,8 +2322,20 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1904",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj",
+      "libraryId": "System.Drawing.Common",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }

@@ -1,0 +1,198 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\Piero\AppData\Local\Temp\JetBrains\ReSharperPlatformVs17\vAny_a5ed34c0\CoverageData\_GTKWinFormsApp.-965351928\Snapshot\snapshot.utdcvr</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=01043cc3_002Dee38_002D4e90_002Daace_002Dac265e459afb/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="BindingContextChangedTest2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.DataBinding.BindingTest.BindingContextChangedTest2&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.CompatTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=04da30e9_002D16b4_002D4d0b_002D9990_002D1646115802ac/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestEventOrdering #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ApplicationContextTest.TestEventOrdering&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=0565f4f4_002D1013_002D4b7a_002D8b63_002D8756a99e9d52/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestPublicMethods" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ControlPropertyEventsTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.TestControlStyle&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=110f5e2a_002D64ab_002D423c_002Db397_002D8292036ac708/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestEventOrdering #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Applications.ApplicationContextTest.TestEventOrdering&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=14d1c7cc_002Dfdff_002D4862_002Da070_002D850817c031a4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestEventOrdering #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Applications.ApplicationContextTest.TestEventOrdering&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Applications.ApplicationContextTest.TestEventOrdering2&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Applications.ApplicationContextTest.ThreadExitTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Args.ColumnClickEventArgsTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Args.DragEventArgsTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Args.EventArgsTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Collections.ArrangedElementCollectionTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Collections.ControlCollectionTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Controls.CheckBoxEventTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.DataBinding.BindingMemberInfoTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.DataBinding.BindingsCollectionTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.DataBinding.BindingTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.DataBinding.ControlBindingsCollectionTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Dialogs.CommonDialogsTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Dialogs.FolderBrowserDialogTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Events.EventClass&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.General.RowStyleTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Layouts.ColumnStyleTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.UI.CursorTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ColumnHeaderTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ControlHandleTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1699e9b6_002D745f_002D4dfa_002Da62f_002Ddda1b0aed08f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestEventOrdering" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ApplicationContextTest.TestEventOrdering&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=16e8df92_002D501a_002D4a58_002D8c3f_002D5cde55219ec0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="OpenFileDialogTest #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.CommonDialogsTest.OpenFileDialogTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=17601408_002Dc5d3_002D49b1_002D9c91_002D9e51230aaff9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestReader" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.CompatTest.TestReader&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=32cd85b9_002D71bd_002D4a44_002D9d2d_002D1cff168d458a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="OpenFileDialogTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.CommonDialogsTest.OpenFileDialogTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3fddbc58_002D27b5_002D4ddf_002D962a_002D400cfe0ca1c1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="BgrndImageChangedTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.EventClass.BgrndImageChangedTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6551213b_002D9e80_002D4619_002D9401_002D818e34896ea0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestBindingManagerDataErrorEventArgs" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.DefaultLayoutTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.CursorTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.TimerTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Applications.ApplicationContextTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7dd30700_002Dab02_002D4705_002Db208_002D33cbe1fdfd39/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="BackColorChangedTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.EventClass.BackColorChangedTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=92d801f2_002Db1dc_002D4439_002D858c_002Dbaba9f9ec8ec/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ColorDialogTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.CommonDialogsTest.ColorDialogTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a720eaf1_002Dab0a_002D49f6_002D9c2a_002Dc08077a22dcb/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="BasePath_ChangesAbsoluteFileRef_Deeper" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.WriterTest.BasePath_ChangesAbsoluteFileRef_Deeper&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ApplicationContextTest.TestEventOrdering2&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ApplicationContextTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.DataBinding.BindingMemberInfoTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.DataBinding.BindingsCollectionTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.DataBinding.BindingSourceTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.DataBinding.BindingTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a84e1ff4_002Dffef_002D4d16_002Dac78_002Dece2ad666929/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="DataSourcePropertyChanged" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.DataBinding.BindingTest.DataSourcePropertyChanged&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ColumnStyleTest.CtorTest1&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ColumnStyleTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.CommonDialogsTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.DataBinding.ControlBindingsCollectionTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Design.ControlBindingsConverterTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ControlCollectionTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.EventClass&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ControlHandleTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.CursorTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.EventArgsTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c8891678_002De407_002D4635_002Da1a7_002Dc5834f9f928b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="BgrndImageChangedTest #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.EventClass.BgrndImageChangedTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ceddf81e_002D856d_002D4e8f_002Db13d_002D63c6ba58f15a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestPublicProperties #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ControlHandleTest.TestPublicProperties&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d06d1796_002Dde27_002D4178_002D803b_002D9066b3e6aab6/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ITRSIsIgnoredIfGetValueAlreadyCalledWithAnotherITRS" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.ResXDataNodeSerializedGetValueTypeNameTests.ITRSIsIgnoredIfGetValueAlreadyCalledWithAnotherITRS&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d0bff513_002D5c23_002D4f13_002Db436_002D9e78477f6e9b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestPublicProperties" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ControlHandleTest.TestPublicProperties&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d30898d6_002D8332_002D4cf1_002D986c_002Dffd7c21e6952/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestReader #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.CompatTest.TestReader&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.CompatTest.TestReader_2_0&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.CultureTest.Test&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.ResXDataNodeAliasTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.ResXDataNodeByteArrayTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.ResXDataNodeFileRefGetValueTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.ResXDataNodeFileRefGetValueTypeNameTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.ResXDataNodeSerializedGetValueTypeNameTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.ResXDataNodeSerializedGetValueTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.ResXDataNodeTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.ResXDataNodeTypeConverterGetValueTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.ResXDataNodeTypeConverterGetValueTypeNameTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.ResXDataNodeWriteBehavior&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.ResXFileRefTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.ResXResourceReaderTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Resources.WriterTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ApplicationContextTest.TestEventOrdering2&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ApplicationContextTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.DataBinding.BindingMemberInfoTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.DataBinding.BindingsCollectionTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.DataBinding.BindingTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.CheckBoxEventTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ColumnClickEventArgsTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ColumnHeaderTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ColumnStyleTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d526ce04_002Db40d_002D41eb_002D8d8b_002D73892fc31258/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestEventOrdering #5" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.Applications.ApplicationContextTest.TestEventOrdering&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ControlHandleTest.TestPublicProperties&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ControlHandleTest.TestProtectedProperties&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F48E2FEE-1244-4EA1-B7BF-B0F4001634DA::net8.0::GtkTests.System.Windows.Forms.ControlHandleTest.TestPublicMethods&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Miscellaneous_0020Files_002Fvctmp27152_005F401157_002EResources_002Ebce40071/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Miscellaneous_0020Files_002Fvctmp27152_005F401157_002EResources_002Ebce40071/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Miscellaneous_0020Files_002Fvctmp27152_005F418587_002EResources_002E2cd660ee/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Miscellaneous_0020Files_002Fvctmp27152_005F418587_002EResources_002E2cd660ee/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Miscellaneous_0020Files_002Fvctmp27152_005F423827_002EResources_002E2cd660ee/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Miscellaneous_0020Files_002Fvctmp27152_005F423827_002EResources_002E2cd660ee/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Miscellaneous_0020Files_002Fvctmp27152_005F430321_002EResources_002E00000000/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Miscellaneous_0020Files_002Fvctmp27152_005F430321_002EResources_002E00000000/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Miscellaneous_0020Files_002Fvctmp27152_005F442659_002EResources_002E2b99ed17_002ECurrent/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Miscellaneous_0020Files_002Fvctmp27152_005F442659_002EResources_002E2b99ed17_002ECurrent/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Miscellaneous_0020Files_002Fvctmp27152_005F496550_002EResources_002E2b99ed17_002EResult/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Miscellaneous_0020Files_002Fvctmp27152_005F496550_002EResources_002E2b99ed17_002EResult/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Miscellaneous_0020Files_002Fvctmp27152_005F726708_002EResources_002Ebce40071/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Miscellaneous_0020Files_002Fvctmp27152_005F726708_002EResources_002Ebce40071/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Source_002FGtkSystem_002EWindows_002EForms_002FGTKSystem_002FResources_002FExtensions_002FSR/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Source_002FGtkSystem_002EWindows_002EForms_002FProperties_002FResources/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Source_002FGtk_002EWindows_002EForms_002FGTKSystem_002FResources_002FExtensions_002FSR/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Source_002FGtk_002EWindows_002EForms_002FGTKSystem_002FResources_002FExtensions_002FSR/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Source_002FGtk_002EWindows_002EForms_002FProperties_002FResources/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Source_002FGtk_002EWindows_002EForms_002FProperties_002FResources_0020_002D_0020Copy/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Source_002FGtk_002EWindows_002EForms_002FProperties_002FResources_0020_002D_0020Copy/@EntryIndexRemoved">True</s:Boolean>
+	
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean></wpf:ResourceDictionary>
