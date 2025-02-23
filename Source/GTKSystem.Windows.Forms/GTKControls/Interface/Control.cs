@@ -1080,10 +1080,7 @@ namespace System.Windows.Forms
 
         public virtual void Invalidate(bool invalidateChildren)
         {
-            if (this.Widget != null && this.Widget.IsVisible)
-            {
-                this.Widget.Window.InvalidateRect(Widget.Allocation, invalidateChildren);
-            }
+            Invalidate(new Rectangle(Widget.Allocation.X, Widget.Allocation.Y, Widget.Allocation.Width, Widget.Allocation.Height), invalidateChildren);
         }
 
         public virtual void Invalidate(Rectangle rc)
@@ -1098,6 +1095,12 @@ namespace System.Windows.Forms
                 if (ISelf != null)
                     ISelf.Override.OnAddClass();
                 this.Widget.Window.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
+                if (invalidateChildren == true && this.Widget is Gtk.Container container)
+                {
+                    foreach (var child in container.Children)
+                        child.Window.InvalidateRect(child.Allocation, invalidateChildren);
+                }
+                Refresh();
             }
         }
 
@@ -1215,8 +1218,13 @@ namespace System.Windows.Forms
             if (this.Widget != null && this.Widget.IsVisible)
             {
                 if (ISelf != null)
-                    ISelf.Override.ClearNativeBackground();
+                    ISelf.Override.OnAddClass();
                 this.Widget.QueueDraw();
+                if (this.Widget is Gtk.Container container)
+                {
+                    foreach (var child in container.Children)
+                        child.QueueDraw();
+                }
             }
         }
 

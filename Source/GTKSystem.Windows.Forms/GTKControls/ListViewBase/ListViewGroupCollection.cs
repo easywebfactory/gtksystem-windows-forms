@@ -29,12 +29,15 @@ namespace System.Windows.Forms
             _listView = listView;
 
         }
-
-		public ListViewGroup Add(string key, string headerText)
+        public new int Add(ListViewGroup group)
+        {
+            AddCore(group);
+			return Count;
+        }
+        public ListViewGroup Add(string key, string headerText)
 		{
 			ListViewGroup group = new ListViewGroup(key, headerText);
-
-            AddCore(group);
+            this.Add(group);
 			return group;
 		}
 

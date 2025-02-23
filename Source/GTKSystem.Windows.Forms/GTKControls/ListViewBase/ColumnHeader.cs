@@ -110,6 +110,12 @@ namespace System.Windows.Forms
             ImageKey = imageKey;
         }
 
+        public ColumnHeader(string text, int width) 
+        {
+            Text = text;
+            Width = width;
+        }
+
         //public void AutoResize(ColumnHeaderAutoResizeStyle headerAutoResize)
         //{
         //	throw null;
