@@ -8,12 +8,11 @@ using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Linq;
+using System.Drawing;
+using System.Net.Sockets;
 using System.Reflection;
-using System.Windows.Forms.GtkRender;
 
 namespace System.Windows.Forms
 {
@@ -44,7 +43,61 @@ namespace System.Windows.Forms
             GridView.Realized += GridView_Realized;
             GridView.RowActivated += GridView_RowActivated;
             GridView.Selection.Changed += Selection_Changed;
+
+
+            GridView.ButtonReleaseEvent += GridView_ButtonReleaseEvent;
+            GridView.KeyPressEvent += GridView_KeyPressEvent;
+            GridView.KeyReleaseEvent += GridView_KeyReleaseEvent;
         }
+        private bool IsControlPress;
+        private void GridView_KeyReleaseEvent(object o, KeyReleaseEventArgs args)
+        {
+            IsControlPress = false;
+        }
+        private void GridView_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
+        {
+            if (args.Event is Gdk.EventKey eventkey)
+            {
+                Keys keys = (Keys)eventkey.HardwareKeycode;
+                if (eventkey.State == Gdk.ModifierType.ControlMask)
+                {
+                    IsControlPress = true;
+                }
+                else { IsControlPress = false; }
+            }
+        }
+
+        private List<DataGridViewCell> _selectedCells = new List<DataGridViewCell>();
+        private void GridView_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
+        {
+            if (IsControlPress == false)
+            {
+                foreach (var item in _selectedCells)
+                {
+                    item.Selected = false;
+                }
+                _selectedCells.Clear();
+            }
+            Gtk.TreeView view=(Gtk.TreeView)o;
+            view.GetCursor(out TreePath path, out TreeViewColumn column);
+            int index = Array.FindIndex(view.Columns, o => o.Handle == column.Handle);
+            Store.GetIter(out TreeIter iter, path);
+            DataGridViewCell cell = Store.GetValue(iter, index) as DataGridViewCell;
+            cell.Selected = cell.Selected==false;
+            if (_selectedCells.Contains(cell) == false)
+                _selectedCells.Add(cell);
+            view.QueueDraw();
+            if (view.Selection.Mode == Gtk.SelectionMode.None)
+            {
+                if (CellClick != null)
+                {
+                    CellClick(this, new DataGridViewCellEventArgs(index, cell.RowIndex));
+                }
+                if (SelectionChanged != null)
+                    SelectionChanged(this, args);
+            }
+        }
+
         private List<int> _selectedBandIndexes = new List<int>();
         private void Selection_Changed(object sender, EventArgs e)
         {
@@ -65,7 +118,7 @@ namespace System.Windows.Forms
             if (CellClick != null)
             {
                 DataGridViewColumn column = args.Column as DataGridViewColumn;
-                CellClick(this, new DataGridViewCellEventArgs(column.Index, args.Path.Indices[0]));
+                CellClick(this, new DataGridViewCellEventArgs(column.Index, args.Path.Indices.Last()));
             }
         }
 
@@ -325,7 +378,16 @@ namespace System.Windows.Forms
                 {
                     case DataGridViewSelectionMode.CellSelect:
                         {
-
+                            int cols = Store.NColumns;
+                            Store.Foreach(new TreeModelForeachFunc((model, path, iter) => {
+                                for (int i = 0; i < cols; i++)
+                                {
+                                    DataGridViewCell cell = (DataGridViewCell)model.GetValue(iter, i);
+                                    if (cell.Selected)
+                                        stcc.Add(cell);
+                                }
+                                return false;
+                            }));
                             break;
                         }
 
@@ -447,7 +509,11 @@ namespace System.Windows.Forms
         {
             GridView.Selection.UnselectAll();
         }
-
+        public void OnCellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (CellPainting != null)
+                CellPainting(sender, e);
+        }
         //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler BackgroundImageChanged;
         [Obsolete("此事件未实现，自行开发")]
@@ -652,7 +718,6 @@ namespace System.Windows.Forms
         public event DataGridViewCellStateChangedEventHandler CellStateChanged;
         [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellParsingEventHandler CellParsing;
-        [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellPaintingEventHandler CellPainting;
         [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewCellMouseEventHandler CellMouseUp;
