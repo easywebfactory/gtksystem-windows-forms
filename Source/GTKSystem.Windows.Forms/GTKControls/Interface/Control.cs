@@ -959,9 +959,10 @@ namespace System.Windows.Forms
 
                 return new Drawing.Graphics(this.Widget, context, this.Widget.Allocation);
             }
-            finally
+            catch(Exception ex) 
             {
-
+                Console.WriteLine("画版创建失败：" + ex.Message);
+                throw;
             }
         }
 
@@ -973,7 +974,6 @@ namespace System.Windows.Forms
                 cr.SetSourceSurface(surface, 0, 0);
                 cr.Paint();
                 cr.Restore();
-                this.Widget.QueueDraw();
             }
         }
 

@@ -4,34 +4,75 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using Microsoft.Win32;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing;
-using System.Reflection;
 using System.Windows.Forms.ComponentModel.Com2Interop;
 using System.Windows.Forms.Design;
+using System.Windows.Forms.PropertyGridInternal;
 namespace System.Windows.Forms
 {
     /// <summary>
-    /// 注：此控件无法使用，正在开发中...
+    /// 
     /// </summary>
     [Designer($"System.Windows.Forms.Design.PropertyGridDesigner, {AssemblyRef.SystemDesign}")]
-    public partial class PropertyGrid : ContainerControl, IComPropertyBrowser//, IPropertyNotifySink.Interface
+    public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
     {
+        public readonly PropertyGridBase self = new PropertyGridBase();
+        public override object GtkControl => self;
         private static readonly object s_propertyValueChangedEvent = new();
         private static readonly object s_comComponentNameChangedEvent = new();
         private static readonly object s_propertyTabChangedEvent = new();
         private static readonly object s_selectedGridItemChangedEvent = new();
         private static readonly object s_propertySortChangedEvent = new();
         private static readonly object s_selectedObjectsChangedEvent = new();
-        private object[]? _selectedObjects;
+        private object[] _selectedObjects;
         private readonly List<TabInfo> _tabs = new List<TabInfo>();
+
+        private PropertyGridView _propertyView;
         public PropertyGrid()
         {
+            _propertyView = new PropertyGridView(this);
+            self.child1.Add(_propertyView.tree);
+            _propertyView.PropertyValueChanged += Self_PropertyValueChanged;
+            _propertyView.SelectedGridItemChanged += Self_SelectedGridItemChanged;
         }
+
+        private void Self_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
+        {
+            Events[s_selectedGridItemChangedEvent]?.DynamicInvoke(this, e);
+        }
+
+        private void Self_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            Events[s_propertyValueChangedEvent]?.DynamicInvoke(this, e);
+        }
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public object[] SelectedObjects
+        {
+            get => _selectedObjects is null ? Array.Empty<object>() : (object[])_selectedObjects.Clone();
+            set
+            {
+                _selectedObjects = value is null ? Array.Empty<object>() : (object[])value.Clone();
+                //只支持一个对象
+                _propertyView.LoadPropertyInfo(_selectedObjects[0]);
+            }
+        }
+        [DefaultValue(null)]
+        public object SelectedObject
+        {
+            get => _selectedObjects is null || _selectedObjects.Length == 0 ? null : _selectedObjects[0];
+            set => SelectedObjects = value is null ? Array.Empty<object>() : (new object[] { value });
+        }
+
+        [Browsable(true)]
+        [Description("控件的大小（以像素为单位）。")]
+        public override Size Size { get => base.Size; set { base.Size = value; self.Position = value.Height - 60; } }
+
         [DefaultValue(true)]
         [Localizable(true)]
         public virtual bool HelpVisible { get; set; }
@@ -110,50 +151,15 @@ namespace System.Windows.Forms
         public override string Text { get; set; }
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public object[] SelectedObjects { 
-            get => _selectedObjects is null ? Array.Empty<object>() : (object[])_selectedObjects.Clone();
-            set { } 
-        }
-        [DefaultValue(null)]
-        //[TypeConverter(typeof(SelectedObjectConverter))]
-        public object SelectedObject
-        {
-            get => _selectedObjects is null || _selectedObjects.Length == 0 ? null : _selectedObjects[0];
-            set => SelectedObjects = value is null ? Array.Empty<object>() : (new object[] { value });
-        }
-
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public PropertyTabCollection PropertyTabs { get; }
-        internal void AddTab(Type tabType, PropertyTabScope scope, object? @object = null, bool setupToolbar = true)
-        {
-        }
-        internal void ClearTabs(PropertyTabScope tabScope)
-        {
-            //if (tabScope < PropertyTabScope.Document)
-            //{
-            //    throw new ArgumentException(SR.PropertyGridTabScope, nameof(tabScope));
-            //}
-
-            //RemoveTabs(tabScope, true);
-        }
-        internal void RemoveTabs(PropertyTabScope classification, bool setupToolbar)
-        {
-
-        }
-        internal void RemoveTab(int tabIndex, bool setupToolbar)
-        {
-        }
-        internal void RemoveTab(Type tabType)
-        {
-        }
+     
         [DefaultValue(PropertySort.CategorizedAlphabetical)]
         public PropertySort PropertySort { get; set; }
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public Padding Padding { get; set; }
+        //[Browsable(false)]
+        //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        //[EditorBrowsable(EditorBrowsableState.Never)]
+        //public Padding Padding { get; set; }
         [DefaultValue(typeof(Color), "InactiveBorder")]
         public Color LineColor { get; set; }
         [DefaultValue(true)]
@@ -165,8 +171,8 @@ namespace System.Windows.Forms
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ControlCollection Controls { get; }
-        public bool InPropertySet => throw new NotImplementedException();
+        public override ControlCollection Controls { get; }
+        public bool InPropertySet => true;
         protected bool DrawFlatToolbar { get; set; }
         //protected ToolStripRenderer ToolStripRenderer { get; set; }
 
@@ -194,61 +200,7 @@ namespace System.Windows.Forms
             add => Events.AddHandler(s_selectedObjectsChangedEvent, value);
             remove => Events.RemoveHandler(s_selectedObjectsChangedEvent, value);
         }
-        //[Browsable(false)]
-        //[EditorBrowsable(EditorBrowsableState.Never)]
-        //public event EventHandler BackgroundImageChanged
-        //{ 
-        //}
-        //[Browsable(false)]
-        //[EditorBrowsable(EditorBrowsableState.Never)]
-        //public event EventHandler BackgroundImageLayoutChanged
-        //{ 
-        //}
-        //[Browsable(false)]
-        //[EditorBrowsable(EditorBrowsableState.Never)]
-        //public event EventHandler ForeColorChanged
-        //{ 
-        //}
-        // [Browsable(false)]
-        //[EditorBrowsable(EditorBrowsableState.Never)]
-        //public event EventHandler PaddingChanged
-        //{ 
-        //}
-        // [Browsable(false)]
-        //public event EventHandler TextChanged
-        //{ 
-        //}
-        // [Browsable(false)]
-        //[EditorBrowsable(EditorBrowsableState.Advanced)]
-        //public event KeyPressEventHandler KeyPress
-        //{ 
-        //}
-        // [Browsable(false)]
-        //[EditorBrowsable(EditorBrowsableState.Advanced)]
-        //public event KeyEventHandler KeyUp
-        //{ 
-        //}
-        // [Browsable(false)]
-        //[EditorBrowsable(EditorBrowsableState.Advanced)]
-        //public new event MouseEventHandler MouseDown
-        //{
-        //    add => base.MouseDown += value;
-        //    remove => base.MouseDown -= value;
-        //}
-        //[Browsable(false)]
-        //[EditorBrowsable(EditorBrowsableState.Advanced)]
-        //public new event KeyEventHandler KeyDown
-        //{
-        //    add => base.KeyDown += value;
-        //    remove => base.KeyDown -= value;
-        //}
-        //[Browsable(false)]
-        //[EditorBrowsable(EditorBrowsableState.Advanced)]
-        //public new event MouseEventHandler MouseMove
-        //{
-        //    add => base.MouseMove += value;
-        //    remove => base.MouseMove -= value;
-        //}
+       
         public event SelectedGridItemChangedEventHandler SelectedGridItemChanged
         {
             add => Events.AddHandler(s_selectedGridItemChangedEvent, value);
@@ -259,18 +211,12 @@ namespace System.Windows.Forms
             add => Events.AddHandler(s_propertySortChangedEvent, value);
             remove => Events.RemoveHandler(s_propertySortChangedEvent, value);
         }
-        // [Browsable(false)]
-        //[EditorBrowsable(EditorBrowsableState.Advanced)]
-        //public new event MouseEventHandler MouseUp
-        //{
-        //    add => base.MouseUp += value;
-        //    remove => base.MouseUp -= value;
-        //}
         public event PropertyValueChangedEventHandler PropertyValueChanged
         {
             add => Events.AddHandler(s_propertyValueChangedEvent, value);
             remove => Events.RemoveHandler(s_propertyValueChangedEvent, value);
         }
+
         public event PropertyTabChangedEventHandler PropertyTabChanged
         {
             add => Events.AddHandler(s_propertyTabChangedEvent, value);
@@ -312,86 +258,6 @@ namespace System.Windows.Forms
         {
             throw new NotImplementedException();
         }
-        // protected override AccessibleObject CreateAccessibilityInstance()
-        //{ 
-        //}
-        // protected virtual PropertyTab CreatePropertyTab(Type tabType)
-        //{ 
-        //}
-        // protected override void Dispose(bool disposing)
-        //{ 
-        //}
-        // protected void OnComComponentNameChanged(ComponentRenameEventArgs e)
-        //{ 
-        //}
-        // protected override void OnEnabledChanged(EventArgs e)
-        //{ 
-        //}
-        // protected override void OnFontChanged(EventArgs e)
-        //{ 
-        //}
-        // protected override void OnGotFocus(EventArgs e)
-        //{ 
-        //}
-        // protected override void OnHandleCreated(EventArgs e)
-        //{ 
-        //}
-        // protected override void OnHandleDestroyed(EventArgs e)
-        //{ 
-        //}
-        // protected override void OnMouseDown(MouseEventArgs me)
-        //{ 
-        //}
-        // protected override void OnMouseMove(MouseEventArgs me)
-        //{ 
-        //}
-        // protected override void OnMouseUp(MouseEventArgs me)
-        //{ 
-        //}
-        // protected void OnNotifyPropertyValueUIItemsChanged(object sender, EventArgs e)
-        //{ 
-        //}
-        // protected override void OnPaint(PaintEventArgs pevent)
-        //{ 
-        //}
-        // protected virtual void OnPropertySortChanged(EventArgs e)
-        //{ 
-        //}
-        // protected virtual void OnPropertyTabChanged(PropertyTabChangedEventArgs e)
-        //{ 
-        //}
-        // protected virtual void OnPropertyValueChanged(PropertyValueChangedEventArgs e)
-        //{ 
-        //}
-        // protected override void OnResize(EventArgs e)
-        //{ 
-        //}
-        // protected virtual void OnSelectedGridItemChanged(SelectedGridItemChangedEventArgs e)
-        //{ 
-        //}
-        // protected virtual void OnSelectedObjectsChanged(EventArgs e)
-        //{ 
-        //}
-        // protected override void OnSystemColorsChanged(EventArgs e)
-        //{ 
-        //}
-        // protected override void OnVisibleChanged(EventArgs e)
-        //{ 
-        //}
-        // protected override bool ProcessDialogKey(Keys keyData)
-        //{ 
-        //    return false;
-        //}
-        // [EditorBrowsable(EditorBrowsableState.Never)]
-        //protected override void ScaleCore(float dx, float dy)
-        //{ 
-        //}
-        // protected void ShowEventsButton(bool value)
-        //{ 
-        //}
-        // protected override void WndProc(ref Message m)
-        //{ 
-        //}
 
         void IComPropertyBrowser.DropDownDone()
         {

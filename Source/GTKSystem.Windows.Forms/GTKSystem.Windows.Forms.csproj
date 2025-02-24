@@ -86,14 +86,22 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
     <None Remove="Resources\System\CloseWin.png" />
     <None Remove="Resources\System\CloseWindow.png" />
     <None Remove="Resources\System\DateTimePicker.ico" />
+    <None Remove="Resources\System\go-down-symbolic.png" />
+    <None Remove="Resources\System\go-next-symbolic.png" />
     <None Remove="Resources\System\MaxWin.png" />
     <None Remove="Resources\System\MaxWindow.png" />
     <None Remove="Resources\System\MinWin.png" />
     <None Remove="Resources\System\MinWindow.png" />
     <None Remove="Resources\System\MonthCalendar.ico" />
     <None Remove="Resources\System\Panel.ico" />
+    <None Remove="Resources\System\PBAlpha.ico" />
+    <None Remove="Resources\System\PBCategory.ico" />
     <None Remove="Resources\System\view-more.ico" />
     <None Remove="Resources\System\view-more.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\System\go-next-symbolic.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -118,12 +126,15 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
     <EmbeddedResource Include="Resources\System\CloseWin.png" />
     <EmbeddedResource Include="Resources\System\CloseWindow.png" />
     <EmbeddedResource Include="Resources\System\DateTimePicker.ico" />
+    <EmbeddedResource Include="Resources\System\go-down-symbolic.png" />
     <EmbeddedResource Include="Resources\System\MaxWin.png" />
     <EmbeddedResource Include="Resources\System\MaxWindow.png" />
     <EmbeddedResource Include="Resources\System\MinWin.png" />
     <EmbeddedResource Include="Resources\System\MinWindow.png" />
     <EmbeddedResource Include="Resources\System\MonthCalendar.ico" />
     <EmbeddedResource Include="Resources\System\Panel.ico" />
+    <EmbeddedResource Include="Resources\System\PBAlpha.ico" />
+    <EmbeddedResource Include="Resources\System\PBCategory.ico" />
     <EmbeddedResource Include="Resources\System\view-more.png" />
   </ItemGroup>
 
