@@ -24,10 +24,16 @@ namespace System.Windows.Forms
         {
             int columnscount = dataGridView.Store.NColumns;
             for (int i = cells.Count; i < columnscount; i++)
-            {
                 cells.Add(new DataGridViewTextBoxCell());
+            
+            for (int i = 0; i < columnscount; i++)
+            {
+                cells[i].ColumnIndex = i;
             }
-            return dataGridView.Store.AppendValues(cells.ConvertAll(o => o).ToArray());
+            if (columnscount >= cells.Count)
+                return dataGridView.Store.AppendValues(cells.ConvertAll(o => o).ToArray());
+            else
+                return dataGridView.Store.AppendValues(cells.ConvertAll(o => o).Take(columnscount).ToArray());
         }
         private TreeIter AddGtkStore(TreeIter parent, DataGridViewCellCollection cells)
         {
@@ -36,7 +42,14 @@ namespace System.Windows.Forms
             {
                 cells.Add(new DataGridViewTextBoxCell());
             }
-            return dataGridView.Store.AppendValues(parent, cells.ConvertAll(o => o).ToArray());
+            for (int i = 0; i < columnscount; i++)
+            {
+                cells[i].ColumnIndex = i;
+            }
+            if (columnscount >= cells.Count)
+                return dataGridView.Store.AppendValues(parent, cells.ConvertAll(o => o).ToArray());
+            else
+                return dataGridView.Store.AppendValues(parent, cells.ConvertAll(o => o).Take(columnscount).ToArray());
         }
         private void AddGtkStore(params DataGridViewRow[] dataGridViewRows)
         {
@@ -54,8 +67,10 @@ namespace System.Windows.Forms
                     _cellStyle = row.DefaultCellStyle;
 
                 foreach (DataGridViewCell cell in row.Cells)
+                {
+                    cell.RowIndex = rowindex;
                     cell.RowStyle = _cellStyle;
-
+                }
                 items.Add(row);
                 row.TreeIter = AddGtkStore(row.Cells);
                 rowindex++;
@@ -94,7 +109,14 @@ namespace System.Windows.Forms
             int columnscount = dataGridView.Store.NColumns;
             for (int i = cells.Count; i < columnscount; i++)
                 cells.Add(new DataGridViewTextBoxCell());
-            return dataGridView.Store.InsertWithValues(rowIndex, cells.ConvertAll(o => o).ToArray());
+            for (int i = 0; i < columnscount; i++)
+            {
+                cells[i].ColumnIndex = i;
+            }
+            if (columnscount >= cells.Count)
+                return dataGridView.Store.InsertWithValues(rowIndex, cells.ConvertAll(o => o).ToArray());
+            else
+                return dataGridView.Store.InsertWithValues(rowIndex, cells.ConvertAll(o => o).Take(columnscount).ToArray());
         }
         private void InsertGtkStore(int rowIndex, params DataGridViewRow[] dataGridViewRows)
         {
@@ -110,7 +132,10 @@ namespace System.Windows.Forms
                     _cellStyle = row.DefaultCellStyle;
 
                 foreach (DataGridViewCell cell in row.Cells)
+                {
+                    cell.RowIndex = idx;
                     cell.RowStyle = _cellStyle;
+                }
 
                 items.Insert(idx, row);
                 row.TreeIter = InsertGtkStore(idx, row.Cells);
