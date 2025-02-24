@@ -43,59 +43,6 @@ namespace System.Windows.Forms
             GridView.Realized += GridView_Realized;
             GridView.RowActivated += GridView_RowActivated;
             GridView.Selection.Changed += Selection_Changed;
-
-
-            GridView.ButtonReleaseEvent += GridView_ButtonReleaseEvent;
-            GridView.KeyPressEvent += GridView_KeyPressEvent;
-            GridView.KeyReleaseEvent += GridView_KeyReleaseEvent;
-        }
-        private bool IsControlPress;
-        private void GridView_KeyReleaseEvent(object o, KeyReleaseEventArgs args)
-        {
-            IsControlPress = false;
-        }
-        private void GridView_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
-        {
-            if (args.Event is Gdk.EventKey eventkey)
-            {
-                Keys keys = (Keys)eventkey.HardwareKeycode;
-                if (eventkey.State == Gdk.ModifierType.ControlMask)
-                {
-                    IsControlPress = true;
-                }
-                else { IsControlPress = false; }
-            }
-        }
-
-        private List<DataGridViewCell> _selectedCells = new List<DataGridViewCell>();
-        private void GridView_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
-        {
-            if (IsControlPress == false)
-            {
-                foreach (var item in _selectedCells)
-                {
-                    item.Selected = false;
-                }
-                _selectedCells.Clear();
-            }
-            Gtk.TreeView view=(Gtk.TreeView)o;
-            view.GetCursor(out TreePath path, out TreeViewColumn column);
-            int index = Array.FindIndex(view.Columns, o => o.Handle == column.Handle);
-            Store.GetIter(out TreeIter iter, path);
-            DataGridViewCell cell = Store.GetValue(iter, index) as DataGridViewCell;
-            cell.Selected = cell.Selected==false;
-            if (_selectedCells.Contains(cell) == false)
-                _selectedCells.Add(cell);
-            view.QueueDraw();
-            if (view.Selection.Mode == Gtk.SelectionMode.None)
-            {
-                if (CellClick != null)
-                {
-                    CellClick(this, new DataGridViewCellEventArgs(index, cell.RowIndex));
-                }
-                if (SelectionChanged != null)
-                    SelectionChanged(this, args);
-            }
         }
 
         private List<int> _selectedBandIndexes = new List<int>();
