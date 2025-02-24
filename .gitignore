@@ -44,3 +44,5 @@ Packages
 *.pdb
 /Samples/GtkWinFormsApp/obj/**/*.*
 /Samples/GtkWinFormsApp/obj/*.*
+/Source/System.Resources.Extensions/obj/Debug/net6.0/System.Resources.Extensions.AssemblyInfo.cs
+/Source/System.Resources.Extensions/obj/Debug/net6.0/System.Resources.Extensions.AssemblyInfoInputs.cache
