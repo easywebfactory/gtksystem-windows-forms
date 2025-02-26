@@ -310,14 +310,8 @@ namespace System.Windows.Forms
         }
         internal void AtrributesClone(DataGridViewCell newcell)
         {
-            //性能优先
             newcell.Style = _cellTemplate.Style?.Clone();
             newcell.ReadOnly = _cellTemplate.ReadOnly;
-
-            //var propertys = newcell.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            //foreach (PropertyInfo property in propertys)
-            //    if (property.CanRead && property.CanWrite)
-            //        property.SetValue(newcell, property.GetValue(_cellTemplate));
         }
         public void SetGridViewDefaultStyle(DataGridViewCellStyle cellStyle)
         {
