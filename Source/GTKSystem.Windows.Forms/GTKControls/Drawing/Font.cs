@@ -529,7 +529,7 @@ namespace System.Drawing
         //
         // 返回结果:
         //     The System.Drawing.Font this method creates, cast as an System.Object.
-        public object Clone() { return ((ArrayList)(new ArrayList() { this }).Clone())[0]; }
+        public object Clone() { return null; }
         //
         // 摘要:
         //     Releases all resources used by this System.Drawing.Font.

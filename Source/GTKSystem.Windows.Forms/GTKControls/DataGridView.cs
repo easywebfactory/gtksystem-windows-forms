@@ -234,21 +234,8 @@ namespace System.Windows.Forms
                     DataGridViewRow newRow = new DataGridViewRow();
                     foreach (DataGridViewColumn col in _columns)
                     {
-                        object cellvalue = dt.Columns.Contains(col.DataPropertyName ?? string.Empty) ? dr[col.DataPropertyName] : null;
-                        if (col is DataGridViewTextBoxColumn)
-                            newRow.Cells.Add(new DataGridViewTextBoxCell() { Value = cellvalue });
-                        else if (col is DataGridViewImageColumn)
-                            newRow.Cells.Add(new DataGridViewImageCell() { Value = cellvalue });
-                        else if (col is DataGridViewCheckBoxColumn)
-                            newRow.Cells.Add(new DataGridViewCheckBoxCell() { Value = cellvalue });
-                        else if (col is DataGridViewButtonColumn)
-                            newRow.Cells.Add(new DataGridViewButtonCell() { Value = cellvalue });
-                        else if (col is DataGridViewComboBoxColumn)
-                            newRow.Cells.Add(new DataGridViewComboBoxCell() { Value = cellvalue });
-                        else if (col is DataGridViewLinkColumn)
-                            newRow.Cells.Add(new DataGridViewLinkCell() { Value = cellvalue });
-                        else
-                            newRow.Cells.Add(new DataGridViewTextBoxCell() { Value = cellvalue });
+                        object cellvalue = dt.Columns.Contains(col.DataPropertyName) ? dr[col.DataPropertyName] : null;
+                        newRow.Cells.Add(col.NewCell(cellvalue, col.ValueType));
                     }
                     _rows.Add(newRow);
                 }
@@ -281,26 +268,12 @@ namespace System.Windows.Forms
                     while (reader.MoveNext())
                     {
                         object obj = reader.Current;
-                        Dictionary<string, object> values = new Dictionary<string, object>();
-                        Array.ForEach(obj.GetType().GetProperties(), o => { values.Add(o.Name, o.GetValue(obj)); });
+                        Type type = obj.GetType();
                         DataGridViewRow newRow = new DataGridViewRow();
                         foreach (DataGridViewColumn col in _columns)
                         {
-                            values.TryGetValue(col.DataPropertyName ?? string.Empty, out object cellvalue);
-                            if (col is DataGridViewTextBoxColumn)
-                                newRow.Cells.Add(new DataGridViewTextBoxCell() { Value = cellvalue });
-                            else if (col is DataGridViewImageColumn)
-                                newRow.Cells.Add(new DataGridViewImageCell() { Value = cellvalue });
-                            else if (col is DataGridViewCheckBoxColumn)
-                                newRow.Cells.Add(new DataGridViewCheckBoxCell() { Value = cellvalue });
-                            else if (col is DataGridViewButtonColumn)
-                                newRow.Cells.Add(new DataGridViewButtonCell() { Value = cellvalue });
-                            else if (col is DataGridViewComboBoxColumn)
-                                newRow.Cells.Add(new DataGridViewComboBoxCell() { Value = cellvalue });
-                            else if (col is DataGridViewLinkColumn)
-                                newRow.Cells.Add(new DataGridViewLinkCell() { Value = cellvalue });
-                            else
-                                newRow.Cells.Add(new DataGridViewTextBoxCell() { Value = cellvalue });
+                            object cellvalue = type.GetProperty(col.DataPropertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty)?.GetValue(obj);
+                            newRow.Cells.Add(col.NewCell(cellvalue, col.ValueType));
                         }
                         _rows.Add(newRow);
                     }

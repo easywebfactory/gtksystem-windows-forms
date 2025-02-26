@@ -178,7 +178,7 @@ namespace System.Windows.Forms
         }
         public object Clone()
         {
-            return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+            return null;
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)

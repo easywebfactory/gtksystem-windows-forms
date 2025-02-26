@@ -123,7 +123,7 @@ namespace System.Windows.Forms
 
         public object Clone()
         {
-            return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+            return null;
             //string data = System.Text.Json.JsonSerializer.Serialize(this,typeof(ColumnHeader));
             //return System.Text.Json.JsonSerializer.Deserialize<ColumnHeader>(data);
         }

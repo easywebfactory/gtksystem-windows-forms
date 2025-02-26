@@ -126,7 +126,7 @@ namespace System.Drawing.Drawing2D
         /// <returns>The <see cref="T:System.Drawing.Drawing2D.Matrix" /> that this method creates.</returns>
         public Matrix Clone()
 		{
-            return ((ArrayList)(new ArrayList() { this }).Clone())[0] as Matrix;
+            return null;
    //         Matrix m = new Matrix();
 			//m.initMatrix = this.initMatrix;
 			//m.initRectangle = this.initRectangle;

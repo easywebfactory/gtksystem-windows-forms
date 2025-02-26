@@ -7,11 +7,8 @@
 using Gtk;
 using System.Collections;
 using System.ComponentModel;
-using System.Drawing;
 using System.Reflection;
-using System.Runtime.Serialization.Json;
 using System.Windows.Forms.GtkRender;
-using System.Xml.Serialization;
 
 namespace System.Windows.Forms
 {
@@ -57,6 +54,14 @@ namespace System.Windows.Forms
                 _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last());
             }
         }
+        internal override DataGridViewCell NewCell(object value = null, Type valueType = null)
+        {
+            DataGridViewCheckBoxCell newcell = new DataGridViewCheckBoxCell();
+            AtrributesClone(newcell);
+            newcell.Value = value;
+            newcell.ValueType = valueType;
+            return newcell;
+        }
     }
 
     public class DataGridViewRadioColumn : DataGridViewColumn
@@ -64,7 +69,7 @@ namespace System.Windows.Forms
         public DataGridViewRadioColumn() : this(null)
         {
         }
-        public DataGridViewRadioColumn(DataGridView ownerGridView) : base(0, ownerGridView, new DataGridViewCheckBoxCell())
+        public DataGridViewRadioColumn(DataGridView ownerGridView) : base(0, ownerGridView, new DataGridViewRadioCell())
         {
             ValueType = typeof(bool);
             var renderer = new CellRendererToggleValue(this);
@@ -91,6 +96,14 @@ namespace System.Windows.Forms
                 val.Value = tggle.Active == false;
                 _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last());
             }
+        }
+        internal override DataGridViewCell NewCell(object value = null, Type valueType = null)
+        {
+            DataGridViewRadioCell newcell = new DataGridViewRadioCell();
+            AtrributesClone(newcell);
+            newcell.Value = value;
+            newcell.ValueType = valueType;
+            return newcell;
         }
     }
     public class DataGridViewComboBoxColumn : DataGridViewColumn
@@ -126,6 +139,14 @@ namespace System.Windows.Forms
                 val.Value = args.NewText;
                 _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last());
             }
+        }
+        internal override DataGridViewCell NewCell(object value = null, Type valueType = null)
+        {
+            DataGridViewComboBoxCell newcell = new DataGridViewComboBoxCell();
+            AtrributesClone(newcell);
+            newcell.Value = value;
+            newcell.ValueType = valueType;
+            return newcell;
         }
         public ObjectCollection Items => _items;
         public class ObjectCollection : ArrayList
@@ -176,7 +197,14 @@ namespace System.Windows.Forms
                 }
             }
         }
-
+        internal override DataGridViewCell NewCell(object value = null, Type valueType = null)
+        {
+            DataGridViewButtonCell newcell = new DataGridViewButtonCell();
+            AtrributesClone(newcell);
+            newcell.Value = value;
+            newcell.ValueType = valueType;
+            return newcell;
+        }
     }
     public class DataGridViewImageColumn : DataGridViewColumn
     {
@@ -194,6 +222,14 @@ namespace System.Windows.Forms
             base.Sizing = TreeViewColumnSizing.GrowOnly;
             _cellRenderer = renderer;
         }
+        internal override DataGridViewCell NewCell(object value = null, Type valueType = null)
+        {
+            DataGridViewImageCell newcell = new DataGridViewImageCell();
+            AtrributesClone(newcell);
+            newcell.Value = value;
+            newcell.ValueType = valueType;
+            return newcell;
+        }
     }
     public class DataGridViewLinkColumn : DataGridViewColumn
     {
@@ -204,6 +240,14 @@ namespace System.Windows.Forms
         {
           
         }
+        internal override DataGridViewCell NewCell(object value = null, Type valueType = null)
+        {
+            DataGridViewLinkCell newcell = new DataGridViewLinkCell();
+            AtrributesClone(newcell);
+            newcell.Value = value;
+            newcell.ValueType = valueType;
+            return newcell;
+        }
     }
 
     public class DataGridViewColumn : TreeViewColumn
@@ -212,7 +256,6 @@ namespace System.Windows.Forms
         internal Gtk.TreeView _treeView;
         internal DataGridView _gridview;
         internal ICellRenderer _cellRenderer;
-
         protected DataGridViewColumn(int column, DataGridView ownerGridView, DataGridViewCell cellTemplate) : base()
         {
             if (ownerGridView != null)
@@ -256,6 +299,25 @@ namespace System.Windows.Forms
                 val.Value = args.NewText;
                 _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last());
             }
+        }
+        internal virtual DataGridViewCell NewCell(object value = null, Type valueType = null)
+        {
+            DataGridViewTextBoxCell newcell = new DataGridViewTextBoxCell();
+            AtrributesClone(newcell);
+            newcell.Value = value;
+            newcell.ValueType = valueType;
+            return newcell;
+        }
+        internal void AtrributesClone(DataGridViewCell newcell)
+        {
+            //性能优先
+            newcell.Style = _cellTemplate.Style?.Clone();
+            newcell.ReadOnly = _cellTemplate.ReadOnly;
+
+            //var propertys = newcell.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            //foreach (PropertyInfo property in propertys)
+            //    if (property.CanRead && property.CanWrite)
+            //        property.SetValue(newcell, property.GetValue(_cellTemplate));
         }
         public void SetGridViewDefaultStyle(DataGridViewCellStyle cellStyle)
         {
@@ -394,9 +456,10 @@ namespace System.Windows.Forms
             get=> _DefaultCellStyle; 
             set { _DefaultCellStyle = value; _cellRenderer.ColumnStyle = value; }
         }
+        private string _DataPropertyName = string.Empty;
         [Browsable(true)]
         [DefaultValue("")]
-        public string DataPropertyName { get; set; }
+        public string DataPropertyName { get => _DataPropertyName; set => _DataPropertyName = value; }
         [DefaultValue(null)]
 
         public ContextMenuStrip ContextMenuStrip { get; set; }
@@ -407,17 +470,7 @@ namespace System.Windows.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public virtual DataGridViewCell CellTemplate {
-            get
-            {
-                Type celltype = _cellTemplate.GetType();
-                DataGridViewCell newcell=Activator.CreateInstance(celltype) as DataGridViewCell;
-                var propertys = celltype.GetProperties(Reflection.BindingFlags.Public | Reflection.BindingFlags.Instance);
-                foreach (PropertyInfo property in propertys)
-                    if (property.CanRead && property.CanWrite)
-                        property.SetValue(newcell, property.GetValue(_cellTemplate));
-
-                return newcell;
-            }
+            get => _cellTemplate;
             set => _cellTemplate = value;
         }
 
@@ -439,7 +492,7 @@ namespace System.Windows.Forms
 
         public object Clone()
         {
-            return ((ArrayList)(new ArrayList() { this }).Clone())[0]; 
+            return null;
         }
         public virtual int GetPreferredWidth(DataGridViewAutoSizeColumnMode autoSizeColumnMode, bool fixedHeight)
         {
