@@ -16,6 +16,13 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         public CheckBox() {
             self.Toggled += Self_Toggled;
+            self.ButtonReleaseEvent += Self_ButtonReleaseEvent;
+        }
+
+        private void Self_ButtonReleaseEvent(object o, Gtk.ButtonReleaseEventArgs args)
+        {
+            if (self.Inconsistent == true)
+                self.Inconsistent = false;
         }
 
         private void Self_Toggled(object sender, EventArgs e)
@@ -27,8 +34,11 @@ namespace System.Windows.Forms
         }
 
         public override string Text { get { return self.Label; } set { self.Label = value; } }
-        public  bool Checked { get { return self.Active; } set { self.Active = value; } }
-        public CheckState CheckState { get { return self.Active ? CheckState.Checked : CheckState.Unchecked; } set { self.Active = value != CheckState.Unchecked; } }
+        public  bool Checked { get { return self.Active; } 
+            set { self.Active = value; if (self.IsRealized) { self.Inconsistent = false; } } }
+        public CheckState CheckState { 
+            get { if (self.Inconsistent == true) { return CheckState.Indeterminate; } else { return self.Active ? CheckState.Checked : CheckState.Unchecked; } } 
+            set { self.Inconsistent = value == CheckState.Indeterminate; self.Active = value == CheckState.Checked; } }
         public event EventHandler CheckedChanged;
         public virtual event EventHandler CheckStateChanged;
     }
