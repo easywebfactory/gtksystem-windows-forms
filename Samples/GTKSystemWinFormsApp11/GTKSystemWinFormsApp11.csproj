@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="GtkSharp" Version="3.24.24.95" />
-    <PackageReference Include="GTKSystem.Windows.Forms" Version="1.3.24.58" />
+    <PackageReference Include="GTKSystem.Windows.Forms" Version="1.3.24.62" />
     <PackageReference Include="GTKSystem.Windows.FormsDesigner" Version="1.0.0.4" />
   </ItemGroup>
 
