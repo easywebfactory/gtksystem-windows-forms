@@ -2,6 +2,7 @@
 ## 更新日志
  #### 2025/2/27 V1.3.24.62
 	1. 修正DataGridView排序禁用属性
+	2. 修正FileDialog的filename属性
  #### 2025/2/26 V1.3.24.61
 	1. 更新TextBox\CheckBox\ListView\DataGridView
 	2. 修正、优化一些功能
