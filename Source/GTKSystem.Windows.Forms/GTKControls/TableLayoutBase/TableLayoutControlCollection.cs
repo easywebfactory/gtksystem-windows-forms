@@ -17,33 +17,29 @@ public class TableLayoutControlCollection : Control.ControlCollection
         Container = container;
     }
 
-    public virtual void Add(Control control, int column, int row)
-    {
-        control.Location = new Drawing.Point(0, 0);
-        control.lockLocation = true;
-        control.Parent = Container;
-        control.Widget.Margin = 4;
-        control.Widget.Valign = Align.Start;
-        control.Widget.Halign = Align.Start;
-        control.Widget.Hexpand = false;
-        control.Widget.WidthRequest = 100;
-        if (Container?.self.GetChildAt(column, row) is Viewport view)
+        public virtual void Add(Control control, int column, int row)
         {
-            var widget = control.Widget as Widget;
-            if (widget != null) view.Child = widget;
-        }
-        else
-        {
-            var viewport = new Viewport { Vexpand = false, Hexpand = false };
-            viewport.Valign = Align.Fill;
-            viewport.Halign = Align.Fill;
-            var widget = control.Widget as Widget;
-            if (widget != null) viewport.Add(widget);
-            Container?.self.Attach(viewport, column, row, 1, 1);
-        }
-        base.Add(control);
-        if (Container != null)
-        {
+            control.Location = new Drawing.Point(0, 0);
+            control.LockLocation = true;
+            control.Parent = Container;
+            control.Widget.Margin = 4;
+            control.Widget.Valign = Align.Start;
+            control.Widget.Halign = Align.Start;
+            control.Widget.Hexpand = false;
+            if (Container.grid.GetChildAt(column, row) is Gtk.Viewport view)
+            {
+                view.Child = control.Widget;
+            }
+            else
+            {
+                Gtk.Viewport viewport = new Gtk.Viewport() { Vexpand = false, Hexpand = false };
+                viewport.Valign = Align.Fill;
+                viewport.Halign = Align.Fill;
+                viewport.BorderWidth = 0;
+                viewport.Child = control.Widget;
+                Container.grid.Attach(viewport, column, row, 1, 1);
+            }
+            base.Add(control);
             Container.SetColumn(control, column);
             Container.SetRow(control, row);
         }

@@ -1,16 +1,16 @@
 ﻿using System.Collections;
 using System.ComponentModel;
 
-namespace System.Windows.Forms;
-
-[ListBindable(false)]
-public class DataGridViewCellCollection : BaseCollection, IList
+namespace System.Windows.Forms
 {
-    private readonly ArrayList items = new();
-
-    private DataGridViewRow? owner;
-    public DataGridViewRow? Row { set => owner = value; get => owner; }
-    public bool IsFixedSize => false;
+    [ListBindable(false)]
+    public class DataGridViewCellCollection : BaseCollection, IList, ICollection, IEnumerable
+    {
+        private ArrayList items = new ArrayList();
+        protected override ArrayList List => items;
+        private DataGridViewRow owner;
+        public DataGridViewRow Row { set => owner = value; get => owner; }
+        public bool IsFixedSize => false;
 
     object IList.this[int index]
     {
@@ -104,28 +104,27 @@ public class DataGridViewCellCollection : BaseCollection, IList
         var dataGridViewCell = value as DataGridViewCell;
         if (dataGridViewCell != null)
         {
-            Remove(dataGridViewCell);
+            Remove((DataGridViewCell)value);
         }
-    }
-    void IList.RemoveAt(int index)
-    {
-        RemoveAt(index);
-    }
-    void ICollection.CopyTo(Array array, int index)
-    {
-        items.CopyTo(array, index);
-    }
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return items.GetEnumerator();
-    }
-    //*****************
-    public virtual int Add(DataGridViewCell dataGridViewCell)
-    {
-        if (owner?.DataGridView != null)
+        void IList.RemoveAt(int index)
         {
-            throw new InvalidOperationException("DataGridViewCellCollection_OwningRowAlreadyBelongsToDataGridView");
+            RemoveAt(index);
         }
+        void ICollection.CopyTo(Array array, int index)
+        {
+            items.CopyTo(array, index);
+        }
+        public override IEnumerator GetEnumerator()
+        {
+            return items.GetEnumerator();
+        }
+        //*****************
+        public virtual int Add(DataGridViewCell dataGridViewCell)
+        {
+            if (owner.DataGridView != null)
+            {
+                throw new InvalidOperationException("DataGridViewCellCollection_OwningRowAlreadyBelongsToDataGridView");
+            }
 
         if (dataGridViewCell.OwningRow != null)
         {

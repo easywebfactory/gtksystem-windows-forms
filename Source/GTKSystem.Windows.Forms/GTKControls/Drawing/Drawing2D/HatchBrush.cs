@@ -47,10 +47,11 @@ public sealed class HatchBrush : Brush
         BackgroundColor = backColor;
     }
 
-    /// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.HatchBrush" /> object.</summary>
-    /// <returns>The <see cref="T:System.Drawing.Drawing2D.HatchBrush" /> this method creates, cast as an object.</returns>
-    public override object Clone()
-    {
-        return ((ArrayList)new ArrayList { this }.Clone())[0];
-    }
+		/// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.HatchBrush" /> object.</summary>
+		/// <returns>The <see cref="T:System.Drawing.Drawing2D.HatchBrush" /> this method creates, cast as an object.</returns>
+		public override object Clone()
+		{
+            return null;
+        }
+	}
 }

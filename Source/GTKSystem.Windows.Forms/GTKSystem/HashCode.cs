@@ -40,6 +40,7 @@ https://raw.githubusercontent.com/Cyan4973/xxHash/5c174cfa4e45a42f94082dc0d4539b
 
 */
 
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 #pragma warning disable CA1066 // Implement IEquatable when overriding Object.Equals
@@ -50,19 +51,19 @@ namespace System;
 
 internal struct HashCode
 {
-    private static readonly uint seed = GenerateGlobalSeed();
+    private static readonly uint s_seed = GenerateGlobalSeed();
 
-    private const uint prime1 = 2654435761U;
-    private const uint prime2 = 2246822519U;
-    private const uint prime3 = 3266489917U;
-    private const uint prime4 = 668265263U;
-    private const uint prime5 = 374761393U;
+    private const uint Prime1 = 2654435761U;
+    private const uint Prime2 = 2246822519U;
+    private const uint Prime3 = 3266489917U;
+    private const uint Prime4 = 668265263U;
+    private const uint Prime5 = 374761393U;
 
     private uint _v1, _v2, _v3, _v4;
     private uint _queue1, _queue2, _queue3;
     private uint _length;
 
-    private static uint GenerateGlobalSeed()
+    private static unsafe uint GenerateGlobalSeed()
     {
         return unchecked ((uint)new Random().Next());
     }
@@ -251,22 +252,22 @@ internal struct HashCode
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void Initialize(out uint v1, out uint v2, out uint v3, out uint v4)
     {
-        v1 = seed + prime1 + prime2;
-        v2 = seed + prime2;
-        v3 = seed;
-        v4 = seed - prime1;
+        v1 = s_seed + Prime1 + Prime2;
+        v2 = s_seed + Prime2;
+        v3 = s_seed;
+        v4 = s_seed - Prime1;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static uint Round(uint hash, uint input)
     {
-        return BitOperations.RotateLeft(hash + input * prime2, 13) * prime1;
+        return BitOperations.RotateLeft(hash + input * Prime2, 13) * Prime1;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static uint QueueRound(uint hash, uint queuedValue)
     {
-        return BitOperations.RotateLeft(hash + queuedValue * prime3, 17) * prime4;
+        return BitOperations.RotateLeft(hash + queuedValue * Prime3, 17) * Prime4;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -277,16 +278,16 @@ internal struct HashCode
 
     private static uint MixEmptyState()
     {
-        return seed + prime5;
+        return s_seed + Prime5;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static uint MixFinal(uint hash)
     {
         hash ^= hash >> 15;
-        hash *= prime2;
+        hash *= Prime2;
         hash ^= hash >> 13;
-        hash *= prime3;
+        hash *= Prime3;
         hash ^= hash >> 16;
         return hash;
     }
@@ -298,7 +299,7 @@ internal struct HashCode
 
     public void Add<T>(T value, IEqualityComparer<T>? comparer)
     {
-        Add(value is null ? 0 : comparer?.GetHashCode(value) ?? value.GetHashCode());
+        Add(value is null ? 0 : (comparer?.GetHashCode(value) ?? value.GetHashCode()));
     }
 
     private void Add(int value)

@@ -14,7 +14,20 @@ namespace System.Windows.Forms
             Init();
         }
 
-        private static string AppDataDirectory
+        private static string appDataDirectory { get {
+                string[] assemblyFullName = Assembly.GetEntryAssembly().FullName.Split(',');
+                string _namespace = assemblyFullName[0];
+                AssemblyName assembly = Assembly.GetExecutingAssembly().GetName();
+                return Path.Combine(_namespace, assembly.Name, assembly.Version.ToString());
+            }
+        }
+
+        public static string CommonAppDataPath {
+            get {
+                return Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),appDataDirectory);
+            } 
+        }
+        public static string UserAppDataPath
         {
             get
             {
@@ -149,7 +162,8 @@ namespace System.Windows.Forms
 .TrackBar {border-width:0px;box-shadow:none;}
 .PrintPreviewBack{background-color:#cccccc; border-radius:0px;}
 .Paper{box-shadow: 0px 0px 3px 1px #999999;background:#ffffff; border-radius:0px;}
-
+.PropertyGrid {box-shadow:0px 0px 0px 1px @frame_color; background:#eeeeee;}
+.PropertyGrid button{background:#eeeeee;}
 ";
 
                 var appdirectory = "./";// StartupPath; //由于linux系统常用到环境变量路径，会导至Directory/Environment获取到的当前目录不正确
@@ -188,9 +202,9 @@ namespace System.Windows.Forms
 
                 if (File.Exists(themesetuppath))
                 {
-                    var setuptheme = File.ReadAllLines(themesetuppath, Encoding.UTF8);
-                    var nameValue = setuptheme.Where(w => w.Contains("=")).ToDictionary(k => k.Split('=')[0], v => v.Split(["="], StringSplitOptions.None)[1]);
-                    nameValue.TryGetValue("UseDefaultStyle", out var usedef);
+                    string[] setuptheme = File.ReadAllLines(themesetuppath, Text.Encoding.UTF8);
+                    Dictionary<string,string> nameValue = setuptheme.Where(w=>w.Contains("=")).ToDictionary(k => k.Split('=')[0],v=>v.Split('=')[1]);
+                    nameValue.TryGetValue("UseDefaultStyle", out string usedef);
                     if (usedef != "false")
                         cssBuilder.AppendLine(cssStyle);
 

@@ -29,6 +29,25 @@ public class RichTextBox : ScrollableControl
         {
             TextChanged?.Invoke(this, e);
         }
+        public int SelectionStart { get { if (self.TextView.Buffer.HasSelection) { self.TextView.Buffer.GetSelectionBounds(out TextIter start, out TextIter end); return start.Offset; } else { return self.TextView.Buffer.CursorPosition; } } }
+        
+        [System.ComponentModel.Browsable(false)]
+        public virtual int SelectionLength
+        {
+            get { self.TextView.Buffer.GetSelectionBounds(out TextIter start, out TextIter end); return end.Offset - start.Offset; }
+            set
+            {
+                
+                TextIter start = self.TextView.Buffer.GetIterAtOffset(self.TextView.Buffer.CursorPosition);
+                TextIter end = self.TextView.Buffer.GetIterAtOffset(self.TextView.Buffer.CursorPosition + value);
+                self.TextView.Buffer.SelectRange(start, end);
+            }
+        }
+        public void InsertTextAtCursor(string text)
+        {
+            if (text == null) return;
+            self.TextView.Buffer.InsertAtCursor(text);
+        }
     }
 
     public override string? Text { get => self.textView.Buffer.Text; set => self.textView.Buffer.Text = value; }

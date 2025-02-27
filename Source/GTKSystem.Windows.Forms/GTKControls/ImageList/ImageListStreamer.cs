@@ -162,9 +162,9 @@ public sealed class ImageListStreamer : ISerializable, IDisposable
         //    throw new InvalidOperationException(SR.ImageListStreamerSaveFailed);
         //}
 
-        ReadOnlySpan<byte> buffer = stream.GetBuffer().AsSpan(0, (int)stream.Length);
-        return Compress(buffer);
-    }
+            ReadOnlySpan<byte> buffer = stream.GetBuffer().AsSpan(0, (int)stream.Length);
+            return Compress(buffer);
+        }
 
     internal void GetObjectData(Stream stream)
     {

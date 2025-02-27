@@ -35,20 +35,20 @@ public partial class PropertyGrid
 
         public PropertyTab this[int index] => _ownerPropertyGrid._tabs[index].Tab;
 
-        public void AddTabType(Type propertyTabType)
-        {
-            _ownerPropertyGrid.AddTab(propertyTabType, PropertyTabScope.Global);
-        }
+            public void AddTabType(Type propertyTabType)
+            {
+              
+            }
 
-        public void AddTabType(Type propertyTabType, PropertyTabScope tabScope)
-        {
-            _ownerPropertyGrid.AddTab(propertyTabType, tabScope);
-        }
+            public void AddTabType(Type propertyTabType, PropertyTabScope tabScope)
+            {
+                
+            }
 
-        public void Clear(PropertyTabScope tabScope)
-        {
-            _ownerPropertyGrid.ClearTabs(tabScope);
-        }
+            public void Clear(PropertyTabScope tabScope)
+            {
+                
+            }
 
         void ICollection.CopyTo(Array dest, int index)
         {
@@ -78,9 +78,10 @@ public partial class PropertyGrid
             return _ownerPropertyGrid._tabs.Select(i => i.Tab).GetEnumerator();
         }
 
-        public void RemoveTabType(Type propertyTabType)
-        {
-            _ownerPropertyGrid.RemoveTab(propertyTabType);
+            public void RemoveTabType(Type propertyTabType)
+            {
+          
+            }
         }
     }
 }

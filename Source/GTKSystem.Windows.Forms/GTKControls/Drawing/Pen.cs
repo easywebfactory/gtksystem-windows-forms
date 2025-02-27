@@ -195,12 +195,12 @@ public sealed class Pen : MarshalByRefObject, ICloneable, IDisposable
         Width = width;
     }
 
-    /// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Pen" />.</summary>
-    /// <returns>An <see cref="T:System.Object" /> that can be cast to a <see cref="T:System.Drawing.Pen" />.</returns>
-    public object Clone()
-    {
-        return ((ArrayList)new ArrayList { this }.Clone())[0];
-    }
+		/// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Pen" />.</summary>
+		/// <returns>An <see cref="T:System.Object" /> that can be cast to a <see cref="T:System.Drawing.Pen" />.</returns>
+		public object Clone()
+		{
+            return null;
+        }
 
     /// <summary>Releases all resources used by this <see cref="T:System.Drawing.Pen" />.</summary>
     public void Dispose()

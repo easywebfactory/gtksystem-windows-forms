@@ -21,12 +21,12 @@ public sealed class SolidBrush : Brush
         Color = color;
     }
 
-    /// <summary>Creates an exact copy of this <see cref="T:System.Drawing.SolidBrush" /> object.</summary>
-    /// <returns>The <see cref="T:System.Drawing.SolidBrush" /> object that this method creates.</returns>
-    public override object Clone()
-    {
-        return ((ArrayList)new ArrayList { this }.Clone())[0];
-    }
+		/// <summary>Creates an exact copy of this <see cref="T:System.Drawing.SolidBrush" /> object.</summary>
+		/// <returns>The <see cref="T:System.Drawing.SolidBrush" /> object that this method creates.</returns>
+		public override object Clone()
+		{
+            return null;
+        }
 
     protected override void Dispose(bool disposing)
     {

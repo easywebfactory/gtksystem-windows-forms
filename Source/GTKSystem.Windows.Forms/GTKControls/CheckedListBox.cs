@@ -11,263 +11,207 @@ using Gtk;
 
 namespace System.Windows.Forms;
 
-[DesignerCategory("Component")]
-public class CheckedListBox : ContainerControl
-{
-    public readonly CheckedListBoxBase self = new();
-    public override object GtkControl => self;
-    internal FlowBox _flow = new();
-    private readonly ObjectCollection _items;
-    public CheckedListBox()
+    [DesignerCategory("Component")]
+    public partial class CheckedListBox : ContainerControl
     {
-        _items = new ObjectCollection(this);
-        _flow.Orientation = Gtk.Orientation.Horizontal;
-        _flow.MinChildrenPerLine = 1;
-        _flow.MaxChildrenPerLine = 99999;
-        _flow.Halign = Align.Fill;
-        _flow.Valign = Align.Fill;
-        _flow.ChildActivated += Control_ChildActivated;
-        _flow.Realized += _flow_Realized;
-        self.AutoScroll = true;
-        self.Add(_flow);
+        public readonly CheckedListBoxBase self = new CheckedListBoxBase();
+        public override object GtkControl => self;
+        internal Gtk.FlowBox _flow = new Gtk.FlowBox();
+        private ObjectCollection _items;
+        public CheckedListBox() : base()
+        {
+            _items = new ObjectCollection(this);
+            _flow.Orientation = Gtk.Orientation.Horizontal;
+            _flow.MinChildrenPerLine = 1;
+            _flow.MaxChildrenPerLine = 99999;
+            _flow.Halign = Gtk.Align.Fill;
+            _flow.Valign = Gtk.Align.Fill;
+            _flow.ChildActivated += Control_ChildActivated;
+            self.AutoScroll = true;
+            self.Add(_flow);
             
-        BorderStyle = BorderStyle.Fixed3D;
-    }
-    private bool isFlowRealized;
-    private void _flow_Realized(object? sender, EventArgs e)
-    {
-        if (isFlowRealized == false)
-        {
-            isFlowRealized = true;
-            foreach (var item in _items)
-            {
-                NativeAdd(item, false, -1);
-            }
-            _flow.ShowAll();
+            this.BorderStyle = BorderStyle.Fixed3D;
         }
-    }
-
-    private void Control_ChildActivated(object? o, ChildActivatedArgs args)
-    {
-        var rowIndex = args.Child.Index;
-        var sender = Items.GetCheckedListBoxItem(rowIndex);
-        if (sender != null)
+        private void Control_ChildActivated(object o, Gtk.ChildActivatedArgs args)
         {
-            sender.Selected = args.Child.IsSelected;
+            int rowIndex = args.Child.Index;
+            if (this.CheckOnClick == true)
+                args.Child.Child.SetProperty("active", new GLib.Value(true));
+
+            if (SelectedIndexChanged != null)
+                SelectedIndexChanged(this, args);
+            if (SelectedValueChanged != null)
+                SelectedValueChanged(this, args);
+            if (SelectedItemChanged != null)
+                SelectedItemChanged(this, args);
         }
 
-        SelectedIndexChanged?.Invoke(this, args);
-        SelectedValueChanged?.Invoke(this, args);
-        SelectedItemChanged?.Invoke(this, args);
-    }
-
-    public int ColumnWidth { get; set; }
-    public bool MultiColumn { get => _flow.Orientation == Gtk.Orientation.Vertical;
-        set { if (value == false) { _flow.Orientation = Gtk.Orientation.Horizontal; } else { _flow.Orientation = Gtk.Orientation.Vertical; } } }
-    public bool HorizontalScrollbar { get; set; }
-    public bool FormattingEnabled { get; set; }
-    public int ItemHeight { get; set; }
-    public SelectionMode SelectionMode { get; set; }
-    public void ClearSelected() {
-        foreach(var wi in _flow.Children.Cast<FlowBoxChild>()) { 
-            var box = ((Box)wi.Child).Children[0];
-            if (box is CheckButton check)
-            {
-                check.Active = false;
-            }
-        }
-        _flow.UnselectAll();
-    }
-    public bool CheckOnClick { get; set; }
-    public ObjectCollection Items { 
-        get {
-            var list = new ArrayList();
-            foreach (var item in _items)
-            {
-                list.Add(item);
-            }
-            return _items;
-
-        } 
-    }
-    public SelectedItemCollection SelectedItems
-    {
-        get
-        {
-            var items = new SelectedItemCollection();
-            for (var i = 0; i < _items.Count; i++)
-            {
-                var item = _items.GetCheckedListBoxItem(i);
-                if (item is { Selected: true })
+        public int ColumnWidth { get; set; }
+        public bool MultiColumn { get { return _flow.Orientation == Gtk.Orientation.Vertical; } set { if (value == false) { _flow.Orientation = Gtk.Orientation.Horizontal; } else { _flow.Orientation = Gtk.Orientation.Vertical; } } }
+        public bool HorizontalScrollbar { get; set; }
+        public bool FormattingEnabled { get; set; }
+        public int ItemHeight { get; set; }
+        public SelectionMode SelectionMode { get; set; }
+        public void ClearSelected() {
+            foreach(Gtk.FlowBoxChild wi in _flow.Children) { 
+                Gtk.Widget box = ((Gtk.Box)wi.Child).Children[0];
+                if (box is Gtk.CheckButton check)
                 {
-                    var itemItem = item.Item;
-                    if (itemItem != null)
-                    {
-                        items.Add(itemItem);
-                    }
-                }
-            }
-            return items;
-        }
-    }
-    public CheckedItemCollection CheckedItems { 
-        get {
-            var items = new CheckedItemCollection();
-            for (var i = 0; i < _items.Count; i++)
-            {
-                var item = _items.GetCheckedListBoxItem(i);
-                if (item is { Checked: true })
-                {
-                    var itemItem = item.Item;
-                    if (itemItem != null)
-                    {
-                        items.Add(itemItem);
-                    }
-                }
-            }
-            return items; } 
-    }
-
-    public CheckedIndexCollection CheckedIndices
-    {
-        get
-        {
-            var items = new CheckedIndexCollection();
-            for (var i = 0; i < _items.Count; i++)
-            {
-                var item = _items.GetCheckedListBoxItem(i);
-                if (item is { Checked: true })
-                    items.Add(i);
-            }
-            return items;
-        }
-    }
-
-    public event ItemCheckEventHandler? ItemCheck;
-    public event EventHandler? SelectedIndexChanged;
-    public event EventHandler? SelectedValueChanged;
-    public event EventHandler? SelectedItemChanged;
-    internal void NativeAdd(object? item, bool isChecked, int position)
-    {
-        if (_flow.IsRealized)
-        {
-            var box = new CheckButton();
-            box.Label = item?.ToString();
-            box.Active = isChecked;
-            box.Hexpand = false;
-            box.Halign = Align.Start;
-            box.Valign = Align.Center;
-            box.Toggled += (sender, _) =>
-            {
-                var checkButton = (CheckButton?)sender;
-                if (checkButton?.Parent is FlowBoxChild parent)
-                {
-                    var checkedListBoxItem = Items.GetCheckedListBoxItem(parent.Index);
-                    if (checkedListBoxItem != null)
-                    {
-                        checkedListBoxItem.Checked = checkButton.Active;
-                    }
-
-                    ItemCheck?.Invoke(this,
-                        new ItemCheckEventArgs(parent.Index,
-                            checkButton.Active ? CheckState.Checked : CheckState.Unchecked,
-                            checkButton.Active == false ? CheckState.Checked : CheckState.Unchecked));
-
-                    if (CheckOnClick)
-                        _flow.SelectChild(parent);
+                    check.Active = false;
                 }
             };
-            var boxitem = new FlowBoxChild();
-            boxitem.HeightRequest = ItemHeight;
-            if (MultiColumn && ColumnWidth > 0)
+            _flow.UnselectAll();
+        }
+        public bool CheckOnClick { get; set; }
+        public ObjectCollection Items { 
+            get {
+                return _items;
+            } 
+        }
+        public SelectedItemCollection SelectedItems
+        {
+            get
             {
-                boxitem.WidthRequest = ColumnWidth;
+                SelectedItemCollection items = new SelectedItemCollection();
+                foreach (Gtk.FlowBoxChild child in _flow.Children)
+                {
+                    if (child.IsSelected == true)
+                        items.Add(child.Child.GetProperty("label").Val);
+                }
+                return items;
             }
-            boxitem.Valign = Align.Start;
-            boxitem.Halign = Align.Start;
-            boxitem.TooltipText = item?.ToString();
-            boxitem.Add(box);
+        }
+        public CheckedItemCollection CheckedItems { 
+            get {
+                CheckedItemCollection items = new CheckedItemCollection();
+                foreach (Gtk.FlowBoxChild child in _flow.Children)
+                {
+                    if ((bool)child.Child.GetProperty("active") == true)
+                        items.Add(child.Child.GetProperty("label").Val);
+                }
+                return items; } 
+        }
+
+        public CheckedIndexCollection CheckedIndices
+        {
+            get
+            {
+                CheckedIndexCollection items = new CheckedIndexCollection();
+                foreach (Gtk.FlowBoxChild child in _flow.Children)
+                {
+                    if ((bool)child.Child.GetProperty("active") == true)
+                        items.Add(child.Index);
+                }
+                return items;
+            }
+        }
+
+        public event ItemCheckEventHandler ItemCheck;
+        public event EventHandler SelectedIndexChanged;
+        public event EventHandler SelectedValueChanged;
+        public event EventHandler SelectedItemChanged;
+        internal void NativeAdd(CheckBox checkbox, bool isChecked, int position)
+        {
+            checkbox.self.Toggled += (object sender, EventArgs e) =>
+            {
+                Gtk.CheckButton box = (Gtk.CheckButton)sender;
+                Gtk.FlowBoxChild item = box.Parent as Gtk.FlowBoxChild;
+                if (this.ItemCheck != null)
+                {
+                    CheckBox checkBox = _items.GetCheckedListBoxItem(item.Index);
+                    this.ItemCheck(checkBox, new ItemCheckEventArgs(item.Index, box.Active == true ? CheckState.Checked : CheckState.Unchecked, box.Active == false ? CheckState.Checked : CheckState.Unchecked));
+                }
+            };
+            Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
+            boxitem.HeightRequest = this.ItemHeight;
+            if (this.MultiColumn && this.ColumnWidth > 0)
+            {
+                boxitem.WidthRequest = this.ColumnWidth;
+            }
+            boxitem.Valign = Gtk.Align.Start;
+            boxitem.Halign = Gtk.Align.Start;
+            boxitem.TooltipText = checkbox.Text;
+            boxitem.Add(checkbox.self);
             if (position < 0)
             {
-                _flow.Add(boxitem);
+                this._flow.Add(boxitem);
             }
             else
             {
-                _flow.Insert(boxitem, position);
+                this._flow.Insert(boxitem, position);
             }
         }
-    }
-    internal void NativeRemove(int index)
-    {
-        if (_flow.IsRealized)
+        internal void NativeRemove(int index)
         {
             if (_flow.Children.Length > index)
                 _flow.Remove(_flow.Children[index]);
         }
-    }
-    internal void NativeClear()
-    {
-        if (_flow.IsRealized)
+        internal void NativeClear()
         {
             foreach (var item in _flow.Children)
                 _flow.Remove(item);
         }
-
-    }
-
-    public class ObjectCollection : ArrayList
-    {
-        public class CheckedListBoxItem
+        public void SetItemChecked(int index, bool value)
         {
-            public object? Item { get; set; }
-            public bool Checked { get; set; }
-            public bool Selected { get; set; }
-            public override string? ToString()
+            CheckBox item = _items.GetCheckedListBoxItem(index);
+            if (item != null)
             {
-                return Item?.ToString();
+                item.Checked = value;
             }
         }
-        private readonly CheckedListBox _owner;
-        public ObjectCollection(CheckedListBox owner)
+        public void SetItemCheckState(int index, System.Windows.Forms.CheckState value)
         {
-            _owner = owner;
-        }
-        public override object? this[int index]
-        {
-            get => ((CheckedListBoxItem)base[index]).Item;
-            set => ((CheckedListBoxItem)base[index]).Item = value;
-        }
-        public CheckedListBoxItem? GetCheckedListBoxItem(int index)
-        {
-            return base[index] as CheckedListBoxItem;
-        }
-        public override int Add(object? value)
-        {
-            return AddCore(value, false, -1);
-        }
-        public int Add(object? item, bool isChecked)
-        {
-            return AddCore(item, isChecked, -1);
-        }
-
-        public int AddCore(object? item, bool isChecked, int position)
-        {
-            _owner.NativeAdd(item, isChecked, position);
-            var listBoxItem = new CheckedListBoxItem
+            CheckBox item = _items.GetCheckedListBoxItem(index);
+            if (item != null)
             {
-                Item = item,
-                Checked = isChecked,
-                Selected = false
-            };
-
-            if (position < 0)
+                item.Checked = value == System.Windows.Forms.CheckState.Checked;
+            }
+        }
+        public class ObjectCollection : ArrayList
+        {
+            private CheckedListBox _owner;
+            public ObjectCollection(CheckedListBox owner)
             {
-                return base.Add(listBoxItem);
+                _owner = owner;
+            }
+            public override object this[int index]
+            {
+                get => ((CheckBox)base[index]).Text;
+                set => ((CheckBox)base[index]).Text = value?.ToString();
+            }
+            public CheckBox GetCheckedListBoxItem(int index)
+            {
+                if (index < Count)
+                    return base[index] as CheckBox;
+                else
+                    return null;
             }
 
-            base.Insert(position, listBoxItem);
-            return position;
-        }
+            public override int Add(object value)
+            {
+                return AddCore(value, false, -1);
+            }
+            public int Add(object item, bool isChecked)
+            {
+                return AddCore(item, isChecked, -1);
+            }
+
+            public int AddCore(object item, bool isChecked, int position)
+            {
+                CheckBox listBoxItem = new CheckBox();
+                listBoxItem.Text=item.ToString();
+                listBoxItem.Checked = isChecked;
+                _owner.NativeAdd(listBoxItem, isChecked, position);
+                if (position < 0)
+                {
+                    return base.Add(listBoxItem);
+                }
+                else
+                {
+                    base.Insert(position, listBoxItem);
+                    return position;
+                }
+            }
 
         public override void AddRange(ICollection c)
         {

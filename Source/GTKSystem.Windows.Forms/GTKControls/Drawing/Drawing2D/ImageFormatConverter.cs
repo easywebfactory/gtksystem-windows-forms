@@ -25,67 +25,67 @@ public class ImageFormatConverter : TypeConverter
         return base.CanConvertTo(context, destinationType);
     }
 
-    public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object? value)
-    {
-        var text = value as string;
-        if (text == null)
-        {
-            return base.ConvertFrom(context, culture, value);
-        }
-        if (text[0] == '[' && text.Length >= 50 && Guid.TryParse(text.Substring(14, 36), out var result))
-        {
-            return new ImageFormat(result);
-        }
-        if (text.Equals("Bmp", StringComparison.OrdinalIgnoreCase))
-        {
-            return ImageFormat.Bmp;
-        }
-        if (text.Equals("Emf", StringComparison.OrdinalIgnoreCase))
-        {
-            return ImageFormat.Emf;
-        }
-        if (text.Equals("Exif", StringComparison.OrdinalIgnoreCase))
-        {
-            return ImageFormat.Exif;
-        }
-        if (text.Equals("Gif", StringComparison.OrdinalIgnoreCase))
-        {
-            return ImageFormat.Gif;
-        }
-        if (text.Equals("Icon", StringComparison.OrdinalIgnoreCase))
-        {
-            return ImageFormat.Icon;
-        }
-        if (text.Equals("Jpeg", StringComparison.OrdinalIgnoreCase))
-        {
-            return ImageFormat.Jpeg;
-        }
-        if (text.Equals("MemoryBmp", StringComparison.OrdinalIgnoreCase))
-        {
-            return ImageFormat.MemoryBmp;
-        }
-        if (text.Equals("Png", StringComparison.OrdinalIgnoreCase))
-        {
-            return ImageFormat.Png;
-        }
-        if (text.Equals("Tiff", StringComparison.OrdinalIgnoreCase))
-        {
-            return ImageFormat.Tiff;
-        }
-        if (text.Equals("Wmf", StringComparison.OrdinalIgnoreCase))
-        {
-            return ImageFormat.Wmf;
-        }
-        if (text.Equals("Heif", StringComparison.OrdinalIgnoreCase))
-        {
-            return ImageFormat.Heif;
-        }
-        if (text.Equals("Webp", StringComparison.OrdinalIgnoreCase))
-        {
-            return ImageFormat.Webp;
-        }
-        throw new FormatException("ImageFormat err");
-    }
+		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+		{
+			string text = value as string;
+			if (text == null)
+			{
+				return base.ConvertFrom(context, culture, value);
+			}
+			if (text[0] == '[' && text.Length >= 50 && Guid.TryParse(text.Substring(14, 36), out var result))
+			{
+				return new ImageFormat(result);
+			}
+			if (text.Equals("Bmp", StringComparison.OrdinalIgnoreCase))
+			{
+				return ImageFormat.Bmp;
+			}
+			if (text.Equals("Emf", StringComparison.OrdinalIgnoreCase))
+			{
+				return ImageFormat.Emf;
+			}
+			if (text.Equals("Exif", StringComparison.OrdinalIgnoreCase))
+			{
+				return ImageFormat.Exif;
+			}
+			if (text.Equals("Gif", StringComparison.OrdinalIgnoreCase))
+			{
+				return ImageFormat.Gif;
+			}
+			if (text.Equals("Icon", StringComparison.OrdinalIgnoreCase))
+			{
+				return ImageFormat.Icon;
+			}
+			if (text.Equals("Jpeg", StringComparison.OrdinalIgnoreCase))
+			{
+				return ImageFormat.Jpeg;
+			}
+			if (text.Equals("MemoryBmp", StringComparison.OrdinalIgnoreCase))
+			{
+				return ImageFormat.MemoryBmp;
+			}
+			if (text.Equals("Png", StringComparison.OrdinalIgnoreCase))
+			{
+				return ImageFormat.Png;
+			}
+			if (text.Equals("Tiff", StringComparison.OrdinalIgnoreCase))
+			{
+				return ImageFormat.Tiff;
+			}
+			if (text.Equals("Wmf", StringComparison.OrdinalIgnoreCase))
+			{
+				return ImageFormat.Wmf;
+			}
+			if (text.Equals("Heif", StringComparison.OrdinalIgnoreCase))
+			{
+				return ImageFormat.Heif;
+			}
+			if (text.Equals("Webp", StringComparison.OrdinalIgnoreCase))
+			{
+				return ImageFormat.Webp;
+			}
+			throw new FormatException("ImageFormat err");
+		}
 
     public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Reflection;
 
 namespace System.Drawing.Drawing2D;
 
@@ -45,12 +46,12 @@ public class CustomLineCap : MarshalByRefObject, ICloneable, IDisposable
     {
     }
 
-    /// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.CustomLineCap" />.</summary>
-    /// <returns>The <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> this method creates, cast as an object.</returns>
-    public object Clone()
-    {
-        return ((ArrayList)new ArrayList { this }.Clone())[0];
-    }
+		/// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.CustomLineCap" />.</summary>
+		/// <returns>The <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> this method creates, cast as an object.</returns>
+		public object Clone()
+		{
+            return null;
+        }
 
     /// <summary>Releases all resources used by this <see cref="T:System.Drawing.Drawing2D.CustomLineCap" /> object.</summary>
     public void Dispose()

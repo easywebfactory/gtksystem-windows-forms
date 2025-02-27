@@ -1,23 +1,22 @@
 ﻿using Gtk;
 
-namespace System.Windows.Forms;
-
-public class DataGridViewRow
+namespace System.Windows.Forms
 {
-    public int Index { get; internal set; }
-    public TreeIter TreeIter { get; internal set; }
-    public DataGridView? DataGridView { get; set; }
-    private readonly DataGridViewCellCollection _cell;
-    private readonly List<DataGridViewRow> _children;
-    public DataGridViewRow()
+    public class DataGridViewRow
     {
-        _cell = new DataGridViewCellCollection(this);
-        _children = [];
-    }
-    public DataGridViewCellCollection Cells => _cell;
-    public List<DataGridViewRow> Children => _children;
-    public object? DataBoundItem => default;
-    public DataGridViewCellStyle? DefaultCellStyle { get; set; }
+        public int Index { get; internal set; }
+        public TreeIter TreeIter { get; internal set; }
+        public DataGridView DataGridView { get; set; }
+        private DataGridViewCellCollection _cell;
+        private DataGridViewRowCollection _children;
+        public DataGridViewRow()
+        {
+            _cell = new DataGridViewCellCollection(this);
+        }
+        public DataGridViewCellCollection Cells { get { return _cell; } }
+        public DataGridViewRowCollection Children { get => _children ?? new DataGridViewRowCollection(DataGridView, this); }
+        public object DataBoundItem { get; }
+        public DataGridViewCellStyle DefaultCellStyle { get; set; }
 
     public bool Displayed => default;
 

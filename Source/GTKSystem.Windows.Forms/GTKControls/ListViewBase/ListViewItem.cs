@@ -1,21 +1,21 @@
+
 using System.Collections;
 using System.Drawing;
 using System.Runtime.Serialization;
-using Gtk;
-
-namespace System.Windows.Forms;
-
-public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
+namespace System.Windows.Forms
 {
-    private ListViewSubItemCollection? _subitems;
-    public class ListViewSubItem
-    {
-        internal Gtk.Label? _label;
-        public Color? BackColor
-        {
-            get;
-            set;
-        }
+
+    public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
+	{
+		private ListViewSubItemCollection _subitems;
+        public class ListViewSubItem
+		{
+			internal Gtk.Label _label;
+			public Color? BackColor
+			{
+				get;
+				set;
+			}
 
 			
         public Rectangle Bounds
@@ -345,11 +345,10 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
 		
 		
 		
-    public ListViewSubItemCollection? SubItems
-    {
-        get;
-        internal set;
-    }
+		public ListViewSubItemCollection SubItems
+		{
+            get => _subitems;
+        }
 
 		
 		
@@ -424,12 +423,10 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
         InitListViewItem(items, imageIndex, "", foreColor, backColor, font, null);
     }
 
-    public ListViewItem(ListViewSubItem[] subItems, int imageIndex)
-    {
-        foreach (var item in subItems)
-            _subitems?.Add(item);
-        InitListViewItem("", imageIndex, "", null, null, null, null);
-    }
+		public ListViewItem(ListViewSubItem[] subItems, int imageIndex)
+		{
+            InitListViewItem(subItems, imageIndex, "", null, null, null, null);
+        }
 
     public ListViewItem(ListViewGroup? group)
     {
@@ -461,12 +458,10 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
         InitListViewItem(items, imageIndex, "", foreColor, backColor, font, group);
     }
 
-    public ListViewItem(ListViewSubItem[] subItems, int imageIndex, ListViewGroup? group)
-    {
-        foreach (var item in subItems)
-            _subitems?.Add(item);
-        InitListViewItem([], imageIndex, "", null, null, null, group);
-    }
+		public ListViewItem(ListViewSubItem[] subItems, int imageIndex, ListViewGroup group)
+		{
+            InitListViewItem(subItems, imageIndex, "", null, null, null, group);
+        }
 
     public ListViewItem(string? text, string? imageKey)
     {
@@ -483,12 +478,10 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
         InitListViewItem(items, -1, imageKey, foreColor, backColor, font, null);
     }
 
-    public ListViewItem(ListViewSubItem[] subItems, string? imageKey)
-    {
-        foreach (var item in subItems)
-            _subitems?.Add(item);
-        InitListViewItem([], -1, imageKey, null, null, null, null);
-    }
+		public ListViewItem(ListViewSubItem[] subItems, string imageKey)
+		{
+            InitListViewItem(subItems, -1, imageKey, null, null, null, null);
+        }
 
     public ListViewItem(string? text, string? imageKey, ListViewGroup? group)
     {
@@ -505,43 +498,45 @@ public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
         InitListViewItem(items, -1, imageKey, foreColor, backColor, font, group);
     }
 
-    public ListViewItem(ListViewSubItem[] subItems, string? imageKey, ListViewGroup? group)
-    {
-        foreach(var item in subItems)
-            _subitems?.Add(item);
-        InitListViewItem("", -1, imageKey, null, null, null, group);
-    }
-    internal void InitListViewItem(string? text, int imageIndex, string? imageKey, Color? foreColor, Color? backColor, Font? font, ListViewGroup? group)
-    {
-        _subitems = new ListViewSubItemCollection(this);
-        SubItems = _subitems;
-        Text = text??string.Empty;
-        ImageIndex = imageIndex;
-        ImageKey = imageKey;
-        ForeColor = foreColor;
-        BackColor = backColor;
-        Font = font;
-        Group = group;
-    }
-    internal void InitListViewItem(string?[] items, int imageIndex, string? imageKey, Color? foreColor, Color? backColor, Font? font, ListViewGroup? group)
-    {
-        InitListViewItem(items[0], imageIndex, imageKey, foreColor, backColor, font, group);
-        foreach (var item in items.Skip(1))
-            if (item != null)
-            {
-                _subitems?.Add(item);
-            }
-    }
-    //internal string RelateFlowBoxChildKey { get; set; }
-    public void BeginEdit()
-    {
+		public ListViewItem(ListViewSubItem[] subItems, string imageKey, ListViewGroup group)
+		{
+            InitListViewItem(subItems, -1, imageKey, null, null, null, group);
+        }
+        internal void InitListViewItem(string text, int imageIndex, string imageKey, Color? foreColor, Color? backColor, Font font, ListViewGroup group)
+        {
+            _subitems = new ListViewSubItemCollection(this);
+            _subitems.Add(text);
+            this.Text = text;
+			this.ImageIndex = imageIndex;
+            this.ImageKey = imageKey;
+            this.ForeColor = foreColor;
+            this.BackColor = backColor;
+            this.Font = font;
+            this.Group = group;
+        }
+        internal void InitListViewItem(string[] items, int imageIndex, string imageKey, Color? foreColor, Color? backColor, Font font, ListViewGroup group)
+        {
+			InitListViewItem(items.Length > 0 ? items[0] : "", imageIndex, imageKey, foreColor, backColor, font, group);
+            foreach (string item in items)
+                _subitems.Add(item);
+
+        }
+        internal void InitListViewItem(ListViewSubItem[] subItems, int imageIndex, string imageKey, Color? foreColor, Color? backColor, Font font, ListViewGroup group)
+        {
+            InitListViewItem(subItems.Length > 0 ? subItems[0].Text : "", imageIndex, imageKey, foreColor, backColor, font, group);
+            foreach (ListViewSubItem item in subItems)
+                _subitems.Add(item);
+        }
+        //internal string RelateFlowBoxChildKey { get; set; }
+        public void BeginEdit()
+		{
 			 
     }
 
-    public virtual object Clone()
-    {
-        return ((ArrayList)new ArrayList { this }.Clone())[0];
-    }
+		public virtual object Clone()
+		{
+            return null;
+        }
 
     public virtual void EnsureVisible()
     {

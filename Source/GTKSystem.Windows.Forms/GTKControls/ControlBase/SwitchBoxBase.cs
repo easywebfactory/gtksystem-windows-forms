@@ -1,18 +1,14 @@
-﻿using Cairo;
-using GTKSystem.Windows.Forms.GTKControls;
+﻿using GLib;
 
-namespace System.Windows.Forms;
-
-public sealed class CheckBoxBase : Gtk.CheckButton, IGtkControl
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public IGtkControlOverride Override { get; set; }
-    public CheckBoxBase()
+    public sealed class SwitchBoxBase : Gtk.Switch, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        public CheckBoxBase() : base()
+        public SwitchBoxBase() : base()
         {
             this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("CheckBox");
+            this.Override.AddClass("SwitchBox");
             base.Valign = Gtk.Align.Start;
             base.Halign = Gtk.Align.Start;
         }

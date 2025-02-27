@@ -629,12 +629,12 @@ public sealed class GraphicsPath : MarshalByRefObject, ICloneable, IDisposable
     {
     }
 
-    /// <summary>Creates an exact copy of this path.</summary>
-    /// <returns>The <see cref="T:System.Drawing.Drawing2D.GraphicsPath" /> this method creates, cast as an object.</returns>
-    public object Clone()
-    {
-        return ((ArrayList)new ArrayList { this }.Clone())[0];
-    }
+		/// <summary>Creates an exact copy of this path.</summary>
+		/// <returns>The <see cref="T:System.Drawing.Drawing2D.GraphicsPath" /> this method creates, cast as an object.</returns>
+		public object Clone()
+		{
+            return null;
+        }
 
     /// <summary>Starts a new figure without closing the current figure. All subsequent points added to the path are added to this new figure.</summary>
     public void StartFigure()

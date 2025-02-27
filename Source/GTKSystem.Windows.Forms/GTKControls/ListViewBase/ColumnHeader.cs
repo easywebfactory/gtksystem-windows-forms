@@ -182,24 +182,26 @@ public class ColumnHeader : Component, ICloneable
         ImageKey = imageKey;
     }
 
-    public override string ToString()
-    {
-        return $"ColumnHeader: {Name} Text: {Text}";
-    }
+        public ColumnHeader(string text, int width) 
+        {
+            Text = text;
+            Width = width;
+        }
 
-    //public void AutoResize(ColumnHeaderAutoResizeStyle headerAutoResize)
-    //{
-    //	throw new NotImplementedException();
-    //}
+        //public void AutoResize(ColumnHeaderAutoResizeStyle headerAutoResize)
+        //{
+        //	throw null;
+        //}
 
-    public object Clone()
-    {
-        return ((ArrayList)new ArrayList { this }.Clone())[0];
-        //string data = System.Text.Json.JsonSerializer.Serialize(this,typeof(ColumnHeader));
-        //return System.Text.Json.JsonSerializer.Deserialize<ColumnHeader>(data);
-    }
-    protected override void Dispose(bool disposing)
-    {
-
+        public object Clone()
+        {
+            return null;
+            //string data = System.Text.Json.JsonSerializer.Serialize(this,typeof(ColumnHeader));
+            //return System.Text.Json.JsonSerializer.Deserialize<ColumnHeader>(data);
+        }
+        protected override void Dispose(bool disposing)
+        {
+         
+        }
     }
 }

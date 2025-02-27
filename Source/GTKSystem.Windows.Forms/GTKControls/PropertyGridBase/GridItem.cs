@@ -25,11 +25,11 @@ public abstract class GridItem
 
     public virtual bool Expandable => false;
 
-    public virtual bool Expanded
-    {
-        get => false;
-        set => throw new NotSupportedException("SR.GridItemNotExpandable");
-    }
+        public virtual bool Expanded
+        {
+            get;
+            set;
+        }
 
     public abstract bool Select();
 }

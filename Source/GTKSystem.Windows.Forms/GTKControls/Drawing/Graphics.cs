@@ -244,21 +244,19 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
     {
     }
 
-    public void Dispose()
-    {
-    }
-    private void DrawArcCore(Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
-    {
-        if (context != null)
+		public void Dispose()
+		{
+		}
+        private void DrawArcCore(Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
         {
-            context.Save();
-            SetTranslateWithDifference(0, 0);
-            SetSourceColor(pen);
-            context.LineWidth = pen.Width;
-            context.LineJoin = Cairo.LineJoin.Round;
-            context.NewPath();
-            context.Arc(x, y, Math.Min(width / 2, height / 2), Math.PI * startAngle / 180,
-                Math.PI * (startAngle + sweepAngle) / 180);
+            this.context.Save();
+            this.SetTranslateWithDifference(0, 0);
+            this.SetSourceColor(pen);
+            this.context.LineWidth = pen.Width;
+            this.context.LineJoin = Cairo.LineJoin.Round;
+            this.context.NewPath();
+			double radius = Math.Min(width / 2, height / 2);
+            this.context.Arc(x + radius, y + radius, radius, Math.PI * startAngle / 180, Math.PI * (startAngle + sweepAngle) / 180);
             //this.context.ArcNegative(x, y, Math.Min(width / 2, height / 2), Math.PI * startAngle / 180, Math.PI * sweepAngle / 180); //œ‡∑¥Œª÷√
             context.Stroke();
             context.Restore();
@@ -1030,23 +1028,20 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
         if (matrix?.InvertValue??false)
             cairoMatrix.Invert();
 
-        return cairoMatrix;
-    }
-
-    private void DrawPieCore(bool isFill, Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
-    {
-        if (context != null)
+			return CairoMatrix;
+        }
+        private void DrawPieCore(bool isFill, Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
         {
-            context.Save();
-            SetTranslateWithDifference(0, 0);
-            SetSourceColor(pen);
-            context.LineWidth = pen.Width;
-            context.NewPath();
-            context.MoveTo(x, y);
-            context.Arc(x, y, Math.Min(width / 2, height / 2), Math.PI * startAngle / 180,
-                Math.PI * (startAngle + sweepAngle) / 180);
-            context.LineTo(x, y);
-            context.ClosePath();
+            this.context.Save();
+            this.SetTranslateWithDifference(0, 0);
+            this.SetSourceColor(pen);
+            this.context.LineWidth = pen.Width;
+            this.context.NewPath();
+            double radius = Math.Min(width / 2, height / 2);
+            this.context.MoveTo(x + radius, y + radius);
+            this.context.Arc(x + radius, y + radius, radius, Math.PI * startAngle / 180, Math.PI * (startAngle + sweepAngle) / 180);
+            this.context.LineTo(x + radius, y + radius);
+            this.context.ClosePath();
             if (isFill)
                 context.Fill();
             else
@@ -1451,15 +1446,15 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
         FillPie(brush, rect.X, rect.Y, rect.Width, rect.Height, startAngle, sweepAngle);
     }
 
-    public void FillPie(Brush? brush, int x, int y, int width, int height, int startAngle, int sweepAngle)
-    {
-        FillPie(brush, (float)x, y, width, height, startAngle, sweepAngle);
-    }
+		public void FillPie(Brush brush, int x, int y, int width, int height, int startAngle, int sweepAngle)
+		{
+            DrawPieCore(true, new Pen(brush, 0), x, y, width, height, startAngle, sweepAngle);
+        }
 
-    public void FillPie(Brush? brush, float x, float y, float width, float height, float startAngle, float sweepAngle)
-    {
-        DrawPieCore(false, new Pen(brush, 0), x, y, width, height, startAngle, sweepAngle);
-    }
+		public void FillPie(Brush brush, float x, float y, float width, float height, float startAngle, float sweepAngle)
+		{
+            DrawPieCore(true, new Pen(brush, 0), x, y, width, height, startAngle, sweepAngle);
+        }
 
     public void FillPolygon(Brush? brush, PointF[] points)
     {

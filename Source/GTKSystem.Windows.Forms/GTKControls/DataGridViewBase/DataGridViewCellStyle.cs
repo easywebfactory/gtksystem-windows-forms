@@ -54,19 +54,25 @@ public class DataGridViewCellStyle : ICloneable
     [DefaultValue(DataGridViewTriState.NotSet)]
     public DataGridViewTriState WrapMode { get; set; }
 
-    public virtual void ApplyStyle(DataGridViewCellStyle _) { }
-    public virtual DataGridViewCellStyle? Clone() {
-        return ((ArrayList)new ArrayList { this }.Clone())[0] as DataGridViewCellStyle;
-    }
-    public override bool Equals(object? o) { return false; }
-    public override int GetHashCode()
-    {
-        return 0;
-    }
-    public override string ToString()
-    {
-        return "DataGridViewCellStyle";
-    }
+        public virtual void ApplyStyle(DataGridViewCellStyle dataGridViewCellStyle) { }
+        public virtual DataGridViewCellStyle Clone() {
+            Type celltype = this.GetType();
+            DataGridViewCellStyle newobj = new DataGridViewCellStyle();
+            var propertys = celltype.GetProperties(Reflection.BindingFlags.Public | Reflection.BindingFlags.Instance);
+            foreach (PropertyInfo property in propertys)
+                if (property.CanRead && property.CanWrite)
+                    property.SetValue(newobj, property.GetValue(this));
+            return newobj;
+        }
+        public override bool Equals(object o) { return false; }
+        public override int GetHashCode()
+        {
+            return 0;
+        }
+        public override string ToString()
+        {
+            return "DataGridViewCellStyle";
+        }
 
     object ICloneable.Clone()
     {

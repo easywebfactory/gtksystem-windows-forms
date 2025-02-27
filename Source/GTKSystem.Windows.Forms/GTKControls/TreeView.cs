@@ -135,126 +135,144 @@ public class TreeView : ScrollableControl
         }
     }
 
-    public void Clear()
-    {
-        Store.Clear();
-    }
-    internal void LoadNodeValue(TreeNode node, TreeIter parent)
-    {
-        var iter = parent.Equals(TreeIter.Zero) ? Store.AppendValues(node.Text, node.Checked, node.ImageIndex, node.ImageKey) : Store.AppendValues(parent, node.Text, node.Checked, node.ImageIndex, node.ImageKey);
-        var path = Store.GetPath(iter);
-        node.Index = string.Join(",", path.Indices);
-        node.treeIter = iter;
-        foreach (var child in node.Nodes)
+        public void Clear()
         {
-            LoadNodeValue(child, iter);
+            Store.Clear();
         }
-    }
-    internal void NativeNodeChecked(TreeNode node, bool isChecked)
-    {
-        if (node != null)
+        internal void LoadNodeValue(TreeNode node, TreeIter parent)
         {
-            _store.SetValue(node.treeIter, 1, isChecked);
-        }
-    }
-    internal void NativeNodeSelected(TreeNode? node, bool isSelected)
-    {
-        if (node != null)
-        {
-            SelectedNode = node;
-        }
-    }
-    internal void NativeNodeText(TreeNode node, string? text)
-    {
-        if (node != null)
-        {
-            _store.SetValue(node.treeIter, 0, text);
-        }
-    }
-    internal void NativeNodeImage(TreeNode node, int index)
-    {
-        if (node != null)
-        {
-            _store.SetValue(node.treeIter, 2, index);
-        }
-    }
-    internal void NativeNodeImage(TreeNode node, string? key)
-    {
-        if (node != null)
-        {
-            _store.SetValue(node.treeIter, 3, key);
-        }
-    }
-    public TreeNodeCollection Nodes => root.Nodes;
-    private bool _checkBoxs;
-    public bool CheckBoxes
-    {
-        get => _checkBoxs;
-        set
-        {
-            _checkBoxs = value;
-            renderercheckbox.Visible = _checkBoxs;
-        }
-    }
-    private void CellName_Toggled(object? o, ToggledArgs args)
-    {
-        //Console.WriteLine("CellRendererToggle CellName_Toggled");
-        var path = new TreePath(args.Path);
-        var model = _store;
-        model.GetIter(out var iter, path);
-        var val = (bool)model.GetValue(iter, 1);
-        model.SetValue(iter, 1, val == false);
-    }
-    private ImageList? _imageList;
-    public ImageList? ImageList
-    {
-        get => _imageList;
-        set
-        {
-            _imageList = value;
-            rendererPixbuf.Visible = _imageList != null;
-            if (_imageList != null)
+            TreeIter iter = parent.Equals(TreeIter.Zero) ? Store.AppendValues(node.Text, node.Checked, node.ImageIndex, node.ImageKey) : Store.AppendValues(parent, node.Text, node.Checked, node.ImageIndex, node.ImageKey);
+            TreePath path = Store.GetPath(iter);
+            node.Index = string.Join(",", path.Indices);
+            node.TreeIter = iter;
+            foreach (TreeNode child in node.Nodes)
             {
-                var column = self.treeView.Columns[0];
-                column.AddAttribute(rendererPixbuf, "pixbufkey", 3);
-                column.AddAttribute(rendererPixbuf, "pixbufindex", 2);
+                LoadNodeValue(child, iter);
             }
         }
-    }
-    public int ImageIndex { get; set; } = -1;
-    public string? ImageKey { get; set; }
-    public int SelectedImageIndex { get; set; }
-    public string? SelectedImageKey { get; set; }
-    public int StateImageIndex { get; set; }
-    public string? StateImageKey { get; set; }
-    public void ExpandAll()
-    {
-        self.treeView.ExpandAll();
-    }
-    public void CollapseAll()
-    {
-        self.treeView.CollapseAll();
-    }
-    internal void SetExpandNode(TreeNode node, bool all)
-    {
-        self.treeView.ExpandRow(_store.GetPath(node.treeIter), all);
-    }
-    internal void SetCollapseNode(TreeNode node)
-    {
-
-        self.treeView.CollapseRow(_store.GetPath(node.treeIter));
-    }
-    internal bool GetNodeExpanded(TreeNode node)
-    {
-        return self.treeView.GetRowExpanded(_store.GetPath(node.treeIter));
-    }
-    public bool ShowLines { get => self.treeView.EnableTreeLines; set { self.treeView.EnableTreeLines = true; self.treeView.EnableGridLines = TreeViewGridLines.Horizontal; } }
-    public bool ShowNodeToolsTips { get; set; }
-    public bool ShowPlusMinus { get; set; } = true;
-    public bool ShowRootLines { get; set; } = true;
-    public object? SelectedItem => SelectedNode?.Text;
-
-    public object? SelectedValue => SelectedNode?.Text;
+        internal void NativeNodeChecked(TreeNode node, bool isChecked)
+        {
+            if (node != null)
+            {
+                _store.SetValue(node.TreeIter,1,isChecked);
+            }
+        }
+        internal void NativeNodeSelected(TreeNode node, bool isSelected)
+        {
+            if (node != null)
+            {
+                this.SelectedNode = node;
+            }
+        }
+        internal void NativeNodeText(TreeNode node, string text)
+        {
+            if (node != null)
+            {
+                _store.SetValue(node.TreeIter, 0, text);
+            }
+        }
+        internal void NativeNodeImage(TreeNode node, int index)
+        {
+            if (node != null)
+            {
+                _store.SetValue(node.TreeIter, 2, index);
+            }
+        }
+        internal void NativeNodeImage(TreeNode node, string key)
+        {
+            if (node != null)
+            {
+                _store.SetValue(node.TreeIter, 3, key);
+            }
+        }
+        public TreeNodeCollection Nodes
+        {
+            get
+            {
+                return root.Nodes;
+            }
+        }
+        private bool _checkBoxs;
+        public bool CheckBoxes
+        {
+            get => _checkBoxs;
+            set
+            {
+                _checkBoxs = value;
+                renderercheckbox.Visible = _checkBoxs == true;
+            }
+        }
+        private void CellName_Toggled(object o, ToggledArgs args)
+        {
+            //Console.WriteLine("CellRendererToggle CellName_Toggled");
+            TreePath path = new TreePath(args.Path);
+            var model = _store;
+            model.GetIter(out TreeIter iter, path);
+            bool val = (bool)(model.GetValue(iter, 1));
+            model.SetValue(iter, 1, val == false);
+        }
+        private ImageList _imageList;
+        public ImageList ImageList { get => _imageList; 
+            set {
+                _imageList = value;
+                rendererPixbuf.Visible = _imageList != null;
+                if (_imageList != null)
+                {
+                    Gtk.TreeViewColumn column = self.TreeView.Columns[0];
+                    column.AddAttribute(rendererPixbuf, "pixbufkey", 3);
+                    column.AddAttribute(rendererPixbuf, "pixbufindex", 2);
+                }
+            } 
+        }
+        public int ImageIndex { get; set; } = -1;
+        public string ImageKey { get; set; }
+        public int SelectedImageIndex { get; set; }
+        public string SelectedImageKey { get; set; }
+        public int StateImageIndex { get; set; }
+        public string StateImageKey { get; set; }
+        public void ExpandAll()
+        {
+            self.TreeView.ExpandAll();
+        }
+        public void CollapseAll()
+        {
+            self.TreeView.CollapseAll();
+        }
+        internal void SetExpandNode(TreeNode node, bool all)
+        {
+            self.TreeView.ExpandRow(_store.GetPath(node.TreeIter), all);
+        }
+        internal void SetCollapseNode(TreeNode node)
+        {
+            
+            self.TreeView.CollapseRow(_store.GetPath(node.TreeIter));
+        }
+        internal bool GetNodeExpanded(TreeNode node)
+        {
+            return self.TreeView.GetRowExpanded(_store.GetPath(node.TreeIter));
+        }
+        internal void RemoveNode(TreeNode node)
+        {
+            _store.Remove(ref node.TreeIter);
+        }
+        public bool ShowLines { get=> self.TreeView.EnableTreeLines; set { self.TreeView.EnableTreeLines = true; self.TreeView.EnableGridLines = Gtk.TreeViewGridLines.Horizontal; } }
+        public bool ShowNodeToolsTips { get; set; }
+        public bool ShowPlusMinus { get; set; } = true;
+        public bool ShowRootLines { get; set; } = true;
+        public object SelectedItem
+        {
+            get
+            {
+                return SelectedNode.Text;
+            }
+        }
+        public object SelectedValue
+        {
+            get
+            {
+                return SelectedNode.Text;
+            }
+        }
 
     [DefaultValue("\\")]
     public string PathSeparator

@@ -462,140 +462,140 @@ public sealed class Font : MarshalByRefObject, ICloneable, IDisposable, ISeriali
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool Underline => Style.HasFlag(FontStyle.Underline);
 
-    //
-    // 摘要:
-    //     Creates a System.Drawing.Font from the specified Windows handle to a device context.
-    //
-    // 参数:
-    //   hdc:
-    //     A handle to a device context.
-    //
-    // 返回结果:
-    //     The System.Drawing.Font this method creates.
-    //
-    // 异常:
-    //   T:System.ArgumentException:
-    //     The font for the specified device context is not a TrueType font.
-    public static Font FromHdc(IntPtr hdc) { return new Font("Arial", 12); }
-    //
-    // 摘要:
-    //     Creates a System.Drawing.Font from the specified Windows handle.
-    //
-    // 参数:
-    //   hfont:
-    //     A Windows handle to a GDI font.
-    //
-    // 返回结果:
-    //     The System.Drawing.Font this method creates.
-    //
-    // 异常:
-    //   T:System.ArgumentException:
-    //     hfont points to an object that is not a TrueType font.
-    public static Font FromHfont(IntPtr hfont) { return new Font("Arial", 12); }
-    //
-    // 摘要:
-    //     Creates a System.Drawing.Font from the specified GDI logical font (LOGFONT) structure.
-    //
-    // 参数:
-    //   lf:
-    //     An System.Object that represents the GDI LOGFONT structure from which to create
-    //     the System.Drawing.Font.
-    //
-    //   hdc:
-    //     A handle to a device context that contains additional information about the lf
-    //     structure.
-    //
-    // 返回结果:
-    //     The System.Drawing.Font that this method creates.
-    //
-    // 异常:
-    //   T:System.ArgumentException:
-    //     The font is not a TrueType font.
-    public static Font FromLogFont(object? lf, IntPtr hdc) { return new Font("Arial", 12); }
-    //
-    // 摘要:
-    //     Creates a System.Drawing.Font from the specified GDI logical font (LOGFONT) structure.
-    //
-    // 参数:
-    //   lf:
-    //     An System.Object that represents the GDI LOGFONT structure from which to create
-    //     the System.Drawing.Font.
-    //
-    // 返回结果:
-    //     The System.Drawing.Font that this method creates.
-    public static Font FromLogFont(object? lf) { return new Font("Arial", 12); }
-    //
-    // 摘要:
-    //     Creates an exact copy of this System.Drawing.Font.
-    //
-    // 返回结果:
-    //     The System.Drawing.Font this method creates, cast as an System.Object.
-    public object Clone() { return ((ArrayList)new ArrayList { this }.Clone())[0]; }
-    //
-    // 摘要:
-    //     Releases all resources used by this System.Drawing.Font.
-    public void Dispose() { }
-    //
-    // 摘要:
-    //     Indicates whether the specified object is a System.Drawing.Font and has the same
-    //     System.Drawing.Font.FontFamily, System.Drawing.Font.GdiVerticalFont, System.Drawing.Font.GdiCharSet,
-    //     System.Drawing.Font.Style, System.Drawing.Font.Size, and System.Drawing.Font.Unit
-    //     property values as this System.Drawing.Font.
-    //
-    // 参数:
-    //   obj:
-    //     The object to test.
-    //
-    // 返回结果:
-    //     true if the obj parameter is a System.Drawing.Font and has the same System.Drawing.Font.FontFamily,
-    //     System.Drawing.Font.GdiVerticalFont, System.Drawing.Font.GdiCharSet, System.Drawing.Font.Style,
-    //     System.Drawing.Font.Size, and System.Drawing.Font.Unit property values as this
-    //     System.Drawing.Font; otherwise, false.
-    public override bool Equals(object? obj) { return obj as Font==this; }
-    //
-    // 摘要:
-    //     Gets the hash code for this System.Drawing.Font.
-    //
-    // 返回结果:
-    //     The hash code for this System.Drawing.Font.
-    public override int GetHashCode() { return base.GetHashCode(); }
-    //
-    // 摘要:
-    //     Returns the height, in pixels, of this System.Drawing.Font when drawn to a device
-    //     with the specified vertical resolution.
-    //
-    // 参数:
-    //   dpi:
-    //     The vertical resolution, in dots per inch, used to calculate the height of the
-    //     font.
-    //
-    // 返回结果:
-    //     The height, in pixels, of this System.Drawing.Font.
-    public float GetHeight(float dpi) { return Height; }
-    //
-    // 摘要:
-    //     Returns the line spacing, in the current unit of a specified System.Drawing.Graphics,
-    //     of this font.
-    //
-    // 参数:
-    //   graphics:
-    //     A System.Drawing.Graphics that holds the vertical resolution, in dots per inch,
-    //     of the display device as well as settings for page unit and page scale.
-    //
-    // 返回结果:
-    //     The line spacing, in pixels, of this font.
-    //
-    // 异常:
-    //   T:System.ArgumentNullException:
-    //     graphics is null.
-    public float GetHeight(Graphics graphics) { return Height; }
-    //
-    // 摘要:
-    //     Returns the line spacing, in pixels, of this font.
-    //
-    // 返回结果:
-    //     The line spacing, in pixels, of this font.
-    public float GetHeight() { return Height; }
+        //
+        // 摘要:
+        //     Creates a System.Drawing.Font from the specified Windows handle to a device context.
+        //
+        // 参数:
+        //   hdc:
+        //     A handle to a device context.
+        //
+        // 返回结果:
+        //     The System.Drawing.Font this method creates.
+        //
+        // 异常:
+        //   T:System.ArgumentException:
+        //     The font for the specified device context is not a TrueType font.
+        public static Font FromHdc(IntPtr hdc) { return new Font("Arial", 12); }
+        //
+        // 摘要:
+        //     Creates a System.Drawing.Font from the specified Windows handle.
+        //
+        // 参数:
+        //   hfont:
+        //     A Windows handle to a GDI font.
+        //
+        // 返回结果:
+        //     The System.Drawing.Font this method creates.
+        //
+        // 异常:
+        //   T:System.ArgumentException:
+        //     hfont points to an object that is not a TrueType font.
+        public static Font FromHfont(IntPtr hfont) { return new Font("Arial", 12); }
+        //
+        // 摘要:
+        //     Creates a System.Drawing.Font from the specified GDI logical font (LOGFONT) structure.
+        //
+        // 参数:
+        //   lf:
+        //     An System.Object that represents the GDI LOGFONT structure from which to create
+        //     the System.Drawing.Font.
+        //
+        //   hdc:
+        //     A handle to a device context that contains additional information about the lf
+        //     structure.
+        //
+        // 返回结果:
+        //     The System.Drawing.Font that this method creates.
+        //
+        // 异常:
+        //   T:System.ArgumentException:
+        //     The font is not a TrueType font.
+        public static Font FromLogFont(object lf, IntPtr hdc) { return new Font("Arial", 12); }
+        //
+        // 摘要:
+        //     Creates a System.Drawing.Font from the specified GDI logical font (LOGFONT) structure.
+        //
+        // 参数:
+        //   lf:
+        //     An System.Object that represents the GDI LOGFONT structure from which to create
+        //     the System.Drawing.Font.
+        //
+        // 返回结果:
+        //     The System.Drawing.Font that this method creates.
+        public static Font FromLogFont(object lf) { return new Font("Arial", 12); }
+        //
+        // 摘要:
+        //     Creates an exact copy of this System.Drawing.Font.
+        //
+        // 返回结果:
+        //     The System.Drawing.Font this method creates, cast as an System.Object.
+        public object Clone() { return null; }
+        //
+        // 摘要:
+        //     Releases all resources used by this System.Drawing.Font.
+        public void Dispose() { }
+        //
+        // 摘要:
+        //     Indicates whether the specified object is a System.Drawing.Font and has the same
+        //     System.Drawing.Font.FontFamily, System.Drawing.Font.GdiVerticalFont, System.Drawing.Font.GdiCharSet,
+        //     System.Drawing.Font.Style, System.Drawing.Font.Size, and System.Drawing.Font.Unit
+        //     property values as this System.Drawing.Font.
+        //
+        // 参数:
+        //   obj:
+        //     The object to test.
+        //
+        // 返回结果:
+        //     true if the obj parameter is a System.Drawing.Font and has the same System.Drawing.Font.FontFamily,
+        //     System.Drawing.Font.GdiVerticalFont, System.Drawing.Font.GdiCharSet, System.Drawing.Font.Style,
+        //     System.Drawing.Font.Size, and System.Drawing.Font.Unit property values as this
+        //     System.Drawing.Font; otherwise, false.
+        public override bool Equals(object obj) { return Equals(obj as Font); }
+        //
+        // 摘要:
+        //     Gets the hash code for this System.Drawing.Font.
+        //
+        // 返回结果:
+        //     The hash code for this System.Drawing.Font.
+        public override int GetHashCode() { return base.GetHashCode(); }
+        //
+        // 摘要:
+        //     Returns the height, in pixels, of this System.Drawing.Font when drawn to a device
+        //     with the specified vertical resolution.
+        //
+        // 参数:
+        //   dpi:
+        //     The vertical resolution, in dots per inch, used to calculate the height of the
+        //     font.
+        //
+        // 返回结果:
+        //     The height, in pixels, of this System.Drawing.Font.
+        public float GetHeight(float dpi) { return Height; }
+        //
+        // 摘要:
+        //     Returns the line spacing, in the current unit of a specified System.Drawing.Graphics,
+        //     of this font.
+        //
+        // 参数:
+        //   graphics:
+        //     A System.Drawing.Graphics that holds the vertical resolution, in dots per inch,
+        //     of the display device as well as settings for page unit and page scale.
+        //
+        // 返回结果:
+        //     The line spacing, in pixels, of this font.
+        //
+        // 异常:
+        //   T:System.ArgumentNullException:
+        //     graphics is null.
+        public float GetHeight(Graphics graphics) { return Height; }
+        //
+        // 摘要:
+        //     Returns the line spacing, in pixels, of this font.
+        //
+        // 返回结果:
+        //     The line spacing, in pixels, of this font.
+        public float GetHeight() { return Height; }
 
     public void GetObjectData(SerializationInfo info, StreamingContext context)
     {

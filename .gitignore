@@ -280,6 +280,27 @@ __pycache__/
 # Telerik's JustMock configuration file
 *.jmconfig
 
+/Source/GTKSystem.Windows.Forms/bin/Debug/net6.0/*.*
+/Source/GTKSystem.Windows.Forms/obj/Debug/net6.0/ref/*.*
+/Source/GTKSystem.Windows.Forms/bin/Debug/*.*
+/Source/GTKSystem.Windows.Forms/obj/Debug/ref/*.*
+/Source/GTKSystem.Windows.Forms/obj/Debug/net6.0/ref/*.*
+/Source/GTKSystem.Windows.Forms/obj/Debug/net6.0/refint/*.*
+
+Packages
+*.pdb
+/Samples/GtkWinFormsApp/obj/**/*.*
+/Samples/GtkWinFormsApp/obj/*.*
+/Source/System.Resources.Extensions/obj/Debug/net6.0/System.Resources.Extensions.AssemblyInfo.cs
+/Source/System.Resources.Extensions/obj/Debug/net6.0/System.Resources.Extensions.AssemblyInfoInputs.cache
+/Samples/GTKWinFormsApp/obj/GTKWinFormsApp.csproj.nuget.dgspec.json
+/Samples/GTKWinFormsApp/obj/project.assets.json
+/Samples/GTKWinFormsApp/obj/project.nuget.cache
+/Source/GTKSystem.Windows.Forms/obj/GTKSystem.Windows.Forms.csproj.nuget.dgspec.json
+/Source/GTKSystem.Windows.Forms/obj/GTKSystem.Windows.Forms.csproj.nuget.g.props
+/Source/GTKSystem.Windows.Forms/obj/GTKSystem.Windows.Forms.csproj.nuget.g.targets
+/Source/GTKSystem.Windows.Forms/obj/project.assets.json
+/Source/GTKSystem.Windows.Forms/obj/project.nuget.cache
 # BizTalk build output
 *.btp.cs
 *.btm.cs

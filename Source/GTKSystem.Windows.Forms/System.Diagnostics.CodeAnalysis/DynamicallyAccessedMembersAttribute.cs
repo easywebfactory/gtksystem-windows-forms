@@ -35,7 +35,7 @@ namespace System.Diagnostics.CodeAnalysis;
 #else
 internal
 #endif
-    sealed class DynamicallyAccessedMembersAttribute : Attribute
+sealed class DynamicallyAccessedMembersAttribute : Attribute
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="DynamicallyAccessedMembersAttribute"/> class

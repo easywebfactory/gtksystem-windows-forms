@@ -215,27 +215,28 @@ public class MessageBox
             irun = ShowCore(activeWindow, WindowPosition.CenterOnParent, text, caption, buttons, icon);
         }
 
-        var resp = (ResponseType)Enum.Parse(typeof(ResponseType),irun.ToString());
-        if (resp == ResponseType.Yes)
-            return DialogResult.Yes;
-        if (resp == ResponseType.No)
-            return DialogResult.No;
-        if (resp == ResponseType.Ok)
-            return DialogResult.Ok;
-        if (resp == ResponseType.Cancel)
-            return DialogResult.Cancel;
-        if (resp == ResponseType.Reject)
-            return DialogResult.Abort;
-        if (resp == ResponseType.Help)
-            return DialogResult.Retry;
-        if (resp == ResponseType.Close)
-            return DialogResult.Ignore;
-        if (resp == ResponseType.None)
-            return DialogResult.None;
-        if (resp == ResponseType.DeleteEvent)
-            return DialogResult.None;
-        return DialogResult.None;
-    }
+            Gtk.ResponseType resp = (Gtk.ResponseType)Enum.Parse(typeof(Gtk.ResponseType), irun.ToString());
+            if (resp == Gtk.ResponseType.Yes)
+                return DialogResult.Yes;
+            else if (resp == Gtk.ResponseType.No)
+                return DialogResult.No;
+            else if (resp == Gtk.ResponseType.Ok)
+                return DialogResult.OK;
+            else if (resp == Gtk.ResponseType.Cancel)
+                return DialogResult.Cancel;
+            else if (resp == Gtk.ResponseType.Reject)
+                return DialogResult.Abort;
+            else if (resp == Gtk.ResponseType.Help)
+                return DialogResult.Retry;
+            else if (resp == Gtk.ResponseType.Close)
+                return DialogResult.Ignore;
+            else if (resp == Gtk.ResponseType.None)
+                return DialogResult.None;
+            else if (resp == Gtk.ResponseType.DeleteEvent)
+                return DialogResult.None;
+            else
+                return DialogResult.None;
+        }
 
     private static int ShowCore(Window? owner, WindowPosition position, string? text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
     {

@@ -113,31 +113,31 @@ public sealed class Matrix : MarshalByRefObject, IDisposable
     public bool InvertValue { get; set; }
     public Matrix? MultiplyValue { get; set; }
 
-    /// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
-    /// <returns>The <see cref="T:System.Drawing.Drawing2D.Matrix" /> that this method creates.</returns>
-    public Matrix? Clone()
-    {
-        return ((ArrayList)new ArrayList { this }.Clone())[0] as Matrix;
-        //         Matrix m = new Matrix();
-        //m.initMatrix = this.initMatrix;
-        //m.initRectangle = this.initRectangle;
-        //m.initPointF = this.initPointF;
-        //m.vectorTransformPoints = this.vectorTransformPoints;
-        //m.transformVectors = this.transformVectors;
-        //m.transformPoints = this.transformPoints;
-        //m.shearX = this.shearX;
-        //m.shearY = this.shearY;
-        //m.angle = this.angle;
-        //m.scaleX = this.scaleX;
-        //m.scaleY = this.scaleY;
-        //m.rotateAtPoint = this.rotateAtPoint;
-        //m.order = this.order;
-        //m.dx = this.dx;
-        //m.dy = this.dy;
-        //m.m11 = this.m11;
-        //m.m12 = this.m12;
-        //m.m21 = this.m21;
-        //m.m22 = this.m22;
+        /// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
+        /// <returns>The <see cref="T:System.Drawing.Drawing2D.Matrix" /> that this method creates.</returns>
+        public Matrix Clone()
+		{
+            return null;
+   //         Matrix m = new Matrix();
+			//m.initMatrix = this.initMatrix;
+			//m.initRectangle = this.initRectangle;
+			//m.initPointF = this.initPointF;
+			//m.vectorTransformPoints = this.vectorTransformPoints;
+			//m.transformVectors = this.transformVectors;
+			//m.transformPoints = this.transformPoints;
+			//m.shearX = this.shearX;
+			//m.shearY = this.shearY;
+			//m.angle = this.angle;
+			//m.scaleX = this.scaleX;
+			//m.scaleY = this.scaleY;
+			//m.rotateAtPoint = this.rotateAtPoint;
+			//m.order = this.order;
+			//m.dx = this.dx;
+			//m.dy = this.dy;
+			//m.m11 = this.m11;
+			//m.m12 = this.m12;
+			//m.m21 = this.m21;
+			//m.m22 = this.m22;
 
         //return m;
     }

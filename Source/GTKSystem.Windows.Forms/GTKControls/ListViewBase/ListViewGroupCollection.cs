@@ -25,15 +25,18 @@ public class ListViewGroupCollection : List<ListViewGroup>
     {
         _listView = listView;
 
-    }
-
-    public ListViewGroup Add(string key, string headerText)
-    {
-        var group = new ListViewGroup(key, headerText);
-
-        AddCore(group);
-        return group;
-    }
+        }
+        public new int Add(ListViewGroup group)
+        {
+            AddCore(group);
+			return Count;
+        }
+        public ListViewGroup Add(string key, string headerText)
+		{
+			ListViewGroup group = new ListViewGroup(key, headerText);
+            this.Add(group);
+			return group;
+		}
 
 
     public void AddRange(ListViewGroup?[] groups)

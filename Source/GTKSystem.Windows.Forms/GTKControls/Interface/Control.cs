@@ -661,24 +661,33 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             widget.Halign = Align.Start;
         }
 
-        if (anchorStyles.HasFlag(AnchorStyles.Top) && anchorStyles.HasFlag(AnchorStyles.Bottom))
-        {
-            widget.Valign = Align.Fill;
+            if (anchorStyles.HasFlag(AnchorStyles.Top) && anchorStyles.HasFlag(AnchorStyles.Bottom))
+            {
+                widget.Valign = Gtk.Align.Fill;
+            }
+            else if (anchorStyles.HasFlag(AnchorStyles.Top))
+            {
+                widget.Valign = Gtk.Align.Start;
+            }
+            else if (anchorStyles.HasFlag(AnchorStyles.Bottom))
+            {
+                widget.Valign = Gtk.Align.End;
+            }
+            else
+            {
+                widget.Valign = Gtk.Align.Start;
+            }
         }
-        else if (anchorStyles.HasFlag(AnchorStyles.Top))
-        {
-            widget.Valign = Align.Start;
+        public virtual Point AutoScrollOffset { get; set; }
+        private bool _autoSize;
+        public virtual bool AutoSize { 
+            get => _autoSize; 
+            set { _autoSize = value;
+                if (_autoSize == true) { this.Widget.WidthRequest = -1; this.Widget.HeightRequest = -1; } else { Size = _size; } 
+            } 
         }
-        else if (anchorStyles.HasFlag(AnchorStyles.Bottom))
-        {
-            widget.Valign = Align.End;
-        }
-        else
-        {
-            widget.Valign = Align.Start;
-        }
-    }
-    public virtual Point AutoScrollOffset { get; set; }
+        public virtual BindingContext BindingContext { get; set; }
+        public virtual Rectangle Bounds { get=> new Rectangle(Widget.Clip.X, this.Widget.Clip.Y, this.Widget.Clip.Width, this.Widget.Clip.Height); set { SetBounds(value.X, value.Y, value.Width, value.Height); } }
 
     public virtual bool AutoSize
     {
@@ -1016,163 +1025,62 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     public virtual bool RecreatingHandle { get; }
     public virtual Region? Region { get; set; }
 
-    public virtual RightToLeft RightToLeft
-    {
-        get => rightToLeft;
-        set
+        public virtual RightToLeft RightToLeft { get; set; }
+        private Size _size;
+        public virtual Size Size
         {
             var toLeft = rightToLeft;
             rightToLeft = value;
             if (toLeft != value)
             {
-                RightToLeftChanged?.Invoke(this, EventArgs.Empty);
+                return _size;
+            }
+            set
+            {
+                _size = value;
+                if (AutoSize == false)
+                {
+                    if (this.Widget is Gtk.Button)
+                    {
+                        Width = value.Width > 6 ? value.Width - 6 : value.Width;
+                        Height = value.Height > 6 ? value.Height - 6 : value.Height;
+                    }
+                    else
+                    {
+                        Width = value.Width;
+                        Height = value.Height;
+                    }
+                }
             }
         }
-    }
-
-    public virtual Size Size
-    {
-        get => new(Width, Height);
-        set
+        public virtual int Height
         {
-            if (Widget is Gtk.Button)
+            get
             {
-                Width = value.Width > 6 ? value.Width - 6 : value.Width;
-                Height = value.Height > 6 ? value.Height - 6 : value.Height;
+                if (this.Widget.IsMapped == false && this.Widget is Gtk.Window wnd)
+                {
+                    return wnd.HeightRequest == -1 ? wnd.DefaultHeight : wnd.HeightRequest;
+                }
+                return this.Widget.HeightRequest == -1 ? this.Widget.AllocatedHeight : this.Widget.HeightRequest;
             }
-            else
+            set
             {
-                Width = value.Width;
-                Height = value.Height;
+                this.Widget.HeightRequest = Math.Max(-1, value);
+                if (DockChanged != null)
+                    DockChanged(this, EventArgs.Empty);
+                if (AnchorChanged != null)
+                    AnchorChanged(this, EventArgs.Empty);
             }
         }
-    }
-    public virtual int Height
-    {
-        get
+        public virtual int Width
         {
-            if (Widget.IsMapped == false && Widget is Window wnd)
+            get
             {
-                return wnd.HeightRequest == -1 ? wnd.DefaultHeight : wnd.HeightRequest;
-            }
-            return Widget.HeightRequest == -1 ? Widget.AllocatedHeight : Widget.HeightRequest;
-        }
-        set
-        {
-            var widget = Widget;
-            var heightRequest = widget?.HeightRequest ?? 0;
-            if (widget != null)
-            {
-                widget.HeightRequest = Math.Max(-1, value);
-            }
-
-            if (heightRequest != value)
-            {
-                Layout?.Invoke(this, new LayoutEventArgs(this, nameof(Height)));
-                Resize?.Invoke(this, EventArgs.Empty);
-                SizeChanged?.Invoke(this, EventArgs.Empty);
-                ClientSizeChanged?.Invoke(this, EventArgs.Empty);
-            }
-
-            if (Dock != DockStyle.None)
-            {
-                Dock = DockStyle.None;
-            }
-            AnchorChanged?.Invoke(this, EventArgs.Empty);
-        }
-    }
-
-    protected int _width;
-    public virtual int Width
-    {
-        get
-        {
-            var widget = Widget;
-            if (widget is { IsMapped: false } and Window wnd)
-            {
-                return wnd.WidthRequest == -1 ? wnd.DefaultWidth : wnd.WidthRequest;
-            }
-            return widget?.WidthRequest == -1 ? widget.AllocatedWidth : widget?.WidthRequest ?? _width;
-        }
-        set
-        {
-            var widget = Widget;
-            var widthRequest = widget?.WidthRequest ?? 0;
-            if (widget != null)
-            {
-                widget.WidthRequest = Math.Max(-1, value);
-            }
-            else
-            {
-                _width = value;
-            }
-
-            if (widthRequest != value)
-            {
-                SizeChanged?.Invoke(this, EventArgs.Empty);
-                Resize?.Invoke(this, EventArgs.Empty);
-            }
-
-            DockChanged?.Invoke(this, EventArgs.Empty);
-            AnchorChanged?.Invoke(this, EventArgs.Empty);
-        }
-    }
-
-    public virtual int TabIndex
-    {
-        get => tabIndex;
-        set
-        {
-            var index = tabIndex;
-            tabIndex = value;
-            if (index != value)
-            {
-                TabIndexChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
-    }
-
-    public virtual bool TabStop
-    {
-        get => tabStop;
-        set
-        {
-            var stop = tabStop;
-            tabStop = value;
-            if (stop != value)
-            {
-                TabStopChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
-    }
-
-    public event EventHandler? TagChanged;
-
-    public virtual object? Tag
-    {
-        get => tag;
-        set
-        {
-            var o = tag;
-            tag = value;
-            if (o != value)
-            {
-                TagChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
-    }
-
-    public virtual string? Text
-    {
-        get => text;
-        set
-        {
-            var oltText = text;
-            text = value;
-            if (oltText != value)
-            {
-                TextChanged?.Invoke(this, EventArgs.Empty);
-                PropertyChanged?.Invoke(this, EventArgs.Empty);
+                if (this.Widget.IsMapped == false && this.Widget is Gtk.Window wnd)
+                {
+                    return wnd.WidthRequest == -1 ? wnd.DefaultWidth : wnd.WidthRequest;
+                }
+                return this.Widget.WidthRequest == -1 ? this.Widget.AllocatedWidth : this.Widget.WidthRequest;
             }
         }
     }
@@ -1360,27 +1268,25 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             context?.Dispose();
             context = new Context(surface);
 
-            var widget = Widget as IWidget;
-            if (widget != null) return new Graphics(widget, context, Widget.Allocation);
-            return null;
+                return new Drawing.Graphics(this.Widget, context, this.Widget.Allocation);
+            }
+            catch(Exception ex) 
+            {
+                Console.WriteLine("画版创建失败：" + ex.Message);
+                throw;
+            }
         }
-        finally
-        {
-            _handleCreated = true;
-        }
-    }
 
-    private void Override_PaintGraphics(Context cr, Rectangle rec)
-    {
-        if (surface != null)
+        private void Override_PaintGraphics(Cairo.Context cr, Rectangle rec)
         {
-            cr.Save();
-            cr.SetSourceSurface(surface, 0, 0);
-            cr.Paint();
-            cr.Restore();
-            Widget.QueueDraw();
+            if (surface != null)
+            {
+                cr.Save();
+                cr.SetSourceSurface(surface, 0, 0);
+                cr.Paint();
+                cr.Restore();
+            }
         }
-    }
 
     public virtual DragDropEffects DoDragDrop(object? data, DragDropEffects allowedEffects)
     {
@@ -1482,27 +1388,31 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         Invalidate(true);
     }
 
-    public virtual void Invalidate(bool invalidateChildren)
-    {
-        if (Widget is { IsVisible: true })
+        public virtual void Invalidate(bool invalidateChildren)
         {
-            Widget.Window.InvalidateRect(Widget.Allocation, invalidateChildren);
+            Invalidate(new Rectangle(Widget.Allocation.X, Widget.Allocation.Y, Widget.Allocation.Width, Widget.Allocation.Height), invalidateChildren);
         }
-    }
 
     public virtual void Invalidate(Rectangle rc)
     {
         Invalidate(rc, true);
     }
 
-    public virtual void Invalidate(Rectangle rc, bool invalidateChildren)
-    {
-        if (Widget != null)
+        public virtual void Invalidate(Rectangle rc, bool invalidateChildren)
         {
-            Self?.Override.OnAddClass();
-            Widget.Window.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
+            if (this.Widget != null)
+            {
+                if (ISelf != null)
+                    ISelf.Override.OnAddClass();
+                this.Widget.Window.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
+                if (invalidateChildren == true && this.Widget is Gtk.Container container)
+                {
+                    foreach (var child in container.Children)
+                        child.Window.InvalidateRect(child.Allocation, invalidateChildren);
+                }
+                Refresh();
+            }
         }
-    }
 
     public virtual void Invalidate(Region region)
     {
@@ -1631,14 +1541,20 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         return new Rectangle(r.X, r.Y, r.Width, r.Height);
     }
 
-    public virtual void Refresh()
-    {
-        if (Widget is { IsVisible: true })
+        public virtual void Refresh()
         {
-            Self?.Override.ClearNativeBackground();
-            Widget.QueueDraw();
+            if (this.Widget != null && this.Widget.IsVisible)
+            {
+                if (ISelf != null)
+                    ISelf.Override.OnAddClass();
+                this.Widget.QueueDraw();
+                if (this.Widget is Gtk.Container container)
+                {
+                    foreach (var child in container.Children)
+                        child.QueueDraw();
+                }
+            }
         }
-    }
 
     public virtual void ResetBackColor()
     {
@@ -1815,46 +1731,36 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    public virtual Size MaximumSize { get; set; }
-    public virtual Size MinimumSize { get; set; }
-    private BorderStyle borderStyle;
-    private BindingContext? bindingContext;
-    private string? text = string.Empty;
-    private string? _name;
-    private bool causesValidation = true;
-    private Cursor? cursor;
-    private bool tabStop = true;
-    private object? tag;
-    private int tabIndex;
-    private RightToLeft rightToLeft;
-    private ImeMode imeMode;
-    private bool _autoSize;
-    private bool _capture;
-    private ContextMenuStrip? _contextMenuStrip;
-    private AccessibleObject? accessibilityObject;
-    private bool _handleCreated;
-    private Padding margin;
-
-    public virtual BorderStyle BorderStyle
-    {
-        get => borderStyle;
-        set
+        public virtual IntPtr Handle { get => this.Widget == null ? IntPtr.Zero : this.Widget.Handle; }
+        public virtual Padding Margin { get; set; }
+        public virtual Size MaximumSize { get; set; }
+        public virtual Size MinimumSize { get; set; }
+        private BorderStyle _BorderStyle;
+        public virtual BorderStyle BorderStyle
         {
-            borderStyle = value;
-            if (value == BorderStyle.FixedSingle)
-            {
-                Widget.StyleContext.AddClass("BorderFixedSingle");
-            }
-            else if (value == BorderStyle.Fixed3D)
-            {
-                Widget.StyleContext.AddClass("BorderFixed3D");
-            }
-            else
-            {
-                Widget.StyleContext.AddClass("BorderNone");
+            get { return _BorderStyle; }
+            set {
+                _BorderStyle = value;
+                if(value==BorderStyle.FixedSingle)
+                {
+                    this.Widget.StyleContext.RemoveClass("BorderFixed3D");
+                    this.Widget.StyleContext.RemoveClass("BorderNone");
+                    this.Widget.StyleContext.AddClass("BorderFixedSingle");
+                }
+                else if (value == BorderStyle.Fixed3D)
+                {
+                    this.Widget.StyleContext.RemoveClass("BorderFixedSingle");
+                    this.Widget.StyleContext.RemoveClass("BorderNone");
+                    this.Widget.StyleContext.AddClass("BorderFixed3D");
+                }
+                else
+                {
+                    this.Widget.StyleContext.RemoveClass("BorderFixedSingle");
+                    this.Widget.StyleContext.RemoveClass("BorderFixed3D");
+                    this.Widget.StyleContext.AddClass("BorderNone");
+                }
             }
         }
-    }
 
     public virtual void Hide()
     {
@@ -1954,13 +1860,14 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    public bool ParticipatesInLayout => throw new NotImplementedException();
+        public bool ParticipatesInLayout => false;
 
     PropertyStore IArrangedElement.Properties => throw new NotImplementedException();
 
     IArrangedElement IArrangedElement.Container => throw new NotImplementedException();
 
-    public ArrangedElementCollection Children => throw new NotImplementedException();
+        private ArrangedElementCollection arrangedElementCollection;
+        public ArrangedElementCollection Children => arrangedElementCollection;
 
     protected virtual void OnKeyDown(KeyEventArgs e)
     {
