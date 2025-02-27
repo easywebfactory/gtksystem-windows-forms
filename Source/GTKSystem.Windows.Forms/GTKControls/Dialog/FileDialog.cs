@@ -5,60 +5,70 @@
  * author:chenhongjin
  */
 
-using Gtk;
-using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
+using Gtk;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public abstract class FileDialog : CommonDialog
 {
-    public abstract class FileDialog : CommonDialog
+    public FileChooserDialog? fileDialog;
+
+    public bool ValidateNames { get; set; } = true;
+
+    public string Title { get; set; } = string.Empty;
+
+    public bool SupportMultiDottedExtensions { get; set; }
+
+    public bool ShowHelp { get; set; }
+
+    public bool RestoreDirectory { get; set; }
+
+    public string InitialDirectory { get; set; } = string.Empty;
+
+    public string Description
     {
-        public Gtk.FileChooserDialog fileDialog;
-        public FileDialog()
+        get => description;
+        set => description = value??string.Empty;
+    }
+
+    internal bool Multiselect { get; set; }
+    internal string SelectedPath
+    {
+        get => SelectedPaths.Length > 0 ? SelectedPaths[0] : string.Empty;
+        set => FileName = value;
+    }
+    internal string[] SelectedPaths => FileNames is { Length: > 0 } ? (string[])FileNames.Clone() : [];
+
+    public int FilterIndex { get; set; } = 1;
+
+    private string? _filter;
+    private string defaultExt = string.Empty;
+    private string[] fileNames = [];
+    private string fileName = string.Empty;
+    private string description = string.Empty;
+
+    public string? Filter
+    {
+        get => _filter ?? string.Empty;
+        set
         {
-
-        }
-        public bool ValidateNames { get; set; }
-
-        public string Title { get; set; }
-
-        public bool SupportMultiDottedExtensions { get; set; }
-
-        public bool ShowHelp { get; set; }
-
-        public bool RestoreDirectory { get; set; }
-
-        public string InitialDirectory { get; set; }
-        public string Description { get; set; }
-        internal bool Multiselect { get; set; }
-        internal string SelectedPath
-        {
-            get => SelectedPaths.Length > 0 ? SelectedPaths[0] : string.Empty;
-            set => FileName = value;
-        }
-        internal string[] SelectedPaths => FileNames != null && FileNames.Length > 0 ? (string[])FileNames.Clone() : Array.Empty<string>();
-
-        public int FilterIndex { get; set; }
-
-        private string _filter;
-        public string Filter
-        {
-            get
+            if (value == _filter)
             {
-                return _filter ?? string.Empty;
+                return;
             }
-            set
+
+            if (value == null)
             {
-                if (value == _filter)
+                _filter = string.Empty;
+                return;
+            }
+            var filters = value.Split(';');
+            if (filters != null)
+            {
+                foreach (var filter in filters)
                 {
-                    return;
-                }
-                string[] filters = value?.Split(';');
-                foreach (string filter in filters)
-                {
-                    string[] pattern = filter.Split('|');
+                    var pattern = filter.Split('|');
                     if (pattern == null || pattern.Length % 2 != 0 || pattern[1].Split('.').Length == 0)
                     {
                         throw new ArgumentException("FileDialog Invalid Filter");
@@ -68,109 +78,132 @@ namespace System.Windows.Forms
                     //ffilter.AddPattern(pattern[1]);
                     //fileDialog.AddFilter(ffilter);
                 }
-                string[] array = value?.Split('|');
-                if (array == null || array[1].Split('.').Length == 0)
-                {
-                    throw new ArgumentException("FileDialog Invalid Filter");
-                }
-                _filter = value;
             }
+
+            var array = value.Split('|');
+            if (array == null || array[1].Split('.').Length == 0)
+            {
+                throw new ArgumentException("FileDialog Invalid Filter");
+            }
+            _filter = value;
         }
+    }
 
-        public bool AutoUpgradeEnabled { get; set; }
+    public bool AutoUpgradeEnabled { get; set; }
 
-        public string FileName { get; set; }
-        public string[] FileNames { get; internal set; }
-        public bool DereferenceLinks { get; set; }
+    public string FileName
+    {
+        get => fileName;
+        set => fileName = value??string.Empty;
+    }
 
-        public string DefaultExt { get; set; }
-
-        public bool CheckPathExists { get; set; }
-
-        public virtual bool CheckFileExists { get; set; }
-
-        public bool AddExtension { get; set; }
-
-        public event CancelEventHandler FileOk;
-        internal Gtk.FileChooserAction ActionType { get; set; }
-        public override void Reset() {
-            AddExtension = true;
-            Title = null;
-            InitialDirectory = null;
-            FileName = null;
-            _filter = null;
-            FilterIndex = 1;
-            SupportMultiDottedExtensions = false;
-        }
-        protected override bool RunDialog(IWin32Window owner)
+    public string[] FileNames
+    {
+        get
         {
-            if (owner != null && owner is Form ownerform)
+            if (!string.IsNullOrEmpty(FileName))
             {
-                fileDialog = new Gtk.FileChooserDialog("选择文件", ownerform.self, ActionType);
-                fileDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
+                return [FileName];
             }
-            else
-            {
-                fileDialog = new Gtk.FileChooserDialog("选择文件", null, ActionType);
-                fileDialog.WindowPosition = Gtk.WindowPosition.Center;
-            }
-            fileDialog.KeepAbove = true;
-            fileDialog.AddButton("确定", Gtk.ResponseType.Ok);
-            fileDialog.AddButton("取消", Gtk.ResponseType.Cancel);
-            fileDialog.SelectMultiple = this.Multiselect;
-            fileDialog.Title = this.Title ?? string.Empty;
-            fileDialog.TooltipText = this.Description ?? string.Empty;
+            return fileNames;
+        }
+        internal set => fileNames = value;
+    }
 
-            if (!string.IsNullOrWhiteSpace(this.SelectedPath))
-                fileDialog.SetCurrentFolder(this.SelectedPath);
-            else if (!string.IsNullOrWhiteSpace(this.InitialDirectory))
-                fileDialog.SetCurrentFolder(this.InitialDirectory);
+    public bool DereferenceLinks { get; set; } = true;
+
+    public string DefaultExt
+    {
+        get => defaultExt;
+        set => defaultExt = value?.TrimStart('.')??string.Empty;
+    }
+
+    public bool CheckPathExists { get; set; } = true;
+
+    public virtual bool CheckFileExists { get; set; } = true;
+
+    public bool AddExtension { get; set; } = true;
+
+    public virtual event CancelEventHandler? FileOk;
+    internal FileChooserAction ActionType { get; set; }
+    public override void Reset() {
+        AddExtension = true;
+        Title = string.Empty;
+        InitialDirectory = string.Empty;
+        FileName = string.Empty;
+        _filter = string.Empty;
+        DefaultExt = string.Empty;
+        FilterIndex = 1;
+        SupportMultiDottedExtensions = false;
+    }
+    protected override bool RunDialog(IWin32Window? owner)
+    {
+        if (owner is Form ownerform)
+        {
+            fileDialog = new FileChooserDialog("选择文件", ownerform.self, ActionType);
+            fileDialog.WindowPosition = WindowPosition.CenterOnParent;
+        }
+        else
+        {
+            fileDialog = new FileChooserDialog("选择文件", null, ActionType);
+            fileDialog.WindowPosition = WindowPosition.Center;
+        }
+        fileDialog.KeepAbove = true;
+        fileDialog.AddButton("确定", ResponseType.Ok);
+        fileDialog.AddButton("取消", ResponseType.Cancel);
+        fileDialog.SelectMultiple = Multiselect;
+        fileDialog.Title = Title ?? string.Empty;
+        fileDialog.TooltipText = Description ?? string.Empty;
+
+        if (!string.IsNullOrWhiteSpace(SelectedPath))
+            fileDialog.SetCurrentFolder(SelectedPath);
+        else if (!string.IsNullOrWhiteSpace(InitialDirectory))
+            fileDialog.SetCurrentFolder(InitialDirectory);
 
             
-            if (!string.IsNullOrWhiteSpace(DefaultExt))
+        if (!string.IsNullOrWhiteSpace(DefaultExt))
+        {
+            DefaultExt = DefaultExt.Trim('.');
+            var filter = new FileFilter();
+            filter.AddMimeType(DefaultExt);
+            filter.AddPattern($"*.{DefaultExt}");
+            fileDialog.Filter = filter;
+        }
+        if (_filter != null)
+        {
+            var filters = _filter.Split(';');
+            foreach(var filter in filters)
             {
-                DefaultExt = DefaultExt.Trim('.');
-                Gtk.FileFilter filter = new Gtk.FileFilter();
-                filter.AddMimeType(DefaultExt);
-                filter.AddPattern($"*.{DefaultExt}");
-                fileDialog.Filter = filter;
+                var pattern = filter.Split('|');
+                var ffilter = new FileFilter();
+                ffilter.AddMimeType(pattern[0]);
+                ffilter.AddPattern(pattern[1]);
+                fileDialog.AddFilter(ffilter);
             }
-            if (_filter != null)
-            {
-                string[] filters = _filter.Split(';');
-                foreach(string filter in filters)
-                {
-                    string[] pattern = filter.Split('|');
-                    Gtk.FileFilter ffilter = new Gtk.FileFilter();
-                    ffilter.AddMimeType(pattern[0]);
-                    ffilter.AddPattern(pattern[1]);
-                    fileDialog.AddFilter(ffilter);
-                }
-                //for (int i = 0; i < array.Length; i += 2)
-                //{
-                //    fileDialog.Filter.AddMimeType(array[i]);
-                //    fileDialog.Filter.AddPattern(array[i + 1]);
+            //for (int i = 0; i < array.Length; i += 2)
+            //{
+            //    fileDialog.Filter.AddMimeType(array[i]);
+            //    fileDialog.Filter.AddPattern(array[i + 1]);
 
-                //}
-            }
+            //}
+        }
             
 
-            int response = fileDialog.Run();
-            this.FileName = fileDialog.Filename;
-            this.FileNames = fileDialog.Filenames;
-            this.SelectedPath = fileDialog.CurrentFolder;
-            fileDialog.HideOnDelete();
-            return response == -5;
-        }
+        var response = fileDialog.Run();
+        FileName = fileDialog.Filename;
+        FileNames = fileDialog.Filenames;
+        SelectedPath = fileDialog.CurrentFolder;
+        fileDialog.HideOnDelete();
+        return response == -5;
+    }
 
-        protected override void Dispose(bool disposing)
+    protected override void Dispose(bool disposing)
+    {
+        if (fileDialog != null)
         {
-            if (fileDialog != null)
-            {
-                fileDialog.Dispose();
-                fileDialog = null;
-            }
-            base.Dispose(disposing);
+            fileDialog.Dispose();
+            fileDialog = null;
         }
+        base.Dispose(disposing);
     }
 }

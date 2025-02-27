@@ -4,24 +4,22 @@
 using System.ComponentModel;
 using System.Windows.Forms.Design;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public partial class PropertyGrid
 {
-
-    public partial class PropertyGrid
+    private class TabInfo(PropertyTab tab, PropertyTabScope scope, ToolStripButton button)
     {
-        private class TabInfo(PropertyTab Tab, PropertyTabScope Scope, ToolStripButton Button)
-        {
-            public Type TabType => Tab.GetType();
-            public PropertyTab Tab { get; } = Tab;
-            public PropertyTabScope Scope { get; } = Scope;
-            public ToolStripButton Button { get; } = Button;
+        public Type TabType => Tab.GetType();
+        public PropertyTab Tab { get; } = tab;
+        public PropertyTabScope Scope { get; } = scope;
+        public ToolStripButton Button { get; } = button;
 
-            public void Deconstruct(out PropertyTab Tab, out PropertyTabScope Scope, out ToolStripButton Button)
-            {
-                Tab = this.Tab;
-                Scope = this.Scope;
-                Button = this.Button;
-            }
+        public void Deconstruct(out PropertyTab tab, out PropertyTabScope scope, out ToolStripButton button)
+        {
+            tab = Tab;
+            scope = Scope;
+            button = Button;
         }
     }
 }

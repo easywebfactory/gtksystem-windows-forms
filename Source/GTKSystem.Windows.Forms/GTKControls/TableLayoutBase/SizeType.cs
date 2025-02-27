@@ -1,9 +1,8 @@
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum SizeType
 {
-	public enum SizeType
-	{
-		AutoSize,
-		Absolute,
-		Percent
-	}
+    AutoSize,
+    Absolute,
+    Percent
 }

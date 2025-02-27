@@ -1,84 +1,81 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Text;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public class DataGridViewCellStyle : ICloneable
 {
-    public class DataGridViewCellStyle : ICloneable
+    private readonly DataGridViewCellStyle? dataGridViewCellStyle;
+    private DataGridViewCellStyleScopes scope;
+    public DataGridViewCellStyle() { }
+    public DataGridViewCellStyle(DataGridViewCellStyle dataGridViewCellStyle)
     {
-        private DataGridViewCellStyleScopes scope;
-        public DataGridViewCellStyle() { }
-        public DataGridViewCellStyle(DataGridViewCellStyle dataGridViewCellStyle) { }
+        this.dataGridViewCellStyle = dataGridViewCellStyle;
+    }
 
-        public Color SelectionForeColor { get; set; }
-        public Color SelectionBackColor { get; set; }
-        public Padding Padding { get; set; }
-        [DefaultValue("")]
-        [TypeConverter(typeof(StringConverter))]
-        public object NullValue { get; set; }
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public bool IsNullValueDefault { get; }
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public bool IsFormatProviderDefault { get; }
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public bool IsDataSourceNullValueDefault { get; }
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public IFormatProvider FormatProvider { get; set; }
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public string Format { get; set; }
-        public Font Font { get; set; }
-        public Color ForeColor { get; set; }
+    public Color SelectionForeColor { get; set; }
+    public Color SelectionBackColor { get; set; }
+    public Padding Padding { get; set; }
+    [DefaultValue("")]
+    [TypeConverter(typeof(StringConverter))]
+    public object? NullValue { get; set; }
 
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public object DataSourceNullValue { get; set; }
-        public Color BackColor { get; set; }
+    [Browsable(false)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public bool IsNullValueDefault => default;
 
-        public DataGridViewContentAlignment Alignment { get; set; }
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public object Tag { get; set; }
-        [DefaultValue(DataGridViewTriState.NotSet)]
-        public DataGridViewTriState WrapMode { get; set; }
+    [Browsable(false)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public bool IsFormatProviderDefault => default;
 
-        public virtual void ApplyStyle(DataGridViewCellStyle dataGridViewCellStyle) { }
-        public virtual DataGridViewCellStyle Clone() {
-            return ((ArrayList)(new ArrayList() { this }).Clone())[0] as DataGridViewCellStyle;
-        }
-        public override bool Equals(object o) { return false; }
-        public override int GetHashCode()
-        {
-            return 0;
-        }
-        public override string ToString()
-        {
-            return "DataGridViewCellStyle";
-        }
+    [Browsable(false)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public bool IsDataSourceNullValueDefault => default;
 
-        object ICloneable.Clone()
-        {
-            throw new NotImplementedException();
-        }
+    [Browsable(false)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public IFormatProvider? FormatProvider { get; set; }
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public string? Format { get; set; }
+    public Font? Font { get; set; }
+    public Color ForeColor { get; set; }
 
-        internal DataGridViewCellStyleScopes Scope
-        {
-            get
-            {
-                return scope;
-            }
-            set
-            {
-                scope = value;
-            }
-        }
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public object? DataSourceNullValue { get; set; }
+    public Color BackColor { get; set; }
+
+    public DataGridViewContentAlignment Alignment { get; set; }
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public object? Tag { get; set; }
+    [DefaultValue(DataGridViewTriState.NotSet)]
+    public DataGridViewTriState WrapMode { get; set; }
+
+    public virtual void ApplyStyle(DataGridViewCellStyle _) { }
+    public virtual DataGridViewCellStyle? Clone() {
+        return ((ArrayList)new ArrayList { this }.Clone())[0] as DataGridViewCellStyle;
+    }
+    public override bool Equals(object? o) { return false; }
+    public override int GetHashCode()
+    {
+        return 0;
+    }
+    public override string ToString()
+    {
+        return "DataGridViewCellStyle";
+    }
+
+    object ICloneable.Clone()
+    {
+        throw new NotImplementedException();
+    }
+
+    internal DataGridViewCellStyleScopes Scope
+    {
+        get => scope;
+        set => scope = value;
     }
 }

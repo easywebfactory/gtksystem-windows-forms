@@ -2,180 +2,166 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections;
-using GLib;
-using System.Collections.Generic;
-using Gtk;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public class TreeNode: ICloneable, ISerializable, IEquatable<TreeNode>
 {
-    public class TreeNode: ICloneable, ISerializable, IEquatable<TreeNode>
+    //格式，各级索引并集：0,1,2,3....
+    private string index = "";
+    public string Index { get => index;
+        internal set => index = value ?? "";
+    }
+    internal Gtk.TreeIter treeIter = Gtk.TreeIter.Zero;
+    private TreeNode? parent;
+    internal TreeView? treeView;
+    internal TreeView? TreeView
     {
-        //格式，各级索引并集：0,1,2,3....
-        private string index = "";
-        public string Index { get { return index; } internal set { index = value ?? ""; } }
-        internal Gtk.TreeIter TreeIter = Gtk.TreeIter.Zero;
-        private TreeNode parent;
-        internal TreeView treeView;
-        internal TreeView TreeView
+        get
         {
-            get
-            {
-                if (treeView == null)
-                { treeView = this.parent?.TreeView; }
-                return treeView;
-            }
+            if (treeView == null)
+            { treeView = parent?.TreeView; }
+            return treeView;
         }
-        private TreeNodeCollection nodes;
-        public TreeNode()
-        {
-            nodes = new TreeNodeCollection(this);
-        }
-        public TreeNode(string text) : this()
-        {
-            Text = text;
-        }
-        public TreeNode(string text, TreeNode[] children) : this()
-        {
-            Text = text;
-            Nodes.AddRange(children);
-        }
-        public TreeNode(TreeView view) : this()
-        {
-            this.treeView = view;
-        }
-        public TreeNode(TreeNode node) : this()
-        {
-            this.parent = node;
-            this.treeView = node.TreeView;
-        }
-        public TreeNodeCollection Nodes
-        {
-            get
-            {
-                return nodes;
-            }
-        }
+    }
+    private readonly TreeNodeCollection nodes;
+    public TreeNode()
+    {
+        nodes = new TreeNodeCollection(this);
+    }
+    public TreeNode(string? text) : this()
+    {
+        Text = text??string.Empty;
+    }
+    public TreeNode(string? text, TreeNode[] children) : this()
+    {
+        Text = text??string.Empty;
+        Nodes.AddRange(children);
+    }
+    public TreeNode(TreeView? view) : this()
+    {
+        treeView = view;
+    }
+    public TreeNode(TreeNode? node) : this()
+    {
+        parent = node;
+        treeView = node?.TreeView;
+    }
+    public TreeNodeCollection Nodes => nodes;
 
-        public TreeNode Parent
-        {
-            get { return parent; }
-            internal set { parent = value; }
+    public TreeNode? Parent
+    {
+        get => parent;
+        internal set => parent = value;
+    }
+    private string _text=string.Empty;
+    public string Text
+    {
+        get=>_text;
+        set {
+            _text = value;
+            TreeView?.NativeNodeText(this, value);
         }
-        private string _text;
-        public string Text
-        {
-            get=>_text;
-            set {
-                _text = value;
-                TreeView?.NativeNodeText(this, value);
-            }
-        }
+    }
 
 
-        public string ToolTipText
-        {
-            get; set;
-        }
+    public string? ToolTipText
+    {
+        get; set;
+    }
 
-        public string Name
-        {
-            get; set;
-        }
-        private bool _IsChecked;
-        public bool Checked
-        {
-            get => _IsChecked; set { _IsChecked = value; TreeView?.NativeNodeChecked(this, value); }
-        }
+    public string Name
+    {
+        get;
+        set;
+    } = string.Empty;
 
-        public string FullPath
-        {
-            get
-            {
-                List<string> paths=new List<string>();
-                GetFullPath(this, paths);
-                return string.Join("/", paths);
-            }
-            set { }
-        }
-        protected void GetFullPath(TreeNode node, List<string> paths)
-        {
-            paths.Add(node.Text);
-            if (node.Parent != null && node.Parent.index != "-1")
-            {
-                GetFullPath(node.Parent, paths);
-            }
-        }
-        private bool _IsSelected;
-        public bool IsSelected
-        {
-            get=> _IsSelected; 
-            set { 
-                _IsSelected = value; 
-                TreeView?.NativeNodeSelected(this, value); 
-            }
-        }
-        public bool IsExpanded
-        {
-            get
-            {
-                return TreeView?.GetNodeExpanded(this) == true;
-            }
-        }
+    private bool isChecked;
+    public bool Checked
+    {
+        get => isChecked; set { isChecked = value; TreeView?.NativeNodeChecked(this, value); }
+    }
 
-        public int Level
+    public string FullPath
+    {
+        get
         {
-            get
-            {
-                if (parent == null)
-                    return 0;
-                else if (TreeView != null && parent.Equals(TreeView.root))
-                    return 0;
-                else
-                    return parent.Level + 1;
-            }
+            List<string?> paths= [];
+            GetFullPath(this, paths);
+            return string.Join("/", paths);
         }
-        private int _imageIndex;
-        public int ImageIndex { 
-            get=>_imageIndex; 
-            set { _imageIndex = value; TreeView?.NativeNodeImage(this, value); }
-        }
-        private string _imageKey;
-        public string ImageKey { 
-            get => _imageKey; 
-            set { _imageKey = value; TreeView?.NativeNodeImage(this, value); }
-        }
-        public int SelectedImageIndex { get; set; }
-        public string SelectedImageKey { get; set; }
-        public int StateImageIndex { get; set; }
-        public string StateImageKey { get; set; }
-        public void Expand(){
-            TreeView?.SetExpandNode(this, false);
-        }
-        public void ExpandAll()
+        set { }
+    }
+    protected void GetFullPath(TreeNode? node, List<string?> paths)
+    {
+        paths.Add(node?.Text);
+        if (node?.Parent != null && node.Parent.index != "-1")
         {
-            TreeView?.SetExpandNode(this, true);
+            GetFullPath(node.Parent, paths);
         }
-        public void Collapse()
-        {
-            TreeView?.SetCollapseNode(this);
+    }
+    private bool isSelected;
+    public bool IsSelected
+    {
+        get=> isSelected; 
+        set { 
+            isSelected = value; 
+            TreeView?.NativeNodeSelected(this, value); 
         }
-        public object Clone()
-        {
-            return ((ArrayList)(new ArrayList() { this }).Clone())[0];
-        }
+    }
+    public bool IsExpanded => TreeView?.GetNodeExpanded(this) == true;
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+    public int Level
+    {
+        get
         {
-            //throw new NotImplementedException();
+            if (parent == null)
+                return 0;
+            if (TreeView != null && parent.Equals(TreeView.root))
+                return 0;
+            return parent.Level + 1;
         }
+    }
+    private int _imageIndex;
+    public int ImageIndex { 
+        get=>_imageIndex; 
+        set { _imageIndex = value; TreeView?.NativeNodeImage(this, value); }
+    }
+    private string? _imageKey;
+    public string? ImageKey { 
+        get => _imageKey; 
+        set { _imageKey = value; TreeView?.NativeNodeImage(this, value); }
+    }
+    public int SelectedImageIndex { get; set; }
+    public string? SelectedImageKey { get; set; }
+    public int StateImageIndex { get; set; }
+    public string? StateImageKey { get; set; }
+    public void Expand(){
+        TreeView?.SetExpandNode(this, false);
+    }
+    public void ExpandAll()
+    {
+        TreeView?.SetExpandNode(this, true);
+    }
+    public void Collapse()
+    {
+        TreeView?.SetCollapseNode(this);
+    }
+    public object Clone()
+    {
+        return ((ArrayList)new ArrayList { this }.Clone())[0];
+    }
 
-        public bool Equals([AllowNull] TreeNode other)
-        {
-            return other != null && other.Index == this.Index && other.Name == this.Name && other.Text == this.Text && other.Level == this.Level;
-        }
+    public void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+        //throw new NotImplementedException();
+    }
+
+    public bool Equals([AllowNull] TreeNode other)
+    {
+        return other != null && other.Index == Index && other.Name == Name && other.Text == Text && other.Level == Level;
     }
 }

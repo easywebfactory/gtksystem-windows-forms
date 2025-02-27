@@ -1,11 +1,10 @@
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum View
 {
-	public enum View
-	{
-		LargeIcon,
-		Details,
-		SmallIcon,
-		List,
-		Tile
-	}
+    LargeIcon,
+    Details,
+    SmallIcon,
+    List,
+    Tile
 }

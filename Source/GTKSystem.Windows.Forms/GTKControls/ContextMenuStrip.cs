@@ -6,17 +6,15 @@
  */
 using System.ComponentModel;
 
-namespace System.Windows.Forms
-{
-    public class ContextMenuStrip:ToolStripDropDownMenu
-    {
-        public ContextMenuStrip() { 
-        
-        }
-        public ContextMenuStrip(IContainer container) {
-        
-        }
-        protected void SetVisibleCore(bool visible) { }
-    }
+namespace System.Windows.Forms;
 
+public class ContextMenuStrip:ToolStripDropDownMenu
+{
+    public ContextMenuStrip() { 
+        
+    }
+    public ContextMenuStrip(IContainer container) {
+        
+    }
+    protected void SetVisibleCore(bool visible) { }
 }

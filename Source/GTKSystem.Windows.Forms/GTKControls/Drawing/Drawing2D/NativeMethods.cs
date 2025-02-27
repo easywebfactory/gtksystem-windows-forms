@@ -1,66 +1,65 @@
 using System.Runtime.InteropServices;
 
-namespace System.Drawing
+namespace System.Drawing;
+
+internal static class NativeMethods
 {
-	internal static class NativeMethods
-	{
-		internal struct BITMAPINFOHEADER
-		{
-			public int biSize;
+    internal struct Bitmapinfoheader
+    {
+        public int biSize;
 
-			public int biWidth;
+        public int biWidth;
 
-			public int biHeight;
+        public int biHeight;
 
-			public short biPlanes;
+        public short biPlanes;
 
-			public short biBitCount;
+        public short biBitCount;
 
-			public int biCompression;
+        public int biCompression;
 
-			public int biSizeImage;
+        public int biSizeImage;
 
-			public int biXPelsPerMeter;
+        public int biXPelsPerMeter;
 
-			public int biYPelsPerMeter;
+        public int biYPelsPerMeter;
 
-			public int biClrUsed;
+        public int biClrUsed;
 
-			public int biClrImportant;
-		}
+        public int biClrImportant;
+    }
 
-		internal struct PALETTEENTRY
-		{
-			public byte peRed;
+    internal struct Paletteentry
+    {
+        public byte peRed;
 
-			public byte peGreen;
+        public byte peGreen;
 
-			public byte peBlue;
+        public byte peBlue;
 
-			public byte peFlags;
-		}
+        public byte peFlags;
+    }
 
-		internal struct RGBQUAD
-		{
-			public byte rgbBlue;
+    internal struct Rgbquad
+    {
+        public byte rgbBlue;
 
-			public byte rgbGreen;
+        public byte rgbGreen;
 
-			public byte rgbRed;
+        public byte rgbRed;
 
-			public byte rgbReserved;
-		}
+        public byte rgbReserved;
+    }
 
-		public const int MAX_PATH = 260;
+    public const int maxPath = 260;
 
-		internal const int SM_REMOTESESSION = 4096;
+    internal const int smRemotesession = 4096;
 
-		internal const int DIB_RGB_COLORS = 0;
+    internal const int dibRgbColors = 0;
 
-		internal const int BI_BITFIELDS = 3;
+    internal const int biBitfields = 3;
 
-		internal const int BI_RGB = 0;
+    internal const int biRgb = 0;
 
-		internal static HandleRef NullHandleRef => new HandleRef(null, IntPtr.Zero);
-	}
+    internal static HandleRef NullHandleRef => new(null, IntPtr.Zero);
 }

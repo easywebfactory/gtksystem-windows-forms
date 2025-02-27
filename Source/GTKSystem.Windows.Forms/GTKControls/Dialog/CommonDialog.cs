@@ -5,54 +5,46 @@
  * author:chenhongjin
  */
 using System.ComponentModel;
-using System.Drawing;
-using System.Runtime.InteropServices;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+[ToolboxItemFilter("System.Windows.Forms")]
+public abstract class CommonDialog : Component
 {
+    private static readonly object helpRequestEvent = new();
+    public object? Tag { get; set; }
 
-    [ToolboxItemFilter("System.Windows.Forms")]
-    public abstract class CommonDialog : Component
+    public event EventHandler? HelpRequest
     {
-        private static readonly object s_helpRequestEvent = new object();
-        public CommonDialog()
+        add => Events.AddHandler(helpRequestEvent, value);
+        remove => Events.RemoveHandler(helpRequestEvent, value);
+    }
+    protected virtual void OnHelpRequest(EventArgs e)
+    {
+        var handler = (EventHandler)Events[helpRequestEvent];
+        handler?.Invoke(this, e);
+    }
+    public abstract void Reset();
+
+    protected abstract bool RunDialog(IWin32Window? owner);
+
+    public virtual DialogResult ShowDialog() => ShowDialog(owner: null);
+
+    public virtual DialogResult ShowDialog(IWin32Window? owner)
+    {
+        var result = DialogResult.Cancel;
+        try
         {
-
-        }
-        public object Tag { get; set; }
-
-        public event EventHandler HelpRequest
-        {
-            add => Events.AddHandler(s_helpRequestEvent, value);
-            remove => Events.RemoveHandler(s_helpRequestEvent, value);
-        }
-        protected virtual void OnHelpRequest(EventArgs e)
-        {
-            EventHandler handler = (EventHandler)Events[s_helpRequestEvent];
-            handler?.Invoke(this, e);
-        }
-        public abstract void Reset();
-
-        protected abstract bool RunDialog(IWin32Window owner);
-
-        public virtual DialogResult ShowDialog() => ShowDialog(owner: null);
-
-        public virtual DialogResult ShowDialog(IWin32Window owner)
-        {
-            DialogResult result = DialogResult.Cancel;
-            try
+            var runresult = RunDialog(owner);
+            if (runresult)
             {
-               bool runresult = RunDialog(owner);
-                if (runresult)
-                {
-                    result = DialogResult.OK;
-                }
+                result = DialogResult.Ok;
             }
-            finally
-            {
-               base.Dispose();
-            }
-            return result;
         }
+        finally
+        {
+            Dispose();
+        }
+        return result;
     }
 }

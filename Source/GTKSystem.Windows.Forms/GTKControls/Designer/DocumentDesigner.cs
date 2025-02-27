@@ -1,101 +1,79 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.ComponentModel.Design.Serialization;
-using System.Drawing;
 using System.Drawing.Design;
 
 
-namespace System.Windows.Forms.Design
+namespace System.Windows.Forms.Design;
+
+/// <summary>
+///  Provides a designer that extends the ScrollableControlDesigner and implements
+///  IRootDesigner.
+/// </summary>
+[ToolboxItemFilter("System.Windows.Forms")]
+public class DocumentDesigner : ScrollableControlDesigner, IRootDesigner, IToolboxUser
 {
-    /// <summary>
-    ///  Provides a designer that extends the ScrollableControlDesigner and implements
-    ///  IRootDesigner.
-    /// </summary>
-    [ToolboxItemFilter("System.Windows.Forms")]
-    public partial class DocumentDesigner : ScrollableControlDesigner, IRootDesigner, IToolboxUser, IOleDragClient
+
+    internal static IDesignerSerializationManager? manager;
+
+    public ViewTechnology[] SupportedTechnologies => throw new NotImplementedException();
+
+    public override IComponent Component => throw new NotImplementedException();
+
+    public override DesignerVerbCollection Verbs => throw new NotImplementedException();
+
+    public override bool CanModifyComponents => throw new NotImplementedException();
+
+    public object GetView(ViewTechnology technology)
     {
+        throw new NotImplementedException();
+    }
 
-        private bool initializing;   // is the designer initializing?
+    public override void DoDefaultAction()
+    {
+        throw new NotImplementedException();
+    }
 
-        // used to keep the state of the tab order view
-        //
-        private bool queriedTabOrder;
-        private MenuCommand tabOrderCommand;
+    public new void Initialize(IComponent component)
+    {
+        throw new NotImplementedException();
+    }
 
-        internal static IDesignerSerializationManager manager;
+    public override void Dispose()
+    {
+        throw new NotImplementedException();
+    }
 
+    public bool GetToolSupported(ToolboxItem tool)
+    {
+        throw new NotImplementedException();
+    }
 
-        private int trayHeight = 80;
-        private bool trayLargeIcon;
-        private bool trayAutoArrange;
-        private bool trayLayoutSuspended;
+    public void ToolPicked(ToolboxItem tool)
+    {
+        throw new NotImplementedException();
+    }
 
-        // ActiveX support
-        //
-        private static readonly Guid htmlDesignTime = new Guid("73CEF3DD-AE85-11CF-A406-00AA00C00940");
+    public override bool AddComponent(IComponent component, string name, bool firstAdd)
+    {
+        throw new NotImplementedException();
+    }
 
-        private const string AxClipFormat = "CLSID";
+    public override bool IsDropOk(IComponent component)
+    {
+        throw new NotImplementedException();
+    }
 
-        public ViewTechnology[] SupportedTechnologies => throw new NotImplementedException();
+    public override Control GetDesignerControl()
+    {
+        throw new NotImplementedException();
+    }
 
-        public IComponent Component => throw new NotImplementedException();
-
-        public DesignerVerbCollection Verbs => throw new NotImplementedException();
-
-        public bool CanModifyComponents => throw new NotImplementedException();
-
-        public object GetView(ViewTechnology technology)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DoDefaultAction()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Initialize(IComponent component)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool GetToolSupported(ToolboxItem tool)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ToolPicked(ToolboxItem tool)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool AddComponent(IComponent component, string name, bool firstAdd)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsDropOk(IComponent component)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Control GetDesignerControl()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Control GetControlForComponent(object component)
-        {
-            throw new NotImplementedException();
-        }
+    public override Control GetControlForComponent(object? component)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -194,6 +194,9 @@
     <Compile Update="GTKControls\PropertyGridBase\PropertyGrid.TabInfo.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\RadioButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\Scrolling\ScrollBar.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -243,9 +246,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\PictureBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\RadioButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\RichTextBox.cs">

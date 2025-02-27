@@ -1,99 +1,98 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace System.Drawing.Imaging
+namespace System.Drawing.Imaging;
+
+[StructLayout(LayoutKind.Sequential)]
+internal sealed class MetafileHeaderEmf
 {
-	[StructLayout(LayoutKind.Sequential)]
-	internal sealed class MetafileHeaderEmf
-	{
-		public MetafileType type;
+    public MetafileType type;
 
-		public int size;
+    public int size;
 
-		public int version;
+    public int version;
 
-		public EmfPlusFlags emfPlusFlags;
+    public EmfPlusFlags emfPlusFlags;
 
-		public float dpiX;
+    public float dpiX;
 
-		public float dpiY;
+    public float dpiY;
 
-		public int X;
+    public int X;
 
-		public int Y;
+    public int Y;
 
-		public int Width;
+    public int Width;
 
-		public int Height;
+    public int Height;
 
-		public SafeNativeMethods.ENHMETAHEADER EmfHeader;
+    public SafeNativeMethods.Enhmetaheader EmfHeader;
 
-		public int EmfPlusHeaderSize;
+    public int EmfPlusHeaderSize;
 
-		public int LogicalDpiX;
+    public int LogicalDpiX;
 
-		public int LogicalDpiY;
+    public int LogicalDpiY;
 
-		internal ref byte GetPinnableReference()
-		{
-			return ref Unsafe.As<MetafileType, byte>(ref type);
-		}
-	}
-    internal static class SafeNativeMethods
+    internal ref byte GetPinnableReference()
     {
-        public struct ENHMETAHEADER
-        {
-            public int iType;
+        return ref Unsafe.As<MetafileType, byte>(ref type);
+    }
+}
+internal static class SafeNativeMethods
+{
+    public struct Enhmetaheader
+    {
+        public int iType;
 
-            public int nSize;
+        public int nSize;
 
-            public int rclBounds_left;
+        public int rclBoundsLeft;
 
-            public int rclBounds_top;
+        public int rclBoundsTop;
 
-            public int rclBounds_right;
+        public int rclBoundsRight;
 
-            public int rclBounds_bottom;
+        public int rclBoundsBottom;
 
-            public int rclFrame_left;
+        public int rclFrameLeft;
 
-            public int rclFrame_top;
+        public int rclFrameTop;
 
-            public int rclFrame_right;
+        public int rclFrameRight;
 
-            public int rclFrame_bottom;
+        public int rclFrameBottom;
 
-            public int dSignature;
+        public int dSignature;
 
-            public int nVersion;
+        public int nVersion;
 
-            public int nBytes;
+        public int nBytes;
 
-            public int nRecords;
+        public int nRecords;
 
-            public short nHandles;
+        public short nHandles;
 
-            public short sReserved;
+        public short sReserved;
 
-            public int nDescription;
+        public int nDescription;
 
-            public int offDescription;
+        public int offDescription;
 
-            public int nPalEntries;
+        public int nPalEntries;
 
-            public int szlDevice_cx;
+        public int szlDeviceCx;
 
-            public int szlDevice_cy;
+        public int szlDeviceCy;
 
-            public int szlMillimeters_cx;
+        public int szlMillimetersCx;
 
-            public int szlMillimeters_cy;
+        public int szlMillimetersCy;
 
-            public int cbPixelFormat;
+        public int cbPixelFormat;
 
-            public int offPixelFormat;
+        public int offPixelFormat;
 
-            public int bOpenGL;
-        }
+        public int bOpenGl;
     }
 }

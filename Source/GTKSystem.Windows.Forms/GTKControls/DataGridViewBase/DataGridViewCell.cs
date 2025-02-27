@@ -1,107 +1,103 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
-using System.Text;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public abstract class DataGridViewCell
 {
-    public abstract class DataGridViewCell
-    {
-        internal DataGridViewRow OwningRowInternal { get; set; }
-        public DataGridView DataGridView { get; set; }
-        protected DataGridViewCell() { }
-        public object Value { get; set; }
+    internal DataGridViewRow? OwningRowInternal { get; set; }
+    public DataGridView? DataGridView { get; set; }
+    public object? Value { get; set; }
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string ToolTipText { get; set; }
-        [Bindable(true)]
-        [DefaultValue(null)]
-        [Localizable(false)]
-        [TypeConverter(typeof(StringConverter))]
-        public object Tag { get; set; }
-        [Browsable(true)]
-        public DataGridViewCellStyle Style { get; set; }
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public string? ToolTipText { get; set; }
+    [Bindable(true)]
+    [DefaultValue(null)]
+    [Localizable(false)]
+    [TypeConverter(typeof(StringConverter))]
+    public object? Tag { get; set; }
+    [Browsable(true)]
+    public DataGridViewCellStyle? Style { get; set; }
 
-        public Size Size { get; }
+    public Size Size => default;
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual bool Selected { get; set; }
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public virtual bool Selected { get; set; }
 
-        public int RowIndex { get; }
+    public int RowIndex => default;
 
-        public virtual bool Resizable { get; }
+    public virtual bool Resizable => default;
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual bool ReadOnly { get; set; }
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public virtual bool ReadOnly { get; set; }
 
-        public Size PreferredSize { get; }
+    public Size PreferredSize => default;
 
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public DataGridViewRow OwningRow { get; }
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public DataGridViewRow? OwningRow => default;
 
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public DataGridViewColumn OwningColumn { get; }
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public DataGridViewColumn? OwningColumn => default;
 
-        public bool IsInEditMode { get; }
+    public bool IsInEditMode => default;
 
-        public DataGridViewCellStyle InheritedStyle { get; }
+    public DataGridViewCellStyle? InheritedStyle => default;
 
-        public AccessibleObject AccessibilityObject { get; }
-        public int ColumnIndex { get; }
+    public AccessibleObject? AccessibilityObject => default;
+    public int ColumnIndex => default;
 
-        public Rectangle ContentBounds { get; }
-        [DefaultValue(null)]
-        public virtual ContextMenuStrip ContextMenuStrip { get; set; }
+    public Rectangle ContentBounds => default;
 
-        public virtual object DefaultNewRowValue { get; }
+    [DefaultValue(null)]
+    public virtual ContextMenuStrip? ContextMenuStrip { get; set; }
 
-        public virtual bool Displayed { get; }
+    public virtual object? DefaultNewRowValue => default;
 
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public object EditedFormattedValue { get; }
+    public virtual bool Displayed => default;
 
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public virtual Type EditType { get; }
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public object? EditedFormattedValue => default;
 
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public Rectangle ErrorIconBounds { get; }
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public virtual Type? EditType => default;
 
-        public string ErrorText { get; set; }
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
+    public Rectangle ErrorIconBounds => default;
 
-        public object FormattedValue { get; }
+    public string? ErrorText { get; set; }
 
-        public virtual Type FormattedValueType { get; }
+    public object? FormattedValue => default;
 
-        public virtual bool Frozen { get; }
+    public virtual Type? FormattedValueType => default;
 
-        public virtual bool Visible { get; }
+    public virtual bool Frozen => default;
 
-        public bool HasStyle { get; }
+    public virtual bool Visible => default;
 
-        public DataGridViewElementStates InheritedState { get; }
+    public bool HasStyle => default;
 
-        public virtual Type ValueType { get; set; }
-    }
-    public class DataGridViewTextBoxCell : DataGridViewCell
-    {
-        //public DataGridViewTextBoxCell(DataGridViewRow dataGridViewRow) {
+    public DataGridViewElementStates InheritedState => default;
+
+    public virtual Type? ValueType { get; set; }
+}
+public class DataGridViewTextBoxCell : DataGridViewCell
+{
+    //public DataGridViewTextBoxCell(DataGridViewRow dataGridViewRow) {
          
-        //}
-    }
-    public class DataGridViewCheckBoxCell : DataGridViewCell
-    {
-    }
-    public class DataGridViewComboBoxCell : DataGridViewCell
-    {
-    }
-    public class DataGridViewButtonCell : DataGridViewCell
-    {
-    }
-    public class DataGridViewImageCell : DataGridViewCell
-    {
-    }
-    public class DataGridViewLinkCell : DataGridViewCell
-    {
-    }
+    //}
+}
+public class DataGridViewCheckBoxCell : DataGridViewCell
+{
+}
+public class DataGridViewComboBoxCell : DataGridViewCell
+{
+}
+public class DataGridViewButtonCell : DataGridViewCell
+{
+}
+public class DataGridViewImageCell : DataGridViewCell
+{
+}
+public class DataGridViewLinkCell : DataGridViewCell
+{
 }

@@ -1,9 +1,8 @@
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum ItemActivation
 {
-	public enum ItemActivation
-	{
-		Standard,
-		OneClick,
-		TwoClick
-	}
+    Standard,
+    OneClick,
+    TwoClick
 }

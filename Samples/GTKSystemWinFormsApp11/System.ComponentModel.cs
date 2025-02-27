@@ -12,13 +12,13 @@ namespace System.ComponentModel
         {
 
         }
-        public new object GetObject(string name, CultureInfo culture)
+        public new object? GetObject(string name, CultureInfo culture)
         {
 
             return GetObject(name);
         }
 
-        public new object GetObject(string name)
+        public new object? GetObject(string name)
         {
             return base.GetObject(name);
         }

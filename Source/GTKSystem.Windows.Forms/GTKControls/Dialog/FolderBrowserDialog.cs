@@ -6,39 +6,51 @@
  */
 
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public sealed class FolderBrowserDialog : FileDialog
 {
-    public sealed class FolderBrowserDialog : FileDialog
+    private Environment.SpecialFolder rootFolder = Environment.SpecialFolder.Desktop;
+
+    public override void Reset()
     {
-        public FolderBrowserDialog()
+        RootFolder = Environment.SpecialFolder.Desktop;
+        Description = string.Empty;
+        SelectedPath = string.Empty;
+        SelectedPathNeedsCheck = false;
+        ShowNewFolderButton = true;
+    }
+
+    public Environment.SpecialFolder RootFolder
+    {
+        get => rootFolder;
+        set
         {
-            
+            if (Enum.GetValues(typeof(Environment.SpecialFolder)).Cast<Environment.SpecialFolder>().ToArray()
+                .Any(i => value == i))
+            {
+                rootFolder = value;
+                return;
+            }
+
+            throw new InvalidEnumArgumentException(nameof(value));
         }
-        public override void Reset()
-        {
-            RootFolder = Environment.SpecialFolder.Desktop;
-            Description = string.Empty;
-            SelectedPath = string.Empty;
-            SelectedPathNeedsCheck = false;
-            ShowNewFolderButton = true;
-        }
-        public Environment.SpecialFolder RootFolder { get; set; } = Environment.SpecialFolder.Desktop;
-        public new string SelectedPath
-        {
-            get => base.SelectedPath;
-            set => base.SelectedPath = value;
-        }
-        private new string[] SelectedPaths => base.SelectedPaths;
-        private new bool Multiselect => base.Multiselect;
-        private new string Title => base.Title;
-        public bool ShowNewFolderButton { get; set; }
-        public bool SelectedPathNeedsCheck { get; set; }
-        public override DialogResult ShowDialog(IWin32Window owner)
-        {
-            ActionType = Gtk.FileChooserAction.SelectFolder;
-            return base.ShowDialog(owner);
-        }
+    }
+
+    public new string SelectedPath
+    {
+        get => base.SelectedPath;
+        set => base.SelectedPath = value;
+    }
+    private new string[] SelectedPaths => base.SelectedPaths;
+    private new bool Multiselect => base.Multiselect;
+    private new string Title => base.Title;
+    public bool ShowNewFolderButton { get; set; } = true;
+    public bool SelectedPathNeedsCheck { get; set; }
+    public override DialogResult ShowDialog(IWin32Window? owner)
+    {
+        ActionType = Gtk.FileChooserAction.SelectFolder;
+        return base.ShowDialog(owner);
     }
 }

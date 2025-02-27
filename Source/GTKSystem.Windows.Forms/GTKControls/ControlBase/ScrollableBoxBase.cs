@@ -1,87 +1,85 @@
-﻿using Gdk;
-using System;
-using System.Windows.Forms;
+﻿using Cairo;
+using GTKSystem.Windows.Forms.GTKControls;
 
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+namespace System.Windows.Forms;
+
+public abstract class ScrollableBoxBase : Gtk.ScrolledWindow, IGtkControl, IScrollableBoxBase
 {
-    public abstract class ScrollableBoxBase : Gtk.ScrolledWindow, IControlGtk, IScrollableBoxBase
+    public event ScrollEventHandler? Scroll;
+    public IGtkControlOverride Override { get; set; }
+    public ScrollableBoxBase()
     {
-        public event ScrollEventHandler Scroll;
-        public GtkControlOverride Override { get; set; }
-        public ScrollableBoxBase() : base()
-        {
-            this.Override = new GtkControlOverride(this);
-            this.ShadowType = Gtk.ShadowType.None;
-            this.BorderWidth = 1;
-            this.Events = Gdk.EventMask.AllEventsMask;
-            base.Halign = Gtk.Align.Start;
-            base.Valign = Gtk.Align.Start;
-            base.Hexpand = false;
-            base.Vexpand = false;
-            base.VscrollbarPolicy = Gtk.PolicyType.Never;
-            base.HscrollbarPolicy = Gtk.PolicyType.Never;
-            base.OverlayScrolling = false;
-            base.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
-            base.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
-        }
+        Override = new GtkFormsControlOverride(this);
+        ShadowType = Gtk.ShadowType.None;
+        BorderWidth = 1;
+        Events = Gdk.EventMask.AllEventsMask;
+        Halign = Gtk.Align.Start;
+        Valign = Gtk.Align.Start;
+        Hexpand = false;
+        Vexpand = false;
+        VscrollbarPolicy = Gtk.PolicyType.Never;
+        HscrollbarPolicy = Gtk.PolicyType.Never;
+        OverlayScrolling = false;
+        Hadjustment.ValueChanged += Hadjustment_ValueChanged;
+        Vadjustment.ValueChanged += Vadjustment_ValueChanged;
+    }
  
-        private void Vadjustment_ValueChanged(object sender, EventArgs e)
+    private void Vadjustment_ValueChanged(object? sender, EventArgs e)
+    {
+        if (Scroll != null)
         {
-            if (Scroll != null)
-            {
-                Gtk.Adjustment adj = (Gtk.Adjustment)sender;
-                Scroll(this, new System.Windows.Forms.ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj.Value > adj.StepIncrement ? (adj.Value - adj.StepIncrement) : adj.Value), (int)adj.Value, ScrollOrientation.VerticalScroll));
-            }
+            var adj = (Gtk.Adjustment?)sender;
+            Scroll?.Invoke(this, new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj?.Value > adj?.StepIncrement ? adj.Value - adj.StepIncrement : adj?.Value??0), (int)(adj?.Value??0), ScrollOrientation.VerticalScroll));
         }
+    }
 
-        private void Hadjustment_ValueChanged(object sender, EventArgs e)
+    private void Hadjustment_ValueChanged(object? sender, EventArgs e)
+    {
+        if (Scroll != null)
         {
-            if (Scroll != null)
-            {
-                Gtk.Adjustment adj = (Gtk.Adjustment)sender;
-                Scroll(this, new System.Windows.Forms.ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj.Value > adj.StepIncrement ? (adj.Value - adj.StepIncrement) : adj.Value), (int)adj.Value, ScrollOrientation.HorizontalScroll));
-            }
+            var adj = (Gtk.Adjustment?)sender;
+            Scroll?.Invoke(this, new ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj?.Value > adj?.StepIncrement ? adj.Value - adj.StepIncrement : adj?.Value??0), (int)(adj?.Value??0), ScrollOrientation.HorizontalScroll));
         }
+    }
 
-        public void AddClass(string cssClass)
+    public void AddClass(string cssClass)
+    {
+        Override.AddClass(cssClass);
+    }
+    public bool VScroll { get; set; } = true;
+    public bool HScroll { get; set; } = true;
+    public virtual bool AutoScroll
+    {
+        get => VscrollbarPolicy == Gtk.PolicyType.Automatic;
+        set
         {
-            this.Override.AddClass(cssClass);
-        }
-        public bool VScroll { get; set; } = true;
-        public bool HScroll { get; set; } = true;
-        public virtual bool AutoScroll
-        {
-            get => base.VscrollbarPolicy == Gtk.PolicyType.Automatic;
-            set
+            if (value)
             {
-                if (value == true)
-                {
-                    if (VScroll)
-                        base.VscrollbarPolicy = Gtk.PolicyType.Automatic;
-                    if (HScroll)
-                        base.HscrollbarPolicy = Gtk.PolicyType.Automatic;
-                }
-                else
-                {
-                    base.VscrollbarPolicy = Gtk.PolicyType.Never;
-                    base.HscrollbarPolicy = Gtk.PolicyType.Never;
-                }
+                if (VScroll)
+                    VscrollbarPolicy = Gtk.PolicyType.Automatic;
+                if (HScroll)
+                    HscrollbarPolicy = Gtk.PolicyType.Automatic;
+            }
+            else
+            {
+                VscrollbarPolicy = Gtk.PolicyType.Never;
+                HscrollbarPolicy = Gtk.PolicyType.Never;
             }
         }
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
-        }
-        protected virtual Gdk.Rectangle GetDrawRectangle()
-        {
-            return new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-        }
-        protected override bool OnDrawn(Cairo.Context cr)
-        {
-            Gdk.Rectangle rec = GetDrawRectangle();
-            Override.OnPaint(cr, rec);
-            return base.OnDrawn(cr);
-        }
+    }
+    protected override void OnShown()
+    {
+        Override.OnAddClass();
+        base.OnShown();
+    }
+    protected virtual Gdk.Rectangle GetDrawRectangle()
+    {
+        return new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);
+    }
+    protected override bool OnDrawn(Context? cr)
+    {
+        var rec = GetDrawRectangle();
+        Override.OnPaint(cr, rec);
+        return base.OnDrawn(cr);
     }
 }

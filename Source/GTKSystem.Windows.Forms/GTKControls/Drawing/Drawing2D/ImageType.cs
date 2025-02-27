@@ -1,9 +1,8 @@
-namespace System.Drawing
+namespace System.Drawing;
+
+internal enum ImageType
 {
-	internal enum ImageType
-	{
-		Unknown,
-		Bitmap,
-		Metafile
-	}
+    Unknown,
+    Bitmap,
+    Metafile
 }

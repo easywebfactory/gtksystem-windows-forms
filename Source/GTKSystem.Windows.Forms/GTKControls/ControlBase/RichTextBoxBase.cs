@@ -1,22 +1,19 @@
-﻿using System.Drawing;
+﻿namespace System.Windows.Forms;
 
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+public sealed class RichTextBoxBase : ScrollableBoxBase
 {
-    public sealed class RichTextBoxBase : ScrollableBoxBase
+    internal Gtk.TextView textView = new();
+    public RichTextBoxBase()
     {
-        internal Gtk.TextView TextView = new Gtk.TextView();
-        public RichTextBoxBase() : base()
-        {
-            this.Override.AddClass("RichTextBox");
-            this.TextView.BorderWidth = 1;
-            this.TextView.Margin = 0;
-            this.TextView.WrapMode = Gtk.WrapMode.Char;
-            this.TextView.Halign = Gtk.Align.Fill;
-            this.TextView.Valign = Gtk.Align.Fill;
-            this.TextView.Hexpand = true;
-            this.TextView.Vexpand = true;
-            this.AutoScroll = true;
-            this.Add(TextView);
-        }
+        Override.AddClass("RichTextBox");
+        textView.BorderWidth = 1;
+        textView.Margin = 0;
+        textView.WrapMode = Gtk.WrapMode.Char;
+        textView.Halign = Gtk.Align.Fill;
+        textView.Valign = Gtk.Align.Fill;
+        textView.Hexpand = true;
+        textView.Vexpand = true;
+        AutoScroll = true;
+        Add(textView);
     }
 }

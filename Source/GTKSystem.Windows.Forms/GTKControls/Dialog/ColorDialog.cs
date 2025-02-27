@@ -5,84 +5,90 @@
  * author:chenhongjin
  */
 
-using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
+using Gtk;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public class ColorDialog : CommonDialog
 {
-    public class ColorDialog : CommonDialog
+    public ColorChooserDialog? colorChooserDialog;
+    private int[] customColors = [];
+
+    [DefaultValue(true)] public virtual bool AllowFullOpen { get; set; } = true;
+
+    [DefaultValue(false)]
+    public virtual bool AnyColor { get; set; }
+
+    public Color Color { get; set; } = Color.Black;
+
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public int[] CustomColors
     {
-        public Gtk.ColorChooserDialog colorChooserDialog;
-        public ColorDialog() : base()
+        get => customColors;
+        set
         {
-
-        }
-
-        [DefaultValue(true)]
-        public virtual bool AllowFullOpen { get; set; }
-
-        [DefaultValue(false)]
-        public virtual bool AnyColor { get; set; }
-        public Color Color { get; set; }
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int[] CustomColors { get; set; }
-
-        [DefaultValue(false)]
-        public virtual bool FullOpen { get; set; }
-
-        [DefaultValue(false)]
-        public virtual bool ShowHelp { get; set; }
-
-        [DefaultValue(false)]
-        public virtual bool SolidColorOnly { get; set; }
-
-        protected virtual IntPtr Instance { get; }
-
-        protected virtual int Options { get; }
-
-
-        public override void Reset()
-        {
-            Color = Color.Black;
-        }
-        protected override bool RunDialog(IWin32Window owner)
-        {
-            if (owner != null && owner is Form ownerform)
+            if (value == null)
             {
-                colorChooserDialog = new Gtk.ColorChooserDialog("选择颜色", ownerform.self);
-                colorChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
+                value = [];
             }
-            else
-            {
-                colorChooserDialog = new Gtk.ColorChooserDialog("选择颜色", null);
-                colorChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
-            }
-            colorChooserDialog.KeepAbove = true;
-            if (Color.Name != "0")
-                colorChooserDialog.Rgba = new Gdk.RGBA() { Alpha = (double)Color.A / 255, Red = (double)Color.R / 255, Green = (double)Color.G / 255, Blue = (double)Color.B / 255 };
-            if (FullOpen && AllowFullOpen)
-                colorChooserDialog.Fullscreen();
-            int res = colorChooserDialog.Run();
-            colorChooserDialog.ParentWindow = null;
-            colorChooserDialog.HideOnDelete();
-            Gdk.RGBA colorSelection = colorChooserDialog.Rgba;
-            this.Color = Color.FromArgb((int)(colorSelection.Alpha * 255), (int)Math.Round(colorSelection.Red * 255, 0), (int)Math.Round(colorSelection.Green * 255, 0), (int)Math.Round(colorSelection.Blue * 255, 0));
-            return res == -5;
+            customColors = value;
         }
+    }
+
+    [DefaultValue(false)]
+    public virtual bool FullOpen { get; set; }
+
+    [DefaultValue(false)]
+    public virtual bool ShowHelp { get; set; }
+
+    [DefaultValue(false)]
+    public virtual bool SolidColorOnly { get; set; }
+
+    protected virtual IntPtr Instance { get; } = default;
+
+    protected virtual int Options { get; } = default;
+
+
+    public override void Reset()
+    {
+        Color = Color.Black;
+    }
+    protected override bool RunDialog(IWin32Window? owner)
+    {
+        if (owner is Form ownerform)
+        {
+            colorChooserDialog = new ColorChooserDialog("选择颜色", ownerform.self);
+            colorChooserDialog.WindowPosition = WindowPosition.CenterOnParent;
+        }
+        else
+        {
+            colorChooserDialog = new ColorChooserDialog("选择颜色", null);
+            colorChooserDialog.WindowPosition = WindowPosition.Center;
+        }
+        colorChooserDialog.KeepAbove = true;
+        if (Color.Name != "0")
+            colorChooserDialog.Rgba = new Gdk.RGBA { Alpha = (double)Color.A / 255, Red = (double)Color.R / 255, Green = (double)Color.G / 255, Blue = (double)Color.B / 255 };
+        if (FullOpen && AllowFullOpen)
+            colorChooserDialog.Fullscreen();
+        var res = colorChooserDialog.Run();
+        colorChooserDialog.ParentWindow = null;
+        colorChooserDialog.HideOnDelete();
+        var colorSelection = colorChooserDialog.Rgba;
+        Color = Color.FromArgb((int)(colorSelection.Alpha * 255), (int)Math.Round(colorSelection.Red * 255, 0), (int)Math.Round(colorSelection.Green * 255, 0), (int)Math.Round(colorSelection.Blue * 255, 0));
+        return res == -5;
+    }
  
-        public override string ToString() { return this.Color.Name; }
-        protected override void Dispose(bool disposing)
+    public override string ToString() { return $"System.Windows.Forms.ColorDialog,  Color: Color [{Color.Name}]"; }
+    protected override void Dispose(bool disposing)
+    {
+        if (colorChooserDialog != null)
         {
-            if (colorChooserDialog != null)
-            {
-                colorChooserDialog.Dispose();
-                colorChooserDialog = null;
-            }
-            base.Dispose(disposing);
+            colorChooserDialog.Dispose();
+            colorChooserDialog = null;
         }
+        base.Dispose(disposing);
     }
 }

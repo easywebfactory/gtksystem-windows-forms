@@ -1,8 +1,5 @@
-using System.Resources;
+namespace System.Windows.Forms.Resources;
 
-namespace FxResources.System.Resources.Extensions
+internal static class Sr
 {
-	internal static class SR
-	{
-	}
 }

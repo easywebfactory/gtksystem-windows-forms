@@ -4,22 +4,21 @@
 
 using System.Runtime.InteropServices;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+/// <summary>
+///  The event class that is created when a property in the grid is modified by the user.
+/// </summary>
+[ComVisible(true)]
+public class PropertyValueChangedEventArgs : EventArgs
 {
-    /// <summary>
-    ///  The event class that is created when a property in the grid is modified by the user.
-    /// </summary>
-    [ComVisible(true)]
-    public class PropertyValueChangedEventArgs : EventArgs
+    public PropertyValueChangedEventArgs(GridItem changedItem, object oldValue)
     {
-        public PropertyValueChangedEventArgs(GridItem changedItem, object oldValue)
-        {
-            ChangedItem = changedItem;
-            OldValue = oldValue;
-        }
-
-        public GridItem ChangedItem { get; }
-
-        public object OldValue { get; }
+        ChangedItem = changedItem;
+        OldValue = oldValue;
     }
+
+    public GridItem ChangedItem { get; }
+
+    public object OldValue { get; }
 }

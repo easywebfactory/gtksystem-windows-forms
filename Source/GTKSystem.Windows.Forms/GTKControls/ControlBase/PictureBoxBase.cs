@@ -1,36 +1,36 @@
-﻿using System;
+﻿using Cairo;
+using GTKSystem.Windows.Forms.GTKControls;
 
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+namespace System.Windows.Forms;
+
+public sealed class PictureBoxBase : Gtk.Image, IGtkControl
 {
-    public sealed class PictureBoxBase : Gtk.Image, IControlGtk
+    public IGtkControlOverride Override { get; set; }
+    public PictureBoxBase()
     {
-        public GtkControlOverride Override { get; set; }
-        public PictureBoxBase() : base()
+        Override = new GtkFormsControlOverride(this);
+        Override.AddClass("PictureBox");
+        Valign = Gtk.Align.Fill;
+        Halign = Gtk.Align.Fill;
+        Expand = true;
+        Xalign = 0;
+        Yalign = 0;
+    }
+    protected override void OnShown()
+    {
+        Override.OnAddClass();
+        base.OnShown();
+    }
+    protected override bool OnDrawn(Context? cr)
+    {
+        if (Pixbuf != null)
         {
-            this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("PictureBox");
-            base.Valign = Gtk.Align.Fill;
-            base.Halign = Gtk.Align.Fill;
-            base.Expand = true;
-            base.Xalign = 0;
-            base.Yalign = 0;
+            cr?.Scale(AllocatedWidth * 1f / Pixbuf.Width * 1f, AllocatedHeight * 1f / Pixbuf.Height * 1f);
         }
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
-        }
-        protected override bool OnDrawn(Cairo.Context cr)
-        {
-            if (this.Pixbuf != null)
-            {
-                cr.Scale(this.AllocatedWidth * 1f / this.Pixbuf.Width * 1f, this.AllocatedHeight * 1f / this.Pixbuf.Height * 1f);
-            }
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnDrawnBackground(cr, rec);
-            Override.OnPaint(cr, rec);
-            base.OnDrawn(cr);
-            return true;
-        }
+        var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);
+        Override.OnDrawnBackground(cr, rec);
+        Override.OnPaint(cr, rec);
+        base.OnDrawn(cr);
+        return true;
     }
 }

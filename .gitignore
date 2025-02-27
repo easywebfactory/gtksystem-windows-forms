@@ -286,3 +286,4 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 obfuscar.xml
+/Samples/GTKSystemWinFormsApp11/obj/Debug/net8.0/GTKSystemWinFormsApp11.GeneratedMSBuildEditorConfig.editorconfig

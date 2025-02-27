@@ -17,6 +17,7 @@ https://www.gtkapp.com；
 https://gitee.com/easywebfactory/gtksystem-windows-forms；
 https://github.com/easywebfactory/gtksystem-windows-forms；
 	  </Description>
+	  <WarningsAsErrors>CS8618;CS8600</WarningsAsErrors>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <RepositoryUrl>https://gitee.com/easywebfactory/gtksystem-windows-forms</RepositoryUrl>
@@ -27,6 +28,10 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
 	  <LangVersion>latest</LangVersion>
 	  <SignAssembly>true</SignAssembly>
 	  <AssemblyOriginatorKeyFile>..\..\GtkForms.snk</AssemblyOriginatorKeyFile>
+	  <NoWarn>$(NoWarn);NUnit2015;NUnit2017</NoWarn>
+	  <Nullable>enable</Nullable>
+      <RootNamespace>System.Windows.Forms</RootNamespace>
+	  <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -188,9 +193,7 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
     <Compile Update="GTKControls\PictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="GTKControls\RadioButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="GTKControls\RadioButton.cs" />
     <Compile Update="GTKControls\RichTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -212,6 +215,11 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
     <Compile Update="GTKControls\TreeView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -227,6 +235,13 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
 
   <ItemGroup>
     <Folder Include="obj\Debug\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

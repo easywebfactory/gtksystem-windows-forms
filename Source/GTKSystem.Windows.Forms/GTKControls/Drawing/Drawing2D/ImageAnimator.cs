@@ -1,448 +1,448 @@
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Drawing.Imaging;
-using System.Threading;
 
-namespace System.Drawing
+namespace System.Drawing;
+
+/// <summary>Animates an image that has time-based frames.</summary>
+public sealed class ImageAnimator
 {
-    /// <summary>Animates an image that has time-based frames.</summary>
-    public sealed class ImageAnimator
+    private sealed class ImageInfo
     {
-        private sealed class ImageInfo
+        private const int propertyTagFrameDelay = 20736;
+
+        private const int propertyTagLoopCount = 20737;
+
+        private readonly Image _image;
+
+        private int _frame;
+
+        private short _loop;
+
+        private readonly int _frameCount;
+
+        private readonly short _loopCount;
+
+        private bool _frameDirty;
+
+        private readonly bool _animated;
+
+        private EventHandler? _onFrameChangedHandler;
+
+        private readonly long[]? _frameEndTimes;
+
+        private readonly long _totalAnimationTime;
+
+        private long _frameTimer;
+
+        public bool Animated => _animated;
+
+        public bool FrameDirty => _frameDirty;
+
+        public EventHandler? FrameChangedHandler
         {
-            private const int PropertyTagFrameDelay = 20736;
+            get => _onFrameChangedHandler;
+            set => _onFrameChangedHandler = value;
+        }
 
-            private const int PropertyTagLoopCount = 20737;
-
-            private readonly Image _image;
-
-            private int _frame;
-
-            private short _loop;
-
-            private readonly int _frameCount;
-
-            private readonly short _loopCount;
-
-            private bool _frameDirty;
-
-            private readonly bool _animated;
-
-            private EventHandler _onFrameChangedHandler;
-
-            private readonly long[] _frameEndTimes;
-
-            private long _totalAnimationTime;
-
-            private long _frameTimer;
-
-            public bool Animated => _animated;
-
-            public bool FrameDirty => _frameDirty;
-
-            public EventHandler FrameChangedHandler
+        private long TotalAnimationTime
+        {
+            get
             {
-                get
+                if (!Animated)
                 {
-                    return _onFrameChangedHandler;
+                    return 0L;
                 }
-                set
-                {
-                    _onFrameChangedHandler = value;
-                }
+                return _totalAnimationTime;
             }
+        }
 
-            private long TotalAnimationTime
+        private bool ShouldAnimate
+        {
+            get
             {
-                get
+                if (TotalAnimationTime <= 0)
                 {
-                    if (!Animated)
-                    {
-                        return 0L;
-                    }
-                    return _totalAnimationTime;
+                    return false;
                 }
-            }
-
-            private bool ShouldAnimate
-            {
-                get
+                if (_loopCount != 0)
                 {
-                    if (TotalAnimationTime <= 0)
-                    {
-                        return false;
-                    }
-                    if (_loopCount != 0)
-                    {
-                        return _loop <= _loopCount;
-                    }
-                    return true;
+                    return _loop <= _loopCount;
                 }
+                return true;
             }
+        }
 
-            internal Image Image => _image;
+        internal Image Image => _image;
 
-            public ImageInfo(Image image)
+        public ImageInfo(Image image)
+        {
+            _image = image;
+            _animated = CanAnimate(image);
+            _frameEndTimes = null;
+            if (_animated)
             {
-                _image = image;
-                _animated = CanAnimate(image);
-                _frameEndTimes = null;
-                if (_animated)
+                _frameCount = image.GetFrameCount(FrameDimension.Time);
+                var propertyItem = image.GetPropertyItem(20736);
+                if (propertyItem != null)
                 {
-                    _frameCount = image.GetFrameCount(FrameDimension.Time);
-                    PropertyItem propertyItem = image.GetPropertyItem(20736);
-                    if (propertyItem != null)
+                    var value = propertyItem.Value;
+                    _frameEndTimes = new long[_frameCount];
+                    var num = 0L;
+                    var num2 = 0;
+                    var num3 = 0;
+                    while (num2 < _frameCount)
                     {
-                        byte[] value = propertyItem.Value;
-                        _frameEndTimes = new long[_frameCount];
-                        long num = 0L;
-                        int num2 = 0;
-                        int num3 = 0;
-                        while (num2 < _frameCount)
+                        if (num3 >= value?.Length)
                         {
-                            if (num3 >= value.Length)
-                            {
-                                num3 = 0;
-                            }
-                            int num4 = BitConverter.ToInt32(value, num3) * 10;
-                            num += ((num4 > 0) ? num4 : 40);
-                            if (num < _totalAnimationTime)
-                            {
-                                num = _totalAnimationTime;
-                            }
-                            else
-                            {
-                                _totalAnimationTime = num;
-                            }
-                            _frameEndTimes[num2] = num;
-                            num2++;
-                            num3 += 4;
+                            num3 = 0;
                         }
+
+                        if (value != null)
+                        {
+                            var num4 = BitConverter.ToInt32(value, num3) * 10;
+                            num += num4 > 0 ? num4 : 40;
+                        }
+
+                        if (num < _totalAnimationTime)
+                        {
+                            num = _totalAnimationTime;
+                        }
+                        else
+                        {
+                            _totalAnimationTime = num;
+                        }
+                        _frameEndTimes[num2] = num;
+                        num2++;
+                        num3 += 4;
                     }
-                    PropertyItem propertyItem2 = image.GetPropertyItem(20737);
-                    if (propertyItem2 != null)
-                    {
-                        byte[] value2 = propertyItem2.Value;
-                        _loopCount = BitConverter.ToInt16(value2, 0);
-                    }
-                    else
-                    {
-                        _loopCount = 0;
-                    }
+                }
+                var propertyItem2 = image.GetPropertyItem(20737);
+                if (propertyItem2 != null)
+                {
+                    var value2 = propertyItem2.Value;
+                    _loopCount = BitConverter.ToInt16(value2, 0);
                 }
                 else
                 {
-                    _frameCount = 1;
+                    _loopCount = 0;
                 }
             }
-
-            public void AdvanceAnimationBy(long milliseconds)
+            else
             {
+                _frameCount = 1;
+            }
+        }
+
+        public void AdvanceAnimationBy(long milliseconds)
+        {
+            if (!ShouldAnimate)
+            {
+                return;
+            }
+            var frame = _frame;
+            _frameTimer += milliseconds;
+            if (_frameTimer > TotalAnimationTime)
+            {
+                _loop += (short)Math.DivRem(_frameTimer, TotalAnimationTime, out var result);
+                _frameTimer = result;
                 if (!ShouldAnimate)
                 {
-                    return;
+                    _frame = _frameCount - 1;
+                    _frameTimer = TotalAnimationTime;
                 }
-                int frame = _frame;
-                _frameTimer += milliseconds;
-                if (_frameTimer > TotalAnimationTime)
+                else if (_frame > 0 && _frameEndTimes != null && _frameTimer < _frameEndTimes[_frame - 1])
                 {
-                    _loop += (short)Math.DivRem(_frameTimer, TotalAnimationTime, out var result);
-                    _frameTimer = result;
-                    if (!ShouldAnimate)
-                    {
-                        _frame = _frameCount - 1;
-                        _frameTimer = TotalAnimationTime;
-                    }
-                    else if (_frame > 0 && _frameTimer < _frameEndTimes[_frame - 1])
-                    {
-                        _frame = 0;
-                    }
-                }
-                while (_frameTimer > _frameEndTimes[_frame])
-                {
-                    _frame++;
-                }
-                if (_frame != frame)
-                {
-                    _frameDirty = true;
-                    OnFrameChanged(EventArgs.Empty);
+                    _frame = 0;
                 }
             }
-
-            internal void UpdateFrame()
+            while (_frameEndTimes != null && _frameTimer > _frameEndTimes[_frame])
             {
-                if (_frameDirty)
-                {
-                    _image.SelectActiveFrame(FrameDimension.Time, _frame);
-                    _frameDirty = false;
-                }
+                _frame++;
             }
-
-            private void OnFrameChanged(EventArgs e)
+            if (_frame != frame)
             {
-                _onFrameChangedHandler?.Invoke(_image, e);
+                _frameDirty = true;
+                OnFrameChanged(EventArgs.Empty);
             }
         }
 
-        internal const int AnimationDelayMS = 40;
-
-        private static List<ImageInfo> s_imageInfoList;
-
-        private static bool s_anyFrameDirty;
-
-        private static Thread s_animationThread;
-
-        private static readonly ReaderWriterLock s_rwImgListLock = new ReaderWriterLock();
-
-        [ThreadStatic]
-        private static int t_threadWriterLockWaitCount;
-
-        private ImageAnimator()
+        internal void UpdateFrame()
         {
+            if (_frameDirty)
+            {
+                _image.SelectActiveFrame(FrameDimension.Time, _frame);
+                _frameDirty = false;
+            }
         }
 
-        /// <summary>Advances the frame in the specified image. The new frame is drawn the next time the image is rendered. This method applies only to images with time-based frames.</summary>
-        /// <param name="image">The <see cref="T:System.Drawing.Image" /> object for which to update frames.</param>
-        public static void UpdateFrames(Image image)
+        private void OnFrameChanged(EventArgs e)
         {
-            if (image == null || s_imageInfoList == null || t_threadWriterLockWaitCount > 0)
+            _onFrameChangedHandler?.Invoke(_image, e);
+        }
+    }
+
+    internal const int animationDelayMs = 40;
+
+    private static List<ImageInfo>? imageInfoList;
+
+    private static bool anyFrameDirty;
+
+    private static Thread? animationThread;
+
+    private static readonly ReaderWriterLock rwImgListLock = new();
+
+    [ThreadStatic]
+    private static int tThreadWriterLockWaitCount;
+
+    private ImageAnimator()
+    {
+    }
+
+    /// <summary>Advances the frame in the specified image. The new frame is drawn the next time the image is rendered. This method applies only to images with time-based frames.</summary>
+    /// <param name="image">The <see cref="T:System.Drawing.Image" /> object for which to update frames.</param>
+    public static void UpdateFrames(Image image)
+    {
+        if (image == null || imageInfoList == null || tThreadWriterLockWaitCount > 0)
+        {
+            return;
+        }
+        rwImgListLock.AcquireReaderLock(-1);
+        try
+        {
+            var flag = false;
+            var flag2 = false;
+            foreach (var imageInfo in imageInfoList)
             {
-                return;
-            }
-            s_rwImgListLock.AcquireReaderLock(-1);
-            try
-            {
-                bool flag = false;
-                bool flag2 = false;
-                foreach (ImageInfo s_imageInfo in s_imageInfoList)
+                if (imageInfo.Image == image)
                 {
-                    if (s_imageInfo.Image == image)
+                    if (imageInfo.FrameDirty)
                     {
-                        if (s_imageInfo.FrameDirty)
+                        lock (imageInfo.Image)
                         {
-                            lock (s_imageInfo.Image)
-                            {
-                                s_imageInfo.UpdateFrame();
-                            }
+                            imageInfo.UpdateFrame();
                         }
-                        flag2 = true;
                     }
-                    else if (s_imageInfo.FrameDirty)
-                    {
-                        flag = true;
-                    }
-                    if (flag && flag2)
-                    {
-                        break;
-                    }
+                    flag2 = true;
                 }
-                s_anyFrameDirty = flag;
+                else if (imageInfo.FrameDirty)
+                {
+                    flag = true;
+                }
+                if (flag && flag2)
+                {
+                    break;
+                }
             }
-            finally
+            anyFrameDirty = flag;
+        }
+        finally
+        {
+            rwImgListLock.ReleaseReaderLock();
+        }
+    }
+
+    /// <summary>Advances the frame in all images currently being animated. The new frame is drawn the next time the image is rendered.</summary>
+    public static void UpdateFrames()
+    {
+        if (!anyFrameDirty || imageInfoList == null || tThreadWriterLockWaitCount > 0)
+        {
+            return;
+        }
+        rwImgListLock.AcquireReaderLock(-1);
+        try
+        {
+            foreach (var imageInfo in imageInfoList)
             {
-                s_rwImgListLock.ReleaseReaderLock();
+                lock (imageInfo.Image)
+                {
+                    imageInfo.UpdateFrame();
+                }
+            }
+            anyFrameDirty = false;
+        }
+        finally
+        {
+            rwImgListLock.ReleaseReaderLock();
+        }
+    }
+
+    /// <summary>Displays a multiple-frame image as an animation.</summary>
+    /// <param name="image">The <see cref="T:System.Drawing.Image" /> object to animate.</param>
+    /// <param name="onFrameChangedHandler">An <see langword="EventHandler" /> object that specifies the method that is called when the animation frame changes.</param>
+    public static void Animate(Image image, EventHandler? onFrameChangedHandler)
+    {
+        if (image == null)
+        {
+            return;
+        }
+        ImageInfo imageInfo;
+        lock (image)
+        {
+            imageInfo = new ImageInfo(image);
+        }
+        StopAnimate(image, onFrameChangedHandler);
+        var isReaderLockHeld = rwImgListLock.IsReaderLockHeld;
+        var lockCookie = default(LockCookie);
+        tThreadWriterLockWaitCount++;
+        try
+        {
+            if (isReaderLockHeld)
+            {
+                lockCookie = rwImgListLock.UpgradeToWriterLock(-1);
+            }
+            else
+            {
+                rwImgListLock.AcquireWriterLock(-1);
             }
         }
-
-        /// <summary>Advances the frame in all images currently being animated. The new frame is drawn the next time the image is rendered.</summary>
-        public static void UpdateFrames()
+        finally
         {
-            if (!s_anyFrameDirty || s_imageInfoList == null || t_threadWriterLockWaitCount > 0)
-            {
-                return;
-            }
-            s_rwImgListLock.AcquireReaderLock(-1);
-            try
-            {
-                foreach (ImageInfo s_imageInfo in s_imageInfoList)
-                {
-                    lock (s_imageInfo.Image)
-                    {
-                        s_imageInfo.UpdateFrame();
-                    }
-                }
-                s_anyFrameDirty = false;
-            }
-            finally
-            {
-                s_rwImgListLock.ReleaseReaderLock();
-            }
+            tThreadWriterLockWaitCount--;
         }
-
-        /// <summary>Displays a multiple-frame image as an animation.</summary>
-        /// <param name="image">The <see cref="T:System.Drawing.Image" /> object to animate.</param>
-        /// <param name="onFrameChangedHandler">An <see langword="EventHandler" /> object that specifies the method that is called when the animation frame changes.</param>
-        public static void Animate(Image image, EventHandler onFrameChangedHandler)
+        try
         {
-            if (image == null)
+            if (imageInfo.Animated)
             {
-                return;
-            }
-            ImageInfo imageInfo = null;
-            lock (image)
-            {
-                imageInfo = new ImageInfo(image);
-            }
-            StopAnimate(image, onFrameChangedHandler);
-            bool isReaderLockHeld = s_rwImgListLock.IsReaderLockHeld;
-            LockCookie lockCookie = default(LockCookie);
-            t_threadWriterLockWaitCount++;
-            try
-            {
-                if (isReaderLockHeld)
+                if (imageInfoList == null)
                 {
-                    lockCookie = s_rwImgListLock.UpgradeToWriterLock(-1);
+                    imageInfoList = [];
                 }
-                else
+                imageInfo.FrameChangedHandler = onFrameChangedHandler;
+                imageInfoList.Add(imageInfo);
+                if (animationThread == null)
                 {
-                    s_rwImgListLock.AcquireWriterLock(-1);
-                }
-            }
-            finally
-            {
-                t_threadWriterLockWaitCount--;
-            }
-            try
-            {
-                if (imageInfo.Animated)
-                {
-                    if (s_imageInfoList == null)
+                    animationThread = new Thread(AnimateImages)
                     {
-                        s_imageInfoList = new List<ImageInfo>();
-                    }
-                    imageInfo.FrameChangedHandler = onFrameChangedHandler;
-                    s_imageInfoList.Add(imageInfo);
-                    if (s_animationThread == null)
-                    {
-                        s_animationThread = new Thread(new ThreadStart(AnimateImages));
-                        s_animationThread.Name = "ImageAnimator";
-                        s_animationThread.IsBackground = true;
-                        s_animationThread.Start();
-                    }
-                }
-            }
-            finally
-            {
-                if (isReaderLockHeld)
-                {
-                    s_rwImgListLock.DowngradeFromWriterLock(ref lockCookie);
-                }
-                else
-                {
-                    s_rwImgListLock.ReleaseWriterLock();
+                        Name = "ImageAnimator",
+                        IsBackground = true
+                    };
+                    animationThread.Start();
                 }
             }
         }
-
-        /// <summary>Returns a Boolean value indicating whether the specified image contains time-based frames.</summary>
-        /// <param name="image">The <see cref="T:System.Drawing.Image" /> object to test.</param>
-        /// <returns>This method returns <see langword="true" /> if the specified image contains time-based frames; otherwise, <see langword="false" />.</returns>
-        public static bool CanAnimate([NotNullWhen(true)] Image image)
+        finally
         {
-            if (image == null)
+            if (isReaderLockHeld)
             {
-                return false;
+                rwImgListLock.DowngradeFromWriterLock(ref lockCookie);
             }
-            lock (image)
+            else
             {
-                Guid[] frameDimensionsList = image!.FrameDimensionsList;
-                Guid[] array = frameDimensionsList;
-                foreach (Guid guid in array)
-                {
-                    FrameDimension frameDimension = new FrameDimension(guid);
-                    if (frameDimension.Equals(FrameDimension.Time))
-                    {
-                        return image!.GetFrameCount(FrameDimension.Time) > 1;
-                    }
-                }
+                rwImgListLock.ReleaseWriterLock();
             }
+        }
+    }
+
+    /// <summary>Returns a Boolean value indicating whether the specified image contains time-based frames.</summary>
+    /// <param name="image">The <see cref="T:System.Drawing.Image" /> object to test.</param>
+    /// <returns>This method returns <see langword="true" /> if the specified image contains time-based frames; otherwise, <see langword="false" />.</returns>
+    public static bool CanAnimate(Image image)
+    {
+        if (image == null)
+        {
             return false;
         }
-
-        /// <summary>Terminates a running animation.</summary>
-        /// <param name="image">The <see cref="T:System.Drawing.Image" /> object to stop animating.</param>
-        /// <param name="onFrameChangedHandler">An <see langword="EventHandler" /> object that specifies the method that is called when the animation frame changes.</param>
-        public static void StopAnimate(Image image, EventHandler onFrameChangedHandler)
+        lock (image)
         {
-            if (image == null || s_imageInfoList == null)
+            var frameDimensionsList = image.FrameDimensionsList;
+            var array = frameDimensionsList;
+            if (array != null)
             {
-                return;
-            }
-            bool isReaderLockHeld = s_rwImgListLock.IsReaderLockHeld;
-            LockCookie lockCookie = default(LockCookie);
-            t_threadWriterLockWaitCount++;
-            try
-            {
-                if (isReaderLockHeld)
+                foreach (var guid in array)
                 {
-                    lockCookie = s_rwImgListLock.UpgradeToWriterLock(-1);
-                }
-                else
-                {
-                    s_rwImgListLock.AcquireWriterLock(-1);
-                }
-            }
-            finally
-            {
-                t_threadWriterLockWaitCount--;
-            }
-            try
-            {
-                for (int i = 0; i < s_imageInfoList.Count; i++)
-                {
-                    ImageInfo imageInfo = s_imageInfoList[i];
-                    if (image == imageInfo.Image)
+                    var frameDimension = new FrameDimension(guid);
+                    if (frameDimension.Equals(FrameDimension.Time))
                     {
-                        if ((Delegate?)onFrameChangedHandler == (Delegate?)imageInfo.FrameChangedHandler || (onFrameChangedHandler != null && onFrameChangedHandler.Equals(imageInfo.FrameChangedHandler)))
-                        {
-                            s_imageInfoList.Remove(imageInfo);
-                        }
-                        break;
+                        return image.GetFrameCount(FrameDimension.Time) > 1;
                     }
-                }
-            }
-            finally
-            {
-                if (isReaderLockHeld)
-                {
-                    s_rwImgListLock.DowngradeFromWriterLock(ref lockCookie);
-                }
-                else
-                {
-                    s_rwImgListLock.ReleaseWriterLock();
                 }
             }
         }
+        return false;
+    }
 
-        private static void AnimateImages()
+    /// <summary>Terminates a running animation.</summary>
+    /// <param name="image">The <see cref="T:System.Drawing.Image" /> object to stop animating.</param>
+    /// <param name="onFrameChangedHandler">An <see langword="EventHandler" /> object that specifies the method that is called when the animation frame changes.</param>
+    public static void StopAnimate(Image image, EventHandler? onFrameChangedHandler)
+    {
+        if (image == null || imageInfoList == null)
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            while (true)
+            return;
+        }
+        var isReaderLockHeld = rwImgListLock.IsReaderLockHeld;
+        var lockCookie = default(LockCookie);
+        tThreadWriterLockWaitCount++;
+        try
+        {
+            if (isReaderLockHeld)
             {
-                Thread.Sleep(40);
-                long elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
-                stopwatch.Restart();
-                s_rwImgListLock.AcquireReaderLock(-1);
-                try
+                lockCookie = rwImgListLock.UpgradeToWriterLock(-1);
+            }
+            else
+            {
+                rwImgListLock.AcquireWriterLock(-1);
+            }
+        }
+        finally
+        {
+            tThreadWriterLockWaitCount--;
+        }
+        try
+        {
+            for (var i = 0; i < imageInfoList.Count; i++)
+            {
+                var imageInfo = imageInfoList[i];
+                if (image == imageInfo.Image)
                 {
-                    for (int i = 0; i < s_imageInfoList.Count; i++)
+                    if ((Delegate?)onFrameChangedHandler == (Delegate?)imageInfo.FrameChangedHandler || (onFrameChangedHandler != null && onFrameChangedHandler.Equals(imageInfo.FrameChangedHandler)))
                     {
-                        ImageInfo imageInfo = s_imageInfoList[i];
-                        if (imageInfo.Animated)
+                        imageInfoList.Remove(imageInfo);
+                    }
+                    break;
+                }
+            }
+        }
+        finally
+        {
+            if (isReaderLockHeld)
+            {
+                rwImgListLock.DowngradeFromWriterLock(ref lockCookie);
+            }
+            else
+            {
+                rwImgListLock.ReleaseWriterLock();
+            }
+        }
+    }
+
+    private static void AnimateImages()
+    {
+        var stopwatch = Stopwatch.StartNew();
+        while (true)
+        {
+            Thread.Sleep(40);
+            var elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
+            stopwatch.Restart();
+            rwImgListLock.AcquireReaderLock(-1);
+            try
+            {
+                for (var i = 0; i < imageInfoList?.Count; i++)
+                {
+                    var imageInfo = imageInfoList[i];
+                    if (imageInfo.Animated)
+                    {
+                        imageInfo.AdvanceAnimationBy(elapsedMilliseconds);
+                        if (imageInfo.FrameDirty)
                         {
-                            imageInfo.AdvanceAnimationBy(elapsedMilliseconds);
-                            if (imageInfo.FrameDirty)
-                            {
-                                s_anyFrameDirty = true;
-                            }
+                            anyFrameDirty = true;
                         }
                     }
                 }
-                finally
-                {
-                    s_rwImgListLock.ReleaseReaderLock();
-                }
+            }
+            finally
+            {
+                rwImgListLock.ReleaseReaderLock();
             }
         }
     }

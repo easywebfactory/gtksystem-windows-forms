@@ -1,8 +1,7 @@
-namespace System.Drawing.Imaging
+namespace System.Drawing.Imaging;
+
+internal enum EmfPlusFlags
 {
-	internal enum EmfPlusFlags
-	{
-		Display = 1,
-		NonDualGdi
-	}
+    Display = 1,
+    NonDualGdi
 }

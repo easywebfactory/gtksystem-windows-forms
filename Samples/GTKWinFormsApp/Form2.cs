@@ -21,7 +21,7 @@ namespace GTKWinFormsApp
             InitializeComponent();
             // listView1.Items.Add(new ListViewItem("test1", new ListViewGroup("ListViewGroup1", "ListViewGroup1")) { });
 
-          DataTable dt = new DataTable();
+          DataTable? dt = new DataTable();
             dt.Columns.Add("ID", typeof(string));
             dt.Columns.Add("CreateDate", typeof(DateTime));
             dt.Rows.Add("user1", DateTime.Now);
@@ -63,7 +63,7 @@ namespace GTKWinFormsApp
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)
         {
             DialogResult res = MessageBox.Show("Form2_FormClosing");
-            e.Cancel = res != DialogResult.OK;
+            e.Cancel = res != DialogResult.Ok;
         }
         private void listView1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
@@ -107,7 +107,7 @@ namespace GTKWinFormsApp
             listView1.Items.Add(new ListViewItem("同时添加分组和数据") { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[0] });
             listView1.Items.Add(new ListViewItem("向指定分组添加数据") { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[1] });
 
-            ListViewItem m = new ListViewItem("这是一种添加多栏数据的方法", 0);
+            ListViewItem? m = new ListViewItem("这是一种添加多栏数据的方法", 0);
             m.Checked = true;
             m.Selected = true;
             m.ForeColor = Color.Green;
