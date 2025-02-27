@@ -43,59 +43,6 @@ namespace System.Windows.Forms
             GridView.Realized += GridView_Realized;
             GridView.RowActivated += GridView_RowActivated;
             GridView.Selection.Changed += Selection_Changed;
-
-
-            GridView.ButtonReleaseEvent += GridView_ButtonReleaseEvent;
-            GridView.KeyPressEvent += GridView_KeyPressEvent;
-            GridView.KeyReleaseEvent += GridView_KeyReleaseEvent;
-        }
-        private bool IsControlPress;
-        private void GridView_KeyReleaseEvent(object o, KeyReleaseEventArgs args)
-        {
-            IsControlPress = false;
-        }
-        private void GridView_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
-        {
-            if (args.Event is Gdk.EventKey eventkey)
-            {
-                Keys keys = (Keys)eventkey.HardwareKeycode;
-                if (eventkey.State == Gdk.ModifierType.ControlMask)
-                {
-                    IsControlPress = true;
-                }
-                else { IsControlPress = false; }
-            }
-        }
-
-        private List<DataGridViewCell> _selectedCells = new List<DataGridViewCell>();
-        private void GridView_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
-        {
-            if (IsControlPress == false)
-            {
-                foreach (var item in _selectedCells)
-                {
-                    item.Selected = false;
-                }
-                _selectedCells.Clear();
-            }
-            Gtk.TreeView view=(Gtk.TreeView)o;
-            view.GetCursor(out TreePath path, out TreeViewColumn column);
-            int index = Array.FindIndex(view.Columns, o => o.Handle == column.Handle);
-            Store.GetIter(out TreeIter iter, path);
-            DataGridViewCell cell = Store.GetValue(iter, index) as DataGridViewCell;
-            cell.Selected = cell.Selected==false;
-            if (_selectedCells.Contains(cell) == false)
-                _selectedCells.Add(cell);
-            view.QueueDraw();
-            if (view.Selection.Mode == Gtk.SelectionMode.None)
-            {
-                if (CellClick != null)
-                {
-                    CellClick(this, new DataGridViewCellEventArgs(index, cell.RowIndex));
-                }
-                if (SelectionChanged != null)
-                    SelectionChanged(this, args);
-            }
         }
 
         private List<int> _selectedBandIndexes = new List<int>();
@@ -287,21 +234,8 @@ namespace System.Windows.Forms
                     DataGridViewRow newRow = new DataGridViewRow();
                     foreach (DataGridViewColumn col in _columns)
                     {
-                        object cellvalue = dt.Columns.Contains(col.DataPropertyName ?? string.Empty) ? dr[col.DataPropertyName] : null;
-                        if (col is DataGridViewTextBoxColumn)
-                            newRow.Cells.Add(new DataGridViewTextBoxCell() { Value = cellvalue });
-                        else if (col is DataGridViewImageColumn)
-                            newRow.Cells.Add(new DataGridViewImageCell() { Value = cellvalue });
-                        else if (col is DataGridViewCheckBoxColumn)
-                            newRow.Cells.Add(new DataGridViewCheckBoxCell() { Value = cellvalue });
-                        else if (col is DataGridViewButtonColumn)
-                            newRow.Cells.Add(new DataGridViewButtonCell() { Value = cellvalue });
-                        else if (col is DataGridViewComboBoxColumn)
-                            newRow.Cells.Add(new DataGridViewComboBoxCell() { Value = cellvalue });
-                        else if (col is DataGridViewLinkColumn)
-                            newRow.Cells.Add(new DataGridViewLinkCell() { Value = cellvalue });
-                        else
-                            newRow.Cells.Add(new DataGridViewTextBoxCell() { Value = cellvalue });
+                        object cellvalue = dt.Columns.Contains(col.DataPropertyName) ? dr[col.DataPropertyName] : null;
+                        newRow.Cells.Add(col.NewCell(cellvalue, col.ValueType));
                     }
                     _rows.Add(newRow);
                 }
@@ -334,26 +268,12 @@ namespace System.Windows.Forms
                     while (reader.MoveNext())
                     {
                         object obj = reader.Current;
-                        Dictionary<string, object> values = new Dictionary<string, object>();
-                        Array.ForEach(obj.GetType().GetProperties(), o => { values.Add(o.Name, o.GetValue(obj)); });
+                        Type type = obj.GetType();
                         DataGridViewRow newRow = new DataGridViewRow();
                         foreach (DataGridViewColumn col in _columns)
                         {
-                            values.TryGetValue(col.DataPropertyName ?? string.Empty, out object cellvalue);
-                            if (col is DataGridViewTextBoxColumn)
-                                newRow.Cells.Add(new DataGridViewTextBoxCell() { Value = cellvalue });
-                            else if (col is DataGridViewImageColumn)
-                                newRow.Cells.Add(new DataGridViewImageCell() { Value = cellvalue });
-                            else if (col is DataGridViewCheckBoxColumn)
-                                newRow.Cells.Add(new DataGridViewCheckBoxCell() { Value = cellvalue });
-                            else if (col is DataGridViewButtonColumn)
-                                newRow.Cells.Add(new DataGridViewButtonCell() { Value = cellvalue });
-                            else if (col is DataGridViewComboBoxColumn)
-                                newRow.Cells.Add(new DataGridViewComboBoxCell() { Value = cellvalue });
-                            else if (col is DataGridViewLinkColumn)
-                                newRow.Cells.Add(new DataGridViewLinkCell() { Value = cellvalue });
-                            else
-                                newRow.Cells.Add(new DataGridViewTextBoxCell() { Value = cellvalue });
+                            object cellvalue = type.GetProperty(col.DataPropertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty)?.GetValue(obj);
+                            newRow.Cells.Add(col.NewCell(cellvalue, col.ValueType));
                         }
                         _rows.Add(newRow);
                     }

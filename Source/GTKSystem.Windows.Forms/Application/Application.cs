@@ -173,7 +173,8 @@ namespace System.Windows.Forms
 .TrackBar {border-width:0px;box-shadow:none;}
 .PrintPreviewBack{background-color:#cccccc; border-radius:0px;}
 .Paper{box-shadow: 0px 0px 3px 1px #999999;background:#ffffff; border-radius:0px;}
-
+.PropertyGrid {box-shadow:0px 0px 0px 1px @frame_color; background:#eeeeee;}
+.PropertyGrid button{background:#eeeeee;}
 ";
 
                 string appdirectory = "./";// StartupPath; //由于linux系统常用到环境变量路径，会导至Directory/Environment获取到的当前目录不正确

@@ -25,7 +25,7 @@ namespace System.Drawing
 		/// <returns>The <see cref="T:System.Drawing.SolidBrush" /> object that this method creates.</returns>
 		public override object Clone()
 		{
-            return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+            return null;
         }
 
 		protected override void Dispose(bool disposing)

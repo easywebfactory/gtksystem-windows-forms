@@ -5,6 +5,7 @@
  * author:chenhongjin
  */
 
+using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using Pango;
@@ -47,13 +48,9 @@ namespace System.Windows.Forms
             header.BorderWidth = 0;
             header.Halign = Gtk.Align.Fill;
             header.Valign = Gtk.Align.Fill;
-            header.HeightRequest = __headerheight;
+            header.HeightRequest = 1;
             // header.WidthRequest = 500;
             header.Homogeneous = false;
-            header.NoShowAll = true;
-            header.Visible = false;
-            header.Hide();
-
             flowBoxContainer.Halign = Gtk.Align.Fill;
             flowBoxContainer.Valign = Gtk.Align.Start;
             scrolledWindow.Halign = Gtk.Align.Fill;
@@ -66,11 +63,11 @@ namespace System.Windows.Forms
             headerView.Valign = Gtk.Align.Start;
             headerView.Hexpand = true;
             headerView.Vexpand = false;
-            headerView.HeightRequest = __headerheight;
+            headerView.HeightRequest = 1;// __headerheight;
             headerView.Width = 100000;
             headerView.Add(header);
             self.box.PackStart(headerView, false, true, 0);
-            self.box.PackStart(scrolledWindow, false, true, 0);
+            self.box.PackStart(scrolledWindow, true, true, 0);
             this.BorderStyle = BorderStyle.Fixed3D;
         }
 
@@ -89,27 +86,17 @@ namespace System.Windows.Forms
                 {
                     header.NoShowAll = false;
                     header.Visible = true;
-
-                    foreach (ColumnHeader col in Columns)
-                    {
-                        LabelBase label = new LabelBase(col.Text) { Xalign = 0, Xpad = 5, WidthRequest = col.Width, MaxWidthChars = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.End, Ellipsize = Pango.EllipsizeMode.End, Wrap = false, LineWrap = false };
-                        label.TooltipText = col.Text;
-                        label.Markup = col.Text;
-                        label.Data.Add("ColumnIndex", col.DisplayIndex);
-                        label.Override.DrawnBackground += Override_DrawnBackground;
-                        var columbt = new Gtk.Button(label) { MarginStart = 0, WidthRequest = col.Width, HeightRequest = __headerheight, Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill };
-                        columbt.ActionTargetValue = new GLib.Variant(col.DisplayIndex);
-                        columbt.Data.Add("ColumnIndex", col.DisplayIndex);
-                        columbt.Clicked += Columbt_Clicked;
-                        header.PackStart(columbt, false, false, 0);
-                    }
-                    header.PackStart(new LabelBase(""), true, true, 0);
                     header.ShowAll();
+                    headerView.HeightRequest=__headerheight;
                 }
-
+                foreach (ColumnHeader header in this.Columns)
+                {
+                    NativeHeaderAdd(header);
+                }
                 foreach (ListViewGroup g in Groups)
+                {
                     NativeGroupAdd(g, -1);
-
+                }
                 foreach (ListViewItem item in Items)
                 {
                     NativeAdd(item, -1);
@@ -119,75 +106,6 @@ namespace System.Windows.Forms
                 self.ShowAll();
             }
         }
-
-        private void Columbt_Clicked(object sender, EventArgs e)
-        {
-            //Console.WriteLine(((Gtk.Widget)sender).AllocatedWidth);
-            Gtk.Button btn = (Gtk.Button)sender;
-
-            if (this.HeaderStyle == ColumnHeaderStyle.Clickable)
-            {
-                int actioncolumn = (int)btn.ActionTargetValue;
-                if (this.AllowColumnReorder == true)
-                {
-                    if (SortingColumnIndex == actioncolumn)
-                    {
-                        if (Sorting == SortOrder.Ascending)
-                            Sorting = SortOrder.Descending;
-                        else if (Sorting == SortOrder.Descending)
-                            Sorting = SortOrder.None;
-                        else
-                            Sorting = SortOrder.Ascending;
-                    }
-                    else
-                    {
-                        Sorting = SortOrder.Ascending;
-                    }
-                    this.Sort();
-
-                    if (ColumnReordered != null)
-                        ColumnReordered(this, new ColumnReorderedEventArgs(SortingColumnIndex, actioncolumn, Columns[actioncolumn]));
-
-                    SortingColumnIndex = actioncolumn;
-                }
-                if (ColumnClick != null)
-                    ColumnClick(this, new ColumnClickEventArgs((int)btn.ActionTargetValue));
-            }
-        }
-
-        private void Override_DrawnBackground(object o, DrawnArgs args)
-        {
-            Cairo.Rectangle rec = args.Cr.ClipExtents();
-            if (rec.Width > 10 && SortingColumnIndex > -1)
-            {
-                LabelBase ws = (LabelBase)o;
-                if (ws.Data["ColumnIndex"].ToString() == SortingColumnIndex.ToString())
-                {
-                    if (Sorting != SortOrder.None)
-                    {
-                        Cairo.Context ctx = args.Cr;
-                        ctx.Save();
-                        ctx.ResetClip();
-                        ctx.Rectangle(rec.X, rec.Y - 4, rec.Width, rec.Height + 4);
-                        ctx.Clip();
-                        ctx.Translate((int)rec.Width / 2 - 16, rec.Y - 5);
-                        ctx.Rotate(0.5 * Math.PI);
-                        Gdk.RGBA color = ws.StyleContext.GetColor(StateFlags.Normal);
-                        ctx.SetSourceRGBA(color.Red, color.Green, color.Blue, color.Alpha);
-                        //Serif,Impact,Sylfaen,Arial Black,Cambria,Candara,Arial
-                        ctx.SelectFontFace("Serif", Cairo.FontSlant.Normal, Cairo.FontWeight.Bold);
-                        ctx.SetFontSize(13);
-                        if (Sorting == SortOrder.Descending)
-                            ctx.ShowText("<");
-                        else if (Sorting == SortOrder.Ascending)
-                            ctx.ShowText(">");
-                        ctx.Stroke();
-                        ctx.Restore();
-                    }
-                }
-            }
-        }
-        private int SortingColumnIndex = -1;
         public bool Sorted { get; set; }
         public System.Windows.Forms.SortOrder Sorting { get; set; }
         public System.Windows.Forms.ListViewAlignment Alignment { get; set; }
@@ -275,7 +193,126 @@ namespace System.Windows.Forms
                 flowBoxContainer.Remove(group);
                 group.Dispose();
             }
+            _defaultGroup?.FlowBox?.Destroy();
+            _defaultGroup=null; 
         }
+        internal void NativeHeaderClear()
+        {
+            Clear();
+            foreach (var col in header.Children)
+            {
+                header.Remove(col);
+                col.Destroy();
+            }
+            header.Hide();
+        }
+        internal void NativeHeaderRemove(ColumnHeader column)
+        {
+            Clear();
+            if (column.DisplayIndex < header.Children.Length)
+            {
+                var headercol = header.Children[column.DisplayIndex];
+                header.Remove(headercol);
+                headercol.Destroy();
+            }
+        }
+        internal void NativeHeaderAdd(ColumnHeader col)
+        {
+            if (self.IsRealized)
+            {
+                LabelBase label = new LabelBase(col.Text) { Xalign = 0, Xpad = 5, WidthRequest = col.Width, MaxWidthChars = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.End, Ellipsize = Pango.EllipsizeMode.End, Wrap = false, LineWrap = false };
+                label.TooltipText = col.Text;
+                label.Markup = col.Text;
+                label.Data.Add("ColumnIndex", col.Index);
+                label.Override.DrawnBackground += Override_DrawnBackground;
+                var columbt = new Gtk.Button(label) { MarginStart = 0, WidthRequest = col.Width, HeightRequest = __headerheight, Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill };
+                columbt.Name = col.Name;
+                columbt.ActionTargetValue = new GLib.Variant(col.Index);
+                columbt.Data.Add("ColumnIndex", col.Index);
+                columbt.Clicked += Columbt_Clicked;
+                header.PackStart(columbt, false, false, 0);
+
+                header.ReorderChild(columbt, col.Index);
+
+                if (this.View == View.Details)
+                {
+                    headerView.HeightRequest = __headerheight;
+                    headerView.ShowAll();
+                }
+                else
+                {
+                    headerView.HeightRequest = 1;
+                }
+            }
+        }
+        private int SortingColumnIndex = -1;
+        private void Columbt_Clicked(object sender, EventArgs e)
+        {
+            //Console.WriteLine(((Gtk.Widget)sender).AllocatedWidth);
+            Gtk.Button btn = (Gtk.Button)sender;
+
+            if (this.HeaderStyle == ColumnHeaderStyle.Clickable)
+            {
+                int actioncolumn = (int)btn.ActionTargetValue;
+                if (this.Sorted == true)
+                {
+                    if (SortingColumnIndex == actioncolumn)
+                    {
+                        if (Sorting == SortOrder.Ascending)
+                            Sorting = SortOrder.Descending;
+                        else if (Sorting == SortOrder.Descending)
+                            Sorting = SortOrder.None;
+                        else
+                            Sorting = SortOrder.Ascending;
+                    }
+                    else
+                    {
+                        Sorting = SortOrder.Ascending;
+                    }
+                    this.Sort();
+
+                    if (ColumnReordered != null)
+                        ColumnReordered(this, new ColumnReorderedEventArgs(SortingColumnIndex, actioncolumn, Columns[actioncolumn]));
+
+                    SortingColumnIndex = actioncolumn;
+                }
+                if (ColumnClick != null)
+                    ColumnClick(this, new ColumnClickEventArgs((int)btn.ActionTargetValue));
+            }
+        }
+        private void Override_DrawnBackground(object o, DrawnArgs args)
+        {
+            Cairo.Rectangle rec = args.Cr.ClipExtents();
+            if (rec.Width > 10 && SortingColumnIndex > -1)
+            {
+                LabelBase ws = (LabelBase)o;
+                if (ws.Data["ColumnIndex"].ToString() == SortingColumnIndex.ToString())
+                {
+                    if (Sorting != SortOrder.None)
+                    {
+                        Cairo.Context ctx = args.Cr;
+                        ctx.Save();
+                        ctx.ResetClip();
+                        ctx.Rectangle(rec.X, rec.Y - 4, rec.Width, rec.Height + 4);
+                        ctx.Clip();
+                        ctx.Translate((int)rec.Width / 2 - 16, rec.Y - 5);
+                        ctx.Rotate(0.5 * Math.PI);
+                        Gdk.RGBA color = ws.StyleContext.GetColor(StateFlags.Normal);
+                        ctx.SetSourceRGBA(color.Red, color.Green, color.Blue, color.Alpha);
+                        //Serif,Impact,Sylfaen,Arial Black,Cambria,Candara,Arial
+                        ctx.SelectFontFace("Serif", Cairo.FontSlant.Normal, Cairo.FontWeight.Bold);
+                        ctx.SetFontSize(13);
+                        if (Sorting == SortOrder.Descending)
+                            ctx.ShowText("<");
+                        else if (Sorting == SortOrder.Ascending)
+                            ctx.ShowText(">");
+                        ctx.Stroke();
+                        ctx.Restore();
+                    }
+                }
+            }
+        }
+        
         internal void NativeUpdateText(ListViewItem item, string text)
         {
             if (item._flowBoxChild != null && item._flowBoxChild.Parent is Gtk.FlowBox flowBox)
@@ -618,6 +655,7 @@ namespace System.Windows.Forms
                             attributes.Insert(fg);
 
                         }
+                        lab.Xpad = 5;
                         lab.Attributes = attributes;
                         lab.MaxWidthChars = 100;
                         lab.Halign = Gtk.Align.Start;
@@ -663,6 +701,7 @@ namespace System.Windows.Forms
                             attributes.Insert(fg);
 
                         }
+                        lab.Xpad = 5;
                         lab.MaxWidthChars = 16;
                         lab.Halign = Gtk.Align.Center;
                         lab.Valign = Gtk.Align.Center;
@@ -786,7 +825,7 @@ namespace System.Windows.Forms
                 _flow.ActivateOnSingleClick = MultiSelect == false;
                 _flow.SortFunc = new Gtk.FlowBoxSortFunc((fbc1, fbc2) =>
                 {
-                    if (this.AllowColumnReorder && SortingColumnIndex > -1)
+                    if (SortingColumnIndex > -1)
                     {
                         if (this.Sorting == SortOrder.Ascending)
                             return fbc2.Data[SortingColumnIndex].ToString().CompareTo(fbc1.Data[SortingColumnIndex].ToString());
@@ -817,6 +856,11 @@ namespace System.Windows.Forms
                 if (position > -1)
                 {
                     flowBoxContainer.ReorderChild(hBox, position + 1);
+                }
+                if (self.IsRealized && Groups.Count > 0)
+                {
+                    hBox.ShowAll();
+                    DefaultGroup?._groupbox?.ShowAll();
                 }
             }
         }
@@ -954,16 +998,11 @@ namespace System.Windows.Forms
         [ListBindable(false)]
         public class ColumnHeaderCollection : List<ColumnHeader>
         {
+            ListView _owner;
             public ColumnHeaderCollection(ListView owner)
             {
-                owner.self.Realized += Self_Realized;
+                _owner = owner;
             }
-
-            private void Self_Realized(object sender, EventArgs e)
-            {
-                this.Sort(new Comparison<ColumnHeader>((a, b) => a.DisplayIndex.CompareTo(b.DisplayIndex)));
-            }
-
             public virtual ColumnHeader this[string key]
             {
                 get
@@ -983,14 +1022,28 @@ namespace System.Windows.Forms
 
             public virtual void RemoveByKey(string key)
             {
-                base.Remove(base.Find(o => o.Name == key));
+                ColumnHeader column = base.Find(o => o.Name == key);
+                base.Remove(column);
+                _owner.NativeHeaderRemove(column);
             }
-
+            public new void Clear()
+            {
+                base.Clear();
+                _owner.NativeHeaderClear();
+            } 
             public virtual int IndexOfKey(string key)
             {
                 return base.FindIndex(o => o.Name == key);
             }
-
+            public new virtual int Add(ColumnHeader header)
+            {
+                header._index = Count;
+                if (header.DisplayIndex == 0)
+                    header.DisplayIndex = header._index;
+                int index= ((IList)this).Add(header);
+                _owner.NativeHeaderAdd(header);
+                return index;
+            }
             public virtual ColumnHeader Add(string text, int width, HorizontalAlignment textAlign)
             {
                 return Add("", text, width, textAlign, "");
@@ -1025,9 +1078,7 @@ namespace System.Windows.Forms
                 header.TextAlign = textAlign;
                 header.ImageKey = imageKey;
                 header.ImageIndex = -1;
-                header._index = base.Count;
-                header.DisplayIndex = header._index;
-                base.Add(header);
+                this.Add(header);
                 return header;
             }
 
@@ -1039,23 +1090,16 @@ namespace System.Windows.Forms
                 header.Width = width;
                 header.TextAlign = textAlign;
                 header.ImageIndex = imageIndex;
-                header._index = base.Count;
-                header.DisplayIndex = header._index;
-                base.Add(header);
+                this.Add(header);
                 return header;
             }
 
             public virtual void AddRange(ColumnHeader[] values)
             {
-                int idx = 0;
                 foreach (ColumnHeader value in values)
                 {
-                    value._index = idx++;
-                    if (value.DisplayIndex == 0)
-                        value.DisplayIndex = value._index;
+                    this.Add(value);
                 }
-
-                base.AddRange(values);
             }
 
             public virtual bool ContainsKey(string key)
@@ -1063,7 +1107,23 @@ namespace System.Windows.Forms
                 return base.Contains(base.Find(o => o.Name == key));
             }
 
+            public new void Insert(int index, ColumnHeader header)
+            {
+                header._index = index;
+                if (header.DisplayIndex == 0)
+                    header.DisplayIndex = header._index;
 
+                base.Insert(index, header);
+                int idx = 0;
+                foreach(var item in this)
+                {
+                    header._index = idx;
+                    if (header.DisplayIndex == 0)
+                        header.DisplayIndex = header._index;
+                    idx++;
+                }
+                _owner.NativeHeaderAdd(header);
+            }
             public void Insert(int index, string text, int width, HorizontalAlignment textAlign)
             {
                 Insert(index, "", text, width, textAlign, null);
@@ -1100,7 +1160,7 @@ namespace System.Windows.Forms
                 header.Width = width;
                 header.TextAlign = textAlign;
                 header.ImageKey = imageKey;
-                base.Insert(index, header);
+                Insert(index, header);
             }
 
             public void Insert(int index, string key, string text, int width, HorizontalAlignment textAlign, int imageIndex)
@@ -1113,7 +1173,7 @@ namespace System.Windows.Forms
                 header.Width = width;
                 header.TextAlign = textAlign;
                 header.ImageIndex = imageIndex;
-                base.Insert(index, header);
+                Insert(index, header);
             }
         }
 

@@ -110,6 +110,12 @@ namespace System.Windows.Forms
             ImageKey = imageKey;
         }
 
+        public ColumnHeader(string text, int width) 
+        {
+            Text = text;
+            Width = width;
+        }
+
         //public void AutoResize(ColumnHeaderAutoResizeStyle headerAutoResize)
         //{
         //	throw null;
@@ -117,7 +123,7 @@ namespace System.Windows.Forms
 
         public object Clone()
         {
-            return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+            return null;
             //string data = System.Text.Json.JsonSerializer.Serialize(this,typeof(ColumnHeader));
             //return System.Text.Json.JsonSerializer.Deserialize<ColumnHeader>(data);
         }

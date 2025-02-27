@@ -27,8 +27,8 @@ namespace System.Windows.Forms
 
         public virtual bool Expanded
         {
-            get => false;
-            set => throw new NotSupportedException("SR.GridItemNotExpandable");
+            get;
+            set;
         }
 
         public abstract bool Select();

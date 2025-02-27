@@ -634,7 +634,7 @@ namespace System.Drawing.Drawing2D
 		/// <returns>The <see cref="T:System.Drawing.Drawing2D.GraphicsPath" /> this method creates, cast as an object.</returns>
 		public object Clone()
 		{
-            return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+            return null;
         }
 
         /// <summary>Starts a new figure without closing the current figure. All subsequent points added to the path are added to this new figure.</summary>

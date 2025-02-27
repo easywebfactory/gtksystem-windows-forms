@@ -535,7 +535,7 @@ namespace System.Windows.Forms
 
 		public virtual object Clone()
 		{
-            return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+            return null;
         }
 
 		public virtual void EnsureVisible()

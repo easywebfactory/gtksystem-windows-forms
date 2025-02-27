@@ -1,6 +1,11 @@
 
 ## 更新日志
 
+ #### 2025/2/26 V1.3.24.61
+	1. 更新TextBox\CheckBox\ListView\DataGridView
+	2. 修正、优化一些功能
+	3. 增加SwitchBox开发控件
+	4. 增加PropertyGrid控件
  #### 2025/2/9 V1.3.24.60
 	1. 更新ListView\TabControl，优化功能，修正ListView滚动条bug
 	2. 修正容器排版精度、机制

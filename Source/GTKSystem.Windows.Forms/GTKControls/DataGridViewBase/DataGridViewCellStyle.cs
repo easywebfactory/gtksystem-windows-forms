@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -52,7 +53,13 @@ namespace System.Windows.Forms
 
         public virtual void ApplyStyle(DataGridViewCellStyle dataGridViewCellStyle) { }
         public virtual DataGridViewCellStyle Clone() {
-            return ((ArrayList)(new ArrayList() { this }).Clone())[0] as DataGridViewCellStyle;
+            Type celltype = this.GetType();
+            DataGridViewCellStyle newobj = new DataGridViewCellStyle();
+            var propertys = celltype.GetProperties(Reflection.BindingFlags.Public | Reflection.BindingFlags.Instance);
+            foreach (PropertyInfo property in propertys)
+                if (property.CanRead && property.CanWrite)
+                    property.SetValue(newobj, property.GetValue(this));
+            return newobj;
         }
         public override bool Equals(object o) { return false; }
         public override int GetHashCode()

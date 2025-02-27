@@ -130,7 +130,7 @@ namespace System.Drawing.Drawing2D
 		/// <returns>The <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> this method creates, cast as an object.</returns>
 		public override object Clone()
 		{
-			return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+			return null;
 
         }
 

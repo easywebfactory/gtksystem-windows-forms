@@ -205,7 +205,7 @@ namespace System.Drawing
 		/// <returns>An <see cref="T:System.Object" /> that can be cast to a <see cref="T:System.Drawing.Pen" />.</returns>
 		public object Clone()
 		{
-            return ((ArrayList)(new ArrayList() { this }).Clone())[0];
+            return null;
         }
 
 		/// <summary>Releases all resources used by this <see cref="T:System.Drawing.Pen" />.</summary>

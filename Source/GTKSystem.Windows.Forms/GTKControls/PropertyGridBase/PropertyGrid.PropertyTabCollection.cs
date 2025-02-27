@@ -44,17 +44,17 @@ namespace System.Windows.Forms
 
             public void AddTabType(Type propertyTabType)
             {
-                _ownerPropertyGrid.AddTab(propertyTabType, PropertyTabScope.Global);
+              
             }
 
             public void AddTabType(Type propertyTabType, PropertyTabScope tabScope)
             {
-                _ownerPropertyGrid.AddTab(propertyTabType, tabScope);
+                
             }
 
             public void Clear(PropertyTabScope tabScope)
             {
-                _ownerPropertyGrid.ClearTabs(tabScope);
+                
             }
 
             void ICollection.CopyTo(Array dest, int index)
@@ -87,7 +87,7 @@ namespace System.Windows.Forms
 
             public void RemoveTabType(Type propertyTabType)
             {
-                _ownerPropertyGrid.RemoveTab(propertyTabType);
+          
             }
         }
     }
