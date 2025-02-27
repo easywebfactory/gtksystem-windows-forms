@@ -4,8 +4,6 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
-using System.IO;
-
 namespace System.Windows.Forms
 {
     public sealed class SaveFileDialog : FileDialog

@@ -5,11 +5,8 @@
  * author:chenhongjin
  */
 
-using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 
 namespace System.Windows.Forms
 {
@@ -51,15 +48,18 @@ namespace System.Windows.Forms
         }
         protected override bool RunDialog(IWin32Window owner)
         {
-            if (owner != null && owner is Form ownerform)
+            if (colorChooserDialog == null)
             {
-                colorChooserDialog = new Gtk.ColorChooserDialog("选择颜色", ownerform.self);
-                colorChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
-            }
-            else
-            {
-                colorChooserDialog = new Gtk.ColorChooserDialog("选择颜色", null);
-                colorChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
+                if (owner != null && owner is Form ownerform)
+                {
+                    colorChooserDialog = new Gtk.ColorChooserDialog("选择颜色", ownerform.self);
+                    colorChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
+                }
+                else
+                {
+                    colorChooserDialog = new Gtk.ColorChooserDialog("选择颜色", null);
+                    colorChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
+                }
             }
             colorChooserDialog.KeepAbove = true;
             if (Color.Name != "0")
@@ -67,10 +67,9 @@ namespace System.Windows.Forms
             if (FullOpen && AllowFullOpen)
                 colorChooserDialog.Fullscreen();
             int res = colorChooserDialog.Run();
-            colorChooserDialog.ParentWindow = null;
-            colorChooserDialog.HideOnDelete();
             Gdk.RGBA colorSelection = colorChooserDialog.Rgba;
             this.Color = Color.FromArgb((int)(colorSelection.Alpha * 255), (int)Math.Round(colorSelection.Red * 255, 0), (int)Math.Round(colorSelection.Green * 255, 0), (int)Math.Round(colorSelection.Blue * 255, 0));
+            colorChooserDialog.HideOnDelete();
             return res == -5;
         }
  
@@ -79,7 +78,7 @@ namespace System.Windows.Forms
         {
             if (colorChooserDialog != null)
             {
-                colorChooserDialog.Dispose();
+                colorChooserDialog.Destroy();
                 colorChooserDialog = null;
             }
             base.Dispose(disposing);
