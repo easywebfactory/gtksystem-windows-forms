@@ -384,15 +384,17 @@ namespace System.Windows.Forms
         [Localizable(true)]
 
         public string ToolTipText { get; set; }
-        private DataGridViewColumnSortMode _SortMode;
+        private DataGridViewColumnSortMode _SortMode = DataGridViewColumnSortMode.Automatic;
         public DataGridViewColumnSortMode SortMode
         {
             get => _SortMode;
             set
             {
                 _SortMode = value;
-                if (value == DataGridViewColumnSortMode.Automatic)
-                    base.SortIndicator = true;
+                if (value == DataGridViewColumnSortMode.NotSortable)
+                    base.SortColumnId = -1;
+                else
+                    base.SortColumnId = _index;
             }
         }
         [Browsable(false)]
@@ -495,8 +497,15 @@ namespace System.Windows.Forms
         public override string ToString() { return this.GetType().Name; }
         //protected override void Dispose(bool disposing) {  }
         private int _index;
-        public int Index { get => _index; internal set { _index = value; base.SortColumnId = value; foreach (var cell in base.Cells) { base.AddAttribute(cell, "cellvalue", _index); } } }
-
+        public int Index
+        {
+            get => _index;
+            internal set
+            {
+                _index = value; if (_SortMode != DataGridViewColumnSortMode.NotSortable) { base.SortColumnId = value; }
+                foreach (var cell in base.Cells) { base.AddAttribute(cell, "cellvalue", _index); }
+            }
+        }
     }
 
 

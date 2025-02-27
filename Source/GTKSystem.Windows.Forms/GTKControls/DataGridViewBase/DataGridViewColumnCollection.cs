@@ -135,7 +135,8 @@ namespace System.Windows.Forms
             {
                 __owner.GridView.Model = __owner.Store;
             }
-            for(int i=0;i < __owner.Store.NColumns; i++)
+            __owner.Store.DefaultSortFunc = new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) => { return 0; });
+            for (int i=0;i < __owner.Store.NColumns; i++)
             {
                 __owner.Store.SetSortFunc(i, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
                 {
