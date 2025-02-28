@@ -172,7 +172,7 @@ namespace System.Windows.Forms
             get => _DataSource;
             set {
                 _DataSource = value;
-                if (self.IsVisible)
+                if (self.IsRealized)
                 {
                     OnSetDataSource();
                 }
