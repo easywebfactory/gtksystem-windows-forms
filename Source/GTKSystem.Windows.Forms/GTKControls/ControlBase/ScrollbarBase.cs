@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class ScrollbarBase<T>: Gtk.Scrollbar, IGtkControl
+public sealed class ScrollbarBase<T>: Gtk.Scrollbar, IControlGtk
 {
     [Obsolete]
     public new static GType GType => typeof(T) == typeof(Gtk.HScrollbar) ? Gtk.HScrollbar.GType : Gtk.VScrollbar.GType;

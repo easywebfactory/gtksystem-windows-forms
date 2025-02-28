@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class FormBase : Dialog, IGtkControl, IScrollableBoxBase, IWin32Window
+public sealed class FormBase : Dialog, IControlGtk, IScrollableBoxBase, IWin32Window
 {
     public new Window? Parent { get; }
     public readonly ScrolledWindow scrollView = new();

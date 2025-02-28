@@ -7,29 +7,30 @@
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+[DesignerCategory("Component")]
+public partial class SwitchBox : Control
 {
-    [DesignerCategory("Component")]
-    public partial class SwitchBox : Control
+    public readonly SwitchBoxBase self = new();
+    public override object GtkControl => self;
+    public SwitchBox() {
+        self.ButtonReleaseEvent += Self_ButtonReleaseEvent;
+    }
+    private void Self_ButtonReleaseEvent(object o, Gtk.ButtonReleaseEventArgs args)
     {
-        public readonly SwitchBoxBase self = new SwitchBoxBase();
-        public override object GtkControl => self;
-        public SwitchBox() {
-            self.ButtonReleaseEvent += Self_ButtonReleaseEvent;
-        }
-        private void Self_ButtonReleaseEvent(object o, Gtk.ButtonReleaseEventArgs args)
-        {
+        if (CheckedChanged != null && self.IsVisible)
+            CheckedChanged(this, EventArgs.Empty);
+    }
+    public override string Text { get => self.TooltipText;
+        set => self.TooltipText = value;
+    }
+    public  bool Checked { get => self.Active;
+        set { 
+            self.Active = value;
             if (CheckedChanged != null && self.IsVisible)
                 CheckedChanged(this, EventArgs.Empty);
-        }
-        public override string Text { get { return self.TooltipText; } set { self.TooltipText = value; } }
-        public  bool Checked { get { return self.Active; } 
-            set { 
-                self.Active = value;
-                if (CheckedChanged != null && self.IsVisible)
-                    CheckedChanged(this, EventArgs.Empty);
-            } 
-        }
-        public event EventHandler CheckedChanged;
+        } 
     }
+    public event EventHandler? CheckedChanged;
 }

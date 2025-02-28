@@ -185,7 +185,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
         {
             var maxsize = Math.Max(DiffLeft + pbrush.Rectangle.Right, DiffTop + pbrush.Rectangle.Bottom); //渐变角度定为方形45度
             using var gradient = new LinearGradient(DiffLeft + pbrush.Rectangle.Left, DiffTop + pbrush.Rectangle.Top, maxsize, maxsize);
-            var linearcount = pbrush.SurroundColors?.Length??0;
+            var linearcount = pbrush.SurroundColors?.Length ?? 0;
             var centeridx = Math.Floor((double)linearcount / 2);
             var idx = 0;
             if (pbrush.SurroundColors != null)
@@ -244,24 +244,24 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
     {
     }
 
-		public void Dispose()
-		{
-		}
-        private void DrawArcCore(Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
-        {
-            this.context.Save();
-            this.SetTranslateWithDifference(0, 0);
-            this.SetSourceColor(pen);
-            this.context.LineWidth = pen.Width;
-            this.context.LineJoin = Cairo.LineJoin.Round;
-            this.context.NewPath();
-			double radius = Math.Min(width / 2, height / 2);
-            this.context.Arc(x + radius, y + radius, radius, Math.PI * startAngle / 180, Math.PI * (startAngle + sweepAngle) / 180);
-            //this.context.ArcNegative(x, y, Math.Min(width / 2, height / 2), Math.PI * startAngle / 180, Math.PI * sweepAngle / 180); //相反位置
-            context.Stroke();
-            context.Restore();
-        }
+    public void Dispose()
+    {
     }
+    private void DrawArcCore(Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
+    {
+        context.Save();
+        SetTranslateWithDifference(0, 0);
+        SetSourceColor(pen);
+        context.LineWidth = pen.Width;
+        context.LineJoin = Cairo.LineJoin.Round;
+        context.NewPath();
+        double radius = Math.Min(width / 2, height / 2);
+        context.Arc(x + radius, y + radius, radius, Math.PI * startAngle / 180, Math.PI * (startAngle + sweepAngle) / 180);
+        //this.context.ArcNegative(x, y, Math.Min(width / 2, height / 2), Math.PI * startAngle / 180, Math.PI * sweepAngle / 180); //相反位置
+        context.Stroke();
+        context.Restore();
+    }
+
     public void DrawArc(Pen pen, Rectangle rect, float startAngle, float sweepAngle)
     {
         DrawArcCore(pen, rect.X, rect.Y, rect.Width, rect.Height, startAngle, sweepAngle);
@@ -516,17 +516,17 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
 
     public void DrawImage(Image? image, Point point)
     {
-        DrawImageScaledCore(image, new Rectangle(point.X, point.Y, image?.Width??0, image?.Height??0), 0, 0, image?.Width??0, image?.Height??0, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
+        DrawImageScaledCore(image, new Rectangle(point.X, point.Y, image?.Width ?? 0, image?.Height ?? 0), 0, 0, image?.Width ?? 0, image?.Height ?? 0, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
     }
 
     public void DrawImage(Image? image, PointF point)
     {
-        DrawImageScaledCore(image, new Rectangle((int)point.X, (int)point.Y, image?.Width??0, image?.Height??0), 0, 0, image?.Width ?? 0, image?.Height ?? 0, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
+        DrawImageScaledCore(image, new Rectangle((int)point.X, (int)point.Y, image?.Width ?? 0, image?.Height ?? 0), 0, 0, image?.Width ?? 0, image?.Height ?? 0, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
     }
 
     public void DrawImage(Image? image, PointF[] destPoints)
     {
-        DrawImageScaledCore(image, new Rectangle((int)destPoints[0].X, (int)destPoints[0].Y, (int)destPoints[1].X - (int)destPoints[0].X, (int)destPoints[2].Y - (int)destPoints[0].Y), 0, 0, image?.Width??0, image?.Height??0, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
+        DrawImageScaledCore(image, new Rectangle((int)destPoints[0].X, (int)destPoints[0].Y, (int)destPoints[1].X - (int)destPoints[0].X, (int)destPoints[2].Y - (int)destPoints[0].Y), 0, 0, image?.Width ?? 0, image?.Height ?? 0, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
     }
     private void DrawImageUnscaledCore(Image image, int x, int y, int width, int height, bool clipped = false)
     {
@@ -716,7 +716,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
 
     public void DrawImage(Image? image, int x, int y)
     {
-        DrawImageScaledCore(image, new Rectangle(x, y, image?.Width??0, image?.Height??0), 0, 0, image?.Width ?? 0, image?.Height??0, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
+        DrawImageScaledCore(image, new Rectangle(x, y, image?.Width ?? 0, image?.Height ?? 0), 0, 0, image?.Width ?? 0, image?.Height ?? 0, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
     }
 
     public void DrawImage(Image? image, int x, int y, Rectangle srcRect, GraphicsUnit srcUnit)
@@ -731,7 +731,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
 
     public void DrawImage(Image? image, float x, float y)
     {
-        DrawImageScaledCore(image, new Rectangle((int)x, (int)y, image?.Width ?? 0, image?.Height ?? 0), x, y, image?.Width??0, image?.Height ?? 0, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
+        DrawImageScaledCore(image, new Rectangle((int)x, (int)y, image?.Width ?? 0, image?.Height ?? 0), x, y, image?.Width ?? 0, image?.Height ?? 0, GraphicsUnit.Pixel, null, null, IntPtr.Zero);
     }
 
     public void DrawImage(Image? image, float x, float y, RectangleF srcRect, GraphicsUnit srcUnit)
@@ -865,7 +865,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
                 }
                 else if (o is GraphicsPath.ClosedCurveMode closedcurve)
                 {
-                    context.CurveTo(closedcurve.Points?[0].X??0, closedcurve.Points?[0].Y??0, closedcurve.Points?[1].X??0,
+                    context.CurveTo(closedcurve.Points?[0].X ?? 0, closedcurve.Points?[0].Y ?? 0, closedcurve.Points?[1].X ?? 0,
                         closedcurve.Points?[1].Y ?? 0, closedcurve.Points?[2].X ?? 0, closedcurve.Points?[2].Y ?? 0);
                     context.FillRule = closedcurve.Fillmode == FillMode.Winding ? FillRule.Winding : FillRule.EvenOdd;
                     //this.context.Fill();
@@ -874,9 +874,9 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
                 }
                 else if (o is GraphicsPath.CurveMode curve)
                 {
-                    context.CurveTo(curve.Points?[0].X??0 + curve.Offset, curve.Points?[0].Y??0 + curve.Offset,
-                        curve.Points?[1].X??0 + curve.Offset, curve.Points?[1].Y??0 + curve.Offset,
-                        curve.Points?[2].X??0 + curve.Offset, curve.Points?[2].Y??0 + curve.Offset);
+                    context.CurveTo(curve.Points?[0].X ?? 0 + curve.Offset, curve.Points?[0].Y ?? 0 + curve.Offset,
+                        curve.Points?[1].X ?? 0 + curve.Offset, curve.Points?[1].Y ?? 0 + curve.Offset,
+                        curve.Points?[2].X ?? 0 + curve.Offset, curve.Points?[2].Y ?? 0 + curve.Offset);
                 }
                 else if (o is GraphicsPath.EllipseMode ellipse)
                 {
@@ -901,7 +901,7 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
                 }
                 else if (o is GraphicsPath.LinesMode lines)
                 {
-                    context.MoveTo(lines.Points?[0].X??0, lines.Points?[0].Y??0);
+                    context.MoveTo(lines.Points?[0].X ?? 0, lines.Points?[0].Y ?? 0);
                     if (lines.Points != null)
                     {
                         foreach (var p in lines.Points)
@@ -1013,10 +1013,10 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
 
     private Cairo.Matrix ConvertToMatrix(Matrix? matrix)
     {
-        var cairoMatrix = new Cairo.Matrix(matrix?.M11??0, matrix?.M12??0, matrix?.M21??0, matrix?.M22??0, matrix?.Dx??0, matrix?.Dy??0);
-        cairoMatrix.Init(matrix?.M11??0, matrix?.M12??0, matrix?.M21??0, matrix?.M22??0, matrix?.Dx??0, matrix?.Dy??0);
+        var cairoMatrix = new Cairo.Matrix(matrix?.M11 ?? 0, matrix?.M12 ?? 0, matrix?.M21 ?? 0, matrix?.M22 ?? 0, matrix?.Dx ?? 0, matrix?.Dy ?? 0);
+        cairoMatrix.Init(matrix?.M11 ?? 0, matrix?.M12 ?? 0, matrix?.M21 ?? 0, matrix?.M22 ?? 0, matrix?.Dx ?? 0, matrix?.Dy ?? 0);
 
-        cairoMatrix.Translate(matrix?.OffsetX??0, matrix?.OffsetY ?? 0);
+        cairoMatrix.Translate(matrix?.OffsetX ?? 0, matrix?.OffsetY ?? 0);
         cairoMatrix.Scale(matrix?.ScaleX ?? 0, matrix?.ScaleY ?? 0);
         cairoMatrix.Rotate(matrix?.Angle ?? 0);
         var multiplyValue = matrix?.MultiplyValue;
@@ -1025,29 +1025,28 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
             cairoMatrix.Multiply(ConvertToMatrix(multiplyValue));
         }
 
-        if (matrix?.InvertValue??false)
+        if (matrix?.InvertValue ?? false)
             cairoMatrix.Invert();
 
-			return CairoMatrix;
-        }
-        private void DrawPieCore(bool isFill, Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
-        {
-            this.context.Save();
-            this.SetTranslateWithDifference(0, 0);
-            this.SetSourceColor(pen);
-            this.context.LineWidth = pen.Width;
-            this.context.NewPath();
-            double radius = Math.Min(width / 2, height / 2);
-            this.context.MoveTo(x + radius, y + radius);
-            this.context.Arc(x + radius, y + radius, radius, Math.PI * startAngle / 180, Math.PI * (startAngle + sweepAngle) / 180);
-            this.context.LineTo(x + radius, y + radius);
-            this.context.ClosePath();
-            if (isFill)
-                context.Fill();
-            else
-                context.Stroke();
-            context.Restore();
-        }
+        return cairoMatrix;
+    }
+    private void DrawPieCore(bool isFill, Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
+    {
+        context.Save();
+        SetTranslateWithDifference(0, 0);
+        SetSourceColor(pen);
+        context.LineWidth = pen.Width;
+        context.NewPath();
+        double radius = Math.Min(width / 2, height / 2);
+        context.MoveTo(x + radius, y + radius);
+        context.Arc(x + radius, y + radius, radius, Math.PI * startAngle / 180, Math.PI * (startAngle + sweepAngle) / 180);
+        context.LineTo(x + radius, y + radius);
+        context.ClosePath();
+        if (isFill)
+            context.Fill();
+        else
+            context.Stroke();
+        context.Restore();
     }
     public void DrawPie(Pen pen, Rectangle rect, float startAngle, float sweepAngle)
     {
@@ -1446,15 +1445,15 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
         FillPie(brush, rect.X, rect.Y, rect.Width, rect.Height, startAngle, sweepAngle);
     }
 
-		public void FillPie(Brush brush, int x, int y, int width, int height, int startAngle, int sweepAngle)
-		{
-            DrawPieCore(true, new Pen(brush, 0), x, y, width, height, startAngle, sweepAngle);
-        }
+    public void FillPie(Brush brush, int x, int y, int width, int height, int startAngle, int sweepAngle)
+    {
+        DrawPieCore(true, new Pen(brush, 0), x, y, width, height, startAngle, sweepAngle);
+    }
 
-		public void FillPie(Brush brush, float x, float y, float width, float height, float startAngle, float sweepAngle)
-		{
-            DrawPieCore(true, new Pen(brush, 0), x, y, width, height, startAngle, sweepAngle);
-        }
+    public void FillPie(Brush brush, float x, float y, float width, float height, float startAngle, float sweepAngle)
+    {
+        DrawPieCore(true, new Pen(brush, 0), x, y, width, height, startAngle, sweepAngle);
+    }
 
     public void FillPolygon(Brush? brush, PointF[] points)
     {
@@ -1731,8 +1730,8 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
 
         if (context != null)
         {
-            context.SelectFontFace(family, font?.Italic??false ? FontSlant.Italic : FontSlant.Normal,
-                font?.Bold?? false ? FontWeight.Bold : FontWeight.Normal);
+            context.SelectFontFace(family, font?.Italic ?? false ? FontSlant.Italic : FontSlant.Normal,
+                font?.Bold ?? false ? FontWeight.Bold : FontWeight.Normal);
             context.SetFontSize(textSize);
             var extents = context.TextExtents(text);
             return new SizeF((float)Math.Max(width, extents.Width), (float)extents.Height);

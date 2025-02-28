@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class PictureBoxBase : Gtk.Image, IGtkControl
+public sealed class PictureBoxBase : Gtk.Image, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public PictureBoxBase()

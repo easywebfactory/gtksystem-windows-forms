@@ -12,7 +12,7 @@ namespace System.Windows.Forms;
 [ComVisible(true)]
 public class PropertyValueChangedEventArgs : EventArgs
 {
-    public PropertyValueChangedEventArgs(GridItem changedItem, object oldValue)
+    public PropertyValueChangedEventArgs(GridItem changedItem, object? oldValue)
     {
         ChangedItem = changedItem;
         OldValue = oldValue;
@@ -20,5 +20,5 @@ public class PropertyValueChangedEventArgs : EventArgs
 
     public GridItem ChangedItem { get; }
 
-    public object OldValue { get; }
+    public object? OldValue { get; }
 }

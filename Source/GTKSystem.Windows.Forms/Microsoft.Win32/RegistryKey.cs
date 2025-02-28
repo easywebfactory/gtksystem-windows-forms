@@ -3,5 +3,3 @@
     internal class RegistryKey
     {
     }
-#endif
-}

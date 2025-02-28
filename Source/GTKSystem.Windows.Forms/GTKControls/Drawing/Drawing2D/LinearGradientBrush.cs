@@ -1,5 +1,3 @@
-using System.Collections;
-
 namespace System.Drawing.Drawing2D;
 
 /// <summary>Encapsulates a <see cref="T:System.Drawing.Brush" /> with a linear gradient. This class cannot be inherited.</summary>
@@ -177,7 +175,7 @@ public sealed class LinearGradientBrush : Brush
 
 		/// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" />.</summary>
 		/// <returns>The <see cref="T:System.Drawing.Drawing2D.LinearGradientBrush" /> this method creates, cast as an object.</returns>
-		public override object Clone()
+		public override object? Clone()
 		{
             return null;
         }

@@ -51,7 +51,7 @@ internal static class MultitargetUtil
         return ex is NullReferenceException
                || ex is StackOverflowException
                || ex is OutOfMemoryException
-               || ex is Threading.ThreadAbortException
+               || ex is ThreadAbortException
 #pragma warning disable CS0618 // Type or member is obsolete
                || ex is ExecutionEngineException
 #pragma warning restore CS0618 // Type or member is obsolete

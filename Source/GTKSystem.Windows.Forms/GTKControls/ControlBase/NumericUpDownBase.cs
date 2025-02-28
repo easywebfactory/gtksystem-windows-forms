@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class NumericUpDownBase : Gtk.SpinButton, IGtkControl
+public sealed class NumericUpDownBase : Gtk.SpinButton, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public NumericUpDownBase() : base(0, 100, 1)

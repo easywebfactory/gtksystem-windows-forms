@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class LinkLabelBase : Gtk.LinkButton, IGtkControl
+public sealed class LinkLabelBase : Gtk.LinkButton, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public LinkLabelBase() : base("")

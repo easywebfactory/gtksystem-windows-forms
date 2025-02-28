@@ -1,16 +1,22 @@
 ﻿using System.Collections;
 using System.ComponentModel;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+[ListBindable(false)]
+public class DataGridViewCellCollection : BaseCollection, IList
 {
-    [ListBindable(false)]
-    public class DataGridViewCellCollection : BaseCollection, IList, ICollection, IEnumerable
+    private readonly ArrayList items = new();
+    protected override ArrayList List => items;
+    private DataGridViewRow? owner;
+
+    public DataGridViewRow? Row
     {
-        private ArrayList items = new ArrayList();
-        protected override ArrayList List => items;
-        private DataGridViewRow owner;
-        public DataGridViewRow Row { set => owner = value; get => owner; }
-        public bool IsFixedSize => false;
+        set => owner = value;
+        get => owner;
+    }
+
+    public bool IsFixedSize => false;
 
     object IList.this[int index]
     {
@@ -33,9 +39,11 @@ namespace System.Windows.Forms
             {
                 throw new ArgumentNullException("value");
             }
+
             items[index] = value;
         }
     }
+
     public DataGridViewCell this[string columnName]
     {
         get
@@ -69,22 +77,27 @@ namespace System.Windows.Forms
             this[dataGridViewColumn.Index] = value;
         }
     }
+
     public DataGridViewCellCollection(DataGridViewRow? dataGridViewRow)
     {
         owner = dataGridViewRow;
     }
+
     void IList.Clear()
     {
         Clear();
     }
+
     bool IList.Contains(object? value)
     {
         return items.Contains(value);
     }
+
     int IList.IndexOf(object? value)
     {
         return items.IndexOf(value);
     }
+
     int IList.Add(object? value)
     {
         var dataGridViewCell = value as DataGridViewCell;
@@ -95,43 +108,60 @@ namespace System.Windows.Forms
 
         return -1;
     }
+
     void IList.Insert(int index, object value)
     {
         Insert(index, (DataGridViewCell)value);
     }
+
     void IList.Remove(object? value)
     {
         var dataGridViewCell = value as DataGridViewCell;
         if (dataGridViewCell != null)
         {
-            Remove((DataGridViewCell)value);
-        }
-        void IList.RemoveAt(int index)
-        {
-            RemoveAt(index);
-        }
-        void ICollection.CopyTo(Array array, int index)
-        {
-            items.CopyTo(array, index);
-        }
-        public override IEnumerator GetEnumerator()
-        {
-            return items.GetEnumerator();
-        }
-        //*****************
-        public virtual int Add(DataGridViewCell dataGridViewCell)
-        {
-            if (owner.DataGridView != null)
+            var gridViewCell = (DataGridViewCell?)value;
+            if (gridViewCell != null)
             {
-                throw new InvalidOperationException("DataGridViewCellCollection_OwningRowAlreadyBelongsToDataGridView");
+                Remove(gridViewCell);
             }
+        }
+    }
 
-        if (dataGridViewCell.OwningRow != null)
+    void IList.RemoveAt(int index)
+    {
+        RemoveAt(index);
+    }
+
+    void ICollection.CopyTo(Array array, int index)
+    {
+        items.CopyTo(array, index);
+    }
+
+    public override IEnumerator GetEnumerator()
+    {
+        return items.GetEnumerator();
+    }
+
+    //*****************
+    public virtual int Add(DataGridViewCell? dataGridViewCell)
+    {
+        if (owner?.DataGridView != null)
+        {
+            throw new InvalidOperationException("DataGridViewCellCollection_OwningRowAlreadyBelongsToDataGridView");
+        }
+
+        if (dataGridViewCell?.OwningRow != null)
         {
             throw new InvalidOperationException("DataGridViewCellCollection_CellAlreadyBelongsToDataGridViewRow");
         }
-        dataGridViewCell.OwningRowInternal = owner;
-        return items.Add(dataGridViewCell);
+
+        if (dataGridViewCell != null)
+        {
+            dataGridViewCell.OwningRowInternal = owner;
+            return items.Add(dataGridViewCell);
+        }
+
+        return -1;
     }
 
     public virtual void AddRange(params DataGridViewCell[] dataGridViewCells)
@@ -147,6 +177,7 @@ namespace System.Windows.Forms
             dataGridViewCell2.OwningRowInternal = owner;
         }
     }
+
     public void AddRange(IEnumerable<DataGridViewCell> dataGridViewCells)
     {
         if (dataGridViewCells == null)
@@ -160,6 +191,7 @@ namespace System.Windows.Forms
             items.Add(dataGridViewCell2);
         }
     }
+
     public override int Count => items.Count;
 
     public virtual void Clear()
@@ -176,22 +208,26 @@ namespace System.Windows.Forms
 
         items.Clear();
     }
+
     public void CopyTo(DataGridViewCell[] array, int index)
     {
         items.CopyTo(array, index);
     }
+
     internal List<TOutput> ConvertAll<TOutput>(Converter<DataGridViewCell, TOutput> converter)
     {
-        List <TOutput> data = [];
+        List<TOutput> data = [];
         foreach (DataGridViewCell cell in items)
             data.Add(converter(cell));
         return data;
     }
+
     public virtual bool Contains(DataGridViewCell dataGridViewCell)
     {
         var num = items.IndexOf(dataGridViewCell);
         return num != -1;
     }
+
     public int IndexOf(DataGridViewCell dataGridViewCell)
     {
         return items.IndexOf(dataGridViewCell);
@@ -238,6 +274,7 @@ namespace System.Windows.Forms
 
         RemoveAt(num);
     }
+
     public virtual void RemoveAt(int index)
     {
         if (owner?.DataGridView != null)

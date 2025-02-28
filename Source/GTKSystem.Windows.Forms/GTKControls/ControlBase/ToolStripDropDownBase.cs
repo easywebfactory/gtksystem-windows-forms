@@ -2,7 +2,7 @@
 
 namespace System.Windows.Forms;
 
-public sealed class ToolStripDropDownBase : Gtk.Menu, IGtkControl
+public sealed class ToolStripDropDownBase : Gtk.Menu, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public ToolStripDropDownBase()

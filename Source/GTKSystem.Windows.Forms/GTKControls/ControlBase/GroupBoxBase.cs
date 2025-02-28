@@ -4,7 +4,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class GroupBoxBase : Frame, IGtkControl, IScrollableBoxBase
+public sealed class GroupBoxBase : Frame, IControlGtk, IScrollableBoxBase
 {
     public IGtkControlOverride Override { get; set; }
     public bool AutoScroll { get; set; }

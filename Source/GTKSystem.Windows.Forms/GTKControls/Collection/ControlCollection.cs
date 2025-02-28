@@ -137,7 +137,7 @@ public partial class Control
                         lay2.Put(widget, offset.X, offset.Y);
                     }
                 }
-                else if (ownerControl is Gtk.Layout lay3)
+                else if (ownerControl is Layout lay3)
                 {
                     if (item is Control con)
                     {

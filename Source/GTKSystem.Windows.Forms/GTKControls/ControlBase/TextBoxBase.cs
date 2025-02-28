@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class TextBoxBase : Gtk.Entry, IGtkControl
+public sealed class TextBoxBase : Gtk.Entry, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public TextBoxBase()

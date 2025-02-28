@@ -4,7 +4,7 @@ namespace System.Windows.Forms;
 
 public sealed class DataGridViewBase : ScrollableBoxBase
 {
-    internal Gtk.TreeView? gridView = new();
+    internal Gtk.TreeView? GridView = new();
     public DataGridViewBase()
     {
         Override = new GtkFormsControlOverride(this);
@@ -12,15 +12,15 @@ public sealed class DataGridViewBase : ScrollableBoxBase
         Override.BackColor = Drawing.Color.White;
         BorderWidth = 0;
         ShadowType = Gtk.ShadowType.Out;
-        if (gridView != null)
+        if (GridView != null)
         {
-            gridView.Valign = Gtk.Align.Start;
-            gridView.Halign = Gtk.Align.Start;
-            gridView.BorderWidth = 0;
-            gridView.EnableGridLines = Gtk.TreeViewGridLines.Both;
-            gridView.EnableTreeLines = true;
+            GridView.Valign = Gtk.Align.Start;
+            GridView.Halign = Gtk.Align.Start;
+            GridView.BorderWidth = 0;
+            GridView.EnableGridLines = Gtk.TreeViewGridLines.Both;
+            GridView.EnableTreeLines = true;
             AutoScroll = true;
-            Add(gridView);
+            Add(GridView);
         }
     }
 }

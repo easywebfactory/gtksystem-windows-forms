@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class ProgressBarBase : Gtk.LevelBar, IGtkControl
+public sealed class ProgressBarBase : Gtk.LevelBar, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public ProgressBarBase()

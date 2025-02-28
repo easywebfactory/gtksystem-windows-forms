@@ -239,9 +239,9 @@ public class Form : ContainerControl, IWin32Window
                                 self.Icon = Icon.Pixbuf;
                             else if (Icon.PixbufData != null)
                                 self.Icon = new Gdk.Pixbuf(Icon.PixbufData);
-                            else if (Icon.FileName != null && IO.File.Exists(Icon.FileName))
+                            else if (Icon.FileName != null && File.Exists(Icon.FileName))
                                 self.SetIconFromFile(Icon.FileName);
-                            else if (Icon.FileName != null && IO.File.Exists("Resources\\" + Icon.FileName))
+                            else if (Icon.FileName != null && File.Exists("Resources\\" + Icon.FileName))
                                 self.SetIconFromFile("Resources\\" + Icon.FileName);
                         }
                         var titlebar = (HeaderBar)self.Titlebar;

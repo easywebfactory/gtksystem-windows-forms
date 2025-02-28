@@ -5,40 +5,39 @@
  * author:chenhongjin
  */
 using System.ComponentModel;
-using System.Windows.Forms.GtkRender;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public class DataGridViewColumnCollection : List<DataGridViewColumn>
 {
-    public class DataGridViewColumnCollection : List<DataGridViewColumn>
+    public event CollectionChangeEventHandler? CollectionChanged;
+    private readonly DataGridView? owner;
+    private readonly Gtk.TreeView? GridView;
+    public DataGridViewColumnCollection(DataGridView? dataGridView)
     {
-        public event CollectionChangeEventHandler CollectionChanged;
-        private DataGridView __owner;
-        private Gtk.TreeView GridView;
-        public DataGridViewColumnCollection(DataGridView dataGridView)
-        {
-            __owner = dataGridView;
-            GridView = dataGridView.GridView;
-        }
+        owner = dataGridView;
+        GridView = dataGridView?.GridView;
+    }
 
     public virtual DataGridViewColumn this[string columnName] { get { return Find(m => m.Name == columnName); } }
 
-        protected DataGridView DataGridView { get { return __owner; } }
-        
-        public void Add(string columnName, string headerText)
-        {
-            DataGridViewColumn column = new DataGridViewColumn() { Name = columnName, HeaderText = headerText };
-            Add(column);
-        }
-        public new void Add(DataGridViewColumn column)
-        {
-            column.DataGridView = __owner;
-            column.Index = Count;
-            column.DisplayIndex = column.Index;
-            column.SetGridViewDefaultStyle(__owner.DefaultCellStyle);
+    protected DataGridView? DataGridView => owner;
 
-            DataGridViewCellStyle _cellStyle = column.DefaultCellStyle;
-            if (__owner.ColumnHeadersDefaultCellStyle != null)
-                _cellStyle = __owner.ColumnHeadersDefaultCellStyle;
+    public void Add(string columnName, string headerText)
+    {
+        var column = new DataGridViewColumn() { Name = columnName, HeaderText = headerText };
+        Add(column);
+    }
+    public new void Add(DataGridViewColumn column)
+    {
+        column.DataGridView = owner;
+        column.Index = Count;
+        column.DisplayIndex = column.Index;
+        column.SetGridViewDefaultStyle(owner?.DefaultCellStyle);
+
+        var _cellStyle = column.DefaultCellStyle;
+        if (owner?.ColumnHeadersDefaultCellStyle != null)
+            _cellStyle = owner.ColumnHeadersDefaultCellStyle;
 
         if (_cellStyle != null)
         {
@@ -82,86 +81,103 @@ namespace System.Windows.Forms
                     column.Alignment = 1.0f;
                     break;
 
-                    default:
-                        column.Alignment = 0f;
-                        break;
-                }
+                default:
+                    column.Alignment = 0f;
+                    break;
             }
+        }
 
-            base.Add(column);
-            if (__owner.self.IsRealized)
-            {
-                Invalidate();
-            }
-            GridView.AppendColumn(column);
-            OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, column));
-        }
-        public new void AddRange(IEnumerable<DataGridViewColumn> columns)
+        base.Add(column);
+        if (owner?.self.IsRealized??false)
         {
-            foreach (DataGridViewColumn column in columns)
-            {
-                Add(column);
-            }
+            Invalidate();
         }
-        public new bool Remove(DataGridViewColumn column)
+        GridView?.AppendColumn(column);
+        OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, column));
+    }
+    public new void AddRange(IEnumerable<DataGridViewColumn> columns)
+    {
+        foreach (var column in columns)
         {
-            __owner.GridView.RemoveColumn(column);
-            bool ir= base.Remove(column);
-            OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Remove, column));
-            return ir;
+            Add(column);
         }
-        public new void RemoveAt(int index)
+    }
+    public new bool Remove(DataGridViewColumn column)
+    {
+        if (owner != null)
         {
-            this.Remove(this[index]);
+            owner.GridView?.RemoveColumn(column);
         }
-        public new void Clear()
+
+        var ir= base.Remove(column);
+        OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Remove, column));
+        return ir;
+    }
+    public new void RemoveAt(int index)
+    {
+        Remove(this[index]);
+    }
+    public new void Clear()
+    {
+        base.Clear();
+        if (GridView != null)
         {
-            base.Clear();
             foreach (var wik in GridView.Columns)
                 GridView.RemoveColumn(wik);
-
-            OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, __owner));
         }
-        public void Invalidate()
+
+        OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, owner));
+    }
+    public void Invalidate()
+    {
+        if (Count > owner?.Store.NColumns)
         {
-            if (Count > __owner.Store.NColumns)
+            object[] columnTypes = new object[Count];
+            owner.Store.Clear();
+            owner.Store = new Gtk.TreeStore(Array.ConvertAll(columnTypes, o => typeof(DataGridViewCell)));
+            if (owner.GridView != null)
             {
-                object[] columnTypes = new object[Count];
-                __owner.Store.Clear();
-                __owner.Store = new Gtk.TreeStore(Array.ConvertAll(columnTypes, o => typeof(DataGridViewCell)));
-                __owner.GridView.Model = __owner.Store;
+                owner.GridView.Model = owner.Store;
             }
-            else if (__owner.GridView.Model == null)
+        }
+        else if (owner?.GridView?.Model == null)
+        {
+            if (owner?.GridView != null)
             {
-                __owner.GridView.Model = __owner.Store;
+                owner.GridView.Model = owner.Store;
             }
-            for(int i=0;i < __owner.Store.NColumns; i++)
+        }
+        for(var i=0;i < (owner?.Store.NColumns??0); i++)
+        {
+            if (owner != null)
             {
-                __owner.Store.SetSortFunc(i, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
+                owner.Store.SetSortFunc(i, (m, t1, t2) =>
                 {
-                    ((Gtk.TreeStore)m).GetSortColumnId(out int sortid, out Gtk.SortType order);
-                    DataGridViewCell v1 = m.GetValue(t1, sortid) as DataGridViewCell;
-                    DataGridViewCell v2 = m.GetValue(t2, sortid) as DataGridViewCell;
+                    ((Gtk.TreeStore)m).GetSortColumnId(out var sortid, out _);
+                    var v1 = m.GetValue(t1, sortid) as DataGridViewCell;
+                    var v2 = m.GetValue(t2, sortid) as DataGridViewCell;
                     if (v1?.Value == null || v2?.Value == null)
                         return 0;
-                    else if(int.TryParse(v1.Value.ToString(), out int rv1) && int.TryParse(v2.Value.ToString(), out int rv2))
+                    if (int.TryParse(v1.Value.ToString(), out var rv1) &&
+                        int.TryParse(v2.Value.ToString(), out var rv2))
                         return (rv2 - rv1);
-                    else if (DateTime.TryParse(v1.Value.ToString(), out DateTime rd1) && DateTime.TryParse(v2.Value.ToString(), out DateTime rd2))
+                    if (DateTime.TryParse(v1.Value.ToString(), out var rd1) &&
+                        DateTime.TryParse(v2.Value.ToString(), out var rd2))
                         return (int)((rd2 - rd1).TotalSeconds);
-                    else
-                        return v2.Value.ToString().CompareTo(v1.Value.ToString());
-                }));
+                    return String.Compare(v2.Value.ToString(), v1.Value.ToString(), StringComparison.Ordinal);
+                });
             }
         }
-        public int GetColumnCount(DataGridViewElementStates includeFilter)
-        {
-            return FindAll(m => m.State == includeFilter).Count;
-        }
+    }
+    public int GetColumnCount(DataGridViewElementStates includeFilter)
+    {
+        return FindAll(m => m.State == includeFilter).Count;
+    }
 
     public int GetColumnsWidth(DataGridViewElementStates includeFilter)
     {
         var co = Find(m => m.State == includeFilter);
-        return co?.Width ?? _owner?.RowHeadersWidth??0;
+        return co?.Width ?? owner?.RowHeadersWidth??0;
     }
 
     public DataGridViewColumn GetFirstColumn(DataGridViewElementStates includeFilter)
@@ -179,15 +195,14 @@ namespace System.Windows.Forms
         return FindLast(m => m.State == includeFilter && m.State == excludeFilter);
     }
 
-        public DataGridViewColumn GetNextColumn(DataGridViewColumn dataGridViewColumnStart, DataGridViewElementStates includeFilter, DataGridViewElementStates excludeFilter)
-        {
-            int ix = FindIndex(m => m.Name == dataGridViewColumnStart.Name && m.State == includeFilter && m.State == excludeFilter);
-            return ix < Count ? base[ix] : null;
-        }
-        protected virtual void OnCollectionChanged(CollectionChangeEventArgs e)
-        {
-            if (CollectionChanged != null)
-                CollectionChanged(__owner, e);
-        }
+    public DataGridViewColumn? GetNextColumn(DataGridViewColumn dataGridViewColumnStart, DataGridViewElementStates includeFilter, DataGridViewElementStates excludeFilter)
+    {
+        var ix = FindIndex(m => m.Name == dataGridViewColumnStart.Name && m.State == includeFilter && m.State == excludeFilter);
+        return ix < Count ? base[ix] : null;
+    }
+    protected virtual void OnCollectionChanged(CollectionChangeEventArgs e)
+    {
+        if (CollectionChanged != null)
+            CollectionChanged(owner, e);
     }
 }

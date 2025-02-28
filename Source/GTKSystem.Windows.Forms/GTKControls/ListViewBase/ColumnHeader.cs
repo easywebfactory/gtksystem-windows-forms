@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace System.Windows.Forms;
@@ -161,7 +160,7 @@ public class ColumnHeader : Component, ICloneable
         {
             if (value < 0)
             {
-                value = _listView?.ClientRectangle.Width??0 - _listView?.Columns.Where(i=>i!=this).Sum(col1 => col1.Width)??0;
+                value = _listView?.ClientRectangle.Width ?? 0 - _listView?.Columns.Where(i => i != this).Sum(col1 => col1.Width) ?? 0;
             }
             width = value;
         }
@@ -172,36 +171,35 @@ public class ColumnHeader : Component, ICloneable
         Text = @"ColumnHeader";
     }
 
-    public ColumnHeader(int imageIndex):this()
+    public ColumnHeader(int imageIndex) : this()
     {
         ImageIndex = imageIndex;
     }
 
-    public ColumnHeader(string? imageKey):this()
+    public ColumnHeader(string? imageKey) : this()
     {
         ImageKey = imageKey;
     }
 
-        public ColumnHeader(string text, int width) 
-        {
-            Text = text;
-            Width = width;
-        }
+    public ColumnHeader(string text, int width)
+    {
+        Text = text;
+        Width = width;
+    }
 
-        //public void AutoResize(ColumnHeaderAutoResizeStyle headerAutoResize)
-        //{
-        //	throw null;
-        //}
+    //public void AutoResize(ColumnHeaderAutoResizeStyle headerAutoResize)
+    //{
+    //	throw null;
+    //}
 
-        public object Clone()
-        {
-            return null;
-            //string data = System.Text.Json.JsonSerializer.Serialize(this,typeof(ColumnHeader));
-            //return System.Text.Json.JsonSerializer.Deserialize<ColumnHeader>(data);
-        }
-        protected override void Dispose(bool disposing)
-        {
-         
-        }
+    public object Clone()
+    {
+        return null;
+        //string data = System.Text.Json.JsonSerializer.Serialize(this,typeof(ColumnHeader));
+        //return System.Text.Json.JsonSerializer.Deserialize<ColumnHeader>(data);
+    }
+    protected override void Dispose(bool disposing)
+    {
+
     }
 }

@@ -8,7 +8,7 @@ internal static class SR
 {
     private static ResourceManager? resourceManager;
 
-    internal static ResourceManager ResourceManager => resourceManager ?? (resourceManager = new ResourceManager(typeof(System.Windows.Forms.Resources.Sr)));
+    internal static ResourceManager ResourceManager => resourceManager ?? (resourceManager = new ResourceManager(typeof(Sr)));
 
     internal static string ArgumentOutOfRangeStreamLength => GetResourceString("ArgumentOutOfRange_StreamLength");
 

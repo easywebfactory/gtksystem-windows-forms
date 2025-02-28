@@ -15,5 +15,5 @@ public class HScrollBar : ScrollBar
 {
     public ScrollbarBase<HScrollbar>? self = new(Gtk.Orientation.Horizontal);
     public override object? GtkControl => self;
-    public override Gtk.Adjustment Adjustment => self.Adjustment;
+    public override Adjustment Adjustment => self.Adjustment;
 }

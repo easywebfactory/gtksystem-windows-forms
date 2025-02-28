@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class RadioButtonBase : Gtk.RadioButton, IGtkControl
+public sealed class RadioButtonBase : Gtk.RadioButton, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public RadioButtonBase() : base(new Gtk.RadioButton("baseradio"))

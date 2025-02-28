@@ -1,7 +1,6 @@
 
 using Gtk;
 using System.Runtime.Serialization;
-using Gtk;
 
 namespace System.Windows.Forms;
 
@@ -39,7 +38,7 @@ public sealed class ListViewGroup : ISerializable
         HeaderAlignment = headerAlignment;
 
     }
-    internal readonly FlowBox flowBox = new() { Orientation = Gtk.Orientation.Horizontal, Name = Guid.NewGuid().ToString() };
+    internal readonly FlowBox FlowBox = new() { Orientation = Gtk.Orientation.Horizontal, Name = Guid.NewGuid().ToString() };
     public string Header
     {
         get;

@@ -12,7 +12,7 @@ public class SelectedGridItemChangedEventArgs : EventArgs
     /// <summary>
     ///  Constructs a SelectedGridItemChangedEventArgs object.
     /// </summary>
-    public SelectedGridItemChangedEventArgs(GridItem oldSel, GridItem newSel)
+    public SelectedGridItemChangedEventArgs(GridItem? oldSel, GridItem newSel)
     {
         OldSelection = oldSel;
         NewSelection = newSel;
@@ -21,7 +21,7 @@ public class SelectedGridItemChangedEventArgs : EventArgs
     /// <summary>
     ///  The previously selected GridItem object. This can be null.
     /// </summary>
-    public GridItem OldSelection { get; }
+    public GridItem? OldSelection { get; }
 
     /// <summary>
     ///  The newly selected GridItem object

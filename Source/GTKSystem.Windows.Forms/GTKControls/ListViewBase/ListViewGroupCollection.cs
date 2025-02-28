@@ -33,8 +33,8 @@ public class ListViewGroupCollection : List<ListViewGroup>
         }
         public ListViewGroup Add(string key, string headerText)
 		{
-			ListViewGroup group = new ListViewGroup(key, headerText);
-            this.Add(group);
+			var group = new ListViewGroup(key, headerText);
+            Add(group);
 			return group;
 		}
 

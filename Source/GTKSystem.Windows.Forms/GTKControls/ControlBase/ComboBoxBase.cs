@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class ComboBoxBase : Gtk.ComboBoxText, IGtkControl
+public sealed class ComboBoxBase : Gtk.ComboBoxText, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public ComboBoxBase() : base(true)

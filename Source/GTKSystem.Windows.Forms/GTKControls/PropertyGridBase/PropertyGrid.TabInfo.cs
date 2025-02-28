@@ -6,21 +6,20 @@ using System.Windows.Forms.Design;
 
 namespace System.Windows.Forms;
 
-    public partial class PropertyGrid
+public partial class PropertyGrid
+{
+    private record TabInfo(PropertyTab Tab, PropertyTabScope Scope, ToolStripButton Button)
     {
-        private record TabInfo(PropertyTab Tab, PropertyTabScope Scope, ToolStripButton Button)
-        {
-            public Type TabType => Tab.GetType();
-            public PropertyTab Tab { get; } = Tab;
-            public PropertyTabScope Scope { get; } = Scope;
-            public ToolStripButton Button { get; } = Button;
+        public Type TabType => Tab.GetType();
+        public PropertyTab Tab { get; } = Tab;
+        public PropertyTabScope Scope { get; } = Scope;
+        public ToolStripButton Button { get; } = Button;
 
-            public void Deconstruct(out PropertyTab Tab, out PropertyTabScope Scope, out ToolStripButton Button)
-            {
-                Tab = this.Tab;
-                Scope = this.Scope;
-                Button = this.Button;
-            }
+        public void Deconstruct(out PropertyTab Tab, out PropertyTabScope scope, out ToolStripButton button)
+        {
+            Tab = this.Tab;
+            scope = this.Scope;
+            button = this.Button;
         }
     }
 }

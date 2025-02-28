@@ -30,7 +30,7 @@ internal abstract class ArrangedElement : Component, IArrangedElement
 
     public Rectangle Bounds => _bounds;
 
-    ArrangedElementCollection IArrangedElement.Children => GetChildren();
+    ArrangedElementCollection? IArrangedElement.Children => GetChildren();
 
     IArrangedElement? IArrangedElement.Container => GetContainer();
 
@@ -86,7 +86,7 @@ internal abstract class ArrangedElement : Component, IArrangedElement
 
     protected abstract IArrangedElement? GetContainer();
 
-    protected abstract ArrangedElementCollection GetChildren();
+    protected abstract ArrangedElementCollection? GetChildren();
 
     public virtual Size GetPreferredSize(Size constrainingSize)
     {

@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
+using System.Reflection;
 
 namespace System.Windows.Forms;
 
@@ -56,15 +56,15 @@ public class DataGridViewCellStyle : ICloneable
 
         public virtual void ApplyStyle(DataGridViewCellStyle dataGridViewCellStyle) { }
         public virtual DataGridViewCellStyle Clone() {
-            Type celltype = this.GetType();
-            DataGridViewCellStyle newobj = new DataGridViewCellStyle();
-            var propertys = celltype.GetProperties(Reflection.BindingFlags.Public | Reflection.BindingFlags.Instance);
-            foreach (PropertyInfo property in propertys)
+            var celltype = GetType();
+            var newobj = new DataGridViewCellStyle();
+            var propertys = celltype.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var property in propertys)
                 if (property.CanRead && property.CanWrite)
                     property.SetValue(newobj, property.GetValue(this));
             return newobj;
         }
-        public override bool Equals(object o) { return false; }
+        public override bool Equals(object? o) { return false; }
         public override int GetHashCode()
         {
             return 0;

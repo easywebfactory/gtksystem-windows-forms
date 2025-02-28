@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class MonthCalendarBase : Gtk.Calendar, IGtkControl
+public sealed class MonthCalendarBase : Gtk.Calendar, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public MonthCalendarBase()

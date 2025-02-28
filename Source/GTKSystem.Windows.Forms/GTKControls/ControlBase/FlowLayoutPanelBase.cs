@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class FlowLayoutPanelBase : Gtk.FlowBox, IGtkControl
+public sealed class FlowLayoutPanelBase : Gtk.FlowBox, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public FlowLayoutPanelBase()

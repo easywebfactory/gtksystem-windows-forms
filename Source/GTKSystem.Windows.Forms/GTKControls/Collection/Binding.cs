@@ -558,7 +558,7 @@ public class Binding
 
     private object? GetPropValue()
     {
-        object? obj = DataSourceNullValue;
+        var obj = DataSourceNullValue;
         var value = false;
         if (propIsNullInfo != null)
         {

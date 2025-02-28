@@ -22,7 +22,7 @@ public class TreeView : ScrollableControl
 
     protected override void SetStyle(Widget widget)
     {
-        base.SetStyle(self.treeView);
+        base.SetStyle(self.TreeView);
     }
     private readonly CellRendererToggle renderercheckbox;
     private readonly CellRendererIcon rendererPixbuf;
@@ -34,12 +34,12 @@ public class TreeView : ScrollableControl
             Name = "__root"
         };
         _store = new TreeStore(typeof(string), typeof(bool), typeof(int), typeof(string));
-        self.treeView.Model = _store;
-        self.treeView.Realized += TreeView_Realized;
-        self.treeView.Selection.Changed += Selection_Changed;
-        self.treeView.RowActivated += TreeView_RowActivated;
-        self.treeView.RowCollapsed += TreeView_RowCollapsed;
-        self.treeView.RowExpanded += TreeView_RowExpanded;
+        self.TreeView.Model = _store;
+        self.TreeView.Realized += TreeView_Realized;
+        self.TreeView.Selection.Changed += Selection_Changed;
+        self.TreeView.RowActivated += TreeView_RowActivated;
+        self.TreeView.RowCollapsed += TreeView_RowCollapsed;
+        self.TreeView.RowExpanded += TreeView_RowExpanded;
         BorderStyle = BorderStyle.Fixed3D;
 
         var column = new TreeViewColumn();
@@ -63,7 +63,7 @@ public class TreeView : ScrollableControl
         renderertext.PlaceholderText = "---";
         column.PackStart(renderertext, true);
         column.AddAttribute(renderertext, "text", 0);
-        self.treeView.AppendColumn(column);
+        self.TreeView.AppendColumn(column);
     }
     private bool isTreeViewRealized;
     private void TreeView_Realized(object? sender, EventArgs e)
@@ -124,9 +124,9 @@ public class TreeView : ScrollableControl
     {
         if (BeforeSelect != null)
         {
-            if (self.treeView.Selection.GetSelected(out _))
+            if (self.TreeView.Selection.GetSelected(out _))
             {
-                var paths = self.treeView.Selection.GetSelectedRows();
+                var paths = self.TreeView.Selection.GetSelectedRows();
                 TreeNode? result = null;
                 GetNodeChild(root, paths[0].Indices, ref result);
                 cancelEventArgs = new TreeViewCancelEventArgs(result, false, TreeViewAction.ByMouse);
@@ -141,11 +141,11 @@ public class TreeView : ScrollableControl
         }
         internal void LoadNodeValue(TreeNode node, TreeIter parent)
         {
-            TreeIter iter = parent.Equals(TreeIter.Zero) ? Store.AppendValues(node.Text, node.Checked, node.ImageIndex, node.ImageKey) : Store.AppendValues(parent, node.Text, node.Checked, node.ImageIndex, node.ImageKey);
-            TreePath path = Store.GetPath(iter);
+            var iter = parent.Equals(TreeIter.Zero) ? Store.AppendValues(node.Text, node.Checked, node.ImageIndex, node.ImageKey) : Store.AppendValues(parent, node.Text, node.Checked, node.ImageIndex, node.ImageKey);
+            var path = Store.GetPath(iter);
             node.Index = string.Join(",", path.Indices);
             node.TreeIter = iter;
-            foreach (TreeNode child in node.Nodes)
+            foreach (var child in node.Nodes)
             {
                 LoadNodeValue(child, iter);
             }
@@ -161,7 +161,7 @@ public class TreeView : ScrollableControl
         {
             if (node != null)
             {
-                this.SelectedNode = node;
+                SelectedNode = node;
             }
         }
         internal void NativeNodeText(TreeNode node, string text)
@@ -178,20 +178,14 @@ public class TreeView : ScrollableControl
                 _store.SetValue(node.TreeIter, 2, index);
             }
         }
-        internal void NativeNodeImage(TreeNode node, string key)
+        internal void NativeNodeImage(TreeNode node, string? key)
         {
             if (node != null)
             {
                 _store.SetValue(node.TreeIter, 3, key);
             }
         }
-        public TreeNodeCollection Nodes
-        {
-            get
-            {
-                return root.Nodes;
-            }
-        }
+        public TreeNodeCollection Nodes => root.Nodes;
         private bool _checkBoxs;
         public bool CheckBoxes
         {
@@ -199,37 +193,37 @@ public class TreeView : ScrollableControl
             set
             {
                 _checkBoxs = value;
-                renderercheckbox.Visible = _checkBoxs == true;
+                renderercheckbox.Visible = _checkBoxs;
             }
         }
         private void CellName_Toggled(object o, ToggledArgs args)
         {
             //Console.WriteLine("CellRendererToggle CellName_Toggled");
-            TreePath path = new TreePath(args.Path);
+            var path = new TreePath(args.Path);
             var model = _store;
-            model.GetIter(out TreeIter iter, path);
-            bool val = (bool)(model.GetValue(iter, 1));
+            model.GetIter(out var iter, path);
+            var val = (bool)(model.GetValue(iter, 1));
             model.SetValue(iter, 1, val == false);
         }
-        private ImageList _imageList;
-        public ImageList ImageList { get => _imageList; 
+        private ImageList? _imageList;
+        public ImageList? ImageList { get => _imageList; 
             set {
                 _imageList = value;
                 rendererPixbuf.Visible = _imageList != null;
                 if (_imageList != null)
                 {
-                    Gtk.TreeViewColumn column = self.TreeView.Columns[0];
+                    var column = self.TreeView.Columns[0];
                     column.AddAttribute(rendererPixbuf, "pixbufkey", 3);
                     column.AddAttribute(rendererPixbuf, "pixbufindex", 2);
                 }
             } 
         }
         public int ImageIndex { get; set; } = -1;
-        public string ImageKey { get; set; }
+        public string? ImageKey { get; set; }
         public int SelectedImageIndex { get; set; }
-        public string SelectedImageKey { get; set; }
+        public string? SelectedImageKey { get; set; }
         public int StateImageIndex { get; set; }
-        public string StateImageKey { get; set; }
+        public string? StateImageKey { get; set; }
         public void ExpandAll()
         {
             self.TreeView.ExpandAll();
@@ -255,26 +249,15 @@ public class TreeView : ScrollableControl
         {
             _store.Remove(ref node.TreeIter);
         }
-        public bool ShowLines { get=> self.TreeView.EnableTreeLines; set { self.TreeView.EnableTreeLines = true; self.TreeView.EnableGridLines = Gtk.TreeViewGridLines.Horizontal; } }
+        public bool ShowLines { get=> self.TreeView.EnableTreeLines; set { self.TreeView.EnableTreeLines = true; self.TreeView.EnableGridLines = TreeViewGridLines.Horizontal; } }
         public bool ShowNodeToolsTips { get; set; }
         public bool ShowPlusMinus { get; set; } = true;
         public bool ShowRootLines { get; set; } = true;
-        public object SelectedItem
-        {
-            get
-            {
-                return SelectedNode.Text;
-            }
-        }
-        public object SelectedValue
-        {
-            get
-            {
-                return SelectedNode.Text;
-            }
-        }
+        public object SelectedItem => SelectedNode.Text;
 
-    [DefaultValue("\\")]
+        public object SelectedValue => SelectedNode.Text;
+
+        [DefaultValue("\\")]
     public string PathSeparator
     {
         get;
@@ -284,9 +267,9 @@ public class TreeView : ScrollableControl
     {
         get
         {
-            if (self.treeView.Selection.GetSelected(out _))
+            if (self.TreeView.Selection.GetSelected(out _))
             {
-                var paths = self.treeView.Selection.GetSelectedRows();
+                var paths = self.TreeView.Selection.GetSelectedRows();
                 TreeNode? result = null;
                 GetNodeChild(root, paths[0].Indices, ref result);
                 return result;
@@ -297,11 +280,11 @@ public class TreeView : ScrollableControl
         set
         {
             if (value == null)
-                self.treeView.Selection.UnselectAll();
+                self.TreeView.Selection.UnselectAll();
             else
             {
-                self.treeView.ExpandToPath(_store.GetPath(value.treeIter));
-                self.treeView.Selection.SelectIter(value.treeIter);
+                self.TreeView.ExpandToPath(_store.GetPath(value.TreeIter));
+                self.TreeView.Selection.SelectIter(value.TreeIter);
             }
         }
     }

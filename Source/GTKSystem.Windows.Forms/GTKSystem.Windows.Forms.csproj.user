@@ -32,9 +32,6 @@
     <Compile Update="GTKControls\ComboBoxBase\ComboBox.ObjectCollection.Entry.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="GTKControls\ComboBoxBase\ComboBox.ObjectCollection.EntryEnumerator.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Update="GTKControls\ContextMenuStrip.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -255,6 +252,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\SplitterPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\SwitchBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\TabControl.cs">

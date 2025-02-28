@@ -178,7 +178,7 @@ public partial class ComboBox
         /// <summary>
         ///  Returns an enumerator for the ComboBox Items collection.
         /// </summary>
-        public IEnumerator GetEnumerator() => new EntryEnumerator(InnerList);
+        public IEnumerator GetEnumerator() => InnerList.GetEnumerator();
 
         /// <summary>
         ///  Adds an item to the combo box. For an unsorted combo box, the item is

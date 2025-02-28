@@ -2,7 +2,7 @@
 
 namespace System.Windows.Forms;
 
-public interface IGtkControl : IWidget
+public interface IControlGtk : IWidget
 {
     IGtkControlOverride Override { get; set; }
 }

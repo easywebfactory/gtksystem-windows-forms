@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class ButtonBase: Gtk.Button, IGtkControl
+public sealed class ButtonBase: Gtk.Button, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public ButtonBase() : base(new Gtk.Label { Wrap = true, SingleLineMode = false, LineWrap = true, LineWrapMode = Pango.WrapMode.WordChar })

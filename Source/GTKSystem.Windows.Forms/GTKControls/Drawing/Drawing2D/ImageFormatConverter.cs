@@ -25,9 +25,9 @@ public class ImageFormatConverter : TypeConverter
         return base.CanConvertTo(context, destinationType);
     }
 
-		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object? value)
 		{
-			string text = value as string;
+			var text = value as string;
 			if (text == null)
 			{
 				return base.ConvertFrom(context, culture, value);

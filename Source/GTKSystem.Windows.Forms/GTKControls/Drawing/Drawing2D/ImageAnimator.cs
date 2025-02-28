@@ -82,21 +82,21 @@ public sealed class ImageAnimator
 				if (_animated)
 				{
 					_frameCount = image.GetFrameCount(FrameDimension.Time);
-					PropertyItem propertyItem = image.GetPropertyItem(20736);
+					var propertyItem = image.GetPropertyItem(20736);
 					if (propertyItem != null)
 					{
-						byte[] value = propertyItem.Value;
+						var value = propertyItem.Value;
 						_frameEndTimes = new long[_frameCount];
-						long num = 0L;
-						int num2 = 0;
-						int num3 = 0;
+						var num = 0L;
+						var num2 = 0;
+						var num3 = 0;
 						while (num2 < _frameCount)
 						{
 							if (num3 >= value.Length)
 							{
 								num3 = 0;
 							}
-							int num4 = BitConverter.ToInt32(value, num3) * 10;
+							var num4 = BitConverter.ToInt32(value, num3) * 10;
 							num += ((num4 > 0) ? num4 : 40);
 							if (num < _totalAnimationTime)
 							{
@@ -111,10 +111,10 @@ public sealed class ImageAnimator
 							num3 += 4;
 						}
 					}
-					PropertyItem propertyItem2 = image.GetPropertyItem(20737);
+					var propertyItem2 = image.GetPropertyItem(20737);
 					if (propertyItem2 != null)
 					{
-						byte[] value2 = propertyItem2.Value;
+						var value2 = propertyItem2.Value;
 						_loopCount = BitConverter.ToInt16(value2, 0);
                     }
 					else

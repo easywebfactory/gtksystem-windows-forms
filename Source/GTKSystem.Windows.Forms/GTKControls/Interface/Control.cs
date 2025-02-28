@@ -34,11 +34,20 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     public string? UniqueKey { get; protected set; }
 
     public virtual IWidget Widget => (IWidget)GtkControl!;
-    public virtual IGtkControl? Self => (IGtkControl)GtkControl!;
+    public virtual IControlGtk? Self => (IControlGtk)GtkControl!;
 
     public virtual object? GtkControl { get; set; }
 
     public static event EventHandler? BeforeInit;
+    private Cursor? cursor;
+    private ImeMode imeMode;
+    private ContextMenuStrip? _contextMenuStrip;
+    private Padding margin;
+    private bool _capture;
+    private bool causesValidation;
+    private bool _handleCreated;
+    private AccessibleObject? accessibilityObject;
+    private BindingContext? bindingContext;
 
     public Control()
     {
@@ -661,34 +670,25 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             widget.Halign = Align.Start;
         }
 
-            if (anchorStyles.HasFlag(AnchorStyles.Top) && anchorStyles.HasFlag(AnchorStyles.Bottom))
-            {
-                widget.Valign = Gtk.Align.Fill;
-            }
-            else if (anchorStyles.HasFlag(AnchorStyles.Top))
-            {
-                widget.Valign = Gtk.Align.Start;
-            }
-            else if (anchorStyles.HasFlag(AnchorStyles.Bottom))
-            {
-                widget.Valign = Gtk.Align.End;
-            }
-            else
-            {
-                widget.Valign = Gtk.Align.Start;
-            }
+        if (anchorStyles.HasFlag(AnchorStyles.Top) && anchorStyles.HasFlag(AnchorStyles.Bottom))
+        {
+            widget.Valign = Align.Fill;
         }
-        public virtual Point AutoScrollOffset { get; set; }
-        private bool _autoSize;
-        public virtual bool AutoSize { 
-            get => _autoSize; 
-            set { _autoSize = value;
-                if (_autoSize == true) { this.Widget.WidthRequest = -1; this.Widget.HeightRequest = -1; } else { Size = _size; } 
-            } 
+        else if (anchorStyles.HasFlag(AnchorStyles.Top))
+        {
+            widget.Valign = Align.Start;
         }
-        public virtual BindingContext BindingContext { get; set; }
-        public virtual Rectangle Bounds { get=> new Rectangle(Widget.Clip.X, this.Widget.Clip.Y, this.Widget.Clip.Width, this.Widget.Clip.Height); set { SetBounds(value.X, value.Y, value.Width, value.Height); } }
-
+        else if (anchorStyles.HasFlag(AnchorStyles.Bottom))
+        {
+            widget.Valign = Align.End;
+        }
+        else
+        {
+            widget.Valign = Align.Start;
+        }
+    }
+    public virtual Point AutoScrollOffset { get; set; }
+    private bool _autoSize;
     public virtual bool AutoSize
     {
         get => _autoSize;
@@ -946,6 +946,8 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     public virtual bool IsMirrored { get; }
 
     public virtual LayoutEngine? LayoutEngine { get; }
+    public virtual string? Text { get; set; }
+
     public virtual int Top
     {
         get => Widget.MarginTop;
@@ -991,13 +993,13 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     public virtual int Right => Widget.MarginEnd;
 
     public virtual int Bottom => Widget.MarginBottom;
-    internal bool lockLocation = false;//由于代码有顺序执行，特殊锁定
+    internal bool LockLocation = false;//由于代码有顺序执行，特殊锁定
     public virtual Point Location
     {
         get => new(Left, Top);
         set
         {
-            if (lockLocation == false)
+            if (LockLocation == false)
             {
                 Left = value.X;
                 Top = value.Y;
@@ -1006,7 +1008,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     }
     public virtual string? Name
     {
-        get => Widget.Name ?? _name;
+        get => Widget.Name;
         set
         {
             var widget = Widget;
@@ -1014,7 +1016,6 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             {
                 widget.Name = value;
             }
-            _name = value;
         }
     }
     public virtual Padding Padding { get; set; }
@@ -1025,64 +1026,64 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     public virtual bool RecreatingHandle { get; }
     public virtual Region? Region { get; set; }
 
-        public virtual RightToLeft RightToLeft { get; set; }
-        private Size _size;
-        public virtual Size Size
+    public virtual RightToLeft RightToLeft { get; set; }
+    private Size _size;
+    public virtual Size Size
+    {
+        get => _size;
+        set
         {
-            var toLeft = rightToLeft;
-            rightToLeft = value;
-            if (toLeft != value)
+            _size = value;
+            if (AutoSize == false)
             {
-                return _size;
-            }
-            set
-            {
-                _size = value;
-                if (AutoSize == false)
+                if (Widget is Gtk.Button)
                 {
-                    if (this.Widget is Gtk.Button)
-                    {
-                        Width = value.Width > 6 ? value.Width - 6 : value.Width;
-                        Height = value.Height > 6 ? value.Height - 6 : value.Height;
-                    }
-                    else
-                    {
-                        Width = value.Width;
-                        Height = value.Height;
-                    }
+                    Width = value.Width > 6 ? value.Width - 6 : value.Width;
+                    Height = value.Height > 6 ? value.Height - 6 : value.Height;
+                }
+                else
+                {
+                    Width = value.Width;
+                    Height = value.Height;
                 }
             }
         }
-        public virtual int Height
+    }
+
+    public virtual int TabIndex { get; set; }
+    public virtual bool TabStop { get; set; }
+    public object? Tag { get; set; }
+
+    public virtual int Height
+    {
+        get
         {
-            get
+            if (Widget.IsMapped == false && Widget is Window wnd)
             {
-                if (this.Widget.IsMapped == false && this.Widget is Gtk.Window wnd)
-                {
-                    return wnd.HeightRequest == -1 ? wnd.DefaultHeight : wnd.HeightRequest;
-                }
-                return this.Widget.HeightRequest == -1 ? this.Widget.AllocatedHeight : this.Widget.HeightRequest;
+                return wnd.HeightRequest == -1 ? wnd.DefaultHeight : wnd.HeightRequest;
             }
-            set
-            {
-                this.Widget.HeightRequest = Math.Max(-1, value);
-                if (DockChanged != null)
-                    DockChanged(this, EventArgs.Empty);
-                if (AnchorChanged != null)
-                    AnchorChanged(this, EventArgs.Empty);
-            }
+            return Widget.HeightRequest == -1 ? Widget.AllocatedHeight : Widget.HeightRequest;
         }
-        public virtual int Width
+        set
         {
-            get
-            {
-                if (this.Widget.IsMapped == false && this.Widget is Gtk.Window wnd)
-                {
-                    return wnd.WidthRequest == -1 ? wnd.DefaultWidth : wnd.WidthRequest;
-                }
-                return this.Widget.WidthRequest == -1 ? this.Widget.AllocatedWidth : this.Widget.WidthRequest;
-            }
+            Widget.HeightRequest = Math.Max(-1, value);
+            if (DockChanged != null)
+                DockChanged(this, EventArgs.Empty);
+            if (AnchorChanged != null)
+                AnchorChanged(this, EventArgs.Empty);
         }
+    }
+    public virtual int Width
+    {
+        get
+        {
+            if (Widget.IsMapped == false && Widget is Window wnd)
+            {
+                return wnd.WidthRequest == -1 ? wnd.DefaultWidth : wnd.WidthRequest;
+            }
+            return Widget.WidthRequest == -1 ? Widget.AllocatedWidth : Widget.WidthRequest;
+        }
+        set => Widget.WidthRequest = value;
     }
 
     public virtual Control? TopLevelControl { get; }
@@ -1211,7 +1212,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     public virtual event EventHandler? Load;
     public virtual IAsyncResult BeginInvoke(Delegate method, params object[] args)
     {
-        var task = Threading.Tasks.Task.Factory.StartNew(state =>
+        var task = Task.Factory.StartNew(state =>
         {
             method.DynamicInvoke((object[])state);
         }, args);
@@ -1224,12 +1225,12 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     }
     public virtual IAsyncResult BeginInvoke(Action method)
     {
-        var task = Threading.Tasks.Task.Factory.StartNew(method);
+        var task = Task.Factory.StartNew(method);
         return task;
     }
     public virtual object EndInvoke(IAsyncResult asyncResult)
     {
-        if (asyncResult is Threading.Tasks.Task task)
+        if (asyncResult is Task task)
         {
             if (task.IsCompleted == false && task is { IsCanceled: false, IsFaulted: false })
                 task.GetAwaiter().GetResult();
@@ -1268,25 +1269,25 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             context?.Dispose();
             context = new Context(surface);
 
-                return new Drawing.Graphics(this.Widget, context, this.Widget.Allocation);
-            }
-            catch(Exception ex) 
-            {
-                Console.WriteLine("画版创建失败：" + ex.Message);
-                throw;
-            }
+            return new Graphics(Widget, context, Widget.Allocation);
         }
-
-        private void Override_PaintGraphics(Cairo.Context cr, Rectangle rec)
+        catch (Exception ex)
         {
-            if (surface != null)
-            {
-                cr.Save();
-                cr.SetSourceSurface(surface, 0, 0);
-                cr.Paint();
-                cr.Restore();
-            }
+            Console.WriteLine("画版创建失败：" + ex.Message);
+            throw;
         }
+    }
+
+    private void Override_PaintGraphics(Context cr, Rectangle rec)
+    {
+        if (surface != null)
+        {
+            cr.Save();
+            cr.SetSourceSurface(surface, 0, 0);
+            cr.Paint();
+            cr.Restore();
+        }
+    }
 
     public virtual DragDropEffects DoDragDrop(object? data, DragDropEffects allowedEffects)
     {
@@ -1388,31 +1389,31 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         Invalidate(true);
     }
 
-        public virtual void Invalidate(bool invalidateChildren)
-        {
-            Invalidate(new Rectangle(Widget.Allocation.X, Widget.Allocation.Y, Widget.Allocation.Width, Widget.Allocation.Height), invalidateChildren);
-        }
+    public virtual void Invalidate(bool invalidateChildren)
+    {
+        Invalidate(new Rectangle(Widget.Allocation.X, Widget.Allocation.Y, Widget.Allocation.Width, Widget.Allocation.Height), invalidateChildren);
+    }
 
     public virtual void Invalidate(Rectangle rc)
     {
         Invalidate(rc, true);
     }
 
-        public virtual void Invalidate(Rectangle rc, bool invalidateChildren)
+    public virtual void Invalidate(Rectangle rc, bool invalidateChildren)
+    {
+        if (Widget != null)
         {
-            if (this.Widget != null)
+            if (Self != null)
+                Self.Override.OnAddClass();
+            Widget.Window.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
+            if (invalidateChildren && Widget is Gtk.Container container)
             {
-                if (ISelf != null)
-                    ISelf.Override.OnAddClass();
-                this.Widget.Window.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
-                if (invalidateChildren == true && this.Widget is Gtk.Container container)
-                {
-                    foreach (var child in container.Children)
-                        child.Window.InvalidateRect(child.Allocation, invalidateChildren);
-                }
-                Refresh();
+                foreach (var child in container.Children)
+                    child.Window.InvalidateRect(child.Allocation, invalidateChildren);
             }
+            Refresh();
         }
+    }
 
     public virtual void Invalidate(Region region)
     {
@@ -1541,20 +1542,20 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         return new Rectangle(r.X, r.Y, r.Width, r.Height);
     }
 
-        public virtual void Refresh()
+    public virtual void Refresh()
+    {
+        if (Widget is { IsVisible: true })
         {
-            if (this.Widget != null && this.Widget.IsVisible)
+            if (Self != null)
+                Self.Override.OnAddClass();
+            Widget.QueueDraw();
+            if (Widget is Gtk.Container container)
             {
-                if (ISelf != null)
-                    ISelf.Override.OnAddClass();
-                this.Widget.QueueDraw();
-                if (this.Widget is Gtk.Container container)
-                {
-                    foreach (var child in container.Children)
-                        child.QueueDraw();
-                }
+                foreach (var child in container.Children)
+                    child.QueueDraw();
             }
         }
+    }
 
     public virtual void ResetBackColor()
     {
@@ -1731,36 +1732,35 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-        public virtual IntPtr Handle { get => this.Widget == null ? IntPtr.Zero : this.Widget.Handle; }
-        public virtual Padding Margin { get; set; }
-        public virtual Size MaximumSize { get; set; }
-        public virtual Size MinimumSize { get; set; }
-        private BorderStyle _BorderStyle;
-        public virtual BorderStyle BorderStyle
+    public virtual Size MaximumSize { get; set; }
+    public virtual Size MinimumSize { get; set; }
+    private BorderStyle _BorderStyle;
+    public virtual BorderStyle BorderStyle
+    {
+        get => _BorderStyle;
+        set
         {
-            get { return _BorderStyle; }
-            set {
-                _BorderStyle = value;
-                if(value==BorderStyle.FixedSingle)
-                {
-                    this.Widget.StyleContext.RemoveClass("BorderFixed3D");
-                    this.Widget.StyleContext.RemoveClass("BorderNone");
-                    this.Widget.StyleContext.AddClass("BorderFixedSingle");
-                }
-                else if (value == BorderStyle.Fixed3D)
-                {
-                    this.Widget.StyleContext.RemoveClass("BorderFixedSingle");
-                    this.Widget.StyleContext.RemoveClass("BorderNone");
-                    this.Widget.StyleContext.AddClass("BorderFixed3D");
-                }
-                else
-                {
-                    this.Widget.StyleContext.RemoveClass("BorderFixedSingle");
-                    this.Widget.StyleContext.RemoveClass("BorderFixed3D");
-                    this.Widget.StyleContext.AddClass("BorderNone");
-                }
+            _BorderStyle = value;
+            if (value == BorderStyle.FixedSingle)
+            {
+                Widget.StyleContext.RemoveClass("BorderFixed3D");
+                Widget.StyleContext.RemoveClass("BorderNone");
+                Widget.StyleContext.AddClass("BorderFixedSingle");
+            }
+            else if (value == BorderStyle.Fixed3D)
+            {
+                Widget.StyleContext.RemoveClass("BorderFixedSingle");
+                Widget.StyleContext.RemoveClass("BorderNone");
+                Widget.StyleContext.AddClass("BorderFixed3D");
+            }
+            else
+            {
+                Widget.StyleContext.RemoveClass("BorderFixedSingle");
+                Widget.StyleContext.RemoveClass("BorderFixed3D");
+                Widget.StyleContext.AddClass("BorderNone");
             }
         }
+    }
 
     public virtual void Hide()
     {
@@ -1860,14 +1860,14 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-        public bool ParticipatesInLayout => false;
+    public bool ParticipatesInLayout => false;
 
     PropertyStore IArrangedElement.Properties => throw new NotImplementedException();
 
     IArrangedElement IArrangedElement.Container => throw new NotImplementedException();
 
-        private ArrangedElementCollection arrangedElementCollection;
-        public ArrangedElementCollection Children => arrangedElementCollection;
+    private ArrangedElementCollection? arrangedElementCollection;
+    public ArrangedElementCollection? Children => arrangedElementCollection;
 
     protected virtual void OnKeyDown(KeyEventArgs e)
     {

@@ -10,7 +10,7 @@ using Rectangle = System.Drawing.Rectangle;
 namespace System.Windows.Forms;
 
 public delegate void PaintGraphicsEventHandler(Context? cr, Rectangle rec);
-public class GtkControlOverride: IControlOverride
+public class GtkControlOverride: IControlOverride, IGtkControlOverride
 {
     private readonly Widget? container;
     public GtkControlOverride(Widget? container)

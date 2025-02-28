@@ -2,7 +2,7 @@
 
 namespace System.Windows.Forms;
 
-public sealed class ListViewBase : Gtk.Viewport, IGtkControl
+public sealed class ListViewBase : Gtk.Viewport, IControlGtk
 {
     public Gtk.Box box = new(Gtk.Orientation.Vertical, 0);
     public IGtkControlOverride Override { get; set; }

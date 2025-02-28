@@ -24,7 +24,11 @@ public abstract class DataGridViewCell
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public virtual bool Selected { get; set; }
 
-    public int RowIndex => default;
+    public int RowIndex
+    {
+        get;
+        set;
+    }
 
     public virtual bool Resizable => default;
 
@@ -44,7 +48,11 @@ public abstract class DataGridViewCell
     public DataGridViewCellStyle? InheritedStyle => default;
 
     public AccessibleObject? AccessibilityObject => default;
-    public int ColumnIndex => default;
+    public int ColumnIndex
+    {
+        get;
+        set;
+    }
 
     public Rectangle ContentBounds => default;
 
@@ -79,6 +87,7 @@ public abstract class DataGridViewCell
     public DataGridViewElementStates InheritedState => default;
 
     public virtual Type? ValueType { get; set; }
+    public DataGridViewCellStyle? RowStyle { get; set; }
 }
 public class DataGridViewTextBoxCell : DataGridViewCell
 {

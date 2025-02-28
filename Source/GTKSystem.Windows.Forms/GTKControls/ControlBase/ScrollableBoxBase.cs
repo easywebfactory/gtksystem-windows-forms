@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public abstract class ScrollableBoxBase : Gtk.ScrolledWindow, IGtkControl, IScrollableBoxBase
+public abstract class ScrollableBoxBase : Gtk.ScrolledWindow, IControlGtk, IScrollableBoxBase
 {
     public event ScrollEventHandler? Scroll;
     public IGtkControlOverride Override { get; set; }

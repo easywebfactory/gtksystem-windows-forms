@@ -51,10 +51,7 @@ public sealed class DataGridViewAdvancedBorderStyle : ICloneable
 
     public DataGridViewAdvancedCellBorderStyle All
     {
-        get
-        {
-            return _all ? _top : DataGridViewAdvancedCellBorderStyle.NotSet;
-        }
+        get => _all ? _top : DataGridViewAdvancedCellBorderStyle.NotSet;
         set
         {
 
@@ -138,10 +135,7 @@ public sealed class DataGridViewAdvancedBorderStyle : ICloneable
 
     public DataGridViewAdvancedCellBorderStyle Top
     {
-        get
-        {
-            return _top;
-        }
+        get => _top;
         set
         {
 

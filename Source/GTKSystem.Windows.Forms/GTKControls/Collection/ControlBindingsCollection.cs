@@ -10,7 +10,7 @@ namespace System.Windows.Forms;
 ///  Represents the collection of data bindings for a control.
 /// </summary>
 [DefaultEvent(nameof(CollectionChanged))]
-[TypeConverter($"System.Windows.Forms.Design.ControlBindingsConverter, {AssemblyRef.systemDesign}")]
+[TypeConverter($"System.Windows.Forms.Design.ControlBindingsConverter, {AssemblyRef.SystemDesign}")]
 public class ControlBindingsCollection : BindingsCollection
 {
     private readonly IBindableComponent? _control;

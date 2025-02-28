@@ -44,7 +44,7 @@ public class TreeNodeCollection: List<TreeNode>
         base.Add(node);
         if (owner is { TreeView: not null })
         {
-            owner.TreeView.LoadNodeValue(node, owner.treeIter);
+            owner.TreeView.LoadNodeValue(node, owner.TreeIter);
         }
     }
 

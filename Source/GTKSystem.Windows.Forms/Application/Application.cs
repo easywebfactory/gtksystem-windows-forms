@@ -14,27 +14,11 @@ namespace System.Windows.Forms
             Init();
         }
 
-        private static string appDataDirectory { get {
-                string[] assemblyFullName = Assembly.GetEntryAssembly().FullName.Split(',');
-                string _namespace = assemblyFullName[0];
-                AssemblyName assembly = Assembly.GetExecutingAssembly().GetName();
-                return Path.Combine(_namespace, assembly.Name, assembly.Version.ToString());
-            }
-        }
-
-        public static string CommonAppDataPath {
-            get {
-                return Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),appDataDirectory);
-            } 
-        }
-        public static string UserAppDataPath
-        {
-            get
-            {
-                var assemblyFullName = Assembly.GetEntryAssembly()!.FullName.Split([","], StringSplitOptions.None);
-                var _namespace = assemblyFullName[0];
+        private static string AppDataDirectory { get {
+                var assemblyFullName = Assembly.GetEntryAssembly()?.FullName.Split(',');
+                var _namespace = assemblyFullName?[0];
                 var assembly = Assembly.GetExecutingAssembly().GetName();
-                return Path.Combine(_namespace, assembly.Name, assembly.Version.ToString());
+                return Path.Combine(_namespace??string.Empty, assembly.Name, assembly.Version.ToString());
             }
         }
 
@@ -169,7 +153,7 @@ namespace System.Windows.Forms
                 var appdirectory = "./";// StartupPath; //由于linux系统常用到环境变量路径，会导至Directory/Environment获取到的当前目录不正确
                 if (!File.Exists($"{appdirectory}/GTKSystem.Windows.Forms.dll"))
                 {
-                    appdirectory = Path.GetDirectoryName(ExecutablePath);
+                    appdirectory = Path.GetDirectoryName(ExecutablePath)??Environment.CurrentDirectory;
                 }
                 var resourcepath = Path.Combine(appdirectory, "Resources");
                 var themepath = Path.Combine(appdirectory, "theme");
@@ -202,9 +186,9 @@ namespace System.Windows.Forms
 
                 if (File.Exists(themesetuppath))
                 {
-                    string[] setuptheme = File.ReadAllLines(themesetuppath, Text.Encoding.UTF8);
-                    Dictionary<string,string> nameValue = setuptheme.Where(w=>w.Contains("=")).ToDictionary(k => k.Split('=')[0],v=>v.Split('=')[1]);
-                    nameValue.TryGetValue("UseDefaultStyle", out string usedef);
+                    string[] setuptheme = File.ReadAllLines(themesetuppath, Encoding.UTF8);
+                    var nameValue = setuptheme.Where(w=>w.Contains("=")).ToDictionary(k => k.Split('=')[0],v=>v.Split('=')[1]);
+                    nameValue.TryGetValue("UseDefaultStyle", out var usedef);
                     if (usedef != "false")
                         cssBuilder.AppendLine(cssStyle);
 
@@ -311,7 +295,7 @@ namespace System.Windows.Forms
         }
         private static void App_Shutdown(object? sender, EventArgs e)
         {
-            Console.WriteLine("App_Shutdown");
+            Console.WriteLine(@"App_Shutdown");
             Gtk.Application.Quit();
         }
 

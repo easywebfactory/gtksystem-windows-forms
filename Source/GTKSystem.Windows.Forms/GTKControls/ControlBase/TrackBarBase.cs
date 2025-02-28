@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class TrackBarBase : Gtk.Viewport, IGtkControl
+public sealed class TrackBarBase : Gtk.Viewport, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public TrackBarBase()

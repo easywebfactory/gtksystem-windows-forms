@@ -1,5 +1,3 @@
-using System.Collections;
-
 namespace System.Drawing.Drawing2D;
 
 /// <summary>Defines a rectangular brush with a hatch style, a foreground color, and a background color. This class cannot be inherited.</summary>
@@ -47,11 +45,10 @@ public sealed class HatchBrush : Brush
         BackgroundColor = backColor;
     }
 
-		/// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.HatchBrush" /> object.</summary>
-		/// <returns>The <see cref="T:System.Drawing.Drawing2D.HatchBrush" /> this method creates, cast as an object.</returns>
-		public override object Clone()
-		{
-            return null;
-        }
-	}
+    /// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.HatchBrush" /> object.</summary>
+    /// <returns>The <see cref="T:System.Drawing.Drawing2D.HatchBrush" /> this method creates, cast as an object.</returns>
+    public override object? Clone()
+    {
+        return null;
+    }
 }

@@ -199,25 +199,25 @@ public class ResourceManager : System.Resources.ResourceManager
 
                 if (name.EndsWith(".BackgroundImage"))
                 {
-                    return new System.Drawing.Bitmap(filebytes) { FileName = fileName };
+                    return new Drawing.Bitmap(filebytes) { FileName = fileName };
                 }
 
                 if (name.EndsWith(".Image"))
                 {
-                    return new System.Drawing.Bitmap(filebytes) { FileName = fileName };
+                    return new Drawing.Bitmap(filebytes) { FileName = fileName };
                 }
 
                 if (name.EndsWith(".Icon"))
                 {
-                    return new System.Drawing.Icon(filebytes) { FileName = fileName };
+                    return new Drawing.Icon(filebytes) { FileName = fileName };
                 }
 
                 if (filebytes == null)
                 {
-                    return new System.Drawing.Bitmap(0, 0);
+                    return new Drawing.Bitmap(0, 0);
                 }
 
-                return new System.Drawing.Bitmap(filebytes) { FileName = fileName };
+                return new Drawing.Bitmap(filebytes) { FileName = fileName };
             }
 
             return obj;

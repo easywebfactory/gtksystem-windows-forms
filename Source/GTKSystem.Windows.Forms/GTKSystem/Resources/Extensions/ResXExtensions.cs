@@ -8,7 +8,7 @@ internal static class ResXExtensions
     {
         if (string.IsNullOrEmpty(value))
         {
-            throw new System.ArgumentException("string Is Null Or Empty");
+            throw new ArgumentException("string Is Null Or Empty");
         }
 
         return value;
@@ -17,8 +17,7 @@ internal static class ResXExtensions
     {
         if (value == null)
         {
-            throw new System.
-                ArgumentException("string Is Null Or Empty");
+            throw new ArgumentException("string Is Null Or Empty");
         }
 
         return value;
@@ -27,7 +26,7 @@ internal static class ResXExtensions
     {
         if (value == null)
         {
-            throw new System.ArgumentException("string is null");
+            throw new ArgumentException("string is null");
         }
 
         return value;

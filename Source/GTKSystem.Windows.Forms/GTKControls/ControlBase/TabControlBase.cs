@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class TabControlBase : Gtk.Notebook, IGtkControl
+public sealed class TabControlBase : Gtk.Notebook, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public TabControlBase()

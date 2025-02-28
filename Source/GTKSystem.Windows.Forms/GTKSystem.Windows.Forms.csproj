@@ -56,6 +56,7 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="GTKControls\ComboBoxBase\ComboBox.ObjectCollection.EntryEnumerator.cs" />
     <Compile Remove="GTKControls\Control\ArrangedElementCollection.cs" />
     <Compile Remove="GTKControls\Control\GridItem.cs" />
     <Compile Remove="GTKControls\Control\GridItemCollection.cs" />

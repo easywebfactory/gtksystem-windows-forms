@@ -2,7 +2,7 @@
 
 namespace System.Windows.Forms;
 
-public sealed class ToolStripBase : Gtk.MenuBar, IGtkControl
+public sealed class ToolStripBase : Gtk.MenuBar, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public ToolStripBase()

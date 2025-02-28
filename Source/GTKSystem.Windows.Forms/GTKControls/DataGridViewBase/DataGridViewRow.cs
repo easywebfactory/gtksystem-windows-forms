@@ -1,22 +1,26 @@
 ﻿using Gtk;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public class DataGridViewRow
 {
-    public class DataGridViewRow
+    public int Index { get; internal set; }
+    public TreeIter TreeIter { get; internal set; }
+    public DataGridView? DataGridView { get; set; }
+    private readonly DataGridViewCellCollection _cell;
+    private readonly DataGridViewRowCollection? _children = default;
+
+    public DataGridViewRow()
     {
-        public int Index { get; internal set; }
-        public TreeIter TreeIter { get; internal set; }
-        public DataGridView DataGridView { get; set; }
-        private DataGridViewCellCollection _cell;
-        private DataGridViewRowCollection _children;
-        public DataGridViewRow()
-        {
-            _cell = new DataGridViewCellCollection(this);
-        }
-        public DataGridViewCellCollection Cells { get { return _cell; } }
-        public DataGridViewRowCollection Children { get => _children ?? new DataGridViewRowCollection(DataGridView, this); }
-        public object DataBoundItem { get; }
-        public DataGridViewCellStyle DefaultCellStyle { get; set; }
+        _cell = new DataGridViewCellCollection(this);
+    }
+
+    public DataGridViewCellCollection Cells => _cell;
+
+    public DataGridViewRowCollection Children => _children ?? new DataGridViewRowCollection(DataGridView, this);
+
+    public object? DataBoundItem { get; set; }
+    public DataGridViewCellStyle? DefaultCellStyle { get; set; }
 
     public bool Displayed => default;
 
@@ -40,7 +44,11 @@ namespace System.Windows.Forms
 
     public DataGridViewTriState Resizable { get; set; }
 
-    public bool Selected { get => DataGridView?.NativeRowGetSelected(Index)??default; set => DataGridView?.NativeRowSetSelected(Index, value); }
+    public bool Selected
+    {
+        get => DataGridView?.NativeRowGetSelected(Index) ?? default;
+        set => DataGridView?.NativeRowSetSelected(Index, value);
+    }
     //public bool Selected { get; set; }
 
     public DataGridViewElementStates State => DataGridViewElementStates.None;

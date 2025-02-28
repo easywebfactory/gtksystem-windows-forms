@@ -43,24 +43,32 @@ public class TextBox : Control
         }
     }
 
-        public override event KeyEventHandler? KeyDown;
-        private void Self_TextInserted(object? o, TextInsertedArgs args)
+    public override event KeyEventHandler? KeyDown;
+    private void Self_TextInserted(object? o, TextInsertedArgs args)
+    {
+        if (KeyDown != null && GetType().Name == "TextBox")
         {
-            if (KeyDown != null && this.GetType().Name == "TextBox")
+            var keytext = args.NewText.ToUpper();
+            if (char.IsNumber(args.NewText[0]))
+                keytext = "D" + keytext;
+            var keyv = Enum.GetValues(typeof(Keys)).Cast<Keys>().Where(k =>
             {
-                string keytext = args.NewText.ToUpper();
-                if (char.IsNumber(args.NewText[0]))
-                    keytext = "D" + keytext;
-                var keyv = Enum.GetValues(typeof(Keys)).Cast<Keys>().Where(k => {
-                    return Enum.GetName(typeof(Keys), k) == keytext;
-                });
-                foreach (var key in keyv) 
-                    KeyDown(this, new KeyEventArgs(key));
-            }
+                return Enum.GetName(typeof(Keys), k) == keytext;
+            });
+            foreach (var key in keyv)
+                KeyDown(this, new KeyEventArgs(key));
         }
+    }
+
+    private void Self_Changed(object sender, EventArgs e)
+    {
+        if (TextChanged != null && self.IsVisible) { TextChanged(this, EventArgs.Empty); }
+    }
 
     public string[] Lines => string.IsNullOrEmpty(Text) ? [] : Text.Replace("\r\n", "\n").Split('\n');
-    public string PlaceholderText { get => self.PlaceholderText;
+    public string PlaceholderText
+    {
+        get => self.PlaceholderText;
         set => self.PlaceholderText = value ?? "";
     }
     public override string Text
@@ -75,28 +83,24 @@ public class TextBox : Control
         }
     }
 
-        public string PlaceholderText { get { return self.PlaceholderText; } set { self.PlaceholderText = value ?? ""; } }
-        public override string Text { get { return self.Text; } set { self.Text = value ?? ""; } }
-        public virtual char PasswordChar { get => self.InvisibleChar; set { self.InvisibleChar = value; self.Visibility = false; } }
-        public virtual bool ReadOnly { get { return self.IsEditable == false; } set { self.IsEditable = value == false;  } }
-        public override event EventHandler TextChanged;
-        public bool Multiline { get; set; }
-        public int SelectionStart { get { self.GetSelectionBounds(out int start, out int end); return start; } }
+    public virtual char PasswordChar { get => self.InvisibleChar; set { self.InvisibleChar = value; self.Visibility = false; } }
+    public virtual bool ReadOnly { get => self.IsEditable == false;
+        set => self.IsEditable = value == false;
+    }
+    public override event EventHandler? TextChanged;
+    public bool Multiline { get; set; }
+    public int SelectionStart { get { self.GetSelectionBounds(out var start, out _); return start; } }
 
-        [System.ComponentModel.Browsable(false)]
-        public virtual int SelectionLength
-        {
-            get { self.GetSelectionBounds(out int start, out int end); return end - start; }
-            set
-            {
-                self.SelectRegion(self.CursorPosition, self.CursorPosition + value);
-            }
-        }
-        public void InsertTextAtCursor(string text)
-        {
-            if(text == null) return;
-            int posi = self.CursorPosition;
-            self.InsertText(text,ref posi);
-        }
+    [Browsable(false)]
+    public virtual int SelectionLength
+    {
+        get { self.GetSelectionBounds(out var start, out var end); return end - start; }
+        set => self.SelectRegion(self.CursorPosition, self.CursorPosition + value);
+    }
+    public void InsertTextAtCursor(string text)
+    {
+        if (text == null) return;
+        var posi = self.CursorPosition;
+        self.InsertText(text, ref posi);
     }
 }

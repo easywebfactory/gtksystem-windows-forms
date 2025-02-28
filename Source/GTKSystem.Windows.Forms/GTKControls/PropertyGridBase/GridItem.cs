@@ -11,17 +11,17 @@ public abstract class GridItem
     [TypeConverter(typeof(StringConverter))]
     public object? Tag { get; set; }
 
-    public abstract GridItemCollection GridItems { get; }
+    public abstract GridItemCollection? GridItems { get; }
 
     public abstract GridItemType GridItemType { get; }
 
-    public abstract string Label { get; }
+    public abstract string? Label { get; }
 
-    public abstract GridItem Parent { get; }
+    public abstract GridItem? Parent { get; }
 
-    public abstract PropertyDescriptor PropertyDescriptor { get; }
+    public abstract PropertyDescriptor? PropertyDescriptor { get; }
 
-    public abstract object Value { get; }
+    public abstract object? Value { get; }
 
     public virtual bool Expandable => false;
 

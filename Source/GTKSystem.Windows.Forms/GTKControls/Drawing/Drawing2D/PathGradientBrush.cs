@@ -1,5 +1,3 @@
-using System.Collections;
-
 namespace System.Drawing.Drawing2D;
 
 /// <summary>Encapsulates a <see cref="T:System.Drawing.Brush" /> object that fills the interior of a <see cref="T:System.Drawing.Drawing2D.GraphicsPath" /> object with a gradient. This class cannot be inherited.</summary>
@@ -129,7 +127,7 @@ public sealed class PathGradientBrush : Brush
 
 		/// <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" />.</summary>
 		/// <returns>The <see cref="T:System.Drawing.Drawing2D.PathGradientBrush" /> this method creates, cast as an object.</returns>
-		public override object Clone()
+		public override object? Clone()
 		{
 			return null;
 

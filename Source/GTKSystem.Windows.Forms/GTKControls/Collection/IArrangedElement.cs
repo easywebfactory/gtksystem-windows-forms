@@ -62,5 +62,5 @@ internal interface IArrangedElement : IComponent
     /// <summary>
     ///  Returns the element's children (on a control, this forwards to Controls)
     /// </summary>
-    ArrangedElementCollection Children { get; }
+    ArrangedElementCollection? Children { get; }
 }

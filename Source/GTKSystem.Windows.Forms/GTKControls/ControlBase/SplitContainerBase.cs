@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class SplitContainerBase : Gtk.Paned, IGtkControl
+public sealed class SplitContainerBase : Gtk.Paned, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public SplitContainerBase() : base(Gtk.Orientation.Vertical)

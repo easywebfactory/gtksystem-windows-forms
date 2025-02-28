@@ -21,7 +21,7 @@ public partial class ListBox : ListControl
 {
     public readonly ListBoxBase self = new();
     public override object GtkControl => self;
-    public override IGtkControl Self => self;
+    public override IControlGtk Self => self;
 
     protected override void SetStyle(Widget widget)
     {

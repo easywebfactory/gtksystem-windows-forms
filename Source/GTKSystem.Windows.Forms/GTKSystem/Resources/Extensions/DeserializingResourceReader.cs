@@ -872,7 +872,7 @@ public sealed class DeserializingResourceReader : System.Resources.IResourceRead
                 {
                     if (_typeTable != null)
                     {
-                        _typeTable[typeIndex] = typeof(System.Windows.Forms.ImageListStreamer);
+                        _typeTable[typeIndex] = typeof(ImageListStreamer);
                     }
                 }
                 else if (_typeTable != null)
@@ -935,8 +935,16 @@ public sealed class DeserializingResourceReader : System.Resources.IResourceRead
 
             // _formatter.Binder = new ImageListSerializationBinder();
         }
-        return _formatter.ReadObject(_store.BaseStream);
-        //return null;
+
+        try
+        {
+            return _formatter.ReadObject(_store.BaseStream);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
     }
 
     private unsafe object? DeserializeObject(int typeIndex)

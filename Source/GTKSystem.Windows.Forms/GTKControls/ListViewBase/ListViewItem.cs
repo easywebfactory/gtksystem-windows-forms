@@ -1,49 +1,30 @@
-
-using System.Collections;
 using System.Drawing;
 using System.Runtime.Serialization;
-namespace System.Windows.Forms
+using Gtk;
+
+namespace System.Windows.Forms;
+
+public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
 {
+    private ListViewSubItemCollection? _subitems;
 
-    public class ListViewItem : ICloneable, ISerializable, IKeyboardToolTip
-	{
-		private ListViewSubItemCollection _subitems;
-        public class ListViewSubItem
-		{
-			internal Gtk.Label _label;
-			public Color? BackColor
-			{
-				get;
-				set;
-			}
+    public class ListViewSubItem
+    {
+        internal Gtk.Label? _label;
+        public Color? BackColor { get; set; }
 
-			
-        public Rectangle Bounds
-        {
-            get;
-            set;
-        }
 
-        public Font? Font
-        {
-            get;
-            set;
-        }
+        public Rectangle Bounds { get; set; }
 
-        public Color? ForeColor
-        {
-            get;
-            set;
-        }
-			 
-        public object? Tag
-        {
-            get;
-            set;
-        }
+        public Font? Font { get; set; }
+
+        public Color? ForeColor { get; set; }
+
+        public object? Tag { get; set; }
 
 
         internal string _text = string.Empty;
+
         public string Text
         {
             get => _text;
@@ -56,19 +37,12 @@ namespace System.Windows.Forms
         }
 
 
-        public string Name
-        {
-            get;
-            set;
-        } = string.Empty;
-        public ListViewItem? ListViewItem
-        {
-            get;
-            set;
-        }
+        public string Name { get; set; } = string.Empty;
+        public ListViewItem? ListViewItem { get; set; }
+
         public ListViewSubItem()
         {
-				 
+
         }
 
         public ListViewSubItem(ListViewItem? owner, string text)
@@ -80,28 +54,26 @@ namespace System.Windows.Forms
         public ListViewSubItem(ListViewItem? owner, string text, Color foreColor, Color backColor, Font? font)
         {
             ListViewItem = owner;
-            Text= text;
+            Text = text;
             ForeColor = foreColor;
             BackColor = backColor;
             Font = font;
         }
-			 
+
         public void ResetStyle()
         {
-				 
+
         }
-			 
+
     }
 
     public class ListViewSubItemCollection : List<ListViewSubItem>
     {
         private readonly ListViewItem? _owner;
+
         public virtual ListViewSubItem this[string key]
         {
-            get
-            {
-                return Find(w => w.Name == key);
-            }
+            get { return Find(w => w.Name == key); }
         }
 
         public ListViewSubItemCollection(ListViewItem? owner)
@@ -125,13 +97,13 @@ namespace System.Windows.Forms
 
         public void AddRange(ListViewSubItem[] items)
         {
-            foreach(var item in items)
+            foreach (var item in items)
                 Add(item);
         }
 
         public void AddRange(string[] items)
         {
-            foreach(var item in items)
+            foreach (var item in items)
                 Add(item);
         }
 
@@ -140,7 +112,7 @@ namespace System.Windows.Forms
             foreach (var item in items)
                 Add(item, foreColor, backColor, font);
         }
-			 
+
         public virtual bool ContainsKey(string key)
         {
             return FindIndex(w => w.Name == key) > -1;
@@ -165,68 +137,42 @@ namespace System.Windows.Forms
 
     internal int id;
     internal FlowBoxChild? _flowBoxChild;
-    internal virtual AccessibleObject? AccessibilityObject
-    {
-        get;
-        set;
-    }
+    internal virtual AccessibleObject? AccessibilityObject { get; set; }
 
 
-    internal string? ItemType
-    {
-        get;
-        set;
-    }
-    public Color? BackColor
-    {
-        get;
-        set;
-    }
+    internal string? ItemType { get; set; }
+    public Color? BackColor { get; set; }
 
-		
-    public Rectangle Bounds
-    {
-        get;
-        set;
-    }
 
-		
-		
+    public Rectangle Bounds { get; set; }
+
+
+
     internal bool _checked;
+
     public bool Checked
     {
         get => _checked;
 
-        set {
+        set
+        {
             _checked = value;
             _listView?.NativeCheckItem(this, value);
         }
     }
 
-		
-		
-    public bool Focused
-    {
-        get;
-        set;
-    }
 
-		
-		
-		
-    public Font? Font
-    {
-        get;
-        set;
-    }
 
-		
-		
-    public Color? ForeColor
-    {
-        get;
-        set;
-    }
+    public bool Focused { get; set; }
+
+
+
+
+    public Font? Font { get; set; }
+
+
+
+    public Color? ForeColor { get; set; }
 
     public ListViewGroup? Group
     {
@@ -234,83 +180,49 @@ namespace System.Windows.Forms
         set => _group = value;
     }
 
-    public int ImageIndex
-    {
-        get;
-        set;
-    }
+    public int ImageIndex { get; set; }
 
-    internal ListViewItemImageIndexer? ImageIndexer
-    {
-        get;
-        set;
-    }
-
-		
-		
-		
-		
-		
-		
-		
-    public string? ImageKey
-    {
-        get;
-        set;
-    }
-
-		
-    public ImageList? ImageList
-    {
-        get;
-        internal set;
-    }
-
-		
-		
-		
-    public int IndentCount
-    {
-        get;
-        set;
-    }
-
-		
-    public int Index
-    {
-        get;
-        internal set;
-    }
-
-		
-    public ListView? ListView
-    {
-        get;
-        internal set;
-    }
+    internal ListViewItemImageIndexer? ImageIndexer { get; set; }
 
 
 
 
-    public string Name
-    {
-        get;
-        set;
-    } = string.Empty;
 
-		
-		
-		
-    public Point Position
-    {
-        get;
-        set;
-    }
+
+
+
+    public string? ImageKey { get; set; }
+
+
+    public ImageList? ImageList { get; internal set; }
+
+
+
+
+    public int IndentCount { get; set; }
+
+
+    public int Index { get; internal set; }
+
+
+    public ListView? ListView { get; internal set; }
+
+
+
+
+    public string Name { get; set; } = string.Empty;
+
+
+
+
+    public Point Position { get; set; }
     internal bool _selected;
+
     public bool Selected
     {
         get => _selected;
-        set { 
+        set
+        {
             _selected = value;
             _listView?.NativeSelectItem(this, value);
         }
@@ -324,45 +236,22 @@ namespace System.Windows.Forms
 
 
 
-    public int StateImageIndex
-    {
-        get;
-        set;
-    }
+    public int StateImageIndex { get; set; }
 
-    internal bool StateImageSet
-    {
-        get; set;
-    }
+    internal bool StateImageSet { get; set; }
 
-    internal bool StateSelected
-    {
-        get;
-        set;
-    }
+    internal bool StateSelected { get; set; }
 
-		
-		
-		
-		
-		public ListViewSubItemCollection SubItems
-		{
-            get => _subitems;
-        }
 
-		
-		
-		
-		
-		
-		
-    public object? Tag
-    {
-        get;
-        set;
-    }
+
+
+
+    public ListViewSubItemCollection? SubItems => _subitems;
+
+    public object? Tag { get; set; }
 
     internal string _text = string.Empty;
+
     public string Text
     {
         get => _text;
@@ -374,19 +263,11 @@ namespace System.Windows.Forms
         }
     }
 
-    public string? ToolTipText
-    {
-        get;
-        set;
-    }
+    public string? ToolTipText { get; set; }
 
-		
-		
-    public bool UseItemStyleForSubItems
-    {
-        get;
-        set;
-    }
+
+
+    public bool UseItemStyleForSubItems { get; set; }
 
     public ListViewItem()
     {
@@ -395,7 +276,7 @@ namespace System.Windows.Forms
 
     protected ListViewItem(SerializationInfo info, StreamingContext context)
     {
-			 
+
     }
 
     public ListViewItem(string? text)
@@ -423,10 +304,10 @@ namespace System.Windows.Forms
         InitListViewItem(items, imageIndex, "", foreColor, backColor, font, null);
     }
 
-		public ListViewItem(ListViewSubItem[] subItems, int imageIndex)
-		{
-            InitListViewItem(subItems, imageIndex, "", null, null, null, null);
-        }
+    public ListViewItem(ListViewSubItem[] subItems, int imageIndex)
+    {
+        InitListViewItem(subItems, imageIndex, "", null, null, null, null);
+    }
 
     public ListViewItem(ListViewGroup? group)
     {
@@ -453,22 +334,23 @@ namespace System.Windows.Forms
         InitListViewItem(items, imageIndex, "", null, null, null, group);
     }
 
-    public ListViewItem(string?[] items, int imageIndex, Color foreColor, Color backColor, Font? font, ListViewGroup? group)
+    public ListViewItem(string?[] items, int imageIndex, Color foreColor, Color backColor, Font? font,
+        ListViewGroup? group)
     {
         InitListViewItem(items, imageIndex, "", foreColor, backColor, font, group);
     }
 
-		public ListViewItem(ListViewSubItem[] subItems, int imageIndex, ListViewGroup group)
-		{
-            InitListViewItem(subItems, imageIndex, "", null, null, null, group);
-        }
+    public ListViewItem(ListViewSubItem[] subItems, int imageIndex, ListViewGroup group)
+    {
+        InitListViewItem(subItems, imageIndex, "", null, null, null, group);
+    }
 
     public ListViewItem(string? text, string? imageKey)
     {
         InitListViewItem(text, -1, imageKey, null, null, null, null);
     }
 
-    public ListViewItem(string?[] items, string? imageKey) 
+    public ListViewItem(string?[] items, string? imageKey)
     {
         InitListViewItem(items, -1, imageKey, null, null, null, null);
     }
@@ -478,10 +360,10 @@ namespace System.Windows.Forms
         InitListViewItem(items, -1, imageKey, foreColor, backColor, font, null);
     }
 
-		public ListViewItem(ListViewSubItem[] subItems, string imageKey)
-		{
-            InitListViewItem(subItems, -1, imageKey, null, null, null, null);
-        }
+    public ListViewItem(ListViewSubItem[] subItems, string imageKey)
+    {
+        InitListViewItem(subItems, -1, imageKey, null, null, null, null);
+    }
 
     public ListViewItem(string? text, string? imageKey, ListViewGroup? group)
     {
@@ -493,56 +375,65 @@ namespace System.Windows.Forms
         InitListViewItem(items, -1, imageKey, null, null, null, group);
     }
 
-    public ListViewItem(string?[] items, string? imageKey, Color foreColor, Color backColor, Font? font, ListViewGroup? group)
+    public ListViewItem(string?[] items, string? imageKey, Color foreColor, Color backColor, Font? font,
+        ListViewGroup? group)
     {
         InitListViewItem(items, -1, imageKey, foreColor, backColor, font, group);
     }
 
-		public ListViewItem(ListViewSubItem[] subItems, string imageKey, ListViewGroup group)
-		{
-            InitListViewItem(subItems, -1, imageKey, null, null, null, group);
-        }
-        internal void InitListViewItem(string text, int imageIndex, string imageKey, Color? foreColor, Color? backColor, Font font, ListViewGroup group)
-        {
-            _subitems = new ListViewSubItemCollection(this);
-            _subitems.Add(text);
-            this.Text = text;
-			this.ImageIndex = imageIndex;
-            this.ImageKey = imageKey;
-            this.ForeColor = foreColor;
-            this.BackColor = backColor;
-            this.Font = font;
-            this.Group = group;
-        }
-        internal void InitListViewItem(string[] items, int imageIndex, string imageKey, Color? foreColor, Color? backColor, Font font, ListViewGroup group)
-        {
-			InitListViewItem(items.Length > 0 ? items[0] : "", imageIndex, imageKey, foreColor, backColor, font, group);
-            foreach (string item in items)
-                _subitems.Add(item);
-
-        }
-        internal void InitListViewItem(ListViewSubItem[] subItems, int imageIndex, string imageKey, Color? foreColor, Color? backColor, Font font, ListViewGroup group)
-        {
-            InitListViewItem(subItems.Length > 0 ? subItems[0].Text : "", imageIndex, imageKey, foreColor, backColor, font, group);
-            foreach (ListViewSubItem item in subItems)
-                _subitems.Add(item);
-        }
-        //internal string RelateFlowBoxChildKey { get; set; }
-        public void BeginEdit()
-		{
-			 
+    public ListViewItem(ListViewSubItem[] subItems, string imageKey, ListViewGroup group)
+    {
+        InitListViewItem(subItems, -1, imageKey, null, null, null, group);
     }
 
-		public virtual object Clone()
-		{
-            return null;
-        }
+    internal void InitListViewItem(string text, int imageIndex, string imageKey, Color? foreColor, Color? backColor,
+        Font font, ListViewGroup group)
+    {
+        _subitems = new ListViewSubItemCollection(this);
+        _subitems.Add(text);
+        Text = text;
+        ImageIndex = imageIndex;
+        ImageKey = imageKey;
+        ForeColor = foreColor;
+        BackColor = backColor;
+        Font = font;
+        Group = group;
+    }
+
+    internal void InitListViewItem(string[] items, int imageIndex, string imageKey, Color? foreColor,
+        Color? backColor, Font font, ListViewGroup group)
+    {
+        InitListViewItem(items.Length > 0 ? items[0] : "", imageIndex, imageKey, foreColor, backColor, font, group);
+        foreach (var item in items)
+            _subitems.Add(item);
+
+    }
+
+    internal void InitListViewItem(ListViewSubItem[] subItems, int imageIndex, string imageKey, Color? foreColor,
+        Color? backColor, Font font, ListViewGroup group)
+    {
+        InitListViewItem(subItems.Length > 0 ? subItems[0].Text : "", imageIndex, imageKey, foreColor, backColor,
+            font, group);
+        foreach (var item in subItems)
+            _subitems.Add(item);
+    }
+
+    //internal string RelateFlowBoxChildKey { get; set; }
+    public void BeginEdit()
+    {
+
+    }
+
+    public virtual object Clone()
+    {
+        return null;
+    }
 
     public virtual void EnsureVisible()
     {
-			 
+
     }
-		 
+
     public ListViewSubItem? GetSubItemAt(int x, int y)
     {
         return _subitems?[x];
@@ -550,16 +441,16 @@ namespace System.Windows.Forms
 
     internal void Host(ListView parent, int id, int index)
     {
-			
+
     }
-		  
+
     public virtual void Remove()
     {
-			
+
     }
 
     public void GetObjectData(SerializationInfo info, StreamingContext context)
     {
-           
+
     }
 }

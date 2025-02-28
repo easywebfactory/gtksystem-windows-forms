@@ -232,7 +232,12 @@ public class KeysConverter : TypeConverter, IComparer
             return Enum.ToObject(typeof(Keys), finalValue);
         }
 
-        return base.ConvertFrom(context, culture, value);
+        if (context != null && culture != null)
+        {
+            return base.ConvertFrom(context, culture, value);
+        }
+
+        return null;
     }
 
     /// <summary>

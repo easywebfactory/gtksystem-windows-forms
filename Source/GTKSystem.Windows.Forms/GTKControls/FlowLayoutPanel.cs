@@ -71,7 +71,7 @@ public class FlowLayoutPanel : Control, IExtenderProvider
             box.Halign = Align.Start;
             box.Expand = false;
             control.Location = new Drawing.Point(0, 0);
-            control.lockLocation = true;
+            control.LockLocation = true;
             control.Parent = _owner;
             var widg = control.Widget;
             widg.Valign = Align.Start;

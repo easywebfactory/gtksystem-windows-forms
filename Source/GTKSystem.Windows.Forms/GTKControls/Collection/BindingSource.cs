@@ -1317,7 +1317,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         try
         {
             parentsCurrentItemChanging = true;
-            this.currencyManager?.PullData(out _);
+            currencyManager?.PullData(out _);
         }
         finally
         {

@@ -3,7 +3,7 @@ using GTKSystem.Windows.Forms.GTKControls;
 
 namespace System.Windows.Forms;
 
-public sealed class LabelBase : Gtk.Label, IGtkControl
+public sealed class LabelBase : Gtk.Label, IControlGtk
 {
     public IGtkControlOverride Override { get; set; }
     public LabelBase()
