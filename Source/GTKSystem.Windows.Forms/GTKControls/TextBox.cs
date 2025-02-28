@@ -20,7 +20,6 @@ namespace System.Windows.Forms
         {
             self.MaxWidthChars = 1;
             self.WidthChars = 0;
-
             self.Valign = Gtk.Align.Start;
             self.Halign = Gtk.Align.Start;
             self.Changed += Self_Changed;
@@ -67,6 +66,7 @@ namespace System.Windows.Forms
         public virtual bool ReadOnly { get { return self.IsEditable == false; } set { self.IsEditable = value == false;  } }
         public override event EventHandler TextChanged;
         public bool Multiline { get; set; }
+        public int MaxLength { get => self.MaxLength; set => self.MaxLength = value; }
         public int SelectionStart { get { self.GetSelectionBounds(out int start, out int end); return start; } }
 
         [System.ComponentModel.Browsable(false)]

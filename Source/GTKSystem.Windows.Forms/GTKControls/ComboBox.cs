@@ -5,9 +5,6 @@
  * author:chenhongjin
  */
 
-using Atk;
-using Gdk;
-using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections;

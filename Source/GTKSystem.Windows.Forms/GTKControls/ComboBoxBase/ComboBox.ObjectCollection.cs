@@ -106,24 +106,20 @@ namespace System.Windows.Forms
             {
                 item ??= "";
                 int index = -1;
-                if (_owner.IsHandleCreated)
+                if (!_owner._sorted)
                 {
-                    if (!_owner._sorted)
+                    InnerList.Add(new Entry(item));
+                    index = InnerList.Count - 1;
+                }
+                else
+                {
+                    Entry entry = item is Entry entryItem ? entryItem : new Entry(item);
+                    index = InnerList.BinarySearch(index: 0, Count, entry, this);
+                    if (index < 0)
                     {
-                        InnerList.Add(new Entry(item));
-                        index = InnerList.Count - 1;
+                        index = ~index; // getting the index of the first element that is larger than the search value
                     }
-                    else
-                    {
-                        Entry entry = item is Entry entryItem ? entryItem : new Entry(item);
-                        index = InnerList.BinarySearch(index: 0, Count, entry, this);
-                        if (index < 0)
-                        {
-                            index = ~index; // getting the index of the first element that is larger than the search value
-                        }
-                        InnerList.Insert(index, entry);
-                    }
-                    
+                    InnerList.Insert(index, entry);
                 }
                 return index;
             }
@@ -135,20 +131,13 @@ namespace System.Windows.Forms
 
             public void AddRange(params object[] items)
             {
-                try
+                foreach (object item in items)
                 {
-                    foreach (object item in items)
-                    {
-                        AddInternal(item);
-                        if(item is Entry entryItem)
-                            NativeAdd(-1, entryItem.Item?.ToString(), entryItem.Item?.ToString());
-                        else
-                            NativeAdd(-1, item?.ToString(), item?.ToString());
-                    }
-                }
-                finally
-                {
-                    
+                    AddInternal(item);
+                    if (item is Entry entryItem)
+                        NativeAdd(-1, entryItem.Item?.ToString(), entryItem.Item?.ToString());
+                    else
+                        NativeAdd(-1, item?.ToString(), item?.ToString());
                 }
             }
             /// <summary>
@@ -178,11 +167,8 @@ namespace System.Windows.Forms
 
             internal void ClearInternal()
             {
-                if (_owner.IsHandleCreated)
-                {
-                    ((Gtk.ListStore)_owner.self.Model).Clear();
-                    InnerList.Clear();
-                }
+                _owner.self.Clear();
+                InnerList.Clear();
                 _owner.SelectedIndex = -1;
             }
 
@@ -248,12 +234,9 @@ namespace System.Windows.Forms
             /// </summary>
             public void RemoveAt(int index)
             {
-                if (_owner.IsHandleCreated)
-                {
-                    _owner.self.Remove(index);
-                    InnerList.RemoveAt(index);
-                }
-                if (!_owner.IsHandleCreated)
+                _owner.self.Remove(index);
+                InnerList.RemoveAt(index);
+                if (_owner.self.IsRealized == false)
                 {
                     if (index < _owner._selectedIndex)
                     {
@@ -262,7 +245,7 @@ namespace System.Windows.Forms
                     else if (index == _owner._selectedIndex)
                     {
                         _owner._selectedIndex = -1;
-                        _owner.Text=string.Empty;
+                        _owner.Text = string.Empty;
                     }
                 }
             }
