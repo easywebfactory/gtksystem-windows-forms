@@ -43,12 +43,12 @@ public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
         _propertyView.SelectedGridItemChanged += Self_SelectedGridItemChanged;
     }
 
-    private void Self_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
+    private void Self_SelectedGridItemChanged(object? sender, SelectedGridItemChangedEventArgs e)
     {
         Events[s_selectedGridItemChangedEvent]?.DynamicInvoke(this, e);
     }
 
-    private void Self_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+    private void Self_PropertyValueChanged(object? s, PropertyValueChangedEventArgs e)
     {
         Events[s_propertyValueChangedEvent]?.DynamicInvoke(this, e);
     }
@@ -67,7 +67,7 @@ public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
     }
 
     [DefaultValue(null)]
-    public object SelectedObject
+    public object? SelectedObject
     {
         get => _selectedObjects is null || _selectedObjects.Length == 0 ? null : _selectedObjects[0];
         set => SelectedObjects = value is null ? Array.Empty<object>() : (new object[] { value });
@@ -138,18 +138,18 @@ public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
 
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public virtual bool CommandsVisible { get; }
+    public virtual bool CommandsVisible { get; internal set; }
 
     [DefaultValue(true)] public virtual bool CommandsVisibleIfAvailable { get; set; }
 
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public virtual bool CanShowCommands { get; }
+    public virtual bool CanShowCommands { get; internal set; }
 
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public Point ContextMenuDefaultLocation { get; }
+    public Point ContextMenuDefaultLocation { get; internal set; }
 
     [DefaultValue(typeof(Color), "HighlightText")]
     public Color SelectedItemWithFocusForeColor { get; set; }
@@ -188,7 +188,7 @@ public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public PropertyTabCollection PropertyTabs { get; }
+    public PropertyTabCollection PropertyTabs { get; internal set; }
 
     [DefaultValue(PropertySort.CategorizedAlphabetical)]
     public PropertySort PropertySort { get; set; }
@@ -205,7 +205,7 @@ public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public PropertyTab SelectedTab { get; }
+    public PropertyTab SelectedTab { get; internal set; }
 
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -219,25 +219,25 @@ public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    protected virtual Bitmap SortByPropertyImage { get; }
+    protected virtual Bitmap SortByPropertyImage { get; set; }
 
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    protected virtual Bitmap SortByCategoryImage { get; }
+    protected virtual Bitmap SortByCategoryImage { get; set; }
 
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    protected virtual Bitmap ShowPropertyPageImage { get; }
+    protected virtual Bitmap ShowPropertyPageImage { get; set; }
 
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    protected virtual Type DefaultTabType { get; }
+    protected virtual Type DefaultTabType { get; set; }
 
-    protected override Size DefaultSize { get; }
-    protected internal override bool ShowFocusCues { get; }
+    protected override Size DefaultSize { get; set; }
+    protected internal override bool ShowFocusCues { get; set; }
     public event ComponentRenameEventHandler ComComponentNameChanged;
 
     public event EventHandler SelectedObjectsChanged
@@ -272,7 +272,7 @@ public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
 
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public new event EventHandler? MouseLeave
+    public new event EventHandler MouseLeave
     {
         add => base.MouseLeave += value;
         remove => base.MouseLeave -= value;
@@ -280,7 +280,7 @@ public partial class PropertyGrid : ContainerControl, IComPropertyBrowser
 
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    public new event EventHandler? MouseEnter
+    public new event EventHandler MouseEnter
     {
         add => base.MouseEnter += value;
         remove => base.MouseEnter -= value;

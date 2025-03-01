@@ -26,7 +26,7 @@ public class ScrollableControl : Control, IArrangedElement, IComponent, IDisposa
     {
         scrollbase = scrolledwindow;
     }
-    public override Rectangle DisplayRectangle { get; }
+    public override Rectangle DisplayRectangle { get; set; }
     public Size AutoScrollMinSize { get; set; }
     public Point AutoScrollPosition { get; set; }
     public Size AutoScrollMargin { get; set; }
