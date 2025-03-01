@@ -54,3 +54,15 @@ Packages
 /Source/GTKSystem.Windows.Forms/obj/GTKSystem.Windows.Forms.csproj.nuget.g.targets
 /Source/GTKSystem.Windows.Forms/obj/project.assets.json
 /Source/GTKSystem.Windows.Forms/obj/project.nuget.cache
+/Samples/GTKSystemWinFormsApp11/bin/Debug/net8.0/GTKSystemWinFormsApp11.deps.json
+/Samples/GTKSystemWinFormsApp11/bin/Debug/net8.0/GTKSystemWinFormsApp11.exe
+/Samples/GTKSystemWinFormsApp11/bin/Debug/net8.0/GTKSystemWinFormsApp11.pdb
+/Source/System.Resources.Extensions/bin/Debug/net6.0/System.Resources.Extensions.dll
+/Source/System.Resources.Extensions/bin/Debug/net6.0/System.Resources.Extensions.pdb
+/Source/System.Resources.Extensions/obj/Debug/net6.0/ref/System.Resources.Extensions.dll
+/Source/System.Resources.Extensions/obj/Debug/net6.0/refint/System.Resources.Extensions.dll
+/Source/System.Resources.Extensions/obj/Debug/net6.0/System.Resources.Extensions.csproj.CoreCompileInputs.cache
+/Source/System.Resources.Extensions/obj/Debug/net6.0/System.Resources.Extensions.csproj.FileListAbsolute.txt
+/Source/System.Resources.Extensions/obj/Debug/net6.0/System.Resources.Extensions.dll
+/Source/System.Resources.Extensions/obj/Debug/net6.0/System.Resources.Extensions.pdb
+*.json

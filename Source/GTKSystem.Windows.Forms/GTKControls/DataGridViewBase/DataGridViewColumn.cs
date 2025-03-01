@@ -310,14 +310,8 @@ namespace System.Windows.Forms
         }
         internal void AtrributesClone(DataGridViewCell newcell)
         {
-            //性能优先
             newcell.Style = _cellTemplate.Style?.Clone();
             newcell.ReadOnly = _cellTemplate.ReadOnly;
-
-            //var propertys = newcell.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            //foreach (PropertyInfo property in propertys)
-            //    if (property.CanRead && property.CanWrite)
-            //        property.SetValue(newcell, property.GetValue(_cellTemplate));
         }
         public void SetGridViewDefaultStyle(DataGridViewCellStyle cellStyle)
         {
@@ -390,15 +384,17 @@ namespace System.Windows.Forms
         [Localizable(true)]
 
         public string ToolTipText { get; set; }
-        private DataGridViewColumnSortMode _SortMode;
+        private DataGridViewColumnSortMode _SortMode = DataGridViewColumnSortMode.Automatic;
         public DataGridViewColumnSortMode SortMode
         {
             get => _SortMode;
             set
             {
                 _SortMode = value;
-                if (value == DataGridViewColumnSortMode.Automatic)
-                    base.SortIndicator = true;
+                if (value == DataGridViewColumnSortMode.NotSortable)
+                    base.SortColumnId = -1;
+                else
+                    base.SortColumnId = _index;
             }
         }
         [Browsable(false)]
@@ -501,8 +497,15 @@ namespace System.Windows.Forms
         public override string ToString() { return this.GetType().Name; }
         //protected override void Dispose(bool disposing) {  }
         private int _index;
-        public int Index { get => _index; internal set { _index = value; base.SortColumnId = value; foreach (var cell in base.Cells) { base.AddAttribute(cell, "cellvalue", _index); } } }
-
+        public int Index
+        {
+            get => _index;
+            internal set
+            {
+                _index = value; if (_SortMode != DataGridViewColumnSortMode.NotSortable) { base.SortColumnId = value; }
+                foreach (var cell in base.Cells) { base.AddAttribute(cell, "cellvalue", _index); }
+            }
+        }
     }
 
 

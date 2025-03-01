@@ -10,6 +10,7 @@ using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
+using System.Reflection;
 
 namespace System.Windows.Forms
 {
@@ -130,18 +131,38 @@ namespace System.Windows.Forms
         }
         internal int _selectedIndex;
         public override int SelectedIndex { get { return self.Active; } set { self.Active = value; _selectedIndex = value; if (value == -1) { Text = ""; } } }
+        public override object SelectedValue { get { return self.ActiveId; } set => self.ActiveId = value?.ToString(); }
         public ObjectCollection Items { get { return __itemsData; } }
         public override string GetItemText(object item)
         {
             if (item is ObjectCollection.Entry entry)
             {
-                return entry.Item?.ToString();
+                Type type = entry.Item.GetType();
+                if (entry.Item is DataRow dr)
+                    return dr[DisplayMember]?.ToString();
+                else if (type.IsValueType && type.IsPrimitive)
+                    return type.GetProperty(DisplayMember).GetValue(entry)?.ToString();
+                else
+                    return item?.ToString();
             }
             return item?.ToString();
         }
         public string NativeGetItemText(int index)
         {
-            return __itemsData[index].ToString();
+            self.Model.GetIter(out TreeIter iter, new TreePath(new int[] { index }));
+            object val = self.Model.GetValue(iter, 1);
+            return val?.ToString();
+        }
+        public void NativeAdd(int index, string value, string text)
+        {
+            if (_sorted == false && index > -1)
+            {
+                self.Insert(index, value, text);
+            }
+            else
+            {
+                self.Append(value, text);
+            }
         }
         private bool _sorted;
         public bool Sorted { get=> _sorted; set=> _sorted = value; }
@@ -151,7 +172,7 @@ namespace System.Windows.Forms
             get => _DataSource;
             set {
                 _DataSource = value;
-                if (self.IsVisible)
+                if (self.IsRealized)
                 {
                     OnSetDataSource();
                 }
@@ -161,47 +182,50 @@ namespace System.Windows.Forms
         {
             if (_DataSource != null)
             {
-                if (_DataSource is IListSource listSource)
+                if (_DataSource is DataTable dtable)
                 {
-                    IEnumerator list = listSource.GetList().GetEnumerator();
-                    SetDataSource(list);
+                    LoadDataTableSource(dtable);
                 }
-                else if (_DataSource is IEnumerable list1)
+                else if (_DataSource is DataView dview)
                 {
-                    SetDataSource(list1.GetEnumerator());
+                    LoadDataTableSource(dview.Table);
+                }
+                else if (_DataSource is IList list)
+                {
+                    LoadListSource(list);
                 }
             }
         }
-        private void SetDataSource(IEnumerator enumerator)
+        private void LoadDataTableSource(DataTable dtable)
         {
             __itemsData.Clear();
-            if (enumerator != null)
+            if(dtable.Columns.Contains(ValueMember)&& dtable.Columns.Contains(DisplayMember))
             {
-                if (string.IsNullOrWhiteSpace(DisplayMember))
-                {
-                    while (enumerator.MoveNext())
-                    {
-                        var o = enumerator.Current;
-                        if (o is DataRowView row)
-                            __itemsData.Add(row[0]);
-                        else
-                            __itemsData.Add(enumerator.Current);
-                    }
-                }
-                else
-                {
-                    while (enumerator.MoveNext())
-                    {
-                        var o = enumerator.Current;
-                        if(o is DataRowView row)
-                            __itemsData.Add(row[DisplayMember]);
-                        else
-                            __itemsData.Add(o.GetType().GetProperty(DisplayMember)?.GetValue(o));
-                    }
-                }
+                foreach (DataRow row in dtable.Rows)
+                    __itemsData.Add(row[ValueMember].ToString(), row[DisplayMember].ToString(), row);
+            }
+            else if (dtable.Columns.Contains(DisplayMember))
+            {
+                foreach (DataRow row in dtable.Rows)
+                    __itemsData.Add("", row[DisplayMember].ToString(), row);
+            }
+            else
+            {
+                throw new Exception("DisplayMember属性未赋值或字段名不存在");
             }
         }
-
+        private void LoadListSource(IList list)
+        {
+            __itemsData.Clear();
+            if (list.Count > 0)
+            {
+                Type type = list[0].GetType();
+                PropertyInfo valproperty = type.GetProperty(ValueMember);
+                PropertyInfo disproperty = type.GetProperty(DisplayMember);
+                foreach (var entry in list)
+                    __itemsData.Add(valproperty?.GetValue(entry)?.ToString(), disproperty?.GetValue(entry)?.ToString(), entry);
+            }
+        }
     }
 
 }

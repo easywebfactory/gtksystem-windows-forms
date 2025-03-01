@@ -5,9 +5,6 @@
  * author:chenhongjin
  */
 
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-
 namespace System.Windows.Forms
 {
     public sealed class FolderBrowserDialog : FileDialog
@@ -23,14 +20,15 @@ namespace System.Windows.Forms
             SelectedPath = string.Empty;
             SelectedPathNeedsCheck = false;
             ShowNewFolderButton = true;
+            base.Reset();
         }
         public Environment.SpecialFolder RootFolder { get; set; } = Environment.SpecialFolder.Desktop;
-        public new string SelectedPath
+        public string SelectedPath
         {
-            get => base.SelectedPath;
-            set => base.SelectedPath = value;
+            get => SelectedDirectory;
+            set => SelectedDirectory = value;
         }
-        private new string[] SelectedPaths => base.SelectedPaths;
+        public string[] SelectedPaths => base.FileNames;
         private new bool Multiselect => base.Multiselect;
         private new string Title => base.Title;
         public bool ShowNewFolderButton { get; set; }

@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 
@@ -78,51 +77,45 @@ namespace System.Windows.Forms
             public int Add(object item)
             {
                 int index = AddInternal(item);
-
+                NativeAdd(-1, item.ToString(), item.ToString());
                 return index;
             }
-
+            internal int Add(string text, string value, object item)
+            {
+                int index = AddInternal(item);
+                NativeAdd(-1, value, text);
+                return index;
+            }
+            private void NativeAdd(int index, string value, string text)
+            {
+                try
+                {
+                    _owner.NativeAdd(index, value, text);
+                }
+                catch
+                {
+                    InnerList.RemoveAt(index);
+                    throw;
+                }
+            }
             private int AddInternal(object item)
             {
                 item ??= "";
                 int index = -1;
-                if (_owner.IsHandleCreated)
+                if (!_owner._sorted)
                 {
-                    if (!_owner._sorted)
+                    InnerList.Add(new Entry(item));
+                    index = InnerList.Count - 1;
+                }
+                else
+                {
+                    Entry entry = item is Entry entryItem ? entryItem : new Entry(item);
+                    index = InnerList.BinarySearch(index: 0, Count, entry, this);
+                    if (index < 0)
                     {
-                        InnerList.Add(new Entry(item));
-                        index = InnerList.Count - 1;
+                        index = ~index; // getting the index of the first element that is larger than the search value
                     }
-                    else
-                    {
-                        Entry entry = item is Entry entryItem ? entryItem : new Entry(item);
-                        index = InnerList.BinarySearch(index: 0, Count, entry, this);
-                        if (index < 0)
-                        {
-                            index = ~index; // getting the index of the first element that is larger than the search value
-                        }
-                        InnerList.Insert(index, entry);
-                    }
-                    bool successful = false;
-                    try
-                    {
-                        if (_owner._sorted)
-                        {
-                            _owner.self.InsertText(index, item.ToString());
-                        }
-                        else
-                        {
-                            _owner.self.AppendText(item.ToString());
-                        }
-                        successful = true;
-                    }
-                    finally
-                    {
-                        if (!successful)
-                        {
-                            InnerList.RemoveAt(index);
-                        }
-                    }
+                    InnerList.Insert(index, entry);
                 }
                 return index;
             }
@@ -134,27 +127,15 @@ namespace System.Windows.Forms
 
             public void AddRange(params object[] items)
             {
-                try
-                {
-                    AddRangeInternal(items);
-                }
-                finally
-                {
-                    
-                }
-            }
-
-            internal void AddRangeInternal(IList items)
-            {
                 foreach (object item in items)
                 {
-                    // adding items one-by-one for performance (especially for sorted combobox)
-                    // we can not rely on ArrayList.Sort since its worst case complexity is n*n
-                    // AddInternal is based on BinarySearch and ensures n*log(n) complexity
                     AddInternal(item);
+                    if (item is Entry entryItem)
+                        NativeAdd(-1, entryItem.Item?.ToString(), entryItem.Item?.ToString());
+                    else
+                        NativeAdd(-1, item?.ToString(), item?.ToString());
                 }
             }
-
             /// <summary>
             ///  Retrieves the item with the specified index.
             /// </summary>
@@ -182,11 +163,8 @@ namespace System.Windows.Forms
 
             internal void ClearInternal()
             {
-                if (_owner.IsHandleCreated)
-                {
-                    ((Gtk.ListStore)_owner.self.Model).Clear();
-                    InnerList.Clear();
-                }
+                _owner.self.Clear();
+                InnerList.Clear();
                 _owner.SelectedIndex = -1;
             }
 
@@ -243,26 +221,7 @@ namespace System.Windows.Forms
                 else
                 {
                     InnerList.Insert(index, new Entry(item));
-                    if (_owner.IsHandleCreated)
-                    {
-                        bool successful = false;
-
-                        try
-                        {
-                            _owner.self.InsertText(index, item.ToString());
-                            successful = true;
-                        }
-                        finally
-                        {
-                            if (successful)
-                            {
-                            }
-                            else
-                            {
-                                InnerList.RemoveAt(index);
-                            }
-                        }
-                    }
+                    NativeAdd(index, item?.ToString(), item?.ToString());
                 }
             }
 
@@ -271,12 +230,9 @@ namespace System.Windows.Forms
             /// </summary>
             public void RemoveAt(int index)
             {
-                if (_owner.IsHandleCreated)
-                {
-                    _owner.self.Remove(index);
-                    InnerList.RemoveAt(index);
-                }
-                if (!_owner.IsHandleCreated)
+                _owner.self.Remove(index);
+                InnerList.RemoveAt(index);
+                if (_owner.self.IsRealized == false)
                 {
                     if (index < _owner._selectedIndex)
                     {
@@ -285,7 +241,7 @@ namespace System.Windows.Forms
                     else if (index == _owner._selectedIndex)
                     {
                         _owner._selectedIndex = -1;
-                        _owner.Text=string.Empty;
+                        _owner.Text = string.Empty;
                     }
                 }
             }
@@ -318,19 +274,18 @@ namespace System.Windows.Forms
                 if (string.Compare(_owner.GetItemText(value), _owner.NativeGetItemText(index), true, CultureInfo.CurrentCulture) != 0)
                 {
                     _owner.self.Remove(index);
-                    _owner.self.InsertText(index, value?.ToString());
+                    _owner.self.Insert(index, value?.ToString(), value?.ToString());
+
                     InnerList.RemoveAt(index);
-                    InnerList.Insert(index,new Entry(value));
+                    InnerList.Insert(index, new Entry(value));
                     if (selected)
                     {
                         _owner.SelectedIndex = index;
-                        _owner.Text=value?.ToString();
+                        _owner.Text = value?.ToString();
                     }
                 }
                 else
                 {
-                    // NEW - FOR COMPATIBILITY REASONS
-                    // Minimum compatibility fix
                     if (selected)
                     {
                         _owner.self.SetStateFlags(Gtk.StateFlags.Selected, true);

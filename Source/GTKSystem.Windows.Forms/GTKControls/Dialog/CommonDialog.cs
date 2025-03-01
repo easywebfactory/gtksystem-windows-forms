@@ -40,17 +40,10 @@ namespace System.Windows.Forms
         public virtual DialogResult ShowDialog(IWin32Window owner)
         {
             DialogResult result = DialogResult.Cancel;
-            try
+            bool runresult = RunDialog(owner);
+            if (runresult)
             {
-               bool runresult = RunDialog(owner);
-                if (runresult)
-                {
-                    result = DialogResult.OK;
-                }
-            }
-            finally
-            {
-               base.Dispose();
+                result = DialogResult.OK;
             }
             return result;
         }

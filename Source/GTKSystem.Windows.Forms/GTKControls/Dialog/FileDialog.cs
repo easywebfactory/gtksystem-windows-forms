@@ -6,10 +6,7 @@
  */
 
 using Gtk;
-using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 
 namespace System.Windows.Forms
 {
@@ -33,13 +30,6 @@ namespace System.Windows.Forms
         public string InitialDirectory { get; set; }
         public string Description { get; set; }
         internal bool Multiselect { get; set; }
-        internal string SelectedPath
-        {
-            get => SelectedPaths.Length > 0 ? SelectedPaths[0] : string.Empty;
-            set => FileName = value;
-        }
-        internal string[] SelectedPaths => FileNames != null && FileNames.Length > 0 ? (string[])FileNames.Clone() : Array.Empty<string>();
-
         public int FilterIndex { get; set; }
 
         private string _filter;
@@ -63,10 +53,6 @@ namespace System.Windows.Forms
                     {
                         throw new ArgumentException("FileDialog Invalid Filter");
                     }
-                    //Gtk.FileFilter ffilter = new Gtk.FileFilter();
-                    //ffilter.AddMimeType(pattern[0]);
-                    //ffilter.AddPattern(pattern[1]);
-                    //fileDialog.AddFilter(ffilter);
                 }
                 string[] array = value?.Split('|');
                 if (array == null || array[1].Split('.').Length == 0)
@@ -78,7 +64,7 @@ namespace System.Windows.Forms
         }
 
         public bool AutoUpgradeEnabled { get; set; }
-
+        internal string SelectedDirectory { get; set; }
         public string FileName { get; set; }
         public string[] FileNames { get; internal set; }
         public bool DereferenceLinks { get; set; }
@@ -98,35 +84,37 @@ namespace System.Windows.Forms
             Title = null;
             InitialDirectory = null;
             FileName = null;
+            FileNames = null;
             _filter = null;
             FilterIndex = 1;
             SupportMultiDottedExtensions = false;
         }
         protected override bool RunDialog(IWin32Window owner)
         {
-            if (owner != null && owner is Form ownerform)
+            if (fileDialog == null)
             {
-                fileDialog = new Gtk.FileChooserDialog("选择文件", ownerform.self, ActionType);
-                fileDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
-            }
-            else
-            {
-                fileDialog = new Gtk.FileChooserDialog("选择文件", null, ActionType);
-                fileDialog.WindowPosition = Gtk.WindowPosition.Center;
+                if (owner != null && owner is Form ownerform)
+                {
+                    fileDialog = new Gtk.FileChooserDialog("选择文件", ownerform.self, ActionType);
+                    fileDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
+                }
+                else
+                {
+                    fileDialog = new Gtk.FileChooserDialog("选择文件", null, ActionType);
+                    fileDialog.WindowPosition = Gtk.WindowPosition.Center;
+                }
+                fileDialog.AddButton("确定", Gtk.ResponseType.Ok);
+                fileDialog.AddButton("取消", Gtk.ResponseType.Cancel);
+                fileDialog.SelectMultiple = this.Multiselect;
+                fileDialog.Title = this.Title ?? string.Empty;
+                fileDialog.TooltipText = this.Description ?? string.Empty;
             }
             fileDialog.KeepAbove = true;
-            fileDialog.AddButton("确定", Gtk.ResponseType.Ok);
-            fileDialog.AddButton("取消", Gtk.ResponseType.Cancel);
-            fileDialog.SelectMultiple = this.Multiselect;
-            fileDialog.Title = this.Title ?? string.Empty;
-            fileDialog.TooltipText = this.Description ?? string.Empty;
-
-            if (!string.IsNullOrWhiteSpace(this.SelectedPath))
-                fileDialog.SetCurrentFolder(this.SelectedPath);
+            if (!string.IsNullOrWhiteSpace(this.SelectedDirectory))
+                fileDialog.SetCurrentFolder(this.SelectedDirectory);
             else if (!string.IsNullOrWhiteSpace(this.InitialDirectory))
                 fileDialog.SetCurrentFolder(this.InitialDirectory);
 
-            
             if (!string.IsNullOrWhiteSpace(DefaultExt))
             {
                 DefaultExt = DefaultExt.Trim('.');
@@ -146,28 +134,20 @@ namespace System.Windows.Forms
                     ffilter.AddPattern(pattern[1]);
                     fileDialog.AddFilter(ffilter);
                 }
-                //for (int i = 0; i < array.Length; i += 2)
-                //{
-                //    fileDialog.Filter.AddMimeType(array[i]);
-                //    fileDialog.Filter.AddPattern(array[i + 1]);
-
-                //}
             }
-            
 
             int response = fileDialog.Run();
             this.FileName = fileDialog.Filename;
-            this.FileNames = fileDialog.Filenames;
-            this.SelectedPath = fileDialog.CurrentFolder;
+            this.FileNames = fileDialog.Filenames.Clone() as string[];
+            this.SelectedDirectory = fileDialog.Filename;
             fileDialog.HideOnDelete();
             return response == -5;
         }
-
         protected override void Dispose(bool disposing)
         {
             if (fileDialog != null)
             {
-                fileDialog.Dispose();
+                fileDialog.Destroy();
                 fileDialog = null;
             }
             base.Dispose(disposing);

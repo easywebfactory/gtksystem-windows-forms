@@ -1,13 +1,5 @@
-﻿using System;
+﻿using System.ComponentModel;
 using System.Drawing;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System.Windows.Forms;
-using Gtk;
 
 namespace System.Windows.Forms
 {
@@ -43,15 +35,18 @@ namespace System.Windows.Forms
         private static Gtk.Window ActiveWindow = null;
         protected override bool RunDialog(IWin32Window owner)
         {
-            if (owner != null && owner is Form ownerform)
+            if (fontChooserDialog == null)
             {
-                fontChooserDialog = new Gtk.FontChooserDialog("选择字体", ownerform.self);
-                fontChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
-            }
-            else
-            {
-                fontChooserDialog = new Gtk.FontChooserDialog("选择字体", null);
-                fontChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
+                if (owner != null && owner is Form ownerform)
+                {
+                    fontChooserDialog = new Gtk.FontChooserDialog("选择字体", ownerform.self);
+                    fontChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
+                }
+                else
+                {
+                    fontChooserDialog = new Gtk.FontChooserDialog("选择字体", null);
+                    fontChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
+                }
             }
             fontChooserDialog.KeepAbove = true;
             if (null != _font)
@@ -86,7 +81,7 @@ namespace System.Windows.Forms
         {
             if (fontChooserDialog != null)
             {
-                fontChooserDialog.Dispose();
+                fontChooserDialog.Destroy();
                 fontChooserDialog = null;
             }
             base.Dispose(disposing);
