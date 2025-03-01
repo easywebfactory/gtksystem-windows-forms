@@ -23,10 +23,6 @@
 
             this.Add(this.grid);
         }
-        public void AddClass(string cssClass)
-        {
-            this.Override.AddClass(cssClass);
-        }
         protected override void OnShown()
         {
             Override.OnAddClass();

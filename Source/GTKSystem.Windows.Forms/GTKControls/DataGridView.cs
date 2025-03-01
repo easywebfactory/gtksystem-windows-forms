@@ -247,7 +247,7 @@ namespace System.Windows.Forms
             Type[] _entityType = _type.GetGenericArguments();
             if (_entityType.Length == 1)
             {
-                PropertyInfo[] pros = _entityType[0].GetProperties();
+                PropertyInfo[] pros = _entityType[0].GetProperties(BindingFlags.Public|BindingFlags.Instance);
                 foreach (PropertyInfo pro in pros)
                 {
                     if (_columns.Exists(m => m.DataPropertyName == pro.Name) == false)

@@ -1,11 +1,7 @@
-using Atk;
-using GLib;
-using Gtk;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing.Imaging;
 using System.Globalization;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
@@ -334,13 +330,13 @@ namespace System.Drawing
 		/// <summary>Releases the unmanaged resources used by the <see cref="T:System.Drawing.Image" /> and optionally releases the managed resources.</summary>
 		/// <param name="disposing">
 		///   <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
-		protected virtual void Dispose(bool disposing)
+		protected new virtual void Dispose(bool disposing)
 		{
-
             if (_Pixbuf != null)
                 _Pixbuf.Dispose();
             if (_PixbufData != null)
                 _PixbufData = null;
+			base.Dispose(disposing);
         }
 		private ImageFormat GetImageFormat(string extension)
 		{
@@ -649,7 +645,7 @@ namespace System.Drawing
 			 
 		}
 
-        public void Dispose()
+        public new void Dispose()
         {
 			Dispose(true);
         }

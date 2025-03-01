@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿#if NETSTANDARD2_0
+using System.Runtime.CompilerServices;
 
 #nullable disable
 namespace System.Drawing;
@@ -358,3 +359,5 @@ internal enum KnownColor
     /// <summary>A system-defined color representing the ARGB value <c>#663399</c>.</summary>
     RebeccaPurple = 175, // 0x000000AF
 }
+
+#endif

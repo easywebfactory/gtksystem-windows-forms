@@ -17,7 +17,7 @@ namespace GTKSystem.Resources.Extensions
 
 		private bool _haveReadFromReader;
 
-		private new IResourceReader Reader => _defaultReader;
+		private IResourceReader Reader => _defaultReader;
 
 		internal RuntimeResourceSet(IResourceReader reader)
 		{

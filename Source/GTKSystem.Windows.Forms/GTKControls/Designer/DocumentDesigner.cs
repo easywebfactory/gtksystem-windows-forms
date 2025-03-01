@@ -42,28 +42,7 @@ namespace System.Windows.Forms.Design
 
         public ViewTechnology[] SupportedTechnologies => throw new NotImplementedException();
 
-        public IComponent Component => throw new NotImplementedException();
-
-        public DesignerVerbCollection Verbs => throw new NotImplementedException();
-
-        public bool CanModifyComponents => throw new NotImplementedException();
-
         public object GetView(ViewTechnology technology)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DoDefaultAction()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Initialize(IComponent component)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
         {
             throw new NotImplementedException();
         }
@@ -74,26 +53,6 @@ namespace System.Windows.Forms.Design
         }
 
         public void ToolPicked(ToolboxItem tool)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool AddComponent(IComponent component, string name, bool firstAdd)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsDropOk(IComponent component)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Control GetDesignerControl()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Control GetControlForComponent(object component)
         {
             throw new NotImplementedException();
         }

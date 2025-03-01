@@ -1,15 +1,13 @@
 using System.Collections;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Drawing.Design;
 using System.Runtime.CompilerServices;
 
 namespace System.Windows.Forms
 {
-	[DefaultProperty("DataSource")]
+    [DefaultProperty("DataSource")]
 	[DefaultEvent("CurrentChanged")]
 	[ComplexBindingProperties("DataSource", "DataMember")]
-	public class BindingSource : Component, IBindingListView, ICollection, IEnumerable, IList, IBindingList, ITypedList, ICancelAddNew, ISupportInitializeNotification, ISupportInitialize, ICurrencyManagerProvider
+    public class BindingSource : Component, IBindingListView, ICollection, IEnumerable, IList, IBindingList, ITypedList, ICancelAddNew, ISupportInitializeNotification, ISupportInitialize, ICurrencyManagerProvider
 	{
 		[Browsable(false)]
 		public virtual CurrencyManager CurrencyManager
@@ -288,12 +286,12 @@ namespace System.Windows.Forms
 		{
 			get
 			{
-				throw null;
+				return null;
 			}
 			//[RequiresUnreferencedCode("Members of types used in the filter expression might be trimmed.")]
 			set
 			{
-				throw null;
+				//throw null;
 			}
 		}
 

@@ -166,7 +166,7 @@ namespace System.Windows.Forms
             {
                 return _cursorData.GetHashCode();
             }
-            else if (_handle != null)
+            else if (_handle != IntPtr.Zero)
             {
                 return _handle.GetHashCode();
             }

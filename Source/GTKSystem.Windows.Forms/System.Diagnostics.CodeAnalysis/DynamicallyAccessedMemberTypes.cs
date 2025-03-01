@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NETSTANDARD2_0
+using System;
 
 namespace System.Diagnostics.CodeAnalysis
 {
@@ -41,3 +42,4 @@ namespace System.Diagnostics.CodeAnalysis
         Interfaces = 8192
     }
 }
+#endif

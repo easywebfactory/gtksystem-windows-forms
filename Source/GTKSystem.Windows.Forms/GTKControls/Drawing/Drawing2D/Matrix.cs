@@ -1,10 +1,7 @@
-using Gtk;
-using System.Collections;
-
 namespace System.Drawing.Drawing2D
 {
-	/// <summary>Encapsulates a 3-by-3 affine matrix that represents a geometric transform. This class cannot be inherited.</summary>
-	public sealed class Matrix : MarshalByRefObject, IDisposable
+    /// <summary>Encapsulates a 3-by-3 affine matrix that represents a geometric transform. This class cannot be inherited.</summary>
+    public sealed class Matrix : MarshalByRefObject, IDisposable
 	{
 		/// <summary>Gets an array of floating-point values that represents the elements of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
 		/// <returns>An array of floating-point values that represents the elements of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</returns>
@@ -183,9 +180,12 @@ namespace System.Drawing.Drawing2D
 		{
 			return this.GetHashCode() == obj.GetHashCode();  
 		}
-
-		/// <summary>Inverts this <see cref="T:System.Drawing.Drawing2D.Matrix" />, if it is invertible.</summary>
-		public void Invert()
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        /// <summary>Inverts this <see cref="T:System.Drawing.Drawing2D.Matrix" />, if it is invertible.</summary>
+        public void Invert()
 		{
 			this.invert = true;
 		}

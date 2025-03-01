@@ -48,7 +48,7 @@ using System.Runtime.CompilerServices;
 namespace System;
 // xxHash32 is used for the hash code.
 // https://github.com/Cyan4973/xxHash
-
+#if NETSTANDARD2_0
 internal struct HashCode
 {
     private static readonly uint s_seed = GenerateGlobalSeed();
@@ -394,3 +394,5 @@ internal struct HashCode
     }
 
 }
+
+#endif

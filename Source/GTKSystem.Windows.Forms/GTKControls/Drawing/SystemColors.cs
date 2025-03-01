@@ -1,6 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+#if NETSTANDARD2_0
+
 namespace System.Drawing;
 
 internal static class SystemColors
@@ -48,3 +50,5 @@ internal static class SystemColors
     public static Color WindowFrame => ColorExtension.FromKnownColor(KnownColor.WindowFrame);
     public static Color WindowText => ColorExtension.FromKnownColor(KnownColor.WindowText);
 }
+
+#endif

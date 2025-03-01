@@ -26,6 +26,8 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
 	  <SignAssembly>False</SignAssembly>
 	  <LangVersion>latest</LangVersion>
 	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Nullable>annotations</Nullable>
+
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
