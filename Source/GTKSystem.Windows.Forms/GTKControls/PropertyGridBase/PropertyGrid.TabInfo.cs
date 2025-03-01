@@ -18,8 +18,8 @@ public partial class PropertyGrid
         public void Deconstruct(out PropertyTab Tab, out PropertyTabScope scope, out ToolStripButton button)
         {
             Tab = this.Tab;
-            scope = this.Scope;
-            button = this.Button;
+            scope = Scope;
+            button = Button;
         }
     }
 }

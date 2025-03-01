@@ -56,10 +56,10 @@ public class DataGridViewCellStyle : ICloneable
 
         public virtual void ApplyStyle(DataGridViewCellStyle dataGridViewCellStyle) { }
         public virtual DataGridViewCellStyle Clone() {
-            var celltype = GetType();
-            var newobj = new DataGridViewCellStyle();
-            var propertys = celltype.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            foreach (var property in propertys)
+            Type celltype = GetType();
+            DataGridViewCellStyle newobj = new DataGridViewCellStyle();
+            var propertys = celltype.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.SetProperty);
+            foreach (PropertyInfo property in propertys)
                 if (property.CanRead && property.CanWrite)
                     property.SetValue(newobj, property.GetValue(this));
             return newobj;

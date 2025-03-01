@@ -34,7 +34,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     public string? UniqueKey { get; protected set; }
 
     public virtual IWidget Widget => (IWidget)GtkControl!;
-    public virtual IControlGtk? Self => (IControlGtk)GtkControl!;
+    public virtual IControlGtk Self => (IControlGtk)GtkControl!;
 
     public virtual object? GtkControl { get; set; }
 
@@ -159,9 +159,12 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             widgetRealized = true;
             InitStyle((Widget)sender!);
             OnLoad(e);
-            foreach (Control control in Controls)
+            if (Controls != null)
             {
-                control.OnLoad(e);
+                foreach (Control control in Controls)
+                {
+                    control.OnLoad(e);
+                }
             }
         }
     }
@@ -236,8 +239,8 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         {
             if (args.Event.Button == 3)
             {
-                ContextMenuStrip.Widget.ShowAll();
-                ((Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
+                ContextMenuStrip.Widget?.ShowAll();
+                ((Menu?)ContextMenuStrip.Widget)?.PopupAtPointer(args.Event);
             }
         }
     }
@@ -304,7 +307,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
         if (KeyDown != null)
         {
-            if (args.Event is Gdk.EventKey eventkey)
+            if (args.Event is { } eventkey)
             {
                 var keys = (Keys)eventkey.HardwareKeycode;
                 if (eventkey.State.HasFlag(Gdk.ModifierType.Mod1Mask))
@@ -482,45 +485,45 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
             if (ForeColor.Name != "0")
             {
-                var foreColor = ForeColor;
-                var color = $"rgba({foreColor.R},{foreColor.G},{foreColor.B},{foreColor.A})";
+                var foreColorValue = ForeColor;
+                var color = $"rgba({foreColorValue.R},{foreColorValue.G},{foreColorValue.B},{foreColorValue.A})";
                 style.AppendFormat("color:{0};", color);
             }
             if (Font != null)
             {
-                var font = Font;
-                if (font.Unit == GraphicsUnit.Pixel)
-                    style.AppendFormat("font-size:{0}px;", font.Size);
-                else if (font.Unit == GraphicsUnit.Inch)
-                    style.AppendFormat("font-size:{0}in;", font.Size);
-                else if (font.Unit == GraphicsUnit.Point)
-                    style.AppendFormat("font-size:{0}pt;", font.Size);
-                else if (font.Unit == GraphicsUnit.Millimeter)
-                    style.AppendFormat("font-size:{0}mm;", font.Size);
-                else if (font.Unit == GraphicsUnit.Document)
-                    style.AppendFormat("font-size:{0}cm;", font.Size);
-                else if (font.Unit == GraphicsUnit.Display)
-                    style.AppendFormat("font-size:{0}pc;", font.Size);
+                var fontValue = Font;
+                if (fontValue.Unit == GraphicsUnit.Pixel)
+                    style.AppendFormat("font-size:{0}px;", fontValue.Size);
+                else if (fontValue.Unit == GraphicsUnit.Inch)
+                    style.AppendFormat("font-size:{0}in;", fontValue.Size);
+                else if (fontValue.Unit == GraphicsUnit.Point)
+                    style.AppendFormat("font-size:{0}pt;", fontValue.Size);
+                else if (fontValue.Unit == GraphicsUnit.Millimeter)
+                    style.AppendFormat("font-size:{0}mm;", fontValue.Size);
+                else if (fontValue.Unit == GraphicsUnit.Document)
+                    style.AppendFormat("font-size:{0}cm;", fontValue.Size);
+                else if (fontValue.Unit == GraphicsUnit.Display)
+                    style.AppendFormat("font-size:{0}pc;", fontValue.Size);
                 else
-                    style.AppendFormat("font-size:{0}pt;", font.Size);
+                    style.AppendFormat("font-size:{0}pt;", fontValue.Size);
 
-                if (string.IsNullOrWhiteSpace(font.FontFamily?.Name) == false)
+                if (string.IsNullOrWhiteSpace(fontValue.FontFamily?.Name) == false)
                 {
-                    style.AppendFormat("font-family:\"{0}\";", font.FontFamily.Name);
+                    style.AppendFormat("font-family:\"{0}\";", fontValue.FontFamily?.Name);
                 }
-                if ((font.Style & FontStyle.Bold) != 0)
+                if ((fontValue.Style & FontStyle.Bold) != 0)
                 {
                     style.Append("font-weight:bold;");
                 }
-                if ((font.Style & FontStyle.Italic) != 0)
+                if ((fontValue.Style & FontStyle.Italic) != 0)
                 {
                     style.Append("font-style:italic;");
                 }
-                if ((font.Style & FontStyle.Underline) != 0)
+                if ((fontValue.Style & FontStyle.Underline) != 0)
                 {
                     style.Append("text-decoration:underline;");
                 }
-                if ((font.Style & FontStyle.Strikeout) != 0)
+                if ((fontValue.Style & FontStyle.Strikeout) != 0)
                 {
                     style.Append("text-decoration:line-through;");
                 }
@@ -556,7 +559,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     public virtual ContentAlignment ImageAlign { get; set; }
 
     public virtual bool UseVisualStyleBackColor { get; set; } = true;
-    public virtual Color VisualStyleBackColor { get; }
+    public virtual Color VisualStyleBackColor { get; set; }
 
     public virtual ImageLayout BackgroundImageLayout
     {
@@ -740,7 +743,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public virtual bool CanFocus => Widget.CanFocus;
 
-    public virtual bool CanSelect { get; }
+    public virtual bool CanSelect { get; set; }
 
     public virtual bool Capture
     {
@@ -767,9 +770,9 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    public virtual string? CompanyName { get; }
+    public virtual string? CompanyName { get; set; }
 
-    public virtual bool ContainsFocus { get; }
+    public virtual bool ContainsFocus { get; set; }
 
     public virtual ContextMenuStrip? ContextMenuStrip
     {
@@ -806,11 +809,11 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public virtual ControlBindingsCollection? DataBindings { get; set; }
 
-    public virtual int DeviceDpi { get; }
+    public virtual int DeviceDpi { get; set; }
 
-    public virtual Rectangle DisplayRectangle { get; }
+    public virtual Rectangle DisplayRectangle { get; set; }
 
-    public virtual bool Disposing { get; }
+    public virtual bool Disposing { get; set; }
     private DockStyle _dock;
     public virtual DockStyle Dock
     {
@@ -891,9 +894,9 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
         set
         {
-            var font = this.font;
-            this.font = value; UpdateStyle();
-            if (font != value)
+            var fontValue = font;
+            font = value; UpdateStyle();
+            if (!Equals(fontValue, value))
             {
                 FontChanged?.Invoke(this, EventArgs.Empty);
                 Layout?.Invoke(this, new LayoutEventArgs(this, nameof(Font)));
@@ -906,16 +909,16 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         get => foreColor;
         set
         {
-            var foreColor = this.foreColor;
-            this.foreColor = value; UpdateStyle();
-            if (foreColor != value)
+            var foreColorValue = foreColor;
+            foreColor = value; UpdateStyle();
+            if (foreColorValue != value)
             {
                 ForeColorChanged?.Invoke(this, EventArgs.Empty);
             }
         }
     }
 
-    public virtual bool HasChildren { get; }
+    public virtual bool HasChildren { get; set; }
 
     public virtual ImeMode ImeMode
     {
@@ -931,7 +934,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    public virtual bool InvokeRequired { get; }
+    public virtual bool InvokeRequired { get; set; }
 
     public virtual bool IsAccessible { get; set; }
 
@@ -943,10 +946,10 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         set => _handleCreated = value;
     }
 
-    public virtual bool IsMirrored { get; }
+    public virtual bool IsMirrored { get; internal set; }
 
-    public virtual LayoutEngine? LayoutEngine { get; }
-    public virtual string? Text { get; set; }
+    public virtual LayoutEngine? LayoutEngine { get; internal set; }
+    public virtual string Text { get; set; } = string.Empty;
 
     public virtual int Top
     {
@@ -1020,10 +1023,10 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     }
     public virtual Padding Padding { get; set; }
     public virtual Control? Parent { get; set; }
-    public virtual Size PreferredSize { get; }
-    public virtual string? ProductName { get; }
-    public virtual string? ProductVersion { get; }
-    public virtual bool RecreatingHandle { get; }
+    public virtual Size PreferredSize { get; set; }
+    public virtual string? ProductName { get; set; }
+    public virtual string? ProductVersion { get; set; }
+    public virtual bool RecreatingHandle { get; set; }
     public virtual Region? Region { get; set; }
 
     public virtual RightToLeft RightToLeft { get; set; }
@@ -1068,9 +1071,9 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         {
             Widget.HeightRequest = Math.Max(-1, value);
             if (DockChanged != null)
-                DockChanged(this, EventArgs.Empty);
+                DockChanged?.Invoke(this, EventArgs.Empty);
             if (AnchorChanged != null)
-                AnchorChanged(this, EventArgs.Empty);
+                AnchorChanged?.Invoke(this, EventArgs.Empty);
         }
     }
     public virtual int Width
@@ -1086,7 +1089,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         set => Widget.WidthRequest = value;
     }
 
-    public virtual Control? TopLevelControl { get; }
+    public virtual Control? TopLevelControl { get; internal set; }
     public virtual bool UseWaitCursor { get; set; }
 
     public virtual bool Visible
@@ -1109,29 +1112,28 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
     }
 
-    protected virtual Size DefaultSize { get; }
-    protected virtual Padding DefaultPadding { get; }
-    protected virtual Size DefaultMinimumSize { get; }
-    protected virtual Padding DefaultMargin { get; }
-    protected virtual Cursor? DefaultCursor { get; }
-    protected override bool CanRaiseEvents { get; }
+    protected virtual Size DefaultSize { get; set; }
+    protected virtual Padding DefaultPadding { get; set; }
+    protected virtual Size DefaultMinimumSize { get; set; }
+    protected virtual Padding DefaultMargin { get; set; }
+    protected virtual Cursor? DefaultCursor { get; set; }
     protected virtual bool DoubleBuffered { get; set; }
     protected int FontHeight { get; set; }
-    protected virtual Size DefaultMaximumSize { get; }
+    protected virtual Size DefaultMaximumSize { get; set; }
     protected virtual ImeMode ImeModeBase { get; set; }
-    protected virtual ImeMode DefaultImeMode { get; }
-    protected virtual bool CanEnableIme { get; }
+    protected virtual ImeMode DefaultImeMode { get; set; }
+    protected virtual bool CanEnableIme { get; set; }
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    protected virtual bool ScaleChildren { get; }
+    protected virtual bool ScaleChildren { get; set; }
     protected bool ResizeRedraw { get; set; }
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    protected internal virtual bool ShowFocusCues { get; }
+    protected internal virtual bool ShowFocusCues { get; set; }
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
-    protected internal virtual bool ShowKeyboardCues { get; }
+    protected internal virtual bool ShowKeyboardCues { get; set; }
 
 
     public virtual IWindowTarget? WindowTarget { get; set; }
@@ -1221,7 +1223,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     }
     public virtual IAsyncResult BeginInvoke(Delegate method)
     {
-        return BeginInvoke(method, null);
+        return BeginInvoke(method, []);
     }
     public virtual IAsyncResult BeginInvoke(Action method)
     {
@@ -1257,7 +1259,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     ImageSurface? image;
     Surface? surface;
     Context? context;
-    public virtual Graphics? CreateGraphics()
+    public virtual Graphics CreateGraphics()
     {
         try
         {
@@ -1273,14 +1275,14 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         }
         catch (Exception ex)
         {
-            Console.WriteLine("画版创建失败：" + ex.Message);
+            Console.WriteLine(@"画版创建失败：" + ex.Message);
             throw;
         }
     }
 
-    private void Override_PaintGraphics(Context cr, Rectangle rec)
+    private void Override_PaintGraphics(Context? cr, Rectangle rec)
     {
-        if (surface != null)
+        if (surface != null && cr != null)
         {
             cr.Save();
             cr.SetSourceSurface(surface, 0, 0);
@@ -1298,7 +1300,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
     }
 
-    public virtual Form FindForm()
+    public virtual Form? FindForm()
     {
         if (Widget.Toplevel?.Data.ContainsKey("Control") ?? false)
         {
@@ -1326,19 +1328,19 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         return false;
     }
 
-    public virtual Control GetChildAtPoint(Point pt)
+    public virtual Control? GetChildAtPoint(Point pt)
     {
         _handleCreated = true;
         return null;
     }
 
-    public virtual Control GetChildAtPoint(Point pt, GetChildAtPointSkip skipValue)
+    public virtual Control? GetChildAtPoint(Point pt, GetChildAtPointSkip skipValue)
     {
         _handleCreated = true;
         return null;
     }
 
-    public virtual IContainerControl GetContainerControl()
+    public virtual IContainerControl? GetContainerControl()
     {
         return this as IContainerControl;
     }
@@ -1349,30 +1351,35 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         Control? next = null;
         var finded = false;
 
-        foreach (var obj in Controls)
+        if (Controls != null)
         {
-            if (obj is Control control)
+            foreach (var obj in Controls)
             {
-                if (finded)
-                    next = control;
+                if (obj is Control control)
+                {
+                    if (finded)
+                        next = control;
 
-                if (control.Widget.Handle == ctl.Widget.Handle)
-                {
-                    finded = true;
-                }
-                if (finded)
-                {
-                    if (forward == false && prev != null)
+                    if (control.Widget.Handle == ctl.Widget.Handle)
                     {
-                        return prev;
+                        finded = true;
                     }
 
-                    if (forward && next != null)
+                    if (finded)
                     {
-                        return next;
+                        if (forward == false && prev != null)
+                        {
+                            return prev;
+                        }
+
+                        if (forward && next != null)
+                        {
+                            return next;
+                        }
                     }
+
+                    prev = control;
                 }
-                prev = control;
             }
         }
 
@@ -1431,7 +1438,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     public virtual object? Invoke(Delegate method)
     {
-        return Invoke(method, null);
+        return Invoke(method, []);
     }
 
     public virtual object? Invoke(Delegate method, params object[] args)
@@ -1456,7 +1463,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             return false;
         });
     }
-    public virtual TEntry Invoke<TEntry>(Func<TEntry> method)
+    public virtual TEntry? Invoke<TEntry>(Func<TEntry> method)
     {
         var result = default(TEntry);
         GLib.Idle.Add(() =>
@@ -1850,7 +1857,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
         HandleDestroyed?.Invoke(this, EventArgs.Empty);
     }
 
-    protected virtual CreateParams? CreateParams
+    protected virtual CreateParams CreateParams
     {
         get
         {
@@ -1866,7 +1873,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
 
     IArrangedElement IArrangedElement.Container => throw new NotImplementedException();
 
-    private ArrangedElementCollection? arrangedElementCollection;
+    private readonly ArrangedElementCollection? arrangedElementCollection = default;
     public ArrangedElementCollection? Children => arrangedElementCollection;
 
     protected virtual void OnKeyDown(KeyEventArgs e)
@@ -1902,7 +1909,7 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
     {
     }
 
-    void IArrangedElement.PerformLayout(IArrangedElement affectedElement, string propertyName)
+    void IArrangedElement.PerformLayout(IArrangedElement affectedElement, string? propertyName)
     {
     }
 }

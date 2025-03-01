@@ -221,7 +221,7 @@ public class MessageBox
             if (resp == ResponseType.No)
                 return DialogResult.No;
             if (resp == ResponseType.Ok)
-                return DialogResult.Ok;
+                return DialogResult.OK;
             if (resp == ResponseType.Cancel)
                 return DialogResult.Cancel;
             if (resp == ResponseType.Reject)

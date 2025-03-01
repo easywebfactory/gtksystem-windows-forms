@@ -12,13 +12,13 @@ namespace System.Windows.Forms;
 [DesignerCategory("Component")]
 public class TextBox : Control
 {
-    public readonly TextBoxBase self = new();
+    public readonly TextBoxBase self = new TextBoxBase();
     public override object GtkControl => self;
+
     public TextBox()
     {
         self.MaxWidthChars = 1;
         self.WidthChars = 0;
-
         self.Valign = Align.Start;
         self.Halign = Align.Start;
         self.Changed += Self_Changed;
@@ -44,6 +44,7 @@ public class TextBox : Control
     }
 
     public override event KeyEventHandler? KeyDown;
+
     private void Self_TextInserted(object? o, TextInsertedArgs args)
     {
         if (KeyDown != null && GetType().Name == "TextBox")
@@ -56,21 +57,26 @@ public class TextBox : Control
                 return Enum.GetName(typeof(Keys), k) == keytext;
             });
             foreach (var key in keyv)
-                KeyDown(this, new KeyEventArgs(key));
+                KeyDown?.Invoke(this, new KeyEventArgs(key));
         }
     }
 
     private void Self_Changed(object sender, EventArgs e)
     {
-        if (TextChanged != null && self.IsVisible) { TextChanged(this, EventArgs.Empty); }
+        if (TextChanged != null && self.IsVisible)
+        {
+            TextChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public string[] Lines => string.IsNullOrEmpty(Text) ? [] : Text.Replace("\r\n", "\n").Split('\n');
+
     public string PlaceholderText
     {
         get => self.PlaceholderText;
         set => self.PlaceholderText = value ?? "";
     }
+
     public override string Text
     {
         get => self.Text;
@@ -83,20 +89,51 @@ public class TextBox : Control
         }
     }
 
-    public virtual char PasswordChar { get => self.InvisibleChar; set { self.InvisibleChar = value; self.Visibility = false; } }
-    public virtual bool ReadOnly { get => self.IsEditable == false;
+    public virtual char PasswordChar
+    {
+        get => self.InvisibleChar;
+        set
+        {
+            self.InvisibleChar = value;
+            self.Visibility = false;
+        }
+    }
+
+    public virtual bool ReadOnly
+    {
+        get => self.IsEditable == false;
         set => self.IsEditable = value == false;
     }
+
     public override event EventHandler? TextChanged;
     public bool Multiline { get; set; }
-    public int SelectionStart { get { self.GetSelectionBounds(out var start, out _); return start; } }
+
+    public int MaxLength
+    {
+        get => self.MaxLength;
+        set => self.MaxLength = value;
+    }
+
+    public int SelectionStart
+    {
+        get
+        {
+            self.GetSelectionBounds(out int start, out _);
+            return start;
+        }
+    }
 
     [Browsable(false)]
     public virtual int SelectionLength
     {
-        get { self.GetSelectionBounds(out var start, out var end); return end - start; }
+        get
+        {
+            self.GetSelectionBounds(out var start, out var end);
+            return end - start;
+        }
         set => self.SelectRegion(self.CursorPosition, self.CursorPosition + value);
     }
+
     public void InsertTextAtCursor(string text)
     {
         if (text == null) return;

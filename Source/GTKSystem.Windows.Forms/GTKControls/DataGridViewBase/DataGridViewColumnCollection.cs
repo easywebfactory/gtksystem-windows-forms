@@ -146,10 +146,8 @@ public class DataGridViewColumnCollection : List<DataGridViewColumn>
             {
                 owner.GridView.Model = owner.Store;
             }
-        }
-        for(var i=0;i < (owner?.Store.NColumns??0); i++)
-        {
-            if (owner != null)
+            owner.Store.DefaultSortFunc = new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) => { return 0; });
+            for (int i=0;i < owner.Store.NColumns; i++)
             {
                 owner.Store.SetSortFunc(i, (m, t1, t2) =>
                 {

@@ -227,7 +227,7 @@ public class DataGridViewRowCollection : IList
     }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public virtual int Add(params object[] values)
+    public virtual int Add(params object?[] values)
     {
         var newRow = new DataGridViewRow();
         var cols = dataGridView?.Columns;
@@ -455,7 +455,7 @@ public class DataGridViewRowCollection : IList
         return items.IndexOf(dataGridViewRow);
     }
 
-    public virtual void Insert(int rowIndex, params object[] values)
+    public virtual void Insert(int rowIndex, params object?[] values)
     {
         var newRow = new DataGridViewRow();
         var cols = dataGridView?.Columns;

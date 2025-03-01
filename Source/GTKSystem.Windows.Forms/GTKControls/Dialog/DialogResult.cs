@@ -13,7 +13,7 @@ public enum DialogResult
     //
     // 摘要:
     //     The dialog box return value is OK (usually sent from a button labeled OK).
-    Ok = 1,
+    OK = 1,
     //
     // 摘要:
     //     The dialog box return value is Cancel (usually sent from a button labeled Cancel).

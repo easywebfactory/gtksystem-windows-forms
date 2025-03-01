@@ -4,19 +4,22 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
-
 namespace System.Windows.Forms;
 
 public sealed class SaveFileDialog : FileDialog
 {
-    public bool CheckWriteAccess => true;
-
+    private new string? Description => base.Description;
+    public bool CheckWriteAccess
+    {
+        get => true;
+        set { }
+    }
     public Stream OpenFile()
     {
-        var filename = FileName;
+        string? filename = FileName;
         if(string.IsNullOrEmpty(filename))
         {
-            throw new ArgumentNullException(nameof(FileName));
+            throw new ArgumentNullException(@"filename");
         }
         return new FileStream(filename, FileMode.Create, FileAccess.ReadWrite);
     }

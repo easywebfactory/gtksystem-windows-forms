@@ -9,11 +9,12 @@ using Gtk;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
+using System.Reflection;
 
 namespace System.Windows.Forms;
 
 [DesignerCategory("Component")]
-public partial class ComboBox: ListControl
+public partial class ComboBox : ListControl
 {
     public readonly ComboBoxBase self = new();
     public override object GtkControl => self;
@@ -111,9 +112,11 @@ public partial class ComboBox: ListControl
     }
 
     private ComboBoxStyle dropDownStyle;
-    public ComboBoxStyle DropDownStyle { 
-        get=> dropDownStyle; 
-        set {
+    public ComboBoxStyle DropDownStyle
+    {
+        get => dropDownStyle;
+        set
+        {
             dropDownStyle = value;
             if (value == ComboBoxStyle.DropDown)
             {
@@ -129,38 +132,60 @@ public partial class ComboBox: ListControl
     }
 
 
-    public override string? Text { get => self.Entry.Text; set => self.Entry.Text = value;
-    }
-    public object? SelectedItem { 
+    public override string Text { get => self.Entry.Text; set => self.Entry.Text = value??string.Empty; }
+    public object? SelectedItem
+    {
         get => SelectedIndex == -1 ? null : itemsData[SelectedIndex];
-        set { var _index = itemsData.IndexOf(value); if (_index != -1) { SelectedIndex = _index; } } 
+        set { int _index = itemsData.IndexOf(value); if (_index != -1) { SelectedIndex = _index; } }
     }
     internal int _selectedIndex;
     public override int SelectedIndex { get => self.Active;
         set { self.Active = value; _selectedIndex = value; if (value == -1) { Text = ""; } } }
+    public override object? SelectedValue { get => self.ActiveId;
+        set => self.ActiveId = value?.ToString(); }
     public ObjectCollection Items => itemsData;
 
-    public override string GetItemText(object? item)
+    public override string? GetItemText(object? item)
     {
         if (item is ObjectCollection.Entry entry)
         {
-            return entry.Item?.ToString()??string.Empty;
+            Type? type = entry.Item?.GetType();
+            if (entry.Item is DataRow dr)
+                return dr[DisplayMember]?.ToString();
+            else if (type is { IsValueType: true, IsPrimitive: true })
+                return type.GetProperty(DisplayMember)?.GetValue(entry)?.ToString();
+            else
+                return item.ToString();
         }
-        return item?.ToString()?? string.Empty;
+        return item?.ToString();
     }
     public string NativeGetItemText(int index)
     {
-        return itemsData[index]?.ToString() ?? string.Empty;
+        self.Model.GetIter(out TreeIter iter, new TreePath(new int[] { index }));
+        object val = self.Model.GetValue(iter, 1);
+        return val.ToString();
+    }
+    public void NativeAdd(int index, string? value, string? text)
+    {
+        if (_sorted == false && index > -1)
+        {
+            self.Insert(index, value, text);
+        }
+        else
+        {
+            self.Append(value, text);
+        }
     }
     private bool _sorted;
-    public bool Sorted { get=> _sorted; set=> _sorted = value; }
-    public object? dataSource;
+    public bool Sorted { get => _sorted; set => _sorted = value; }
+    public object? _DataSource;
     public override object? DataSource
     {
-        get => dataSource;
-        set {
-            dataSource = value;
-            if (self.IsVisible)
+        get => _DataSource;
+        set
+        {
+            _DataSource = value;
+            if (self.IsRealized)
             {
                 OnSetDataSource();
             }
@@ -168,50 +193,50 @@ public partial class ComboBox: ListControl
     }
     private void OnSetDataSource()
     {
-        if (dataSource != null)
+        if (_DataSource != null)
         {
-            if (dataSource is IListSource listSource)
+            if (_DataSource is DataTable dtable)
             {
-                var list = listSource.GetList().GetEnumerator();
-                using var disposable = list as IDisposable;
-                SetDataSource(list);
+                LoadDataTableSource(dtable);
             }
-            else if (dataSource is IEnumerable list1)
+            else if (_DataSource is DataView dview)
             {
-                var enumerator = list1.GetEnumerator();
-                using var disposable = enumerator as IDisposable;
-                SetDataSource(enumerator);
+                LoadDataTableSource(dview.Table);
+            }
+            else if (_DataSource is IList list)
+            {
+                LoadListSource(list);
             }
         }
     }
-    private void SetDataSource(IEnumerator enumerator)
+    private void LoadDataTableSource(DataTable dtable)
     {
         itemsData.Clear();
-        if (enumerator != null)
+        if (dtable.Columns.Contains(ValueMember) && dtable.Columns.Contains(DisplayMember))
         {
-            if (string.IsNullOrWhiteSpace(DisplayMember))
-            {
-                while (enumerator.MoveNext())
-                {
-                    var o = enumerator.Current;
-                    if (o is DataRowView row)
-                        itemsData.Add(row[0]);
-                    else
-                        itemsData.Add(enumerator.Current);
-                }
-            }
-            else
-            {
-                while (enumerator.MoveNext())
-                {
-                    var o = enumerator.Current;
-                    if(o is DataRowView row)
-                        itemsData.Add(row[DisplayMember]);
-                    else
-                        itemsData.Add(o?.GetType().GetProperty(DisplayMember)?.GetValue(o));
-                }
-            }
+            foreach (DataRow row in dtable.Rows)
+                itemsData.Add(row[ValueMember].ToString(), row[DisplayMember].ToString(), row);
+        }
+        else if (dtable.Columns.Contains(DisplayMember))
+        {
+            foreach (DataRow row in dtable.Rows)
+                itemsData.Add("", row[DisplayMember].ToString(), row);
+        }
+        else
+        {
+            throw new Exception("DisplayMember属性未赋值或字段名不存在");
         }
     }
-
+    private void LoadListSource(IList list)
+    {
+        itemsData.Clear();
+        if (list.Count > 0)
+        {
+            Type type = list[0].GetType();
+            PropertyInfo? valproperty = type.GetProperty(ValueMember);
+            PropertyInfo? disproperty = type.GetProperty(DisplayMember);
+            foreach (var entry in list)
+                itemsData.Add(valproperty?.GetValue(entry)?.ToString(), disproperty?.GetValue(entry)?.ToString(), entry);
+        }
+    }
 }

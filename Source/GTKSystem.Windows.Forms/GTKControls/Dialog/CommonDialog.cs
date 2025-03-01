@@ -32,18 +32,11 @@ public abstract class CommonDialog : Component
 
     public virtual DialogResult ShowDialog(IWin32Window? owner)
     {
-        var result = DialogResult.Cancel;
-        try
+        DialogResult result = DialogResult.Cancel;
+        bool runresult = RunDialog(owner);
+        if (runresult)
         {
-            var runresult = RunDialog(owner);
-            if (runresult)
-            {
-                result = DialogResult.Ok;
-            }
-        }
-        finally
-        {
-            Dispose();
+            result = DialogResult.OK;
         }
         return result;
     }

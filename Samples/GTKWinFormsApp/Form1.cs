@@ -149,7 +149,7 @@ namespace GTKWinFormsApp
             }
             DialogResult result = cd.ShowDialog(this);
 
-            if (result == DialogResult.Ok)
+            if (result == DialogResult.OK)
             {
                 textBox1.Text = "#" + cd.Color.Name;
                 textBox1.BackColor = ColorTranslator.FromHtml(textBox1.Text);

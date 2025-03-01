@@ -4,17 +4,11 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
-
 namespace System.Windows.Forms;
 
 public sealed class OpenFileDialog : FileDialog
 {
-    public override string ToString()
-    {
-        return $"System.Windows.Forms.OpenFileDialog: Title: {Title}, FileName: {FileName}";
-    }
-
-    private new string Description => base.Description;
+    private new string? Description => base.Description;
     public bool ReadOnlyChecked { get; set; }
     public bool ShowReadOnly { get; set; }
     public new bool Multiselect { get => base.Multiselect; set => base.Multiselect = value; }

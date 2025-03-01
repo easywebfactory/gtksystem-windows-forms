@@ -5,14 +5,10 @@
  * author:chenhongjin
  */
 
-using System.ComponentModel;
-
 namespace System.Windows.Forms;
 
 public sealed class FolderBrowserDialog : FileDialog
 {
-    private Environment.SpecialFolder rootFolder = Environment.SpecialFolder.Desktop;
-
     public override void Reset()
     {
         RootFolder = Environment.SpecialFolder.Desktop;
@@ -20,33 +16,18 @@ public sealed class FolderBrowserDialog : FileDialog
         SelectedPath = string.Empty;
         SelectedPathNeedsCheck = false;
         ShowNewFolderButton = true;
+        base.Reset();
     }
-
-    public Environment.SpecialFolder RootFolder
+    public Environment.SpecialFolder RootFolder { get; set; } = Environment.SpecialFolder.Desktop;
+    public string? SelectedPath
     {
-        get => rootFolder;
-        set
-        {
-            if (Enum.GetValues(typeof(Environment.SpecialFolder)).Cast<Environment.SpecialFolder>().ToArray()
-                .Any(i => value == i))
-            {
-                rootFolder = value;
-                return;
-            }
-
-            throw new InvalidEnumArgumentException(nameof(value));
-        }
+        get => SelectedDirectory;
+        set => SelectedDirectory = value;
     }
-
-    public new string SelectedPath
-    {
-        get => base.SelectedPath;
-        set => base.SelectedPath = value;
-    }
-    private new string[] SelectedPaths => base.SelectedPaths;
+    public string[]? SelectedPaths => FileNames;
     private new bool Multiselect => base.Multiselect;
-    private new string Title => base.Title;
-    public bool ShowNewFolderButton { get; set; } = true;
+    private new string? Title => base.Title;
+    public bool ShowNewFolderButton { get; set; }
     public bool SelectedPathNeedsCheck { get; set; }
     public override DialogResult ShowDialog(IWin32Window? owner)
     {

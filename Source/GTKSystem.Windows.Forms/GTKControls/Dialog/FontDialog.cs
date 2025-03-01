@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.Drawing;
 using Gtk;
 
 namespace System.Windows.Forms;
@@ -40,29 +40,32 @@ public class FontDialog : CommonDialog
 
     protected override bool RunDialog(IWin32Window? owner)
     {
-        if (owner is Form ownerform)
+        if (fontChooserDialog == null)
         {
-            fontChooserDialog = new FontChooserDialog("选择字体", ownerform.self);
-            fontChooserDialog.WindowPosition = WindowPosition.CenterOnParent;
-        }
-        else
-        {
-            fontChooserDialog = new FontChooserDialog("选择字体", null);
-            fontChooserDialog.WindowPosition = WindowPosition.Center;
+            if (owner is Form ownerform)
+            {
+                fontChooserDialog = new FontChooserDialog("选择字体", ownerform.self);
+                fontChooserDialog.WindowPosition = WindowPosition.CenterOnParent;
+            }
+            else
+            {
+                fontChooserDialog = new FontChooserDialog("选择字体", null);
+                fontChooserDialog.WindowPosition = WindowPosition.Center;
+            }
         }
         fontChooserDialog.KeepAbove = true;
         if (null != _font)
             fontChooserDialog.Font = _font.Name + " " + (int)_font.Size;
         if (FullOpen && AllowFullOpen)
             fontChooserDialog.Fullscreen();
-        var res = fontChooserDialog.Run();
-        var fontStyle = FontStyle.Regular;
+        int res = fontChooserDialog.Run();
+        FontStyle fontStyle = FontStyle.Regular;
         switch (fontChooserDialog.FontDesc.Weight)
         {
             case Pango.Weight.Bold:
             case Pango.Weight.Ultrabold:
             case Pango.Weight.Semibold:
-                fontStyle |= FontStyle.Bold; 
+                fontStyle |= FontStyle.Bold;
                 break;
         }
         switch (fontChooserDialog.FontDesc.Style)
@@ -78,12 +81,12 @@ public class FontDialog : CommonDialog
         return res == -5;
     }
 
-    public override string ToString() => $"{_font?.Name} {_font?.Size}"; 
+    public override string ToString() => $"{_font?.Name} {_font?.Size}";
     protected override void Dispose(bool disposing)
     {
         if (fontChooserDialog != null)
         {
-            fontChooserDialog.Dispose();
+            fontChooserDialog.Destroy();
             fontChooserDialog = null;
         }
         base.Dispose(disposing);

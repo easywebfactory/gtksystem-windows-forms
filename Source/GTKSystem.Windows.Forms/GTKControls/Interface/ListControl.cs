@@ -96,9 +96,38 @@ public abstract class ListControl : ScrollableControl
         add => events.AddHandler("SelectedIndexChanged", value);
         remove => events.RemoveHandler("SelectedIndexChanged", value);
     }
-    public virtual string GetItemText(object? item)
+    public virtual string? GetItemText(object? item)
     {
         return item?.ToString();
     }
 
+    protected virtual void OnDisplayMemberChanged(EventArgs eventArgs)
+    {
+        DisplayMemberChanged?.Invoke(this, eventArgs);
+    }
+
+    protected virtual void OnFormat(ListControlConvertEventArgs e)
+    {
+        Format?.Invoke(this, e);
+    }
+
+    protected virtual void OnFormatInfoChanged(EventArgs eventArgs)
+    {
+        FormatInfoChanged?.Invoke(this, eventArgs);
+    }
+
+    protected virtual void OnFormatStringChanged(EventArgs e)
+    {
+        FormatStringChanged?.Invoke(this, e);
+    }
+
+    protected virtual void OnFormattingEnabledChanged(EventArgs eventArgs)
+    {
+        FormattingEnabledChanged?.Invoke(this, eventArgs);
+    }
+
+    protected virtual void OnValueMemberChanged(EventArgs e)
+    {
+        ValueMemberChanged?.Invoke(this, e);
+    }
 }

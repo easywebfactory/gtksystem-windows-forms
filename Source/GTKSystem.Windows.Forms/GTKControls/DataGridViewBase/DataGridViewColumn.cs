@@ -299,6 +299,7 @@ public class DataGridViewColumn : TreeViewColumn
         Sizing = TreeViewColumnSizing.GrowOnly;
         _cellRenderer = renderer;
     }
+
     private void Renderer_Edited(object o, EditedArgs args)
     {
         var path = new TreePath(args.Path);
@@ -314,29 +315,24 @@ public class DataGridViewColumn : TreeViewColumn
             }
         }
     }
+
     internal virtual DataGridViewCell NewCell(object? value = null, Type? valueType = null)
     {
-        var newcell = new DataGridViewTextBoxCell();
+        DataGridViewTextBoxCell newcell = new DataGridViewTextBoxCell();
         AtrributesClone(newcell);
         newcell.Value = value;
         newcell.ValueType = valueType;
         return newcell;
     }
-    internal void AtrributesClone(DataGridViewCell? newcell)
+    internal void AtrributesClone(DataGridViewCell newcell)
     {
-        //性能优先
-        if (newcell != null)
+        if (_cellTemplate != null)
         {
-            newcell.Style = _cellTemplate?.Style?.Clone();
-            newcell.ReadOnly = _cellTemplate?.ReadOnly ?? false;
+            newcell.Style = _cellTemplate.Style?.Clone();
+            newcell.ReadOnly = _cellTemplate.ReadOnly;
         }
-
-        //var propertys = newcell.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-        //foreach (PropertyInfo property in propertys)
-        //    if (property.CanRead && property.CanWrite)
-        //        property.SetValue(newcell, property.GetValue(_cellTemplate));
     }
-    public void SetGridViewDefaultStyle(DataGridViewCellStyle? cellStyle)
+    public void SetGridViewDefaultStyle(DataGridViewCellStyle cellStyle)
     {
         if (cellStyle is { WrapMode: DataGridViewTriState.True })
         {
@@ -362,6 +358,7 @@ public class DataGridViewColumn : TreeViewColumn
             }
         }
     }
+
     private int DefaultHeight
     {
         get
@@ -380,43 +377,58 @@ public class DataGridViewColumn : TreeViewColumn
         {
             if (_gridview != null)
             {
-                return _gridview.RowTemplate?.Height??0;
+                return _gridview.RowTemplate?.Height ?? 0;
             }
             return DefaultHeight;
         }
     }
-    public DataGridView? DataGridView { get => _gridview;
+    public DataGridView? DataGridView
+    {
+        get => _gridview;
         set
-    {
-        _gridview = value;
-        if (value != null)
         {
-            _treeView = value.GridView;
+            _gridview = value;
+            if (value != null)
+            {
+                _treeView = value.GridView;
+            }
         }
-    } }
+    }
     private string? _markup;
-    public string? Markup { get => _markup; set
+    public string? Markup
     {
-        _markup = value;
-        if (_cellRenderer != null)
+        get => _markup; set
         {
-            _cellRenderer.Markup = value;
+            _markup = value;
+            if (_cellRenderer != null)
+            {
+                _cellRenderer.Markup = value;
+            }
         }
-    } }
+    }
 
-    public DataGridViewElementStates State { get => DataGridViewElementStates.None;
-        internal set { } }
+    public DataGridViewElementStates State
+    {
+        get => DataGridViewElementStates.None;
+        internal set { }
+    }
     [DefaultValue("")]
-    public string HeaderText { get => Title;
+    public string HeaderText
+    {
+        get => Title;
         set => Title = value;
     }
     private int _DisplayIndex;
     [Browsable(false)]
-    public int DisplayIndex { get => _DisplayIndex; set => _DisplayIndex = value;
+    public int DisplayIndex
+    {
+        get => _DisplayIndex; set => _DisplayIndex = value;
     }
     [Localizable(true)]
     [RefreshProperties(RefreshProperties.Repaint)]
-    public new int Width { get => FixedWidth;
+    public new int Width
+    {
+        get => FixedWidth;
         set => FixedWidth = value;
     }
 
@@ -431,15 +443,17 @@ public class DataGridViewColumn : TreeViewColumn
     [Localizable(true)]
 
     public string? ToolTipText { get; set; }
-    private DataGridViewColumnSortMode _SortMode;
+    private DataGridViewColumnSortMode _SortMode = DataGridViewColumnSortMode.Automatic;
     public DataGridViewColumnSortMode SortMode
     {
         get => _SortMode;
         set
         {
             _SortMode = value;
-            if (value == DataGridViewColumnSortMode.Automatic)
-                SortIndicator = true;
+            if (value == DataGridViewColumnSortMode.NotSortable)
+                SortColumnId = -1;
+            else
+                SortColumnId = _index;
         }
     }
     [Browsable(false)]
@@ -464,14 +478,19 @@ public class DataGridViewColumn : TreeViewColumn
             }
         }
     }
+
     [DefaultValue("")]
-    public string Name { get => Button.Name; set => Button.Name = value;
+    public string Name
+    {
+        get => Button.Name; set => Button.Name = value;
     }
     [DefaultValue(5)]
     [Localizable(true)]
     [RefreshProperties(RefreshProperties.Repaint)]
 
-    public int MinimumWidth { get => MinWidth; set => MinWidth = value;
+    public int MinimumWidth
+    {
+        get => MinWidth; set => MinWidth = value;
     }
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -561,6 +580,13 @@ public class DataGridViewColumn : TreeViewColumn
     public override string ToString() { return GetType().Name; }
     //protected override void Dispose(bool disposing) {  }
     private int _index;
-    public int Index { get => _index; internal set { _index = value; SortColumnId = value; foreach (var cell in Cells) { AddAttribute(cell, "cellvalue", _index); } } }
-
+    public int Index
+    {
+        get => _index;
+        internal set
+        {
+            _index = value; if (_SortMode != DataGridViewColumnSortMode.NotSortable) { SortColumnId = value; }
+            foreach (var cell in Cells) { AddAttribute(cell, "cellvalue", _index); }
+        }
+    }
 }

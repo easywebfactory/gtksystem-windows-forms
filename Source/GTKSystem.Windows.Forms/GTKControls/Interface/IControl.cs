@@ -72,7 +72,7 @@ public interface IControl
     int TabIndex { get; set; }
     bool TabStop { get; set; }
     object? Tag { get; set; }
-    string? Text { get; set; }
+    string Text { get; set; }
     int Top { get; set; }
     Control? TopLevelControl { get; }
     bool UseWaitCursor { get; set; }
@@ -160,11 +160,11 @@ public interface IControl
     DragDropEffects DoDragDrop(object? data, DragDropEffects allowedEffects);
     void DrawToBitmap(Bitmap bitmap, Rectangle targetBounds);
     object EndInvoke(IAsyncResult asyncResult);
-    Form FindForm();
+    Form? FindForm();
     bool Focus();
-    Control GetChildAtPoint(Point pt);
-    Control GetChildAtPoint(Point pt, GetChildAtPointSkip skipValue);
-    IContainerControl GetContainerControl();
+    Control? GetChildAtPoint(Point pt);
+    Control? GetChildAtPoint(Point pt, GetChildAtPointSkip skipValue);
+    IContainerControl? GetContainerControl();
     Control? GetNextControl(Control ctl, bool forward);
     Size GetPreferredSize(Size proposedSize);
     // void Hide();
@@ -176,7 +176,7 @@ public interface IControl
     void Invalidate(Region region, bool invalidateChildren);
     object? Invoke(Delegate method);
     object? Invoke(Delegate method, params object[] args);
-    TEntry Invoke<TEntry>(Func<TEntry> method);
+    TEntry? Invoke<TEntry>(Func<TEntry> method);
     int LogicalToDeviceUnits(int value);
     Size LogicalToDeviceUnits(Size value);
     void PerformLayout();

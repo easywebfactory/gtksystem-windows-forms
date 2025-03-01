@@ -63,7 +63,7 @@ namespace GTKWinFormsApp
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)
         {
             DialogResult res = MessageBox.Show("Form2_FormClosing");
-            e.Cancel = res != DialogResult.Ok;
+            e.Cancel = res != DialogResult.OK;
         }
         private void listView1_ItemCheck(object sender, ItemCheckEventArgs e)
         {

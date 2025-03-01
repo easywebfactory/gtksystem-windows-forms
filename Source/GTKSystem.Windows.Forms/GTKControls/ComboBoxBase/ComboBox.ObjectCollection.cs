@@ -35,28 +35,43 @@ public partial class ComboBox
 
         public bool IsReadOnly => false;
 
-        /// <summary>
-        ///  Adds an item to the combo box. For an unsorted combo box, the item is
-        ///  added to the end of the existing list of items. For a sorted combo box,
-        ///  the item is inserted into the list according to its sorted position.
-        ///  The item's toString() method is called to obtain the string that is
-        ///  displayed in the combo box.
-        ///  A SystemException occurs if there is insufficient space available to
-        ///  store the new item.
-        /// </summary>
-        public int Add(object? item)
-        {
-            var index = AddInternal(item);
-
-            return index;
-        }
-
-        private int AddInternal(object? item)
-        {
-            item ??= "";
-            var index = -1;
-            if (_owner.IsHandleCreated)
+            /// <summary>
+            ///  Adds an item to the combo box. For an unsorted combo box, the item is
+            ///  added to the end of the existing list of items. For a sorted combo box,
+            ///  the item is inserted into the list according to its sorted position.
+            ///  The item's toString() method is called to obtain the string that is
+            ///  displayed in the combo box.
+            ///  A SystemException occurs if there is insufficient space available to
+            ///  store the new item.
+            /// </summary>
+            public int Add(object item)
             {
+                int index = AddInternal(item);
+                NativeAdd(-1, item.ToString(), item.ToString());
+                return index;
+            }
+            internal int Add(string? text, string? value, object item)
+            {
+                int index = AddInternal(item);
+                NativeAdd(-1, value, text);
+                return index;
+            }
+            private void NativeAdd(int index, string? value, string? text)
+            {
+                try
+                {
+                    _owner.NativeAdd(index, value, text);
+                }
+                catch
+                {
+                    InnerList.RemoveAt(index);
+                    throw;
+                }
+            }
+            private int AddInternal(object item)
+            {
+                item ??= "";
+                int index;
                 if (!_owner._sorted)
                 {
                     InnerList.Add(new Entry(item));
@@ -64,7 +79,7 @@ public partial class ComboBox
                 }
                 else
                 {
-                    var entry = item is Entry entryItem ? entryItem : new Entry(item);
+                    Entry entry = item is Entry entryItem ? entryItem : new Entry(item);
                     index = InnerList.BinarySearch(index: 0, Count, entry, this);
                     if (index < 0)
                     {
@@ -72,61 +87,35 @@ public partial class ComboBox
                     }
                     InnerList.Insert(index, entry);
                 }
-                var successful = false;
-                try
-                {
-                    if (_owner._sorted)
-                    {
-                        _owner.self.InsertText(index, item.ToString());
-                    }
-                    else
-                    {
-                        _owner.self.AppendText(item.ToString());
-                    }
-                    successful = true;
-                }
-                finally
-                {
-                    if (!successful)
-                    {
-                        InnerList.RemoveAt(index);
-                    }
-                }
+                return index;
             }
-            return index;
-        }
 
         int IList.Add(object? item)
         {
             return Add(item!);
         }
 
-        public void AddRange(params object[] items)
-        {
-            AddRangeInternal(items);
-        }
-
-        internal void AddRangeInternal(IList items)
-        {
-            foreach (var item in items)
+            public void AddRange(params object[] items)
             {
-                // adding items one-by-one for performance (especially for sorted combobox)
-                // we can not rely on ArrayList.Sort since its worst case complexity is n*n
-                // AddInternal is based on BinarySearch and ensures n*log(n) complexity
-                AddInternal(item);
+                foreach (object item in items)
+                {
+                    AddInternal(item);
+                    if (item is Entry entryItem)
+                        NativeAdd(-1, entryItem.Item?.ToString(), entryItem.Item?.ToString());
+                    else
+                        NativeAdd(-1, item?.ToString(), item?.ToString());
+                }
             }
-        }
-
-        /// <summary>
-        ///  Retrieves the item with the specified index.
-        /// </summary>
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual object? this[int index]
-        {
-            get => InnerList[index].Item;
-            set => SetItemInternal(index, value!);
-        }
+            /// <summary>
+            ///  Retrieves the item with the specified index.
+            /// </summary>
+            [Browsable(false)]
+            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+            public virtual object? this[int index]
+            {
+                get => InnerList[index].Item;
+                set => SetItemInternal(index, value!);
+            }
 
         /// <summary>
         ///  Removes all items from the ComboBox.
@@ -136,15 +125,12 @@ public partial class ComboBox
             ClearInternal();
         }
 
-        internal void ClearInternal()
-        {
-            if (_owner.IsHandleCreated)
+            internal void ClearInternal()
             {
-                ((Gtk.ListStore)_owner.self.Model).Clear();
+                _owner.self.Clear();
                 InnerList.Clear();
+                _owner.SelectedIndex = -1;
             }
-            _owner.SelectedIndex = -1;
-        }
 
         public bool Contains(object? value)
         {
@@ -180,71 +166,49 @@ public partial class ComboBox
         /// </summary>
         public IEnumerator GetEnumerator() => InnerList.GetEnumerator();
 
-        /// <summary>
-        ///  Adds an item to the combo box. For an unsorted combo box, the item is
-        ///  added to the end of the existing list of items. For a sorted combo box,
-        ///  the item is inserted into the list according to its sorted position.
-        ///  The item's toString() method is called to obtain the string that is
-        ///  displayed in the combo box.
-        ///  A SystemException occurs if there is insufficient space available to
-        ///  store the new item.
-        /// </summary>
-        public void Insert(int index, object? item)
-        {
-            item ??= "";
-            if (_owner._sorted)
+            /// <summary>
+            ///  Adds an item to the combo box. For an unsorted combo box, the item is
+            ///  added to the end of the existing list of items. For a sorted combo box,
+            ///  the item is inserted into the list according to its sorted position.
+            ///  The item's toString() method is called to obtain the string that is
+            ///  displayed in the combo box.
+            ///  A SystemException occurs if there is insufficient space available to
+            ///  store the new item.
+            /// </summary>
+            public void Insert(int index, object? item)
             {
-                Add(item);
-            }
-            else
-            {
-                InnerList.Insert(index, new Entry(item));
-                if (_owner.IsHandleCreated)
+                item ??= "";
+                if (_owner._sorted)
                 {
-                    var successful = false;
-
-                    try
-                    {
-                        _owner.self.InsertText(index, item.ToString());
-                        successful = true;
-                    }
-                    finally
-                    {
-                        if (successful)
-                        {
-                        }
-                        else
-                        {
-                            InnerList.RemoveAt(index);
-                        }
-                    }
+                    Add(item);
+                }
+                else
+                {
+                    InnerList.Insert(index, new Entry(item));
+                    NativeAdd(index, item.ToString(), item.ToString());
                 }
             }
-        }
 
-        /// <summary>
-        ///  Removes an item from the ComboBox at the given index.
-        /// </summary>
-        public void RemoveAt(int index)
-        {
-            if (_owner.IsHandleCreated)
+            /// <summary>
+            ///  Removes an item from the ComboBox at the given index.
+            /// </summary>
+            public void RemoveAt(int index)
             {
                 _owner.self.Remove(index);
                 InnerList.RemoveAt(index);
-            }
-            if (!_owner.IsHandleCreated)
-            {
-                if (index < _owner._selectedIndex)
+                if (_owner.self.IsRealized == false)
                 {
-                    _owner._selectedIndex--;
-                }
-                else if (index == _owner._selectedIndex)
-                {
-                    _owner._selectedIndex = -1;
-                    _owner.Text = string.Empty;
+                    if (index < _owner._selectedIndex)
+                    {
+                        _owner._selectedIndex--;
+                    }
+                    else if (index == _owner._selectedIndex)
+                    {
+                        _owner._selectedIndex = -1;
+                        _owner.Text = string.Empty;
+                    }
                 }
             }
-        }
 
         /// <summary>
         ///  Removes the given item from the ComboBox, provided that it is
@@ -271,28 +235,27 @@ public partial class ComboBox
 
             var selected = index == _owner.SelectedIndex;
 
-            if (string.Compare(_owner.GetItemText(value), _owner.NativeGetItemText(index), true, CultureInfo.CurrentCulture) != 0)
-            {
-                _owner.self.Remove(index);
-                _owner.self.InsertText(index, value?.ToString());
-                InnerList.RemoveAt(index);
-                InnerList.Insert(index, new Entry(value));
-                if (selected)
+                if (string.Compare(_owner.GetItemText(value), _owner.NativeGetItemText(index), true, CultureInfo.CurrentCulture) != 0)
                 {
-                    _owner.SelectedIndex = index;
-                    _owner.Text = value?.ToString();
+                    _owner.self.Remove(index);
+                    _owner.self.Insert(index, value?.ToString(), value?.ToString());
+
+                    InnerList.RemoveAt(index);
+                    InnerList.Insert(index, new Entry(value));
+                    if (selected)
+                    {
+                        _owner.SelectedIndex = index;
+                        _owner.Text = value?.ToString()??string.Empty;
+                    }
+                }
+                else
+                {
+                    if (selected)
+                    {
+                        _owner.self.SetStateFlags(Gtk.StateFlags.Selected, true);
+                    }
                 }
             }
-            else
-            {
-                // NEW - FOR COMPATIBILITY REASONS
-                // Minimum compatibility fix
-                if (selected)
-                {
-                    _owner.self.SetStateFlags(Gtk.StateFlags.Selected, true);
-                }
-            }
-        }
 
         public int IndexOf(object? value)
         {

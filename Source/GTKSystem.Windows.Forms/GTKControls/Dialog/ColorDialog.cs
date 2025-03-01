@@ -58,35 +58,37 @@ public class ColorDialog : CommonDialog
     }
     protected override bool RunDialog(IWin32Window? owner)
     {
-        if (owner is Form ownerform)
+        if (colorChooserDialog == null)
         {
-            colorChooserDialog = new ColorChooserDialog("选择颜色", ownerform.self);
-            colorChooserDialog.WindowPosition = WindowPosition.CenterOnParent;
-        }
-        else
-        {
-            colorChooserDialog = new ColorChooserDialog("选择颜色", null);
-            colorChooserDialog.WindowPosition = WindowPosition.Center;
+            if (owner is Form ownerform)
+            {
+                colorChooserDialog = new ColorChooserDialog("选择颜色", ownerform.self);
+                colorChooserDialog.WindowPosition = WindowPosition.CenterOnParent;
+            }
+            else
+            {
+                colorChooserDialog = new ColorChooserDialog("选择颜色", null);
+                colorChooserDialog.WindowPosition = WindowPosition.Center;
+            }
         }
         colorChooserDialog.KeepAbove = true;
         if (Color.Name != "0")
-            colorChooserDialog.Rgba = new Gdk.RGBA { Alpha = (double)Color.A / 255, Red = (double)Color.R / 255, Green = (double)Color.G / 255, Blue = (double)Color.B / 255 };
+            colorChooserDialog.Rgba = new Gdk.RGBA() { Alpha = (double)Color.A / 255, Red = (double)Color.R / 255, Green = (double)Color.G / 255, Blue = (double)Color.B / 255 };
         if (FullOpen && AllowFullOpen)
             colorChooserDialog.Fullscreen();
-        var res = colorChooserDialog.Run();
-        colorChooserDialog.ParentWindow = null;
-        colorChooserDialog.HideOnDelete();
-        var colorSelection = colorChooserDialog.Rgba;
+        int res = colorChooserDialog.Run();
+        Gdk.RGBA colorSelection = colorChooserDialog.Rgba;
         Color = Color.FromArgb((int)(colorSelection.Alpha * 255), (int)Math.Round(colorSelection.Red * 255, 0), (int)Math.Round(colorSelection.Green * 255, 0), (int)Math.Round(colorSelection.Blue * 255, 0));
+        colorChooserDialog.HideOnDelete();
         return res == -5;
     }
- 
-    public override string ToString() { return $"System.Windows.Forms.ColorDialog,  Color: Color [{Color.Name}]"; }
+
+    public override string ToString() { return Color.Name; }
     protected override void Dispose(bool disposing)
     {
         if (colorChooserDialog != null)
         {
-            colorChooserDialog.Dispose();
+            colorChooserDialog.Destroy();
             colorChooserDialog = null;
         }
         base.Dispose(disposing);
