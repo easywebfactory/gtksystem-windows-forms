@@ -159,74 +159,30 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
 
   <ItemGroup>
     <Compile Update="GTKControls\Button.cs" />
-    <Compile Update="GTKControls\CheckBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\CheckedListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\ComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\DataGridView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\DateTimePicker.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="GTKControls\CheckBox.cs" />
+    <Compile Update="GTKControls\CheckedListBox.cs" />
+    <Compile Update="GTKControls\ComboBox.cs" />
+    <Compile Update="GTKControls\DataGridView.cs" />
+    <Compile Update="GTKControls\DateTimePicker.cs" />
     <Compile Update="GTKControls\EventArgs\Control.PrintPaintEventArgs.cs" />
-    <Compile Update="GTKControls\Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="GTKControls\GroupBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\Label.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\LinkLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\MaskedTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\MenuStrip.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\MonthCalendar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\NumericUpDown.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\Panel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\PictureBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="GTKControls\Form.cs" />
+    <Compile Update="GTKControls\GroupBox.cs" />
+    <Compile Update="GTKControls\Label.cs" />
+    <Compile Update="GTKControls\LinkLabel.cs" />
+    <Compile Update="GTKControls\MaskedTextBox.cs" />
+    <Compile Update="GTKControls\MenuStrip.cs" />
+    <Compile Update="GTKControls\MonthCalendar.cs" />
+    <Compile Update="GTKControls\NumericUpDown.cs" />
+    <Compile Update="GTKControls\Panel.cs" />
+    <Compile Update="GTKControls\PictureBox.cs" />
     <Compile Update="GTKControls\RadioButton.cs" />
-    <Compile Update="GTKControls\RichTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\SplitContainer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\SplitterPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\TabControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\TextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\Timer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\TreeView.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="GTKControls\RichTextBox.cs" />
+    <Compile Update="GTKControls\SplitContainer.cs" />
+    <Compile Update="GTKControls\SplitterPanel.cs" />
+    <Compile Update="GTKControls\TabControl.cs" />
+    <Compile Update="GTKControls\TextBox.cs" />
+    <Compile Update="GTKControls\Timer.cs" />
+    <Compile Update="GTKControls\TreeView.cs" />
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
