@@ -4,21 +4,20 @@
 
 using System.Diagnostics;
 
-namespace System.Windows.Forms
-{
-    public class DataGridViewColumnEventArgs : EventArgs
-    {
-        public DataGridViewColumnEventArgs(DataGridViewColumn dataGridViewColumn)
-        {
-            if (dataGridViewColumn == null)
-            {
-                throw new ArgumentNullException(nameof(dataGridViewColumn));
-            }
+namespace System.Windows.Forms;
 
-            Debug.Assert(dataGridViewColumn.Index >= -1);
-            Column = dataGridViewColumn;
+public class DataGridViewColumnEventArgs : EventArgs
+{
+    public DataGridViewColumnEventArgs(DataGridViewColumn dataGridViewColumn)
+    {
+        if (dataGridViewColumn == null)
+        {
+            throw new ArgumentNullException(nameof(dataGridViewColumn));
         }
 
-        public DataGridViewColumn Column { get; }
+        Debug.Assert(dataGridViewColumn.Index >= -1);
+        Column = dataGridViewColumn;
     }
+
+    public DataGridViewColumn Column { get; }
 }

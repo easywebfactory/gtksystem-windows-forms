@@ -114,7 +114,7 @@ namespace GTKWinFormsApp
 
             //path.CloseAllFigures();
 
-            LinearGradientBrush brush = new LinearGradientBrush(new Point(0, 0), new Point(100, 30), Color.Red, Color.Blue);
+            LinearGradientBrush? brush = new LinearGradientBrush(new Point(0, 0), new Point(100, 30), Color.Red, Color.Blue);
             //g.TranslateTransform(30, 0);
             //g.RotateTransform(20);
             g.DrawPath(new Pen(brush, 2), path);

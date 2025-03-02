@@ -1,38 +1,32 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public class ToolStripDropDownMenu : ToolStripDropDown
 {
-    public class ToolStripDropDownMenu : ToolStripDropDown
-    {
-
-        public ToolStripDropDownMenu()
-        {
-
-        }
-        //public Rectangle DisplayRectangle { get; }
+    //public Rectangle DisplayRectangle { get; }
         
-        //public LayoutEngine LayoutEngine { get; }
+    //public LayoutEngine LayoutEngine { get; }
 
-        public ToolStripLayoutStyle LayoutStyle { get; set; }
+    public ToolStripLayoutStyle LayoutStyle { get; set; }
 
-        [DefaultValue(true)]
-        public bool ShowImageMargin { get; set; } = true;
+    [DefaultValue(true)]
+    public bool ShowImageMargin { get; set; } = true;
 
-        [DefaultValue(false)]
-        public bool ShowCheckMargin { get; set; }
-        protected Padding DefaultPadding { get; }
+    [DefaultValue(false)]
+    public bool ShowCheckMargin { get; set; }
+    protected Padding DefaultPadding { get; set; }
 
-        protected internal Size MaxItemSize { get; }
+    protected internal Size MaxItemSize { get; set; }
 
-        protected void OnFontChanged(EventArgs e) { }
+    protected void OnFontChanged(EventArgs e) { }
 
-        protected void OnLayout(LayoutEventArgs e) { }
+    protected void OnLayout(LayoutEventArgs e) { }
       
-        protected void OnPaintBackground(PaintEventArgs e) { }
+    protected void OnPaintBackground(PaintEventArgs e) { }
 
-        protected void SetDisplayedItems() { }
+    protected void SetDisplayedItems() { }
         
-        protected internal ToolStripItem CreateDefaultItem(string text, Image image, EventHandler onClick) { return null; }
-    }
+    protected internal ToolStripItem? CreateDefaultItem(string text, Image image, EventHandler? onClick) { return null; }
 }

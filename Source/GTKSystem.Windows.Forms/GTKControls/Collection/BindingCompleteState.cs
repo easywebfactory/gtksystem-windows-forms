@@ -1,9 +1,8 @@
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum BindingCompleteState
 {
-	public enum BindingCompleteState
-	{
-		Success,
-		DataError,
-		Exception
-	}
+    Success,
+    DataError,
+    Exception
 }

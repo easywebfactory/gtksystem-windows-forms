@@ -5,330 +5,341 @@
  * author:chenhongjin
  */
 using Gtk;
-using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+[DesignerCategory("Component")]
+public class TabControl : ContainerControl
 {
-    [DesignerCategory("Component")]
-    public partial class TabControl : ContainerControl
+    public readonly TabControlBase self = new();
+    public override object GtkControl => self;
+    private readonly ControlCollection _controls;
+    private readonly TabPageCollection _tabPageControls;
+    public TabControl()
     {
-        public readonly TabControlBase self = new TabControlBase();
-        public override object GtkControl => self;
-        private TabControl.ControlCollection _controls;
-        private TabControl.TabPageCollection _tabPageControls;
-        public TabControl() : base()
+        _controls = new ControlCollection(this);
+        _tabPageControls = new TabPageCollection(this);
+        self.SwitchPage += Self_SwitchPage;
+    }
+    private void Self_SwitchPage(object? o, SwitchPageArgs args)
+    {
+        if (SelectedIndexChanged != null && self.IsMapped)
+            SelectedIndexChanged?.Invoke(this, new EventArgs());
+    }
+
+    /// <summary>
+    /// gtk特有的菜单功能，供有需要的使用
+    /// </summary>
+    [Browsable(false)]
+    public bool EnablePopup
+    {
+        set { self.EnablePopup = true; self.PopupEnable(); }
+    }
+    public TabAlignment Alignment
+    {
+        get
         {
-            _controls = new ControlCollection(this);
-            _tabPageControls = new TabPageCollection(this);
-            self.SwitchPage += Self_SwitchPage;
+            if (self.TabPos == PositionType.Left)
+                return TabAlignment.Left;
+            if (self.TabPos == PositionType.Top)
+                return TabAlignment.Top;
+            if (self.TabPos == PositionType.Right)
+                return TabAlignment.Right;
+            if (self.TabPos == PositionType.Bottom)
+                return TabAlignment.Bottom;
+            return TabAlignment.Top;
         }
-        private void Self_SwitchPage(object o, SwitchPageArgs args)
+        set
         {
-            if (SelectedIndexChanged != null && self.IsMapped)
-                SelectedIndexChanged(this, new EventArgs());
+            if (value == TabAlignment.Left)
+                self.TabPos = PositionType.Left;
+            else if (value == TabAlignment.Top)
+                self.TabPos = PositionType.Top;
+            else if (value == TabAlignment.Right)
+                self.TabPos = PositionType.Right;
+            else if (value == TabAlignment.Bottom)
+                self.TabPos = PositionType.Bottom;
         }
+    }
+    public bool Multiline { get; set; }
+    public int SelectedIndex
+    {
+        get => self.CurrentPage;
+        set => self.CurrentPage = value;
+    }
 
-        /// <summary>
-        /// gtk特有的菜单功能，供有需要的使用
-        /// </summary>
-        [Browsable(false)]
-        public bool EnablePopup { 
-            set { self.EnablePopup = true; self.PopupEnable(); } 
-        }
-        public TabAlignment Alignment {
-            get
-            {
-                if (self.TabPos == PositionType.Left)
-                    return TabAlignment.Left;
-                else if (self.TabPos == PositionType.Top)
-                    return TabAlignment.Top;
-                else if (self.TabPos == PositionType.Right)
-                    return TabAlignment.Right;
-                else if (self.TabPos == PositionType.Bottom)
-                    return TabAlignment.Bottom;
-                else
-                    return TabAlignment.Top;
-            }
-            set {
-                if(value == TabAlignment.Left)
-                    self.TabPos = PositionType.Left;
-                else if (value == TabAlignment.Top)
-                    self.TabPos = PositionType.Top;
-                else if (value == TabAlignment.Right)
-                    self.TabPos = PositionType.Right;
-                else if (value == TabAlignment.Bottom)
-                    self.TabPos = PositionType.Bottom;
-            }
-        }
-        public bool Multiline { get; set; }
-        public int SelectedIndex { get { return self.CurrentPage; } set { self.CurrentPage = value; } }
+    public TabPage SelectedTab
+    {
+        get => _controls[self.CurrentPage];
+        set { }
+    }
 
-        public TabPage SelectedTab { get { return _controls[self.CurrentPage]; } set { } }
+    public TabSizeMode SizeMode { get; set; }
+    public TabDrawMode DrawMode { get; set; }
+    public bool ShowToolTips { get; set; }
+    public bool ShowTabs { get => self.ShowTabs; set => self.ShowTabs = value; }
+    public Size ItemSize { get; set; }
+    public int TabCount => self.NPages;
+    public TabPageCollection TabPages => _tabPageControls;
 
-        public TabSizeMode SizeMode { get; set; }
-        public TabDrawMode DrawMode { get; set; }
-        public bool ShowToolTips { get; set; }
-        public bool ShowTabs { get => self.ShowTabs; set => self.ShowTabs = value; }
-        public Size ItemSize { get; set; }
-        public int TabCount { get => self.NPages; }
-        public TabPageCollection TabPages { get { return _tabPageControls; } }
-        public Rectangle GetTabRect(int index)
+    public Rectangle GetTabRect(int index)
+    {
+        if (index < 0 || index >= TabCount)
         {
-            if (index < 0 || (index >= TabCount))
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), index, "SR.InvalidArgument");
-            }
-            TabPage page = TabPages[index];
-            Gtk.Label tab = page.TabLabel;
-            Gdk.Rectangle rect = tab.Allocation;
-            return new Rectangle(0, 0, rect.Width, rect.Height);
+            throw new ArgumentOutOfRangeException(nameof(index));
+        }
+        var page = TabPages[index];
+        var tab = page.TabLabel;
+        var rect = tab.Allocation;
+        return new Rectangle(0, 0, rect.Width, rect.Height);
+    }
+
+    public new ControlCollection Controls => _controls;
+    public event EventHandler? SelectedIndexChanged;
+
+    public event DrawItemEventHandler? DrawItem;
+
+    public new class ControlCollection : List<TabPage>
+    {
+        readonly TabControl _owner;
+        public ControlCollection(TabControl owner)
+        {
+            _owner = owner;
+            _owner.self.Shown += Self_Shown;
         }
 
-        public new TabControl.ControlCollection Controls => _controls;
-        public event EventHandler SelectedIndexChanged;
-
-        public event DrawItemEventHandler DrawItem;
-
-        public new class ControlCollection : List<TabPage>
+        private void Self_Shown(object? sender, EventArgs e)
         {
-            TabControl _owner;
-            public ControlCollection(TabControl owner)
+            foreach (var item in this)
             {
-                _owner = owner;
-                _owner.self.Shown += Self_Shown;
-            }
-
-            private void Self_Shown(object sender, EventArgs e)
-            {
-                foreach(TabPage item in this) {
+                if (_owner != null)
+                {
                     _owner.self.SetMenuLabelText(item.self, _owner.self.GetTabLabelText(item.self));
                 }
             }
-
-            public new int Add(TabPage item)
-            {
-                try
-                {
-                    item.Parent = _owner;
-                    item.TabLabel.Name = base.Count.ToString();
-                    item._tabLabel.WidthRequest = _owner.ItemSize.Width;
-                    item._tabLabel.HeightRequest = _owner.ItemSize.Height;
-                    if (_owner.SizeMode == TabSizeMode.Fixed)
-                    {
-                        item._tabLabel.Ellipsize = Pango.EllipsizeMode.End;
-                    }
-                    else if (_owner.SizeMode == TabSizeMode.FillToRight)
-                    {
-                        item._tabLabel.Halign = Align.End;
-                    }
-                    base.Add(item);
-                    item.TabLabel.Drawn += (object sender, DrawnArgs args) =>
-                    {
-                        if (_owner.DrawMode == TabDrawMode.OwnerDrawFixed && _owner.DrawItem != null)
-                        {
-                            Gtk.Label tab = (Gtk.Label)sender;
-                            tab.GetAllocatedSize(out Gdk.Rectangle allocation, out int baseline);
-                            args.Cr.ResetClip();
-                            int width = allocation.Width + 24;
-                            int height = allocation.Height + 2;
-                            _owner.DrawItem(this, new DrawItemEventArgs(new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height)) { diff_left = -12, diff_top = -2 }, _owner.Font, new Rectangle(0, 0, width, height), Convert.ToInt32(tab.Name), DrawItemState.Default));
-
-                        }
-                    };
-                    return _owner.self.AppendPage(item.self, item.TabLabel);
-                }
-                catch
-                {
-                    throw;
-                }
-                finally
-                {
-                    _owner.self.SetTabReorderable(item.self, true);
-                    if (_owner.Widget.IsRealized)
-                        item.Widget.ShowAll();
-                }
-            }
-            public new void RemoveAt(int index)
-            {
-                base.RemoveAt(index);
-                _owner.self.RemovePage(index);
-            }
-            public new void Remove(TabPage value)
-            {
-                base.Remove(value);
-                _owner.self.Remove(((TabPage)value).Widget);
-            }
         }
 
-
-        public class TabPageCollection : IList, ICollection, IEnumerable
+        public new int Add(TabPage item)
         {
-            private TabControl _owner;
-            public TabPageCollection(TabControl owner)
+            try
             {
-                _owner = owner;
+                item.Parent = _owner;
+                item.TabLabel.Name = Count.ToString();
+                item._tabLabel.WidthRequest = _owner.ItemSize.Width;
+                item._tabLabel.HeightRequest = _owner.ItemSize.Height;
+                if (_owner.SizeMode == TabSizeMode.Fixed)
+                {
+                    item._tabLabel.Ellipsize = Pango.EllipsizeMode.End;
+                }
+                else if (_owner.SizeMode == TabSizeMode.FillToRight)
+                {
+                    item._tabLabel.Halign = Align.End;
+                }
+                base.Add(item);
+                item.TabLabel.Drawn += (sender, args) =>
+                {
+                    if (_owner.DrawMode == TabDrawMode.OwnerDrawFixed && _owner.DrawItem != null)
+                    {
+                        var tab = (Gtk.Label)sender;
+                        tab.GetAllocatedSize(out var allocation, out _);
+                        args.Cr.ResetClip();
+                        var width = allocation.Width + 24;
+                        var height = allocation.Height + 2;
+                        _owner.DrawItem?.Invoke(this, new DrawItemEventArgs(new Graphics(tab, args.Cr, new Gdk.Rectangle(0, 0, width, height)) { DiffLeft = -12, DiffTop = -2 }, _owner.Font, new Rectangle(0, 0, width, height), Convert.ToInt32(tab.Name), DrawItemState.Default));
+
+                    }
+                };
+                return _owner.self.AppendPage(item.self, item.TabLabel);
             }
-
-            public virtual TabPage this[string key] { get { return _owner.Controls.Find(p => p.Name == key); } }
-            public virtual TabPage this[int index] { get { return _owner.Controls[index]; } set { Add(value); } }
-
-            object IList.this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-            //[Browsable(false)]
-            public int Count { get { return _owner.Controls.Count; } }
-
-            public bool IsReadOnly { get { return false; } }
-
-            bool IList.IsFixedSize => throw new NotImplementedException();
-
-            bool ICollection.IsSynchronized => throw new NotImplementedException();
-
-            object ICollection.SyncRoot => throw new NotImplementedException();
-
-            public void Add(string key, string text, string imageKey)
+            finally
             {
-                TabPage tp = new TabPage();
-                tp.Name = key;
-                tp.Text = text;
-                this.Add(tp);
+                _owner.self.SetTabReorderable(item.self, true);
+                if (_owner.Widget.IsRealized)
+                    item.Widget.ShowAll();
             }
+        }
+        public new void RemoveAt(int index)
+        {
+            base.RemoveAt(index);
+            _owner.self.RemovePage(index);
+        }
+        public new void Remove(TabPage value)
+        {
+            base.Remove(value);
+            if (value.Widget is Widget widget) _owner.self.Remove(widget);
+        }
+    }
 
-            public void Add(TabPage value)
-            {
-                value.Parent = _owner;
-                _owner.Controls.Add(value);
-            }
-            public void Add(string key, string text)
-            {
-                this.Add(key, text, null);
-            }
 
-            public void Add(string text)
-            {
-                this.Add($"tabPage{Count}", text, null);
-            }
+    public class TabPageCollection : IList
+    {
+        private readonly TabControl _owner;
+        public TabPageCollection(TabControl owner)
+        {
+            _owner = owner;
+        }
 
-            public void Add(string key, string text, int imageIndex)
-            {
-                this.Add(key, text, null);
-            }
+        public virtual TabPage this[string key] { get { return _owner.Controls.Find(p => p.Name == key); } }
+        public virtual TabPage this[int index]
+        {
+            get => _owner.Controls[index];
+            set => Add(value);
+        }
 
-            int IList.Add(object value)
-            {
-                throw new NotImplementedException();
-            }
+        object IList.this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-            public void AddRange(TabPage[] pages)
-            {
-                foreach (TabPage page in pages)
-                    this.Add(page);
-            }
+        //[Browsable(false)]
+        public int Count => _owner.Controls.Count;
 
-            bool IList.Contains(object value)
-            {
-                throw new NotImplementedException();
-            }
+        public bool IsReadOnly => false;
 
-            void CopyTo(Array array, int index)
-            {
-                throw new NotImplementedException();
-            }
+        bool IList.IsFixedSize => throw new NotImplementedException();
 
-            public int IndexOf(object value)
-            {
-                throw new NotImplementedException();
-            }
+        bool ICollection.IsSynchronized => throw new NotImplementedException();
 
-            public virtual void Clear()
-            {
-                _owner.Controls.Clear();
-            }
+        object ICollection.SyncRoot => throw new NotImplementedException();
 
-            public bool Contains(TabPage page)
-            {
-                return _owner.Controls.Contains(page);
-            }
+        public void Add(string? key, string? text, string? imageKey)
+        {
+            var tp = new TabPage();
+            tp.Name = key;
+            tp.Text = text;
+            Add(tp);
+        }
 
-            public virtual bool ContainsKey(string key)
-            {
-                return _owner.Controls.FindIndex(p => p.Name == key) > -1;
+        public void Add(TabPage value)
+        {
+            value.Parent = _owner;
+            _owner.Controls.Add(value);
+        }
+        public void Add(string? key, string? text)
+        {
+            Add(key, text, null);
+        }
 
-            }
+        public void Add(string? text)
+        {
+            Add($"tabPage{Count}", text, null);
+        }
 
-            public IEnumerator GetEnumerator()
-            {
-                return _owner.Controls.GetEnumerator();
-            }
+        public void Add(string? key, string? text, int imageIndex)
+        {
+            Add(key, text, null);
+        }
 
-            public int IndexOf(TabPage page)
-            {
-                return _owner.Controls.IndexOf(page);
-            }
+        int IList.Add(object? value)
+        {
+            throw new NotImplementedException();
+        }
 
-            public virtual int IndexOfKey(string key)
-            {
-                return _owner.Controls.FindIndex(p => p.Name == key);
-            }
+        public void AddRange(TabPage[] pages)
+        {
+            foreach (var page in pages)
+                Add(page);
+        }
 
-            public void Insert(int index, string key, string text, int imageIndex)
-            {
-                _owner.Controls.Insert(index, new TabPage() { Name = key, Text = text }); ;
-            }
+        bool IList.Contains(object? value)
+        {
+            throw new NotImplementedException();
+        }
 
-            public void Insert(int index, string key, string text)
-            {
-                Insert(index, key, text, -1);
-            }
+        void CopyTo(Array array, int index)
+        {
+            throw new NotImplementedException();
+        }
 
-            public void Insert(int index, TabPage tabPage)
-            {
-                _owner.Controls.Insert(index, tabPage);
-            }
+        public int IndexOf(object? value)
+        {
+            throw new NotImplementedException();
+        }
 
-            public void Insert(int index, string key, string text, string imageKey)
-            {
-                Insert(index, key, text, -1);
-            }
+        public virtual void Clear()
+        {
+            _owner.Controls.Clear();
+        }
 
-            public void Insert(int index, string text)
-            {
-                Insert(index, $"tabPage{Count}", text, -1);
-            }
+        public bool Contains(TabPage page)
+        {
+            return _owner.Controls.Contains(page);
+        }
 
-            public void Insert(int index, object value)
-            {
-                throw new NotImplementedException();
-            }
+        public virtual bool ContainsKey(string key)
+        {
+            return _owner.Controls.FindIndex(p => p.Name == key) > -1;
 
-            public void Remove(TabPage value)
-            {
-                _owner.Controls.Remove(value);
-            }
+        }
 
-            public void RemoveAt(int index)
-            {
-                _owner.Controls.RemoveAt(index);
-            }
+        public IEnumerator GetEnumerator()
+        {
+            return _owner.Controls.GetEnumerator();
+        }
 
-            public virtual void RemoveByKey(string key)
-            {
-                _owner.Controls.RemoveAt(_owner.Controls.FindIndex(p => p.Name == key));
-            }
+        public int IndexOf(TabPage page)
+        {
+            return _owner.Controls.IndexOf(page);
+        }
 
-            void IList.Remove(object value)
-            {
-                throw new NotImplementedException();
-            }
+        public virtual int IndexOfKey(string key)
+        {
+            return _owner.Controls.FindIndex(p => p.Name == key);
+        }
 
-            void ICollection.CopyTo(Array array, int index)
-            {
-                throw new NotImplementedException();
-            }
+        public void Insert(int index, string key, string text, int imageIndex)
+        {
+            _owner.Controls.Insert(index, new TabPage { Name = key, Text = text }); 
+        }
+
+        public void Insert(int index, string key, string text)
+        {
+            Insert(index, key, text, -1);
+        }
+
+        public void Insert(int index, TabPage tabPage)
+        {
+            _owner.Controls.Insert(index, tabPage);
+        }
+
+        public void Insert(int index, string key, string text, string imageKey)
+        {
+            Insert(index, key, text, -1);
+        }
+
+        public void Insert(int index, string text)
+        {
+            Insert(index, $"tabPage{Count}", text, -1);
+        }
+
+        public void Insert(int index, object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove(TabPage value)
+        {
+            _owner.Controls.Remove(value);
+        }
+
+        public void RemoveAt(int index)
+        {
+            _owner.Controls.RemoveAt(index);
+        }
+
+        public virtual void RemoveByKey(string key)
+        {
+            _owner.Controls.RemoveAt(_owner.Controls.FindIndex(p => p.Name == key));
+        }
+
+        void IList.Remove(object? value)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICollection.CopyTo(Array array, int index)
+        {
+            throw new NotImplementedException();
         }
     }
 }

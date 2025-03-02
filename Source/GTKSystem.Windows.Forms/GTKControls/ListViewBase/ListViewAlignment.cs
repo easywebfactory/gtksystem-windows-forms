@@ -1,10 +1,9 @@
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum ListViewAlignment
 {
-	public enum ListViewAlignment
-	{
-		Default = 0,
-		Top = 2,
-		Left = 1,
-		SnapToGrid = 5
-	}
+    Default = 0,
+    Top = 2,
+    Left = 1,
+    SnapToGrid = 5
 }

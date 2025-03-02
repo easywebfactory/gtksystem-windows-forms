@@ -1,9 +1,8 @@
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum ListViewGroupCollapsedState
 {
-	public enum ListViewGroupCollapsedState
-	{
-		Default,
-		Expanded,
-		Collapsed
-	}
+    Default,
+    Expanded,
+    Collapsed
 }

@@ -1,21 +1,19 @@
 ﻿using Gtk;
 
+namespace System.Windows.Forms;
 
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+public sealed class UserControlBase : ScrollableBoxBase
 {
-    public sealed class UserControlBase : ScrollableBoxBase
+    public UserControlBase()
     {
-        public UserControlBase() : base()
-        {
-            this.Override.AddClass("UserControl");
-            this.MarginStart = 0;
-            this.MarginTop = 0;
-            this.BorderWidth = 0;
-            this.ShadowType = ShadowType.None;
-            this.Events = Gdk.EventMask.AllEventsMask;
-            this.Expand = false;
-            this.Hexpand = false;
-            this.Vexpand = false;
-        }
+        Override.AddClass("UserControl");
+        MarginStart = 0;
+        MarginTop = 0;
+        BorderWidth = 0;
+        ShadowType = ShadowType.None;
+        Events = Gdk.EventMask.AllEventsMask;
+        Expand = false;
+        Hexpand = false;
+        Vexpand = false;
     }
 }

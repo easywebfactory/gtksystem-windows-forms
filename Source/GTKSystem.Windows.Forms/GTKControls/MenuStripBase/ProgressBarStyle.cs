@@ -1,9 +1,8 @@
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum ProgressBarStyle
 {
-	public enum ProgressBarStyle
-	{
-		Blocks,
-		Continuous,
-		Marquee
-	}
+    Blocks,
+    Continuous,
+    Marquee
 }

@@ -1,6 +1,5 @@
-namespace GTKSystem.Resources.Extensions
+namespace System.Windows.Forms.Resources;
+
+internal class UnknownType
 {
-	internal class UnknownType
-	{
-	}
 }

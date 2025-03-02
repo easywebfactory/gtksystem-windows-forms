@@ -1,40 +1,34 @@
 ﻿ 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public class ContainerControl : ScrollableControl, IContainerControl
 {
-    public class ContainerControl : ScrollableControl, IContainerControl
+    private Control? activeControl;
+    public Control? ActiveControl
     {
-        private Control _ActiveControl;
-        public Control ActiveControl
+        get
         {
-            get
+            foreach (var control in Controls)
             {
-                foreach (object control in this.Controls)
+                if (control is Control con)
                 {
-                    if (control is Control con)
-                    {
-                        if ((con.Widget.StateFlags & Gtk.StateFlags.Active) != 0 || con.Widget.IsFocus)
-                            return con;
-                    }
-                }
-                return _ActiveControl;
-            }
-            set { ActivateControl(value); } 
-        }
-        public ContainerControl() : base()
-        {
-        }
-        public bool ActivateControl(Control active)
-        {
-            _ActiveControl = active;
-            if (active != null)
-            {
-                if (active.GtkControl is Gtk.Widget widget)
-                {
-                    return widget.Activate();
+                    if ((con.Widget.StateFlags & Gtk.StateFlags.Active) != 0 || con.Widget.IsFocus)
+                        return con;
                 }
             }
-            return false;
+            return activeControl;
         }
-        public virtual StatusStrip StatusStrip { get; set; }
+        set => ActivateControl(value);
     }
+
+    public bool ActivateControl(Control? active)
+    {
+        activeControl = active;
+        if (active?.GtkControl is Gtk.Widget widget)
+        {
+            return widget.Activate();
+        }
+        return false;
+    }
+    public virtual StatusStrip? StatusStrip { get; set; }
 }

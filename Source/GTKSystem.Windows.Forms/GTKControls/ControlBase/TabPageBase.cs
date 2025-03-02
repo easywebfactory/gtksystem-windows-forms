@@ -1,35 +1,35 @@
-﻿using Gtk;
-using System;
+﻿using Cairo;
+using Gtk;
+using GTKSystem.Windows.Forms.GTKControls;
 
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+namespace System.Windows.Forms;
+
+public sealed class TabPageBase : ScrollableBoxBase
 {
-    public sealed class TabPageBase : ScrollableBoxBase
+    public Overlay? content = new();
+    public TabPageBase()
     {
-        public Gtk.Overlay Content = new Gtk.Overlay();
-        public TabPageBase() : base()
-        {
-            this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("TabPage");
-            this.BorderWidth = 0;
-            this.Content.Margin = 0;
-            this.Content.Halign = Align.Fill;
-            this.Content.Valign = Align.Fill;
-            this.Content.Expand = false;
-            this.Content.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
-            base.Halign = Align.Fill;
-            base.Valign = Align.Fill;
-            base.Add(Content);
-        }
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
-        }
-        protected override bool OnDrawn(Cairo.Context cr)
-        {
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnPaint(cr, rec);
-            return base.OnDrawn(cr);
-        }
+        Override = new GtkFormsControlOverride(this);
+        Override.AddClass("TabPage");
+        BorderWidth = 0;
+        content!.Margin = 0;
+        content.Halign = Align.Fill;
+        content.Valign = Align.Fill;
+        content.Expand = false;
+        content.Add(new Fixed { Halign = Align.Fill, Valign = Align.Fill });
+        Halign = Align.Fill;
+        Valign = Align.Fill;
+        Add(content);
+    }
+    protected override void OnShown()
+    {
+        Override.OnAddClass();
+        base.OnShown();
+    }
+    protected override bool OnDrawn(Context? cr)
+    {
+        var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);
+        Override.OnPaint(cr, rec);
+        return base.OnDrawn(cr);
     }
 }

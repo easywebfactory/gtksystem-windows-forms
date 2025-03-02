@@ -4,26 +4,25 @@
 
 using System.Runtime.InteropServices;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+/// <summary>
+///  Provides data for the <see cref='ListView.OnItemDrag'/> event.
+/// </summary>
+[ComVisible(true)]
+public class ItemDragEventArgs : EventArgs
 {
-    /// <summary>
-    ///  Provides data for the <see cref='ListView.OnItemDrag'/> event.
-    /// </summary>
-    [ComVisible(true)]
-    public class ItemDragEventArgs : EventArgs
+    public ItemDragEventArgs(MouseButtons button) : this(button, null)
     {
-        public ItemDragEventArgs(MouseButtons button) : this(button, null)
-        {
-        }
-
-        public ItemDragEventArgs(MouseButtons button, object item)
-        {
-            Button = button;
-            Item = item;
-        }
-
-        public MouseButtons Button { get; }
-
-        public object Item { get; }
     }
+
+    public ItemDragEventArgs(MouseButtons button, object item)
+    {
+        Button = button;
+        Item = item;
+    }
+
+    public MouseButtons Button { get; }
+
+    public object Item { get; }
 }

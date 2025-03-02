@@ -1,20 +1,19 @@
-﻿using Gtk;
+﻿using Cairo;
 
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+namespace System.Windows.Forms;
+
+public sealed class PanelBase: ScrollableBoxBase
 {
-    public sealed class PanelBase: ScrollableBoxBase
+    public PanelBase()
     {
-        public PanelBase() : base()
-        {
-            this.Override.AddClass("Panel");
-            this.ShadowType = Gtk.ShadowType.None;
-            this.BorderWidth = 0;
-        }
-        protected override bool OnDrawn(Cairo.Context cr)
-        {
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnDrawnBackground(cr, rec);
-            return base.OnDrawn(cr);
-        }
+        Override.AddClass("Panel");
+        ShadowType = Gtk.ShadowType.None;
+        BorderWidth = 0;
+    }
+    protected override bool OnDrawn(Context? cr)
+    {
+        var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);
+        Override.OnDrawnBackground(cr, rec);
+        return base.OnDrawn(cr);
     }
 }

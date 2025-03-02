@@ -4,31 +4,30 @@
 
 using System.Runtime.InteropServices;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+[ComVisible(true)]
+public enum SelectionMode
 {
-    [ComVisible(true)]
-    public enum SelectionMode
-    {
-        /// <summary>
-        ///  Indicates that no items can be selected.
-        /// </summary>
-        None = 0,
+    /// <summary>
+    ///  Indicates that no items can be selected.
+    /// </summary>
+    None = 0,
 
-        /// <summary>
-        ///  Indicates that only one item at a time can be selected.
-        /// </summary>
-        One = 1,
+    /// <summary>
+    ///  Indicates that only one item at a time can be selected.
+    /// </summary>
+    One = 1,
 
-        /// <summary>
-        ///  Indicates that more than one item at a time can be selected.
-        /// </summary>
-        MultiSimple = 2,
+    /// <summary>
+    ///  Indicates that more than one item at a time can be selected.
+    /// </summary>
+    MultiSimple = 2,
 
-        /// <summary>
-        ///  Indicates that more than one item at a time can be selected, and
-        ///  keyboard combinations, such as SHIFT and CTRL can be used to help
-        ///  in selection.
-        /// </summary>
-        MultiExtended = 3,
-    }
+    /// <summary>
+    ///  Indicates that more than one item at a time can be selected, and
+    ///  keyboard combinations, such as SHIFT and CTRL can be used to help
+    ///  in selection.
+    /// </summary>
+    MultiExtended = 3,
 }

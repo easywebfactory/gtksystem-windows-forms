@@ -4,16 +4,15 @@
 
 using System.Runtime.InteropServices;
 
-namespace System.Windows.Forms
-{
-    [ComVisible(true)]
-    public class NavigateEventArgs : EventArgs
-    {
-        public NavigateEventArgs(bool isForward)
-        {
-            Forward = isForward;
-        }
+namespace System.Windows.Forms;
 
-        public bool Forward { get; }
+[ComVisible(true)]
+public class NavigateEventArgs : EventArgs
+{
+    public NavigateEventArgs(bool isForward)
+    {
+        Forward = isForward;
     }
+
+    public bool Forward { get; }
 }

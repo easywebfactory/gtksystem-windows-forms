@@ -6,16 +6,15 @@
  */
 using System.ComponentModel;
 
-namespace System.Windows.Forms
-{
-    [DesignerCategory("Component")]
-    public partial class MenuStrip : ToolStrip
-    {
-        public MenuStrip() : base("MenuStrip")
-        {
-            this.self.StyleContext.AddClass("MenuStrip");
-            this.Dock = DockStyle.Top;
-        }
+namespace System.Windows.Forms;
 
+[DesignerCategory("Component")]
+public class MenuStrip : ToolStrip
+{
+    public MenuStrip() : base("MenuStrip")
+    {
+        self.StyleContext.AddClass("MenuStrip");
+        Dock = DockStyle.Top;
     }
+
 }

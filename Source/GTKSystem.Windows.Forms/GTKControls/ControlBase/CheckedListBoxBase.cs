@@ -1,11 +1,10 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿namespace System.Windows.Forms;
+
+public sealed class CheckedListBoxBase : ScrollableBoxBase
 {
-    public sealed class CheckedListBoxBase : ScrollableBoxBase
+    public CheckedListBoxBase()
     {
-        public CheckedListBoxBase() : base()
-        {
-            this.Override.AddClass("CheckedListBox");
-            this.BorderWidth = 1;
-        }
+        Override.AddClass("CheckedListBox");
+        BorderWidth = 1;
     }
 }

@@ -1,9 +1,8 @@
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum ToolStripItemOverflow
 {
-	public enum ToolStripItemOverflow
-	{
-		Never,
-		Always,
-		AsNeeded
-	}
+    Never,
+    Always,
+    AsNeeded
 }

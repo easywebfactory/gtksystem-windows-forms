@@ -1,9 +1,8 @@
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum ToolStripItemPlacement
 {
-	public enum ToolStripItemPlacement
-	{
-		Main,
-		Overflow,
-		None
-	}
+    Main,
+    Overflow,
+    None
 }

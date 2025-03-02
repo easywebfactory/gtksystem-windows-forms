@@ -4,21 +4,16 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
-using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+
 using System.ComponentModel;
+using Gtk;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+[DesignerCategory("Component")]
+public class HScrollBar : ScrollBar
 {
-    [DesignerCategory("Component")]
-    public class HScrollBar : ScrollBar
-    {
-        public ScrollbarBase<Gtk.HScrollbar> self = new ScrollbarBase<Gtk.HScrollbar>(Gtk.Orientation.Horizontal);
-        public override object GtkControl => self;
-        public override Gtk.Adjustment Adjustment { get => self.Adjustment; }
-        public HScrollBar() : base()
-        {
- 
-        }
-
-    }
+    public ScrollbarBase<HScrollbar>? self = new(Gtk.Orientation.Horizontal);
+    public override object? GtkControl => self;
+    public override Adjustment Adjustment => self.Adjustment;
 }

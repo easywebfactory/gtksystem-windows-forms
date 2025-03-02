@@ -7,11 +7,11 @@ internal partial class PropertyStore
 {
     private sealed class PaddingWrapper
     {
-        public Padding Padding;
+        public Padding padding;
 
         public PaddingWrapper(Padding padding)
         {
-            Padding = padding;
+            this.padding = padding;
         }
     }
 }

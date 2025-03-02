@@ -4,7 +4,7 @@
 using System.ComponentModel.Design;
 using Microsoft.Win32;
 
-namespace System.Windows.Forms.ComponentModel.Com2Interop;
+namespace System.Windows.Forms.ComponentModel;
 
 /// <summary>
 ///  Allows Visual Studio to communicate internally with the PropertyGrid control.

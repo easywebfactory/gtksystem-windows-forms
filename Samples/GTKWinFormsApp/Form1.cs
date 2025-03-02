@@ -71,7 +71,7 @@ namespace GTKWinFormsApp
         }
         public class TestDataMode
         {
-            public string name { get; set; }
+            public string? name { get; set; }
             public string treeID { get; set; }
             public string parent { get; set; }
             public string treeName { get; set; }
@@ -88,7 +88,7 @@ namespace GTKWinFormsApp
                 return;
             }
             //1、数据集列表数据源
-            List<TestEntity> data = new List<TestEntity>();
+            List<TestEntity>? data = new List<TestEntity>();
             var createdate = DateTime.Now;
             data.Add(new TestEntity() { ID = 0, Title = "加载数据点yes加载数据\n点yes加载数据点yes加载数据点yes", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "face-smile-big", PIC = new Bitmap(10,10) });
             data.Add(new TestEntity() { ID = 1, Title = "test2", Info = "yyyy2", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile("Resources/img11.jpg") });
@@ -127,12 +127,11 @@ namespace GTKWinFormsApp
             public DateTime CreateDate { get; set; }
             public string Operate { get; set; }
             public string PIC1 { get; set; }
-            public Image PIC { get; set; }
+            public Image? PIC { get; set; }
             public event PropertyChangedEventHandler? PropertyChanged;
             protected void OnPropertyChangedEventHandler([CallerMemberName] string propertyName = null)
             {
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
@@ -391,7 +390,7 @@ namespace GTKWinFormsApp
 
             if (GTKWinFormsApp.Properties.Resources.timg6 != null)
             {
-                MemoryStream mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6);
+                MemoryStream? mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6);
                 
                     //g.DrawImage(new Bitmap(mem), new Point(0, 0));
                     g.DrawImage(new Bitmap(mem), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);

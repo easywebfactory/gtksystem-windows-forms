@@ -1,34 +1,27 @@
-namespace GTKSystem.Resources.Extensions
+namespace System.Windows.Forms.Resources;
+
+internal struct ResourceLocator
 {
-	internal struct ResourceLocator
-	{
-		internal object _value;
+    internal object? _value;
 
-		internal int _dataPos;
+    internal int _dataPos;
 
-		internal int DataPosition => _dataPos;
+    internal int DataPosition => _dataPos;
 
-		internal object Value
-		{
-			get
-			{
-				return _value;
-			}
-			set
-			{
-				_value = value;
-			}
-		}
+    internal object? Value
+    {
+        get => _value;
+        set => _value = value;
+    }
 
-		internal ResourceLocator(int dataPos, object value)
-		{
-			_dataPos = dataPos;
-			_value = value;
-		}
+    internal ResourceLocator(int dataPos, object? value)
+    {
+        _dataPos = dataPos;
+        _value = value;
+    }
 
-		internal static bool CanCache(ResourceTypeCode value)
-		{
-			return value <= ResourceTypeCode.TimeSpan;
-		}
-	}
+    internal static bool CanCache(ResourceTypeCode value)
+    {
+        return value <= ResourceTypeCode.TimeSpan;
+    }
 }

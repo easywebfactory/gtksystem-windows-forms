@@ -1,10 +1,9 @@
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum TickStyle
 {
-	public enum TickStyle
-	{
-		None,
-		TopLeft,
-		BottomRight,
-		Both
-	}
+    None,
+    TopLeft,
+    BottomRight,
+    Both
 }

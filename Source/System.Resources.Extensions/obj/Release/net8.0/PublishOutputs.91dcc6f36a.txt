@@ -1,3 +1,0 @@
-F:\我的项目\GTK\gtksystem-windows-forms\Libs\System.Resources.Extensions.dll
-F:\我的项目\GTK\gtksystem-windows-forms\Libs\System.Resources.Extensions.deps.json
-F:\我的项目\GTK\gtksystem-windows-forms\Libs\System.Resources.Extensions.pdb

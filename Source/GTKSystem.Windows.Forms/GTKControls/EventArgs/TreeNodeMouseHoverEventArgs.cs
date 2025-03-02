@@ -4,19 +4,18 @@
 
 using System.Runtime.InteropServices;
 
-namespace System.Windows.Forms
-{
-    /// <summary>
-    ///  Provides data for the <see cref='TreeView.OnNodeMouseHover'/> event.
-    /// </summary>
-    [ComVisible(true)]
-    public class TreeNodeMouseHoverEventArgs : EventArgs
-    {
-        public TreeNodeMouseHoverEventArgs(TreeNode node)
-        {
-            Node = node;
-        }
+namespace System.Windows.Forms;
 
-        public TreeNode Node { get; }
+/// <summary>
+///  Provides data for the <see cref='TreeView.OnNodeMouseHover'/> event.
+/// </summary>
+[ComVisible(true)]
+public class TreeNodeMouseHoverEventArgs : EventArgs
+{
+    public TreeNodeMouseHoverEventArgs(TreeNode node)
+    {
+        Node = node;
     }
+
+    public TreeNode Node { get; }
 }

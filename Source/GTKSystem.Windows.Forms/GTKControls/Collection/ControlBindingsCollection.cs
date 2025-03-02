@@ -1,110 +1,251 @@
-using Gtk;
-using System.Collections;
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
 using System.ComponentModel;
-using System.Data.Common;
-using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+/// <summary>
+///  Represents the collection of data bindings for a control.
+/// </summary>
+[DefaultEvent(nameof(CollectionChanged))]
+[TypeConverter($"System.Windows.Forms.Design.ControlBindingsConverter, {AssemblyRef.SystemDesign}")]
+public class ControlBindingsCollection : BindingsCollection
 {
-    [DefaultEvent("CollectionChanged")]
-    public class ControlBindingsCollection : BindingsCollection
+    private readonly IBindableComponent? _control;
+
+    public ControlBindingsCollection(IBindableComponent? control)
     {
-        private Control _owner;
-        public ControlBindingsCollection(Control owner) : base()
-        {
-            _owner = owner;
-        }
-        private void Control_Shown(object sender, EventArgs e)
-        {
-            foreach(Binding bin in this)
-                bin.ReadValue();
-        }
+        _control = control;
+    }
 
-        public IBindableComponent BindableComponent
+    public IBindableComponent? BindableComponent => _control;
+
+    public Control? Control => _control as Control;
+
+    public Binding? this[string propertyName]
+    {
+        get
         {
-            get
+            foreach (Binding binding in this)
             {
-                throw null;
-            }
-        }
-
-        public Control Control
-        {
-            get => _owner;
-        }
-
-        public Binding this[string propertyName]
-        {
-            get
-            {
-                foreach (Binding binding in this)
+                if (string.Equals(binding.PropertyName, propertyName, StringComparison.OrdinalIgnoreCase))
                 {
-                    if (binding.PropertyName == propertyName)
-                        return binding;
+                    return binding;
                 }
-                return null;
             }
+
+            return null;
+        }
+    }
+
+    /// <summary>
+    ///  Adds the binding to the collection. An ArgumentNullException is thrown if this
+    ///  binding is null. An exception is thrown if a binding to the same target and
+    ///  Property as an existing binding or if the binding's column isn't a valid column
+    ///  given this DataSource.Table's schema.
+    ///  Fires the CollectionChangedEvent.
+    /// </summary>
+    public new void Add(Binding binding) => base.Add(binding);
+
+    /// <summary>
+    ///  Creates the binding and adds it to the collection. An InvalidBindingException is
+    ///  thrown if this binding can't be constructed. An exception is thrown if a binding
+    ///  to the same target and Property as an existing binding or if the binding's column
+    ///  isn't a valid column given this DataSource.Table's schema.
+    ///  Fires the CollectionChangedEvent.
+    /// </summary>
+    public Binding Add(string propertyName, object dataSource, string? dataMember) =>
+        Add(
+            propertyName,
+            dataSource,
+            dataMember,
+            formattingEnabled: false,
+            DefaultDataSourceUpdateMode,
+            nullValue: null,
+            formatString: string.Empty,
+            formatInfo: null);
+
+    public Binding Add(
+        string propertyName,
+        object dataSource,
+        string? dataMember,
+        bool formattingEnabled) =>
+            Add(
+                propertyName,
+                dataSource,
+                dataMember,
+                formattingEnabled,
+                DefaultDataSourceUpdateMode,
+                nullValue: null,
+                formatString: string.Empty,
+                formatInfo: null);
+
+    public Binding Add(
+        string propertyName,
+        object dataSource,
+        string? dataMember,
+        bool formattingEnabled,
+        DataSourceUpdateMode updateMode) =>
+            Add(
+                propertyName,
+                dataSource,
+                dataMember,
+                formattingEnabled,
+                updateMode,
+                nullValue: null,
+                formatString: string.Empty,
+                formatInfo: null);
+
+    public Binding Add(
+        string propertyName,
+        object dataSource,
+        string? dataMember,
+        bool formattingEnabled,
+        DataSourceUpdateMode updateMode,
+        object? nullValue) =>
+            Add(
+                propertyName,
+                dataSource,
+                dataMember,
+                formattingEnabled,
+                updateMode,
+                nullValue,
+                formatString: string.Empty,
+                formatInfo: null);
+
+    public Binding Add(
+        string propertyName,
+        object dataSource,
+        string? dataMember,
+        bool formattingEnabled,
+        DataSourceUpdateMode updateMode,
+        object? nullValue,
+        string formatString) =>
+            Add(
+                propertyName,
+                dataSource,
+                dataMember,
+                formattingEnabled,
+                updateMode,
+                nullValue,
+                formatString,
+                formatInfo: null);
+
+    public Binding Add(
+        string propertyName,
+        object dataSource,
+        string? dataMember,
+        bool formattingEnabled,
+        DataSourceUpdateMode updateMode,
+        object? nullValue,
+        string formatString,
+        IFormatProvider? formatInfo)
+    {
+        if(dataSource==null) throw new ArgumentNullException(nameof(dataSource));
+
+        Binding binding = new(
+            propertyName,
+            dataSource,
+            dataMember,
+            formattingEnabled,
+            updateMode,
+            nullValue,
+            formatString,
+            formatInfo);
+        Add(binding);
+        return binding;
+    }
+
+    /// <summary>
+    ///  Creates the binding and adds it to the collection. An InvalidBindingException is
+    ///  thrown if this binding can't be constructed. An exception is thrown if a binding to
+    ///  the same target and Property as an existing binding or if the binding's column isn't
+    ///  a valid column given this DataSource.Table's schema.
+    ///  Fires the CollectionChangedEvent.
+    /// </summary>
+    protected override void AddCore(Binding dataBinding)
+    {
+        if (dataBinding == null) throw new ArgumentNullException(nameof(dataBinding));
+
+        if (dataBinding.BindableComponent == _control)
+        {
+            throw new ArgumentException(nameof(dataBinding));
         }
 
-        public DataSourceUpdateMode DefaultDataSourceUpdateMode
+        if (dataBinding.BindableComponent is not null)
         {
-            [CompilerGenerated]
-            get;
-            [CompilerGenerated]
-            set;
+            throw new ArgumentException(nameof(dataBinding));
         }
 
-        public ControlBindingsCollection(IBindableComponent control)
+        // important to set prop first for error checking.
+        dataBinding.SetBindableComponent(_control);
+
+        base.AddCore(dataBinding);
+    }
+
+    internal void CheckDuplicates(Binding binding)
+    {
+        Debug.Assert(!string.IsNullOrEmpty(binding.PropertyName), "The caller should check for this.");
+
+        for (var i = 0; i < Count; i++)
         {
-        }
-        public new void Add(Binding binding)
-        {
-            binding.Control = this.Control;
-            if (binding.DataSource is INotifyPropertyChanged notify)
+            var current = this[i];
+            if (binding != current
+                && !string.IsNullOrEmpty(current.PropertyName)
+                && string.Equals(binding.PropertyName, current.PropertyName, StringComparison.InvariantCulture))
             {
-                notify.PropertyChanged += (object sender, PropertyChangedEventArgs e) => {
-                    binding.ReadValue();
-                };
+                throw new ArgumentException(nameof(binding));
             }
-
-            base.Add(binding);
         }
+    }
 
-        public Binding Add(string propertyName, object dataSource, string dataMember)
-        {
-            return Add(propertyName, dataSource, dataMember, true, DataSourceUpdateMode.OnPropertyChanged, null, null, null);
-        }
+    /// <summary>
+    ///  Clears the collection of any bindings.
+    ///  Fires the CollectionChangedEvent.
+    /// </summary>
+    public new void Clear() => base.Clear();
 
-        public Binding Add(string propertyName, object dataSource, string dataMember, bool formattingEnabled)
+    protected override void ClearCore()
+    {
+        var numLinks = Count;
+        for (var i = 0; i < numLinks; i++)
         {
-            return Add(propertyName, dataSource, dataMember, formattingEnabled, DataSourceUpdateMode.OnPropertyChanged, null, null, null);
-        }
-
-        public Binding Add(string propertyName, object dataSource, string dataMember, bool formattingEnabled, DataSourceUpdateMode updateMode)
-        {
-            return Add(propertyName, dataSource, dataMember, formattingEnabled, updateMode, null, null, null);
-        }
-
-        public Binding Add(string propertyName, object dataSource, string dataMember, bool formattingEnabled, DataSourceUpdateMode updateMode, object nullValue)
-        {
-            return Add(propertyName, dataSource, dataMember, formattingEnabled, updateMode, nullValue, null, null);
+            var dataBinding = this[i];
+            dataBinding.SetBindableComponent(null);
         }
 
-        public Binding Add(string propertyName, object dataSource, string dataMember, bool formattingEnabled, DataSourceUpdateMode updateMode, object nullValue, string formatString)
+        base.ClearCore();
+    }
+
+    public DataSourceUpdateMode DefaultDataSourceUpdateMode { get; set; } = DataSourceUpdateMode.OnValidation;
+
+    /// <summary>
+    ///  Removes the given binding from the collection.
+    ///  An ArgumentNullException is thrown if this binding is null. An ArgumentException is
+    ///  thrown if this binding doesn't belong to this collection.
+    ///  The CollectionChanged event is fired if it succeeds.
+    /// </summary>
+    public new void Remove(Binding binding) => base.Remove(binding);
+
+    /// <summary>
+    ///  Removes the given binding from the collection.
+    ///  It throws an IndexOutOfRangeException if this doesn't have a valid binding.
+    ///  The CollectionChanged event is fired if it succeeds.
+    /// </summary>
+    public new void RemoveAt(int index) => base.RemoveAt(index);
+
+    protected override void RemoveCore(Binding dataBinding)
+    {
+        if(dataBinding==null) throw new ArgumentNullException(nameof(dataBinding));
+
+        if (dataBinding.BindableComponent != _control)
         {
-            return Add(propertyName, dataSource, dataMember, formattingEnabled, updateMode, nullValue, formatString, null);
+            throw new ArgumentException(nameof(dataBinding));
         }
 
-        public Binding Add(string propertyName, object dataSource, string dataMember, bool formattingEnabled, DataSourceUpdateMode updateMode, object nullValue, string formatString, IFormatProvider formatInfo)
-        {
-            Binding binding = new Binding(propertyName, dataSource, dataMember, formattingEnabled, updateMode, nullValue, formatString, formatInfo);
-            this.Add(binding);
-            return binding;
-        }
-        private void Binding_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            Binding binding = (Binding)sender;
-            binding.ReadValue();
-        }
+        dataBinding.SetBindableComponent(value: null);
+        base.RemoveCore(dataBinding);
     }
 }

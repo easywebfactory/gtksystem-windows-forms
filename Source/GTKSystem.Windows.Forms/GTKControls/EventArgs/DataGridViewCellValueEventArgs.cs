@@ -4,44 +4,43 @@
 
 using System.Diagnostics;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public class DataGridViewCellValueEventArgs : EventArgs
 {
-    public class DataGridViewCellValueEventArgs : EventArgs
+    internal DataGridViewCellValueEventArgs()
     {
-        internal DataGridViewCellValueEventArgs()
+        ColumnIndex = -1;
+        RowIndex = -1;
+    }
+
+    public DataGridViewCellValueEventArgs(int columnIndex, int rowIndex)
+    {
+        if (columnIndex < 0)
         {
-            ColumnIndex = -1;
-            RowIndex = -1;
+            throw new ArgumentOutOfRangeException(nameof(columnIndex));
+        }
+        if (rowIndex < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(rowIndex));
         }
 
-        public DataGridViewCellValueEventArgs(int columnIndex, int rowIndex)
-        {
-            if (columnIndex < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(columnIndex));
-            }
-            if (rowIndex < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(rowIndex));
-            }
+        ColumnIndex = columnIndex;
+        RowIndex = rowIndex;
+    }
 
-            ColumnIndex = columnIndex;
-            RowIndex = rowIndex;
-        }
+    public int ColumnIndex { get; private set; }
 
-        public int ColumnIndex { get; private set; }
+    public int RowIndex { get; private set; }
 
-        public int RowIndex { get; private set; }
+    public object? Value { get; set; }
 
-        public object Value { get; set; }
-
-        internal void SetProperties(int columnIndex, int rowIndex, object value)
-        {
-            Debug.Assert(columnIndex >= -1);
-            Debug.Assert(rowIndex >= -1);
-            ColumnIndex = columnIndex;
-            RowIndex = rowIndex;
-            Value = value;
-        }
+    internal void SetProperties(int columnIndex, int rowIndex, object? value)
+    {
+        Debug.Assert(columnIndex >= -1);
+        Debug.Assert(rowIndex >= -1);
+        ColumnIndex = columnIndex;
+        RowIndex = rowIndex;
+        Value = value;
     }
 }

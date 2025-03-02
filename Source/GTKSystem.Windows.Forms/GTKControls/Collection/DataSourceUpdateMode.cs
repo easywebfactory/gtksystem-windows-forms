@@ -1,9 +1,8 @@
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum DataSourceUpdateMode
 {
-	public enum DataSourceUpdateMode
-	{
-		OnValidation,
-		OnPropertyChanged,
-		Never
-	}
+    OnValidation,
+    OnPropertyChanged,
+    Never
 }

@@ -1,11 +1,10 @@
 using System.ComponentModel;
 
-namespace System.Windows.Forms
-{
-	public interface IBindableComponent : IComponent, IDisposable
-	{
-		ControlBindingsCollection DataBindings { get; }
+namespace System.Windows.Forms;
 
-		BindingContext BindingContext { get; set; }
-	}
+public interface IBindableComponent : IComponent
+{
+    ControlBindingsCollection? DataBindings { get; }
+
+    BindingContext? BindingContext { get; set; }
 }

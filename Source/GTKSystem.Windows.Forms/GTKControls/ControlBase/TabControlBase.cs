@@ -1,35 +1,33 @@
-﻿using Gtk;
-using System;
-using System.Linq;
+﻿using Cairo;
+using GTKSystem.Windows.Forms.GTKControls;
 
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+namespace System.Windows.Forms;
+
+public sealed class TabControlBase : Gtk.Notebook, IControlGtk
 {
-    public sealed class TabControlBase : Gtk.Notebook, IControlGtk
+    public IGtkControlOverride Override { get; set; }
+    public TabControlBase()
     {
-        public GtkControlOverride Override { get; set; }
-        public TabControlBase() : base()
-        {
-            this.Scrollable = true;
-            this.EnablePopup = false;
-            this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("TabControl");
-            base.Halign = Gtk.Align.Start;
-            base.Valign = Gtk.Align.Start;
-        }
-        public void AddClass(string cssClass)
-        {
-            this.Override.AddClass(cssClass);
-        }
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
-        }
-        protected override bool OnDrawn(Cairo.Context cr)
-        {
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnPaint(cr, rec);
-            return base.OnDrawn(cr);
-        }
+        Scrollable = true;
+        EnablePopup = false;
+        Override = new GtkFormsControlOverride(this);
+        Override.AddClass("TabControl");
+        Halign = Gtk.Align.Start;
+        Valign = Gtk.Align.Start;
+    }
+    public void AddClass(string cssClass)
+    {
+        Override.AddClass(cssClass);
+    }
+    protected override void OnShown()
+    {
+        Override.OnAddClass();
+        base.OnShown();
+    }
+    protected override bool OnDrawn(Context? cr)
+    {
+        var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);
+        Override.OnPaint(cr, rec);
+        return base.OnDrawn(cr);
     }
 }

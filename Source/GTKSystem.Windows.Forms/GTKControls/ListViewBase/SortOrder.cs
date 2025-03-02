@@ -1,9 +1,8 @@
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum SortOrder
 {
-	public enum SortOrder
-	{
-		None,
-		Ascending,
-		Descending
-	}
+    None,
+    Ascending,
+    Descending
 }

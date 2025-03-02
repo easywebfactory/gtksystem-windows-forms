@@ -4,58 +4,64 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
-using Cairo;
+
 using Gtk;
-using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+[DesignerCategory("Component")]
+public class GroupBox : ContainerControl
 {
-    [DesignerCategory("Component")]
-    public partial class GroupBox : ContainerControl
+    public readonly GroupBoxBase self = new();
+    public override object GtkControl => self;
+    private readonly Overlay? contaner = new();
+    private readonly ControlCollection? _controls;
+    public GroupBox()
     {
-        public readonly GroupBoxBase self = new GroupBoxBase();
-        public override object GtkControl => self;
-        private Gtk.Overlay contaner = new Gtk.Overlay();
-        private ControlCollection _controls = null;
-        public GroupBox() : base()
+        _controls = new ControlCollection(this, contaner);
+        _controls.offset.Offset(0, -20);
+        if (contaner != null)
         {
-            _controls = new ControlCollection(this, contaner);
-            _controls.Offset.Offset(0, -20);
             contaner.MarginStart = 0;
             contaner.MarginTop = 0;
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
-            contaner.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
+            contaner.Add(new Fixed { Halign = Align.Fill, Valign = Align.Fill });
             self.Child = contaner;
         }
-        public override string Text { get { return self.Label; } set { self.Label = value; } }
-        public override ControlCollection Controls => _controls;
-        public override Padding Padding
+    }
+    public override string? Text { get => self.Label;
+        set => self.Label = value;
+    }
+    public override ControlCollection? Controls => _controls;
+    public override Padding Padding
+    {
+        get => base.Padding;
+        set
         {
-            get => base.Padding;
-            set
+            base.Padding = value;
+            if (contaner != null)
             {
-                base.Padding = value;
                 contaner.MarginStart = value.Left;
                 contaner.MarginTop = value.Top;
                 contaner.MarginEnd = value.Right;
                 contaner.MarginBottom = value.Bottom;
             }
         }
-        public override void SuspendLayout()
-        {
-            _Created = false;
-        }
-        public override void ResumeLayout(bool resume)
-        {
-            _Created = resume == false;
-        }
-
-        public override void PerformLayout()
-        {
-            _Created = true;
-        }
-
     }
+    public override void SuspendLayout()
+    {
+        created = false;
+    }
+    public override void ResumeLayout(bool resume)
+    {
+        created = resume == false;
+    }
+
+    public override void PerformLayout()
+    {
+        created = true;
+    }
+
 }

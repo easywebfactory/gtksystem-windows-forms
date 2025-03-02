@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Microsoft.Win32;
 
-namespace Microsoft.Win32
+internal class RegistryKey
 {
-#if NETSTANDARD2_0
-    internal class RegistryKey
-    {
-    }
-#endif
 }

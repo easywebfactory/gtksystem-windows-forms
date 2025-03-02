@@ -1,8 +1,7 @@
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum BindingCompleteContext
 {
-	public enum BindingCompleteContext
-	{
-		ControlUpdate,
-		DataSourceUpdate
-	}
+    ControlUpdate,
+    DataSourceUpdate
 }

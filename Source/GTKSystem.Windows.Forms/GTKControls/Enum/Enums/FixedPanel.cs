@@ -1,11 +1,8 @@
-﻿using System;
+﻿namespace System.Windows.Forms;
 
-namespace System.Windows.Forms
+public enum FixedPanel
 {
-    public enum FixedPanel
-    {
-        None = 0,
-        Panel1 = 1,
-        Panel2 = 2
-    }
+    None = 0,
+    Panel1 = 1,
+    Panel2 = 2
 }

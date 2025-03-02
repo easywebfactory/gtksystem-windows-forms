@@ -1,10 +1,5 @@
-﻿using System;
+﻿namespace System.Windows.Forms;
 
-
-namespace System.Windows.Forms
+public interface IButtonControl:IControl
 {
-    public interface IButtonControl:IControl
-    {
-    }
-
 }

@@ -5,128 +5,130 @@
  * author:chenhongjin
  */
 
-using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using GTKSystem.Windows.Forms.Utility;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Reflection;
+using Gdk;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+[DesignerCategory("Component")]
+public class PictureBox : Control
 {
-    [DesignerCategory("Component")]
-    public partial class PictureBox : Control
+    private readonly PictureBoxBase self = new();
+    public override object GtkControl => self;
+    public PictureBox()
     {
-        private readonly PictureBoxBase self = new PictureBoxBase();
-        public override object GtkControl => self;
-        public PictureBox()
+        self.Shown += Self_Shown;
+    }
+
+    private void Self_Shown(object? sender, EventArgs? e)
+    {
+        var width = Width;
+        var height = Height;
+        if (MaximumSize.Width > 0)
         {
-            self.Shown += Self_Shown;
+            width = Math.Min(MaximumSize.Width, Width);
         }
-
-        private void Self_Shown(object sender, EventArgs e)
+        if (MaximumSize.Height > 0)
         {
-            int width = Width;
-            int height = Height;
-            if (this.MaximumSize.Width > 0)
-            {
-                width = Math.Min(this.MaximumSize.Width, Width);
-            }
-            if (this.MaximumSize.Height > 0)
-            {
-                height = Math.Min(this.MaximumSize.Height, Height);
-            }
-            if (this.MinimumSize.Width > 0)
-            {
-                width = Math.Min(this.MinimumSize.Width, width);
-            }
-            if (this.MinimumSize.Height > 0)
-            {
-                height = Math.Min(this.MinimumSize.Height, height);
-            }
-            if (_image != null && _image.Pixbuf != null)
-            {
-                ImageUtility.ScaleImageByPictureBoxSizeMode(_image.Pixbuf, width, height, out Gdk.Pixbuf newImagePixbuf, SizeMode);
-                self.Pixbuf = newImagePixbuf;
-            }
-            else if (InitialImage != null && InitialImage.Pixbuf != null)
-            {
-                ImageUtility.ScaleImageByPictureBoxSizeMode(InitialImage.Pixbuf, width, height, out Gdk.Pixbuf newImagePixbuf, SizeMode);
-                self.Pixbuf = newImagePixbuf;
-            }
+            height = Math.Min(MaximumSize.Height, Height);
         }
-
-
-        public PictureBoxSizeMode SizeMode { get; set; }
-
-        public System.Drawing.Image InitialImage { get; set; }
-        private string _ImageLocation;
-        public string ImageLocation { get { return _ImageLocation; } set { _ImageLocation = value; Load(value); } }
-
-        private System.Drawing.Image _image;
-        public override System.Drawing.Image Image { 
-            get { return _image; }
-            set {
-                _image = value;
-                if (self.IsRealized && _image != null && _image.PixbufData != null)
-                {
-                    Self_Shown(null, null);
-                }
-            }
+        if (MinimumSize.Width > 0)
+        {
+            width = Math.Min(MinimumSize.Width, width);
         }
+        if (MinimumSize.Height > 0)
+        {
+            height = Math.Min(MinimumSize.Height, height);
+        }
+        if (_image is { Pixbuf: not null })
+        {
+            ImageUtility.ScaleImageByPictureBoxSizeMode(_image.Pixbuf, width, height, out var newImagePixbuf, SizeMode);
+            self.Pixbuf = newImagePixbuf;
+        }
+        else if (InitialImage is { Pixbuf: not null })
+        {
+            ImageUtility.ScaleImageByPictureBoxSizeMode(InitialImage.Pixbuf, width, height, out var newImagePixbuf, SizeMode);
+            self.Pixbuf = newImagePixbuf;
+        }
+    }
 
-        public System.Drawing.Image ErrorImage { get; set; }
 
-        [DefaultValue(BorderStyle.None)]
-        public override BorderStyle BorderStyle { get; set; }
+    public PictureBoxSizeMode SizeMode { get; set; }
 
-        public void CancelAsync() { }
-        public new void Load(string url) {
-            if(string.IsNullOrWhiteSpace(url))
-            { return; }
-            else if (url.Contains("://") && Uri.TryCreate(url, UriKind.Absolute, out Uri result)){
-                GLib.IFile file = GLib.FileFactory.NewForUri(result);
-                GLib.FileInputStream stream = file.Read(new GLib.Cancellable());
-                Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(stream, new GLib.Cancellable());
-                _image = new Bitmap(0, 0);
-                _image.Pixbuf = pixbuf;
-            }
-            else
-            {
-                Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(url.Replace("\\\\", "/").Replace("\\", "/"));
-                _image = new Bitmap(0, 0);
-                _image.Pixbuf = pixbuf;
-            }
-            if(self.IsMapped && self.IsVisible)
+    public Image? InitialImage { get; set; }
+    private string? imageLocation;
+    public string? ImageLocation { get => imageLocation;
+        set { imageLocation = value; Load(value); } }
+
+    private Image? _image;
+    public override Image? Image { 
+        get => _image;
+        set {
+            _image = value;
+            if (self.IsRealized && _image is { PixbufData: not null })
             {
                 Self_Shown(null, null);
             }
         }
-        public new void Load()
-        {
-            try
-            {
-                if (System.IO.File.Exists(ImageLocation))
-                {
-                    Load(ImageLocation);
-                }
-            }
-            catch { }
-        }
-        public void LoadAsync() { 
-            if (System.IO.File.Exists(ImageLocation)) { 
-                LoadAsync(ImageLocation);
-            } 
-        }
-        public void LoadAsync(string url) {
-            Threading.Tasks.Task.Run(() => Gtk.Application.Invoke(new EventHandler((o, e) => { 
-                Load(url);
-            })));
-        }
-  
-        public override void EndInit()
-        {
+    }
 
+    public Image? ErrorImage { get; set; }
+
+    [DefaultValue(BorderStyle.None)]
+    public override BorderStyle BorderStyle { get; set; }
+
+    public void CancelAsync() { }
+    public new void Load(string? url) {
+        if(string.IsNullOrWhiteSpace(url))
+        { return; }
+
+        if ((url??string.Empty).Contains("://") && Uri.TryCreate(url, UriKind.Absolute, out var result)){
+            var file = GLib.FileFactory.NewForUri(result);
+            var stream = file.Read(new GLib.Cancellable());
+            var pixbuf = new Pixbuf(stream, new GLib.Cancellable());
+            _image = new Bitmap(0, 0);
+            _image.Pixbuf = pixbuf;
         }
+        else
+        {
+            var pixbuf = new Pixbuf((url ?? string.Empty).Replace("\\\\", "/").Replace("\\", "/"));
+            _image = new Bitmap(0, 0);
+            _image.Pixbuf = pixbuf;
+        }
+        if(self.IsMapped && self.IsVisible)
+        {
+            Self_Shown(null, null);
+        }
+    }
+    public new void Load()
+    {
+        try
+        {
+            if (File.Exists(ImageLocation))
+            {
+                Load(ImageLocation);
+            }
+        }
+        catch (Exception e)
+        {
+            Trace.Write(e);
+        }
+    }
+    public void LoadAsync() { 
+        if (File.Exists(ImageLocation)) { 
+            LoadAsync(ImageLocation);
+        } 
+    }
+    public void LoadAsync(string? url) {
+        Task.Run(() => Gtk.Application.Invoke((_, _) => { 
+            Load(url);
+        }));
+    }
+  
+    public override void EndInit()
+    {
+
     }
 }

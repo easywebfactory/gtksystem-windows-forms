@@ -1,8 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace System.Windows.Forms;
 
-namespace System.Windows.Forms
-{
-    public class DataGridViewColumnHeaderCell { }
-}
+public class DataGridViewColumnHeaderCell { }

@@ -1,9 +1,8 @@
-﻿namespace System.Windows.Forms
+﻿namespace System.Windows.Forms;
+
+public enum RightToLeft
 {
-    public enum RightToLeft
-    {
-        Inherit,
-        No,
-        Yes
-    }
+    Inherit,
+    No,
+    Yes
 }

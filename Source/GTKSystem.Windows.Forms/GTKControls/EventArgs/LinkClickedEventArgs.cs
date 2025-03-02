@@ -4,25 +4,24 @@
 
 using System.Runtime.InteropServices;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+/// <summary>
+///  Provides data for the <see cref='RichTextBox.LinkClicked'/> event.
+/// </summary>
+[ComVisible(true)]
+public class LinkClickedEventArgs : EventArgs
 {
     /// <summary>
-    ///  Provides data for the <see cref='RichTextBox.LinkClicked'/> event.
+    ///  Initializes a new instance of the <see cref='LinkClickedEventArgs'/> class.
     /// </summary>
-    [ComVisible(true)]
-    public class LinkClickedEventArgs : EventArgs
+    public LinkClickedEventArgs(string linkText)
     {
-        /// <summary>
-        ///  Initializes a new instance of the <see cref='LinkClickedEventArgs'/> class.
-        /// </summary>
-        public LinkClickedEventArgs(string linkText)
-        {
-            LinkText = linkText;
-        }
-
-        /// <summary>
-        ///  Gets the text of the link being clicked.
-        /// </summary>
-        public string LinkText { get; }
+        LinkText = linkText;
     }
+
+    /// <summary>
+    ///  Gets the text of the link being clicked.
+    /// </summary>
+    public string LinkText { get; }
 }
