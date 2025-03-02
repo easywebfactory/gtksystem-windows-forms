@@ -23,7 +23,7 @@ public class ResourceManager : System.Resources.ResourceManager
     {
 
     }
-    public ResourceManager(string? baseName, Assembly? assembly, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) : base(baseName ?? string.Empty, assembly??Assembly.GetExecutingAssembly(), usingResourceSet)
+    public ResourceManager(string? baseName, Assembly? assembly, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) : base(baseName ?? string.Empty, assembly ?? Assembly.GetExecutingAssembly(), usingResourceSet)
     {
         _baseName = baseName;
         _assembly = assembly;
@@ -107,7 +107,7 @@ public class ResourceManager : System.Resources.ResourceManager
                     {
                         try
                         {
-                            if(dict.Value is ImageListStreamer streamer)
+                            if (dict.Value is ImageListStreamer streamer)
                             {
                                 streamer.ResourceInfo = getResourceInfo;
                                 return streamer;
@@ -225,7 +225,7 @@ public class ResourceManager : System.Resources.ResourceManager
 
         return null;
     }
-      
+
     //public  UnmanagedMemoryStream GetStream(string name)
     //{
     //    return GetStream(name);

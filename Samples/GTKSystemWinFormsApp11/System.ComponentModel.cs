@@ -6,7 +6,7 @@ using System.Globalization;
 
 namespace System.ComponentModel
 {
-    public class ComponentResourceManager : GTKSystem.ComponentModel.ComponentResourceManager
+    public class ComponentResourceManager : Windows.Forms.ComponentModel.ComponentResourceManager
     {
         public ComponentResourceManager(Type form) : base(form)
         {

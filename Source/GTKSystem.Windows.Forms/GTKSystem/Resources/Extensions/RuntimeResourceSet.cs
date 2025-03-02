@@ -23,7 +23,7 @@ internal sealed class RuntimeResourceSet : ResourceSet, IEnumerable
         {
             throw new ArgumentNullException("reader");
         }
-        _defaultReader = reader as DeserializingResourceReader ?? throw new ArgumentException(SR.Format(SR.NotSupportedWrongResourceReaderType, reader.GetType()), "reader");
+        _defaultReader = reader as DeserializingResourceReader ?? throw new ArgumentException(Messages.Format(Messages.NotSupportedWrongResourceReaderType, reader.GetType()), "reader");
         var fastResourceComparer = FastResourceComparer.@default;
         _resCache = new Dictionary<string?, ResourceLocator>(fastResourceComparer!);
         _defaultReader._resCache = _resCache;
@@ -80,7 +80,7 @@ internal sealed class RuntimeResourceSet : ResourceSet, IEnumerable
         var reader = Reader;
         if (reader == null || _resCache == null)
         {
-            throw new ObjectDisposedException(null, SR.ObjectDisposedResourceSet);
+            throw new ObjectDisposedException(null, Messages.ObjectDisposedResourceSet);
         }
         return reader.GetEnumerator();
     }
@@ -115,14 +115,14 @@ internal sealed class RuntimeResourceSet : ResourceSet, IEnumerable
         }
         if (Reader == null || _resCache == null)
         {
-            throw new ObjectDisposedException(null, SR.ObjectDisposedResourceSet);
+            throw new ObjectDisposedException(null, Messages.ObjectDisposedResourceSet);
         }
         object? obj = null;
         lock (Reader)
         {
             if (Reader == null)
             {
-                throw new ObjectDisposedException(null, SR.ObjectDisposedResourceSet);
+                throw new ObjectDisposedException(null, Messages.ObjectDisposedResourceSet);
             }
             ResourceLocator value;
             if (_defaultReader != null)

@@ -11,7 +11,7 @@ public sealed class Bitmap : Image
 {
     private static readonly Color defaultTransparentColor = Color.LightGray;
 
-    internal Bitmap(byte[]? pixbuf):base(pixbuf)
+    public Bitmap(byte[]? pixbuf):base(pixbuf)
     {
             
     }

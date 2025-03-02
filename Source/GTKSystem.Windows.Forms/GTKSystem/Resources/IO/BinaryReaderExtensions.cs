@@ -11,7 +11,7 @@ internal static class BinaryReaderExtensions
         {
             if (num2 == 35)
             {
-                throw new FormatException(SR.FormatBad7BitInt32);
+                throw new FormatException(Messages.FormatBad7BitInt32);
             }
 
             if (reader != null)

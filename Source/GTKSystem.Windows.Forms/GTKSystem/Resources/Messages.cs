@@ -1,14 +1,15 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+
 //using System.Resources;
 
 namespace System.Windows.Forms.Resources;
 
-internal static class SR
+internal static class Messages
 {
     private static ResourceManager? resourceManager;
 
-    internal static ResourceManager ResourceManager => resourceManager ?? (resourceManager = new ResourceManager(typeof(Sr)));
+    internal static ResourceManager ResourceManager => resourceManager ?? (resourceManager = new ResourceManager(typeof(SystemResources)));
 
     internal static string ArgumentOutOfRangeStreamLength => GetResourceString("ArgumentOutOfRange_StreamLength");
 

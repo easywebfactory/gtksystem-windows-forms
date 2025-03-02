@@ -22,7 +22,7 @@ public class PaperSize
         _createdByDefaultConstructor = true;
     }
 
-    internal PaperSize(PaperKind kind, string name, int width, int height)
+    public PaperSize(PaperKind kind, string name, int width, int height)
     {
         _kind = kind;
         _name = name;

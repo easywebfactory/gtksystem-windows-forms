@@ -3,9 +3,10 @@
 // See the LICENSE file in the project root for more information.
 
 using System.ComponentModel.Design;
+using System.Resources;
 using System.Runtime.Serialization;
 
-namespace System.Resources;
+namespace System.Windows.Forms.Resources;
 // This class implements a partial type resolver for the BinaryFormatter.
 // This is needed to be able to read binary serialized content from older
 // NDP types and map them to newer versions.

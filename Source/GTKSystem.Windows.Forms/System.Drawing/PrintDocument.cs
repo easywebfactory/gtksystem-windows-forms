@@ -4,9 +4,11 @@
 
 using Gtk;
 using System.ComponentModel;
+using System.Drawing.Printing;
 using System.Windows.Forms;
+using PaperSize = System.Drawing.Printing.PaperSize;
 
-namespace System.Drawing.Printing;
+namespace System.Drawing;
 
 [DefaultProperty("DocumentName"), DefaultEvent("PrintPage")]
 public class PrintDocument : Component
@@ -26,24 +28,26 @@ public class PrintDocument : Component
     private bool _originAtMargins;
     private bool _userSetPageSettings;
 
-        public PrintDocument() 
-        { 
-            _defaultPageSettings = new PageSettings(_printerSettings);
-            _pageSetup = new PageSetup();
+    public PrintDocument()
+    {
+        _defaultPageSettings = new PageSettings(_printerSettings);
+        _pageSetup = new PageSetup();
+    }
+    private PageSetup _pageSetup;
+    public PageSetup PageSetup
+    {
+        get => _pageSetup;
+        set
+        {
+            _pageSetup = value;
+            var pageSettings = DefaultPageSettings;
+            pageSettings.Landscape = value.Orientation == PageOrientation.Landscape || value.Orientation == PageOrientation.ReverseLandscape;
+            pageSettings.Margins = new Margins((int)value.GetLeftMargin(Unit.Points), (int)value.GetTopMargin(Unit.Points), (int)value.GetRightMargin(Unit.Points), (int)value.GetBottomMargin(Unit.Points));
+            Enum.TryParse(value.PaperSize.DisplayName, out PaperKind paperKind);
+            pageSettings.PaperSize = new PaperSize(paperKind, value.PaperSize.Name, (int)value.PaperSize.GetWidth(Unit.Points), (int)value.PaperSize.GetHeight(Unit.Points));
+            _userSetPageSettings = true;
         }
-        private PageSetup _pageSetup;
-        public PageSetup PageSetup { 
-            get=> _pageSetup; 
-            set {
-                _pageSetup = value;
-                var pageSettings = DefaultPageSettings;
-                pageSettings.Landscape = value.Orientation == PageOrientation.Landscape || value.Orientation == PageOrientation.ReverseLandscape;
-                pageSettings.Margins = new Margins((int)value.GetLeftMargin(Unit.Points), (int)value.GetTopMargin(Unit.Points), (int)value.GetRightMargin(Unit.Points), (int)value.GetBottomMargin(Unit.Points));
-                Enum.TryParse(value.PaperSize.DisplayName, out PaperKind paperKind);
-                pageSettings.PaperSize = new PaperSize(paperKind, value.PaperSize.Name, (int)value.PaperSize.GetWidth(Unit.Points), (int)value.PaperSize.GetHeight(Unit.Points));
-                _userSetPageSettings = true;
-            }
-        }
+    }
 
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]

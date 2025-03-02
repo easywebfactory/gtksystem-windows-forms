@@ -11,7 +11,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms.Design;
-using System.Windows.Forms.Interfaces;
 using Cairo;
 using Color = System.Drawing.Color;
 using Font = System.Drawing.Font;
@@ -161,9 +160,12 @@ public partial class Control : Component, IControl, ISynchronizeInvoke, ISupport
             OnLoad(e);
             if (Controls != null)
             {
-                foreach (Control control in Controls)
+                foreach (object item in Controls)
                 {
-                    control.OnLoad(e);
+                    if (item is Control control)
+                    {
+                        control.OnLoad(e);
+                    }
                 }
             }
         }

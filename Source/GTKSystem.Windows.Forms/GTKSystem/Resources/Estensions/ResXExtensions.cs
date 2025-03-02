@@ -1,6 +1,4 @@
-﻿using System.Resources;
-
-namespace System.Windows.Forms.Resources;
+﻿namespace System.Windows.Forms.Resources.Estensions;
 
 internal static class ResXExtensions
 {

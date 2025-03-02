@@ -5,7 +5,7 @@ using GLib;
 using Gtk;
 using Pango;
 
-namespace System.Windows.Forms.Interfaces;
+namespace System.Drawing;
 
 public interface IWidget: IDisposable
 {

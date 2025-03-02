@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace System.Windows.Forms.Design;
+namespace System.Windows.Forms.Resources;
 
 public class ImageListImage
 {
@@ -27,7 +27,7 @@ public class ImageListImage
     public Image? Image { get; set; }
 
     // Add properties to make this object "look" like Image in the Collection editor
-    public float HorizontalResolution => Image?.HorizontalResolution??0;
+    public float HorizontalResolution => Image?.HorizontalResolution ?? 0;
 
     public float VerticalResolution => Image?.VerticalResolution ?? 0;
 
@@ -35,9 +35,9 @@ public class ImageListImage
 
     public ImageFormat? RawFormat => Image?.RawFormat;
 
-    public Size Size => Image?.Size??default;
+    public Size Size => Image?.Size ?? default;
 
-    public SizeF PhysicalDimension => Image?.Size??default;
+    public SizeF PhysicalDimension => Image?.Size ?? default;
 
     public static ImageListImage? ImageListImageFromStream(Stream? stream, bool imageIsIcon)
     {

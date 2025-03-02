@@ -44,11 +44,11 @@ using System.Runtime.CompilerServices;
 
 #pragma warning disable CA1066 // Implement IEquatable when overriding Object.Equals
 
-namespace System;
+namespace System.Drawing;
 // xxHash32 is used for the hash code.
 // https://github.com/Cyan4973/xxHash
 
-internal struct HashCode
+public struct HashCode
 {
     private static readonly uint s_seed = GenerateGlobalSeed();
 

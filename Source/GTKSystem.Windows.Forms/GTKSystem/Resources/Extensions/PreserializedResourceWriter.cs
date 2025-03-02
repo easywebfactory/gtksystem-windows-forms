@@ -185,7 +185,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
         }
         if (!stream.CanWrite)
         {
-            throw new ArgumentException(SR.ArgumentStreamNotWritable);
+            throw new ArgumentException(Messages.ArgumentStreamNotWritable);
         }
         _output = stream;
         _resourceList = new SortedDictionary<string?, object?>(FastResourceComparer.@default!);
@@ -200,7 +200,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
         }
         if (_resourceList == null)
         {
-            throw new InvalidOperationException(SR.InvalidOperationResourceWriterSaved);
+            throw new InvalidOperationException(Messages.InvalidOperationResourceWriterSaved);
         }
         _caseInsensitiveDups.Add(name, null);
         _resourceList.Add(name, value);
@@ -214,7 +214,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
         }
         if (_resourceList == null)
         {
-            throw new InvalidOperationException(SR.InvalidOperationResourceWriterSaved);
+            throw new InvalidOperationException(Messages.InvalidOperationResourceWriterSaved);
         }
         if (value is Stream)
         {
@@ -233,7 +233,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
         }
         if (_resourceList == null)
         {
-            throw new InvalidOperationException(SR.InvalidOperationResourceWriterSaved);
+            throw new InvalidOperationException(Messages.InvalidOperationResourceWriterSaved);
         }
         AddResourceInternal(name, value, closeAfterWrite);
     }
@@ -248,7 +248,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
         }
         if (!value.CanSeek)
         {
-            throw new ArgumentException(SR.NotSupportedUnseekableStream);
+            throw new ArgumentException(Messages.NotSupportedUnseekableStream);
         }
         _caseInsensitiveDups.Add(name, null);
         _resourceList.Add(name, new StreamWrapper(value, closeAfterWrite));
@@ -262,7 +262,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
         }
         if (_resourceList == null)
         {
-            throw new InvalidOperationException(SR.InvalidOperationResourceWriterSaved);
+            throw new InvalidOperationException(Messages.InvalidOperationResourceWriterSaved);
         }
         _caseInsensitiveDups.Add(name, null);
         _resourceList.Add(name, value);
@@ -272,7 +272,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
     {
         if (_resourceList == null)
         {
-            throw new InvalidOperationException(SR.InvalidOperationResourceWriterSaved);
+            throw new InvalidOperationException(Messages.InvalidOperationResourceWriterSaved);
         }
         _caseInsensitiveDups.Add(name, null);
         if (_preserializedData == null)
@@ -311,7 +311,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
     {
         if (_resourceList == null)
         {
-            throw new InvalidOperationException(SR.InvalidOperationResourceWriterSaved);
+            throw new InvalidOperationException(Messages.InvalidOperationResourceWriterSaved);
         }
 
         if (_output != null)
@@ -528,7 +528,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
             }
             return (ResourceTypeCode)(num + 64);
         }
-        throw new PlatformNotSupportedException(SR.NotSupportedBinarySerializedResources);
+        throw new PlatformNotSupportedException(Messages.NotSupportedBinarySerializedResources);
     }
 
     private void WriteValue(ResourceTypeCode typeCode, object value, BinaryWriter writer)
@@ -601,7 +601,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
                         var memoryStream = (MemoryStream)streamWrapper.stream;
                         if (memoryStream.Length > int.MaxValue)
                         {
-                            throw new ArgumentException(SR.ArgumentOutOfRangeStreamLength);
+                            throw new ArgumentException(Messages.ArgumentOutOfRangeStreamLength);
                         }
                         var array = memoryStream.ToArray();
                         writer.Write(array.Length);
@@ -611,7 +611,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
                     var stream = streamWrapper.stream;
                     if (stream.Length > int.MaxValue)
                     {
-                        throw new ArgumentException(SR.ArgumentOutOfRangeStreamLength);
+                        throw new ArgumentException(Messages.ArgumentOutOfRangeStreamLength);
                     }
                     stream.Position = 0L;
                     writer.Write((int)stream.Length);
@@ -628,7 +628,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
                     break;
                 }
             default:
-                throw new PlatformNotSupportedException(SR.NotSupportedBinarySerializedResources);
+                throw new PlatformNotSupportedException(Messages.NotSupportedBinarySerializedResources);
             case ResourceTypeCode.Null:
                 break;
         }
@@ -658,7 +658,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
             var converter = TypeDescriptor.GetConverter(value2);
             if (converter == null)
             {
-                throw new TypeLoadException(SR.Format(SR.TypeLoadExceptionCannotLoadConverter, value2));
+                throw new TypeLoadException(Messages.Format(Messages.TypeLoadExceptionCannotLoadConverter, value2));
             }
             var value3 = converter.ConvertFromInvariantString(value);
             AddResource(name, value3);
@@ -722,7 +722,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
         }
         if (!value.CanSeek)
         {
-            throw new ArgumentException(SR.NotSupportedUnseekableStream);
+            throw new ArgumentException(Messages.NotSupportedUnseekableStream);
         }
         AddResourceData(name, typeName, new ResourceDataRecord(SerializationFormat.ActivatorStream, value, closeAfterWrite));
         _requiresDeserializingResourceReader = true;
@@ -757,7 +757,7 @@ public sealed class PreserializedResourceWriter : IResourceWriter
                         var stream = (Stream)resourceDataRecord.data;
                         if (stream.Length > int.MaxValue)
                         {
-                            throw new ArgumentException(SR.ArgumentOutOfRangeStreamLength);
+                            throw new ArgumentException(Messages.ArgumentOutOfRangeStreamLength);
                         }
 
                         stream.Position = 0L;

@@ -1,11 +1,9 @@
-
 using Cairo;
 using Gdk;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
-using System.Windows.Forms.Interfaces;
 using Gtk;
 using Matrix = System.Drawing.Drawing2D.Matrix;
 
@@ -17,26 +15,26 @@ public sealed class Graphics : MarshalByRefObject, IDeviceContext
     private readonly Gdk.Rectangle rectangle;
     private readonly IWidget? _widget;
     #region 用于输入与输出的数值调整差值
-    internal double DiffLeft { get; set; }
-    internal double DiffTop { get; set; }
+    public double DiffLeft { get; set; }
+    public double DiffTop { get; set; }
     //internal int diff_right { get; set; }
     //internal int diff_bottom { get; set; }
     #endregion
-    internal Graphics(IWidget? widget, Context? context, Gdk.Rectangle rectangle)
+    public Graphics(IWidget? widget, Context? context, Gdk.Rectangle rectangle)
     {
         _widget = widget;
         this.context = context;
         this.rectangle = rectangle;
         Clip = new Region(new Rectangle(this.rectangle.X, this.rectangle.Y, this.rectangle.Width, this.rectangle.Height));
     }
-    internal Graphics(Widget? widget, Context? context, Gdk.Rectangle rectangle)
+    public Graphics(Widget? widget, Context? context, Gdk.Rectangle rectangle)
     {
         this.widget = widget;
         this.context = context;
         this.rectangle = rectangle;
         Clip = new Region(new Rectangle(this.rectangle.X, this.rectangle.Y, this.rectangle.Width, this.rectangle.Height));
     }
-    internal Graphics(Context? context, Gdk.Rectangle rectangle)
+    public Graphics(Context? context, Gdk.Rectangle rectangle)
     {
         this.context = context;
         this.rectangle = rectangle;

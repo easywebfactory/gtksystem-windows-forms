@@ -4,8 +4,9 @@
 
 using System.Collections;
 using System.Reflection;
+using System.Windows.Forms.Resources.Interfaces;
 
-namespace System.Resources;
+namespace System.Windows.Forms.Resources;
 
 public partial class ResXResourceReader
 {

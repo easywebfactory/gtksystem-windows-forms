@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Forms.Resources;
 
-namespace GTKSystem.ComponentModel;
+namespace System.Windows.Forms.ComponentModel;
 
 /// <summary>
 /// 此为System.ComponentModel.ComponentResourceManager的取图实现

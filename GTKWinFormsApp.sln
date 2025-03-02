@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readme", "readme", "{7674FD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTKSystemWinFormsApp11", "Samples\GTKSystemWinFormsApp11\GTKSystemWinFormsApp11.csproj", "{ED029673-302D-4E58-B33E-1472BD96B19C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTKSystem.Drawing", "Source\GTKSystem.Drawing\GTKSystem.Drawing.csproj", "{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{ED029673-302D-4E58-B33E-1472BD96B19C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED029673-302D-4E58-B33E-1472BD96B19C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED029673-302D-4E58-B33E-1472BD96B19C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{99043664-0431-4398-92A6-55A45736D2F6} = {3BF22CCD-4FE4-42BD-960A-EAD8617880B9}
 		{A963833A-1053-4321-9BCF-3FB7C58F0601} = {F6BAC321-6965-4B7A-8C35-34B3F226C1AE}
 		{ED029673-302D-4E58-B33E-1472BD96B19C} = {F6BAC321-6965-4B7A-8C35-34B3F226C1AE}
+		{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0} = {3BF22CCD-4FE4-42BD-960A-EAD8617880B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8B2528BB-EDE2-4992-83A6-3C0C3FDA43DE}

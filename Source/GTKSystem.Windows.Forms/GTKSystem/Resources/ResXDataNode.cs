@@ -8,13 +8,13 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Reflection;
+using System.Resources;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Windows.Forms;
-using System.Windows.Forms.Resources;
+using System.Windows.Forms.Resources.Estensions;
 using System.Xml;
 
-namespace System.Resources;
+namespace System.Windows.Forms.Resources;
 
 public sealed class ResXDataNode : ISerializable
 {

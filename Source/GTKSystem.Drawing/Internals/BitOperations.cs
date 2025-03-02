@@ -4,7 +4,9 @@
 // Some routines inspired by the Stanford Bit Twiddling Hacks by Sean Eron Anderson:
 // http://graphics.stanford.edu/~seander/bithacks.html
 
-namespace System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
+
+namespace System.Drawing;
 
 /// <summary>
 /// Utility methods for intrinsic bit-twiddling operations.

@@ -5,10 +5,11 @@
 using System.Collections;
 using System.Diagnostics;
 using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Xml;
 
-namespace System.Resources;
+namespace System.Windows.Forms.Resources;
 
 /// <summary>
 ///  ResX resource writer. See the text in "ResourceSchema" for more

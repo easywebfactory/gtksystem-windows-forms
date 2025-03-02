@@ -3,7 +3,7 @@
 
 namespace System.Drawing;
 
-internal static class GtkSystemColors
+public static class GtkSystemColors
 {
     public static Color ActiveBorder => ColorExtension.FromKnownColor(KnownColor.ActiveBorder);
     public static Color ActiveCaption => ColorExtension.FromKnownColor(KnownColor.ActiveCaption);

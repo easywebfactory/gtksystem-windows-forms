@@ -183,6 +183,11 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
     <Compile Update="GTKControls\TextBox.cs" />
     <Compile Update="GTKControls\Timer.cs" />
     <Compile Update="GTKControls\TreeView.cs" />
+    <Compile Update="GTKSystem\Resources\Extensions\SystemResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SystemResources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -206,6 +211,14 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GTKSystem.Drawing\GTKSystem.Drawing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="GTKSystem\Resources\Extensions\SystemResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SystemResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -13,7 +13,7 @@ internal sealed class FastResourceComparer : IComparer, IEqualityComparer, IComp
         return HashFunction(key2);
     }
 
-    public int GetHashCode([DisallowNull] string? key)
+    public int GetHashCode(string? key)
     {
         return HashFunction(key);
     }

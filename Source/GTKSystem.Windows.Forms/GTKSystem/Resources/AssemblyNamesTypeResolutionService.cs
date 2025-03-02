@@ -7,7 +7,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace System.Resources;
+namespace System.Windows.Forms.Resources;
 
 internal class AssemblyNamesTypeResolutionService : ITypeResolutionService
 {
