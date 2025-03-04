@@ -311,14 +311,15 @@ namespace System.Windows.Forms
             Gtk.Box msgbox = new Box(Gtk.Orientation.Horizontal, 10);
             msgbox.Valign = Align.Start;
             msgbox.Halign = Align.Fill;
+        
             if (icon == MessageBoxIcon.Question)
-                msgbox.PackStart(Gtk.Image.NewFromIconName("dialog-question", IconSize.Dialog), false, false, 5);
+                msgbox.PackStart(Gtk.Image.LoadFromResource("GTKSystem.Windows.Forms.Resources.System.dialog-question.png"), false, false, 5);
             else if (icon == MessageBoxIcon.Warning || icon == MessageBoxIcon.Exclamation)
-                msgbox.PackStart(Gtk.Image.NewFromIconName("dialog-warning", IconSize.Dialog), false, false, 5);
+                msgbox.PackStart(Gtk.Image.LoadFromResource("GTKSystem.Windows.Forms.Resources.System.dialog-warning.png"), false, false, 5);
             else if (icon == MessageBoxIcon.Information || icon == MessageBoxIcon.Asterisk)
-                msgbox.PackStart(Gtk.Image.NewFromIconName("dialog-information", IconSize.Dialog), false, false, 5);
+                msgbox.PackStart(Gtk.Image.LoadFromResource("GTKSystem.Windows.Forms.Resources.System.dialog-information.png"), false, false, 5);
             else if (icon == MessageBoxIcon.Error || icon == MessageBoxIcon.Stop || icon == MessageBoxIcon.Hand)
-                msgbox.PackStart(Gtk.Image.NewFromIconName("dialog-error", IconSize.Dialog), false, false, 5);
+                msgbox.PackStart(Gtk.Image.LoadFromResource("GTKSystem.Windows.Forms.Resources.System.dialog-error.png"), false, false, 5);
             var content = new Gtk.Label(text) { MarginEnd = 30 };
             content.Halign = Align.Fill;
             content.Valign = Align.Start;
@@ -341,9 +342,7 @@ namespace System.Windows.Forms
             msgbox.PackStart(content, false, true, 5);
             dia.ContentArea.PackStart(msgbox, false, true, 0);
          
-            IconTheme iconTheme = new IconTheme();
-            Gdk.Pixbuf pixbuf = iconTheme.LoadIcon("dialog-information", 16, IconLookupFlags.DirLtr);
-            dia.Icon = pixbuf;
+            dia.Icon = new Gdk.Pixbuf(typeof(MessageBox).Assembly, "GTKSystem.Windows.Forms.Resources.System.help-faq.png");
             if (buttons == MessageBoxButtons.OK)
             {
                 dia.AddButton("确定", Gtk.ResponseType.Ok);

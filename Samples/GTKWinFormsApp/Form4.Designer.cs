@@ -94,6 +94,7 @@ namespace GTKWinFormsApp
             splitContainer1.Panel2.Controls.Add(button5);
             splitContainer1.Panel2.Controls.Add(panel1);
             splitContainer1.Panel2.Controls.Add(button3);
+            
             splitContainer1.Size = new System.Drawing.Size(992, 441);
             splitContainer1.SplitterDistance = 265;
             splitContainer1.TabIndex = 0;
@@ -293,6 +294,7 @@ namespace GTKWinFormsApp
             label1.Size = new System.Drawing.Size(992, 51);
             label1.TabIndex = 1;
             label1.Text = "横幅栏";
+
             // 
             // Form4
             // 

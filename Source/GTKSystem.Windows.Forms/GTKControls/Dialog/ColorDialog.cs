@@ -12,7 +12,6 @@ namespace System.Windows.Forms
 {
     public class ColorDialog : CommonDialog
     {
-        public Gtk.ColorChooserDialog colorChooserDialog;
         public ColorDialog() : base()
         {
 
@@ -48,19 +47,18 @@ namespace System.Windows.Forms
         }
         protected override bool RunDialog(IWin32Window owner)
         {
-            if (colorChooserDialog == null)
+            Gtk.ColorChooserDialog colorChooserDialog = null;
+            if (owner != null && owner is Form ownerform)
             {
-                if (owner != null && owner is Form ownerform)
-                {
-                    colorChooserDialog = new Gtk.ColorChooserDialog("选择颜色", ownerform.self);
-                    colorChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
-                }
-                else
-                {
-                    colorChooserDialog = new Gtk.ColorChooserDialog("选择颜色", null);
-                    colorChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
-                }
+                colorChooserDialog = new Gtk.ColorChooserDialog("选择颜色", ownerform.self);
+                colorChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
             }
+            else
+            {
+                colorChooserDialog = new Gtk.ColorChooserDialog("选择颜色", null);
+                colorChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
+            }
+            colorChooserDialog.IconName = "image-x-generic";
             colorChooserDialog.KeepAbove = true;
             if (Color.Name != "0")
                 colorChooserDialog.Rgba = new Gdk.RGBA() { Alpha = (double)Color.A / 255, Red = (double)Color.R / 255, Green = (double)Color.G / 255, Blue = (double)Color.B / 255 };
@@ -69,19 +67,11 @@ namespace System.Windows.Forms
             int res = colorChooserDialog.Run();
             Gdk.RGBA colorSelection = colorChooserDialog.Rgba;
             this.Color = Color.FromArgb((int)(colorSelection.Alpha * 255), (int)Math.Round(colorSelection.Red * 255, 0), (int)Math.Round(colorSelection.Green * 255, 0), (int)Math.Round(colorSelection.Blue * 255, 0));
-            colorChooserDialog.HideOnDelete();
+            colorChooserDialog.Dispose();
+            colorChooserDialog.Destroy();
             return res == -5;
         }
  
         public override string ToString() { return this.Color.Name; }
-        protected override void Dispose(bool disposing)
-        {
-            if (colorChooserDialog != null)
-            {
-                colorChooserDialog.Destroy();
-                colorChooserDialog = null;
-            }
-            base.Dispose(disposing);
-        }
     }
 }

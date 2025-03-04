@@ -25,22 +25,23 @@ namespace GTKWinFormsApp
 
         private void Button4_Click(object? sender, EventArgs e)
         {
+            //propertyGrid1.SelectedObject = sender;
             splitContainer1.Panel1.Controls.Add(new Button() { Location = new Point(200, 100), Size = new Size(160, 30), Text = "testtest", Dock=DockStyle.Fill });
         }
 
         Point panel1Location = new Point();
         private void Form4_Shown(object? sender, EventArgs e)
         {
-
+           
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "jpg|*.jpg;png|*.png";
+            ofd.Filter = "图像文件(.jpg)|*.jpg;图像文件(.png)|*.png";
             ofd.Multiselect = true;
             ofd.Title = "测试打开文件";
-
+            ofd.DefaultExt = ".jpg";
             DialogResult dialogResult = ofd.ShowDialog(this);
             Console.WriteLine("dialogResult:" + dialogResult.ToString());
             Console.WriteLine("FileName:" + ofd.FileName);

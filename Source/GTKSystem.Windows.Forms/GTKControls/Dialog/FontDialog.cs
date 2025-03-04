@@ -1,11 +1,11 @@
-﻿using System.ComponentModel;
+﻿using Gtk;
+using System.ComponentModel;
 using System.Drawing;
 
 namespace System.Windows.Forms
 {
     public class FontDialog : CommonDialog
     {
-        public Gtk.FontChooserDialog fontChooserDialog;
         public FontDialog() : base()
         {
             this.Reset();
@@ -35,19 +35,18 @@ namespace System.Windows.Forms
         private static Gtk.Window ActiveWindow = null;
         protected override bool RunDialog(IWin32Window owner)
         {
-            if (fontChooserDialog == null)
+            Gtk.FontChooserDialog fontChooserDialog = null;
+            if (owner != null && owner is Form ownerform)
             {
-                if (owner != null && owner is Form ownerform)
-                {
-                    fontChooserDialog = new Gtk.FontChooserDialog("选择字体", ownerform.self);
-                    fontChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
-                }
-                else
-                {
-                    fontChooserDialog = new Gtk.FontChooserDialog("选择字体", null);
-                    fontChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
-                }
+                fontChooserDialog = new Gtk.FontChooserDialog("选择字体", ownerform.self);
+                fontChooserDialog.WindowPosition = Gtk.WindowPosition.CenterOnParent;
             }
+            else
+            {
+                fontChooserDialog = new Gtk.FontChooserDialog("选择字体", null);
+                fontChooserDialog.WindowPosition = Gtk.WindowPosition.Center;
+            }
+            fontChooserDialog.IconName = "font-x-generic";
             fontChooserDialog.KeepAbove = true;
             if (null != _font)
                 fontChooserDialog.Font = _font.Name + " " + (int)_font.Size;
@@ -60,7 +59,7 @@ namespace System.Windows.Forms
                 case Pango.Weight.Bold:
                 case Pango.Weight.Ultrabold:
                 case Pango.Weight.Semibold:
-                    fontStyle |= FontStyle.Bold; 
+                    fontStyle |= FontStyle.Bold;
                     break;
             }
             switch (fontChooserDialog.FontDesc.Style)
@@ -72,19 +71,11 @@ namespace System.Windows.Forms
             }
             _font = new Font(fontChooserDialog.FontDesc.Family, (int)(fontChooserDialog.FontDesc.Size / Pango.Scale.PangoScale), fontStyle);
 
-            fontChooserDialog.HideOnDelete();
+            fontChooserDialog.Dispose();
+            fontChooserDialog.Destroy();
             return res == -5;
         }
 
         public override string ToString() => $"{_font.Name} {_font.Size}"; 
-        protected override void Dispose(bool disposing)
-        {
-            if (fontChooserDialog != null)
-            {
-                fontChooserDialog.Destroy();
-                fontChooserDialog = null;
-            }
-            base.Dispose(disposing);
-        }
     }
 }
