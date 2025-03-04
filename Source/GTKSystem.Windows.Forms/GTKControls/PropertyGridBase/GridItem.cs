@@ -1,29 +1,29 @@
 ﻿
 using System.ComponentModel;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public abstract class GridItem
 {
-    public abstract class GridItem
-    {
-        [Localizable(false)]
-        [Bindable(true)]
-        [DefaultValue(null)]
-        [TypeConverter(typeof(StringConverter))]
-        public object Tag { get; set; }
+    [Localizable(false)]
+    [Bindable(true)]
+    [DefaultValue(null)]
+    [TypeConverter(typeof(StringConverter))]
+    public object? Tag { get; set; }
 
-        public abstract GridItemCollection GridItems { get; }
+    public abstract GridItemCollection? GridItems { get; }
 
-        public abstract GridItemType GridItemType { get; }
+    public abstract GridItemType GridItemType { get; }
 
-        public abstract string Label { get; }
+    public abstract string? Label { get; }
 
-        public abstract GridItem Parent { get; }
+    public abstract GridItem? Parent { get; }
 
-        public abstract PropertyDescriptor PropertyDescriptor { get; }
+    public abstract PropertyDescriptor? PropertyDescriptor { get; }
 
-        public abstract object Value { get; }
+    public abstract object? Value { get; }
 
-        public virtual bool Expandable => false;
+    public virtual bool Expandable => false;
 
         public virtual bool Expanded
         {
@@ -31,6 +31,5 @@ namespace System.Windows.Forms
             set;
         }
 
-        public abstract bool Select();
-    }
+    public abstract bool Select();
 }

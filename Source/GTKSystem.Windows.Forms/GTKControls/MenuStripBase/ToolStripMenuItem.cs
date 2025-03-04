@@ -1,48 +1,35 @@
-﻿using Gtk;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿namespace System.Windows.Forms;
 
-
-namespace System.Windows.Forms
+public class ToolStripMenuItem : WidgetToolStrip<Gtk.MenuItem>
 {
-    public class ToolStripMenuItem : WidgetToolStrip<Gtk.MenuItem>
+    public ToolStripMenuItem():base("ToolStripMenuItem")
     {
-        public ToolStripMenuItem():base("ToolStripMenuItem")
-        {
-            DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
-        }
-
-        public override CheckState CheckState { 
-            get => base.CheckState;
-            set
-            {
-                base.CheckState = value;
-            }
-        }
-        public override bool Checked {
-            get
-            {
-                if (this.flagBox.Child is Gtk.CheckButton checkbutton)
-                {
-                   return checkbutton.Active;
-                }
-                else if (this.flagBox.Child is Gtk.RadioButton radiobutton)
-                {
-                    return radiobutton.Active;
-                }
-                return base.Checked; 
-            }
-            set { 
-                base.Checked = value;
-                if (this.flagBox.Child is Gtk.CheckButton checkbutton)
-                {
-                    checkbutton.Active = value;
-                }
-                else if (this.flagBox.Child is Gtk.RadioButton radiobutton)
-                {
-                    radiobutton.Active = value;
-                }
-            } }
+        DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
     }
+
+    public override bool Checked {
+        get
+        {
+            if (flagBox.Child is Gtk.CheckButton checkbutton)
+            {
+                return checkbutton.Active;
+            }
+
+            if (flagBox.Child is Gtk.RadioButton radiobutton)
+            {
+                return radiobutton.Active;
+            }
+            return base.Checked; 
+        }
+        set { 
+            base.Checked = value;
+            if (flagBox.Child is Gtk.CheckButton checkbutton)
+            {
+                checkbutton.Active = value;
+            }
+            else if (flagBox.Child is Gtk.RadioButton radiobutton)
+            {
+                radiobutton.Active = value;
+            }
+        } }
 }

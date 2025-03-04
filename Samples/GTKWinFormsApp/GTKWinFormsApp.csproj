@@ -22,7 +22,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
-		<PackageReference Include="GTKSystem.Windows.FormsDesigner" Version="1.0.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -42,10 +41,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="obj\Debug\net8.0\" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj" />
 	</ItemGroup>
 
@@ -54,6 +49,9 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Resources\BindingNavigator.Delete.ico">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\img11.jpg">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Resources\img10.jpg">

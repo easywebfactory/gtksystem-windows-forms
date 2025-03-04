@@ -1,10 +1,9 @@
 ﻿
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum ComboBoxStyle
 {
-    public enum ComboBoxStyle
-    {
-        Simple,
-        DropDown,
-        DropDownList
-    }
+    Simple,
+    DropDown,
+    DropDownList
 }

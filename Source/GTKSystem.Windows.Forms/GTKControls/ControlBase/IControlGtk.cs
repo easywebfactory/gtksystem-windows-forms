@@ -1,11 +1,8 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Drawing;
 
+namespace System.Windows.Forms;
 
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+public interface IControlGtk : IWidget
 {
-    public interface IControlGtk : IDisposable
-    {
-        GtkControlOverride Override { get; set; }
-    }
+    IGtkControlOverride Override { get; set; }
 }

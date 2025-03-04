@@ -1,9 +1,8 @@
-namespace System.Windows.Forms
-{
-	public interface ICurrencyManagerProvider
-	{
-		CurrencyManager CurrencyManager { get; }
+namespace System.Windows.Forms;
 
-		CurrencyManager GetRelatedCurrencyManager(string dataMember);
-	}
+public interface ICurrencyManagerProvider
+{
+    CurrencyManager? CurrencyManager { get; }
+
+    CurrencyManager? GetRelatedCurrencyManager(string? dataMember);
 }

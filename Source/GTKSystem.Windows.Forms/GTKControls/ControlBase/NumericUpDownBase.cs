@@ -1,32 +1,34 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
-{
-    public sealed class NumericUpDownBase : Gtk.SpinButton, IControlGtk
-    {
-        public GtkControlOverride Override { get; set; }
-        public NumericUpDownBase() : base(0, 100, 1)
-        {
-            this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("NumericUpDown");
-            this.Value = 0;
-            this.Orientation = Gtk.Orientation.Horizontal;
-            base.Valign = Gtk.Align.Start;
-            base.Halign = Gtk.Align.Start;
-        }
-        public void AddClass(string cssClass)
-        {
-            this.Override.AddClass(cssClass);
-        }
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
-        }
+﻿using Cairo;
+using GTKSystem.Windows.Forms.GTKControls;
 
-        protected override bool OnDrawn(Cairo.Context cr)
-        {
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnPaint(cr, rec);
-            return base.OnDrawn(cr);
-        }
+namespace System.Windows.Forms;
+
+public sealed class NumericUpDownBase : Gtk.SpinButton, IControlGtk
+{
+    public IGtkControlOverride Override { get; set; }
+    public NumericUpDownBase() : base(0, 100, 1)
+    {
+        Override = new GtkFormsControlOverride(this);
+        Override.AddClass("NumericUpDown");
+        Value = 0;
+        Orientation = Gtk.Orientation.Horizontal;
+        Valign = Gtk.Align.Start;
+        Halign = Gtk.Align.Start;
+    }
+    public void AddClass(string cssClass)
+    {
+        Override.AddClass(cssClass);
+    }
+    protected override void OnShown()
+    {
+        Override.OnAddClass();
+        base.OnShown();
+    }
+
+    protected override bool OnDrawn(Context? cr)
+    {
+        var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);
+        Override.OnPaint(cr, rec);
+        return base.OnDrawn(cr);
     }
 }

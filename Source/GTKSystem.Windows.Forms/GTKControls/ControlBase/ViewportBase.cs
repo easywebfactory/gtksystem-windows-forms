@@ -1,19 +1,21 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿using Cairo;
+using GTKSystem.Windows.Forms.GTKControls;
+
+namespace System.Windows.Forms;
+
+public sealed class ViewportBase : Gtk.Viewport, IControlGtk
 {
-    public sealed class ViewportBase : Gtk.Viewport, IControlGtk
+    public IGtkControlOverride Override { get; set; }
+    public ViewportBase()
     {
-        public GtkControlOverride Override { get; set; }
-        public ViewportBase() : base()
-        {
-            this.Override = new GtkControlOverride(this);
-            base.Halign = Gtk.Align.Start;
-            base.Valign = Gtk.Align.Start;
-        }
-        protected override bool OnDrawn(Cairo.Context cr)
-        {
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnDrawnBackground(cr, rec);
-            return base.OnDrawn(cr);
-        }
+        Override = new GtkFormsControlOverride(this);
+        Halign = Gtk.Align.Start;
+        Valign = Gtk.Align.Start;
+    }
+    protected override bool OnDrawn(Context? cr)
+    {
+        var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);
+        Override.OnDrawnBackground(cr, rec);
+        return base.OnDrawn(cr);
     }
 }

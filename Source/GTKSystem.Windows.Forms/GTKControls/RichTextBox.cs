@@ -5,65 +5,78 @@
  * author:chenhongjin
  */
 using Gtk;
-using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+[DesignerCategory("Component")]
+public class RichTextBox : ScrollableControl
 {
-    [DesignerCategory("Component")]
-    public partial class RichTextBox : ScrollableControl
+    public readonly RichTextBoxBase self = new();
+    public override object GtkControl => self;
+    protected override void SetStyle(Widget widget)
     {
-        public readonly RichTextBoxBase self = new RichTextBoxBase();
-        public override object GtkControl => self;
-        protected override void SetStyle(Widget widget)
-        {
-            base.SetStyle(self.TextView);
-        }
-        public RichTextBox():base()
-        {
-            self.TextView.Buffer.Changed += Buffer_Changed;
-            this.BorderStyle = BorderStyle.Fixed3D;
-        }
-        private void Buffer_Changed(object sender, EventArgs e)
-        {
-            if (TextChanged != null && self.IsVisible)
-            {
-                TextChanged(this, e);
-            }
-        }
+        base.SetStyle(self.TextView);
+    }
+    public RichTextBox()
+    {
+        self.TextView.Buffer.Changed += Buffer_Changed;
+        BorderStyle = BorderStyle.Fixed3D;
+    }
 
-        public override string Text { get => self.TextView.Buffer.Text; set => self.TextView.Buffer.Text = value; }
-        public virtual bool ReadOnly { get { return self.TextView.CanFocus; } set { self.TextView.CanFocus = value; } }
-
-        public override event EventHandler TextChanged;
-        public void AppendText(string text)
+    private void Buffer_Changed(object? sender, EventArgs e)
+    {
+        if (TextChanged != null && self.IsVisible)
         {
-            var enditer = self.TextView.Buffer.EndIter;
-            self.TextView.Buffer.Insert(ref enditer, text);
-        }
-
-        public string[] Lines
-        {
-            get { return self.TextView.Buffer.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); }
-        }
-        public int SelectionStart { get { if (self.TextView.Buffer.HasSelection) { self.TextView.Buffer.GetSelectionBounds(out TextIter start, out TextIter end); return start.Offset; } else { return self.TextView.Buffer.CursorPosition; } } }
-        
-        [System.ComponentModel.Browsable(false)]
-        public virtual int SelectionLength
-        {
-            get { self.TextView.Buffer.GetSelectionBounds(out TextIter start, out TextIter end); return end.Offset - start.Offset; }
-            set
-            {
-                
-                TextIter start = self.TextView.Buffer.GetIterAtOffset(self.TextView.Buffer.CursorPosition);
-                TextIter end = self.TextView.Buffer.GetIterAtOffset(self.TextView.Buffer.CursorPosition + value);
-                self.TextView.Buffer.SelectRange(start, end);
-            }
-        }
-        public void InsertTextAtCursor(string text)
-        {
-            if (text == null) return;
-            self.TextView.Buffer.InsertAtCursor(text);
+            TextChanged?.Invoke(this, e);
         }
     }
+
+    public int SelectionStart
+    {
+        get
+        {
+            if (self.TextView.Buffer.HasSelection)
+            {
+                self.TextView.Buffer.GetSelectionBounds(out var start, out _);
+                return start.Offset;
+            }
+
+            return self.TextView.Buffer.CursorPosition;
+        }
+    }
+
+    [Browsable(false)]
+    public virtual int SelectionLength
+    {
+        get { self.TextView.Buffer.GetSelectionBounds(out var start, out var end); return end.Offset - start.Offset; }
+        set
+        {
+
+            var start = self.TextView.Buffer.GetIterAtOffset(self.TextView.Buffer.CursorPosition);
+            var end = self.TextView.Buffer.GetIterAtOffset(self.TextView.Buffer.CursorPosition + value);
+            self.TextView.Buffer.SelectRange(start, end);
+        }
+    }
+    public void InsertTextAtCursor(string text)
+    {
+        if (text == null) return;
+        self.TextView.Buffer.InsertAtCursor(text);
+    }
+
+    public override string? Text { get => self.TextView.Buffer.Text; set => self.TextView.Buffer.Text = value; }
+    public virtual bool ReadOnly
+    {
+        get => self.TextView.CanFocus;
+        set => self.TextView.CanFocus = value;
+    }
+
+    public override event EventHandler? TextChanged;
+    public void AppendText(string text)
+    {
+        var enditer = self.TextView.Buffer.EndIter;
+        self.TextView.Buffer.Insert(ref enditer, text);
+    }
+
+    public string[] Lines => self.TextView.Buffer.Text.Split(["\r\n", "\n"], StringSplitOptions.None);
 }

@@ -4,37 +4,37 @@
 
 using System.Collections;
 using System.Reflection;
+using System.Windows.Forms.Resources.Interfaces;
 
-namespace System.Resources
+namespace System.Windows.Forms.Resources;
+
+public partial class ResXResourceReader
 {
-    public partial class ResXResourceReader
+    private sealed class ReaderAliasResolver : IAliasResolver
     {
-        private sealed class ReaderAliasResolver : IAliasResolver
+        private readonly Hashtable _cachedAliases;
+
+        internal ReaderAliasResolver()
         {
-            private readonly Hashtable _cachedAliases;
+            _cachedAliases = new Hashtable();
+        }
 
-            internal ReaderAliasResolver()
+        public AssemblyName? ResolveAlias(string alias)
+        {
+            AssemblyName? result = null;
+            if (_cachedAliases != null)
             {
-                _cachedAliases = new Hashtable();
+                result = (AssemblyName)_cachedAliases[alias];
             }
 
-            public AssemblyName ResolveAlias(string alias)
-            {
-                AssemblyName result = null;
-                if (_cachedAliases != null)
-                {
-                    result = (AssemblyName)_cachedAliases[alias];
-                }
+            return result;
+        }
 
-                return result;
-            }
-
-            public void PushAlias(string alias, AssemblyName name)
+        public void PushAlias(string alias, AssemblyName name)
+        {
+            if (_cachedAliases != null && !string.IsNullOrEmpty(alias))
             {
-                if (_cachedAliases != null && !string.IsNullOrEmpty(alias))
-                {
-                    _cachedAliases[alias] = name;
-                }
+                _cachedAliases[alias] = name;
             }
         }
     }
