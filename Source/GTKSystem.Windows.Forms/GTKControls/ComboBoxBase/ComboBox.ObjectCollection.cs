@@ -80,7 +80,7 @@ namespace System.Windows.Forms
                 NativeAdd(-1, item.ToString(), item.ToString());
                 return index;
             }
-            internal int Add(string text, string value, object item)
+            internal int Add( string value, string text, object item)
             {
                 int index = AddInternal(item);
                 NativeAdd(-1, value, text);
@@ -163,7 +163,7 @@ namespace System.Windows.Forms
 
             internal void ClearInternal()
             {
-                _owner.self.Clear();
+                _owner.self.RemoveAll();
                 InnerList.Clear();
                 _owner.SelectedIndex = -1;
             }

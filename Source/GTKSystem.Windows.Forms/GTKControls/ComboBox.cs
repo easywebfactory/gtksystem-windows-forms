@@ -161,6 +161,7 @@ namespace System.Windows.Forms
             }
             else
             {
+                 
                 self.Append(value, text);
             }
         }
