@@ -171,30 +171,16 @@ namespace System.Windows.Forms
             {
                 this.Parent = parent;
                 self.SetPosition(WindowPosition.CenterOnParent);
+                self.DestroyWithParent = true;
                 self.Activate();
             }
 
             if (self.IsVisible == false)
             {
-                if (AutoScroll == true)
-                {
-                    self.ScrollView.HscrollbarPolicy = PolicyType.Automatic;
-                    self.ScrollView.VscrollbarPolicy = PolicyType.Automatic;
-                }
-                else
-                {
-                    self.ScrollView.HscrollbarPolicy = PolicyType.Never;
-                    self.ScrollView.VscrollbarPolicy = PolicyType.Never;
-                }
-
                 this.FormBorderStyle = this.FormBorderStyle;
                 if (this.MaximizeBox == false && this.MinimizeBox == false)
                 {
                     self.TypeHint = Gdk.WindowTypeHint.Dialog;
-                }
-                else if (this.MaximizeBox == false && this.MinimizeBox == true)
-                {
-                    self.Resizable = false;
                 }
                 self.Resize(self.DefaultWidth, self.DefaultHeight);
 

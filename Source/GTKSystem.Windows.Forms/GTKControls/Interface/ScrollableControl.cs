@@ -39,7 +39,24 @@ namespace System.Windows.Forms
             set
             {
                 _AutoScroll = value;
-                if(scrollbase != null) { scrollbase.AutoScroll = value; }
+                if (AutoSize == false)
+                    if (scrollbase != null) { scrollbase.AutoScroll = value; }
+            }
+        }
+        public override bool AutoSize
+        {
+            get => base.AutoSize;
+            set
+            {
+                base.AutoSize = value;
+                if (value == true)
+                {
+                    if (scrollbase != null) { scrollbase.AutoScroll = false; }
+                }
+                else
+                {
+                    if (scrollbase != null) { scrollbase.AutoScroll = _AutoScroll; }
+                }
             }
         }
         //public VScrollProperties VerticalScroll { get; }

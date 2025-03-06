@@ -39,7 +39,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public event System.Windows.Forms.ScrollEventHandler Scroll;
         public FormBase(Gtk.Window parent = null) : base("title", Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive), DialogFlags.UseHeaderBar)
         {
-            this.DestroyWithParent = true;
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("Form");
             this.WindowPosition = Gtk.WindowPosition.Center;
@@ -92,10 +91,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 if (CloseWindowEvent(this, EventArgs.Empty))
                 {
                     this.OnClose();
-                    if (this.Group.CurrentGrab != null)
-                    {
-                        this.Group.CurrentGrab.Destroy();
-                    }
+                    this.Dispose();
                     this.Destroy();
                 }
                 else

@@ -5,6 +5,7 @@
  * author:chenhongjin
  */
 
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -192,6 +193,16 @@ namespace System.Windows.Forms
             }
             private void SetMarginEnd(Gtk.Overlay lay, Control control)
             {
+                if (__owner is Form)
+                {
+                    lay.WidthRequest = Math.Max(-1, Math.Max(lay.Parent.Parent.AllocatedWidth, control.Location.X + control.Width));
+                    lay.HeightRequest = Math.Max(-1, Math.Max(lay.Parent.Parent.AllocatedHeight, control.Location.Y + control.Height));
+                }
+                else
+                {
+                    lay.WidthRequest = Math.Max(-1, Math.Max(__owner.Width - 4, control.Location.X + control.Width));
+                    lay.HeightRequest = Math.Max(-1, Math.Max(__owner.Height - 4, control.Location.Y + control.Height));
+                }
                 if (lay.IsMapped == true)
                 {
                     Gtk.Widget widget = control.Widget;
