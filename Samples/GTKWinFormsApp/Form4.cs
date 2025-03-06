@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Printing;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GTKWinFormsApp
@@ -26,7 +17,7 @@ namespace GTKWinFormsApp
         private void Button4_Click(object? sender, EventArgs e)
         {
             //propertyGrid1.SelectedObject = sender;
-            splitContainer1.Panel1.Controls.Add(new Button() { Location = new Point(200, 100), Size = new Size(160, 30), Text = "testtest", Dock=DockStyle.Fill });
+            splitContainer1.Panel1.Controls.Add(new Button() { Location = new Point(20, 100), Size = new Size(160, 30), Text = "testtest", Dock=DockStyle.Fill });
         }
 
         Point panel1Location = new Point();
@@ -38,10 +29,10 @@ namespace GTKWinFormsApp
         private void button3_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "图像文件(.jpg)|*.jpg;图像文件(.png)|*.png";
+            ofd.Filter = "图像文件|*.jpg;*.png|图像文件2|*.bmp";
             ofd.Multiselect = true;
             ofd.Title = "测试打开文件";
-            ofd.DefaultExt = ".jpg";
+            ofd.DefaultExt = "*.png";
             DialogResult dialogResult = ofd.ShowDialog(this);
             Console.WriteLine("dialogResult:" + dialogResult.ToString());
             Console.WriteLine("FileName:" + ofd.FileName);
@@ -59,7 +50,7 @@ namespace GTKWinFormsApp
         private void button6_Click(object sender, EventArgs e)
         {
             SaveFileDialog ofd = new SaveFileDialog();
-            ofd.Filter = "jpg|*.jpg;png|*.png";
+            ofd.Filter = "图像文件|*.jpg;*.png|图像文件2|*.bmp";
             ofd.Title = "测试保存文件";
 
             DialogResult dialogResult = ofd.ShowDialog();
