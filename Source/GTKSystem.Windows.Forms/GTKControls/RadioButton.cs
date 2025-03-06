@@ -15,29 +15,30 @@ namespace System.Windows.Forms
         public readonly RadioButtonBase self = new RadioButtonBase();
         public override object GtkControl => self;
         public RadioButton():base() {
-            self.Realized += Control_Realized;
+            self.ParentSet += Self_ParentSet;
+        }
+
+        private void Self_ParentSet(object o, Gtk.ParentSetArgs args)
+        {
+            Gtk.Container con = self.Parent as Gtk.Container;
+            foreach (var widget in con.Children)
+            {
+                if (widget is Gtk.RadioButton group)
+                {
+                    ((Gtk.RadioButton)o).Group = new Gtk.RadioButton[0];
+                    //加入容器内的第一个radio配组
+                    ((Gtk.RadioButton)o).JoinGroup(group);
+                     break;
+                }
+            }
+            self.Active = _Checked;
+            self.Toggled += Self_Toggled;
         }
 
         private void Self_Toggled(object sender, EventArgs e)
         {
             if (CheckedChanged != null && self.IsVisible)
                 CheckedChanged(this, e);
-        }
-
-        private void Control_Realized(object sender, EventArgs e)
-        {
-            Gtk.Container con = self.Parent as Gtk.Container;
-            foreach (var widget in con.AllChildren)
-            {
-                if (widget is Gtk.RadioButton)
-                {
-                    //加入容器内的第一个radio配组
-                    ((Gtk.RadioButton)sender).JoinGroup((Gtk.RadioButton)widget);
-                    break;
-                }
-            }
-            self.Active = _Checked;
-            self.Toggled += Self_Toggled;
         }
         public event EventHandler CheckedChanged;
 

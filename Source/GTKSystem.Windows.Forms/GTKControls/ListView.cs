@@ -79,32 +79,28 @@ namespace System.Windows.Forms
         private bool ControlRealized = false;
         private void Control_Realized(object sender, EventArgs e)
         {
-            if (ControlRealized == false)
+            if (this.View == View.Details)
             {
-                ControlRealized = true;
-                if (this.View == View.Details)
-                {
-                    header.NoShowAll = false;
-                    header.Visible = true;
-                    header.ShowAll();
-                    headerView.HeightRequest=__headerheight;
-                }
-                foreach (ColumnHeader header in this.Columns)
-                {
-                    NativeHeaderAdd(header);
-                }
-                foreach (ListViewGroup g in Groups)
-                {
-                    NativeGroupAdd(g, -1);
-                }
-                foreach (ListViewItem item in Items)
-                {
-                    NativeAdd(item, -1);
-                }
-
-                MultiSelect = MultiSelect == true;
-                self.ShowAll();
+                header.NoShowAll = false;
+                header.Visible = true;
+                header.ShowAll();
+                headerView.HeightRequest = __headerheight;
             }
+            foreach (ColumnHeader header in this.Columns)
+            {
+                NativeHeaderAdd(header);
+            }
+            foreach (ListViewGroup g in Groups)
+            {
+                NativeGroupAdd(g, -1);
+            }
+            foreach (ListViewItem item in Items)
+            {
+                NativeAdd(item, -1);
+            }
+
+            MultiSelect = MultiSelect == true;
+            self.ShowAll();
         }
         public bool Sorted { get; set; }
         public System.Windows.Forms.SortOrder Sorting { get; set; }

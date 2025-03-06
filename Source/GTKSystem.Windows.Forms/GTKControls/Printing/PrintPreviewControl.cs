@@ -43,13 +43,12 @@ namespace System.Windows.Forms
             scroll = new Gtk.ScrolledWindow();
             scroll.Child = paper;
             self.Add(scroll);
-            self.Realized += Self_Shown;
-
+            self.Realized += Self_Realized;
             ResetBackColor();
             ResetForeColor();
         }
 
-        private void Self_Shown(object sender, EventArgs e)
+        private void Self_Realized(object? sender, EventArgs e)
         {
             if (AutoZoom == false)
             {
