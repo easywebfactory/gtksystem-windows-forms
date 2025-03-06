@@ -5,6 +5,8 @@
  * author:chenhongjin
  */
 
+using Cairo;
+using GLib;
 using System.ComponentModel;
 
 namespace System.Windows.Forms
@@ -43,20 +45,27 @@ namespace System.Windows.Forms
                 {
                     return;
                 }
-                string[] filters = value?.Split(';');
-                foreach (string filter in filters)
+                if (!string.IsNullOrEmpty(value))
                 {
-                    string[] pattern = filter.Split('|');
-                    if (pattern == null || pattern.Length % 2 != 0 || pattern[1].Split('.').Length == 0)
+                    string[] filters = value.Split('|');
+                    int pipeCount = filters.Length;
+                    if (pipeCount == 1 || pipeCount % 2 == 1)
                     {
-                        throw new ArgumentException("FileDialog Invalid Filter");
+                        throw new ArgumentException("FileDialog Invalid Filter", value);
+                    }
+                    for(int i = 1; i < pipeCount; i += 2)
+                    {
+                        if (filters[i].Split('.').Length == 1)
+                        {
+                            throw new ArgumentException("FileDialog Invalid Filter", value);
+                        }
                     }
                 }
-                string[] array = value?.Split('|');
-                if (array == null || array[1].Split('.').Length == 0)
+                else
                 {
-                    throw new ArgumentException("FileDialog Invalid Filter");
+                    value = null!;
                 }
+
                 _filter = value;
             }
         }
@@ -114,11 +123,32 @@ namespace System.Windows.Forms
             else if (!string.IsNullOrWhiteSpace(this.InitialDirectory))
                 fileDialog.SetCurrentFolder(this.InitialDirectory);
 
-            if (!string.IsNullOrWhiteSpace(DefaultExt))
+
+            if (_filter != null)
+            {
+                string[] filters = _filter.Split('|');
+                for (int i = 1; i < filters.Length; i += 2)
+                {
+                    string[] patterns = filters[i].Split(';');
+                    foreach (string pattern in patterns)
+                    {
+                        Gtk.FileFilter ffilter = new Gtk.FileFilter();
+                        string extand = pattern.TrimStart(new char[] { '*', ' ' });
+                        if (MimeMapping.ContainsKey(extand))
+                        {
+                            ffilter.AddMimeType(MimeMapping[extand]);
+                        }
+                        ffilter.AddPattern(pattern);
+                        ffilter.Name = $"{filters[i - 1]}（{pattern}）";
+                        fileDialog.AddFilter(ffilter);
+                    }
+                }
+            }
+            else if (!string.IsNullOrWhiteSpace(DefaultExt))
             {
                 string[] pattern = DefaultExt.Split('|');
                 Gtk.FileFilter filter = new Gtk.FileFilter();
-                string extand = pattern.Last().Trim(new char[] { '*', '.', ' ' });
+                string extand = pattern.Last().TrimStart(new char[] { '*', '.', ' ' });
                 if (MimeMapping.ContainsKey('.' + extand))
                 {
                     filter.AddMimeType(MimeMapping['.' + extand]);
@@ -126,23 +156,6 @@ namespace System.Windows.Forms
                 filter.AddPattern($"*.{extand}");
                 filter.Name = extand;
                 fileDialog.Filter = filter;
-            }
-            if (_filter != null)
-            {
-                string[] filters = _filter.Split(';');
-                foreach (string filter in filters)
-                {
-                    string[] pattern = filter.Split('|');
-                    Gtk.FileFilter ffilter = new Gtk.FileFilter();
-                    string extand= pattern[1].Trim(new char[] { '*',' ' });
-                    if (MimeMapping.ContainsKey(extand))
-                    {
-                        ffilter.AddMimeType(MimeMapping[extand]);
-                    }
-                    ffilter.AddPattern(pattern[1]);
-                    ffilter.Name = $"{pattern[0]}（{pattern[1]}）";
-                    fileDialog.AddFilter(ffilter);
-                }
             }
             int response = fileDialog.Run();
             this.FileName = fileDialog.Filename;
