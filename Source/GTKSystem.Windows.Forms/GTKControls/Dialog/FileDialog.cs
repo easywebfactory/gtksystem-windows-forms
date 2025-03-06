@@ -141,21 +141,12 @@ namespace System.Windows.Forms
                         ffilter.AddPattern(pattern);
                         ffilter.Name = $"{filters[i - 1]}（{pattern}）";
                         fileDialog.AddFilter(ffilter);
+                        if(pattern== DefaultExt)
+                        {
+                            fileDialog.Filter = ffilter;
+                        }
                     }
                 }
-            }
-            else if (!string.IsNullOrWhiteSpace(DefaultExt))
-            {
-                string[] pattern = DefaultExt.Split('|');
-                Gtk.FileFilter filter = new Gtk.FileFilter();
-                string extand = pattern.Last().TrimStart(new char[] { '*', '.', ' ' });
-                if (MimeMapping.ContainsKey('.' + extand))
-                {
-                    filter.AddMimeType(MimeMapping['.' + extand]);
-                }
-                filter.AddPattern($"*.{extand}");
-                filter.Name = extand;
-                fileDialog.Filter = filter;
             }
             int response = fileDialog.Run();
             this.FileName = fileDialog.Filename;
