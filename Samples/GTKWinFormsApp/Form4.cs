@@ -14,14 +14,13 @@ namespace GTKWinFormsApp
             button4.Click += Button4_Click;
         }
 
-        private void Button4_Click(object? sender, EventArgs e)
+        private void Button4_Click(object sender, EventArgs e)
         {
-            //propertyGrid1.SelectedObject = sender;
-            splitContainer1.Panel1.Controls.Add(new Button() { Location = new Point(20, 100), Size = new Size(160, 30), Text = "testtest", Dock=DockStyle.Fill });
+
         }
 
         Point panel1Location = new Point();
-        private void Form4_Shown(object? sender, EventArgs e)
+        private void Form4_Shown(object sender, EventArgs e)
         {
            
         }

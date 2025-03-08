@@ -1,5 +1,13 @@
-GTKWinFormsApp.csproj 是引用GTKSystem框架的工程
+窗体设计管理方法，以GTKWinFormsApp工程为例：
 
-GTKWinFormsApp_Win.csproj是.net原生工程
+一、GTKWinFormsApp.csproj 是引用GTKSystem框架的工程，需要配置runtimer.json
 
-可以时打开这两个工程，方便界面设计，对照发开
+二、GTKWinFormsApp_Win2.csproj是.net8原生工程，切换框架时，obj文件有异常提示，可以删除obj文件夹，让Visual Studio自动生成即可
+
+三、GTKWinFormsApp_Win.csproj是.net Framework v4.8原生工程，与GTKSystem框架没有冲突（注意：不要编译此工程，如果编译后出现无法处理的异常，重启工程即可）
+  App.config是.net Framework v4.8原生工程的文件
+  创建方法：新建一个winform（Framework）项目工程（如GTKWinFormsApp_Win），选择Framework v4.8（4.7也行，高版本可以提高语言法兼容性），
+  创建工程后，进入工程目录，复制 GTKWinFormsApp_Win.csproj、App.config文件到GTKSystem框架的工程下，用此GTKWinFormsApp_Win.csproj打开工程，显示隐藏文件，把窗体form和usercontrol都加入工程，如果有问题，修正即可。
+  打开工程属性配置，把默认命名空间改成“GTKWinFormsApp”。
+
+  注意：不需要编译GTKWinFormsApp_Win.csproj工程，如果编译，有可能出现异常提示，影响窗体设计，解决此问题，只需要重启工程即可。

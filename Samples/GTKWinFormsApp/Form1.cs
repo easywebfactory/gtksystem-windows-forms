@@ -1,16 +1,13 @@
 ﻿
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.Common;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Json;
-using System.Text;
 using System.Windows.Forms;
 
 namespace GTKWinFormsApp
@@ -24,7 +21,7 @@ namespace GTKWinFormsApp
             this.Load += Form1_Load;
         }
 
-        private void Form1_Load(object? sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
             
             treeView1.Nodes.Clear();
@@ -34,7 +31,7 @@ namespace GTKWinFormsApp
             using (FileStream reader = new FileStream("TestData1.json", FileMode.Open, FileAccess.Read))
             {
                 DataContractJsonSerializer dataContractJson = new DataContractJsonSerializer(typeof(List<TestDataMode>));
-                List<TestDataMode>? json = dataContractJson.ReadObject(reader) as List<TestDataMode>;
+                List<TestDataMode> json = dataContractJson.ReadObject(reader) as List<TestDataMode>;
                 IEnumerable<TreeNode> childs = GetChild(null, json);
                 treeView1.Nodes.AddRange(childs.ToArray());
                 foreach (TreeNode child in treeView1.Nodes)
@@ -80,6 +77,7 @@ namespace GTKWinFormsApp
         TestEntity b = new TestEntity();
         private void button1_Click(object sender, EventArgs e)
         {
+
             Console.WriteLine(treeView1.SelectedNode?.Text);
             // b.Title = "test2";
             DialogResult result = MessageBox.Show("1、加载数据点yes \n2、不加载数据点no", "加载数据提示", MessageBoxButtons.YesNo);
@@ -90,55 +88,58 @@ namespace GTKWinFormsApp
             //1、数据集列表数据源
             List<TestEntity> data = new List<TestEntity>();
             var createdate = DateTime.Now;
-            data.Add(new TestEntity() { ID = 0, Title = "加载数据点yes加载数据\n点yes加载数据点yes加载数据点yes", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "face-smile-big", PIC = new Bitmap(10,10) });
-            data.Add(new TestEntity() { ID = 1, Title = "test2", Info = "yyyy2", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile("Resources/img11.jpg") });
-            data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "Resources/BindingNavigator.Delete.ico", PIC = Image.FromFile("Resources/timg2.jpg") });
-            data.Add(new TestEntity() { ID = 4, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile("Resources/timg2.jpg") });
+            data.Add(new TestEntity() { ID = 0, Title = "加载数据点yes加载数据\n点yes加载数据点yes加载数据点yes", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "face-smile-big", PIC = Image.FromFile("./Resources/timg6.jpg") });
+            data.Add(new TestEntity() { ID = 1, Title = "test2", Info = "yyyy2", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile("./Resources/timg6.jpg") });
+            data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "./Resources/BindingNavigator.Delete.ico", PIC = Image.FromFile("./Resources/timg2.jpg") });
+            data.Add(new TestEntity() { ID = 4, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile("./Resources/timg2.jpg") });
 
-            data.Add(new TestEntity() { ID = 5, Title = "网络图片异步加载", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://gitlab.gnome.org/uploads/-/system/project/avatar/13319/gi-docgen.png?width=48", PIC = Image.FromFile("Resources/timg2.jpg") });
-            data.Add(new TestEntity() { ID = 6, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile("Resources/timg2.jpg") });
+            data.Add(new TestEntity() { ID = 5, Title = "网络图片异步加载", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://gitlab.gnome.org/uploads/-/system/project/avatar/13319/gi-docgen.png?width=48", PIC = Image.FromFile("./Resources/timg2.jpg") });
+            data.Add(new TestEntity() { ID = 6, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile("./Resources/timg2.jpg") });
             for (int i = 0; i < 10; i++)
-                data.Add(new TestEntity() { ID = i + 7, Title = "网络图片异步加载" + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString(), PIC = Image.FromFile("Resources/timg2.jpg") });
+                data.Add(new TestEntity() { ID = i + 7, Title = "网络图片异步加载" + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString(), PIC = Image.FromFile("./Resources/timg2.jpg") });
 
 
             this.dataGridView1.DataSource = data;
-            //foreach (TestEntity testEntity in data)
-            //    this.dataGridView1.Rows.Add(testEntity.ID, testEntity.State, testEntity.Title,testEntity.CreateDate, testEntity.Operate, testEntity.PIC);
+            this.comboBox1.DisplayMember = "Title";
+            this.comboBox1.ValueMember = "ID";
+            this.comboBox1.DataSource = data;
+            // dataGridView1.Columns[1].Visible = false;
 
-            //var s=this.dataGridView1.Rows[0].Cells[0];
-
-            //2、datatable数据源
-            //  DataTable dt = new DataTable();
-            //  dt.Columns.Add("ID", typeof(string));
-            //  dt.Columns.Add("CreateDate", typeof(DateTime));
-            //  dt.Columns.Add("State", typeof(bool));
-            //  dt.Rows.Add("test1dddd", DateTime.Now, true);
-            //  dt.Rows.Add("test2", DateTime.Now.AddDays(5), false);
+            ////2、datatable数据源
+            //DataTable dt = new DataTable();
+            //dt.Columns.Add("ID", typeof(string));
+            //dt.Columns.Add("CreateDate1", typeof(DateTime));
+            //dt.Columns.Add("State", typeof(bool));
+            //dt.Rows.Add("test1dddd", DateTime.Now, true);
+            //dt.Rows.Add("test2", DateTime.Now.AddDays(5), false);
             ////  this.dataGridView1.Columns.Clear();
-            //  this.dataGridView1.DataSource = dt;
+            //this.dataGridView1.DataSource = dt;
         }
-        public class TestEntity : INotifyPropertyChanged
+        public class TestEntity
         {
             public int ID { get; set; }
             public string title;
-            public string Title { get { return title; } set { title = value; OnPropertyChangedEventHandler(); } }
+            public string Title { get { return title; } set { title = value; } }
             public string Info { get; set; }
             public bool State { get; set; }
             public DateTime CreateDate { get; set; }
             public string Operate { get; set; }
             public string PIC1 { get; set; }
             public Image PIC { get; set; }
-            public event PropertyChangedEventHandler? PropertyChanged;
-            protected void OnPropertyChangedEventHandler([CallerMemberName] string propertyName = null)
-            {
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
 
 
         private void button2_Click(object sender, EventArgs e)
         {
+            DataGridViewTextBoxColumn column = new DataGridViewTextBoxColumn();
+            column.HeaderText = "test1";
+            column.MinimumWidth = 6;
+            column.Name = "test1";
+            column.Width = 225;
+            column.DataPropertyName = "test1";
+
+            dataGridView1.Columns.Add(column);
+
             ColorDialog cd = new ColorDialog();
             if (textBox1.Text.Length >= 6)
             {
@@ -228,7 +229,7 @@ namespace GTKWinFormsApp
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Console.WriteLine("comboBox1_SelectedIndexChanged");
+            Console.WriteLine($"comboBox1_SelectedIndexChanged {comboBox1.SelectedIndex},{comboBox1.SelectedValue},{comboBox1.Text}");
         }
 
         private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
@@ -246,6 +247,8 @@ namespace GTKWinFormsApp
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
             //6
+            //if(dataGridView1.SelectedRows.Count > 0) 
+            //    dataGridView1.SelectedRows[0].Cells[3].Value = DateTime.Now;
             Console.WriteLine("dataGridView1_SelectionChanged");
         }
 
@@ -369,15 +372,18 @@ namespace GTKWinFormsApp
 
         private void checkedListBox1_SelectedValueChanged(object sender, EventArgs e)
         {
-            Console.WriteLine("checkedListBox1_SelectedValueChanged");
+            Console.WriteLine($"checkedListBox1_SelectedValueChanged:{sender}");
         }
 
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Console.WriteLine("checkedListBox1_ItemCheck，" + e.NewValue + e.CurrentValue);
+            (sender as CheckBox).Text = "1234";
+            checkedListBox1.Items[0] = DateTime.Now.ToString();
+            Console.WriteLine($"checkedListBox1_ItemCheck，{sender}: newvalue:{e.NewValue}-oldvalue:{e.CurrentValue}");
             if (e.Index == 2)
             {
-                foreach(var o in checkedListBox1.CheckedItems)
+                checkedListBox1.SetItemChecked(3, true);
+                foreach (var o in checkedListBox1.CheckedItems)
                 {
                     Console.WriteLine("ItemCheck，" + o.ToString());
                 }
@@ -392,10 +398,10 @@ namespace GTKWinFormsApp
             if (GTKWinFormsApp.Properties.Resources.timg6 != null)
             {
                 MemoryStream mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6);
-                
-                    //g.DrawImage(new Bitmap(mem), new Point(0, 0));
-                    g.DrawImage(new Bitmap(mem), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
-                
+
+                //g.DrawImage(new Bitmap(mem), new Point(0, 0));
+                g.DrawImage(new Bitmap(mem), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
+
             }
 
             g.FillRectangle(new SolidBrush(Color.AliceBlue), new Rectangle(0, 0, 100, 50));
@@ -431,7 +437,15 @@ namespace GTKWinFormsApp
 
         private void button6_Click(object sender, EventArgs e)
         {
-
+           // textBox1.InsertTextAtCursor("666溜");
+            Console.WriteLine(textBox1.SelectionStart);
+            Console.WriteLine(textBox1.SelectionLength);
+            textBox1.SelectionLength = 20;
+            // richTextBox1.InsertTextAtCursor("666溜");
+            // Console.WriteLine(richTextBox1.SelectionStart);
+            //// Console.WriteLine(richTextBox1.SelectionStart1);
+            // Console.WriteLine(richTextBox1.SelectionLength);
+            richTextBox1.SelectionLength = 50;
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -452,7 +466,7 @@ namespace GTKWinFormsApp
             e.Graphics.FillRectangle(new SolidBrush(Color.DarkBlue), e.Bounds);
             var font = new Font(FontFamily.GenericSansSerif, 12);
             e.Graphics.DrawString($"tab组{e.Index}", font, new SolidBrush(Color.Red), new PointF(0, 0));
-            e.Graphics.DrawImage(Image.FromFile("Resources\\BindingNavigator.Delete.ico"), new Point(e.Bounds.Width - 16, 0));
+            e.Graphics.DrawImage(Image.FromFile("./Resources/BindingNavigator.Delete.ico"), new Point(e.Bounds.Width - 16, 0));
         }
 
         private void button1_Paint(object sender, PaintEventArgs e)

@@ -162,7 +162,7 @@ namespace GTKWinFormsApp
             textBox1.Location = new Point(63, 31);
             textBox1.Margin = new Padding(4);
             textBox1.Name = "textBox1";
-            textBox1.PlaceholderText = "选择颜色";
+           // textBox1.PlaceholderText = "选择颜色";
             textBox1.Size = new Size(256, 27);
             textBox1.TabIndex = 2;
             textBox1.TextChanged += textBox1_TextChanged;
@@ -188,7 +188,6 @@ namespace GTKWinFormsApp
             dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dataGridView1.ColumnHeadersHeight = 29;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { ID, State, Title, CreateDate, Operate, PIC });
-            dataGridView1.DataMember = "ID,State,Title";
             dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = SystemColors.Window;
             dataGridViewCellStyle4.Font = new Font("Microsoft YaHei UI", 9F);
@@ -226,6 +225,7 @@ namespace GTKWinFormsApp
             dataGridView1.RowEnter += dataGridView1_RowEnter;
             dataGridView1.RowLeave += dataGridView1_RowLeave;
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             // 
             // groupBox1
             // 
@@ -305,7 +305,7 @@ namespace GTKWinFormsApp
             // 
             // checkedListBox1
             // 
-            checkedListBox1.CheckOnClick = true;
+            checkedListBox1.CheckOnClick = false;
             checkedListBox1.ColumnWidth = 50;
             checkedListBox1.FormattingEnabled = true;
             checkedListBox1.Items.AddRange(new object[] { "北京市", "天津市", "河南省", "山西省", "内蒙古自治区", "辽宁省", "吉林省", "黑龙江省", "上海市", "江苏省", "浙江省", "安徽省", "福建省" });
@@ -501,16 +501,18 @@ namespace GTKWinFormsApp
             // 
             tableLayoutPanel1.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
             tableLayoutPanel1.Controls.Add(label5, 0, 0);
             tableLayoutPanel1.Controls.Add(button6, 1, 1);
             tableLayoutPanel1.Controls.Add(label6, 0, 1);
             tableLayoutPanel1.Location = new Point(795, 26);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 66.29214F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.7078667F));
+            //tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 66.29214F));
+            //tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.7078667F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 115));
             tableLayoutPanel1.Size = new Size(291, 181);
             tableLayoutPanel1.TabIndex = 7;
             // 
@@ -519,7 +521,7 @@ namespace GTKWinFormsApp
             label5.AutoSize = true;
             label5.Location = new Point(4, 1);
             label5.Name = "label5";
-            label5.Size = new Size(131, 20);
+            label5.Size = new Size(131, 120);
             label5.TabIndex = 0;
             label5.Text = "tablelayoutpanel";
             // 
@@ -540,7 +542,7 @@ namespace GTKWinFormsApp
             label6.Name = "label6";
             label6.Size = new Size(129, 60);
             label6.TabIndex = 0;
-            label6.Text = "\r\ndddddddddddddddddddddddddddddddddddd";
+            label6.Text = "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd";
             // 
             // richTextBox1
             // 
@@ -792,6 +794,7 @@ namespace GTKWinFormsApp
             ID.SortMode = DataGridViewColumnSortMode.NotSortable;
             ID.Width = 160;
             ID.Resizable = DataGridViewTriState.False;
+            ID.ReadOnly = true;
             // 
             // State
             // 
@@ -815,11 +818,12 @@ namespace GTKWinFormsApp
             Title.Name = "Title";
             Title.Resizable = DataGridViewTriState.True;
             Title.Width = 250;
+             
             // 
             // CreateDate
             // 
             CreateDate.DataPropertyName = "CreateDate";
-            CreateDate.HeaderText = "日期时间";
+            CreateDate.HeaderText = "日期\r\n时间";
             CreateDate.Items.AddRange(new object[] { "2012-09-12 12:32:11", "2012-09-13 12:32:22", "2012-09-14 12:32:33" });
             CreateDate.MinimumWidth = 6;
             CreateDate.Name = "CreateDate";
@@ -834,6 +838,7 @@ namespace GTKWinFormsApp
             Operate.MinimumWidth = 6;
             Operate.Name = "Operate";
             Operate.Width = 160;
+ 
             // 
             // PIC
             // 

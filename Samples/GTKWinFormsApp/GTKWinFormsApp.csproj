@@ -3,12 +3,16 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net8.0</TargetFramework>
-		<Nullable>enable</Nullable>
+		<Nullable>annotations</Nullable>
 		<UseWindowsForms>False</UseWindowsForms>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<IsPublishable>False</IsPublishable>
 		<EnableUnsafeBinaryFormatterSerialization>True</EnableUnsafeBinaryFormatterSerialization>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
 
 	<ItemGroup>
 	  <None Remove="TestData1.json" />

@@ -17,7 +17,7 @@ namespace GTKWinFormsApp
         public Form3()
         {
             InitializeComponent();
-            //目前自定义控件无法在窗体设计器中可视化，建议使用程序添加，如下示例：
+
             UserControl11 userControl11 = new UserControl11();
             panel5.Controls.Add(userControl11);
             this.SizeChanged += Form3_SizeChanged;
@@ -25,31 +25,14 @@ namespace GTKWinFormsApp
             this.Shown += Form3_Shown;
         }
 
-        private void Form3_Shown(object? sender, EventArgs e)
+        private void Form3_Shown(object sender, EventArgs e)
         {
-
-            Image m = new Bitmap(500, 300);
-            // Graphics g = Graphics.FromImage(m);
-            // g.Clear(Color.Red);
-            // g.DrawRectangle(new Pen(Color.Blue), new Rectangle(60, 60, 200, 100));
-            //// g.Dispose();
-            // panel1.Controls.Add(new Gtk.Image(m.Pixbuf));
-            //using (Graphics g = Graphics.FromImage(m))
-            //{
-            //   // m.Pixbuf = new Gdk.Pixbuf(Graphics.surface, 0, 0, 500, 300);
-            //    g.Clear(Color.White);
-            //    g.DrawString(DateTime.Now.ToString(), new Font(FontFamily.GenericSansSerif, 16), new SolidBrush(Color.Red), 200, 200);
-            //    g.DrawRectangle(new Pen((Color)Color.Red, 5), new Rectangle(0, 0, 200, 200));
-            //    // g.Dispose();
-
-
-            //   // panel1.Controls.Add(m);
-            //   // panel1.Show();
-            //    panel1.Refresh();
-            //}
+            // SwitchBox switchBox = new SwitchBox();
+            //switchBox.Location = new Point(100, 100);
+            //panel1.Controls.Add(switchBox);
         }
 
-        private void Form3_SizeChanged(object? sender, EventArgs e)
+        private void Form3_SizeChanged(object sender, EventArgs e)
         {
             panel1.Refresh();
             //Console.WriteLine(Width);
@@ -74,13 +57,13 @@ namespace GTKWinFormsApp
         {
             var result = this.BeginInvoke(new MethodInvoker(() =>
             {
-                System.Threading.Thread.Sleep(3000);
-                for (int i = 0; i < 100; i++)
+                System.Threading.Thread.Sleep(1000);
+                for (int i = 1; i < 101; i++)
                 {
-                    progressBar1.Invoke(() =>
+                    progressBar1.Invoke(new MethodInvoker(() =>
                     {
                         progressBar1.Value = i;
-                    });
+                    }));
                     System.Threading.Thread.Sleep(20);
                 }
             }));
