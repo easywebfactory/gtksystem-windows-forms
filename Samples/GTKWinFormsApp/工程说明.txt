@@ -1,6 +1,6 @@
 窗体设计管理方法，以GTKWinFormsApp工程为例：
 
-一、GTKWinFormsApp.csproj 是引用GTKSystem框架的工程，需要配置runtimer.json
+一、GTKWinFormsApp.csproj 是引用GTKSystem框架的工程，从Nuget上安装GTKSystem.Windows.FormsDesigner，编译工程即可
 
 二、GTKWinFormsApp_Win2.csproj是.net8原生工程，切换框架时，obj文件有异常提示，可以删除obj文件夹，让Visual Studio自动生成即可
 
