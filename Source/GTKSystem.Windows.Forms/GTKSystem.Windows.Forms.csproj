@@ -30,20 +30,17 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
 
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <Optimize>True</Optimize>
-    <IsAotCompatible>True</IsAotCompatible>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <IsAotCompatible>True</IsAotCompatible>
-  </PropertyGroup>
-
   <ItemGroup>
+    <Compile Remove="GTKControls\Interface\**" />
+    <Compile Remove="GTKControls\Struct\**" />
     <Compile Remove="Resources\Forms_ico\**" />
     <Compile Remove="Resources\icons\**" />
+    <EmbeddedResource Remove="GTKControls\Interface\**" />
+    <EmbeddedResource Remove="GTKControls\Struct\**" />
     <EmbeddedResource Remove="Resources\Forms_ico\**" />
     <EmbeddedResource Remove="Resources\icons\**" />
+    <None Remove="GTKControls\Interface\**" />
+    <None Remove="GTKControls\Struct\**" />
     <None Remove="Resources\Forms_ico\**" />
     <None Remove="Resources\icons\**" />
   </ItemGroup>
@@ -58,8 +55,6 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
     <Compile Remove="GTKControls\EventArgs\PropertyValueChangedEventArgs.cs" />
     <Compile Remove="GTKControls\EventArgs\SelectedGridItemChangedEventArgs.cs" />
     <Compile Remove="GTKControls\EventHandlers\SelectedGridItemChangedEventHandler.cs" />
-    <Compile Remove="GTKControls\Interface\WidgetContainerControl.cs" />
-    <Compile Remove="GTKControls\Interface\WidgetControl.cs" />
     <Compile Remove="GTKControls\ListViewBase\ImageList.cs" />
     <Compile Remove="GTKControls\ListViewBase\ImageListStreamer.cs" />
     <Compile Remove="GTKControls\ListViewBase\SerializationInfo.cs" />
@@ -232,7 +227,6 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="GTKControls\Internal\" />
     <Folder Include="obj\Debug\" />
   </ItemGroup>
 

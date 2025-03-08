@@ -1,6 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-
+#if NETSTANDARD2_0
 namespace System.Diagnostics.CodeAnalysis
 {
     /// <summary>
@@ -35,6 +35,8 @@ namespace System.Diagnostics.CodeAnalysis
 #else
     internal
 #endif
+
+
     sealed class DynamicallyAccessedMembersAttribute : Attribute
     {
         /// <summary>
@@ -54,3 +56,4 @@ namespace System.Diagnostics.CodeAnalysis
         public DynamicallyAccessedMemberTypes MemberTypes { get; }
     }
 }
+#endif

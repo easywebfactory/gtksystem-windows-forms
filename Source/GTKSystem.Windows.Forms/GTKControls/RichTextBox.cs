@@ -17,6 +17,7 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         protected override void SetStyle(Widget widget)
         {
+            self.TextView.Name = this.Name;
             base.SetStyle(self.TextView);
         }
         public RichTextBox():base()

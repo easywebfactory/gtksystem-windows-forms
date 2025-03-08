@@ -38,6 +38,18 @@
     <Compile Update="GTKControls\ContextMenuStrip.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\Control\ContainerControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\Control\Control.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\Control\ListControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\Control\ScrollableControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\Dialog\ColorDialog.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -126,18 +138,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="GTKControls\GroupBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\Interface\ContainerControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\Interface\Control.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\Interface\ListControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\Interface\ScrollableControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\Label.cs">
@@ -255,6 +255,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\SplitterPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\SwitchBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\TabControl.cs">

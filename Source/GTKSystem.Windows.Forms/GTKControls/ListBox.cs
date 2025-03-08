@@ -25,6 +25,7 @@ namespace System.Windows.Forms
         public override IControlGtk ISelf { get => self; }
         protected override void SetStyle(Widget widget)
         {
+            self.ListBox.Name = this.Name;
             base.SetStyle(self.ListBox);
         }
         private ControlBindingsCollection _collect;

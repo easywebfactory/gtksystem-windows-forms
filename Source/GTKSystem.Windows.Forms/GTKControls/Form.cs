@@ -8,6 +8,7 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 
 namespace System.Windows.Forms
 {
@@ -22,7 +23,6 @@ namespace System.Windows.Forms
         private Gtk.Overlay contanter = new Gtk.Overlay();
         private ObjectCollection _ObjectCollection;
         public override event EventHandler SizeChanged;
-
         public Form() : base()
         {
             Init();

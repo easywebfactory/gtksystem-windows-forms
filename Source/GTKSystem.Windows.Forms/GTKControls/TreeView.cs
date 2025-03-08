@@ -25,6 +25,7 @@ namespace System.Windows.Forms
         internal Gtk.TreeStore Store { get { return _store; } }
         protected override void SetStyle(Widget widget)
         {
+            self.TreeView.Name = this.Name;
             base.SetStyle(self.TreeView);
         }
         private CellRendererToggle renderercheckbox;
@@ -353,7 +354,8 @@ namespace System.Windows.Forms
             {
                 set
                 {
-                    if (string.IsNullOrWhiteSpace(value) == false)
+
+                    if (string.IsNullOrWhiteSpace(value) == false && _treeView.ImageList.Images.ContainsKey(value))
                         this.Pixbuf = _treeView.ImageList.Images[value].Pixbuf;
                 }
             }

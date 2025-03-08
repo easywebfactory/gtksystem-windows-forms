@@ -131,15 +131,18 @@ namespace System.Windows.Forms
 
         internal Image GetOriginalImage(string name)
         {
-            string direc = System.IO.Directory.GetCurrentDirectory();
-            string path1 = $"{direc}/Resources";
+           // string direc = Path.GetDirectoryName(Application.ExecutablePath);
+            string path1 = $"./Resources";
             var value = this.ImageStream;
-            if (value.ResourceInfo != null)
+            if (value.ResourceInfo != null && value.ResourceInfo.BaseName != null)
             {
                 //这里加载图像数据
-                string path2 = $"{path1}/{value.ResourceInfo.ResourceName}/{name}";
+                string dir = $"{path1}/{Path.GetExtension(value.ResourceInfo.BaseName).TrimStart('.')}";
+                string path2 = $"{dir}/{name}";
                 if (IO.File.Exists(path2))
                 {
+                    if (!Directory.Exists(dir))
+                        Directory.CreateDirectory(dir);
                     return ScaleSimpleBitmap(Bitmap.FromFile(path2));
                 }
             }

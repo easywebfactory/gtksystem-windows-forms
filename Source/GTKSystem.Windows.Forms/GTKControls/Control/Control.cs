@@ -4,11 +4,11 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
-using System.IO;
 using System.Text;
 using System.Windows.Forms.Design;
 using System.Windows.Forms.Layout;
@@ -279,9 +279,12 @@ namespace System.Windows.Forms
             {
                 if (this.Image != null && this.Image.PixbufData != null)
                 {
-                    string imguri = $"Resources/{widget.WidgetPath.IterGetName(0)}${widget.Name}_img.png";
+                    string imgdir = $"Resources/{widget.WidgetPath.IterGetName(0)}";
+                    string imguri = $"{imgdir}/{widget.Name}_image.png";
                     if (!File.Exists(imguri))
                     {
+                        if (!Directory.Exists(imgdir))
+                            Directory.CreateDirectory(imgdir);
                         Gdk.Pixbuf imagepixbuf = new Gdk.Pixbuf(this.Image.PixbufData);
                         imagepixbuf.Save(imguri, "png");
                     }
@@ -330,14 +333,14 @@ namespace System.Windows.Forms
 
                     if (this.BackgroundImage != null && this.BackgroundImage.PixbufData != null)
                     {
-                        string bgimguri = $"Resources/{widget.WidgetPath.IterGetName(0)}${widget.Name}_bg.png";
+                        string bgimguri = $"{imgdir}/{widget.Name}_bgimage.png";
                         if (!File.Exists(bgimguri))
                         {
                             Gdk.Pixbuf bgpixbuf = new Gdk.Pixbuf(this.BackgroundImage.PixbufData);
                             bgpixbuf.Save(bgimguri, "png");
                         }
 
-                        style.AppendFormat(",url(\"Resources/{0}_bg.png\") repeat", widget.Name);
+                        style.AppendFormat(",url(\"{0}\") repeat", bgimguri);
                     }
                     style.Append(";");
                     style.Append("background-origin: padding-box;");
@@ -345,10 +348,13 @@ namespace System.Windows.Forms
                 }
                 else if (this.BackgroundImage != null && this.BackgroundImage.PixbufData != null)
                 {
+                    string bgimgdir = $"Resources/{widget.WidgetPath.IterGetName(0)}";
+                    string bgimguri = $"{bgimgdir}/{widget.Name}_bgimage.png";
                     Gdk.Pixbuf bgpixbuf = new Gdk.Pixbuf(this.BackgroundImage.PixbufData);
-                    string bgimguri = $"Resources/{widget.WidgetPath.IterGetName(0)}${widget.Name}_bg.png";
                     if (!File.Exists(bgimguri))
                     {
+                        if (!Directory.Exists(bgimgdir))
+                            Directory.CreateDirectory(bgimgdir);
                         bgpixbuf.Save(bgimguri, "png");
                     }
                     style.AppendFormat("background-image:url(\"{0}\");", bgimguri);
@@ -956,7 +962,6 @@ namespace System.Windows.Forms
                 surface = image.CreateSimilar(Cairo.Content.ColorAlpha, this.Widget.AllocatedWidth, this.Widget.AllocatedHeight);
                 context?.Dispose();
                 context = new Cairo.Context(surface);
-
                 return new Drawing.Graphics(this.Widget, context, this.Widget.Allocation);
             }
             catch(Exception ex) 
