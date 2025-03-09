@@ -948,10 +948,9 @@ namespace System.Drawing
                     float textSize = str.emSize < 1 ? 14f : str.emSize;
                     FontFamily font = str.family;
                     string family = font?.Name;
-                    if (this.widget != null)
+                    if (this.widget != null && family != null)
                     {
                         Pango.Context pangocontext = this.widget.PangoContext;
-                        family = pangocontext.FontDescription.Family;
                         var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
                         if (pangoFamily == null)
                             family = pangocontext.FontDescription.Family;
@@ -1135,7 +1134,7 @@ namespace System.Drawing
 			if (string.IsNullOrEmpty(text) == false)
 			{
 				this.context.Save();
-                
+                string family = font?.Name;
                 float textSize = 14f;
 				if (font != null)
 				{
@@ -1144,17 +1143,15 @@ namespace System.Drawing
 						textSize = font.Size * 1 / 72 * 96;
 					if (font.Unit == GraphicsUnit.Inch)
 						textSize = font.Size * 96;
+
+					if (this.widget != null && family != null)
+                    {
+						Pango.Context pangocontext = this.widget.PangoContext;
+						var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
+						if (pangoFamily == null)
+							family = pangocontext.FontDescription.Family;
+					}
 				}
-                
-                string family = font?.Name;
-                if (this.widget != null)
-                {
-                    Pango.Context pangocontext = this.widget.PangoContext;
-                    family = pangocontext.FontDescription.Family;
-                    var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
-                    if (pangoFamily == null)
-                        family = pangocontext.FontDescription.Family;
-                }
                 this.context.SetFontSize(textSize);
                 this.context.SelectFontFace(family, (font.Style & FontStyle.Italic) != 0 ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, (font.Style & FontStyle.Bold) != 0 ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
                 TextExtents textext = this.context.TextExtents(text);
@@ -1648,23 +1645,23 @@ namespace System.Drawing
 		public SizeF MeasureString(string text, Font font, int width, StringFormat format)
         {
             float textSize = 14f;
-            if (font != null)
-            {
-                textSize = font.Size;
-                if (font.Unit == GraphicsUnit.Point)
-                    textSize = font.Size * 1 / 72 * 96;
-                if (font.Unit == GraphicsUnit.Inch)
-                    textSize = font.Size * 96;
-            }
             string family = font?.Name;
-            if (this.widget != null)
-            {
-                Pango.Context pangocontext = this.widget.PangoContext;
-                family = pangocontext.FontDescription.Family;
-                var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
-                if (pangoFamily == null)
-                    family = pangocontext.FontDescription.Family;
-            }
+			if (font != null)
+			{
+				textSize = font.Size;
+				if (font.Unit == GraphicsUnit.Point)
+					textSize = font.Size * 1 / 72 * 96;
+				if (font.Unit == GraphicsUnit.Inch)
+					textSize = font.Size * 96;
+
+				if (this.widget != null && family != null)
+				{
+					Pango.Context pangocontext = this.widget.PangoContext;
+					var pangoFamily = Array.Find(pangocontext.Families, f => f.Name == font.Name);
+					if (pangoFamily == null)
+						family = pangocontext.FontDescription.Family;
+				}
+			}
             this.context.SelectFontFace(family, font.Italic ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, font.Bold ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
             this.context.SetFontSize(textSize);
             var extents = this.context.TextExtents(text);
