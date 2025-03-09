@@ -32,7 +32,7 @@ Form2.Designer.cs的配置程序如下：
  imageList1.Images.SetKeyName(0, "010.jpg");
  imageList1.Images.SetKeyName(1, "timg2.jpg");
 
-那么需要把图片010.jpg和timg2.jpg复制到文件夹Resources或Resources/imageList1。
+那么需要把图片010.jpg和timg2.jpg复制到文件夹Resources或Resources/Formx(所属窗体)。
 ```
 
 

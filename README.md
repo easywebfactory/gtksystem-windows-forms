@@ -13,13 +13,13 @@ C#桌面应用程序跨平台（windows、linux、macos）开发框架，基于G
 ### 安装教程
 默认的情况下，visual studio从Nuget引用GtkSharp编译时，就会自动下载Gtk.zip运行时安装包，并自动解压安装。本开源项目下载包也包含Gtk.zip包，可手动安装。以下是三种环境安装方法：
 
-1、安装GtkSharp后，编译你的工程项目，自动安装（此库不是最新的，有些功能可能有Bug）  
+1、安装GtkSharp后，编译你的工程项目，自动安装（自动下载的库版本比较旧，有bug，建议手动从本项目下载）
 安装GtkSharp后，编译你的工程项目时，会自动下载gtk.zip解压到目录$(LOCALAPPDATA)\Gtk\3.24.24配置Gtk环境，目前国内网络限制，可能会出现无法下载的错误。
 如果无法自动下载，本项目提供下载 [https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies](https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies)。
 也可以下载https://github.com/GtkSharp/Dependencies，把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24目录即可。
 ps: $(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData\Local\Gtk\3.24.24
 
-2、下载exe安装包安装（建议使用此方法下载安装，获取最新库，本项目下载包已经包含此安装包） 
+2、下载exe安装包安装
 本项目提供下载 [https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies](https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies)。
 方法1在国内可能会有网络障碍，并且是比较旧的运行时库，可能有Bug，建议用此方法获取最新版本安装：下载[https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer)，安装后配置电脑变量环境：
 ```
@@ -28,7 +28,7 @@ ps: $(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData
 @echo set PATH=%GTK3R_PREFIX%;%%PATH%%
 @set PATH=%GTK3R_PREFIX%;%PATH%
 ```
-3、使用MSYS软件平台安装，具体操作请网上查询（可以获取最新库）
+3、使用MSYS软件平台安装，具体操作请网上查询
 
 windows安装DotNet环境：
 ```
@@ -68,7 +68,7 @@ linux安装DotNet环境：
 1.  项目工程框架选择“window应用程序”改配置UseWindowsForms为false或“控制台应用程序”，.net6及以上版本
 2.  NulGet安装GtkSharp(3.24.24.95)、GTKSystem.Windows.Forms、GTKSystem.Windows.FormsDesigner
 3.  检查form表单是否有使用图像资源，如使用需新建System.Resources.ResourceManager和System.ComponentModel.ComponentResourceManager，具体请看下面内容。
-4.  编译工程，执行本项目的开发插件菜单“修复窗体设计器”，或者手动在obj目录下创建.designer.runtimeconfig.json，请看下面第5点。
+4.  安装本下载包里的【VisualStudio开发插件】，用于添加窗体创建模板。
 
 ### 如何运行软件
 1. windows下：直接编译发布运行，Debug目录的demo_app.exe文件或demo_app.dll文件都可以直接运行。
@@ -117,48 +117,8 @@ GTKSystem.ComponentModel.ComponentResourceManager实现了项目资源文件和�
 GTKSystem.Windows.Forms是必须引用<br/>
 System.Resources.Extensions是空程序dll，不是必须引用，只有VS在窗体设计器出现相关异常提示时使用
 
-5、GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.designer.runtimeconfig.json
-GTKWinFormsApp\obj\Debug\net8.0\GTKWinFormsApp.runtimeconfig.json
-将name设置为Microsoft.WindowsDesktop.App， **用于VS支持可视化窗体设计器，重新加载工程或重启VS** 
-如以下配置：
-GTKWinFormsApp.designer.runtimeconfig.json
-```
-{
-  "runtimeOptions": {
-    "tfm": "net8.0",
-    "framework": {
-      "name":"Microsoft.WindowsDesktop.App",
-      "version": "8.0.0"
-    },
-    "additionalProbingPaths": [
-      "C:\\Users\\chj\\.dotnet\\store\\|arch|\\|tfm|", 
-      "C:\\Users\\chj\\.nuget\\packages",
-      "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-    ],
-    "configProperties": {
-      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false,
-      "Microsoft.NETCore.DotNetHostPolicy.SetAppPaths": true
-    }
-  }
-}
-```
-
-GTKWinFormsApp.runtimeconfig.json
-```
-{
-  "runtimeOptions": {
-    "tfm": "net8.0",
-    "framework": {
-      "name": "Microsoft.WindowsDesktop.App",
-      "version": "8.0.0"
-    },
-    "configProperties": {
-      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false
-    }
-  }
-}
-```
+5、从NuGet安装GTKSystem.Windows.FormsDesigner，用于开启窗体设计器。<br/>
+ 使用窗体设计器有几种方法，详细的使用教程可以访问[https://www.gtkapp.com/formsdesigner](https://www.gtkapp.com/formsdesigner)   
 
 ### Resources资源的使用
 * [查看Resources资源的使用教程>>](Readme_Resources.md)
@@ -192,7 +152,7 @@ QQ群：236066073（满），1011147488
 ### 常见问题
   为什么Form窗体设计器打不开？<br/>
   ```
-  答：检查runtimeconfig确保配置正确，通过NuGet安装GTKSystem.Windows.FormsDesigner，然后按以下流程操作：
+  答：从NuGet安装GTKSystem.Windows.FormsDesigner，编译工程，检查obj目录下包含GTKWinFormsApp.designer.runtimeconfig.json和GTKWinFormsApp.runtimeconfig.json，然后按以下流程操作：
     1、编译一下 
     2、打开Form窗体
     （如果不能打开窗体，执行下面流程） 
