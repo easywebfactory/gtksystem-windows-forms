@@ -151,7 +151,7 @@ namespace System.Windows.Forms
         public bool UseCompatibleStateImageBehavior { get; set; }
         public System.Windows.Forms.View View { get; set; }
         private int _fontSize;
-        protected int FontSize
+        internal int FontSize
         {
             get
             {
@@ -567,11 +567,6 @@ namespace System.Windows.Forms
                                     subattributes.Insert(fg);
                                     sublabel.Attributes = subattributes;
                                 }
-                                //if (subitem.BackColor.HasValue)
-                                //{
-                                //    Pango.AttrBackground fg = new Pango.AttrBackground(Convert.ToUInt16(subitem.BackColor.Value.R * 257), Convert.ToUInt16(subitem.BackColor.Value.G * 257), Convert.ToUInt16(subitem.BackColor.Value.B * 257));
-                                //    subattributes.Insert(fg);
-                                //}
                                 sublabel.Attributes = subattributes;
                                 sublabel.WidthRequest = col.Width + 2;
                                 sublabel.MaxWidthChars = 0;
@@ -649,10 +644,9 @@ namespace System.Windows.Forms
                         {
                             Pango.AttrForeground fg = new Pango.AttrForeground(Convert.ToUInt16(item.ForeColor.Value.R * 257), Convert.ToUInt16(item.ForeColor.Value.G * 257), Convert.ToUInt16(item.ForeColor.Value.B * 257));
                             attributes.Insert(fg);
-
                         }
-                        lab.Xpad = 5;
                         lab.Attributes = attributes;
+                        lab.Xpad = 5;
                         lab.MaxWidthChars = 100;
                         lab.Halign = Gtk.Align.Start;
                         lab.Valign = Gtk.Align.Center;
@@ -697,6 +691,7 @@ namespace System.Windows.Forms
                             attributes.Insert(fg);
 
                         }
+                        lab.Attributes = attributes;
                         lab.Xpad = 5;
                         lab.MaxWidthChars = 16;
                         lab.Halign = Gtk.Align.Center;
@@ -719,6 +714,7 @@ namespace System.Windows.Forms
                             attributes.Insert(fg);
 
                         }
+                        lab.Attributes = attributes;
                         lab.Halign = Gtk.Align.Start;
                         lab.Valign = Gtk.Align.Fill;
                         lab.Text = item.Text;
