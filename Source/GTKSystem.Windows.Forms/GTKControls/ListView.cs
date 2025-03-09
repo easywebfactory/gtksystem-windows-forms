@@ -375,7 +375,7 @@ namespace System.Windows.Forms
         }
         internal void NativeCheckItem(ListViewItem item, bool ischecked)
         {
-            if (item._flowBoxChild != null && item._flowBoxChild.Parent is Gtk.FlowBox flowBox)
+            if (item._flowBoxChild != null && item._flowBoxChild.IsRealized && item._flowBoxChild.Parent is Gtk.FlowBox flowBox)
             {
                 Gtk.Box box = item._flowBoxChild.Child as Gtk.Box;
                 if (this.View == View.Details)
