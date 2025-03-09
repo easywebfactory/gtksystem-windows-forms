@@ -70,7 +70,6 @@ namespace System.Windows.Forms
             self.box.PackStart(scrolledWindow, true, true, 0);
             this.BorderStyle = BorderStyle.Fixed3D;
         }
-
         private void Hadjustment_ValueChanged(object sender, EventArgs e)
         {
             headerView.Hadjustment.Value = scrolledWindow.Hadjustment.Value;
@@ -1438,23 +1437,19 @@ namespace System.Windows.Forms
             int idx = Items.FindIndex(startIndex, w => w.Text == text);
             return idx == -1 ? null : Items[idx];
         }
-        // public override event MouseEventHandler MouseDown;
         public ListViewItem GetItemAt(int x, int y)
         {
             foreach (Gtk.Box vbox in flowBoxContainer.Children)
             {
-                if (vbox.Allocation.Top < y && vbox.Allocation.Top + vbox.AllocatedHeight > y)
+                foreach (var flow in vbox.Children)
                 {
-                    foreach (var flow in vbox.Children)
+                    if (flow is Gtk.FlowBox _flow)
                     {
-                        if (flow is Gtk.FlowBox _flow)
+                        int top = _flow.Allocation.Top + __headerheight - (int)scrolledWindow.Vadjustment.Value;
+                        FlowBoxChild child = _flow.GetChildAtPos(x + (int)scrolledWindow.Vadjustment.Value, y - top);
+                        if (child != null)
                         {
-                            int top2 = _flow.Allocation.Top - __headerheight;
-                            FlowBoxChild child = _flow.GetChildAtPos(x, y - top2);
-                            if (child != null)
-                            {
-                                return this.Items.Find(m => m.Index == Convert.ToInt32(child.Data["ItemId"]));
-                            }
+                            return this.Items.Find(m => m.Index == Convert.ToInt32(child.Data["ItemId"]));
                         }
                     }
                 }

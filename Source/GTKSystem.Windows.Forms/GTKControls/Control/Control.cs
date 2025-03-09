@@ -118,6 +118,22 @@ namespace System.Windows.Forms
             if (MouseDown != null)
             {
                 MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+            } 
+        }
+        private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
+        {
+            MouseButtons result = MouseButtons.None;
+            if (args.Event.Button == 1)
+                result = MouseButtons.Left;
+            else if (args.Event.Button == 2)
+                result = MouseButtons.Middle;
+            else if (args.Event.Button == 3)
+                result = MouseButtons.Right;
+            Gtk.Widget owidget = (Gtk.Widget)o;
+            owidget.Window.GetOrigin(out int x, out int y);
+            if (MouseUp != null)
+            {
+                MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
             }
             if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
             {
@@ -133,24 +149,6 @@ namespace System.Windows.Forms
                 if (MouseClick != null)
                     MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
             }
-            
-        }
-        private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
-        {
-            if (MouseUp != null)
-            {
-                MouseButtons result = MouseButtons.None;
-                if (args.Event.Button == 1)
-                    result = MouseButtons.Left;
-                else if (args.Event.Button == 2)
-                    result = MouseButtons.Middle;
-                else if (args.Event.Button == 3)
-                    result = MouseButtons.Right;
-                Gtk.Widget owidget = (Gtk.Widget)o;
-                owidget.Window.GetOrigin(out int x, out int y);
-                MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-            }
-
             if (ContextMenuStrip != null)
             {
                 if (args.Event.Button == 3)
