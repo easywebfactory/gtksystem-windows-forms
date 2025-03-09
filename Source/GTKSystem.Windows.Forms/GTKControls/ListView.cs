@@ -1446,7 +1446,7 @@ namespace System.Windows.Forms
                     if (flow is Gtk.FlowBox _flow)
                     {
                         int top = _flow.Allocation.Top + __headerheight - (int)scrolledWindow.Vadjustment.Value;
-                        FlowBoxChild child = _flow.GetChildAtPos(x + (int)scrolledWindow.Vadjustment.Value, y - top);
+                        FlowBoxChild child = _flow.GetChildAtPos(x + (int)scrolledWindow.Hadjustment.Value, y - top);
                         if (child != null)
                         {
                             return this.Items.Find(m => m.Index == Convert.ToInt32(child.Data["ItemId"]));
