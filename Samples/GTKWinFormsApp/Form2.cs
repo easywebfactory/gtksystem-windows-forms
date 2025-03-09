@@ -43,7 +43,18 @@ namespace GTKWinFormsApp
 
             this.FormClosing += Form2_FormClosing;
             this.FormClosed += Form2_FormClosed;
+            listView1.MouseDown += ListView1_MouseDown;
         }
+
+        private void ListView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            ListViewItem item = listView1.GetItemAt(e.X, e.Y);
+            if (item != null)
+            {
+                Console.WriteLine(item.Text);
+            }
+        }
+
         int i = 4;
         private void Timer1_Tick(object sender, System.EventArgs e)
         {

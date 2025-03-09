@@ -74,11 +74,10 @@ namespace GTKWinFormsApp
             listView1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
             listView1.FullRowSelect = true;
             listView1.GridLines = true;
-           // listView1.GroupImageList = imageList1;
             //listViewGroup1.Footer = "组脚标题";
             listViewGroup1.Header = "组头标题";
             listViewGroup1.Name = "listViewGroup1";
-           // listViewGroup1.Subtitle = "组头副标题";
+            //listViewGroup1.Subtitle = "组头副标题";
             listViewGroup2.Header = "ListViewGroup2";
             listViewGroup2.Name = "listViewGroup2";
            // listViewGroup2.Subtitle = "group2";
