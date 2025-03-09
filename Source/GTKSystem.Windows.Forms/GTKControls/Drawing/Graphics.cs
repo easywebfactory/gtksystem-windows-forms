@@ -1153,7 +1153,7 @@ namespace System.Drawing
 					}
 				}
                 this.context.SetFontSize(textSize);
-                this.context.SelectFontFace(family, (font.Style & FontStyle.Italic) != 0 ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, (font.Style & FontStyle.Bold) != 0 ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
+                this.context.SelectFontFace(family, font.Style.HasFlag(FontStyle.Italic) ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, font.Style.HasFlag(FontStyle.Bold) ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
                 TextExtents textext = this.context.TextExtents(text);
                 this.SetTranslateWithDifference(layoutRectangle.X, layoutRectangle.Y + textext.Height);
                 this.SetSourceColor(new Pen(brush, 1));
