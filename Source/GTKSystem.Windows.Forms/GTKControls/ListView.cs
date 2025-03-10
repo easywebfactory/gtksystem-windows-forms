@@ -12,13 +12,7 @@ using Pango;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-
 using System.Drawing;
-using System.Linq;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.ListViewItem;
-
-
 
 namespace System.Windows.Forms
 {
@@ -556,7 +550,7 @@ namespace System.Windows.Forms
                             sublayout.WidthRequest = col.Width;
                             if (item.SubItems != null && item.SubItems.Count > index)
                             {
-                                ListViewSubItem subitem = item.SubItems[index];
+                                ListViewItem.ListViewSubItem subitem = item.SubItems[index];
                                 Gtk.Label sublabel = new Gtk.Label();
                                 subitem._label = sublabel;
                                 Pango.AttrList subattributes = new Pango.AttrList();
@@ -1456,7 +1450,21 @@ namespace System.Windows.Forms
             }
             return null;
         }
-
+        internal void GetSubItemAt(int x, int y, out int iItem, out int iSubItem)
+        {
+            iItem = -1;
+            iSubItem = -1;
+            int position = -(int)headerView.Hadjustment.Value;
+            for (int i = 0; i < Columns.Count; i++)
+            {
+                if (position < x && position + Columns[i].Width > x)
+                {
+                    iSubItem = i;
+                    break;
+                }
+                position += Columns[i].Width;
+            }
+        }
         public Drawing.Rectangle GetItemRect(int index)
         {
             throw null;
@@ -1468,7 +1476,6 @@ namespace System.Windows.Forms
         public event ItemCheckedEventHandler ItemChecked;
         public event ListViewItemSelectionChangedEventHandler ItemSelectionChanged;
         public event EventHandler SelectedIndexChanged;
-        //public override event EventHandler Click;
         public event EventHandler ItemActivate;
     }
 }

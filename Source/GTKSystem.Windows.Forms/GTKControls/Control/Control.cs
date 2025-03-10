@@ -5,6 +5,7 @@
  * author:chenhongjin
  */
 
+using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
@@ -69,6 +70,7 @@ namespace System.Windows.Forms
         private int location_y = 0;
         private void Widget_SizeAllocated(object o, SizeAllocatedArgs args)
         {
+            Resize?.Invoke(this, EventArgs.Empty);
             if (args.Allocation.Width != size_width || args.Allocation.Height != size_height)
             {
                 size_width = args.Allocation.Width;
@@ -104,57 +106,62 @@ namespace System.Windows.Forms
 
         private void Widget_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
-            //Console.WriteLine($"Widget_ButtonPressEvent1:{args.Event.XRoot},{args.Event.YRoot};{args.Event.X},{args.Event.Y}");
-            MouseButtons result = MouseButtons.None;
-            if (args.Event.Button == 1)
-                result = MouseButtons.Left;
-            else if (args.Event.Button == 2)
-                result = MouseButtons.Middle;
-            else if (args.Event.Button == 3)
-                result = MouseButtons.Right;
-
-            Gtk.Widget owidget = (Gtk.Widget)o;
-            owidget.Window.GetOrigin(out int x, out int y);//避免事件穿透错误
-            if (MouseDown != null)
+            Gtk.Widget owidget = o as Gtk.Widget;
+            if (owidget != null && owidget.Window != null)
             {
-                MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-            } 
+                MouseButtons result = MouseButtons.None;
+                if (args.Event.Button == 1)
+                    result = MouseButtons.Left;
+                else if (args.Event.Button == 2)
+                    result = MouseButtons.Middle;
+                else if (args.Event.Button == 3)
+                    result = MouseButtons.Right;
+
+                owidget.Window.GetOrigin(out int x, out int y);//避免事件穿透错误
+                if (MouseDown != null)
+                {
+                    MouseDown(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                }
+            }
         }
         private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
         {
-            MouseButtons result = MouseButtons.None;
-            if (args.Event.Button == 1)
-                result = MouseButtons.Left;
-            else if (args.Event.Button == 2)
-                result = MouseButtons.Middle;
-            else if (args.Event.Button == 3)
-                result = MouseButtons.Right;
-            Gtk.Widget owidget = (Gtk.Widget)o;
-            owidget.Window.GetOrigin(out int x, out int y);
-            if (MouseUp != null)
+            Gtk.Widget owidget = o as Gtk.Widget;
+            if (owidget != null && owidget.Window != null)
             {
-                MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-            }
-            if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
-            {
-                if (MouseDoubleClick != null)
-                    MouseDoubleClick(this, new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-                if (DoubleClick != null)
-                    DoubleClick(this, EventArgs.Empty);
-            }
-            else
-            {
-                if (Click != null)
-                    Click(this, EventArgs.Empty);
-                if (MouseClick != null)
-                    MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
-            }
-            if (ContextMenuStrip != null)
-            {
-                if (args.Event.Button == 3)
+                MouseButtons result = MouseButtons.None;
+                if (args.Event.Button == 1)
+                    result = MouseButtons.Left;
+                else if (args.Event.Button == 2)
+                    result = MouseButtons.Middle;
+                else if (args.Event.Button == 3)
+                    result = MouseButtons.Right;
+                owidget.Window.GetOrigin(out int x, out int y);
+                if (MouseUp != null)
                 {
-                    ContextMenuStrip.Widget.ShowAll();
-                    ((Gtk.Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
+                    MouseUp(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                }
+                if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
+                {
+                    if (MouseDoubleClick != null)
+                        MouseDoubleClick(this, new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                    if (DoubleClick != null)
+                        DoubleClick(this, EventArgs.Empty);
+                }
+                else
+                {
+                    if (Click != null)
+                        Click(this, EventArgs.Empty);
+                    if (MouseClick != null)
+                        MouseClick(this, new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0));
+                }
+                if (ContextMenuStrip != null)
+                {
+                    if (args.Event.Button == 3)
+                    {
+                        ContextMenuStrip.Widget.ShowAll();
+                        ((Gtk.Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
+                    }
                 }
             }
         }
@@ -673,7 +680,7 @@ namespace System.Windows.Forms
 
         public virtual bool IsDisposed { get; }
 
-        public virtual bool IsHandleCreated { get => true; }
+        public virtual bool IsHandleCreated { get => this.Widget.IsRealized; }
 
         public virtual bool IsMirrored { get; }
 
@@ -1491,14 +1498,44 @@ namespace System.Windows.Forms
 
         private ArrangedElementCollection arrangedElementCollection;
         public ArrangedElementCollection Children => arrangedElementCollection;
-
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        protected virtual void OnResize(EventArgs e)
+        {
+            this.Widget?.QueueResize();
+            Resize?.Invoke(this, e);
+        }
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        protected virtual void OnClick(EventArgs e)
+        {
+            Click?.Invoke(this, e);
+        }
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        protected virtual void OnMouseDoubleClick(MouseEventArgs e)
+        {
+            MouseDoubleClick?.Invoke(this, e);
+        }
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        protected virtual void OnMouseClick(MouseEventArgs e)
+        {
+            MouseClick?.Invoke(this, e);
+        }
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        protected virtual void OnMouseDown(MouseEventArgs e)
+        {
+            MouseDown?.Invoke(this, e);
+        }
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        protected virtual void OnMouseUp(MouseEventArgs e)
+        {
+            MouseUp?.Invoke(this, e);
+        }
         protected virtual void OnKeyDown(KeyEventArgs e)
         {
-
+            KeyDown?.Invoke(this, e);
         }
         protected virtual void OnKeyUp(KeyEventArgs e)
         {
-
+            KeyUp?.Invoke(this, e);
         }
         protected virtual void OnVisibleChanged(EventArgs e)
         {
@@ -1506,7 +1543,7 @@ namespace System.Windows.Forms
         }
         protected virtual void OnSizeChanged(EventArgs e)
         {
-
+            SizeChanged?.Invoke(this, e);
         }
         protected virtual void Select(bool directed, bool forward)
         {
