@@ -542,13 +542,25 @@ namespace System.Windows.Forms
 		{
 			 
 		}
-		 
-		public ListViewSubItem GetSubItemAt(int x, int y)
-		{
-			return _subitems[x];
-		}
 
-		internal void Host(ListView parent, int id, int index)
+        public ListViewSubItem GetSubItemAt(int x, int y)
+        {
+            if (_listView is not null && _listView.IsHandleCreated && _listView.View == View.Details)
+            {
+                _listView.GetSubItemAt(x, y, out int iItem, out int iSubItem);
+                if (Index > -1 && iSubItem > -1 && iSubItem < SubItems.Count)
+                {
+                    return SubItems[iSubItem];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        internal void Host(ListView parent, int id, int index)
 		{
 			
 		}
