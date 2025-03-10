@@ -8,9 +8,7 @@ using Gdk;
 using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 
 
 namespace System.Windows.Forms

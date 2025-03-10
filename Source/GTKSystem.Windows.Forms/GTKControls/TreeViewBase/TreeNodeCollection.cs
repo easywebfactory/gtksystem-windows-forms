@@ -1,12 +1,4 @@
-﻿
-using Atk;
-using Gtk;
-using Pango;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-namespace System.Windows.Forms
+﻿namespace System.Windows.Forms
 {
     public class TreeNodeCollection: List<TreeNode>
     {
@@ -56,22 +48,23 @@ namespace System.Windows.Forms
 
         public new void Clear()
         {
-            this.owner?.TreeView?.Clear();
+            if (owner.TreeView != null)
+            {
+                foreach (TreeNode node in this)
+                    owner.TreeView.RemoveNode(node);
+            }
             base.Clear();
         }
         public new void Remove(TreeNode node)
         {
-            int indx = base.FindIndex(m => m.Index == node.Index);
-            if (indx > -1)
-                RemoveAt(indx);
+            if (owner.TreeView != null)
+                this.owner.TreeView.RemoveNode(node);
+            base.Remove(node);
         }
         public new void RemoveAt(int index)
         {
-            if (this.owner.TreeView.Store.GetIter(out TreeIter iter, new TreePath(new int[] { index })))
-            {
-                this.owner.TreeView.Store.Remove(ref iter);
-            }
-            base.RemoveAt(index);
+            if (index < this.Count)
+                Remove(this[index]);
         }
     }
 }
