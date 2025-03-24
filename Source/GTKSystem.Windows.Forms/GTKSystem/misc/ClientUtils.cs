@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Globalization;
+using System.Security;
 using System.Threading;
 
 namespace System.Windows.Forms
@@ -56,6 +57,14 @@ namespace System.Windows.Forms
             }
 
             return index + 1;
+        }
+        public static bool IsSecurityOrCriticalException(Exception ex)
+        {
+            if (ex is SecurityException)
+            {
+                return true;
+            }
+            return IsCriticalException(ex);
         }
     }
 }

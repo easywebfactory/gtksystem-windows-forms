@@ -20,7 +20,7 @@ namespace System.Windows.Forms
     [DefaultProperty("Text")]
     [Designer(typeof(ControlDesigner))]
     [ToolboxItemFilter("System.Windows.Forms")]
-    public partial class Control : Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize, IArrangedElement
+    public partial class Control : Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize, IArrangedElement, IBindableComponent
     {
         private Gtk.Application app = Application.Init();
         public string unique_key { get; protected set; }
@@ -1503,6 +1503,10 @@ namespace System.Windows.Forms
         {
             this.Widget?.QueueResize();
             Resize?.Invoke(this, e);
+        }
+        public virtual void PerformClick()
+        {
+            OnClick(EventArgs.Empty);
         }
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         protected virtual void OnClick(EventArgs e)

@@ -6,8 +6,10 @@
 
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 
 namespace System.Windows.Forms
@@ -393,10 +395,6 @@ namespace System.Windows.Forms
         public class MdiLayout
         {
         }
-    }
-
-    public class BindingContext : ContextBoundObject
-    {
     }
 }
 
