@@ -1,24 +1,18 @@
-﻿using Gtk;
-using System;
-using System.Drawing;
+﻿namespace System.Windows.Forms;
 
-
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+public sealed class BoxBase: Gtk.Box, IControlGtk
 {
-    public sealed class BoxBase: Gtk.Box, IControlGtk
+    public IGtkControlOverride Override { get; set; }
+    public BoxBase(Gtk.Orientation orientation, int spacing) : base(orientation, spacing)
     {
-        public GtkControlOverride Override { get; set; }
-        public BoxBase(Orientation orientation, int spacing) : base(orientation, spacing)
-        {
-            this.Override = new GtkControlOverride(this);
-            base.Valign = Gtk.Align.Start;
-            base.Halign = Gtk.Align.Start;
-        }
-        protected override bool OnDrawn(Cairo.Context cr)
-        {
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.DrawnBackColor(cr, rec);
-            return base.OnDrawn(cr);
-        }
+        Override = new GtkFormsControlOverride(this);
+        Valign = Gtk.Align.Start;
+        Halign = Gtk.Align.Start;
+    }
+    protected override bool OnDrawn(Cairo.Context cr)
+    {
+        var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);
+        Override.DrawnBackColor(cr, rec);
+        return base.OnDrawn(cr);
     }
 }

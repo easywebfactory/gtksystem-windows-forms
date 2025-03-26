@@ -1,30 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace System.Windows.Forms;
 
-namespace System.Windows.Forms
+/// <summary>
+///     Defines values for specifying how the width of a column is adjusted.
+///     Defines values for specifying one of three possible states.
+/// </summary>
+public enum DataGridViewTriState
 {
-    //
-    // 摘要:
-    //     Defines values for specifying how the width of a column is adjusted.
+    /// <summary>
+    ///     The property is not set and will behave in a default manner.
+    /// </summary>
+    NotSet = 0,
 
+    /// <summary>
+    ///     The property's state is true.
+    /// </summary>
+    True = 1,
 
-    //
-    // 摘要:
-    //     Defines values for specifying one of three possible states.
-    public enum DataGridViewTriState
-    {
-        //
-        // 摘要:
-        //     The property is not set and will behave in a default manner.
-        NotSet = 0,
-        //
-        // 摘要:
-        //     The property's state is true.
-        True = 1,
-        //
-        // 摘要:
-        //     The property's state is false.
-        False = 2
-    }
+    /// <summary>
+    ///     The property's state is false.
+    /// </summary>
+    False = 2
 }

@@ -12,7 +12,4 @@
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <SourceRoot Include="C:\Users\auto_\.nuget\packages\" />
   </ItemGroup>
-  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)gtksystem.windows.formsdesigner\1.0.0.4\build\GTKSystem.Windows.FormsDesigner.props" Condition="Exists('$(NuGetPackageRoot)gtksystem.windows.formsdesigner\1.0.0.4\build\GTKSystem.Windows.FormsDesigner.props')" />
-  </ImportGroup>
 </Project>

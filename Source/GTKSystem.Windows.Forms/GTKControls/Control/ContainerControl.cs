@@ -1,14 +1,16 @@
 ﻿ 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public class ContainerControl : ScrollableControl, IContainerControl
 {
-    public class ContainerControl : ScrollableControl, IContainerControl
+    private Control? activeControl;
+    public Control? ActiveControl
     {
-        private Control _ActiveControl;
-        public Control ActiveControl
+        get
         {
-            get
+            if (Controls != null)
             {
-                foreach (object control in this.Controls)
+                foreach (var control in Controls)
                 {
                     if (control is Control con)
                     {
@@ -16,25 +18,21 @@ namespace System.Windows.Forms
                             return con;
                     }
                 }
-                return _ActiveControl;
             }
-            set { ActivateControl(value); } 
+
+            return activeControl;
         }
-        public ContainerControl() : base()
-        {
-        }
-        public bool ActivateControl(Control active)
-        {
-            _ActiveControl = active;
-            if (active != null)
-            {
-                if (active.GtkControl is Gtk.Widget widget)
-                {
-                    return widget.Activate();
-                }
-            }
-            return false;
-        }
-        public virtual StatusStrip StatusStrip { get; set; }
+        set => ActivateControl(value);
     }
+
+    public bool ActivateControl(Control? active)
+    {
+        activeControl = active;
+        if (active?.GtkControl is Gtk.Widget widget)
+        {
+            return widget.Activate();
+        }
+        return false;
+    }
+    public virtual StatusStrip? StatusStrip { get; set; }
 }

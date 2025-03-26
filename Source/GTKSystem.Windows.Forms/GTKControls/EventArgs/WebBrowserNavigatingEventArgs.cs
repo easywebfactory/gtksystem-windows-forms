@@ -4,45 +4,32 @@
 
 using System.ComponentModel;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+/// <summary>
+///  Provides data for the <see cref='WebBrowser.OnNavigating'/> event.
+/// </summary>
+public class WebBrowserNavigatingEventArgs : CancelEventArgs
 {
+    private readonly Uri _url;
+    private readonly string _targetFrameName;
+
     /// <summary>
-    ///  Provides data for the <see cref='WebBrowser.OnNavigating'/> event.
+    ///  Creates an instance of the <see cref='WebBrowserNavigatingEventArgs'/> class.
     /// </summary>
-    public class WebBrowserNavigatingEventArgs : CancelEventArgs
+    public WebBrowserNavigatingEventArgs(Uri url, string targetFrameName)
     {
-        private readonly Uri _url;
-        private readonly string _targetFrameName;
-
-        /// <summary>
-        ///  Creates an instance of the <see cref='WebBrowserNavigatingEventArgs'/> class.
-        /// </summary>
-        public WebBrowserNavigatingEventArgs(Uri url, string targetFrameName)
-        {
-            _url = url;
-            _targetFrameName = targetFrameName;
-        }
-
-        /// <summary>
-        ///  Url the browser is navigating to.
-        /// </summary>
-        public Uri Url
-        {
-            get
-            {
-                return _url;
-            }
-        }
-
-        /// <summary>
-        ///  In case an individual frame is about to be navigated, this contains the frame name.
-        /// </summary>
-        public string TargetFrameName
-        {
-            get
-            {
-                return _targetFrameName;
-            }
-        }
+        _url = url;
+        _targetFrameName = targetFrameName;
     }
+
+    /// <summary>
+    ///  Url the browser is navigating to.
+    /// </summary>
+    public Uri Url => _url;
+
+    /// <summary>
+    ///  In case an individual frame is about to be navigated, this contains the frame name.
+    /// </summary>
+    public string TargetFrameName => _targetFrameName;
 }

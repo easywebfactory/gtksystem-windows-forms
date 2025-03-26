@@ -1,13 +1,10 @@
-﻿
-using System.Runtime.InteropServices;
-using System;
+﻿using System;
 using System.Windows.Forms;
-using System.IO;
 using System.Drawing;
 
 namespace GTKWinFormsApp
 {
-    partial class Form1
+    partial class TestDataForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -26,8 +23,6 @@ namespace GTKWinFormsApp
             }
             base.Dispose(disposing);
         }
-
-        #region Windows Form Designer generated code
 
         /// <summary>
         ///  Required method for Designer support - do not modify
@@ -48,7 +43,7 @@ namespace GTKWinFormsApp
             TreeNode treeNode5 = new TreeNode("Node0", new TreeNode[] { treeNode3, treeNode4 });
             TreeNode treeNode6 = new TreeNode("Node1");
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestDataForm));
             button1 = new Button();
             comboBox1 = new ComboBox();
             textBox1 = new TextBox();
@@ -91,14 +86,14 @@ namespace GTKWinFormsApp
             contextMenuStrip1 = new ContextMenuStrip(components);
             toolStripMenuItem1 = new ToolStripMenuItem();
             toolStripMenuItem2 = new ToolStripMenuItem();
-            菜单三ToolStripMenuItem = new ToolStripMenuItem();
+            MenuThreeToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1 = new MenuStrip();
             toolStripMenuItem3 = new ToolStripMenuItem();
             test1ToolStripMenuItem = new ToolStripMenuItem();
-            三级菜单1ToolStripMenuItem = new ToolStripMenuItem();
+            ThirdLevelMenu1ToolStripMenuItem = new ToolStripMenuItem();
             test2ToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem4 = new ToolStripMenuItem();
-            二级菜单1ToolStripMenuItem = new ToolStripMenuItem();
+            SecondaryMenu1ToolStripMenuItem = new ToolStripMenuItem();
             splitContainer2 = new SplitContainer();
             ID = new DataGridViewTextBoxColumn();
             State = new DataGridViewCheckBoxColumn();
@@ -162,7 +157,6 @@ namespace GTKWinFormsApp
             textBox1.Location = new Point(63, 31);
             textBox1.Margin = new Padding(4);
             textBox1.Name = "textBox1";
-           // textBox1.PlaceholderText = "选择颜色";
             textBox1.Size = new Size(256, 27);
             textBox1.TabIndex = 2;
             textBox1.TextChanged += textBox1_TextChanged;
@@ -698,16 +692,16 @@ namespace GTKWinFormsApp
             // 
             // toolStripMenuItem2
             // 
-            toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { 菜单三ToolStripMenuItem });
+            toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { MenuThreeToolStripMenuItem });
             toolStripMenuItem2.Name = "toolStripMenuItem2";
             toolStripMenuItem2.Size = new Size(123, 24);
             toolStripMenuItem2.Text = "菜单二";
             // 
             // 菜单三ToolStripMenuItem
             // 
-            菜单三ToolStripMenuItem.Name = "菜单三ToolStripMenuItem";
-            菜单三ToolStripMenuItem.Size = new Size(137, 26);
-            菜单三ToolStripMenuItem.Text = "菜单三";
+            MenuThreeToolStripMenuItem.Name = "MenuThreeToolStripMenuItem";
+            MenuThreeToolStripMenuItem.Size = new Size(137, 26);
+            MenuThreeToolStripMenuItem.Text = "菜单三";
             // 
             // menuStrip1
             // 
@@ -732,16 +726,16 @@ namespace GTKWinFormsApp
             // 
             // test1ToolStripMenuItem
             // 
-            test1ToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 三级菜单1ToolStripMenuItem });
+            test1ToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ThirdLevelMenu1ToolStripMenuItem });
             test1ToolStripMenuItem.Name = "test1ToolStripMenuItem";
             test1ToolStripMenuItem.Size = new Size(161, 26);
             test1ToolStripMenuItem.Text = "二级菜单1";
             // 
             // 三级菜单1ToolStripMenuItem
             // 
-            三级菜单1ToolStripMenuItem.Name = "三级菜单1ToolStripMenuItem";
-            三级菜单1ToolStripMenuItem.Size = new Size(161, 26);
-            三级菜单1ToolStripMenuItem.Text = "三级菜单1";
+            ThirdLevelMenu1ToolStripMenuItem.Name = "ThirdLevelMenu1ToolStripMenuItem";
+            ThirdLevelMenu1ToolStripMenuItem.Size = new Size(161, 26);
+            ThirdLevelMenu1ToolStripMenuItem.Text = "三级菜单1";
             // 
             // test2ToolStripMenuItem
             // 
@@ -756,16 +750,16 @@ namespace GTKWinFormsApp
             // 
             // toolStripMenuItem4
             // 
-            toolStripMenuItem4.DropDownItems.AddRange(new ToolStripItem[] { 二级菜单1ToolStripMenuItem });
+            toolStripMenuItem4.DropDownItems.AddRange(new ToolStripItem[] { SecondaryMenu1ToolStripMenuItem });
             toolStripMenuItem4.Name = "toolStripMenuItem4";
             toolStripMenuItem4.Size = new Size(92, 25);
             toolStripMenuItem4.Text = "一级菜单2";
             // 
             // 二级菜单1ToolStripMenuItem
             // 
-            二级菜单1ToolStripMenuItem.Name = "二级菜单1ToolStripMenuItem";
-            二级菜单1ToolStripMenuItem.Size = new Size(161, 26);
-            二级菜单1ToolStripMenuItem.Text = "二级菜单1";
+            SecondaryMenu1ToolStripMenuItem.Name = "SecondaryMenu1ToolStripMenuItem";
+            SecondaryMenu1ToolStripMenuItem.Size = new Size(161, 26);
+            SecondaryMenu1ToolStripMenuItem.Text = "二级菜单1";
             // 
             // splitContainer2
             // 
@@ -859,7 +853,7 @@ namespace GTKWinFormsApp
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
             Margin = new Padding(4);
-            Name = "Form1";
+            Name = "TestDataForm";
             Text = "默认风格界面";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox1.ResumeLayout(false);
@@ -891,8 +885,6 @@ namespace GTKWinFormsApp
             ResumeLayout(false);
         }
 
-        #endregion
-
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.TextBox textBox1;
@@ -918,7 +910,7 @@ namespace GTKWinFormsApp
         private ToolStripMenuItem test1ToolStripMenuItem;
         private ToolStripMenuItem test2ToolStripMenuItem;
         private ToolStripMenuItem toolStripMenuItem4;
-        private ToolStripMenuItem 菜单三ToolStripMenuItem;
+        private ToolStripMenuItem MenuThreeToolStripMenuItem;
         private CheckBox checkBox2;
         private DateTimePicker dateTimePicker1;
         private NumericUpDown numericUpDown1;
@@ -927,8 +919,8 @@ namespace GTKWinFormsApp
         private System.Windows.Forms.RadioButton radioButton3;
         private CheckedListBox checkedListBox1;
         private System.Windows.Forms.TreeView treeView1;
-        private ToolStripMenuItem 三级菜单1ToolStripMenuItem;
-        private ToolStripMenuItem 二级菜单1ToolStripMenuItem;
+        private ToolStripMenuItem ThirdLevelMenu1ToolStripMenuItem;
+        private ToolStripMenuItem SecondaryMenu1ToolStripMenuItem;
         private SplitContainer splitContainer1;
         private PictureBox pictureBox2;
         private ListBox listBox1;

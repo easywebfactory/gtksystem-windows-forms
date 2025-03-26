@@ -1,0 +1,131 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFrameworks>net8.0</TargetFrameworks>
+		<Nullable>enable</Nullable>
+		<UseWindowsForms>False</UseWindowsForms>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<IsPublishable>False</IsPublishable>
+		<EnableUnsafeBinaryFormatterSerialization>True</EnableUnsafeBinaryFormatterSerialization>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="..\GtkWinFormsApp\Resources\010.jpg" Link="Resources\010.jpg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\GtkWinFormsApp\Resources\BindingNavigator.Delete.ico" Link="Resources\BindingNavigator.Delete.ico">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\GtkWinFormsApp\Resources\img10.jpg" Link="Resources\img10.jpg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\GtkWinFormsApp\Resources\img11.jpg" Link="Resources\img11.jpg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\GtkWinFormsApp\Resources\timg.jpg" Link="Resources\timg.jpg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\GtkWinFormsApp\Resources\timg2.jpg" Link="Resources\timg2.jpg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\GtkWinFormsApp\Resources\timg6.jpg" Link="Resources\timg6.jpg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\GtkWinFormsApp\工程说明.txt" Link="ProjectDescription.zh-HANS.txt" />
+		<None Include="..\GtkWinFormsApp\TestData1.en.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="..\GtkWinFormsApp\TestData1.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<Compile Include="..\GtkWinFormsApp\UserControl11.cs">
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Include="..\GtkWinFormsApp\UserControl11.Designer.cs">
+			<DependentUpon>UserControl11.cs</DependentUpon>
+		</Compile>
+		<EmbeddedResource Include="..\GtkWinFormsApp\UserControl11.resx">
+			<DependentUpon>..\GtkWinFormsApp\UserControl11.cs</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="..\GtkWinFormsApp\Form1.cs" Link="TestDataForm.cs" SubType="Form" />
+		<Compile Include="..\GtkWinFormsApp\Form1.Designer.cs" Link="TestDataForm.Designer.cs" />
+		<Compile Include="..\GtkWinFormsApp\Program.cs" Link="Program.cs" />
+		<Compile Include="..\GtkWinFormsApp\Properties\Resources.Designer.cs" Link="Properties\Resources.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="..\GtkWinFormsApp\Form1.resx" Link="TestDataForm.resx" />
+		<EmbeddedResource Include="..\GtkWinFormsApp\Properties\Resources.resx" Link="Properties\Resources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		  <CustomToolNamespace>GTKWinFormsApp.Properties</CustomToolNamespace>
+		</EmbeddedResource>
+		<EmbeddedResource Include="..\GtkWinFormsApp\Properties\Resources.zh-HANS.resx" Link="Properties\Resources.zh-HANS.resx">
+			<DependentUpon>Resources.resx</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="..\GtkWinFormsApp\Form2.cs" Link="ListViewForm.cs" SubType="Form" />
+		<Compile Include="..\GtkWinFormsApp\Form2.Designer.cs" Link="ListViewForm.Designer.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="..\GtkWinFormsApp\Form2.resx" Link="ListViewForm.resx" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="..\GtkWinFormsApp\Form3.cs" Link="GtkMainForm.cs" SubType="Form" />
+		<Compile Include="..\GtkWinFormsApp\Form3.Designer.cs" Link="GtkMainForm.Designer.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="..\GtkWinFormsApp\Form3.resx" Link="GtkMainForm.resx" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="..\GtkWinFormsApp\Form4.cs" Link="CommonDialogsForm.cs" SubType="Form" />
+		<Compile Include="..\GtkWinFormsApp\Form4.Designer.cs" Link="CommonDialogsForm.Designer.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="..\GtkWinFormsApp\Form4.resx" Link="CommonDialogsForm.resx" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="..\..\Source\GTKSystem.Windows.Forms\Content\System.ComponentModel.cs" Link="System.ComponentModel.cs" />
+		<Compile Include="..\..\Source\GTKSystem.Windows.Forms\Content\System.Resources.ResourceManager.cs" Link="System.Resources.ResourceManager.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
+		<PackageReference Include="System.Drawing.Common" Version="8.0.14" Aliases="sdc" PrivateAssets="All" IncludeAssets="All" Condition="'$(TargetFramework)'=='net8.0'" />
+		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" Aliases="sre" PrivateAssets="All" IncludeAssets="All" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="System.Drawing" PrivateAssets="All" IncludeAssets="All" Condition="'$(TargetFramework)'=='net4.8'" Aliases="sd" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj" />
+	</ItemGroup>
+
+</Project>

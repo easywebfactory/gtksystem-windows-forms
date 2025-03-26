@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace GTKWinFormsApp
 {
-    partial class Form4
+    partial class CommonDialogsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -23,8 +23,6 @@ namespace GTKWinFormsApp
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -32,12 +30,12 @@ namespace GTKWinFormsApp
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            TreeNode treeNode1 = new TreeNode("节点3");
-            TreeNode treeNode2 = new TreeNode("节点2", new TreeNode[] { treeNode1 });
-            TreeNode treeNode3 = new TreeNode("节点4");
-            TreeNode treeNode4 = new TreeNode("节点0", new TreeNode[] { treeNode2, treeNode3 });
-            TreeNode treeNode5 = new TreeNode("节点1");
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form4));
+            treeNode1 = new TreeNode("节点3");
+            treeNode2 = new TreeNode("节点2", new TreeNode[] { treeNode1 });
+            treeNode3 = new TreeNode("节点4");
+            treeNode4 = new TreeNode("节点0", new TreeNode[] { treeNode2, treeNode3 });
+            treeNode5 = new TreeNode("节点1");
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CommonDialogsForm));
             splitContainer1 = new SplitContainer();
             button2 = new Button();
             button1 = new Button();
@@ -125,7 +123,6 @@ namespace GTKWinFormsApp
             hScrollBar1.Name = "hScrollBar1";
             hScrollBar1.Size = new System.Drawing.Size(260, 26);
             hScrollBar1.TabIndex = 8;
-            hScrollBar1.ValueChanged += hScrollBar1_ValueChanged;
             // 
             // vScrollBar1
             // 
@@ -133,7 +130,6 @@ namespace GTKWinFormsApp
             vScrollBar1.Name = "vScrollBar1";
             vScrollBar1.Size = new System.Drawing.Size(26, 216);
             vScrollBar1.TabIndex = 7;
-            vScrollBar1.ValueChanged += vScrollBar1_ValueChanged;
             // 
             // button9
             // 
@@ -143,7 +139,6 @@ namespace GTKWinFormsApp
             button9.TabIndex = 6;
             button9.Text = "警告消息";
             button9.UseVisualStyleBackColor = true;
-            button9.Click += button9_Click;
             // 
             // button8
             // 
@@ -153,7 +148,6 @@ namespace GTKWinFormsApp
             button8.TabIndex = 5;
             button8.Text = "选择颜色";
             button8.UseVisualStyleBackColor = true;
-            button8.Click += button8_Click;
             // 
             // button7
             // 
@@ -163,7 +157,6 @@ namespace GTKWinFormsApp
             button7.TabIndex = 4;
             button7.Text = "浏览文件夹";
             button7.UseVisualStyleBackColor = true;
-            button7.Click += button7_Click;
             // 
             // button6
             // 
@@ -173,7 +166,6 @@ namespace GTKWinFormsApp
             button6.TabIndex = 3;
             button6.Text = "保存文件";
             button6.UseVisualStyleBackColor = true;
-            button6.Click += button6_Click;
             // 
             // treeView1
             // 
@@ -283,7 +275,6 @@ namespace GTKWinFormsApp
             button3.TabIndex = 0;
             button3.Text = "打开文件";
             button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
             // 
             // label1
             // 
@@ -303,7 +294,7 @@ namespace GTKWinFormsApp
             ClientSize = new System.Drawing.Size(992, 492);
             Controls.Add(splitContainer1);
             Controls.Add(label1);
-            Name = "Form4";
+            Name = "CommonDialogsForm";
             Text = "Form4";
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
@@ -314,8 +305,11 @@ namespace GTKWinFormsApp
             ResumeLayout(false);
         }
 
-        #endregion
-
+        private TreeNode treeNode1;
+        private TreeNode treeNode2;
+        private TreeNode treeNode3;
+        private TreeNode treeNode4;
+        private TreeNode treeNode5;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace GTKWinFormsApp
 {
-    partial class Form3
+    partial class GtkMainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -24,8 +24,6 @@ namespace GTKWinFormsApp
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -33,15 +31,15 @@ namespace GTKWinFormsApp
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form3));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GtkMainForm));
             menuStrip1 = new MenuStrip();
             toolStripMenuItem1 = new ToolStripMenuItem();
             ddddToolStripMenuItem = new ToolStripMenuItem();
             ssssToolStripMenuItem = new ToolStripMenuItem();
-            bb菜单ToolStripMenuItem = new ToolStripMenuItem();
-            bb菜单2ToolStripMenuItem = new ToolStripMenuItem();
+            bbMenuToolStripMenuItem = new ToolStripMenuItem();
+            bbMenu2ToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator3 = new ToolStripSeparator();
-            c菜单ToolStripMenuItem = new ToolStripMenuItem();
+            cMenuToolStripMenuItem = new ToolStripMenuItem();
             ssssToolStripMenuItem1 = new ToolStripMenuItem();
             toolStrip2 = new ToolStrip();
             toolStripButton1 = new ToolStripButton();
@@ -101,7 +99,7 @@ namespace GTKWinFormsApp
             // 
             // toolStripMenuItem1
             // 
-            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { ddddToolStripMenuItem, ssssToolStripMenuItem, toolStripSeparator3, c菜单ToolStripMenuItem });
+            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { ddddToolStripMenuItem, ssssToolStripMenuItem, toolStripSeparator3, cMenuToolStripMenuItem });
             toolStripMenuItem1.Name = "toolStripMenuItem1";
             toolStripMenuItem1.Size = new Size(62, 24);
             toolStripMenuItem1.Text = "菜单1";
@@ -116,43 +114,42 @@ namespace GTKWinFormsApp
             // 
             // ssssToolStripMenuItem
             // 
-            ssssToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { bb菜单ToolStripMenuItem, bb菜单2ToolStripMenuItem });
+            ssssToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { bbMenuToolStripMenuItem, bbMenu2ToolStripMenuItem });
             ssssToolStripMenuItem.Image = (Image)resources.GetObject("ssssToolStripMenuItem.Image");
             ssssToolStripMenuItem.Name = "ssssToolStripMenuItem";
             ssssToolStripMenuItem.Size = new Size(132, 26);
             ssssToolStripMenuItem.Text = "b菜单";
             // 
-            // bb菜单ToolStripMenuItem
+            // bbMenuToolStripMenuItem
             // 
-            bb菜单ToolStripMenuItem.Name = "bb菜单ToolStripMenuItem";
-            bb菜单ToolStripMenuItem.Size = new Size(151, 26);
-            bb菜单ToolStripMenuItem.Text = "bb菜单";
+            bbMenuToolStripMenuItem.Name = "bbMenuToolStripMenuItem";
+            bbMenuToolStripMenuItem.Size = new Size(151, 26);
+            bbMenuToolStripMenuItem.Text = "bbMenu";
             // 
-            // bb菜单2ToolStripMenuItem
+            // bbMenu2ToolStripMenuItem
             // 
-            bb菜单2ToolStripMenuItem.Name = "bb菜单2ToolStripMenuItem";
-            bb菜单2ToolStripMenuItem.Size = new Size(151, 26);
-            bb菜单2ToolStripMenuItem.Text = "bb菜单2";
+            bbMenu2ToolStripMenuItem.Name = "bbMenu2ToolStripMenuItem";
+            bbMenu2ToolStripMenuItem.Size = new Size(151, 26);
+            bbMenu2ToolStripMenuItem.Text = "bbMenu2";
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
             toolStripSeparator3.Size = new Size(129, 6);
             // 
-            // c菜单ToolStripMenuItem
+            // cMenuToolStripMenuItem
             // 
-            c菜单ToolStripMenuItem.Checked = true;
-            c菜单ToolStripMenuItem.CheckState = CheckState.Indeterminate;
-            c菜单ToolStripMenuItem.Name = "c菜单ToolStripMenuItem";
-            c菜单ToolStripMenuItem.Size = new Size(132, 26);
-            c菜单ToolStripMenuItem.Text = "c菜单";
+            cMenuToolStripMenuItem.Checked = true;
+            cMenuToolStripMenuItem.CheckState = CheckState.Indeterminate;
+            cMenuToolStripMenuItem.Name = "cMenuToolStripMenuItem";
+            cMenuToolStripMenuItem.Size = new Size(132, 26);
+            cMenuToolStripMenuItem.Text = "cMenu";
             // 
             // ssssToolStripMenuItem1
             // 
             ssssToolStripMenuItem1.Name = "ssssToolStripMenuItem1";
             ssssToolStripMenuItem1.Size = new Size(62, 24);
             ssssToolStripMenuItem1.Text = "菜单2";
-            ssssToolStripMenuItem1.Click += ssssToolStripMenuItem1_Click;
             // 
             // toolStrip2
             // 
@@ -254,7 +251,6 @@ namespace GTKWinFormsApp
             button1.TabIndex = 3;
             button1.Text = "打开主窗口";
             button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
             // 
             // contextMenuStrip1
             // 
@@ -375,7 +371,6 @@ namespace GTKWinFormsApp
             trackBar1.TickFrequency = 2;
             trackBar1.TickStyle = TickStyle.Both;
             trackBar1.Value = 10;
-            trackBar1.Scroll += trackBar1_Scroll;
             // 
             // panel1
             // 
@@ -399,7 +394,6 @@ namespace GTKWinFormsApp
             button4.TabIndex = 2;
             button4.Text = "列表视图";
             button4.UseVisualStyleBackColor = true;
-            button4.Click += button4_Click;
             // 
             // button2
             // 
@@ -409,7 +403,6 @@ namespace GTKWinFormsApp
             button2.TabIndex = 0;
             button2.Text = "分割容器布局";
             button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
             // 
             // button3
             // 
@@ -419,7 +412,6 @@ namespace GTKWinFormsApp
             button3.TabIndex = 1;
             button3.Text = "打印";
             button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
             // 
             // panel3
             // 
@@ -428,7 +420,6 @@ namespace GTKWinFormsApp
             panel3.Name = "panel3";
             panel3.Size = new Size(250, 135);
             panel3.TabIndex = 9;
-            panel3.Paint += panel3_Paint;
             // 
             // panel5
             // 
@@ -439,7 +430,6 @@ namespace GTKWinFormsApp
             panel5.Name = "panel5";
             panel5.Size = new Size(250, 95);
             panel5.TabIndex = 10;
-            panel5.Scroll += panel5_Scroll;
             // 
             // label2
             // 
@@ -483,10 +473,9 @@ namespace GTKWinFormsApp
             Controls.Add(menuStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
-            Name = "Form3";
+            Name = "GtkMainForm";
             ShowInTaskbar = false;
             Text = "默认风格界面";
-            Load += Form3_Load;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             toolStrip2.ResumeLayout(false);
@@ -502,7 +491,6 @@ namespace GTKWinFormsApp
             PerformLayout();
         }
 
-        #endregion
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStrip toolStrip2;
@@ -521,8 +509,8 @@ namespace GTKWinFormsApp
         private System.Windows.Forms.ToolStripMenuItem fffffffToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ssssToolStripMenuItem1;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ToolStripMenuItem bb菜单ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem bb菜单2ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bbMenuToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bbMenu2ToolStripMenuItem;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem ddddToolStripMenuItem1;
@@ -546,7 +534,7 @@ namespace GTKWinFormsApp
         private Panel panel5;
         private Label label2;
         private ToolStripSeparator toolStripSeparator3;
-        private ToolStripMenuItem c菜单ToolStripMenuItem;
+        private ToolStripMenuItem cMenuToolStripMenuItem;
         private ProgressBar progressBar1;
         private Button button4;
     }

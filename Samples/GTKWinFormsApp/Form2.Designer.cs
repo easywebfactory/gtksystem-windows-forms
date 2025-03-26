@@ -1,8 +1,10 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
+using GTKWinFormsApp.Properties;
 
 namespace GTKWinFormsApp
 {
-    partial class Form2
+    partial class ListViewForm
     {
         /// <summary>
         /// Required designer variable.
@@ -22,8 +24,6 @@ namespace GTKWinFormsApp
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -31,14 +31,14 @@ namespace GTKWinFormsApp
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ListViewForm));
             ListViewGroup listViewGroup1 = new ListViewGroup("组头标题", HorizontalAlignment.Left);
-            ListViewGroup listViewGroup2 = new ListViewGroup("ListViewGroup2", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup2 = new ListViewGroup(Resources.ListViewForm_ListViewForm_ListViewGroup2, HorizontalAlignment.Left);
             ListViewItem listViewItem1 = new ListViewItem(new string[] { "ListViewItem 是一个 ContentControl 且只能包含单个子元素。 但是，该子元素可以是任何视觉元素。" }, 0, System.Drawing.Color.Blue, System.Drawing.Color.FromArgb(255, 192, 255), null);
             ListViewItem listViewItem2 = new ListViewItem("ListView 派生自 ListBox。 通常，该控件的项为数据集合的成员，并且表示为 ListViewItem 对象", 0);
             ListViewItem listViewItem3 = new ListViewItem("ListView 控件提供了使用不同布局或视图中显示一组数据项的基础结构。 例如，用户可能需要在表格中显示数据项，并同时对表格的列进行排序。", 0);
-            ListViewItem listViewItem4 = new ListViewItem(new string[] { "ListView 分组", "listView1.Groups.Add()", "432321" }, 0);
-            ListViewItem listViewItem5 = new ListViewItem(new string[] { "ListView 定义视图模式", "View.SmallIcon", "View.LargeIcon", "View.Details", "View.List" }, 1);
+            ListViewItem listViewItem4 = new ListViewItem(new string[] { "ListView 分组", Resources.ListViewForm_ListViewForm_listView1_Groups_Add__, "432321" }, 0);
+            ListViewItem listViewItem5 = new ListViewItem(new string[] { "ListView 定义视图模式", "View.SmallIcon", "View.LargeIcon", Resources.ListViewForm_ListViewForm_View_Details, Resources.ListViewForm_ListViewForm_View_List }, 1);
             ListViewItem listViewItem6 = new ListViewItem("什么是 ListView？", 0);
             ListViewItem listViewItem7 = new ListViewItem(new string[] { "将数据绑定到 ListView", "listView1.Items.Add();" }, 0);
             imageList1 = new ImageList(components);
@@ -143,7 +143,7 @@ namespace GTKWinFormsApp
             listBox1.BackColor = System.Drawing.Color.Yellow;
             listBox1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
             listBox1.FormattingEnabled = true;
-            listBox1.Items.AddRange(new object[] { "0-异常警告0 --- 机房空调运行监控事件 --- 638526419125153303 ------ 2024/5/30 4:58:32", "1-异常警告1 --- 机房空调运行监控事件 --- 638526419135198480 ------ 2024/5/30 4:58:33", "2-异常警告2 --- 机房空调运行监控事件 --- 638526419155233741 ------ 2024/5/30 4:58:35", "3-异常警告3 --- 机房空调运行监控事件 --- 638526419495254800 ------ 2024/5/30 4:59:09", "4-异常警告4 --- 机房空调运行监控事件 --- 638526419505198651 ------ 2024/5/30 4:59:10", "5-异常警告5 --- 机房空调运行监控事件 --- 638526419565218661 ------ 2024/5/30 4:59:16" });
+            listBox1.Items.AddRange(new object[] { "0-Exception警告0 --- 机房空调运行监控事件 --- 638526419125153303 ------ 2024/5/30 4:58:32", "1-Exception警告1 --- 机房空调运行监控事件 --- 638526419135198480 ------ 2024/5/30 4:58:33", "2-Exception警告2 --- 机房空调运行监控事件 --- 638526419155233741 ------ 2024/5/30 4:58:35", "3-Exception警告3 --- 机房空调运行监控事件 --- 638526419495254800 ------ 2024/5/30 4:59:09", "4-Exception警告4 --- 机房空调运行监控事件 --- 638526419505198651 ------ 2024/5/30 4:59:10", "5-Exception警告5 --- 机房空调运行监控事件 --- 638526419565218661 ------ 2024/5/30 4:59:16" });
             listBox1.Location = new System.Drawing.Point(0, 455);
             listBox1.Name = "listBox1";
             listBox1.Size = new System.Drawing.Size(720, 150);
@@ -208,13 +208,12 @@ namespace GTKWinFormsApp
             Controls.Add(richTextBox1);
             Controls.Add(listBox1);
             Controls.Add(listView1);
-            Name = "Form2";
+            Name = "ListViewForm";
             Text = "Form2";
             ResumeLayout(false);
             PerformLayout();
         }
 
-        #endregion
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ListBox listBox1;

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
+	<!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,69 +59,426 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="timg6" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\timg6.jpg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+	<data name="timg6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\timg6.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="timg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\timg.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="GtkMainForm_GtkMainForm_Menu_1" xml:space="preserve">
+    <value>Menu 1</value>
   </data>
-  <data name="timg" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\timg.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	<data name="GtkMainForm_GtkMainForm_a_Menu" xml:space="preserve">
+    <value>a Menu</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_b_Menu" xml:space="preserve">
+    <value>b Menu</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_bb_Menu" xml:space="preserve">
+    <value>bb Menu</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_bb_Menu_2" xml:space="preserve">
+    <value>bb Menu 2</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_c_Menu" xml:space="preserve">
+    <value>c Menu</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_Menu_2" xml:space="preserve">
+    <value>Menu 2</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_Dropdown_List_1" xml:space="preserve">
+    <value>Dropdown List 1</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_Item_1" xml:space="preserve">
+    <value>Item 1</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_Item_2" xml:space="preserve">
+    <value>Item 2</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_Open_Main_Window" xml:space="preserve">
+    <value>Open Main Window</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_Status_Text" xml:space="preserve">
+    <value>Status Text</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_Dropdown_Menu" xml:space="preserve">
+    <value>Dropdown Menu</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_Slider_Value" xml:space="preserve">
+    <value>Slider Value</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_List_View" xml:space="preserve">
+    <value>List View</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_Split_Container_Layout" xml:space="preserve">
+    <value>Split Container Layout</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_Print" xml:space="preserve">
+    <value>Print</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_This_is_a_UserControl_placeholder" xml:space="preserve">
+    <value>This is a UserControl placeholder</value>
+  </data>
+	<data name="GtkMainForm_GtkMainForm_Default_Style_Interface" xml:space="preserve">
+    <value>Default Style Interface</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_Group_Header_Title" xml:space="preserve">
+    <value>Group header title</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_ListViewGroup2" xml:space="preserve">
+    <value>ListViewGroup2</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_ListViewItem_is_a_ContentControl_and_can_only_contain_a_single_child_element__However__this_child_element_can_be_any_visual_element_" xml:space="preserve">
+    <value>ListViewItem is a ContentControl and can only contain a single child element. However, this child element can be any visual element.</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_ListView_is_derived_from_ListBox__Typically__the_items_of_this_control_are_members_of_a_data_collection_and_are_represented_as_ListViewItem_objects_" xml:space="preserve">
+    <value>ListView is derived from ListBox. Typically, the items of this control are members of a data collection and are represented as ListViewItem objects.</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_A" xml:space="preserve">
+    <value>The ListView control provides the infrastructure to display a set of data items in different layouts or views. For example, a user may want to display data items in a table while allowing sorting of the table’s columns.</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_ListView_Grouping" xml:space="preserve">
+    <value>ListView Grouping</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_listView1_Groups_Add__" xml:space="preserve">
+    <value>listView1.Groups.Add()</value>
+  </data>
+	<data name="ListViewForm_ListViewForm__432321" xml:space="preserve">
+    <value>432321</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_ListView_Defines_View_Modes" xml:space="preserve">
+    <value>ListView Defines View Modes</value>
+  </data>
+	<data name="ViewSmallIcon" xml:space="preserve">
+    <value>View.SmallIcon</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_View_LargeIcon" xml:space="preserve">
+    <value>View.LargeIcon</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_View_Details" xml:space="preserve">
+    <value>View.Details</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_View_List" xml:space="preserve">
+    <value>View.List</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_What_is_ListView_" xml:space="preserve">
+    <value>What is ListView?</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_Bind_Data_to_ListView" xml:space="preserve">
+    <value>Bind Data to ListView</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_listView1_Items_Add___" xml:space="preserve">
+    <value>listView1.Items.Add();</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_Group_Footer_Title" xml:space="preserve">
+    <value>Group Footer Title</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_listViewGroup1" xml:space="preserve">
+    <value>listViewGroup1</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_group2" xml:space="preserve">
+    <value>group2</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_Group_Header_Subtitle" xml:space="preserve">
+    <value>Group Header Subtitle</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_Group_1" xml:space="preserve">
+    <value>Group 1</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_Group_2fffffffffffffffffffffffffffffff" xml:space="preserve">
+    <value>Group 2fffffffffffffffffffffffffffffff</value>
+  </data>
+	<data name="ListViewForm_ListViewForm_Group_3" xml:space="preserve">
+    <value>Group 3</value>
+  </data>
+	<data name="ListViewForm_ListViewForm__0_Exception_Warning_0_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419125153303________2024_5_30_4_58_32" xml:space="preserve">
+    <value>0-Exception Warning 0 --- Server Room Air Conditioning Monitoring Event --- 638526419125153303 ------ 2024/5/30 4:58:32</value>
+  </data>
+	<data name="ListViewForm_ListViewForm__1_Exception_Warning_1_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419135198480________2024_5_30_4_58_33" xml:space="preserve">
+    <value>1-Exception Warning 1 --- Server Room Air Conditioning Monitoring Event --- 638526419135198480 ------ 2024/5/30 4:58:33</value>
+  </data>
+	<data name="ListViewForm_ListViewForm__2_Exception_Warning_2_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419155233741________2024_5_30_4_58_35" xml:space="preserve">
+    <value>2-Exception Warning 2 --- Server Room Air Conditioning Monitoring Event --- 638526419155233741 ------ 2024/5/30 4:58:35</value>
+  </data>
+	<data name="ListViewForm_ListViewForm__3_Exception_Warning_3_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419495254800________2024_5_30_4_59_09" xml:space="preserve">
+    <value>3-Exception Warning 3 --- Server Room Air Conditioning Monitoring Event --- 638526419495254800 ------ 2024/5/30 4:59:09</value>
+  </data>
+	<data name="ListViewForm_ListViewForm__4_Exception_Warning_4_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419505198651________2024_5_30_4_59_10" xml:space="preserve">
+    <value>4-Exception Warning 4 --- Server Room Air Conditioning Monitoring Event --- 638526419505198651 ------ 2024/5/30 4:59:10</value>
+  </data>
+	<data name="ListViewForm_ListViewForm__5_Exception_Warning_5_____Server_Room_Air_Conditioning_Monitoring_Event_____638526419565218661________2024_5_30_4_59_16" xml:space="preserve">
+    <value>5-Exception Warning 5 --- Server Room Air Conditioning Monitoring Event --- 638526419565218661 ------ 2024/5/30 4:59:16</value>
+  </data>
+	<data name="ListViewForm_Timer1_Tick_Exception_Warning__0______Server_Room_Air_Conditioning_Operation_Monitoring_Event______1__________2_" xml:space="preserve">
+    <value>Exception Warning {0} --- Server Room Air Conditioning Operation Monitoring Event --- {1} ------ {2}</value>
+  </data>
+	<data name="ListViewForm_ListViewForm___Monitoring_Scroll_Event_Log" xml:space="preserve">
+    <value>&gt; Monitoring Scroll Event Log</value>
+  </data>
+	<data name="ListViewForm_button1_Click_1_Add_group_and_data_simultaneously" xml:space="preserve">
+    <value>Add group and data simultaneously</value>
+  </data>
+	<data name="ListViewForm_button1_Click_2_Add_data_to_a_specified_group" xml:space="preserve">
+    <value>Add data to a specified group</value>
+  </data>
+	<data name="ListViewForm_button1_Click_3_This_is_a_method_to_add_multi_column_data" xml:space="preserve">
+    <value>This is a method to add multi-column data</value>
+  </data>
+	<data name="ListViewForm_button1_Click_4_Sub_column_data_1" xml:space="preserve">
+    <value>Sub-column data 1</value>
+  </data>
+	<data name="ListViewForm_button1_Click_5_Sub_column_data_2" xml:space="preserve">
+    <value>Sub-column data 2</value>
+  </data>
+	<data name="ListViewForm_button1_Click_6_Sub_column_data_3_Sub_column_data_3_Sub_column_data_3" xml:space="preserve">
+    <value>Sub-column data 3 Sub-column data 3 Sub-column data 3</value>
+  </data>
+	<data name="CommonDialogsForm_CommonDialogsForm_Node_1" xml:space="preserve">
+    <value>Node 3</value>
+  </data>
+	<data name="CommonDialogsForm_CommonDialogsForm_Node_2" xml:space="preserve">
+    <value>Node 2</value>
+  </data>
+	<data name="CommonDialogsForm_CommonDialogsForm_Node_3" xml:space="preserve">
+    <value>Node 4</value>
+  </data>
+	<data name="CommonDialogsForm_CommonDialogsForm_Node_4" xml:space="preserve">
+    <value>Node 0</value>
+  </data>
+	<data name="CommonDialogsForm_CommonDialogsForm_Node_5" xml:space="preserve">
+    <value>Node 1</value>
+  </data>
+	<data name="CommonDialogsForm_CommonDialogsForm_0" xml:space="preserve">
+    <value>Test Button 1</value>
+  </data>
+	<data name="CommonDialogsForm_CommonDialogsForm_1" xml:space="preserve">
+    <value>Warning Message</value>
+  </data>
+	<data name="TestDataForm_TestDataForm_Load_2B" xml:space="preserve">
+    <value>Select Color</value>
+  </data>
+	<data name="CommonDialogsForm_CommonDialogsForm_3" xml:space="preserve">
+    <value>Browse Folder</value>
+  </data>
+	<data name="CommonDialogsForm_CommonDialogsForm_4" xml:space="preserve">
+    <value>Save File</value>
+  </data>
+	<data name="CommonDialogsForm_CommonDialogsForm_5" xml:space="preserve">
+    <value>Open File</value>
+  </data>
+	<data name="CommonDialogsForm_CommonDialogsForm_6" xml:space="preserve">
+    <value>Banner Bar</value>
+  </data>
+	<data name="CommonDialogsForm_button3_Click_Test_Open_File" xml:space="preserve">
+    <value>Test Open File</value>
+  </data>
+	<data name="CommonDialogsForm_button6_Click_Test_Save_File" xml:space="preserve">
+    <value>Test Save File</value>
+  </data>
+	<data name="CommonDialogsForm_button7_Click_Browse_Folder_Description" xml:space="preserve">
+    <value>Browse Folder Description</value>
+  </data>
+	<data name="CommonDialogsForm_button9_Click_Warn" xml:space="preserve">
+    <value>Warn</value>
+  </data>
+	<data name="CommonDialogsForm_button9_Click_Doubt" xml:space="preserve">
+    <value>Doubt</value>
+  </data>
+	<data name="TestDataForm_TestDataForm_Load_1" xml:space="preserve">
+    <value>Load Data Table Data</value>
+  </data>
+	<data name="TestDataForm_TestDataForm_Load_2" xml:space="preserve">
+    <value>This is a dropdown list control data test</value>
+  </data>
+	<data name="TestDataForm_TestDataForm_Load_3" xml:space="preserve">
+    <value>Group Box Title</value>
+  </data>
+	<data name="TestDataForm_TestDataForm_Load_4" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+	<data name="TestDataForm_TestDataForm_Load_5" xml:space="preserve">
+    <value>Select Color Button</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_6" xml:space="preserve">
+    <value>Beijing|Tianjin|Henan Province|Shanxi Province|Inner Mongolia Autonomous Region|Liaoning Province|Jilin Province|Heilongjiang Province|Shanghai|Jiangsu Province|Zhejiang Province|Anhui Province|Fujian Province</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_7" xml:space="preserve">
+    <value>Special Economic Zone</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_8" xml:space="preserve">
+    <value>yyyy-MM-dd HH:mm:ss</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_9" xml:space="preserve">
+    <value>Direct-controlled Municipality</value>
+  </data>
+	<data name="TestDataForm_TestDataForm_Open_Website_A" xml:space="preserve">
+    <value>Open Website:</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_B" xml:space="preserve">
+    <value>Nationwide</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_C" xml:space="preserve">
+    <value>0000-MM-dd HH:mm</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_D" xml:space="preserve">
+    <value>ListView Demo</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_E" xml:space="preserve">
+    <value>Data Grid Example</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_F" xml:space="preserve">
+    <value>Container Table Example</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_G" xml:space="preserve">
+    <value>This is a RichTextBox, this is a RichTextBox, this is a RichTextBox, this is a RichTextBox, this is a RichTextBox, this is a RichTextBox, this is a RichTextBox, this is a RichTextBox, this is a RichTextBox, this is a RichTextBox, this is a RichTextBox, this is a RichTextBox, this is a RichTextBox</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_H" xml:space="preserve">
+    <value>Drawing and Image Example</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_I" xml:space="preserve">
+    <value>Menu One</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_J" xml:space="preserve">
+    <value>Menu Two</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_K" xml:space="preserve">
+    <value>Menu Three</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_L" xml:space="preserve">
+    <value>Primary Menu 1</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_M" xml:space="preserve">
+    <value>Secondary Menu 1</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_N" xml:space="preserve">
+    <value>Tertiary Menu 1</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_O" xml:space="preserve">
+    <value>Secondary Menu 2</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_P" xml:space="preserve">
+    <value>Primary Menu 2</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_Q" xml:space="preserve">
+    <value>Status</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_R" xml:space="preserve">
+    <value>Title</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_S" xml:space="preserve">
+    <value>Date &amp; Time</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_T" xml:space="preserve">
+    <value>Action</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_U" xml:space="preserve">
+    <value>Image</value>
+  </data>
+	<data name="Resources.TestDataForm_TestDataForm_Load_V" xml:space="preserve">
+    <value>Serial Number</value>
+  </data>
+	<data name="TestDataForm_Form1_Load_TestData1_json" xml:space="preserve">
+    <value>TestData1.en.json</value>
+  </data>
+	<data name="TestDataForm_pictureBox2_Paint_This_is_the_Paint_Graphics_sample_effect" xml:space="preserve">
+    <value>This is the Paint Graphics sample effect</value>
+  </data>
+	<data name="TestDataForm_button1_1" xml:space="preserve">
+    <value>1. Load data point yes  
+2. Do not load data point no</value>
+  </data>
+	<data name="TestDataForm_button1_2" xml:space="preserve">
+    <value>Load Data Prompt</value>
+  </data>
+	<data name="TestDataForm_button1_3" xml:space="preserve">
+    <value>Load data point yes, load data  
+Point yes, load data point yes, load data point yes</value>
+  </data>
+	<data name="TestDataForm_button1_4" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+	<data name="TestDataForm_button1_5" xml:space="preserve">
+    <value>Asynchronous Network Image Loading</value>
+  </data>
+	<data name="GtkMainForm_panel3_Paint_testText" xml:space="preserve">
+    <value>testText</value>
+  </data>
+	<data name="img10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\img10.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="img11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\img11.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="TestDataForm_button1_Click_Asynchronous_loading_of_network_images" xml:space="preserve">
+    <value>Asynchronous loading of network images</value>
+  </data>
+	<data name="label1Text" xml:space="preserve">
+    <value>Special note:
+Images added to ImageList must be placed in the Resource directory under the program directory (specific directories (such as imageList1) can be further added under this directory)
+Otherwise, the image cannot be read. The name of the image can be found in the xxx.Designer.cs file, such as:
+imageList1.Images.SetKeyName(0, "010.jpg");
+imageList1.Images.SetKeyName(1, "timg2.jpg");</value>
+  </data>
+	<data name="testdata1Json" xml:space="preserve">
+    <value>TestData1.en.json</value>
   </data>
 </root>

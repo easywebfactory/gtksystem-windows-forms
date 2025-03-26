@@ -1,21 +1,18 @@
-﻿using GLib;
+﻿namespace System.Windows.Forms;
 
-namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+public sealed class SwitchBoxBase : Gtk.Switch, IControlGtk
 {
-    public sealed class SwitchBoxBase : Gtk.Switch, IControlGtk
+    public IGtkControlOverride Override { get; set; }
+    public SwitchBoxBase()
     {
-        public GtkControlOverride Override { get; set; }
-        public SwitchBoxBase() : base()
-        {
-            this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("SwitchBox");
-            base.Valign = Gtk.Align.Start;
-            base.Halign = Gtk.Align.Start;
-        }
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
-        }
+        Override = new GtkControlOverride(this);
+        Override.AddClass("SwitchBox");
+        Valign = Gtk.Align.Start;
+        Halign = Gtk.Align.Start;
+    }
+    protected override void OnShown()
+    {
+        Override.OnAddClass();
+        base.OnShown();
     }
 }

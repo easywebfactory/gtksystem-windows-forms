@@ -1,6 +1,3 @@
-﻿namespace System.Windows.Forms
-{
-    internal interface IPersistStorage
-    {
-    }
-}
+﻿namespace System.Windows.Forms;
+
+internal interface IPersistStorage;

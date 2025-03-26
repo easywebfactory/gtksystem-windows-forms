@@ -1,9 +1,8 @@
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum ColumnHeaderStyle
 {
-	public enum ColumnHeaderStyle
-	{
-		None,
-		Nonclickable,
-		Clickable
-	}
+    None,
+    Nonclickable,
+    Clickable
 }

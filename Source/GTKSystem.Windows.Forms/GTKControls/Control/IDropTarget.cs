@@ -1,6 +1,3 @@
-﻿namespace System.Windows.Forms
-{
-    internal interface IDropTarget
-    {
-    }
-}
+﻿namespace System.Windows.Forms;
+
+internal interface IDropTarget;

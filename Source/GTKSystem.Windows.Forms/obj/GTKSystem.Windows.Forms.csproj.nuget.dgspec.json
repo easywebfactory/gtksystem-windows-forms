@@ -1,50 +1,43 @@
 {
   "format": 1,
   "restore": {
-    "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {}
+    "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {}
   },
   "projects": {
-    "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {
-      "version": "1.3.24.54",
+    "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Drawing\\GTKSystem.Drawing.csproj": {
+      "version": "1.3.24.64-piero",
       "restore": {
-        "projectUniqueName": "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
-        "projectName": "GTKSystem.Windows.Forms",
-        "projectPath": "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
+        "projectUniqueName": "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Drawing\\GTKSystem.Drawing.csproj",
+        "projectName": "GTKSystem.Drawing",
+        "projectPath": "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Drawing\\GTKSystem.Drawing.csproj",
         "packagesPath": "C:\\Users\\auto_\\.nuget\\packages\\",
-        "outputPath": "D:\\GTK\\GTKSystemWindowsForms\\Source\\GTKSystem.Windows.Forms\\obj\\",
+        "outputPath": "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Drawing\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "configFilePaths": [
+          "D:\\GTK\\GTKSystemWindowsForms-partition-2\\NuGet.Config",
           "C:\\Users\\auto_\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net6.0",
-          "net7.0",
-          "net8.0"
+          "net462",
+          "netstandard2.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Packages": {},
+          "https://api.nuget.org/v3/index.json": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net6.0": {
-            "targetAlias": "net6.0",
+          "net462": {
+            "targetAlias": "net462",
             "projectReferences": {}
           },
-          "net7.0": {
-            "targetAlias": "net7.0",
-            "projectReferences": {}
-          },
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
             "projectReferences": {}
           }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
         },
         "restoreAuditProperties": {
           "enableAudit": "true",
@@ -53,70 +46,50 @@
         }
       },
       "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
+        "net462": {
+          "targetAlias": "net462",
           "dependencies": {
             "GtkSharp": {
               "target": "Package",
               "version": "[3.24.24.95, )"
             },
-            "Microsoft.NET.ILLink.Analyzers": {
+            "Microsoft.NETFramework.ReferenceAssemblies": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[7.0.100-1.23401.1, )",
+              "version": "[1.0.3, )",
               "autoReferenced": true
             },
-            "Microsoft.NET.ILLink.Tasks": {
-              "suppressParent": "All",
+            "System.Memory": {
               "target": "Package",
-              "version": "[7.0.100-1.23401.1, )",
-              "autoReferenced": true
+              "version": "[4.6.1, )"
             },
-            "System.Resources.Extensions": {
+            "System.Numerics.Vectors": {
               "target": "Package",
-              "version": "[8.0.0, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
+              "version": "[4.6.0, )"
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
         },
-        "net7.0": {
-          "targetAlias": "net7.0",
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
           "dependencies": {
             "GtkSharp": {
               "target": "Package",
               "version": "[3.24.24.95, )"
             },
-            "Microsoft.NET.ILLink.Analyzers": {
+            "NETStandard.Library": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[7.0.100-1.23401.1, )",
+              "version": "[2.0.3, )",
               "autoReferenced": true
             },
-            "Microsoft.NET.ILLink.Tasks": {
-              "suppressParent": "All",
+            "System.Memory": {
               "target": "Package",
-              "version": "[7.0.100-1.23401.1, )",
-              "autoReferenced": true
+              "version": "[4.6.1, )"
             },
-            "System.Resources.Extensions": {
+            "System.Numerics.Vectors": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[4.6.0, )"
             }
           },
           "imports": [
@@ -130,43 +103,116 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[7.0.20, 7.0.20]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[7.0.20, 7.0.20]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[7.0.20, 7.0.20]"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Resources.Extensions\\GTKSystem.Resources.Extensions.csproj": {
+      "version": "1.3.24.64-piero",
+      "restore": {
+        "projectUniqueName": "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Resources.Extensions\\GTKSystem.Resources.Extensions.csproj",
+        "projectName": "GTKSystem.Resources.Extensions",
+        "projectPath": "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Resources.Extensions\\GTKSystem.Resources.Extensions.csproj",
+        "packagesPath": "C:\\Users\\auto_\\.nuget\\packages\\",
+        "outputPath": "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Resources.Extensions\\obj\\",
+        "projectStyle": "PackageReference",
+        "crossTargeting": true,
+        "configFilePaths": [
+          "D:\\GTK\\GTKSystemWindowsForms-partition-2\\NuGet.Config",
+          "C:\\Users\\auto_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net462",
+          "netstandard2.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Packages": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net462": {
+            "targetAlias": "net462",
+            "projectReferences": {
+              "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Drawing\\GTKSystem.Drawing.csproj": {
+                "projectPath": "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Drawing\\GTKSystem.Drawing.csproj"
+              }
             }
-          ],
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
+          },
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {
+              "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Drawing\\GTKSystem.Drawing.csproj": {
+                "projectPath": "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Drawing\\GTKSystem.Drawing.csproj"
+              }
+            }
+          }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net462": {
+          "targetAlias": "net462",
+          "dependencies": {
+            "GtkSharp": {
+              "target": "Package",
+              "version": "[3.24.24.95, )"
+            },
+            "Microsoft.NETFramework.ReferenceAssemblies": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[1.0.3, )",
+              "autoReferenced": true
+            },
+            "System.Drawing.Common": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.14, )",
+              "aliases": "sdc"
+            },
+            "System.Memory": {
+              "target": "Package",
+              "version": "[4.6.1, )"
+            },
+            "System.Numerics.Vectors": {
+              "target": "Package",
+              "version": "[4.6.0, )"
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
         },
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
           "dependencies": {
             "GtkSharp": {
               "target": "Package",
               "version": "[3.24.24.95, )"
             },
-            "Microsoft.NET.ILLink.Tasks": {
+            "NETStandard.Library": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.8, )",
+              "version": "[2.0.3, )",
               "autoReferenced": true
             },
-            "System.Resources.Extensions": {
+            "System.Drawing.Common": {
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[8.0.14, )",
+              "aliases": "sdc"
+            },
+            "System.Memory": {
+              "target": "Package",
+              "version": "[4.6.1, )"
+            },
+            "System.Numerics.Vectors": {
+              "target": "Package",
+              "version": "[4.6.0, )"
             }
           },
           "imports": [
@@ -180,12 +226,120 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj": {
+      "version": "1.3.24.64-piero",
+      "restore": {
+        "projectUniqueName": "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
+        "projectName": "GTKSystem.Windows.Forms",
+        "projectPath": "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Windows.Forms\\GTKSystem.Windows.Forms.csproj",
+        "packagesPath": "C:\\Users\\auto_\\.nuget\\packages\\",
+        "outputPath": "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Windows.Forms\\obj\\",
+        "projectStyle": "PackageReference",
+        "crossTargeting": true,
+        "configFilePaths": [
+          "D:\\GTK\\GTKSystemWindowsForms-partition-2\\NuGet.Config",
+          "C:\\Users\\auto_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net462",
+          "netstandard2.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Packages": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net462": {
+            "targetAlias": "net462",
+            "projectReferences": {
+              "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Drawing\\GTKSystem.Drawing.csproj": {
+                "projectPath": "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Drawing\\GTKSystem.Drawing.csproj"
+              },
+              "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Resources.Extensions\\GTKSystem.Resources.Extensions.csproj": {
+                "projectPath": "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Resources.Extensions\\GTKSystem.Resources.Extensions.csproj"
+              }
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {
+              "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Drawing\\GTKSystem.Drawing.csproj": {
+                "projectPath": "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Drawing\\GTKSystem.Drawing.csproj"
+              },
+              "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Resources.Extensions\\GTKSystem.Resources.Extensions.csproj": {
+                "projectPath": "D:\\GTK\\GTKSystemWindowsForms-partition-2\\Source\\GTKSystem.Resources.Extensions\\GTKSystem.Resources.Extensions.csproj"
+              }
+            }
+          }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net462": {
+          "targetAlias": "net462",
+          "dependencies": {
+            "GtkSharp": {
+              "target": "Package",
+              "version": "[3.24.24.95, )"
+            },
+            "Microsoft.NETFramework.ReferenceAssemblies": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[1.0.3, )",
+              "autoReferenced": true
+            },
+            "System.Drawing.Common": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.14, )",
+              "aliases": "sdc"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
+        },
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "dependencies": {
+            "GtkSharp": {
+              "target": "Package",
+              "version": "[3.24.24.95, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            },
+            "System.Drawing.Common": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.14, )",
+              "aliases": "sdc"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

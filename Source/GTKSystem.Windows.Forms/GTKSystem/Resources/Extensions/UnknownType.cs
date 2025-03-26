@@ -1,6 +1,8 @@
-namespace GTKSystem.Resources.Extensions
+namespace System.Resources.Extensions;
+
+internal sealed class UnknownType
 {
-	internal class UnknownType
-	{
-	}
+    public UnknownType()
+    {
+    }
 }

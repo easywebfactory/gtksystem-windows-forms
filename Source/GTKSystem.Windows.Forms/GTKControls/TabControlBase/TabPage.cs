@@ -1,74 +1,69 @@
 ﻿/*
- * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
- * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
+ * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
+ * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
- * date: 2024/1/3
  */
-using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System;
-using System.Collections.Generic;
+
 using System.Drawing;
-using System.Text;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public class TabPage : ContainerControl
 {
-    public class TabPage : ContainerControl
+    public readonly TabPageBase self = new();
+    public override object GtkControl => self;
+    internal Gtk.Label _tabLabel = new();
+    private readonly ControlCollection _controls;
+    public TabPage()
     {
-        public readonly TabPageBase self = new TabPageBase();
-        public override object GtkControl => self;
-        internal Gtk.Label _tabLabel = new Gtk.Label();
-        private ControlCollection _controls;
-        public TabPage() : base()
-        {
-            _controls = new ControlCollection(this, self.Content);
-            this.Dock = DockStyle.Fill;
-        }
+        _controls = new ControlCollection(this, self.content);
+        Dock = DockStyle.Fill;
+    }
 
-        public TabPage(string text):this()
-        {
-            _tabLabel.Text = text;
-        }
+    public TabPage(string text):this()
+    {
+        _tabLabel.Text = text;
+    }
 
-        public override Point Location
+    public override Point Location
+    {
+        get => new(0, 0);
+        set
         {
-            get
-            {
-                return new Point(0, 0);
-            }
-            set
-            {
-            }
         }
-        public new DockStyle Dock
-        {
-            get
-            {
-                return DockStyle.Fill;
-            }
-            set { base.Dock = DockStyle.Fill; }
-        }
-        public override string Text { get { return _tabLabel.Text; } set { _tabLabel.Text = value; } }
-        public Gtk.Label TabLabel { get { return _tabLabel; } }
+    }
+    public new DockStyle Dock
+    {
+        get => DockStyle.Fill;
+        set => base.Dock = DockStyle.Fill;
+    }
+    public override string Text { get => _tabLabel.Text;
+        set => _tabLabel.Text = value;
+    }
+    public Gtk.Label TabLabel => _tabLabel;
 
-        public new ControlCollection Controls => _controls;
+    public new ControlCollection Controls => _controls;
 
-        public int ImageIndex { get; set; }
-        public string ImageKey { get; set; }
-        public List<object> ImageList { get; set; }
-        public override Padding Padding
+    public int ImageIndex { get; set; }
+    public string? ImageKey { get; set; }
+    public List<object>? ImageList { get; set; }
+    public override Padding Padding
+    {
+        get => base.Padding;
+        set
         {
-            get => base.Padding;
-            set
+            base.Padding = value;
+            if (self.content != null)
             {
-                base.Padding = value;
-                self.Content.MarginStart = value.Left;
-                self.Content.MarginTop = value.Top;
-                self.Content.MarginEnd = value.Right;
-                self.Content.MarginBottom = value.Bottom;
+                self.content.MarginStart = value.Left;
+                self.content.MarginTop = value.Top;
+                self.content.MarginEnd = value.Right;
+                self.content.MarginBottom = value.Bottom;
             }
         }
-        private Size _size;
-        public override Size Size { get => _size; set { _size = value; } }
+    }
+    private Size _size;
+    public override Size Size { get => _size; set => _size = value;
     }
 }

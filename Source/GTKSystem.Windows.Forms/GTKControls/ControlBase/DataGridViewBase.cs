@@ -1,22 +1,26 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿namespace System.Windows.Forms;
+
+public sealed class DataGridViewBase : ScrollableBoxBase
 {
-    public sealed class DataGridViewBase : ScrollableBoxBase
+    internal Gtk.TreeView GridView = new();
+    public DataGridViewBase()
     {
-        internal Gtk.TreeView GridView = new Gtk.TreeView();
-        public DataGridViewBase() : base()
+        Override = new GtkFormsControlOverride(this);
+        Override.AddClass("DataGridView");
+        Override.BackColor = Drawing.Color.White;
+        BorderWidth = 0;
+        ShadowType = Gtk.ShadowType.Out;
+        if (GridView == null)
         {
-            this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("DataGridView");
-            this.Override.BackColor = System.Drawing.Color.White;
-            this.BorderWidth = 0;
-            this.ShadowType = Gtk.ShadowType.Out;
-            GridView.Valign = Gtk.Align.Start;
-            GridView.Halign = Gtk.Align.Start;
-            GridView.BorderWidth = 0;
-            GridView.EnableGridLines = Gtk.TreeViewGridLines.Both;
-            GridView.EnableTreeLines = true;
-            this.AutoScroll = true;
-            this.Add(GridView);
+            return;
         }
+
+        GridView.Valign = Gtk.Align.Start;
+        GridView.Halign = Gtk.Align.Start;
+        GridView.BorderWidth = 0;
+        GridView.EnableGridLines = Gtk.TreeViewGridLines.Both;
+        GridView.EnableTreeLines = true;
+        AutoScroll = true;
+        Add(GridView);
     }
 }

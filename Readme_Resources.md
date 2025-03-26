@@ -1,38 +1,38 @@
-## Ò»¡¢Ôö¼Ó´æ·Å×ÊÔ´ÎÄ¼ş¼ĞResources
-´ËÄ¿Â¼²»ÊÇ±ØĞëµÄ£¬Ö»ÓĞÔÚÊ¹ÓÃÁËÏà¹Ø×ÊÔ´²Å¿ÉÄÜĞèÒª£¬¾ßÌåÇë¿´ÏÂÃæµÄ¡¾È«¾Ö¹²Ïí×ÊÔ´Properties/Resources.resx¡¿ºÍ¡¾´°Ìå¶ÀÕ¼×ÊÔ´Form.resx¡¿µÄÊ¹ÓÃ·½·¨¡£
-Ò»°ãÇé¿öÏÂ£¬µ¥¸öÍ¼Æ¬×ÊÔ´¿ÉÒÔÖ±½Ó¼æÈİÔ­ÉúÊ¹ÓÃ£¬¿ÉÒÔÎŞĞè¶îÍâÅäÖÃ£¬Í¼Æ¬×é×ÊÔ´Ôò±ØĞë°ÑÍ¼Æ¬´æ·Åµ½ResourcesÎÄ¼ş¼ĞÏÂ¡£
+ï»¿## ä¸€ã€å¢åŠ å­˜æ”¾èµ„æºæ–‡ä»¶å¤¹Resources
+æ­¤ç›®å½•ä¸æ˜¯å¿…é¡»çš„ï¼Œåªæœ‰åœ¨ä½¿ç”¨äº†ç›¸å…³èµ„æºæ‰å¯èƒ½éœ€è¦ï¼Œå…·ä½“è¯·çœ‹ä¸‹é¢çš„ã€å…¨å±€å…±äº«èµ„æºProperties/Resources.resxã€‘å’Œã€çª—ä½“ç‹¬å èµ„æºForm.resxã€‘çš„ä½¿ç”¨æ–¹æ³•ã€‚
+ä¸€èˆ¬æƒ…å†µä¸‹ï¼Œå•ä¸ªå›¾ç‰‡èµ„æºå¯ä»¥ç›´æ¥å…¼å®¹åŸç”Ÿä½¿ç”¨ï¼Œå¯ä»¥æ— éœ€é¢å¤–é…ç½®ï¼Œå›¾ç‰‡ç»„èµ„æºåˆ™å¿…é¡»æŠŠå›¾ç‰‡å­˜æ”¾åˆ°Resourcesæ–‡ä»¶å¤¹ä¸‹ã€‚
 
-#### ´´½¨·½·¨ÈçÏÂ£º
-ÔÚÏîÄ¿ÏÂºÍ±àÒëÊä³öÄ¿Â¼ÏÂ´´½¨ResourcesÎÄ¼ş¼Ğ£¬°ÑResources×ÊÔ´´æ·ÅµÄÍ¼Æ¬¡¢Form.resxÎÄ¼ş¸´ÖÆµ½ResourcesÎÄ¼ş¼Ğ£¬´ËÎÄ¼ş¼ĞºÍÎÄ¼şÈ«²¿Éú³Éµ½¹¤³ÌÏîÄ¿±àÒëÊä³öÄ¿Â¼ÏÂ¡£
+#### åˆ›å»ºæ–¹æ³•å¦‚ä¸‹ï¼š
+åœ¨é¡¹ç›®ä¸‹å’Œç¼–è¯‘è¾“å‡ºç›®å½•ä¸‹åˆ›å»ºResourcesæ–‡ä»¶å¤¹ï¼ŒæŠŠResourcesèµ„æºå­˜æ”¾çš„å›¾ç‰‡ã€Form.resxæ–‡ä»¶å¤åˆ¶åˆ°Resourcesæ–‡ä»¶å¤¹ï¼Œæ­¤æ–‡ä»¶å¤¹å’Œæ–‡ä»¶å…¨éƒ¨ç”Ÿæˆåˆ°å·¥ç¨‹é¡¹ç›®ç¼–è¯‘è¾“å‡ºç›®å½•ä¸‹ã€‚
 
 
-## ¶ş¡¢Ê¹ÓÃÈ«¾Ö¹²Ïí×ÊÔ´Properties/Resources.resx
-### ĞÂ½¨System.Resources.ResourceManagerÀà<br/>
-ÔÚÏîÄ¿ÏÂĞÂ½¨System.Resources.ResourceManagerÀà£¬¼Ì³ĞGTKSystem.Resources.ResourceManager£¬ÓÃÓÚ¸²¸ÇÔ­ÉúSystem.Resources.ResourceManagerÀà¡£
-GTKSystem.Resources.ResourceManagerÊµÏÖÁËÏîÄ¿×ÊÔ´ÎÄ¼şºÍÍ¼ÏñÎÄ¼ş¶ÁÈ¡¡£
-Èç¹ûÏîÄ¿ÀïÃ»ÓĞÊ¹ÓÃ×ÊÔ´Í¼ÏñÎÄ¼ş£¬¿ÉÒÔ²»ÓÃĞÂ½¨´ËÎÄ¼ş¡£
+## äºŒã€ä½¿ç”¨å…¨å±€å…±äº«èµ„æºProperties/Resources.resx
+### æ–°å»ºSystem.Resources.ResourceManagerç±»<br/>
+åœ¨é¡¹ç›®ä¸‹æ–°å»ºSystem.Resources.ResourceManagerç±»ï¼Œç»§æ‰¿GTKSystem.Resources.ResourceManagerï¼Œç”¨äºè¦†ç›–åŸç”ŸSystem.Resources.ResourceManagerç±»ã€‚
+GTKSystem.Resources.ResourceManagerå®ç°äº†é¡¹ç›®èµ„æºæ–‡ä»¶å’Œå›¾åƒæ–‡ä»¶è¯»å–ã€‚
+å¦‚æœé¡¹ç›®é‡Œæ²¡æœ‰ä½¿ç”¨èµ„æºå›¾åƒæ–‡ä»¶ï¼Œå¯ä»¥ä¸ç”¨æ–°å»ºæ­¤æ–‡ä»¶ã€‚
 
-### ĞÂ½¨System.ComponentModel.ComponentResourceManagerÀà<br/>
-ÔÚÏîÄ¿ÏÂĞÂ½¨System.ComponentModel.ComponentResourceManagerÀà£¬¼Ì³ĞGTKSystem.ComponentModel.ComponentResourceManager£¬ÓÃÓÚ¸²¸ÇÔ­ÉúSystem.ComponentModel.ComponentResourceManagerÀà¡£<br/>
-GTKSystem.ComponentModel.ComponentResourceManagerÊµÏÖÁËÏîÄ¿×ÊÔ´ÎÄ¼şºÍÍ¼ÏñÎÄ¼ş¶ÁÈ¡£¨µ÷ÓÃGTKSystem.Resources.ResourceManager£©¡£
-Èç¹ûÏîÄ¿ÀïÃ»ÓĞÊ¹ÓÃ×ÊÔ´Í¼ÏñÎÄ¼ş£¬¿ÉÒÔ²»ÓÃĞÂ½¨´ËÎÄ¼ş¡£
+### æ–°å»ºSystem.ComponentModel.ComponentResourceManagerç±»<br/>
+åœ¨é¡¹ç›®ä¸‹æ–°å»ºSystem.ComponentModel.ComponentResourceManagerç±»ï¼Œç»§æ‰¿GTKSystem.ComponentModel.ComponentResourceManagerï¼Œç”¨äºè¦†ç›–åŸç”ŸSystem.ComponentModel.ComponentResourceManagerç±»ã€‚<br/>
+GTKSystem.ComponentModel.ComponentResourceManagerå®ç°äº†é¡¹ç›®èµ„æºæ–‡ä»¶å’Œå›¾åƒæ–‡ä»¶è¯»å–ï¼ˆè°ƒç”¨GTKSystem.Resources.ResourceManagerï¼‰ã€‚
+å¦‚æœé¡¹ç›®é‡Œæ²¡æœ‰ä½¿ç”¨èµ„æºå›¾åƒæ–‡ä»¶ï¼Œå¯ä»¥ä¸ç”¨æ–°å»ºæ­¤æ–‡ä»¶ã€‚
 
-## Èı¡¢Ê¹ÓÃ´°Ìå¶ÀÕ¼×ÊÔ´Form.resx
-### ĞÂ½¨System.ComponentModel.ComponentResourceManagerÀà<br/>
-ÔÚÏîÄ¿ÏÂĞÂ½¨System.ComponentModel.ComponentResourceManagerÀà£¬¼Ì³ĞGTKSystem.ComponentModel.ComponentResourceManager£¬ÓÃÓÚ¸²¸ÇÔ­ÉúSystem.ComponentModel.ComponentResourceManagerÀà¡£<br/>
-GTKSystem.ComponentModel.ComponentResourceManagerÊµÏÖÁËÏîÄ¿×ÊÔ´ÎÄ¼şºÍÍ¼ÏñÎÄ¼ş¶ÁÈ¡£¨µ÷ÓÃGTKSystem.Resources.ResourceManager£©¡£
-Èç¹ûÏîÄ¿ÀïÃ»ÓĞÊ¹ÓÃ×ÊÔ´Í¼ÏñÎÄ¼ş£¬¿ÉÒÔ²»ÓÃĞÂ½¨´ËÎÄ¼ş¡£
+## ä¸‰ã€ä½¿ç”¨çª—ä½“ç‹¬å èµ„æºForm.resx
+### æ–°å»ºSystem.ComponentModel.ComponentResourceManagerç±»<br/>
+åœ¨é¡¹ç›®ä¸‹æ–°å»ºSystem.ComponentModel.ComponentResourceManagerç±»ï¼Œç»§æ‰¿GTKSystem.ComponentModel.ComponentResourceManagerï¼Œç”¨äºè¦†ç›–åŸç”ŸSystem.ComponentModel.ComponentResourceManagerç±»ã€‚<br/>
+GTKSystem.ComponentModel.ComponentResourceManagerå®ç°äº†é¡¹ç›®èµ„æºæ–‡ä»¶å’Œå›¾åƒæ–‡ä»¶è¯»å–ï¼ˆè°ƒç”¨GTKSystem.Resources.ResourceManagerï¼‰ã€‚
+å¦‚æœé¡¹ç›®é‡Œæ²¡æœ‰ä½¿ç”¨èµ„æºå›¾åƒæ–‡ä»¶ï¼Œå¯ä»¥ä¸ç”¨æ–°å»ºæ­¤æ–‡ä»¶ã€‚
 
-### Í¼Æ¬×é×ÊÔ´µÄÊ¹ÓÃ
-ÓÉÓÚGTKSystemÎŞ·¨¶ÁÈ¡Í¼Æ¬×é(ImageList)£¬ĞèÒª°ÑÍ¼Æ¬×éµÄÍ¼Æ¬´æÈëµ½ÏîÄ¿µÄResourcesÎÄ¼ş¼ĞÏÂ£¬Èç£º
+### å›¾ç‰‡ç»„èµ„æºçš„ä½¿ç”¨
+ç”±äºGTKSystemæ— æ³•è¯»å–å›¾ç‰‡ç»„(ImageList)ï¼Œéœ€è¦æŠŠå›¾ç‰‡ç»„çš„å›¾ç‰‡å­˜å…¥åˆ°é¡¹ç›®çš„Resourcesæ–‡ä»¶å¤¹ä¸‹ï¼Œå¦‚ï¼š
 ```
-Form2.Designer.csµÄÅäÖÃ³ÌĞòÈçÏÂ£º
+Form2.Designer.csçš„é…ç½®ç¨‹åºå¦‚ä¸‹ï¼š
  imageList1.ImageStream = (ImageListStreamer)resources.GetObject("imageList1.ImageStream");
  imageList1.TransparentColor = System.Drawing.Color.Transparent;
  imageList1.Images.SetKeyName(0, "010.jpg");
  imageList1.Images.SetKeyName(1, "timg2.jpg");
 
-ÄÇÃ´ĞèÒª°ÑÍ¼Æ¬010.jpgºÍtimg2.jpg¸´ÖÆµ½ÎÄ¼ş¼ĞResources»òResources/Formx(ËùÊô´°Ìå)¡£
+é‚£ä¹ˆéœ€è¦æŠŠå›¾ç‰‡010.jpgå’Œtimg2.jpgå¤åˆ¶åˆ°æ–‡ä»¶å¤¹Resourcesæˆ–Resources/Formx(æ‰€å±çª—ä½“)ã€‚
 ```
 
 

@@ -13,7 +13,7 @@ namespace System.Windows.Forms;
 /// </summary>
 internal partial class PropertyStore
 {
-    private static int s_currentKey;
+    private static int _currentKey;
 
     private IntegerEntry[]? _intEntries;
     private ObjectEntry[]? _objEntries;
@@ -25,7 +25,7 @@ internal partial class PropertyStore
     /// </summary>
     public bool ContainsInteger(int key)
     {
-        GetInteger(key, out bool found);
+        GetInteger(key, out var found);
         return found;
     }
 
@@ -36,7 +36,7 @@ internal partial class PropertyStore
     /// </summary>
     public bool ContainsObject(int key)
     {
-        GetObject(key, out bool found);
+        GetObject(key, out var found);
         return found;
     }
 
@@ -48,7 +48,7 @@ internal partial class PropertyStore
     ///  initializer, and we never have the same class hierarchy
     ///  initializing on multiple threads at once.
     /// </summary>
-    public static int CreateKey() => s_currentKey++;
+    public static int CreateKey() => _currentKey++;
 
     public Color GetColor(int key) => GetColor(key, out _);
 
@@ -57,7 +57,7 @@ internal partial class PropertyStore
     /// </summary>
     public Color GetColor(int key, out bool found)
     {
-        object? storedObject = GetObject(key, out found);
+        var storedObject = GetObject(key, out found);
         if (found)
         {
             if (storedObject is ColorWrapper wrapper)
@@ -65,7 +65,8 @@ internal partial class PropertyStore
                 return wrapper.Color;
             }
 
-            Debug.Assert(storedObject is null, $"Have non-null object that isn't a color wrapper stored in a color entry!{Environment.NewLine}Did someone SetObject instead of SetColor?");
+            Debug.Assert(storedObject is null,
+                $"Have non-null object that isn't a color wrapper stored in a color entry!{Environment.NewLine}Did someone SetObject instead of SetColor?");
         }
 
         found = false;
@@ -77,7 +78,7 @@ internal partial class PropertyStore
     /// </summary>
     public Padding GetPadding(int key, out bool found)
     {
-        object? storedObject = GetObject(key, out found);
+        var storedObject = GetObject(key, out found);
         if (found)
         {
             if (storedObject is PaddingWrapper wrapper)
@@ -85,7 +86,8 @@ internal partial class PropertyStore
                 return wrapper.Padding;
             }
 
-            Debug.Assert(storedObject is null, $"Have non-null object that isn't a padding wrapper stored in a padding entry!{Environment.NewLine}Did someone SetObject instead of SetPadding?");
+            Debug.Assert(storedObject is null,
+                $"Have non-null object that isn't a padding wrapper stored in a padding entry!{Environment.NewLine}Did someone SetObject instead of SetPadding?");
         }
 
         found = false;
@@ -97,7 +99,7 @@ internal partial class PropertyStore
     /// </summary>
     public Size GetSize(int key, out bool found)
     {
-        object? storedObject = GetObject(key, out found);
+        var storedObject = GetObject(key, out found);
         if (found)
         {
             if (storedObject is SizeWrapper wrapper)
@@ -105,7 +107,8 @@ internal partial class PropertyStore
                 return wrapper.Size;
             }
 
-            Debug.Assert(storedObject is null, $"Have non-null object that isn't a padding wrapper stored in a padding entry!{Environment.NewLine}Did someone SetObject instead of SetPadding?");
+            Debug.Assert(storedObject is null,
+                $"Have non-null object that isn't a padding wrapper stored in a padding entry!{Environment.NewLine}Did someone SetObject instead of SetPadding?");
         }
 
         found = false;
@@ -117,7 +120,7 @@ internal partial class PropertyStore
     /// </summary>
     public Rectangle GetRectangle(int key, out bool found)
     {
-        object? storedObject = GetObject(key, out found);
+        var storedObject = GetObject(key, out found);
         if (found)
         {
             if (storedObject is RectangleWrapper wrapper)
@@ -125,7 +128,8 @@ internal partial class PropertyStore
                 return wrapper.Rectangle;
             }
 
-            Debug.Assert(storedObject is null, $"Have non-null object that isn't a Rectangle wrapper stored in a Rectangle entry!{Environment.NewLine}Did someone SetObject instead of SetRectangle?");
+            Debug.Assert(storedObject is null,
+                $"Have non-null object that isn't a Rectangle wrapper stored in a Rectangle entry!{Environment.NewLine}Did someone SetObject instead of SetRectangle?");
         }
 
         found = false;
@@ -146,8 +150,8 @@ internal partial class PropertyStore
     /// </summary>
     public int GetInteger(int key, out bool found)
     {
-        short keyIndex = SplitKey(key, out short element);
-        if (!LocateIntegerEntry(keyIndex, out int index))
+        var keyIndex = SplitKey(key, out var element);
+        if (!LocateIntegerEntry(keyIndex, out var index))
         {
             found = false;
             return default;
@@ -199,7 +203,7 @@ internal partial class PropertyStore
     /// <returns>True if an object (including null) is found for the given key; otherwise, false.</returns>
     public bool TryGetObject<T>(int key, out T? value)
     {
-        object? entry = GetObject(key, out bool found);
+        var entry = GetObject(key, out var found);
         Debug.Assert(!found || entry is null || entry is T, $"Entry is not of type {typeof(T)}, but of type {entry?.GetType()}");
         if (typeof(T).IsValueType || typeof(T).IsEnum || typeof(T).IsPrimitive)
         {
@@ -213,7 +217,7 @@ internal partial class PropertyStore
 
     public bool ContainsObjectThatIsNotNull(int key)
     {
-        object? entry = GetObject(key, out bool found);
+        var entry = GetObject(key, out var found);
         return found && entry is not null;
     }
 
@@ -224,8 +228,8 @@ internal partial class PropertyStore
     /// </summary>
     public object? GetObject(int key, out bool found)
     {
-        short keyIndex = SplitKey(key, out short element);
-        if (!LocateObjectEntry(keyIndex, out int index))
+        var keyIndex = SplitKey(key, out var element);
+        if (!LocateObjectEntry(keyIndex, out var index))
         {
             found = false;
             return null;
@@ -264,12 +268,10 @@ internal partial class PropertyStore
     ///  this returns false. If the entry is not found, index will contain
     ///  the insert point at which one would add a new element.
     /// </summary>
-    private bool LocateIntegerEntry(short entryKey, out int index)
+    private bool LocateIntegerEntry(short _, out int index)
     {
-
-            index = 0;
-            return false;
-        
+        index = 0;
+        return false;
     }
 
     /// <summary>
@@ -280,12 +282,10 @@ internal partial class PropertyStore
     ///  this returns false. If the entry is not found, index will contain
     ///  the insert point at which one would add a new element.
     /// </summary>
-    private bool LocateObjectEntry(short entryKey, out int index)
+    private bool LocateObjectEntry(short _, out int index)
     {
-
-            index = 0;
-            return false;
-        
+        index = 0;
+        return false;
     }
 
     /// <summary>
@@ -293,7 +293,6 @@ internal partial class PropertyStore
     /// </summary>
     public void RemoveInteger(int key)
     {
-
     }
 
     /// <summary>
@@ -301,8 +300,8 @@ internal partial class PropertyStore
     /// </summary>
     public void RemoveObject(int key)
     {
-        short entryKey = SplitKey(key, out short element);
-        if (!LocateObjectEntry(entryKey, out int index))
+        var entryKey = SplitKey(key, out var element);
+        if (!LocateObjectEntry(entryKey, out var index))
         {
             return;
         }
@@ -314,7 +313,7 @@ internal partial class PropertyStore
         }
 
         // Declare that the element is no longer used
-        _objEntries[index].Mask &= (short)(~((short)(1 << element)));
+        _objEntries[index].Mask &= (short)~(short)(1 << element);
 
         if (_objEntries[index].Mask == 0)
         {
@@ -327,7 +326,7 @@ internal partial class PropertyStore
             }
             else
             {
-                ObjectEntry[] newEntries = new ObjectEntry[_objEntries.Length - 1];
+                var newEntries = new ObjectEntry[_objEntries.Length - 1];
                 if (index > 0)
                 {
                     Array.Copy(_objEntries, 0, newEntries, 0, index);
@@ -372,7 +371,7 @@ internal partial class PropertyStore
 
     public void SetColor(int key, Color value)
     {
-        object? storedObject = GetObject(key, out bool found);
+        var storedObject = GetObject(key, out var found);
         if (!found)
         {
             SetObject(key, new ColorWrapper(value));
@@ -386,7 +385,8 @@ internal partial class PropertyStore
             }
             else
             {
-                Debug.Assert(storedObject is null, "object should either be null or ColorWrapper"); // could someone have SetObject to this key behind our backs?
+                Debug.Assert(storedObject is null,
+                    "object should either be null or ColorWrapper"); // could someone have SetObject to this key behind our backs?
                 SetObject(key, new ColorWrapper(value));
             }
         }
@@ -394,7 +394,7 @@ internal partial class PropertyStore
 
     public void SetPadding(int key, Padding value)
     {
-        object? storedObject = GetObject(key, out bool found);
+        var storedObject = GetObject(key, out var found);
         if (!found)
         {
             SetObject(key, new PaddingWrapper(value));
@@ -408,7 +408,8 @@ internal partial class PropertyStore
             }
             else
             {
-                Debug.Assert(storedObject is null, "object should either be null or PaddingWrapper"); // could someone have SetObject to this key behind our backs?
+                Debug.Assert(storedObject is null,
+                    "object should either be null or PaddingWrapper"); // could someone have SetObject to this key behind our backs?
                 SetObject(key, new PaddingWrapper(value));
             }
         }
@@ -416,7 +417,7 @@ internal partial class PropertyStore
 
     public void SetRectangle(int key, Rectangle value)
     {
-        object? storedObject = GetObject(key, out bool found);
+        var storedObject = GetObject(key, out var found);
         if (!found)
         {
             SetObject(key, new RectangleWrapper(value));
@@ -430,7 +431,8 @@ internal partial class PropertyStore
             }
             else
             {
-                Debug.Assert(storedObject is null, "object should either be null or RectangleWrapper"); // could someone have SetObject to this key behind our backs?
+                Debug.Assert(storedObject is null,
+                    "object should either be null or RectangleWrapper"); // could someone have SetObject to this key behind our backs?
                 SetObject(key, new RectangleWrapper(value));
             }
         }
@@ -438,7 +440,7 @@ internal partial class PropertyStore
 
     public void SetSize(int key, Size value)
     {
-        object? storedObject = GetObject(key, out bool found);
+        var storedObject = GetObject(key, out var found);
         if (!found)
         {
             SetObject(key, new SizeWrapper(value));
@@ -452,7 +454,8 @@ internal partial class PropertyStore
             }
             else
             {
-                Debug.Assert(storedObject is null, "object should either be null or SizeWrapper"); // could someone have SetObject to this key behind our backs?
+                Debug.Assert(storedObject is null,
+                    "object should either be null or SizeWrapper"); // could someone have SetObject to this key behind our backs?
                 SetObject(key, new SizeWrapper(value));
             }
         }
@@ -463,13 +466,13 @@ internal partial class PropertyStore
     /// </summary>
     public void SetInteger(int key, int value)
     {
-        short entryKey = SplitKey(key, out short element);
-        if (!LocateIntegerEntry(entryKey, out int index))
+        var entryKey = SplitKey(key, out var element);
+        if (!LocateIntegerEntry(entryKey, out var index))
         {
             // We must allocate a new entry.
             if (_intEntries is not null)
             {
-                IntegerEntry[] newEntries = new IntegerEntry[_intEntries.Length + 1];
+                var newEntries = new IntegerEntry[_intEntries.Length + 1];
 
                 if (index > 0)
                 {
@@ -516,7 +519,10 @@ internal partial class PropertyStore
                 break;
         }
 
-        _intEntries[index].Mask = (short)((1 << element) | (ushort)(_intEntries[index].Mask));
+        if (_intEntries != null)
+        {
+            _intEntries[index].Mask = (short)((1 << element) | (ushort)_intEntries[index].Mask);
+        }
     }
 
     /// <summary>
@@ -524,13 +530,13 @@ internal partial class PropertyStore
     /// </summary>
     public void SetObject(int key, object? value)
     {
-        short entryKey = SplitKey(key, out short element);
-        if (!LocateObjectEntry(entryKey, out int index))
+        var entryKey = SplitKey(key, out var element);
+        if (!LocateObjectEntry(entryKey, out var index))
         {
             // We must allocate a new entry.
             if (_objEntries is not null)
             {
-                ObjectEntry[] newEntries = new ObjectEntry[_objEntries.Length + 1];
+                var newEntries = new ObjectEntry[_objEntries.Length + 1];
 
                 if (index > 0)
                 {
@@ -577,7 +583,10 @@ internal partial class PropertyStore
                 break;
         }
 
-        _objEntries[index].Mask = (short)((ushort)(_objEntries[index].Mask) | (1 << element));
+        if (_objEntries != null)
+        {
+            _objEntries[index].Mask = (short)((ushort)_objEntries[index].Mask | (1 << element));
+        }
     }
 
     /// <summary>

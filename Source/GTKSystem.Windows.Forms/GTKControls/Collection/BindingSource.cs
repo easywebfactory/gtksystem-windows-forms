@@ -417,7 +417,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
     [DefaultValue(-1)]
     public int Position
     {
-        get => _currencyManager?.Position ?? 0;
+        get => _currencyManager?.Position??0;
         set
         {
             if (_currencyManager != null && _currencyManager.Position != value)
@@ -654,7 +654,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         }
         if (!AllowNewInternal(true))
         {
-            throw new InvalidOperationException(string.Format("BindingSourceBindingListWrapperNeedToSetAllowNew {0}", _itemType == null ? "(null)" : _itemType.FullName));
+            throw new InvalidOperationException(string.Format("BindingSourceBindingListWrapperNeedToSetAllowNew {0}",  _itemType == null ? "(null)" : _itemType.FullName ));
         }
         var num = _addNewPos;
         EndEdit();
@@ -676,7 +676,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
             }
             if (_itemConstructor == null)
             {
-                throw new InvalidOperationException(string.Format("BindingSourceBindingListWrapperNeedAParameterlessConstructor {0}", _itemType == null ? "(null)" : _itemType.FullName));
+                throw new InvalidOperationException(string.Format("BindingSourceBindingListWrapperNeedAParameterlessConstructor {0}", _itemType == null ? "(null)" : _itemType.FullName ));
             }
             newObject = _itemConstructor.Invoke(null);
         }
@@ -1056,7 +1056,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         {
             return _currencyManager;
         }
-        if ((member?.IndexOf(".", StringComparison.Ordinal) ?? -1) != -1)
+        if ((member?.IndexOf(".", StringComparison.Ordinal)??-1) != -1)
         {
             return null;
         }
@@ -1370,7 +1370,7 @@ public class BindingSource : Component, IBindingListView, ITypedList, ICancelAdd
         }
         var arrayLists = new ArrayList();
         var itemProperties = _currencyManager?.GetItemProperties();
-        var strArrays = sortString?.Split(',') ?? [];
+        var strArrays = sortString?.Split(',')??[];
         for (var i = 0; i < strArrays.Length; i++)
         {
             var str = strArrays[i].Trim();

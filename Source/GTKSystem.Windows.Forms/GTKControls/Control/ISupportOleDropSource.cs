@@ -1,6 +1,3 @@
-﻿namespace System.Windows.Forms
-{
-    internal interface ISupportOleDropSource
-    {
-    }
-}
+﻿namespace System.Windows.Forms;
+
+internal interface ISupportOleDropSource;

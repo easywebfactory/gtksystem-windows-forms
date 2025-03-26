@@ -1,50 +1,63 @@
 ﻿/*
- * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
- * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
- * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ * A cross-platform interface component developed based on GTK components and compatible with the native C# control winform interface.
+ * Use this component GTKSystem.Windows.Forms instead of Microsoft.WindowsDesktop.App.WindowsForms, compile once, run across platforms windows, linux, macos
+ * Technical support 438865652@qq.com, https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
 
 using Gtk;
-using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
-using System.Reflection;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+[DesignerCategory("Component")]
+public partial class ComboBox : ListControl
 {
-
-    [DesignerCategory("Component")]
-    public partial class ComboBox: ListControl
+    public readonly ComboBoxBase self = new();
+    public override object GtkControl => self;
+    private readonly ObjectCollection itemsData;
+    public ComboBox()
     {
-        public readonly ComboBoxBase self = new ComboBoxBase();
-        public override object GtkControl => self;
-        private ObjectCollection __itemsData;
-        public ComboBox():base()
-        {
-            self.Entry.HasFrame = false;
-            self.Entry.WidthChars = 0;
+        self.Entry.HasFrame = false;
+        self.Entry.WidthChars = 0;
 
-            __itemsData = new ObjectCollection(this);
-            self.Realized += Self_Realized;
-            self.Changed += Self_Changed;
+        itemsData = new ObjectCollection(this);
+        self.Realized += Self_Realized;
+        self.Changed += Self_Changed;
+    }
+
+    private void Self_Changed(object? sender, EventArgs e)
+    {
+        if (self.IsVisible)
+        {
+            OnSelectedIndexChanged(e);
+            OnSelectedValueChanged(e);
+            OnSelectedItemChanged(e);
         }
+    }
 
-        private void Self_Changed(object sender, EventArgs e)
-        {
-            if (self.IsVisible)
-            {
-                ((EventHandler)Events["SelectedIndexChanged"])?.Invoke(this, e);
-                ((EventHandler)Events["SelectedValueChanged"])?.Invoke(this, e);
-                ((EventHandler)Events["SelectedItemChanged"])?.Invoke(this, e);
-            }
-        }
+    protected virtual void OnSelectedItemChanged(EventArgs e)
+    {
+        ((EventHandler)events["SelectedItemChanged"])?.Invoke(this, e);
+    }
 
-        private void Self_Realized(object sender, EventArgs e)
+    protected virtual void OnSelectedValueChanged(EventArgs e)
+    {
+        ((EventHandler)events["SelectedValueChanged"])?.Invoke(this, e);
+    }
+
+    protected virtual void OnSelectedIndexChanged(EventArgs e)
+    {
+        ((EventHandler)events["SelectedIndexChanged"])?.Invoke(this, e);
+    }
+
+    private void Self_Realized(object? sender, EventArgs e)
+    {
+        OnSetDataSource();
+        if (((Box)self.Children[0].Parent).Children[1] is ToggleButton ws)
         {
-            OnSetDataSource();
-            var ws = ((Gtk.Box)self.Children[0].Parent).Children[1] as Gtk.ToggleButton;
             ws.Toggled += Ws_Toggled;
             if (DropDownStyle == ComboBoxStyle.DropDownList)
             {
@@ -54,90 +67,103 @@ namespace System.Windows.Forms
                 self.Entry.WidthRequest = 1;
                 ws.WidthRequest = self.WidthRequest;
                 ws.Label = self.Entry.Text;
-                ws.Image = Gtk.Image.NewFromIconName("pan-down", Gtk.IconSize.Button);
-                ws.ImagePosition = Gtk.PositionType.Right;
+                ws.Image = Gtk.Image.NewFromIconName("pan-down", IconSize.Button);
+                ws.ImagePosition = PositionType.Right;
                 ws.AlwaysShowImage = true;
                 ws.Valign = Align.Center;
                 ws.Yalign = 0.5f;
                 ws.Xalign = 0.95f;
                 ws.Hexpand = true;
-                ws.Image.Halign = Gtk.Align.End;
-                ws.Image.Valign = Gtk.Align.Center;
+                ws.Image.Halign = Align.End;
+                ws.Image.Valign = Align.Center;
                 ws.Drawn += Ws_Drawn;
             }
         }
-        public event EventHandler DropDown;
-        private void Ws_Toggled(object sender, EventArgs e)
+    }
+    public event EventHandler? DropDown;
+    private void Ws_Toggled(object? sender, EventArgs e)
+    {
+        OnDropDown(e);
+    }
+
+    protected virtual void OnDropDown(EventArgs e)
+    {
+        DropDown?.Invoke(this, e);
+    }
+
+    private void Ws_Drawn(object? o, DrawnArgs args)
+    {
+        self.Entry.Visible = false;
+        if (o is ToggleButton ws)
         {
-            if (DropDown != null)
-            {
-                DropDown(this, e);
-            }
-        }
-        private void Ws_Drawn(object o, Gtk.DrawnArgs args)
-        {
-            self.Entry.Visible = false;
-            Gtk.ToggleButton ws = (Gtk.ToggleButton)o;
             ws.WidthRequest = -1;
-            Pango.Context pangocontext = ws.PangoContext;
-            string family = pangocontext.FontDescription.Family;
+            var pangocontext = ws.PangoContext;
+            var family = pangocontext.FontDescription.Family;
             args.Cr.SelectFontFace(family, Cairo.FontSlant.Normal, Cairo.FontWeight.Normal);
-            if (this.ForeColor.Name == "0")
+            if (ForeColor.Name == "0")
             {
-                Gdk.RGBA color = ws.StyleContext.GetColor(StateFlags.Normal);
+                var color = ws.StyleContext.GetColor(StateFlags.Normal);
                 args.Cr.SetSourceRGBA(color.Red, color.Green, color.Blue, color.Alpha);
             }
             else
             {
-                args.Cr.SetSourceRGBA(this.ForeColor.R / 255, this.ForeColor.G / 255, this.ForeColor.B / 255, this.ForeColor.A / 255);
+                var foreColorR = ForeColor.R / 255;
+                var foreColorG = ForeColor.G / 255;
+                var foreColorB = ForeColor.B / 255;
+                var foreColorA = ForeColor.A / 255;
+                args.Cr.SetSourceRGBA(foreColorR, foreColorG, foreColorB, foreColorA);
             }
 
-            double fontsize = pangocontext.FontDescription.Size / Pango.Scale.PangoScale * 1.5;
+            var fontsize = pangocontext.FontDescription.Size / Pango.Scale.PangoScale * 1.5;
             args.Cr.Save();
             args.Cr.Translate(10, (ws.AllocatedHeight - fontsize) / 2 + fontsize - 2);
             args.Cr.SetFontSize(fontsize);
-            Cairo.TextExtents ext = args.Cr.TextExtents(self.Entry.Text);
-            string text = self.Entry.Text;
+            args.Cr.TextExtents(self.Entry.Text);
+            var text = self.Entry.Text;
             while (text.Length > 1 && args.Cr.TextExtents(text).Width > ws.AllocatedWidth - 40)
                 text = text.Substring(0, text.Length - 1);
 
             args.Cr.ShowText(text);
-            args.Cr.Restore();
         }
 
-        private ComboBoxStyle _DropDownStyle;
-        public ComboBoxStyle DropDownStyle { 
-            get=> _DropDownStyle; 
-            set {
-                _DropDownStyle = value;
-                if (value == ComboBoxStyle.DropDown)
-                {
-                    self.StyleContext.RemoveClass("DropDownList");
-                }
-                else if (value == ComboBoxStyle.DropDownList)
-                {
-                    self.StyleContext.AddClass("DropDownList");
-                    self.Entry.IsEditable = false;
-                    self.Entry.CanFocus = false;
-                }
+        args.Cr.Restore();
+    }
+
+    private ComboBoxStyle dropDownStyle;
+    public ComboBoxStyle DropDownStyle
+    {
+        get => dropDownStyle;
+        set
+        {
+            dropDownStyle = value;
+            if (value == ComboBoxStyle.DropDown)
+            {
+                self.StyleContext.RemoveClass("DropDownList");
+            }
+            else if (value == ComboBoxStyle.DropDownList)
+            {
+                self.StyleContext.AddClass("DropDownList");
+                self.Entry.IsEditable = false;
+                self.Entry.CanFocus = false;
             }
         }
+    }
 
+    public override string Text { get => self.Entry.Text; set => self.Entry.Text = value ?? string.Empty; }
 
-        public override string Text { get => self.Entry.Text; set { self.Entry.Text = value; } }
         public object SelectedItem { 
-            get { return SelectedIndex == -1 ? null : __itemsData[SelectedIndex]; }
-            set { int _index = __itemsData.IndexOf(value); if (_index != -1) { SelectedIndex = _index; } } 
+            get { return SelectedIndex == -1 ? null : itemsData[SelectedIndex]; }
+            set { var _index = itemsData.IndexOf(value); if (_index != -1) { SelectedIndex = _index; } } 
         }
         internal int _selectedIndex;
         public override int SelectedIndex { get { return self.Active; } set { self.Active = value; _selectedIndex = value; if (value == -1) { Text = ""; } } }
         public override object SelectedValue { get { return self.ActiveId; } set => self.ActiveId = value?.ToString(); }
-        public ObjectCollection Items { get { return __itemsData; } }
+        public ObjectCollection Items { get { return itemsData; } }
         public override string GetItemText(object item)
         {
             if (item is ObjectCollection.Entry entry)
             {
-                Type type = entry.Item.GetType();
+                var type = entry.Item.GetType();
                 if (entry.Item is DataRow dr)
                     return dr[DisplayMember]?.ToString();
                 else if (type.IsValueType && type.IsPrimitive)
@@ -149,8 +175,8 @@ namespace System.Windows.Forms
         }
         public string NativeGetItemText(int index)
         {
-            self.Model.GetIter(out TreeIter iter, new TreePath(new int[] { index }));
-            object val = self.Model.GetValue(iter, 1);
+            self.Model.GetIter(out var iter, new TreePath(new int[] { index }));
+            var val = self.Model.GetValue(iter, 1);
             return val?.ToString();
         }
         public void NativeAdd(int index, string value, string text)
@@ -167,7 +193,7 @@ namespace System.Windows.Forms
         }
         private bool _sorted;
         public bool Sorted { get=> _sorted; set=> _sorted = value; }
-        public object _DataSource;
+        public object _DataSource = null!;
         public override object DataSource
         {
             get => _DataSource;
@@ -199,34 +225,32 @@ namespace System.Windows.Forms
         }
         private void LoadDataTableSource(DataTable dtable)
         {
-            __itemsData.Clear();
+            itemsData.Clear();
             if(dtable.Columns.Contains(ValueMember)&& dtable.Columns.Contains(DisplayMember))
             {
                 foreach (DataRow row in dtable.Rows)
-                    __itemsData.Add(row[ValueMember].ToString(), row[DisplayMember].ToString(), row);
+                    itemsData.Add(row[ValueMember].ToString(), row[DisplayMember].ToString(), row);
             }
             else if (dtable.Columns.Contains(DisplayMember))
             {
                 foreach (DataRow row in dtable.Rows)
-                    __itemsData.Add("", row[DisplayMember].ToString(), row);
+                    itemsData.Add("", row[DisplayMember].ToString(), row);
             }
             else
             {
-                throw new Exception("DisplayMember属性未赋值或字段名不存在");
+                throw new Exception("The DisplayMember property is not with assigned a value or the field name does not exist");
             }
         }
         private void LoadListSource(IList list)
         {
-            __itemsData.Clear();
+            itemsData.Clear();
             if (list.Count > 0)
             {
-                Type type = list[0].GetType();
-                PropertyInfo valproperty = type.GetProperty(ValueMember);
-                PropertyInfo disproperty = type.GetProperty(DisplayMember);
+                var type = list[0].GetType();
+                var valproperty = type.GetProperty(ValueMember);
+                var disproperty = type.GetProperty(DisplayMember);
                 foreach (var entry in list)
-                    __itemsData.Add(valproperty?.GetValue(entry)?.ToString(), disproperty?.GetValue(entry)?.ToString(), entry);
+                    itemsData.Add(valproperty?.GetValue(entry)?.ToString()??string.Empty, disproperty?.GetValue(entry)?.ToString() ?? string.Empty, entry);
             }
         }
     }
-
-}

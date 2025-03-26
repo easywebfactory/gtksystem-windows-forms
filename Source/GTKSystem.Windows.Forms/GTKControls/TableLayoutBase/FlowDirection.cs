@@ -1,10 +1,9 @@
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum FlowDirection
 {
-	public enum FlowDirection
-	{
-		LeftToRight,
-		TopDown,
-		RightToLeft,
-		BottomUp
-	}
+    LeftToRight,
+    TopDown,
+    RightToLeft,
+    BottomUp
 }

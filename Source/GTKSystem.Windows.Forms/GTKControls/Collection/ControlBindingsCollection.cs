@@ -143,7 +143,7 @@ public class ControlBindingsCollection : BindingsCollection
         string formatString,
         IFormatProvider? formatInfo)
     {
-        if (dataSource == null) throw new ArgumentNullException(nameof(dataSource));
+        if(dataSource==null) throw new ArgumentNullException(nameof(dataSource));
 
         Binding binding = new(
             propertyName,
@@ -238,7 +238,7 @@ public class ControlBindingsCollection : BindingsCollection
 
     protected override void RemoveCore(Binding dataBinding)
     {
-        if (dataBinding == null) throw new ArgumentNullException(nameof(dataBinding));
+        if(dataBinding==null) throw new ArgumentNullException(nameof(dataBinding));
 
         if (dataBinding.BindableComponent != _control)
         {

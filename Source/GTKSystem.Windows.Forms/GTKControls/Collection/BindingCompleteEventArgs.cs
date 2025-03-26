@@ -1,73 +1,74 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+/// <summary>
+///  Provides information about a Binding Completed event.
+/// </summary>
+public class BindingCompleteEventArgs : CancelEventArgs
 {
-	public class BindingCompleteEventArgs : CancelEventArgs
-	{
-		public Binding Binding
-		{
-			[CompilerGenerated]
-			get
-			{
-				throw null;
-			}
-		}
+    /// <summary>
+    ///  Constructor for BindingCompleteEventArgs.
+    /// </summary>
+    public BindingCompleteEventArgs(
+        Binding? binding,
+        BindingCompleteState state,
+        BindingCompleteContext context,
+        string? errorText,
+        Exception? exception,
+        bool cancel)
+        : base(cancel)
+    {
+        Binding = binding;
+        BindingCompleteState = state;
+        BindingCompleteContext = context;
+        ErrorText = errorText ?? string.Empty;
+        Exception = exception;
+    }
 
-		public BindingCompleteState BindingCompleteState
-		{
-			[CompilerGenerated]
-			get
-			{
-				throw null;
-			}
-		}
+    /// <summary>
+    ///  Constructor for BindingCompleteEventArgs.
+    /// </summary>
+    public BindingCompleteEventArgs(
+        Binding? binding,
+        BindingCompleteState state,
+        BindingCompleteContext context,
+        string? errorText,
+        Exception? exception)
+        : this(binding, state, context, errorText, exception, true)
+    {
+    }
 
-		public BindingCompleteContext BindingCompleteContext
-		{
-			[CompilerGenerated]
-			get
-			{
-				throw null;
-			}
-		}
+    /// <summary>
+    ///  Constructor for BindingCompleteEventArgs.
+    /// </summary>
+    public BindingCompleteEventArgs(
+        Binding? binding,
+        BindingCompleteState state,
+        BindingCompleteContext context,
+        string? errorText)
+        : this(binding, state, context, errorText, null, true)
+    {
+    }
 
-		public string ErrorText
-		{
-			[CompilerGenerated]
-			get
-			{
-				throw null;
-			}
-		}
+    /// <summary>
+    ///  Constructor for BindingCompleteEventArgs.
+    /// </summary>
+    public BindingCompleteEventArgs(
+        Binding? binding,
+        BindingCompleteState state,
+        BindingCompleteContext context)
+        : this(binding, state, context, string.Empty, null, false)
+    {
+    }
 
-		public Exception Exception
-		{
-			[CompilerGenerated]
-			get
-			{
-				throw null;
-			}
-		}
+    public Binding? Binding { get; }
 
-		public BindingCompleteEventArgs(Binding binding, BindingCompleteState state, BindingCompleteContext context, string errorText, Exception exception, bool cancel)
-		{
-			throw null;
-		}
-
-		public BindingCompleteEventArgs(Binding binding, BindingCompleteState state, BindingCompleteContext context, string errorText, Exception exception)
-		{
-			throw null;
-		}
-
-		public BindingCompleteEventArgs(Binding binding, BindingCompleteState state, BindingCompleteContext context, string errorText)
-		{
-			throw null;
-		}
-
-		public BindingCompleteEventArgs(Binding binding, BindingCompleteState state, BindingCompleteContext context)
-		{
-			throw null;
-		}
-	}
+    public BindingCompleteState BindingCompleteState { get; }
+    public BindingCompleteContext BindingCompleteContext { get; }
+    public string ErrorText { get; }
+    public Exception? Exception { get; }
 }

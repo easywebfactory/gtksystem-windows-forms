@@ -1,14 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace System.Drawing;
 
+#if NETSTANDARD
+using System.Drawing.Gtk;
+#endif
+
 internal static class ColorTable
 {
-    private static readonly Lazy<Dictionary<string, Color>> s_colorConstants = new(GetColors);
+    private static Dictionary<string, Color>? s_colorConstants;
 
     private static Dictionary<string, Color> GetColors()
     {
@@ -29,7 +32,13 @@ internal static class ColorTable
         }
     }
 
-    internal static Dictionary<string, Color> Colors => s_colorConstants.Value;
+    internal static Dictionary<string, Color> Colors
+    {
+        get
+        {
+            return s_colorConstants ??= GetColors();
+        }
+    }
 
     internal static bool TryGetNamedColor(string name, out Color result) => Colors.TryGetValue(name, out result);
 

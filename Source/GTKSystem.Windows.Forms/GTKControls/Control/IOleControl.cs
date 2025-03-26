@@ -1,6 +1,3 @@
-﻿namespace System.Windows.Forms
-{
-    internal interface IOleControl
-    {
-    }
-}
+﻿namespace System.Windows.Forms;
+
+internal interface IOleControl;

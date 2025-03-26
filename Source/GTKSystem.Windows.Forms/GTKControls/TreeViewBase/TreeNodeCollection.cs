@@ -1,10 +1,10 @@
 ﻿namespace System.Windows.Forms
 {
-    public class TreeNodeCollection: List<TreeNode>
+    public class TreeNodeCollection : List<TreeNode>
     {
-        private TreeNode owner;
+        private readonly TreeNode? owner;
 
-        internal TreeNodeCollection(TreeNode owner)
+        internal TreeNodeCollection(TreeNode? owner)
         {
             this.owner = owner;
 
@@ -15,7 +15,7 @@
             {
                 throw new ArgumentNullException("nodes");
             }
-            foreach (TreeNode node in nodes)
+            foreach (var node in nodes)
             {
                 Add(node);
             }
@@ -26,7 +26,7 @@
             {
                 throw new ArgumentNullException("nodes");
             }
-            foreach (TreeNode node in nodes)
+            foreach (var node in nodes)
             {
                 Add(node);
             }
@@ -38,9 +38,9 @@
                 throw new ArgumentNullException("node");
             }
             node.Parent = owner;
-            node.treeView = owner.TreeView;
+            node.treeView = owner?.TreeView;
             base.Add(node);
-            if (owner != null && owner.TreeView != null)
+            if (owner is { TreeView: not null })
             {
                 owner.TreeView.LoadNodeValue(node, owner.TreeIter);
             }
@@ -50,7 +50,7 @@
         {
             if (owner.TreeView != null)
             {
-                foreach (TreeNode node in this)
+                foreach (var node in this)
                     owner.TreeView.RemoveNode(node);
             }
             base.Clear();

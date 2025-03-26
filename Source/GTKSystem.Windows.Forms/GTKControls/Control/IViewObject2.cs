@@ -1,6 +1,3 @@
-﻿namespace System.Windows.Forms
-{
-    internal interface IViewObject2
-    {
-    }
-}
+﻿namespace System.Windows.Forms;
+
+internal interface IViewObject2;

@@ -1,6 +1,3 @@
-﻿namespace System.Windows.Forms
-{
-    internal interface IOleInPlaceActiveObject
-    {
-    }
-}
+﻿namespace System.Windows.Forms;
+
+internal interface IOleInPlaceActiveObject;

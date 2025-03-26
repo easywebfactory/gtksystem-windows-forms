@@ -7,33 +7,40 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{3BF22C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{F6BAC321-6965-4B7A-8C35-34B3F226C1AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTKSystem.Windows.Forms", "Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj", "{99043664-0431-4398-92A6-55A45736D2F6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Resources.Extensions", "Source\System.Resources.Extensions\System.Resources.Extensions.csproj", "{1154F095-54D8-48FA-A61E-1E4587E2CF6C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTKWinFormsApp", "Samples\GTKWinFormsApp\GTKWinFormsApp.csproj", "{A963833A-1053-4321-9BCF-3FB7C58F0601}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readme", "readme", "{7674FDFE-A432-492E-AC63-C24377F85870}"
-	ProjectSection(SolutionItems) = preProject
-		README.en.md = README.en.md
-		README.md = README.md
-		Readme_Resources.md = Readme_Resources.md
-		UpdateHistory.md = UpdateHistory.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{56631C54-2CE5-44E4-A931-4788557760B4}"
-	ProjectSection(SolutionItems) = preProject
-		licenses\LICENSE.txt = licenses\LICENSE.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "licenses", "licenses", "{FA74C15D-95F5-4B11-A721-308659F09D90}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Licenses", "Licenses", "{FA74C15D-95F5-4B11-A721-308659F09D90}"
 	ProjectSection(SolutionItems) = preProject
 		Source\licenses\LICENSE.txt = Source\licenses\LICENSE.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{7674FDFE-A432-492E-AC63-C24377F85870}"
+	ProjectSection(SolutionItems) = preProject
+		README.en.md = README.en.md
+		README.md = README.md
+		Readme_Resources.en.md = Readme_Resources.en.md
+		Readme_Resources.md = Readme_Resources.md
+		UpdateHistory.en.md = UpdateHistory.en.md
+		UpdateHistory.md = UpdateHistory.md
+	EndProjectSection
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTKSystemWinFormsApp11", "Samples\GTKSystemWinFormsApp11\GTKSystemWinFormsApp11.csproj", "{ED029673-302D-4E58-B33E-1472BD96B19C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTKWinFormsApp_Win", "Samples\GTKWinFormsApp\GTKWinFormsApp_Win.csproj", "{9A63B577-C26D-45DB-B917-E0F8FF914ADF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTKSystem.Drawing", "Source\GTKSystem.Drawing\GTKSystem.Drawing.csproj", "{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTKSystem.Windows.Forms", "Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj", "{400FCDE9-834C-486F-BD0B-5C5CFC788606}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{638C415D-5E77-4A81-8D5B-1D5ABF6D3E4C}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Nuget.Config = Nuget.Config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{16C648F1-EB34-411C-9DA2-DBF34578862C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gtk.Windows.Forms.Tests", "Tests\Gtk.Windows.Forms.Tests\Gtk.Windows.Forms.Tests.csproj", "{F7C3FA4C-FEB5-4BAF-9E5D-0C3DAFFE3940}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTKSystem.Resources.Extensions", "Source\GTKSystem.Resources.Extensions\GTKSystem.Resources.Extensions.csproj", "{B930BE10-6BFB-3150-7132-7B097DACFD67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTKWinFormsApp", "Samples\GtkWinFormsApp_Net8\GTKWinFormsApp.csproj", "{7CA25057-410C-CB5B-9920-94897811FED3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,33 +48,41 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{99043664-0431-4398-92A6-55A45736D2F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99043664-0431-4398-92A6-55A45736D2F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99043664-0431-4398-92A6-55A45736D2F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99043664-0431-4398-92A6-55A45736D2F6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1154F095-54D8-48FA-A61E-1E4587E2CF6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1154F095-54D8-48FA-A61E-1E4587E2CF6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1154F095-54D8-48FA-A61E-1E4587E2CF6C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A963833A-1053-4321-9BCF-3FB7C58F0601}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A963833A-1053-4321-9BCF-3FB7C58F0601}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A963833A-1053-4321-9BCF-3FB7C58F0601}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A963833A-1053-4321-9BCF-3FB7C58F0601}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ED029673-302D-4E58-B33E-1472BD96B19C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED029673-302D-4E58-B33E-1472BD96B19C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED029673-302D-4E58-B33E-1472BD96B19C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED029673-302D-4E58-B33E-1472BD96B19C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9A63B577-C26D-45DB-B917-E0F8FF914ADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9A63B577-C26D-45DB-B917-E0F8FF914ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9A63B577-C26D-45DB-B917-E0F8FF914ADF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{400FCDE9-834C-486F-BD0B-5C5CFC788606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{400FCDE9-834C-486F-BD0B-5C5CFC788606}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{400FCDE9-834C-486F-BD0B-5C5CFC788606}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{400FCDE9-834C-486F-BD0B-5C5CFC788606}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7C3FA4C-FEB5-4BAF-9E5D-0C3DAFFE3940}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7C3FA4C-FEB5-4BAF-9E5D-0C3DAFFE3940}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7C3FA4C-FEB5-4BAF-9E5D-0C3DAFFE3940}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7C3FA4C-FEB5-4BAF-9E5D-0C3DAFFE3940}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B930BE10-6BFB-3150-7132-7B097DACFD67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B930BE10-6BFB-3150-7132-7B097DACFD67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B930BE10-6BFB-3150-7132-7B097DACFD67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B930BE10-6BFB-3150-7132-7B097DACFD67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CA25057-410C-CB5B-9920-94897811FED3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CA25057-410C-CB5B-9920-94897811FED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CA25057-410C-CB5B-9920-94897811FED3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CA25057-410C-CB5B-9920-94897811FED3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{99043664-0431-4398-92A6-55A45736D2F6} = {3BF22CCD-4FE4-42BD-960A-EAD8617880B9}
-		{1154F095-54D8-48FA-A61E-1E4587E2CF6C} = {3BF22CCD-4FE4-42BD-960A-EAD8617880B9}
-		{A963833A-1053-4321-9BCF-3FB7C58F0601} = {F6BAC321-6965-4B7A-8C35-34B3F226C1AE}
 		{ED029673-302D-4E58-B33E-1472BD96B19C} = {F6BAC321-6965-4B7A-8C35-34B3F226C1AE}
-		{9A63B577-C26D-45DB-B917-E0F8FF914ADF} = {F6BAC321-6965-4B7A-8C35-34B3F226C1AE}
+		{A49F46BA-ED41-45B8-AA8F-103C29AE8BD0} = {3BF22CCD-4FE4-42BD-960A-EAD8617880B9}
+		{400FCDE9-834C-486F-BD0B-5C5CFC788606} = {3BF22CCD-4FE4-42BD-960A-EAD8617880B9}
+		{F7C3FA4C-FEB5-4BAF-9E5D-0C3DAFFE3940} = {16C648F1-EB34-411C-9DA2-DBF34578862C}
+		{B930BE10-6BFB-3150-7132-7B097DACFD67} = {3BF22CCD-4FE4-42BD-960A-EAD8617880B9}
+		{7CA25057-410C-CB5B-9920-94897811FED3} = {F6BAC321-6965-4B7A-8C35-34B3F226C1AE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8B2528BB-EDE2-4992-83A6-3C0C3FDA43DE}

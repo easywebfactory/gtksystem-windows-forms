@@ -1,6 +1,3 @@
-﻿namespace System.Windows.Forms
-{
-    internal interface IOleWindow
-    {
-    }
-}
+﻿namespace System.Windows.Forms;
+
+internal interface IOleWindow;

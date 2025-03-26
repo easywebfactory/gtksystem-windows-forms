@@ -1,6 +1,3 @@
-﻿namespace System.Windows.Forms
-{
-    internal interface IHandle
-    {
-    }
-}
+﻿namespace System.Windows.Forms;
+
+internal interface IHandle;

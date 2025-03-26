@@ -1,6 +1,3 @@
-﻿namespace System.Windows.Forms
-{
-    public class LayoutEngine
-    {
-    }
-}
+﻿namespace System.Windows.Forms;
+
+public class LayoutEngine;

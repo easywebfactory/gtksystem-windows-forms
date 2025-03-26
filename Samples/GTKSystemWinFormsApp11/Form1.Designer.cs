@@ -1,6 +1,8 @@
-﻿namespace GTKSystemWinFormsApp11
+﻿using System.Windows.Forms;
+
+namespace GTKSystemWinFormsApp11
 {
-    partial class Form1
+    partial class GtkForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,13 +31,13 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GtkForm));
             menuStrip1 = new MenuStrip();
             toolStripMenuItem1 = new ToolStripMenuItem();
             ddddToolStripMenuItem = new ToolStripMenuItem();
             ssssToolStripMenuItem = new ToolStripMenuItem();
-            bb菜单ToolStripMenuItem = new ToolStripMenuItem();
-            bb菜单2ToolStripMenuItem = new ToolStripMenuItem();
+            bbMenuToolStripMenuItem = new ToolStripMenuItem();
+            bbMenu2ToolStripMenuItem = new ToolStripMenuItem();
             ssssToolStripMenuItem1 = new ToolStripMenuItem();
             toolStrip2 = new ToolStrip();
             toolStripButton1 = new ToolStripButton();
@@ -92,7 +94,6 @@
             toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { ddddToolStripMenuItem, ssssToolStripMenuItem });
             toolStripMenuItem1.Name = "toolStripMenuItem1";
             toolStripMenuItem1.Size = new System.Drawing.Size(62, 24);
-            toolStripMenuItem1.Text = "菜单1";
             // 
             // ddddToolStripMenuItem
             // 
@@ -100,32 +101,27 @@
             ddddToolStripMenuItem.CheckState = CheckState.Checked;
             ddddToolStripMenuItem.Name = "ddddToolStripMenuItem";
             ddddToolStripMenuItem.Size = new System.Drawing.Size(132, 26);
-            ddddToolStripMenuItem.Text = "a菜单";
             // 
             // ssssToolStripMenuItem
             // 
-            ssssToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { bb菜单ToolStripMenuItem, bb菜单2ToolStripMenuItem });
+            ssssToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { bbMenuToolStripMenuItem, bbMenu2ToolStripMenuItem });
             ssssToolStripMenuItem.Name = "ssssToolStripMenuItem";
             ssssToolStripMenuItem.Size = new System.Drawing.Size(132, 26);
-            ssssToolStripMenuItem.Text = "b菜单";
             // 
-            // bb菜单ToolStripMenuItem
+            // bbMenuToolStripMenuItem
             // 
-            bb菜单ToolStripMenuItem.Name = "bb菜单ToolStripMenuItem";
-            bb菜单ToolStripMenuItem.Size = new System.Drawing.Size(151, 26);
-            bb菜单ToolStripMenuItem.Text = "bb菜单";
+            bbMenuToolStripMenuItem.Name = "bbMenuToolStripMenuItem";
+            bbMenuToolStripMenuItem.Size = new System.Drawing.Size(151, 26);
             // 
-            // bb菜单2ToolStripMenuItem
+            // bbMenu2ToolStripMenuItem
             // 
-            bb菜单2ToolStripMenuItem.Name = "bb菜单2ToolStripMenuItem";
-            bb菜单2ToolStripMenuItem.Size = new System.Drawing.Size(151, 26);
-            bb菜单2ToolStripMenuItem.Text = "bb菜单2";
+            bbMenu2ToolStripMenuItem.Name = "bbMenu2ToolStripMenuItem";
+            bbMenu2ToolStripMenuItem.Size = new System.Drawing.Size(151, 26);
             // 
             // ssssToolStripMenuItem1
             // 
             ssssToolStripMenuItem1.Name = "ssssToolStripMenuItem1";
             ssssToolStripMenuItem1.Size = new System.Drawing.Size(62, 24);
-            ssssToolStripMenuItem1.Text = "菜单2";
             // 
             // toolStrip2
             // 
@@ -164,7 +160,6 @@
             toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             toolStripDropDownButton1.Name = "toolStripDropDownButton1";
             toolStripDropDownButton1.Size = new System.Drawing.Size(112, 25);
-            toolStripDropDownButton1.Text = "下拉列表1";
             // 
             // memnuToolStripMenuItem
             // 
@@ -172,13 +167,11 @@
             memnuToolStripMenuItem.CheckState = CheckState.Checked;
             memnuToolStripMenuItem.Name = "memnuToolStripMenuItem";
             memnuToolStripMenuItem.Size = new System.Drawing.Size(116, 26);
-            memnuToolStripMenuItem.Text = "项1";
             // 
             // fffffffToolStripMenuItem
             // 
             fffffffToolStripMenuItem.Name = "fffffffToolStripMenuItem";
             fffffffToolStripMenuItem.Size = new System.Drawing.Size(116, 26);
-            fffffffToolStripMenuItem.Text = "项2";
             // 
             // toolStripSplitButton1
             // 
@@ -224,7 +217,6 @@
             button1.Name = "button1";
             button1.Size = new System.Drawing.Size(275, 52);
             button1.TabIndex = 3;
-            button1.Text = "打开主窗口";
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             button1.Paint += button1_Paint;
@@ -263,7 +255,6 @@
             toolStripStatusLabel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             toolStripStatusLabel1.Size = new System.Drawing.Size(69, 20);
-            toolStripStatusLabel1.Text = "状态文本";
             // 
             // toolStripProgressBar2
             // 
@@ -299,7 +290,6 @@
             toolStripSplitButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             toolStripSplitButton2.Name = "toolStripSplitButton2";
             toolStripSplitButton2.Size = new System.Drawing.Size(108, 24);
-            toolStripSplitButton2.Text = "下拉菜单";
             // 
             // toolStripMenuItem6
             // 
@@ -334,7 +324,7 @@
             linkLabel1.TabIndex = 6;
             linkLabel1.TabStop = true;
             linkLabel1.Text = "linkLabel1";
-            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
+            linkLabel1.LinkClicked += LinkLabel1_LinkClicked;
             // 
             // trackBar1
             // 
@@ -383,7 +373,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            //BackColor = System.Drawing.SystemColors.ActiveCaption;
+            BackColor = System.Drawing.SystemColors.Window;
             ClientSize = new System.Drawing.Size(800, 450);
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(panel1);
@@ -396,10 +386,10 @@
             Controls.Add(menuStrip1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
-            //MaximizeBox = false;
+            MaximizeBox = false;
             Name = "Form1";
-           // ShowInTaskbar = false;
-            Text = "Form3";
+            ShowInTaskbar = false;
+            Text = "Gtk Form";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             toolStrip2.ResumeLayout(false);
@@ -432,8 +422,8 @@
         private System.Windows.Forms.ToolStripMenuItem fffffffToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ssssToolStripMenuItem1;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ToolStripMenuItem bb菜单ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem bb菜单2ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bbMenuToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bbMenu2ToolStripMenuItem;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem ddddToolStripMenuItem1;

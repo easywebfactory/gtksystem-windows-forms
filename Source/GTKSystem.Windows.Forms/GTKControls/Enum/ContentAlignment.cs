@@ -1,52 +1,58 @@
-﻿
-namespace System.Drawing
+﻿namespace System.Drawing;
+
+/// <summary>
+///     Specifies alignment of content on the drawing surface.
+/// </summary>
+public enum ContentAlignment
 {
-    //
-    // 摘要:
-    //     Specifies alignment of content on the drawing surface.
-    public enum ContentAlignment
-    {
-        //
-        // 摘要:
-        //     Content is vertically aligned at the top, and horizontally aligned on the left.
-        TopLeft = 1,
-        //
-        // 摘要:
-        //     Content is vertically aligned at the top, and horizontally aligned at the center.
-        TopCenter = 2,
-        //
-        // 摘要:
-        //     Content is vertically aligned at the top, and horizontally aligned on the right.
-        TopRight = 4,
-        //
-        // 摘要:
-        //     Content is vertically aligned in the middle, and horizontally aligned on the
-        //     left.
-        MiddleLeft = 16,
-        //
-        // 摘要:
-        //     Content is vertically aligned in the middle, and horizontally aligned at the
-        //     center.
-        MiddleCenter = 32,
-        //
-        // 摘要:
-        //     Content is vertically aligned in the middle, and horizontally aligned on the
-        //     right.
-        MiddleRight = 64,
-        //
-        // 摘要:
-        //     Content is vertically aligned at the bottom, and horizontally aligned on the
-        //     left.
-        BottomLeft = 256,
-        //
-        // 摘要:
-        //     Content is vertically aligned at the bottom, and horizontally aligned at the
-        //     center.
-        BottomCenter = 512,
-        //
-        // 摘要:
-        //     Content is vertically aligned at the bottom, and horizontally aligned on the
-        //     right.
-        BottomRight = 1024
-    }
+    /// <summary>
+    ///     Content is vertically aligned at the top, and horizontally aligned on the left.
+    /// </summary>
+    TopLeft = 1,
+
+    /// <summary>
+    ///     Content is vertically aligned at the top, and horizontally aligned at the center.
+    /// </summary>
+    TopCenter = 2,
+
+    /// <summary>
+    ///     Content is vertically aligned at the top, and horizontally aligned on the right.
+    /// </summary>
+    TopRight = 4,
+
+    /// <summary>
+    ///     Content is vertically aligned in the middle, and horizontally aligned on the
+    ///     left.
+    /// </summary>
+    MiddleLeft = 16,
+
+    /// <summary>
+    ///     Content is vertically aligned in the middle, and horizontally aligned at the
+    ///     center.
+    /// </summary>
+    MiddleCenter = 32,
+
+    /// <summary>
+    ///     Content is vertically aligned in the middle, and horizontally aligned on the
+    ///     right.
+    /// </summary>
+    MiddleRight = 64,
+
+    /// <summary>
+    ///     Content is vertically aligned at the bottom, and horizontally aligned on the
+    ///     left.
+    /// </summary>
+    BottomLeft = 256,
+
+    /// <summary>
+    ///     Content is vertically aligned at the bottom, and horizontally aligned at the
+    ///     center.
+    /// </summary>
+    BottomCenter = 512,
+
+    /// <summary>
+    ///     Content is vertically aligned at the bottom, and horizontally aligned on the
+    ///     right.
+    /// </summary>
+    BottomRight = 1024
 }

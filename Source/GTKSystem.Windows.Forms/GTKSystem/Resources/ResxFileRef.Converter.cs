@@ -6,166 +6,194 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
-using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace System.Resources
+namespace System.Resources;
+
+public partial class ResXFileRef
 {
-    public partial class ResXFileRef
+    public class Converter : TypeConverter
     {
-        public class Converter : TypeConverter
+        public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
         {
-            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+            if (sourceType == typeof(string))
             {
-                if (sourceType == typeof(string))
-                {
-                    return true;
-                }
-
-                return false;
+                return true;
             }
 
-            public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+            return false;
+        }
+
+        public override bool CanConvertTo(ITypeDescriptorContext? context, Type destinationType)
+        {
+            return destinationType == typeof(string);
+        }
+
+        public override object? ConvertTo(
+            ITypeDescriptorContext context,
+            CultureInfo culture,
+            object value,
+            Type destinationType)
+        {
+            object? created = null;
+            if (destinationType == typeof(string))
             {
-                return destinationType == typeof(string);
+                created = ((ResXFileRef)value).ToString();
             }
 
-            public override object ConvertTo(
-                ITypeDescriptorContext context,
-                CultureInfo culture,
-                object value,
-                Type destinationType)
+            return created;
+        }
+
+        // nameof(value) is the parameter name of ConvertFrom, which calls this method.
+        internal static string?[]? ParseResxFileRefString(string? stringValue)
+        {
+            string?[]? result = null;
+            if (stringValue != null)
             {
-                object created = null;
-                if (destinationType == typeof(string))
+                stringValue = stringValue.Trim();
+                string? fileName;
+                string remainingString;
+                if (stringValue.StartsWith("\""))
                 {
-                    created = ((ResXFileRef)value).ToString();
+                    var lastIndexOfQuote = stringValue.LastIndexOf('\"');
+                    if (lastIndexOfQuote - 1 < 0)
+                    {
+                        throw new ArgumentException(nameof(stringValue));
+                    }
+
+                    fileName = stringValue.Substring(1, lastIndexOfQuote - 1); // remove the quotes in" ..... "
+                    if (lastIndexOfQuote + 2 > stringValue.Length)
+                    {
+                        throw new ArgumentException(nameof(stringValue));
+                    }
+
+                    remainingString = stringValue.Substring(lastIndexOfQuote + 2);
+                }
+                else
+                {
+                    var nextSemiColumn = stringValue.IndexOf(';');
+                    if (nextSemiColumn == -1)
+                    {
+                        throw new ArgumentException(nameof(stringValue));
+                    }
+
+                    fileName = stringValue.Substring(0, nextSemiColumn);
+                    if (nextSemiColumn + 1 > stringValue.Length)
+                    {
+                        throw new ArgumentException(nameof(stringValue));
+                    }
+
+                    remainingString = stringValue.Substring(nextSemiColumn + 1);
                 }
 
-                return created;
+                var parts = remainingString.Split(';');
+                if (parts.Length > 1)
+                {
+                    result = [fileName, parts[0], parts[1]];
+                }
+                else if (parts.Length > 0)
+                {
+                    result = [fileName, parts[0]];
+                }
+                else
+                {
+                    result = [fileName];
+                }
             }
 
-            // "value" is the parameter name of ConvertFrom, which calls this method.
-            internal static string[] ParseResxFileRefString(string stringValue)
+            return result;
+        }
+
+        public override object? ConvertFrom(
+            ITypeDescriptorContext? context,
+            CultureInfo? culture,
+            object? value)
+        {
+            if (value is string stringValue)
             {
-                string[] result = null;
-                if (stringValue != null)
+                var parts = ParseResxFileRefString(stringValue);
+                var fileName = parts?[0];
+                if (parts != null)
                 {
-                    stringValue = stringValue.Trim();
-                    string fileName;
-                    string remainingString;
-                    if (stringValue.StartsWith("\""))
+                    var typeName = parts[1];
+                    if (typeName != null)
                     {
-                        int lastIndexOfQuote = stringValue.LastIndexOf('\"');
-                        if (lastIndexOfQuote - 1 < 0)
+                        var toCreate = Type.GetType(typeName, true);
+
+                        // special case string and byte[]
+                        if (toCreate == typeof(string))
                         {
-                            throw new ArgumentException(nameof(stringValue));
+                            // we have a string, now we need to check the encoding
+                            var secondPart = SecondPart(parts);
+                            if (secondPart != null)
+                            {
+                                var textFileEncoding =
+                                    parts.Length > 2
+                                        ? Encoding.GetEncoding(secondPart)
+                                        : Encoding.Default;
+                                if (fileName != null)
+                                {
+                                    using var sr = new StreamReader(fileName, textFileEncoding);
+                                    return sr.ReadToEnd();
+                                }
+                            }
                         }
 
-                        fileName = stringValue.Substring(1, lastIndexOfQuote - 1); // remove the quotes in" ..... "
-                        if (lastIndexOfQuote + 2 > stringValue.Length)
+                        // this is a regular file, we call it's constructor with a stream as a parameter
+                        // or if it's a byte array we just return that
+                        byte[]? temp;
+
+                        if (fileName != null)
                         {
-                            throw new ArgumentException(nameof(stringValue));
+                            using (var fileStream =
+                                   new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                            {
+                                Debug.Assert(fileStream != null, "Couldn't open " + fileName);
+                                temp = new byte[fileStream?.Length ?? 0];
+                                _ = fileStream?.Read(temp, 0, (int)fileStream.Length);
+                            }
+
+                            if (toCreate == typeof(byte[]))
+                            {
+                                return temp;
+                            }
+
+                            var memStream = new MemoryStream(temp);
+                            if (toCreate == typeof(MemoryStream))
+                            {
+                                return memStream;
+                            }
+
+                            if (toCreate == typeof(Bitmap) && fileName.EndsWith(".ico"))
+                            {
+                                // we special case the .ico bitmaps because GDI+ destroy the alpha channel component and
+                                // we don't want that to happen
+                                var ico = new Icon(memStream);
+                                return ico.ToBitmap();
+                            }
+
+                            if (toCreate != null)
+                            {
+                                return Activator.CreateInstance(toCreate,
+                                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance, null,
+                                    [memStream], null);
+                            }
                         }
-
-                        remainingString = stringValue.Substring(lastIndexOfQuote + 2);
-                    }
-                    else
-                    {
-                        int nextSemiColumn = stringValue.IndexOf(';');
-                        if (nextSemiColumn == -1)
-                        {
-                            throw new ArgumentException(nameof(stringValue));
-                        }
-
-                        fileName = stringValue.Substring(0, nextSemiColumn);
-                        if (nextSemiColumn + 1 > stringValue.Length)
-                        {
-                            throw new ArgumentException(nameof(stringValue));
-                        }
-
-                        remainingString = stringValue.Substring(nextSemiColumn + 1);
-                    }
-
-                    string[] parts = remainingString.Split(';');
-                    if (parts.Length > 1)
-                    {
-                        result = new string[] { fileName, parts[0], parts[1] };
-                    }
-                    else if (parts.Length > 0)
-                    {
-                        result = new string[] { fileName, parts[0] };
-                    }
-                    else
-                    {
-                        result = new string[] { fileName };
                     }
                 }
-
-                return result;
             }
 
-            public override object ConvertFrom(
-                ITypeDescriptorContext context,
-                CultureInfo culture,
-                object value)
+            return null;
+        }
+
+        private static string? SecondPart(string?[] parts)
+        {
+            if (parts?.Length < 2)
             {
-                if (value is string stringValue)
-                {
-                    string[] parts = ParseResxFileRefString(stringValue);
-                    string fileName = parts[0];
-                    Type toCreate = Type.GetType(parts[1], true);
-
-                    // special case string and byte[]
-                    if (toCreate == typeof(string))
-                    {
-                        // we have a string, now we need to check the encoding
-                        Encoding textFileEncoding =
-                            parts.Length > 2
-                                ? Encoding.GetEncoding(parts[2])
-                                : Encoding.Default;
-                        using (StreamReader sr = new StreamReader(fileName, textFileEncoding))
-                        {
-                            return sr.ReadToEnd();
-                        }
-                    }
-
-                    // this is a regular file, we call it's constructor with a stream as a parameter
-                    // or if it's a byte array we just return that
-                    byte[] temp = null;
-
-                    using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
-                    {
-                        Debug.Assert(fileStream != null, "Couldn't open " + fileName);
-                        temp = new byte[fileStream.Length];
-                        fileStream.Read(temp, 0, (int)fileStream.Length);
-                    }
-
-                    if (toCreate == typeof(byte[]))
-                    {
-                        return temp;
-                    }
-
-                    MemoryStream memStream = new MemoryStream(temp);
-                    if (toCreate == typeof(MemoryStream))
-                    {
-                        return memStream;
-                    }
-
-                    if (toCreate == typeof(Bitmap) && fileName.EndsWith(".ico"))
-                    {
-                        // we special case the .ico bitmaps because GDI+ destroy the alpha channel component and
-                        // we don't want that to happen
-                        Icon ico = new Icon(memStream);
-                        return ico.ToBitmap();
-                    }
-
-                    return Activator.CreateInstance(toCreate, BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance, null, new object[] { memStream }, null);
-                }
-
                 return null;
             }
+            return parts![2];
         }
     }
 }

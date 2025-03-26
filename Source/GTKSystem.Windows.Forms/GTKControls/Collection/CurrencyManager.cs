@@ -164,7 +164,7 @@ public class CurrencyManager : BindingManagerBase
             {
                 value = 0;
             }
-            var count = _list?.Count ?? 0;
+            var count = _list?.Count??0;
             if (value >= count)
             {
                 value = count - 1;
@@ -221,7 +221,7 @@ public class CurrencyManager : BindingManagerBase
 
     private void ChangeRecordState(int newPosition, bool validating, bool endCurrentEdit, bool firePositionChange, bool pullData)
     {
-        if (newPosition == -1 && (_list?.Count ?? 0) == 0)
+        if (newPosition == -1 && (_list?.Count??0) == 0)
         {
             if (ListPosition != -1)
             {
@@ -362,7 +362,7 @@ public class CurrencyManager : BindingManagerBase
 
     private void FindGoodRow()
     {
-        var count = _list?.Count ?? 0;
+        var count = _list?.Count??0;
         for (var i = 0; i < count; i++)
         {
             ListPosition = i;
@@ -412,7 +412,7 @@ public class CurrencyManager : BindingManagerBase
         {
             return "";
         }
-        var propertyDescriptorArray = new PropertyDescriptor[listAccessors?.Count ?? 0];
+        var propertyDescriptorArray = new PropertyDescriptor[listAccessors?.Count??0];
         if (listAccessors != null)
         {
             listAccessors.CopyTo(propertyDescriptorArray, 0);
@@ -453,7 +453,7 @@ public class CurrencyManager : BindingManagerBase
         var num = ListPosition;
         UpdateLastGoodKnownRow(listChangedEventArg);
         UpdateIsBinding();
-        if ((_list?.Count ?? 0) == 0)
+        if ((_list?.Count??0) == 0)
         {
             ListPosition = -1;
             if (num != -1)
@@ -482,102 +482,102 @@ public class CurrencyManager : BindingManagerBase
             switch (listChangedEventArg.ListChangedType)
             {
                 case ListChangedType.Reset:
+                {
+                    if (ListPosition != -1 || (_list?.Count??0) <= 0)
                     {
-                        if (ListPosition != -1 || (_list?.Count ?? 0) <= 0)
-                        {
-                            ChangeRecordState(Math.Min(ListPosition, _list?.Count ?? 0 - 1), true, false, true, false);
-                        }
-                        else
-                        {
-                            ChangeRecordState(0, true, false, true, false);
-                        }
-                        UpdateIsBinding(false);
-                        OnItemChanged(_resetEvent);
-                        break;
+                        ChangeRecordState(Math.Min(ListPosition, _list?.Count??0 - 1), true, false, true, false);
                     }
+                    else
+                    {
+                        ChangeRecordState(0, true, false, true, false);
+                    }
+                    UpdateIsBinding(false);
+                    OnItemChanged(_resetEvent);
+                    break;
+                }
                 case ListChangedType.ItemAdded:
+                {
+                    if (listChangedEventArg.NewIndex > ListPosition || ListPosition >= (_list?.Count??0) - 1)
                     {
-                        if (listChangedEventArg.NewIndex > ListPosition || ListPosition >= (_list?.Count ?? 0) - 1)
-                        {
-                            if (listChangedEventArg.NewIndex == ListPosition && ListPosition == _list!.Count - 1 && ListPosition != -1)
-                            {
-                                OnCurrentItemChanged(EventArgs.Empty);
-                            }
-                            if (ListPosition == -1)
-                            {
-                                ChangeRecordState(0, false, false, true, false);
-                            }
-                            UpdateIsBinding();
-                            OnItemChanged(_resetEvent);
-                            break;
-                        }
-
-                        ChangeRecordState(ListPosition + 1, true, true, ListPosition != (_list?.Count ?? 0) - 2, false);
-                        UpdateIsBinding();
-                        OnItemChanged(_resetEvent);
-                        if (ListPosition != (_list?.Count ?? 0) - 1)
-                        {
-                            break;
-                        }
-                        OnPositionChanged(EventArgs.Empty);
-                        break;
-                    }
-                case ListChangedType.ItemDeleted:
-                    {
-                        if (listChangedEventArg.NewIndex == ListPosition)
-                        {
-                            ChangeRecordState(Math.Min(ListPosition, Count - 1), true, false, true, false);
-                            OnItemChanged(_resetEvent);
-                            break;
-                        }
-
-                        if (listChangedEventArg.NewIndex >= ListPosition)
-                        {
-                            OnItemChanged(_resetEvent);
-                            break;
-                        }
-                        ChangeRecordState(ListPosition - 1, true, false, true, false);
-                        OnItemChanged(_resetEvent);
-                        break;
-                    }
-                case ListChangedType.ItemMoved:
-                    {
-                        if (listChangedEventArg.OldIndex == ListPosition)
-                        {
-                            ChangeRecordState(listChangedEventArg.NewIndex, true, Position > -1 && Position < (_list?.Count ?? 0), true, false);
-                        }
-                        else if (listChangedEventArg.NewIndex == ListPosition)
-                        {
-                            ChangeRecordState(listChangedEventArg.OldIndex, true, Position > -1 && Position < (_list?.Count ?? 0), true, false);
-                        }
-                        OnItemChanged(_resetEvent);
-                        break;
-                    }
-                case ListChangedType.ItemChanged:
-                    {
-                        if (listChangedEventArg.NewIndex == ListPosition)
+                        if (listChangedEventArg.NewIndex == ListPosition && ListPosition == _list!.Count - 1 && ListPosition != -1)
                         {
                             OnCurrentItemChanged(EventArgs.Empty);
                         }
-                        OnItemChanged(new ItemChangedEventArgs(listChangedEventArg.NewIndex));
+                        if (ListPosition == -1)
+                        {
+                            ChangeRecordState(0, false, false, true, false);
+                        }
+                        UpdateIsBinding();
+                        OnItemChanged(_resetEvent);
                         break;
                     }
+
+                    ChangeRecordState(ListPosition + 1, true, true, ListPosition != (_list?.Count??0) - 2, false);
+                    UpdateIsBinding();
+                    OnItemChanged(_resetEvent);
+                    if (ListPosition != (_list?.Count ?? 0) - 1)
+                    {
+                        break;
+                    }
+                    OnPositionChanged(EventArgs.Empty);
+                    break;
+                }
+                case ListChangedType.ItemDeleted:
+                {
+                    if (listChangedEventArg.NewIndex == ListPosition)
+                    {
+                        ChangeRecordState(Math.Min(ListPosition, Count - 1), true, false, true, false);
+                        OnItemChanged(_resetEvent);
+                        break;
+                    }
+
+                    if (listChangedEventArg.NewIndex >= ListPosition)
+                    {
+                        OnItemChanged(_resetEvent);
+                        break;
+                    }
+                    ChangeRecordState(ListPosition - 1, true, false, true, false);
+                    OnItemChanged(_resetEvent);
+                    break;
+                }
+                case ListChangedType.ItemMoved:
+                {
+                    if (listChangedEventArg.OldIndex == ListPosition)
+                    {
+                        ChangeRecordState(listChangedEventArg.NewIndex, true, Position > -1 && Position < (_list?.Count??0), true, false);
+                    }
+                    else if (listChangedEventArg.NewIndex == ListPosition)
+                    {
+                        ChangeRecordState(listChangedEventArg.OldIndex, true, Position > -1 && Position < (_list?.Count ?? 0), true, false);
+                    }
+                    OnItemChanged(_resetEvent);
+                    break;
+                }
+                case ListChangedType.ItemChanged:
+                {
+                    if (listChangedEventArg.NewIndex == ListPosition)
+                    {
+                        OnCurrentItemChanged(EventArgs.Empty);
+                    }
+                    OnItemChanged(new ItemChangedEventArgs(listChangedEventArg.NewIndex));
+                    break;
+                }
                 case ListChangedType.PropertyDescriptorAdded:
                 case ListChangedType.PropertyDescriptorDeleted:
                 case ListChangedType.PropertyDescriptorChanged:
+                {
+                    _lastGoodKnownRow = -1;
+                    if (ListPosition == -1 && (_list?.Count ?? 0) > 0)
                     {
-                        _lastGoodKnownRow = -1;
-                        if (ListPosition == -1 && (_list?.Count ?? 0) > 0)
-                        {
-                            ChangeRecordState(0, true, false, true, false);
-                        }
-                        else if (ListPosition > (_list?.Count ?? 0) - 1)
-                        {
-                            ChangeRecordState((_list?.Count ?? 0) - 1, true, false, true, false);
-                        }
-                        OnMetaDataChanged(EventArgs.Empty);
-                        break;
+                        ChangeRecordState(0, true, false, true, false);
                     }
+                    else if (ListPosition > (_list?.Count ?? 0) - 1)
+                    {
+                        ChangeRecordState((_list?.Count ?? 0) - 1, true, false, true, false);
+                    }
+                    OnMetaDataChanged(EventArgs.Empty);
+                    break;
+                }
             }
             OnListChanged(listChangedEventArg);
         }
@@ -836,50 +836,50 @@ public class CurrencyManager : BindingManagerBase
         switch (e.ListChangedType)
         {
             case ListChangedType.Reset:
-                {
-                    _lastGoodKnownRow = -1;
-                    return;
-                }
+            {
+                _lastGoodKnownRow = -1;
+                return;
+            }
             case ListChangedType.ItemAdded:
+            {
+                if (e.NewIndex > _lastGoodKnownRow || _lastGoodKnownRow >= (List?.Count??0) - 1)
                 {
-                    if (e.NewIndex > _lastGoodKnownRow || _lastGoodKnownRow >= (List?.Count ?? 0) - 1)
-                    {
-                        break;
-                    }
-                    _lastGoodKnownRow++;
-                    return;
-                }
-            case ListChangedType.ItemDeleted:
-                {
-                    if (e.NewIndex != _lastGoodKnownRow)
-                    {
-                        break;
-                    }
-                    _lastGoodKnownRow = -1;
-                    return;
-                }
-            case ListChangedType.ItemMoved:
-                {
-                    if (e.OldIndex != _lastGoodKnownRow)
-                    {
-                        break;
-                    }
-                    _lastGoodKnownRow = e.NewIndex;
-                    return;
-                }
-            case ListChangedType.ItemChanged:
-                {
-                    if (e.NewIndex != _lastGoodKnownRow)
-                    {
-                        break;
-                    }
-                    _lastGoodKnownRow = -1;
                     break;
                 }
-            default:
+                _lastGoodKnownRow++;
+                return;
+            }
+            case ListChangedType.ItemDeleted:
+            {
+                if (e.NewIndex != _lastGoodKnownRow)
                 {
-                    return;
+                    break;
                 }
+                _lastGoodKnownRow = -1;
+                return;
+            }
+            case ListChangedType.ItemMoved:
+            {
+                if (e.OldIndex != _lastGoodKnownRow)
+                {
+                    break;
+                }
+                _lastGoodKnownRow = e.NewIndex;
+                return;
+            }
+            case ListChangedType.ItemChanged:
+            {
+                if (e.NewIndex != _lastGoodKnownRow)
+                {
+                    break;
+                }
+                _lastGoodKnownRow = -1;
+                break;
+            }
+            default:
+            {
+                return;
+            }
         }
     }
 

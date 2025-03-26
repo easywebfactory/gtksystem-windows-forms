@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using System.Globalization;
-using System.Runtime.Serialization;
 using System.Security.Permissions;
 
 namespace System.Windows.Forms;
@@ -509,7 +508,7 @@ public class Binding
             {
                 converter = _bindToObject.FieldInfo.Converter;
             }
-            return Formatter.FormatObject(value, propertyType, converter, _propInfoConverter, _formatString ?? string.Empty, _formatInfo, _nullValue, _dsNullValue);
+            return Formatter.FormatObject(value, propertyType, converter, _propInfoConverter, _formatString??string.Empty, _formatInfo, _nullValue, _dsNullValue);
         }
         var convertEventArg1 = new ConvertEventArgs(value, propertyType);
         OnFormat(convertEventArg1);

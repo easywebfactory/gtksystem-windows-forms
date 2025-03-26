@@ -19,7 +19,7 @@ namespace System.Windows.Forms.Properties {
     // 类通过类似于 ResGen 或 Visual Studio 的工具自动生成的。
     // 若要添加或移除成员，请编辑 .ResX 文件，然后重新运行 ResGen
     // (以 /str 作为命令选项)，或重新生成 VS 项目。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -61,12 +61,291 @@ namespace System.Windows.Forms.Properties {
         }
         
         /// <summary>
+        ///   查找类似 /* css file path */ 的本地化字符串。
+        /// </summary>
+        internal static string Application_Init_css_file_path {
+            get {
+                return ResourceManager.GetString("Application_Init_css file path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 /* Custom theme name */ 的本地化字符串。
+        /// </summary>
+        internal static string Application_Init_Custom_theme_name {
+            get {
+                return ResourceManager.GetString("Application_Init_Custom theme name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Define control style 的本地化字符串。
+        /// </summary>
+        internal static string Application_Init_Define_control_style {
+            get {
+                return ResourceManager.GetString("Application_Init_Define control style", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 =》Directory does not exist 的本地化字符串。
+        /// </summary>
+        internal static string Application_Init_Directory_does_not_exist {
+            get {
+                return ResourceManager.GetString("Application_Init_Directory_does_not_exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 /* Freely defined style files */ 的本地化字符串。
+        /// </summary>
+        internal static string Application_Init_Freely_defined_style_files {
+            get {
+                return ResourceManager.GetString("Application_Init_Freely defined style files", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 /* Here you can customize or adjust the control style */  的本地化字符串。
+        /// </summary>
+        internal static string Application_Init_Here_you_can_customize_or_adjust_the_control_style {
+            get {
+                return ResourceManager.GetString("Application_Init_Here you can customize or adjust the control style", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 /*Specify the theme, valid when AutoTheme=false*/ 的本地化字符串。
+        /// </summary>
+        internal static string Application_Init_Specify_the_theme__valid_when_AutoTheme_is_false {
+            get {
+                return ResourceManager.GetString("Application_Init_Specify the theme, valid when AutoTheme is false", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 /* The folder where the theme files are located */ 的本地化字符串。
+        /// </summary>
+        internal static string Application_Init_The_folder_where_the_theme_files_are_located {
+            get {
+                return ResourceManager.GetString("Application_Init_The folder where the theme files are located", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 /*Whether to apply built-in styles*/ 的本地化字符串。
+        /// </summary>
+        internal static string Application_Init_Whether_to_apply_built_in_styles {
+            get {
+                return ResourceManager.GetString("Application_Init_Whether to apply built-in styles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 /*Whether to follow the system theme by default*/ 的本地化字符串。
+        /// </summary>
+        internal static string Application_Init_Whether_to_follow_the_system_theme_by_default {
+            get {
+                return ResourceManager.GetString("Application_Init_Whether to follow the system theme by default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 /*Whether to use a custom theme, corresponding to [custom theme]*/ 的本地化字符串。
+        /// </summary>
+        internal static string Application_Init_Whether_to_use_a_custom_theme__corresponding_to_custom_theme {
+            get {
+                return ResourceManager.GetString("Application_Init_Whether to use a custom theme, corresponding to custom theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 /*Whether to use custom style, corresponding to [custom style]*/ 的本地化字符串。
+        /// </summary>
+        internal static string Application_Init_Whether_to_use_custom_style__corresponding_to__custom_style_ {
+            get {
+                return ResourceManager.GetString("Application_Init_Whether to use custom style, corresponding to [custom style]", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Choose color 的本地化字符串。
+        /// </summary>
+        internal static string ColorDialog_RunDialog_Choose_color {
+            get {
+                return ResourceManager.GetString("ColorDialog_RunDialog_Choose color", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找 System.Byte[] 类型的本地化资源。
         /// </summary>
         internal static byte[] DateTimePicker {
             get {
                 object obj = ResourceManager.GetObject("DateTimePicker", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The selected date is outside the restricted range \nMaximum time: {0}\nMinimum time: {1} 的本地化字符串。
+        /// </summary>
+        internal static string DateTimePicker_Calendar_DaySelected_Choose {
+            get {
+                return ResourceManager.GetString("DateTimePicker_Calendar_DaySelected_Choose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Date restrictions 的本地化字符串。
+        /// </summary>
+        internal static string DateTimePicker_Calendar_DaySelected_Date_restrictions {
+            get {
+                return ResourceManager.GetString("DateTimePicker_Calendar_DaySelected_Date restrictions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Choose Today  的本地化字符串。
+        /// </summary>
+        internal static string DateTimePicker_DateTimePicker_Choose_Today {
+            get {
+                return ResourceManager.GetString("DateTimePicker_DateTimePicker_Choose Today", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ____year__month__day 的本地化字符串。
+        /// </summary>
+        internal static string DateTimePicker_DateTimePicker_Mask {
+            get {
+                return ResourceManager.GetString("DateTimePicker_DateTimePicker_Mask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 MM month dd day yyyy year 的本地化字符串。
+        /// </summary>
+        internal static string DateTimePicker_Value_yyyy年MM月dd日 {
+            get {
+                return ResourceManager.GetString("DateTimePicker_Value_yyyy年MM月dd日", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Cancel 的本地化字符串。
+        /// </summary>
+        internal static string FileDialog_RunDialog_Cancel {
+            get {
+                return ResourceManager.GetString("FileDialog_RunDialog_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 OK 的本地化字符串。
+        /// </summary>
+        internal static string FileDialog_RunDialog_OK {
+            get {
+                return ResourceManager.GetString("FileDialog_RunDialog_OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Select File 的本地化字符串。
+        /// </summary>
+        internal static string FileDialog_RunDialog_Select_File {
+            get {
+                return ResourceManager.GetString("FileDialog_RunDialog_Select_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Select Font 的本地化字符串。
+        /// </summary>
+        internal static string FontDialog_RunDialog_Select_Font {
+            get {
+                return ResourceManager.GetString("FontDialog_RunDialog_Select_Font", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 You are closing this window, are you sure you want to close it? 的本地化字符串。
+        /// </summary>
+        internal static string FormBase_FormBase_Close_ {
+            get {
+                return ResourceManager.GetString("FormBase_FormBase_Close_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Cancel 的本地化字符串。
+        /// </summary>
+        internal static string MessageBox_ShowCore_Cancel {
+            get {
+                return ResourceManager.GetString("MessageBox_ShowCore_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Close 的本地化字符串。
+        /// </summary>
+        internal static string MessageBox_ShowCore_Close {
+            get {
+                return ResourceManager.GetString("MessageBox_ShowCore_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Help 的本地化字符串。
+        /// </summary>
+        internal static string MessageBox_ShowCore_Help {
+            get {
+                return ResourceManager.GetString("MessageBox_ShowCore_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No 的本地化字符串。
+        /// </summary>
+        internal static string MessageBox_ShowCore_No {
+            get {
+                return ResourceManager.GetString("MessageBox_ShowCore_No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 OK 的本地化字符串。
+        /// </summary>
+        internal static string MessageBox_ShowCore_OK {
+            get {
+                return ResourceManager.GetString("MessageBox_ShowCore_OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reject 的本地化字符串。
+        /// </summary>
+        internal static string MessageBox_ShowCore_Reject {
+            get {
+                return ResourceManager.GetString("MessageBox_ShowCore_Reject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Yes 的本地化字符串。
+        /// </summary>
+        internal static string MessageBox_ShowCore_Yes {
+            get {
+                return ResourceManager.GetString("MessageBox_ShowCore_Yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 File is in use and cannot be overwritten 的本地化字符串。
+        /// </summary>
+        internal static string PrintDialog_RunPrint_File_is_in_use_and_cannot_be_overwritten {
+            get {
+                return ResourceManager.GetString("PrintDialog_RunPrint_File is in use and cannot be overwritten", resourceCulture);
             }
         }
     }

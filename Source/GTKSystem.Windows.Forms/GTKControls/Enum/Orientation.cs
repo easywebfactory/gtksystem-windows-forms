@@ -1,19 +1,17 @@
-﻿
+﻿namespace System.Windows.Forms;
 
-namespace System.Windows.Forms
+/// <summary>
+///     Specifies the orientation of controls or elements of controls.
+/// </summary>
+public enum Orientation
 {
-    //
-    // 摘要:
-    //     Specifies the orientation of controls or elements of controls.
-    public enum Orientation
-    {
-        //
-        // 摘要:
-        //     The control or element is oriented horizontally.
-        Horizontal,
-        //
-        // 摘要:
-        //     The control or element is oriented vertically.
-        Vertical
-    }
+    /// <summary>
+    ///     The control or element is oriented horizontally.
+    /// </summary>
+    Horizontal,
+
+    /// <summary>
+    ///     The control or element is oriented vertically.
+    /// </summary>
+    Vertical
 }

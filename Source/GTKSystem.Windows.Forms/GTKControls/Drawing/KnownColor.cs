@@ -1,12 +1,10 @@
-﻿#if NETSTANDARD2_0
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
-#nullable disable
 namespace System.Drawing;
 
 /// <summary>Specifies the known system colors.</summary>
 [TypeForwardedFrom("System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
-internal enum KnownColor
+public enum KnownColor
 {
     /// <summary>The system-defined color of the active window's border.</summary>
     ActiveBorder = 1,
@@ -359,5 +357,3 @@ internal enum KnownColor
     /// <summary>A system-defined color representing the ARGB value <c>#663399</c>.</summary>
     RebeccaPurple = 175, // 0x000000AF
 }
-
-#endif

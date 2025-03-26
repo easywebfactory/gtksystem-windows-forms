@@ -1,6 +1,3 @@
-﻿namespace System.Windows.Forms
-{
-    internal interface IPersistPropertyBag
-    {
-    }
-}
+﻿namespace System.Windows.Forms;
+
+internal interface IPersistPropertyBag;

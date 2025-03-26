@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35506.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTKSystemWinFormsApp11.PoC", "GTKSystemWinFormsApp11\GTKSystemWinFormsApp11.PoC.csproj", "{BCA6AC0C-D92B-46DC-994E-849397F24BB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTKWinFormsApp.PoC", "GtkWinFormsApp\GTKWinFormsApp.PoC.csproj", "{39C669C1-50E9-F73A-8539-3FB1779CB7B2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCA6AC0C-D92B-46DC-994E-849397F24BB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCA6AC0C-D92B-46DC-994E-849397F24BB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCA6AC0C-D92B-46DC-994E-849397F24BB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCA6AC0C-D92B-46DC-994E-849397F24BB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39C669C1-50E9-F73A-8539-3FB1779CB7B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39C669C1-50E9-F73A-8539-3FB1779CB7B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39C669C1-50E9-F73A-8539-3FB1779CB7B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39C669C1-50E9-F73A-8539-3FB1779CB7B2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {76BCAFB2-B252-4ADE-BA84-B2039B4E48D5}
+	EndGlobalSection
+EndGlobal

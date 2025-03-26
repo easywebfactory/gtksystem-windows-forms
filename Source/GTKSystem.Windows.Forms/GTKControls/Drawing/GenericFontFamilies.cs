@@ -2,24 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace System.Drawing
+namespace System.Drawing;
+
+/// <summary>
+/// Specifies a generic System.Drawing.FontFamily object.
+/// </summary>
+public enum GenericFontFamilies
 {
-    //
-    // 摘要:
-    //     Specifies a generic System.Drawing.FontFamily object.
-    public enum GenericFontFamilies
-    {
-        //
-        // 摘要:
-        //     A generic Serif System.Drawing.FontFamily object.
-        Serif = 0,
-        //
-        // 摘要:
-        //     A generic Sans Serif System.Drawing.FontFamily object.
-        SansSerif = 1,
-        //
-        // 摘要:
-        //     A generic Monospace System.Drawing.FontFamily object.
-        Monospace = 2
-    }
+    /// <summary>
+    /// A generic Serif System.Drawing.FontFamily object.
+    /// </summary>
+    Serif = 0,
+    /// <summary>
+    /// A generic Sans Serif System.Drawing.FontFamily object.
+    /// </summary>
+    SansSerif = 1,
+    /// <summary>
+    /// A generic Monospace System.Drawing.FontFamily object.
+    /// </summary>
+    Monospace = 2
 }

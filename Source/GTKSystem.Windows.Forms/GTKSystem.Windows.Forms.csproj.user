@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <_LastSelectedProfileId>F:\我的项目\GTK\gtksystem-windows-forms\Source\GTKSystem.Windows.Forms\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
-    <ShowAllFiles>false</ShowAllFiles>
-  </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Compile Update="GTKControls\Button.cs">
       <SubType>Component</SubType>
@@ -50,6 +47,12 @@
     <Compile Update="GTKControls\Control\ScrollableControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\DataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\DateTimePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\Dialog\ColorDialog.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -72,6 +75,18 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\Drawing\Printing\PrintDocument.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\EventArgs\Control.PrintPaintEventArgs.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\FlowLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="GTKControls\GroupBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\HScrollBar.cs">
@@ -98,6 +113,15 @@
     <Compile Update="GTKControls\ImageList\ImageList.OriginalOptions.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\Label.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\LinkLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\ListBoxBase\ListBox.IntegerCollection.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -122,82 +146,10 @@
     <Compile Update="GTKControls\ListViewBase\ColumnHeader.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="GTKControls\DataGridView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\DateTimePicker.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\EventArgs\Control.PrintPaintEventArgs.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\FlowLayoutPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="GTKControls\GroupBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\Label.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\LinkLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\ListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Update="GTKControls\MaskedTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\MenuStrip.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\MenuStripBase\ToolStripDropDown.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\MenuStripBase\ToolStripDropDownMenu.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\MenuStripBase\ToolStripStatusLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\Printing\PageSetupDialog.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\Printing\PrintDialog.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\Printing\PrintPreviewControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\Printing\PrintPreviewDialog.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\ProgressBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\MenuStripBase\ToolStripProgressBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\PropertyGrid.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\PropertyGridBase\PropertyGrid.Flags.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\PropertyGridBase\PropertyGrid.PropertyTabCollection.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\PropertyGridBase\PropertyGrid.TabInfo.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\Scrolling\ScrollBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="GTKControls\StatusStrip.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\MenuStripBase\ToolStripButton.cs">
@@ -206,10 +158,16 @@
     <Compile Update="GTKControls\MenuStripBase\ToolStripComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripDropDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\MenuStripBase\ToolStripDropDownButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\MenuStripBase\ToolStripDropDownItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripDropDownMenu.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\MenuStripBase\ToolStripItem.cs">
@@ -221,10 +179,16 @@
     <Compile Update="GTKControls\MenuStripBase\ToolStripMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\MenuStripBase\ToolStripSeparator.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\MenuStripBase\ToolStripSplitButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\MenuStripBase\ToolStripStatusLabel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\MenuStripBase\ToolStripTextBox.cs">
@@ -245,16 +209,49 @@
     <Compile Update="GTKControls\PictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\Printing\PageSetupDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\Printing\PrintDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\Printing\PrintPreviewControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\Printing\PrintPreviewDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\PropertyGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\PropertyGridBase\PropertyGrid.Flags.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\PropertyGridBase\PropertyGrid.PropertyTabCollection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\PropertyGridBase\PropertyGrid.TabInfo.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\RadioButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\RichTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\Scrolling\ScrollBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\SplitContainer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\SplitterPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\StatusStrip.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\SwitchBox.cs">
@@ -270,6 +267,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\TextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\Timer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="GTKControls\ToolStrip.cs">
@@ -288,4 +288,5 @@
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
 </Project>

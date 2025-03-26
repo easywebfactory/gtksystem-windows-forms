@@ -1,13 +1,12 @@
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+public enum TableLayoutPanelCellBorderStyle
 {
-	public enum TableLayoutPanelCellBorderStyle
-	{
-		None,
-		Single,
-		Inset,
-		InsetDouble,
-		Outset,
-		OutsetDouble,
-		OutsetPartial
-	}
+    None,
+    Single,
+    Inset,
+    InsetDouble,
+    Outset,
+    OutsetDouble,
+    OutsetPartial
 }

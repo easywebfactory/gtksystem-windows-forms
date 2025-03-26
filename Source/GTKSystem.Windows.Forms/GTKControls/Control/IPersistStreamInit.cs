@@ -1,6 +1,3 @@
-﻿namespace System.Windows.Forms
-{
-    internal interface IPersistStreamInit
-    {
-    }
-}
+﻿namespace System.Windows.Forms;
+
+internal interface IPersistStreamInit;

@@ -4,40 +4,27 @@
 
 using System.ComponentModel;
 
-namespace System.Windows.Forms
+namespace System.Windows.Forms;
+
+/// <summary>
+///  Provides data for the <see cref='TreeView.OnBeforeCheck'/>,
+///  <see cref='TreeView.OnBeforeCollapse'/>,
+///  <see cref='TreeView.OnBeforeExpand'/>,
+///  or <see cref='TreeView.OnBeforeSelect'/> event.
+/// </summary>
+public class TreeViewCancelEventArgs : CancelEventArgs
 {
-    /// <summary>
-    ///  Provides data for the <see cref='TreeView.OnBeforeCheck'/>,
-    ///  <see cref='TreeView.OnBeforeCollapse'/>,
-    ///  <see cref='TreeView.OnBeforeExpand'/>,
-    ///  or <see cref='TreeView.OnBeforeSelect'/> event.
-    /// </summary>
-    public class TreeViewCancelEventArgs : CancelEventArgs
-    {
-        private readonly TreeNode node;
-        private readonly TreeViewAction action;
+    private readonly TreeNode? node;
+    private readonly TreeViewAction action;
 
-        public TreeViewCancelEventArgs(TreeNode node, bool cancel, TreeViewAction action)
+    public TreeViewCancelEventArgs(TreeNode? node, bool cancel, TreeViewAction action)
         : base(cancel)
-        {
-            this.node = node;
-            this.action = action;
-        }
-
-        public TreeNode Node
-        {
-            get
-            {
-                return node;
-            }
-        }
-
-        public TreeViewAction Action
-        {
-            get
-            {
-                return action;
-            }
-        }
+    {
+        this.node = node;
+        this.action = action;
     }
+
+    public TreeNode? Node => node;
+
+    public TreeViewAction Action => action;
 }
