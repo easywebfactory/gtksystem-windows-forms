@@ -148,7 +148,7 @@ Example `GTKWinFormsApp.designer.runtimeconfig.json`:
 Contribute to this framework at:
 - [Gitee Repository](https://gitee.com/easywebfactory)
 - [GitHub Repository](https://github.com/easywebfactory)
-- [CSDN Blog](https://blog.csdn.net/auto_toyota)
+- piero(This branch is a modified version of Piero)
 
 ### Update History
 For detailed updates, visit: [Update History >>](UpdateHistory.md)
