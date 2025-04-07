@@ -66,6 +66,24 @@ namespace System.Windows.Forms
         public override event EventHandler TextChanged;
         public bool Multiline { get; set; }
         public int MaxLength { get => self.MaxLength; set => self.MaxLength = value; }
+        public string[] Lines
+        {
+            get
+            {
+                return self.Text.Split([Environment.NewLine], StringSplitOptions.None);
+            }
+            set
+            {
+                if (value is null || value.Length == 0)
+                {
+                    Text = string.Empty;
+                }
+                else
+                {
+                    Text = string.Join(Environment.NewLine, value);
+                }
+            }
+        }
         public int SelectionStart { get { self.GetSelectionBounds(out int start, out int end); return start; } }
 
         [System.ComponentModel.Browsable(false)]

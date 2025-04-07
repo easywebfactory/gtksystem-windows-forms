@@ -7,6 +7,7 @@
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
+using System.Text;
 
 namespace System.Windows.Forms
 {
@@ -45,8 +46,22 @@ namespace System.Windows.Forms
 
         public string[] Lines
         {
-            get { return self.TextView.Buffer.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None); }
+            get {
+                return self.TextView.Buffer.Text.Split([Environment.NewLine], StringSplitOptions.None); 
+            }
+            set
+            {
+                if (value is null || value.Length == 0)
+                {
+                    Text = string.Empty;
+                }
+                else
+                {
+                    Text = string.Join(Environment.NewLine, value);
+                }
+            }
         }
+
         public int SelectionStart { get { if (self.TextView.Buffer.HasSelection) { self.TextView.Buffer.GetSelectionBounds(out TextIter start, out TextIter end); return start.Offset; } else { return self.TextView.Buffer.CursorPosition; } } }
         
         [System.ComponentModel.Browsable(false)]
