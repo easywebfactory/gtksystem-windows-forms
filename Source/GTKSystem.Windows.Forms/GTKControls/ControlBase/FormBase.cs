@@ -22,8 +22,8 @@ public sealed class FormBase : Dialog, IControlGtk, IScrollableBoxBase, IWin32Wi
             }
             else
             {
-                ScrollView.VscrollbarPolicy = PolicyType.Never;
-                ScrollView.HscrollbarPolicy = PolicyType.Never;
+                ScrollView.VscrollbarPolicy = PolicyType.External;
+                ScrollView.HscrollbarPolicy = PolicyType.External;
             }
         }
     }

@@ -2,35 +2,29 @@
 
 namespace System.Windows.Forms;
 
-public sealed class TableLayoutPanelBase : Grid, IControlGtk
+public sealed class TableLayoutPanelBase : ScrollableBoxBase, IControlGtk
 {
-    public IGtkControlOverride Override { get; set; }
-    public Grid grid = new();
-    public TableLayoutPanelBase()
+    public Gtk.Grid grid = new Gtk.Grid();
+    public TableLayoutPanelBase() : base()
     {
-        Override = new GtkControlOverride(this);
-        Override.AddClass("TableLayoutPanel");
+        this.Override = new GtkControlOverride(this);
+        this.Override.AddClass("TableLayoutPanel");
         grid.RowHomogeneous = false;
         grid.ColumnHomogeneous = false;
         grid.BaselineRow = 0;
         grid.ColumnSpacing = 0;
         grid.RowSpacing = 0;
         grid.BorderWidth = 0;
-        grid.Halign = Align.Fill;
-        grid.Valign = Align.Fill;
-        BorderWidth = 0;
-        Vexpand = false;
-        Hexpand = false;
-        HScrollBarPolicy = PolicyType.External;
-        VScrollBarPolicy = PolicyType.External;
+        grid.Halign = Gtk.Align.Fill;
+        grid.Valign = Gtk.Align.Fill;
+        this.BorderWidth = 0;
+        this.Vexpand = false;
+        this.Hexpand = false;
+        this.HscrollbarPolicy = Gtk.PolicyType.External;
+        this.VscrollbarPolicy = Gtk.PolicyType.External;
 
-        Add(grid);
+        this.Add(this.grid);
     }
-
-    public PolicyType VScrollBarPolicy { get; set; }
-
-    public PolicyType HScrollBarPolicy { get; set; }
-
     protected override void OnShown()
     {
         Override.OnAddClass();
@@ -38,7 +32,7 @@ public sealed class TableLayoutPanelBase : Grid, IControlGtk
     }
     protected override bool OnDrawn(Cairo.Context cr)
     {
-        var rec = new Gdk.Rectangle(0, 0, AllocatedWidth, AllocatedHeight);
+        Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
         Override.OnPaint(cr, rec);
         return base.OnDrawn(cr);
     }

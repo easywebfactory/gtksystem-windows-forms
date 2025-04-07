@@ -17,17 +17,17 @@ namespace System.Windows.Forms;
 //[ProvideProperty("CellPosition", typeof(Control))]
 //[DefaultProperty("ColumnCount")]
 [DesignerCategory("Component")]
-public class TableLayoutPanel : ContainerControl, IExtenderProvider
+public partial class TableLayoutPanel : ContainerControl, IExtenderProvider
 {
-    public readonly TableLayoutPanelBase self = new();
+    public readonly TableLayoutPanelBase self = new TableLayoutPanelBase();
     public override object GtkControl => self;
-    private readonly TableLayoutControlCollection _controls;
-    private readonly TableLayoutColumnStyleCollection _columnStyles;
-    private readonly TableLayoutRowStyleCollection _rowStyles;
+    private TableLayoutControlCollection _controls;
+    private TableLayoutColumnStyleCollection _columnStyles;
+    private TableLayoutRowStyleCollection _rowStyles;
     public Gtk.Grid grid => self.grid;
-    public TableLayoutPanel()
+    public TableLayoutPanel() : base()
     {
-        _controls=new TableLayoutControlCollection(this);
+        _controls = new TableLayoutControlCollection(this);
         _columnStyles = new TableLayoutColumnStyleCollection();
         _rowStyles = new TableLayoutRowStyleCollection();
     }
@@ -51,8 +51,10 @@ public class TableLayoutPanel : ContainerControl, IExtenderProvider
     }
 
     [Browsable(false)]
-    public new TableLayoutControlCollection Controls => _controls;
-
+    public new TableLayoutControlCollection Controls
+    {
+        get => _controls;
+    }
     private int _ColumnCount;
     [DefaultValue(0)]
     [Localizable(true)]
@@ -61,9 +63,9 @@ public class TableLayoutPanel : ContainerControl, IExtenderProvider
         get => _ColumnCount;
         set
         {
-            for (var r = 0; r < _RowCount; r++)
+            for (int r = 0; r < _RowCount; r++)
             {
-                for (var c = 0; c < value; c++)
+                for (int c = 0; c < value; c++)
                 {
                     if (grid.GetChildAt(c, r) == null)
                     {
@@ -71,7 +73,7 @@ public class TableLayoutPanel : ContainerControl, IExtenderProvider
                     }
                 }
             }
-            for (var c = value; c < _ColumnCount; c++)
+            for (int c = value; c < _ColumnCount; c++)
             {
                 grid.RemoveColumn(value);
             }
@@ -93,9 +95,9 @@ public class TableLayoutPanel : ContainerControl, IExtenderProvider
         get => _RowCount;
         set
         {
-            for (var r = 0; r < value; r++)
+            for (int r = 0; r < value; r++)
             {
-                for (var c = 0; c < _ColumnCount; c++)
+                for (int c = 0; c < _ColumnCount; c++)
                 {
                     if (grid.GetChildAt(c, r) == null)
                     {
@@ -103,7 +105,7 @@ public class TableLayoutPanel : ContainerControl, IExtenderProvider
                     }
                 }
             }
-            for (var r = value; r < _RowCount; r++)
+            for (int r = value; r < _RowCount; r++)
             {
                 grid.RemoveRow(value);
             }
@@ -114,15 +116,23 @@ public class TableLayoutPanel : ContainerControl, IExtenderProvider
 
     [DisplayName("Rows")]
     [Browsable(false)]
-    public TableLayoutRowStyleCollection RowStyles => _rowStyles;
+    public TableLayoutRowStyleCollection RowStyles
+    {
+        get => _rowStyles;
+    }
+
 
     [DisplayName("Columns")]
     [Browsable(false)]
-    public TableLayoutColumnStyleCollection ColumnStyles => _columnStyles;
-
-    public override Size Size { 
+    public TableLayoutColumnStyleCollection ColumnStyles
+    {
+        get => _columnStyles;
+    }
+    public override Size Size
+    {
         get => base.Size;
-        set {
+        set
+        {
             base.Size = value;
             SetColumnsStyles();
             SetRowsStyles();
@@ -130,20 +140,20 @@ public class TableLayoutPanel : ContainerControl, IExtenderProvider
     }
     private void SetColumnsStyles()
     {
-        var size = Size;
-        var cidx = 0;
+        Size size = this.Size;
+        int cidx = 0;
         foreach (ColumnStyle cs in ColumnStyles)
         {
             if (cidx < ColumnCount)
             {
                 if (cs.SizeType == SizeType.Absolute)
                 {
-                    for (var r = 0; r < RowCount; r++)
+                    for (int r = 0; r < RowCount; r++)
                         grid.GetChildAt(cidx, r).WidthRequest = Convert.ToInt32(cs.Width);
                 }
                 else if (cs.SizeType == SizeType.Percent)
                 {
-                    for (var r = 0; r < RowCount; r++)
+                    for (int r = 0; r < RowCount; r++)
                     {
                         grid.GetChildAt(cidx, r).WidthRequest = Convert.ToInt32(size.Width * cs.Width * 0.01);
                     }
@@ -154,22 +164,20 @@ public class TableLayoutPanel : ContainerControl, IExtenderProvider
     }
     private void SetRowsStyles()
     {
-        var size = Size;
-        var ridx = 0;
+        Size size = this.Size;
+        int ridx = 0;
         foreach (RowStyle rs in RowStyles)
         {
             if (ridx < RowCount)
             {
                 if (rs.SizeType == SizeType.Absolute)
                 {
-                    Console.WriteLine(ColumnCount);
-                    Console.WriteLine(Convert.ToInt32(rs.Height));
-                    for (var c = 0; c < ColumnCount; c++)
+                    for (int c = 0; c < ColumnCount; c++)
                         grid.GetChildAt(c, ridx).HeightRequest = Convert.ToInt32(rs.Height);
                 }
                 else if (rs.SizeType == SizeType.Percent)
                 {
-                    for (var c = 0; c < ColumnCount; c++)
+                    for (int c = 0; c < ColumnCount; c++)
                         grid.GetChildAt(c, ridx).HeightRequest = Convert.ToInt32(size.Height * rs.Height * 0.01);
                 }
                 ridx++;
@@ -178,7 +186,7 @@ public class TableLayoutPanel : ContainerControl, IExtenderProvider
     }
     bool IExtenderProvider.CanExtend(object obj)
     {
-        throw new NotImplementedException();
+        throw null;
     }
 
     [DefaultValue(1)]
@@ -222,7 +230,7 @@ public class TableLayoutPanel : ContainerControl, IExtenderProvider
     [DisplayName("Cell")]
     public TableLayoutPanelCellPosition GetCellPosition(Control control)
     {
-        var cellPosition = new TableLayoutPanelCellPosition(-1, -1);
+        TableLayoutPanelCellPosition cellPosition = new TableLayoutPanelCellPosition(-1, -1);
         if (grid[control.Widget.Parent] is Gtk.Grid.GridChild cell)
         {
             cellPosition.Column = cell.LeftAttach;
@@ -254,14 +262,14 @@ public class TableLayoutPanel : ContainerControl, IExtenderProvider
 
     }
 
-    public Control? GetControlFromPosition(int column, int row)
+    public Control GetControlFromPosition(int column, int row)
     {
         return grid.GetChildAt(column, row).Data["Control"] as Control;
     }
 
     public TableLayoutPanelCellPosition GetPositionFromControl(Control control)
     {
-        var cellPosition = new TableLayoutPanelCellPosition(-1, -1);
+        TableLayoutPanelCellPosition cellPosition = new TableLayoutPanelCellPosition(-1, -1);
         if (grid[control.Widget.Parent] is Gtk.Grid.GridChild cell)
         {
             cellPosition.Column = cell.LeftAttach;
@@ -274,10 +282,10 @@ public class TableLayoutPanel : ContainerControl, IExtenderProvider
     [EditorBrowsable(EditorBrowsableState.Never)]
     public int[] GetColumnWidths()
     {
-        var list = new List<int>();
+        List<int> list = new List<int>();
         if (RowCount > 0)
         {
-            for (var c = 0; c < ColumnCount; c++)
+            for (int c = 0; c < ColumnCount; c++)
                 list.Add(grid.GetChildAt(c, 0).WidthRequest);
         }
         return list.ToArray();
@@ -286,10 +294,10 @@ public class TableLayoutPanel : ContainerControl, IExtenderProvider
     [Browsable(false)]
     public int[] GetRowHeights()
     {
-        var list = new List<int>();
+        List<int> list = new List<int>();
         if (ColumnCount > 0)
         {
-            for (var r = 0; r < RowCount; r++)
+            for (int r = 0; r < RowCount; r++)
                 list.Add(grid.GetChildAt(0, r).WidthRequest);
         }
         return list.ToArray();

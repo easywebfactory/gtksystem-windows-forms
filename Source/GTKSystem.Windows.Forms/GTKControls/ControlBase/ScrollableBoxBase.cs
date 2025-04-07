@@ -17,8 +17,8 @@ public abstract class ScrollableBoxBase : ScrolledWindow, IControlGtk, IScrollab
         Valign = Align.Start;
         Hexpand = false;
         Vexpand = false;
-        VscrollbarPolicy = PolicyType.Never;
-        HscrollbarPolicy = PolicyType.Never;
+        VscrollbarPolicy = PolicyType.External;
+        HscrollbarPolicy = PolicyType.External;
         OverlayScrolling = false;
         Hadjustment.ValueChanged += Hadjustment_ValueChanged;
         Vadjustment.ValueChanged += Vadjustment_ValueChanged;
@@ -67,8 +67,8 @@ public abstract class ScrollableBoxBase : ScrolledWindow, IControlGtk, IScrollab
             }
             else
             {
-                VscrollbarPolicy = PolicyType.Never;
-                HscrollbarPolicy = PolicyType.Never;
+                VscrollbarPolicy = PolicyType.External;
+                HscrollbarPolicy = PolicyType.External;
             }
         }
     }
