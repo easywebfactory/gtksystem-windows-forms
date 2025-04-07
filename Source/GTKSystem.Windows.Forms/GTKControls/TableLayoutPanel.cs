@@ -175,8 +175,6 @@ namespace System.Windows.Forms
                 {
                     if (rs.SizeType == SizeType.Absolute)
                     {
-                        Console.WriteLine(ColumnCount);
-                        Console.WriteLine(Convert.ToInt32(rs.Height));
                         for (int c = 0; c < ColumnCount; c++)
                             grid.GetChildAt(c, ridx).HeightRequest = Convert.ToInt32(rs.Height);
                     }

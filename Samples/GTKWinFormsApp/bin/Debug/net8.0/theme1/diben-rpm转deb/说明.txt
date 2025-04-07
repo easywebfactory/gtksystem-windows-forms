@@ -1,0 +1,4 @@
+sudo dpkg alien_8.95_all.deb
+
+sudo alien xxx.rpm
+在同目录下生成同名xxx.deb

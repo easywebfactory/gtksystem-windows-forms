@@ -412,16 +412,19 @@ namespace GTKWinFormsApp
             // tabControl1
             // 
             tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+           // tabControl1.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
+
+            tabControl1.Dock= DockStyle.Fill;
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
             tabControl1.ItemSize = new Size(181, 25);
-            tabControl1.Location = new Point(4, 197);
+            tabControl1.Location = new Point(304, 197);
             tabControl1.Margin = new Padding(4);
             tabControl1.Multiline = true;
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1187, 459);
+            tabControl1.Size = new Size(800, 459);
             tabControl1.TabIndex = 4;
             tabControl1.DrawItem += tabControl1_DrawItem;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;

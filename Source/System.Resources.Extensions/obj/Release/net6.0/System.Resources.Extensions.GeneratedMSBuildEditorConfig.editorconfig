@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = System.Resources.Extensions
-build_property.ProjectDir = F:\我的项目\GTK\gtksystem-windows-forms\Source\System.Resources.Extensions\
+build_property.ProjectDir = D:\GTK\GTKSystemWindowsForms\Source\System.Resources.Extensions\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

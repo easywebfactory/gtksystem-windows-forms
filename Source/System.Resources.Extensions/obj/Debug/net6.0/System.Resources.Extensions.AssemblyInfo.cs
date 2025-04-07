@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("System.Resources.Extensions")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f77d9451aa4a8ae473b6c57519095316c6615caf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5556b5f8636753313b2caf6c8c47a5607ed4e28f")]
 [assembly: System.Reflection.AssemblyProductAttribute("System.Resources.Extensions")]
 [assembly: System.Reflection.AssemblyTitleAttribute("System.Resources.Extensions")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
