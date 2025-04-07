@@ -9,14 +9,3 @@ F:\我的项目\GTK\gtksystem-windows-forms\Source\System.Resources.Extensions\o
 F:\我的项目\GTK\gtksystem-windows-forms\Source\System.Resources.Extensions\obj\Debug\net6.0\refint\System.Resources.Extensions.dll
 F:\我的项目\GTK\gtksystem-windows-forms\Source\System.Resources.Extensions\obj\Debug\net6.0\System.Resources.Extensions.pdb
 F:\我的项目\GTK\gtksystem-windows-forms\Source\System.Resources.Extensions\obj\Debug\net6.0\ref\System.Resources.Extensions.dll
-D:\GTK\GTKSystemWindowsForms\Source\System.Resources.Extensions\bin\Debug\net6.0\System.Resources.Extensions.deps.json
-D:\GTK\GTKSystemWindowsForms\Source\System.Resources.Extensions\bin\Debug\net6.0\System.Resources.Extensions.dll
-D:\GTK\GTKSystemWindowsForms\Source\System.Resources.Extensions\bin\Debug\net6.0\System.Resources.Extensions.pdb
-D:\GTK\GTKSystemWindowsForms\Source\System.Resources.Extensions\obj\Debug\net6.0\System.Resources.Extensions.GeneratedMSBuildEditorConfig.editorconfig
-D:\GTK\GTKSystemWindowsForms\Source\System.Resources.Extensions\obj\Debug\net6.0\System.Resources.Extensions.AssemblyInfoInputs.cache
-D:\GTK\GTKSystemWindowsForms\Source\System.Resources.Extensions\obj\Debug\net6.0\System.Resources.Extensions.AssemblyInfo.cs
-D:\GTK\GTKSystemWindowsForms\Source\System.Resources.Extensions\obj\Debug\net6.0\System.Resources.Extensions.csproj.CoreCompileInputs.cache
-D:\GTK\GTKSystemWindowsForms\Source\System.Resources.Extensions\obj\Debug\net6.0\System.Resources.Extensions.dll
-D:\GTK\GTKSystemWindowsForms\Source\System.Resources.Extensions\obj\Debug\net6.0\refint\System.Resources.Extensions.dll
-D:\GTK\GTKSystemWindowsForms\Source\System.Resources.Extensions\obj\Debug\net6.0\System.Resources.Extensions.pdb
-D:\GTK\GTKSystemWindowsForms\Source\System.Resources.Extensions\obj\Debug\net6.0\ref\System.Resources.Extensions.dll
