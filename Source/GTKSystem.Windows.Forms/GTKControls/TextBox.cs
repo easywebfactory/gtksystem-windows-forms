@@ -70,7 +70,7 @@ namespace System.Windows.Forms
         {
             get
             {
-                return self.Text.Split([Environment.NewLine], StringSplitOptions.None);
+                return [self.Text];
             }
             set
             {
@@ -80,7 +80,7 @@ namespace System.Windows.Forms
                 }
                 else
                 {
-                    Text = string.Join(Environment.NewLine, value);
+                    Text = string.Join(string.Empty, value);
                 }
             }
         }
