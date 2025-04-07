@@ -26,8 +26,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 }
                 else
                 {
-                    ScrollView.VscrollbarPolicy = Gtk.PolicyType.Never;
-                    ScrollView.HscrollbarPolicy = Gtk.PolicyType.Never;
+                    ScrollView.VscrollbarPolicy = Gtk.PolicyType.External;
+                    ScrollView.HscrollbarPolicy = Gtk.PolicyType.External;
                 }
             }
         }

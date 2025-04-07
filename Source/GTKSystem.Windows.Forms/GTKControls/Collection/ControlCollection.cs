@@ -200,8 +200,16 @@ namespace System.Windows.Forms
                 }
                 else
                 {
-                    lay.WidthRequest = Math.Max(-1, Math.Max(__owner.Width - 4, control.Location.X + control.Width));
-                    lay.HeightRequest = Math.Max(-1, Math.Max(__owner.Height - 4, control.Location.Y + control.Height));
+                    if (control.Dock == DockStyle.Fill)
+                    {
+                        lay.WidthRequest = -1;
+                        lay.HeightRequest = -1;
+                    }
+                    else
+                    {
+                        lay.WidthRequest = Math.Max(-1, Math.Max(__owner.Width - 4, control.Location.X + control.Width));
+                        lay.HeightRequest = Math.Max(-1, Math.Max(__owner.Height - 4, control.Location.Y + control.Height));
+                    }
                 }
                 if (lay.IsMapped == true)
                 {
