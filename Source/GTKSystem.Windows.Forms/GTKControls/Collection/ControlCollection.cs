@@ -202,8 +202,40 @@ namespace System.Windows.Forms
                 {
                     if (control.Dock == DockStyle.Fill)
                     {
+                        control.Widget.MarginTop = 0;
+                        control.Widget.MarginStart = 0;
+                        control.Widget.MarginEnd = 0;
+                        control.Widget.MarginBottom = 0;
                         lay.WidthRequest = -1;
                         lay.HeightRequest = -1;
+                    }
+                    else if(control.Dock == DockStyle.Left)
+                    {
+                        control.Widget.MarginTop = 0;
+                        control.Widget.MarginStart = 0;
+                        control.Widget.MarginBottom = 0;
+                        lay.HeightRequest = -1;
+                    }
+                    else if (control.Dock == DockStyle.Right)
+                    {
+                        control.Widget.MarginTop = 0;
+                        control.Widget.MarginEnd = 0;
+                        control.Widget.MarginBottom = 0;
+                        lay.HeightRequest = -1;
+                    }
+                    else if(control.Dock == DockStyle.Top)
+                    {
+                        control.Widget.MarginTop = 0;
+                        control.Widget.MarginStart = 0;
+                        control.Widget.MarginEnd = 0;
+                        lay.WidthRequest = -1;
+                    }
+                    else if(control.Dock == DockStyle.Bottom)
+                    {
+                        control.Widget.MarginStart = 0;
+                        control.Widget.MarginEnd = 0;
+                        control.Widget.MarginBottom = 0;
+                        lay.WidthRequest = -1;
                     }
                     else
                     {
