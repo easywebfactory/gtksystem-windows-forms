@@ -113,6 +113,7 @@ namespace System.Windows.Forms
                         else if (item is Control control)
                         {
                             lay.AddOverlay(control.Widget);
+                            lay.SetOverlayPassThrough(control.Widget, true);
                             control.DockChanged += Control_DockChanged;
                             control.AnchorChanged += Control_AnchorChanged;
                             SetMarginEnd(lay, control);
