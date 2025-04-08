@@ -113,7 +113,8 @@ namespace System.Windows.Forms
                         else if (item is Control control)
                         {
                             lay.AddOverlay(control.Widget);
-                            lay.SetOverlayPassThrough(control.Widget, true);
+                            if(control.Widget is Gtk.Label)
+                                lay.SetOverlayPassThrough(control.Widget, true);
                             control.DockChanged += Control_DockChanged;
                             control.AnchorChanged += Control_AnchorChanged;
                             SetMarginEnd(lay, control);
