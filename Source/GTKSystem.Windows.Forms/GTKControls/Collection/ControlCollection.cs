@@ -193,55 +193,42 @@ namespace System.Windows.Forms
             }
             private void SetMarginEnd(Gtk.Overlay lay, Control control)
             {
-                if (__owner is Form)
+                if (control.Dock == DockStyle.Fill)
+                {
+                    control.Widget.WidthRequest = -1;
+                    control.Widget.HeightRequest = -1;
+                    lay.WidthRequest = -1;
+                    lay.HeightRequest = -1;
+                }
+                else if (control.Dock == DockStyle.Left)
+                {
+                    control.Widget.HeightRequest = -1;
+                    lay.HeightRequest = -1;
+                }
+                else if (control.Dock == DockStyle.Right)
+                {
+                    control.Widget.HeightRequest = -1;
+                    lay.HeightRequest = -1;
+                }
+                else if (control.Dock == DockStyle.Top)
+                {
+                    control.Widget.WidthRequest = -1;
+                    lay.WidthRequest = -1;
+                }
+                else if (control.Dock == DockStyle.Bottom)
+                {
+                    control.Widget.WidthRequest = -1;
+                    lay.WidthRequest = -1;
+                }
+                else if (__owner is Form)
                 {
                     lay.WidthRequest = Math.Max(-1, Math.Max(lay.Parent.Parent.AllocatedWidth, control.Location.X + control.Width));
                     lay.HeightRequest = Math.Max(-1, Math.Max(lay.Parent.Parent.AllocatedHeight, control.Location.Y + control.Height));
                 }
                 else
                 {
-                    if (control.Dock == DockStyle.Fill)
-                    {
-                        control.Widget.MarginTop = 0;
-                        control.Widget.MarginStart = 0;
-                        control.Widget.MarginEnd = 0;
-                        control.Widget.MarginBottom = 0;
-                        lay.WidthRequest = -1;
-                        lay.HeightRequest = -1;
-                    }
-                    else if(control.Dock == DockStyle.Left)
-                    {
-                        control.Widget.MarginTop = 0;
-                        control.Widget.MarginStart = 0;
-                        control.Widget.MarginBottom = 0;
-                        lay.HeightRequest = -1;
-                    }
-                    else if (control.Dock == DockStyle.Right)
-                    {
-                        control.Widget.MarginTop = 0;
-                        control.Widget.MarginEnd = 0;
-                        control.Widget.MarginBottom = 0;
-                        lay.HeightRequest = -1;
-                    }
-                    else if(control.Dock == DockStyle.Top)
-                    {
-                        control.Widget.MarginTop = 0;
-                        control.Widget.MarginStart = 0;
-                        control.Widget.MarginEnd = 0;
-                        lay.WidthRequest = -1;
-                    }
-                    else if(control.Dock == DockStyle.Bottom)
-                    {
-                        control.Widget.MarginStart = 0;
-                        control.Widget.MarginEnd = 0;
-                        control.Widget.MarginBottom = 0;
-                        lay.WidthRequest = -1;
-                    }
-                    else
-                    {
-                        lay.WidthRequest = Math.Max(-1, Math.Max(__owner.Width - 4, control.Location.X + control.Width));
-                        lay.HeightRequest = Math.Max(-1, Math.Max(__owner.Height - 4, control.Location.Y + control.Height));
-                    }
+                    lay.WidthRequest = Math.Max(-1, Math.Max(__owner.Width - 4, control.Location.X + control.Width));
+                    lay.HeightRequest = Math.Max(-1, Math.Max(__owner.Height - 4, control.Location.Y + control.Height));
                 }
                 if (lay.IsMapped == true)
                 {
