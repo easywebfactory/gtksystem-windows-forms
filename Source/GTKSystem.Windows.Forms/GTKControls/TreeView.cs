@@ -34,10 +34,10 @@ namespace System.Windows.Forms
             root.Index = "-1";
             root.Name = "__root";
             _store = new Gtk.TreeStore(typeof(string), typeof(bool), typeof(int), typeof(string));
+            self.TreeView.Selection.Mode = Gtk.SelectionMode.Single;
             self.TreeView.Model = _store;
             self.TreeView.Realized += TreeView_Realized;
             self.TreeView.Selection.Changed += Selection_Changed;
-            self.TreeView.RowActivated += TreeView_RowActivated;
             self.TreeView.RowCollapsed += TreeView_RowCollapsed;
             self.TreeView.RowExpanded += TreeView_RowExpanded;
             this.BorderStyle = BorderStyle.Fixed3D;
@@ -103,30 +103,29 @@ namespace System.Windows.Forms
             }
         }
 
-        private void TreeView_RowActivated(object o, RowActivatedArgs args)
-        {
-            if (AfterSelect != null && ((Gtk.TreeView)o).IsVisible)
-            {
-                if (cancelEventArgs == null || cancelEventArgs.Cancel == false)
-                {
-                    TreeNode result = null;
-                    GetNodeChild(root, args.Path.Indices, ref result);
-                    AfterSelect(this, new TreeViewEventArgs(result));
-                }
-            }
-        }
         private TreeViewCancelEventArgs cancelEventArgs = null;
         private void Selection_Changed(object sender, EventArgs e)
         {
-            if (BeforeSelect != null)
+            if (BeforeSelect != null || AfterSelect != null)
             {
-                if (self.TreeView.Selection.GetSelected(out TreeIter iter))
+                Gtk.TreeSelection selection = sender as Gtk.TreeSelection;
+                TreePath[] paths = selection.GetSelectedRows();
+                if(paths.Length>0)
                 {
-                    TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
-                    TreeNode result = null; 
-                    GetNodeChild(root, paths[0].Indices, ref result);
+                    TreePath currpath = paths.Last();
+                    TreeNode result = null;
+                    GetNodeChild(root, currpath.Indices, ref result);
                     cancelEventArgs = new TreeViewCancelEventArgs(result, false, TreeViewAction.ByMouse);
-                    BeforeSelect(this, cancelEventArgs);
+
+                    BeforeSelect?.Invoke(this, cancelEventArgs);
+                    if (cancelEventArgs == null || cancelEventArgs.Cancel == false)
+                    {
+                        AfterSelect?.Invoke(this, new TreeViewEventArgs(result));
+                    }
+                    else
+                    {
+                        selection.UnselectPath(currpath);
+                    }
                 }
             }
         }
@@ -200,7 +199,6 @@ namespace System.Windows.Forms
         }
         private void CellName_Toggled(object o, ToggledArgs args)
         {
-            //Console.WriteLine("CellRendererToggle CellName_Toggled");
             TreePath path = new TreePath(args.Path);
             var model = _store;
             model.GetIter(out TreeIter iter, path);
@@ -280,10 +278,11 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (self.TreeView.Selection.GetSelected(out TreeIter iter)) {
-                    TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
+                TreePath[] paths = self.TreeView.Selection.GetSelectedRows();
+                if (paths.Length > 0)
+                {
                     TreeNode result = null;
-                    GetNodeChild(root, paths[0].Indices, ref result);
+                    GetNodeChild(root, paths.Last().Indices, ref result);
                     return result;
                 }
                 else { return null; }
@@ -299,7 +298,6 @@ namespace System.Windows.Forms
                     {
                         self.TreeView.ExpandToPath(path);
                         self.TreeView.Selection.SelectPath(path);
-                        self.TreeView.ActivateRow(path, self.TreeView.Columns[0]);
                     }
                 }
             }
