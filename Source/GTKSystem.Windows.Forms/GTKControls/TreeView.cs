@@ -294,8 +294,13 @@ namespace System.Windows.Forms
                     self.TreeView.Selection.UnselectAll();
                 else
                 {
-                    self.TreeView.ExpandToPath(_store.GetPath(value.TreeIter));
-                    self.TreeView.Selection.SelectIter(value.TreeIter);
+                    TreePath path = _store.GetPath(value.TreeIter);
+                    if (path != null)
+                    {
+                        self.TreeView.ExpandToPath(path);
+                        self.TreeView.Selection.SelectPath(path);
+                        self.TreeView.ActivateRow(path, self.TreeView.Columns[0]);
+                    }
                 }
             }
         }
