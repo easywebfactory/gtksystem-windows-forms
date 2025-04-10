@@ -145,6 +145,18 @@ namespace System.Windows.Forms
                 LoadNodeValue(child, iter);
             }
         }
+        internal void InsertNode(int position, TreeNode node, TreeNode parent)
+        {
+            if (node != null && parent != null) 
+            {
+                var iter = Store.InsertWithValues(parent.TreeIter, position, node.Text, node.Checked, node.ImageIndex, node.ImageKey);
+                Gtk.TreePath path = Store.GetPath(iter);
+                node.Index = string.Join(",", path.Indices);
+                node.TreeIter = iter;
+                foreach (TreeNode node2 in node.Nodes)
+                    LoadNodeValue(node2, node.TreeIter);
+            }
+        }
         internal void NativeNodeChecked(TreeNode node, bool isChecked)
         {
             if (node != null)
@@ -152,12 +164,30 @@ namespace System.Windows.Forms
                 _store.SetValue(node.TreeIter,1,isChecked);
             }
         }
+        internal bool GetNodeChecked(TreeNode node)
+        {
+            var val = Store.GetValue(node.TreeIter, 1);
+            return val == null ? false : (bool)val;
+        }
         internal void NativeNodeSelected(TreeNode node, bool isSelected)
         {
             if (node != null)
             {
                 this.SelectedNode = node;
             }
+        }
+        internal bool GetNodeSelected(TreeNode node)
+        {
+            Gtk.TreePath[] treePaths = self.TreeView.Selection.GetSelectedRows();
+            foreach (Gtk.TreePath treePath in treePaths)
+            {
+                if (Store.GetIter(out Gtk.TreeIter iter, treePath))
+                {
+                    if (iter.Equals(node.TreeIter))
+                        return true;
+                }
+            }
+            return false;
         }
         internal void NativeNodeText(TreeNode node, string text)
         {

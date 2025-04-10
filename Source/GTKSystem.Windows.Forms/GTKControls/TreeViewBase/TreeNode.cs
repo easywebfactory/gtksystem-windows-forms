@@ -90,7 +90,15 @@ namespace System.Windows.Forms
         private bool _IsChecked;
         public bool Checked
         {
-            get => _IsChecked; set { _IsChecked = value; TreeView?.NativeNodeChecked(this, value); }
+            get {
+                if (this.TreeIter.Equals(Gtk.TreeIter.Zero) || this.TreeView == null)
+                    return _IsChecked;
+                else
+                {
+                    return this.TreeView.GetNodeChecked(this);
+                }
+            } 
+            set { _IsChecked = value; TreeView?.NativeNodeChecked(this, value); }
         }
 
         public string FullPath
@@ -114,7 +122,14 @@ namespace System.Windows.Forms
         private bool _IsSelected;
         public bool IsSelected
         {
-            get=> _IsSelected; 
+            get {
+                if (this.TreeIter.Equals(Gtk.TreeIter.Zero) || this.TreeView == null)
+                    return _IsSelected;
+                else
+                {
+                    return this.TreeView.GetNodeSelected(this);
+                }
+            }
             set { 
                 _IsSelected = value; 
                 TreeView?.NativeNodeSelected(this, value); 

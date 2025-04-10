@@ -1,4 +1,5 @@
-﻿namespace System.Windows.Forms
+﻿
+namespace System.Windows.Forms
 {
     public class TreeNodeCollection: List<TreeNode>
     {
@@ -45,7 +46,23 @@
                 owner.TreeView.LoadNodeValue(node, owner.TreeIter);
             }
         }
-
+      
+        public new void Insert(int index, TreeNode node)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException("node");
+            }
+            if (this.Count <= index)
+            {
+                throw new ArgumentOutOfRangeException("index " + index.ToString());
+            }
+            base.Insert(index, node);
+            if (owner != null && owner.TreeView != null)
+            {
+                owner.TreeView.InsertNode(index, node, owner);
+            }
+        }
         public new void Clear()
         {
             if (owner.TreeView != null)
