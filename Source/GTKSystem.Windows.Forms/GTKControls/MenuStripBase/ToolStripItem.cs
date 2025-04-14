@@ -106,7 +106,7 @@ namespace System.Windows.Forms
         public virtual Color ForeColor { get; set; }
         public virtual Color BackColor { get; set; }
         public virtual bool HasChildren { get; }
-
+        public virtual bool AutoSize { get; set; }
         public virtual int Height { get; set; }
         public virtual ImeMode ImeMode { get; set; }
 

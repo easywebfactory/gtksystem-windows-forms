@@ -379,7 +379,7 @@ namespace System.Windows.Forms
         private Color _BackColor;
         public override Color BackColor { get => _BackColor; set { _BackColor = value; UpdateStyle(); } }
         public override bool HasChildren { get; }
-
+        public override bool AutoSize { get; set; }
         public override int Height { get { return this.Widget.HeightRequest; } set { this.Widget.HeightRequest = value; } }
         public override ImeMode ImeMode { get; set; }
 

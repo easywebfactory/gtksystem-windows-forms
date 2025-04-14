@@ -113,7 +113,7 @@ namespace System.Windows.Forms
                         else if (item is Control control)
                         {
                             lay.AddOverlay(control.Widget);
-                            if(control.Widget is Gtk.Label)
+                            if(control.Widget is Gtk.Label || control.Widget is Gtk.Button || control.Widget is Gtk.Entry || control.Widget is Gtk.TextView || control.Widget is Gtk.ScrolledWindow)
                                 lay.SetOverlayPassThrough(control.Widget, true);
                             control.DockChanged += Control_DockChanged;
                             control.AnchorChanged += Control_AnchorChanged;
@@ -195,6 +195,16 @@ namespace System.Windows.Forms
             }
             private void SetMarginEnd(Gtk.Overlay lay, Control control)
             {
+                if (__owner is Form)
+                {
+                    lay.WidthRequest = Math.Max(-1, Math.Max(lay.Parent.Parent.AllocatedWidth, control.Location.X + control.Width));
+                    lay.HeightRequest = Math.Max(-1, Math.Max(lay.Parent.Parent.AllocatedHeight, control.Location.Y + control.Height));
+                }
+                else
+                {
+                    lay.WidthRequest = Math.Max(-1, Math.Max(__owner.Width - 4, control.Location.X + control.Width));
+                    lay.HeightRequest = Math.Max(-1, Math.Max(__owner.Height - 4, control.Location.Y + control.Height));
+                }
                 if (control.Dock == DockStyle.Fill)
                 {
                     control.Widget.WidthRequest = -1;
@@ -221,16 +231,6 @@ namespace System.Windows.Forms
                 {
                     control.Widget.WidthRequest = -1;
                     lay.WidthRequest = -1;
-                }
-                else if (__owner is Form)
-                {
-                    lay.WidthRequest = Math.Max(-1, Math.Max(lay.Parent.Parent.AllocatedWidth, control.Location.X + control.Width));
-                    lay.HeightRequest = Math.Max(-1, Math.Max(lay.Parent.Parent.AllocatedHeight, control.Location.Y + control.Height));
-                }
-                else
-                {
-                    lay.WidthRequest = Math.Max(-1, Math.Max(__owner.Width - 4, control.Location.X + control.Width));
-                    lay.HeightRequest = Math.Max(-1, Math.Max(__owner.Height - 4, control.Location.Y + control.Height));
                 }
                 if (lay.IsMapped == true)
                 {
