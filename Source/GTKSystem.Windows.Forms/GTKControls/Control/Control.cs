@@ -675,7 +675,15 @@ namespace System.Windows.Forms
                 else
                     return _Font;
             }
-            set { _Font = value; UpdateStyle(); }
+            set { 
+                _Font = value;
+                if (string.IsNullOrWhiteSpace(_Font?.Name) == false && !this.Widget.PangoContext.Families.Any(o => o.Name == _Font.Name))
+                {
+                    _Font = new Font("", value.Size, value.Style, value.Unit, value.GdiCharSet);
+                    Console.WriteLine($"\"{_Font.Name}\" font name is not supported, only English names are supported. Please confirm that the font name is correct or replace it with an English name");
+                }
+                UpdateStyle(); 
+            }
         }
         private Color _ForeColor;
         public virtual Color ForeColor
@@ -1559,7 +1567,7 @@ namespace System.Windows.Forms
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         protected virtual void OnResize(EventArgs e)
         {
-            this.Widget?.QueueResize();
+            
         }
         public virtual void PerformClick()
         {
@@ -1619,7 +1627,7 @@ namespace System.Windows.Forms
         }
         protected virtual void OnSizeChanged(EventArgs e)
         {
-            SizeChanged?.Invoke(this, e);
+
         }
         protected virtual void Select(bool directed, bool forward)
         {
@@ -1647,12 +1655,12 @@ namespace System.Windows.Forms
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         protected virtual void OnMouseMove(MouseEventArgs e)
         {
-            MouseMove?.Invoke(this, e);
+            
         }
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         protected virtual void OnMouseWheel(MouseEventArgs e)
         {
-            MouseWheel?.Invoke(this, e);
+            
         }
     }
 }
