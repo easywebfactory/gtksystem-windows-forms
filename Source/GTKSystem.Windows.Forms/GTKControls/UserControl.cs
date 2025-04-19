@@ -24,6 +24,7 @@ namespace System.Windows.Forms
 
         public UserControl() : base()
         {
+            self.Override.sender = this;
             contaner = new Gtk.Overlay();
             contaner.MarginStart = 0;
             contaner.MarginTop = 0;

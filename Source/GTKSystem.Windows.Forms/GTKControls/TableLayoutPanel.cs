@@ -32,7 +32,8 @@ namespace System.Windows.Forms
         public Gtk.Grid grid => self.grid;
         public TableLayoutPanel():base()
         {
-            _controls=new TableLayoutControlCollection(this);
+            self.Override.sender = this;
+            _controls =new TableLayoutControlCollection(this);
 			_columnStyles = new TableLayoutColumnStyleCollection();
 			_rowStyles = new TableLayoutRowStyleCollection();
         }

@@ -19,6 +19,7 @@ namespace System.Windows.Forms
         internal SplitContainer Owner;
         public SplitterPanel(SplitContainer owner) : base()
         {
+            self.Override.sender = this;
             self.Override.AddClass("SplitterPanel");
             Owner = owner;
             self.BorderWidth = 0;

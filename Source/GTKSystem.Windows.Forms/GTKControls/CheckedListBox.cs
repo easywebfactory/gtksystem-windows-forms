@@ -21,6 +21,7 @@ namespace System.Windows.Forms
         private ObjectCollection _items;
         public CheckedListBox() : base()
         {
+            self.Override.sender = this;
             _items = new ObjectCollection(this);
             _flow.Orientation = Gtk.Orientation.Horizontal;
             _flow.MinChildrenPerLine = 1;

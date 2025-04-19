@@ -15,6 +15,7 @@ namespace System.Windows.Forms
         public readonly SwitchBoxBase self = new SwitchBoxBase();
         public override object GtkControl => self;
         public SwitchBox() {
+            self.Override.sender = this;
             self.ButtonReleaseEvent += Self_ButtonReleaseEvent;
         }
         private void Self_ButtonReleaseEvent(object o, Gtk.ButtonReleaseEventArgs args)

@@ -33,6 +33,7 @@ namespace System.Windows.Forms
 
         public ListBox():base()
 		{
+            self.Override.sender = this;
             self.ListBox.Halign = Gtk.Align.Fill;
             self.ListBox.Valign = Gtk.Align.Fill;
             self.ListBox.Hexpand = true;

@@ -28,6 +28,7 @@ namespace System.Windows.Forms
         public Gtk.TreeView GridView { get { return self.GridView; } }
         public DataGridView():base()
         {
+            self.Override.sender = this;
             this.BorderStyle = BorderStyle.FixedSingle;
             GridView.Margin = 0;
             GridView.MarginStart = 0;

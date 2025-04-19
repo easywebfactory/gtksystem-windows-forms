@@ -17,6 +17,7 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         public ProgressBar():base()
         {
+            self.Override.sender = this;
             self.Realized += Control_Realized;
         }
 

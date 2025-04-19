@@ -16,6 +16,7 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         public NumericUpDown() : base()
         {
+            self.Override.sender = this;
             self.ValueChanged += Self_ValueChanged;
         }
 

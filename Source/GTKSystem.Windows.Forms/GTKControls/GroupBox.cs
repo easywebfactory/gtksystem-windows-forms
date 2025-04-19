@@ -20,6 +20,7 @@ namespace System.Windows.Forms
         private ControlCollection _controls = null;
         public GroupBox() : base()
         {
+            self.Override.sender = this;
             _controls = new ControlCollection(this, contaner);
             _controls.Offset.Offset(0, -20);
             contaner.MarginStart = 0;

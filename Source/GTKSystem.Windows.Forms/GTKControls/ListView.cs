@@ -32,6 +32,7 @@ namespace System.Windows.Forms
         private int __headerheight = 30;
         public ListView() : base()
         {
+            self.Override.sender = this;
             _items = new ListViewItemCollection(this);
             _groups = new ListViewGroupCollection(this);
             _columns = new ColumnHeaderCollection(this);

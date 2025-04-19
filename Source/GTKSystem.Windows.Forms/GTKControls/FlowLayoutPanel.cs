@@ -21,6 +21,7 @@ namespace System.Windows.Forms
         private ObjectCollection _controls;
         public FlowLayoutPanel() : base()
         {
+            self.Override.sender = this;
             self.Orientation = Gtk.Orientation.Horizontal;
             self.Halign = Align.Start;
             self.Valign = Align.Start;

@@ -35,6 +35,7 @@ namespace System.Windows.Forms
         private PropertyGridView _propertyView;
         public PropertyGrid()
         {
+            self.Override.sender = this;
             _propertyView = new PropertyGridView(this);
             self.child1.Add(_propertyView.tree);
             _propertyView.PropertyValueChanged += Self_PropertyValueChanged;

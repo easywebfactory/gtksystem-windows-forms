@@ -15,6 +15,7 @@ namespace System.Windows.Forms
         public readonly RadioButtonBase self = new RadioButtonBase();
         public override object GtkControl => self;
         public RadioButton():base() {
+            self.Override.sender = this;
             self.ParentSet += Self_ParentSet;
         }
 

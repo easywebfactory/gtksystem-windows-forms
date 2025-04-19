@@ -20,6 +20,7 @@ namespace System.Windows.Forms
         private ControlCollection _controls;
         public Panel() : base()
         {
+            self.Override.sender = this;
             _controls = new ControlCollection(this, contaner);
             contaner.Margin = 0;
             contaner.Halign = Align.Fill;

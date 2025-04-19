@@ -12,9 +12,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
     public sealed class GtkControlOverride: IControlOverride
     {
         private Widget container;
+        public object sender;
         public GtkControlOverride(Widget container)
         {
             this.container = container;
+            this.sender = container;
         }
         public event DrawnHandler DrawnBackground;
         public event PaintEventHandler Paint;
@@ -95,7 +97,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 ImageUtility.DrawImage(cr, imagePixbuf, area, ImageAlign);
             }
         }
-        
         public event PaintGraphicsEventHandler PaintGraphics;
         public void OnPaint(Cairo.Context cr, Gdk.Rectangle area)
         {
@@ -103,7 +104,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 PaintGraphics(cr, new Rectangle(area.X, area.Y, area.Width, area.Height));
             }
             if (Paint != null)
-                Paint(this.container, new PaintEventArgs(new Graphics(container, cr, area), new Rectangle(area.X, area.Y, area.Width, area.Height)));
+                Paint(sender, new PaintEventArgs(new Graphics(container, cr, area), new Rectangle(area.X, area.Y, area.Width, area.Height)));
         }
     }
 }

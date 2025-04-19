@@ -23,6 +23,7 @@ namespace System.Windows.Forms
         private TabControl.TabPageCollection _tabPageControls;
         public TabControl() : base()
         {
+            self.Override.sender = this;
             _controls = new ControlCollection(this);
             _tabPageControls = new TabPageCollection(this);
             self.SwitchPage += Self_SwitchPage;

@@ -16,7 +16,7 @@ namespace System.Windows.Forms
         public readonly LabelBase self = new LabelBase();
         public override object GtkControl => self;
         public Label() : base() {
-      
+            self.Override.sender = this;
         }
         public override string Text { get => self.Text; set { self.Text = value; } }
         public override RightToLeft RightToLeft { get { return self.Direction == Gtk.TextDirection.Rtl ? RightToLeft.Yes : RightToLeft.No; } set { self.Direction = value == RightToLeft.Yes ?  Gtk.TextDirection.Rtl : Gtk.TextDirection.Ltr; } }

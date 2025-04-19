@@ -30,6 +30,7 @@ namespace System.Windows.Forms
         private CellRendererIcon rendererPixbuf;
         public TreeView() : base()
         {
+            self.Override.sender = this;
             root = new TreeNode(this);
             root.Index = "-1";
             root.Name = "__root";

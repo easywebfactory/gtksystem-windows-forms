@@ -27,6 +27,7 @@ namespace System.Windows.Forms
         public override event EventHandler SizeChanged;
         public Form() : base()
         {
+            self.Override.sender = this;
             Init();
         }
         public Form(string title) : this()
@@ -378,6 +379,7 @@ namespace System.Windows.Forms
         {
             return self.Activate();
         }
+        public bool TopMost { get { return self.IsActive; } set { self.KeepAbove = value; } }
         public MenuStrip MainMenuStrip { get; set; }
 
         public override IntPtr Handle => self.Handle;

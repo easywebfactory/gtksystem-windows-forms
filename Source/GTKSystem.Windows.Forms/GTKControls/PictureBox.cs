@@ -21,6 +21,7 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         public PictureBox()
         {
+            self.Override.sender = this;
             self.Shown += Self_Shown;
         }
 

@@ -16,6 +16,7 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         public MonthCalendar():base()
         {
+            self.Override.sender = this;
             self.DaySelected += MonthCalendar_DaySelected;
         }
 

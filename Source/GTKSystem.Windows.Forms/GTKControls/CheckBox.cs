@@ -15,6 +15,7 @@ namespace System.Windows.Forms
         public readonly CheckBoxBase self = new CheckBoxBase();
         public override object GtkControl => self;
         public CheckBox() {
+            self.Override.sender = this;
             self.Toggled += Self_Toggled;
             self.ButtonReleaseEvent += Self_ButtonReleaseEvent;
         }

@@ -19,6 +19,7 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         public SplitContainer() : base()
         {
+            self.Override.sender = this;
             _panel1 = new SplitterPanel(this);
             _panel1.contaner.Name = "Child1";
             _panel2 = new SplitterPanel(this);

@@ -17,6 +17,7 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         public Button() : base()
         {
+            self.Override.sender = this;
             self.Clicked += Self_Clicked;
         }
         private void Self_Clicked(object sender, EventArgs e)

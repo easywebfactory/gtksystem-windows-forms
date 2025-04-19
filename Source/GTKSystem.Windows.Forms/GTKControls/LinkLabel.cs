@@ -18,6 +18,7 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         public LinkLabel():base()
         {
+            self.Override.sender = this;
             self.Clicked += LinkLabel_Click;
             self.ActivateLink += LinkLabel_ActivateLink;
         }

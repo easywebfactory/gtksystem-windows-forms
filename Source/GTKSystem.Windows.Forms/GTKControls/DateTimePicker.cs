@@ -20,6 +20,7 @@ namespace System.Windows.Forms
         Gtk.Calendar calendar = new Gtk.Calendar();
         public DateTimePicker() : base("DateTimePicker")
         {
+            self.Override.sender = this;
             base.Mask = "____年__月__日";
 
             self.SecondaryIconActivatable = true;

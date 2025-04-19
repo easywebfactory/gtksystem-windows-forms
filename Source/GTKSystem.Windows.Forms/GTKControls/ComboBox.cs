@@ -23,6 +23,7 @@ namespace System.Windows.Forms
         private ObjectCollection __itemsData;
         public ComboBox():base()
         {
+            self.Override.sender = this;
             self.Entry.HasFrame = false;
             self.Entry.WidthChars = 0;
 

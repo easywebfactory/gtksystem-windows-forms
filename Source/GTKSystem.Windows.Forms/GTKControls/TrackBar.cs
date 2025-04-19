@@ -18,6 +18,7 @@ namespace System.Windows.Forms
         Gtk.Scale scale;
 		public TrackBar():base()
         {
+            self.Override.sender = this;
             self.Realized += Control_Realized;
         }
 

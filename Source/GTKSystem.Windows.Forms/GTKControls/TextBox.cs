@@ -19,6 +19,7 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         public TextBox() : base()
         {
+            self.Override.sender = this;
             self.MaxWidthChars = 1;
             self.WidthChars = 0;
             self.Valign = Gtk.Align.Start;
@@ -110,6 +111,14 @@ namespace System.Windows.Forms
             if(text == null) return;
             int posi = self.CursorPosition;
             self.InsertText(text,ref posi);
+        }
+        public void SelectAll()
+        {
+            Select(0, -1);
+        }
+        public void DeselectAll()
+        {
+            SelectionLength = 0;
         }
     }
 }

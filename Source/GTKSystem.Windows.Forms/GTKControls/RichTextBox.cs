@@ -19,6 +19,7 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         protected override void SetStyle(Widget widget)
         {
+            self.Override.sender = this;
             self.TextView.Name = this.Name;
             base.SetStyle(self.TextView);
         }
@@ -87,6 +88,14 @@ namespace System.Windows.Forms
         {
             if (text == null) return;
             self.TextView.Buffer.InsertAtCursor(text);
+        }
+        public void SelectAll()
+        {
+            Select(0, Text.Length);
+        }
+        public void DeselectAll()
+        {
+            SelectionLength = 0;
         }
     }
 }

@@ -63,6 +63,7 @@ namespace System.Windows.Forms
                 widget.SizeAllocated += Widget_SizeAllocated;
             }
         }
+
         private int size_width = 0;
         private int size_height = 0;
         private int location_x = 0;
@@ -990,40 +991,17 @@ namespace System.Windows.Forms
         {
 
         }
-        Cairo.ImageSurface image;
         Cairo.Surface surface;
         Cairo.Context context;
         public virtual Drawing.Graphics CreateGraphics()
         {
             try
             {
-                if (image == null)
-                    image = new Cairo.ImageSurface(Cairo.Format.Argb32, this.Widget.AllocatedWidth, this.Widget.AllocatedHeight);
-
                 surface?.Dispose();
-                surface = image.CreateSimilar(Cairo.Content.ColorAlpha, this.Widget.AllocatedWidth, this.Widget.AllocatedHeight);
+                surface = this.Widget.Window.CreateSimilarSurface(Cairo.Content.ColorAlpha, this.Widget.AllocatedWidth, this.Widget.AllocatedHeight);
                 context?.Dispose();
                 context = new Cairo.Context(surface);
                 return new Drawing.Graphics(this.Widget, context, this.Widget.Allocation);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("画版创建失败：" + ex.Message);
-                throw;
-            }
-        }
-        public virtual Drawing.Graphics CreateGraphics(int x, int y, int width, int height)
-        {
-            try
-            {
-                if (image == null)
-                    image = new Cairo.ImageSurface(Cairo.Format.Argb32, width, height);
-
-                surface?.Dispose();
-                surface = image.CreateSimilar(Cairo.Content.ColorAlpha, width, height);
-                context?.Dispose();
-                context = new Cairo.Context(surface);
-                return new Drawing.Graphics(this.Widget, context, new Gdk.Rectangle(x, y, width, height));
             }
             catch (Exception ex)
             {
@@ -1521,8 +1499,6 @@ namespace System.Windows.Forms
         {
             try
             {
-                if (image != null)
-                    image.Dispose();
                 if (surface != null)
                     surface.Dispose();
                 if (context != null)
