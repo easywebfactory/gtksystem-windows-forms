@@ -4,8 +4,8 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+using Gtk;
 using System.ComponentModel;
-using System.Windows.Forms.GtkRender;
 
 namespace System.Windows.Forms
 {
@@ -60,7 +60,7 @@ namespace System.Windows.Forms
                 {
                     Gtk.CssProvider css = new Gtk.CssProvider();
                     css.LoadFromData(style);
-                    header.StyleContext.AddProvider(css, 800);
+                    header.StyleContext.AddProvider(css, StyleProviderPriority.User);
                 }
                 switch (_cellStyle.Alignment)
                 {

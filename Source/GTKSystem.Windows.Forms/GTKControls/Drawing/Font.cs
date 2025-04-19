@@ -411,7 +411,7 @@ namespace System.Drawing
         //     true if this System.Drawing.Font has a horizontal line through it; otherwise,
         //     false.
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool Strikeout { get; }
+        public bool Strikeout { get => Style.HasFlag(FontStyle.Strikeout); }
         //
         // 摘要:
         //     Gets style information for this System.Drawing.Font.

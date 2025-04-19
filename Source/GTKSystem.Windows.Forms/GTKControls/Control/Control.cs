@@ -442,19 +442,19 @@ namespace System.Windows.Forms
                     {
                         style.AppendFormat("font-family:\"{0}\";", font.FontFamily.Name);
                     }
-                    if ((font.Style & FontStyle.Bold) != 0)
+                    if (font.Bold)
                     {
                         style.Append("font-weight:bold;");
                     }
-                    if ((font.Style & FontStyle.Italic) != 0)
+                    if (font.Italic)
                     {
                         style.Append("font-style:italic;");
                     }
-                    if ((font.Style & FontStyle.Underline) != 0)
+                    if (font.Underline)
                     {
                         style.Append("text-decoration:underline;");
                     }
-                    if ((font.Style & FontStyle.Strikeout) != 0)
+                    if (font.Strikeout)
                     {
                         style.Append("text-decoration:line-through;");
                     }
@@ -474,7 +474,7 @@ namespace System.Windows.Forms
                     {
                         if (widget.StyleContext.HasClass(styleClassName))
                             widget.StyleContext.RemoveProvider(provider);
-                        widget.StyleContext.AddProvider(provider, 900);
+                        widget.StyleContext.AddProvider(provider, StyleProviderPriority.User);
                         widget.StyleContext.AddClass(styleClassName);
                     }
                 }
@@ -677,12 +677,25 @@ namespace System.Windows.Forms
             }
             set { 
                 _Font = value;
-                if (string.IsNullOrWhiteSpace(_Font?.Name) == false && !this.Widget.PangoContext.Families.Any(o => o.Name == _Font.Name))
+                if (_Font != null)
                 {
-                    _Font = new Font("", value.Size, value.Style, value.Unit, value.GdiCharSet);
-                    Console.WriteLine($"\"{_Font.Name}\" font name is not supported, only English names are supported. Please confirm that the font name is correct or replace it with an English name");
+                    if (string.IsNullOrWhiteSpace(_Font.Name) == false && !this.Widget.PangoContext.Families.Any(o => o.Name == _Font.Name))
+                    {
+                        _Font = new Font("", value.Size, value.Style, value.Unit, value.GdiCharSet);
+                        Console.WriteLine($"\"{_Font.Name}\" font name is not supported, only English names are supported. Please confirm that the font name is correct or replace it with an English name");
+                    }
+                    Pango.FontDescription fdesc = this.Widget.PangoContext.FontDescription;
+                    fdesc.Family = _Font.Name;
+                    if (_Font.Unit == GraphicsUnit.Point)
+                        fdesc.Size = Convert.ToInt32(_Font.Size * Pango.Scale.PangoScale * 96 / 72);
+                    else
+                        fdesc.Size = Convert.ToInt32(_Font.Size * Pango.Scale.PangoScale);
+                    if (_Font.Bold)
+                        fdesc.Weight = Pango.Weight.Bold;
+                    if (_Font.Italic)
+                        fdesc.Style = Pango.Style.Italic;
                 }
-                UpdateStyle(); 
+                UpdateStyle();
             }
         }
         private Color _ForeColor;

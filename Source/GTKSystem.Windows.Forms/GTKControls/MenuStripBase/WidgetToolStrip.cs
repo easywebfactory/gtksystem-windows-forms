@@ -7,7 +7,7 @@
  */
 
 using GLib;
-using System;
+using Gtk;
 using System.ComponentModel;
 using System.Drawing;
 using System.Text;
@@ -50,7 +50,7 @@ namespace System.Windows.Forms
         {
             this.unique_key = Guid.NewGuid().ToString().ToLower();
             MenuItem = (Gtk.MenuItem)Activator.CreateInstance(typeof(T), args);
-            MenuItem.StyleContext.AddProvider(provider, 900);
+            MenuItem.StyleContext.AddProvider(provider, StyleProviderPriority.User);
             if (stripType == "ToolStripSeparator")
             {
                 Created = true;
@@ -281,19 +281,19 @@ namespace System.Windows.Forms
                 {
                     style.AppendFormat("font-family:\"{0}\";", font.FontFamily.Name);
                 }
-                if ((font.Style & FontStyle.Bold) != 0)
+                if (font.Bold)
                 {
                     style.Append("font-weight:bold;");
                 }
-                if ((font.Style & FontStyle.Italic) != 0)
+                if (font.Italic)
                 {
                     style.Append("font-style:italic;");
                 }
-                if ((font.Style & FontStyle.Underline) != 0)
+                if (font.Underline)
                 {
                     style.Append("text-decoration:underline;");
                 }
-                if ((font.Style & FontStyle.Strikeout) != 0)
+                if (font.Strikeout)
                 {
                     style.Append("text-decoration:line-through;");
                 }
