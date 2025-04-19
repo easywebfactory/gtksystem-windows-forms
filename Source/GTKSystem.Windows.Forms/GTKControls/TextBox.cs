@@ -4,6 +4,8 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+using Atk;
+using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
@@ -84,7 +86,10 @@ namespace System.Windows.Forms
                 }
             }
         }
-        public int SelectionStart { get { self.GetSelectionBounds(out int start, out int end); return start; } }
+        public int SelectionStart { 
+            get { self.GetSelectionBounds(out int start, out int end); return start; }
+            set { Select(value, SelectionLength); }
+        }
 
         [System.ComponentModel.Browsable(false)]
         public virtual int SelectionLength
@@ -92,9 +97,14 @@ namespace System.Windows.Forms
             get { self.GetSelectionBounds(out int start, out int end); return end - start; }
             set
             {
-                self.SelectRegion(self.CursorPosition, self.CursorPosition + value);
+                Select(SelectionStart, value);
             }
         }
+        public void Select(int start, int length)
+        {
+            self.SelectRegion(start, start + length);
+        }
+        
         public void InsertTextAtCursor(string text)
         {
             if(text == null) return;

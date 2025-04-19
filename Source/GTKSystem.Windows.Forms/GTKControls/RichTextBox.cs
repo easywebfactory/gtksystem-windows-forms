@@ -4,6 +4,7 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
@@ -62,7 +63,10 @@ namespace System.Windows.Forms
             }
         }
 
-        public int SelectionStart { get { if (self.TextView.Buffer.HasSelection) { self.TextView.Buffer.GetSelectionBounds(out TextIter start, out TextIter end); return start.Offset; } else { return self.TextView.Buffer.CursorPosition; } } }
+        public int SelectionStart { 
+            get { self.TextView.Buffer.GetSelectionBounds(out TextIter start, out TextIter end); return start.Offset; }
+            set { Select(value, SelectionLength); }
+        }
         
         [System.ComponentModel.Browsable(false)]
         public virtual int SelectionLength
@@ -70,11 +74,14 @@ namespace System.Windows.Forms
             get { self.TextView.Buffer.GetSelectionBounds(out TextIter start, out TextIter end); return end.Offset - start.Offset; }
             set
             {
-                
-                TextIter start = self.TextView.Buffer.GetIterAtOffset(self.TextView.Buffer.CursorPosition);
-                TextIter end = self.TextView.Buffer.GetIterAtOffset(self.TextView.Buffer.CursorPosition + value);
-                self.TextView.Buffer.SelectRange(start, end);
+                Select(SelectionStart, value);
             }
+        }
+        public void Select(int start, int length)
+        {
+            TextIter startiter = self.TextView.Buffer.GetIterAtOffset(start);
+            TextIter enditer = self.TextView.Buffer.GetIterAtOffset(start + length);
+            self.TextView.Buffer.SelectRange(startiter, enditer);
         }
         public void InsertTextAtCursor(string text)
         {
