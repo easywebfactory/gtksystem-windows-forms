@@ -32,6 +32,7 @@ namespace System.Windows.Forms
         //
         // 摘要:
         //     The size of the image is increased or decreased maintaining the size ratio.
-        Zoom = 4
+        Zoom = 4,
+        Tile = 5
     }
 }

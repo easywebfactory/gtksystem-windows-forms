@@ -213,12 +213,11 @@ namespace System.Windows.Forms
                 LabelBase label = new LabelBase(col.Text) { Xalign = 0, Xpad = 5, WidthRequest = col.Width, MaxWidthChars = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.End, Ellipsize = Pango.EllipsizeMode.End, Wrap = false, LineWrap = false };
                 label.TooltipText = col.Text;
                 label.Markup = col.Text;
-                label.Data.Add("ColumnIndex", col.Index);
-                label.Override.DrawnBackground += Override_DrawnBackground;
+                label.Name = $"column_t_{col.Index}";
+                label.Drawn += Label_Drawn;
                 var columbt = new Gtk.Button(label) { MarginStart = 0, WidthRequest = col.Width, HeightRequest = __headerheight, Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill };
-                columbt.Name = col.Name;
+                columbt.Name = $"column_b_{col.Index}";
                 columbt.ActionTargetValue = new GLib.Variant(col.Index);
-                columbt.Data.Add("ColumnIndex", col.Index);
                 columbt.Clicked += Columbt_Clicked;
                 header.PackStart(columbt, false, false, 0);
 
@@ -235,48 +234,14 @@ namespace System.Windows.Forms
                 }
             }
         }
-        private int SortingColumnIndex = -1;
-        private void Columbt_Clicked(object sender, EventArgs e)
-        {
-            //Console.WriteLine(((Gtk.Widget)sender).AllocatedWidth);
-            Gtk.Button btn = (Gtk.Button)sender;
 
-            if (this.HeaderStyle == ColumnHeaderStyle.Clickable)
-            {
-                int actioncolumn = (int)btn.ActionTargetValue;
-                if (this.Sorted == true)
-                {
-                    if (SortingColumnIndex == actioncolumn)
-                    {
-                        if (Sorting == SortOrder.Ascending)
-                            Sorting = SortOrder.Descending;
-                        else if (Sorting == SortOrder.Descending)
-                            Sorting = SortOrder.None;
-                        else
-                            Sorting = SortOrder.Ascending;
-                    }
-                    else
-                    {
-                        Sorting = SortOrder.Ascending;
-                    }
-                    this.Sort();
-
-                    if (ColumnReordered != null)
-                        ColumnReordered(this, new ColumnReorderedEventArgs(SortingColumnIndex, actioncolumn, Columns[actioncolumn]));
-
-                    SortingColumnIndex = actioncolumn;
-                }
-                if (ColumnClick != null)
-                    ColumnClick(this, new ColumnClickEventArgs((int)btn.ActionTargetValue));
-            }
-        }
-        private void Override_DrawnBackground(object o, DrawnArgs args)
+        private void Label_Drawn(object o, DrawnArgs args)
         {
             Cairo.Rectangle rec = args.Cr.ClipExtents();
-            if (rec.Width > 10 && SortingColumnIndex > -1)
+            if (rec.Width > 10 && SortColumn != null)
             {
                 LabelBase ws = (LabelBase)o;
-                if (ws.Data["ColumnIndex"].ToString() == SortingColumnIndex.ToString())
+                if (ws.Name == $"column_t_{SortColumn.Index}")
                 {
                     if (Sorting != SortOrder.None)
                     {
@@ -302,7 +267,43 @@ namespace System.Windows.Forms
                 }
             }
         }
-        
+
+        private void Columbt_Clicked(object sender, EventArgs e)
+        {
+            Gtk.Button btn = (Gtk.Button)sender;
+            if (this.HeaderStyle == ColumnHeaderStyle.Clickable)
+            {
+                int actioncolumn = (int)btn.ActionTargetValue;
+
+                if (SelectedColumnIndex != actioncolumn)
+                    Sorting = SortOrder.None;
+
+                SortColumn = this.Columns[actioncolumn];
+                if (Sorting == SortOrder.Ascending)
+                    Sorting = SortOrder.Descending;
+                else if (Sorting == SortOrder.Descending)
+                    Sorting = SortOrder.None;
+                else
+                    Sorting = SortOrder.Ascending;
+
+                this.Sort();
+
+                if (ColumnClick != null)
+                    ColumnClick(this, new ColumnClickEventArgs((int)btn.ActionTargetValue));
+            }
+        }
+        private int SelectedColumnIndex = -1;
+        public ColumnHeader SortColumn { set; get; }
+        public void Sort()
+        {
+            if (SortColumn != null)
+            {
+                foreach (var group in GetAllGroups())
+                {
+                    group.FlowBox.InvalidateSort();
+                }
+            }
+        }
         internal void NativeUpdateText(ListViewItem item, string text)
         {
             if (item._flowBoxChild != null && item._flowBoxChild.Parent is Gtk.FlowBox flowBox)
@@ -729,16 +730,13 @@ namespace System.Windows.Forms
 
                 if (position == -1 && Groups.Exists(g => g.SerialGuid == group.SerialGuid) == false)
                 {
-                    if (AllowColumnReorder)
+                    if (Sorting == SortOrder.Descending)
                     {
-                        if (Sorting == SortOrder.Descending)
-                        {
-                            position = Groups.OrderByDescending(o => o.Header).ToList().FindIndex(g => g.Name == group.Name);
-                        }
-                        else if (Sorting == SortOrder.Ascending)
-                        {
-                            position = Groups.OrderBy(o => o.Header).ToList().FindIndex(g => g.Name == group.Name);
-                        }
+                        position = Groups.OrderByDescending(o => o.Header).ToList().FindIndex(g => g.Name == group.Name);
+                    }
+                    else if (Sorting == SortOrder.Ascending)
+                    {
+                        position = Groups.OrderBy(o => o.Header).ToList().FindIndex(g => g.Name == group.Name);
                     }
                 }
 
@@ -811,12 +809,12 @@ namespace System.Windows.Forms
                 _flow.ActivateOnSingleClick = MultiSelect == false;
                 _flow.SortFunc = new Gtk.FlowBoxSortFunc((fbc1, fbc2) =>
                 {
-                    if (SortingColumnIndex > -1)
+                    if (SortColumn != null)
                     {
                         if (this.Sorting == SortOrder.Ascending)
-                            return fbc2.Data[SortingColumnIndex].ToString().CompareTo(fbc1.Data[SortingColumnIndex].ToString());
+                            return fbc2.Data[SortColumn.Index].ToString().CompareTo(fbc1.Data[SortColumn.Index].ToString());
                         else if (this.Sorting == SortOrder.Descending)
-                            return fbc1.Data[SortingColumnIndex].ToString().CompareTo(fbc2.Data[SortingColumnIndex].ToString());
+                            return fbc1.Data[SortColumn.Index].ToString().CompareTo(fbc2.Data[SortColumn.Index].ToString());
                         else
                             return fbc2.Index.CompareTo(fbc1.Index);
                     }
@@ -914,13 +912,7 @@ namespace System.Windows.Forms
                     ItemSelectionChanged(this, new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
             }
         }
-        public void Sort()
-        {
-            foreach (var group in GetAllGroups())
-            {
-                group.FlowBox.InvalidateSort();
-            }
-        }
+
         private bool IsCacheUpdate;
         public void BeginUpdate()
         {
@@ -1292,10 +1284,27 @@ namespace System.Windows.Forms
                 base.Insert(index, item);
                 return item;
             }
-
+            public new void RemoveAt(int index)
+            {
+                if (index < Count && index >= 0)
+                {
+                    ListViewItem item = this[index];
+                    Remove(item);
+                }
+            }
+            public new void Remove(ListViewItem item)
+            {
+                base.Remove(item);
+                if( item._flowBoxChild?.Parent is Gtk.FlowBox flow){
+                    flow.Remove(item._flowBoxChild);
+                    item._flowBoxChild.Destroy();
+                }
+            }
             public virtual void RemoveByKey(string key)
             {
-                base.Remove(base.Find(w => w.Name == key));
+                ListViewItem item = base.Find(w => w.Name == key);
+                if (item != null)
+                    Remove(item);
             }
             public new void Clear()
             {

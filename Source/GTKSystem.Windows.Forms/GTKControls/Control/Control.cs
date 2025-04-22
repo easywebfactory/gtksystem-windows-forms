@@ -289,7 +289,7 @@ namespace System.Windows.Forms
             if (widget is Gtk.Image) { }
             else
             {
-                if (this.Image != null && this.Image.PixbufData != null)
+                if (this._image != null && this._image.PixbufData != null)
                 {
                     string imgdir = $"Resources/{widget.WidgetPath.IterGetName(0)}";
                     string imguri = $"{imgdir}/{widget.Name}_image.png";
@@ -297,7 +297,7 @@ namespace System.Windows.Forms
                     {
                         if (!Directory.Exists(imgdir))
                             Directory.CreateDirectory(imgdir);
-                        Gdk.Pixbuf imagepixbuf = new Gdk.Pixbuf(this.Image.PixbufData);
+                        Gdk.Pixbuf imagepixbuf = new Gdk.Pixbuf(this._image.PixbufData);
                         imagepixbuf.Save(imguri, "png");
                     }
                     style.AppendFormat("background:url(\"{0}\")", imguri);
@@ -343,12 +343,12 @@ namespace System.Windows.Forms
                         style.Append(" center center");
                     }
 
-                    if (this.BackgroundImage != null && this.BackgroundImage.PixbufData != null)
+                    if (this._backgroundImage != null && this._backgroundImage.PixbufData != null)
                     {
                         string bgimguri = $"{imgdir}/{widget.Name}_bgimage.png";
                         if (!File.Exists(bgimguri))
                         {
-                            Gdk.Pixbuf bgpixbuf = new Gdk.Pixbuf(this.BackgroundImage.PixbufData);
+                            Gdk.Pixbuf bgpixbuf = new Gdk.Pixbuf(this._backgroundImage.PixbufData);
                             bgpixbuf.Save(bgimguri, "png");
                         }
 
@@ -358,11 +358,11 @@ namespace System.Windows.Forms
                     style.Append("background-origin: padding-box;");
                     style.Append("background-clip: padding-box;");
                 }
-                else if (this.BackgroundImage != null && this.BackgroundImage.PixbufData != null)
+                else if (this._backgroundImage != null && this._backgroundImage.PixbufData != null)
                 {
                     string bgimgdir = $"Resources/{widget.WidgetPath.IterGetName(0)}";
                     string bgimguri = $"{bgimgdir}/{widget.Name}_bgimage.png";
-                    Gdk.Pixbuf bgpixbuf = new Gdk.Pixbuf(this.BackgroundImage.PixbufData);
+                    Gdk.Pixbuf bgpixbuf = new Gdk.Pixbuf(this._backgroundImage.PixbufData);
                     if (!File.Exists(bgimguri))
                     {
                         if (!Directory.Exists(bgimgdir))
@@ -486,13 +486,16 @@ namespace System.Windows.Forms
         }
 
         #region 背景
-        public virtual System.Drawing.Image Image { get; set; }
+        private Drawing.Image _image;
+        public virtual System.Drawing.Image Image { get => _image; set => _image = value; }
         public virtual System.Drawing.ContentAlignment ImageAlign { get; set; }
 
         public virtual bool UseVisualStyleBackColor { get; set; } = true;
         public virtual Color VisualStyleBackColor { get; }
-        public virtual ImageLayout BackgroundImageLayout { get => ISelf == null ? ImageLayout.None : ISelf.Override.BackgroundImageLayout; set { if (ISelf != null) { ISelf.Override.BackgroundImageLayout = value; } } }
-        public virtual Drawing.Image BackgroundImage { get => ISelf == null ? null : ISelf.Override.BackgroundImage; set { if (ISelf != null) { ISelf.Override.BackgroundImage = value; Refresh(); } } }
+        private ImageLayout _backgroundImageLayout;
+        public virtual ImageLayout BackgroundImageLayout { get => _backgroundImageLayout; set { _backgroundImageLayout = value; if (ISelf != null) { ISelf.Override.BackgroundImageLayout = value; } } }
+        private Drawing.Image _backgroundImage;
+        public virtual Drawing.Image BackgroundImage { get => _backgroundImage; set { _backgroundImage = value; if (ISelf != null) { ISelf.Override.BackgroundImage = value; Refresh(); } } }
         public virtual Color BackColor
         {
             get

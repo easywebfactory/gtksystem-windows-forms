@@ -18,11 +18,9 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.container = container;
             this.sender = container;
         }
-        public event DrawnHandler DrawnBackground;
         public event PaintEventHandler Paint;
         public System.Drawing.Color? BackColor { get; set; }
-        private System.Drawing.Image _BackgroundImage;
-        public System.Drawing.Image BackgroundImage { get { return _BackgroundImage; } set { _BackgroundImage = value; backgroundPixbuf = null; } }
+        public System.Drawing.Image BackgroundImage { get; set; }
         public ImageLayout BackgroundImageLayout { get; set; }
         public System.Drawing.Image Image { get; set; }
         public System.Drawing.ContentAlignment ImageAlign { get; set; }
@@ -49,7 +47,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public void ClearNativeBackground()
         {
         }
-        private Gdk.Pixbuf backgroundPixbuf;
+
         public void DrawnBackColor(Cairo.Context cr, Gdk.Rectangle area)
         {
             if (BackColor.HasValue)
@@ -69,32 +67,16 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 cr.Paint();
                 cr.Restore();
             }
-            if (BackgroundImage != null && BackgroundImage.PixbufData != null)
+            if (BackgroundImage != null && BackgroundImage.Pixbuf != null)
             {
-                if (backgroundPixbuf == null || backgroundPixbuf.Width != area.Width || backgroundPixbuf.Height != area.Height)
-                {
-                    ImageUtility.ScaleImageByImageLayout(BackgroundImage.PixbufData, area.Width, area.Height, out backgroundPixbuf, BackgroundImageLayout);
-                }
-                ImageUtility.DrawImage(cr, backgroundPixbuf, area, ContentAlignment.TopLeft);
-            }
-
-            if (DrawnBackground != null)
-            {
-                DrawnArgs args = new DrawnArgs() { Args = new object[] { cr } };
-                DrawnBackground(this.container, args);
+                SetDrawnBackground(cr, BackgroundImage.Pixbuf, BackgroundImageLayout, area.Width, area.Height);
             }
         }
-        private Gdk.Pixbuf imagePixbuf;
         public void OnDrawnImage(Cairo.Context cr, Gdk.Rectangle area)
         {
-            if (Image != null && Image.PixbufData != null)
+            if (Image != null && Image.Pixbuf != null)
             {
-                if (imagePixbuf == null || imagePixbuf.Width != area.Width || imagePixbuf.Height != area.Height)
-                {
-                    Gdk.Pixbuf imagepixbuf = new Gdk.Pixbuf(Image.PixbufData);
-                    imagePixbuf = imagepixbuf.ScaleSimple(area.Width, area.Height, Gdk.InterpType.Nearest);
-                }
-                ImageUtility.DrawImage(cr, imagePixbuf, area, ImageAlign);
+                SetDrawImage(cr, Image.Pixbuf, area, ImageAlign);
             }
         }
         public event PaintGraphicsEventHandler PaintGraphics;
@@ -105,6 +87,87 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             }
             if (Paint != null)
                 Paint(sender, new PaintEventArgs(new Graphics(container, cr, area), new Rectangle(area.X, area.Y, area.Width, area.Height)));
+        }
+
+        public void SetDrawImage(Cairo.Context ctx, Gdk.Pixbuf img, Gdk.Rectangle rec, ContentAlignment ImageAlign)
+        {
+            ctx.Save();
+            if (ImageAlign == ContentAlignment.TopLeft)
+                Gdk.CairoHelper.SetSourcePixbuf(ctx, img, rec.X, rec.Y);
+            else if (ImageAlign == ContentAlignment.TopCenter)
+                Gdk.CairoHelper.SetSourcePixbuf(ctx, img, (img.Width - rec.Width) / 2 + rec.X, rec.Y);
+            else if (ImageAlign == ContentAlignment.TopRight)
+                Gdk.CairoHelper.SetSourcePixbuf(ctx, img, (img.Width - rec.Width) + rec.X, rec.Y);
+            else if (ImageAlign == ContentAlignment.MiddleLeft)
+                Gdk.CairoHelper.SetSourcePixbuf(ctx, img, rec.X, (img.Height - rec.Height) / 2 + rec.Y);
+            else if (ImageAlign == ContentAlignment.MiddleCenter)
+                Gdk.CairoHelper.SetSourcePixbuf(ctx, img, (img.Width - rec.Width) / 2 + rec.X, (img.Height - rec.Height) / 2 + rec.Y);
+            else if (ImageAlign == ContentAlignment.MiddleRight)
+                Gdk.CairoHelper.SetSourcePixbuf(ctx, img, (img.Width - rec.Width) + rec.X, (img.Height - rec.Height) / 2 + rec.Y);
+            else if (ImageAlign == ContentAlignment.BottomLeft)
+                Gdk.CairoHelper.SetSourcePixbuf(ctx, img, rec.X, (img.Height - rec.Height) + rec.Y);
+            else if (ImageAlign == ContentAlignment.BottomCenter)
+                Gdk.CairoHelper.SetSourcePixbuf(ctx, img, (img.Width - rec.Width) / 2 + rec.X, (img.Height - rec.Height) + rec.Y);
+            else if (ImageAlign == ContentAlignment.BottomRight)
+                Gdk.CairoHelper.SetSourcePixbuf(ctx, img, (img.Width - rec.Width) + rec.X, (img.Height - rec.Height) + rec.Y);
+            else
+                Gdk.CairoHelper.SetSourcePixbuf(ctx, img, rec.X, rec.Y);
+
+            using (var p = ctx.GetSource())
+            {
+                if (p is Cairo.SurfacePattern pattern)
+                {
+                    pattern.Filter = Cairo.Filter.Fast;
+                }
+            }
+            ctx.Paint();
+            ctx.Restore();
+        }
+        public void SetDrawnBackground(Cairo.Context cr, Gdk.Pixbuf image, ImageLayout layoutMode, int width, int height)
+        {
+            if (layoutMode == ImageLayout.None)
+            {
+                //从左上角开始原图铺开
+                Gdk.CairoHelper.SetSourcePixbuf(cr, image, 0, 0);
+            }
+            else if (layoutMode == ImageLayout.Stretch)
+            { //自由缩放取全图铺满
+                Gdk.CairoHelper.SetSourcePixbuf(cr, image.ScaleSimple(width, height, Gdk.InterpType.Nearest), 0, 0);
+            }
+            else if (layoutMode == ImageLayout.Center)
+            {
+                //取原图中间
+                int offsetx = (width - image.Width) / 2;
+                int offsety = (height - image.Height) / 2;
+                Gdk.CairoHelper.SetSourcePixbuf(cr, image, offsetx, offsety);
+            }
+            else if (layoutMode == ImageLayout.Zoom)
+            {
+                //原图比例缩放，显示全图
+                double scaleW = width * 1f / image.Width;
+                double scaleH = height * 1f / image.Height;
+                if (scaleW > scaleH)
+                    Gdk.CairoHelper.SetSourcePixbuf(cr, image.ScaleSimple((int)(image.Width * scaleH), height, Gdk.InterpType.Nearest), 0, 0);
+                else
+                    Gdk.CairoHelper.SetSourcePixbuf(cr, image.ScaleSimple(width, (int)(image.Height * scaleW), Gdk.InterpType.Nearest), 0, 0);
+            }
+            else if (layoutMode == ImageLayout.Tile)
+            {
+                //平铺背景图，原图铺满
+                for (int y = 0; y < height; y += image.Height)
+                {
+                    for (int x = 0; x < width; x += image.Width)
+                    {
+                        Gdk.CairoHelper.SetSourcePixbuf(cr, image, x, y);
+                        cr.Paint();
+                    }
+                }
+            }
+            else
+            {
+                Gdk.CairoHelper.SetSourcePixbuf(cr, image, 0, 0);
+            }
+            cr.Paint();
         }
     }
 }
