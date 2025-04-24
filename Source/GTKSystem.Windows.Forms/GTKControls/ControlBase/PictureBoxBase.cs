@@ -17,6 +17,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("PictureBox");
+            this.Events = Gdk.EventMask.AllEventsMask;
         }
 
         protected override void OnShown()
