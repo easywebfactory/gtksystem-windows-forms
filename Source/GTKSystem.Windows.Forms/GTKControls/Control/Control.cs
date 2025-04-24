@@ -1436,10 +1436,7 @@ namespace System.Windows.Forms
 
         public virtual void Hide()
         {
-            if (this.GtkControl is Misc con)
-            {
-                con.Hide();
-            }
+            this.Widget?.Hide();
         }
 
         public virtual void Show()
