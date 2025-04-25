@@ -44,7 +44,7 @@ namespace System.Windows.Forms
         public event EventHandler CheckedChanged;
 
         public override string Text { get { return self.Label; } set { self.Label = value;} }
-        public bool Checked { get { return self.Active; } set { _Checked = true; self.Active = true; } }
+        public bool Checked { get { return self.Active; } set { _Checked = value; self.Active = value; } }
         private bool _Checked;
     }
 }
