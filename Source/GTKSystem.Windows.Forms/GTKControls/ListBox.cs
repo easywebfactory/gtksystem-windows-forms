@@ -43,6 +43,7 @@ namespace System.Windows.Forms
             self.ListBox.Realized += Self_Realized;
             self.ListBox.SelectedRowsChanged += ListBox_SelectedRowsChanged;
             this.BorderStyle = BorderStyle.Fixed3D;
+            self.ListBox.FocusVadjustment = self.Vadjustment;
         }
         private void ListBox_SelectedRowsChanged(object sender, EventArgs e)
         {
@@ -292,7 +293,10 @@ namespace System.Windows.Forms
         [Browsable(false)]
 		public int PreferredHeight
         {
-            get; 
+            get { 
+                self.ListBox.GetPreferredHeight(out int mini_height, out int natural_height);
+                return mini_height;
+            }
         }
 
         [DefaultValue(false)]
@@ -397,22 +401,25 @@ namespace System.Windows.Forms
             get=> _topIndex; 
             set {
                 _topIndex = value;
-                GLib.Timeout.Add(100, new TimeoutHandler(() => {
-                    int rowheight = ItemHeight;
-                    if (rowheight < 14)
+                GLib.Timeout.Add(20, () =>
+                {
+                    int topheight = 0;
+                    int maxi = self.ListBox.Children.Length;
+                    for (int ii = 0; ii <= _topIndex && ii< maxi; ii++)
                     {
-                        if (self.ListBox.Children.Length > 0)
-                            rowheight = self.ListBox.Children[0].AllocatedHeight;
-                        else
-                            rowheight = 18;
+                        self.ListBox.Children[ii].GetPreferredHeight(out int mini_height, out int natural_height);
+                        topheight += natural_height;
                     }
-                    var adjustment = self.Vadjustment;
-                    adjustment.Value = value * rowheight - Height + 5;
+                    self.Vadjustment.Value = topheight - self.AllocatedHeight;
                     return false;
-                }));
+                });
             }
         }
-
+        public override bool Focus()
+        {
+            self.ListBox.IsFocus = true;
+            return self.ListBox.IsFocus;
+        }
         [DefaultValue(true)]
 		public bool UseTabStops
         {
@@ -465,14 +472,21 @@ namespace System.Windows.Forms
 		}
 
 		public int GetItemHeight(int index)
-		{
-			throw null;
-		}
+        {
+            if (self.ListBox.Children.Length > index)
+            {
+                self.ListBox.Children[index].GetPreferredHeight(out int min_height, out int nat_height);
+                return nat_height;
+            }
+            else
+                return 0;
+        }
 
-		public Drawing.Rectangle GetItemRectangle(int index)
+        public Drawing.Rectangle GetItemRectangle(int index)
 		{
-			throw null;
-		}
+            self.ListBox.Children[index].GetAllocatedSize(out Gdk.Rectangle allocation, out int size);
+            return new Drawing.Rectangle(allocation.X, allocation.Y, allocation.Width, allocation.Height);
+        }
 		public bool GetSelected(int index)
 		{
             return self.ListBox.GetRowAtIndex(index).IsSelected;
@@ -485,7 +499,7 @@ namespace System.Windows.Forms
 
 		public int IndexFromPoint(int x, int y)
 		{
-			throw null;
+            return self.ListBox.GetRowAtY(y).Index;
 		}
 
 		public override void Refresh()
