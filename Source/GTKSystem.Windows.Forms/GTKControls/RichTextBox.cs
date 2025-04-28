@@ -42,12 +42,9 @@ namespace System.Windows.Forms
         public virtual bool ReadOnly { get { return self.TextView.CanFocus; } set { self.TextView.CanFocus = value; } }
         public override bool Focus()
         {
-            GLib.Timeout.Add(20, () =>
-            {
-                self.TextView.Buffer.GetSelectionBounds(out TextIter start, out TextIter end);
-                self.TextView.ScrollToIter(start, 0, false, 0, 1);
-                return false;
-            });
+            Application.DoEvents();
+            self.TextView.Buffer.GetSelectionBounds(out TextIter start, out TextIter end);
+            self.TextView.ScrollToIter(start, 0, false, 0, 1);
             self.TextView.IsFocus = true;
             return self.TextView.IsFocus;
         }

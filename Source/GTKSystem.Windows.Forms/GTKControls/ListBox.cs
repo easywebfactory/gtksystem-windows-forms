@@ -398,21 +398,19 @@ namespace System.Windows.Forms
         private int _topIndex;
 		public int TopIndex
         {
-            get=> _topIndex; 
-            set {
+            get=> _topIndex;
+            set
+            {
                 _topIndex = value;
-                GLib.Timeout.Add(20, () =>
+                Application.DoEvents();
+                int topheight = 0;
+                int maxi = self.ListBox.Children.Length;
+                for (int ii = 0; ii <= _topIndex && ii < maxi; ii++)
                 {
-                    int topheight = 0;
-                    int maxi = self.ListBox.Children.Length;
-                    for (int ii = 0; ii <= _topIndex && ii< maxi; ii++)
-                    {
-                        self.ListBox.Children[ii].GetPreferredHeight(out int mini_height, out int natural_height);
-                        topheight += natural_height;
-                    }
-                    self.Vadjustment.Value = topheight - self.AllocatedHeight;
-                    return false;
-                });
+                    self.ListBox.Children[ii].GetPreferredHeight(out int mini_height, out int natural_height);
+                    topheight += natural_height;
+                }
+                self.Vadjustment.Value = topheight - self.AllocatedHeight;
             }
         }
         public override bool Focus()
