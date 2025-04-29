@@ -449,6 +449,7 @@ namespace GTKWinFormsApp
             label2.Size = new Size(168, 20);
             label2.TabIndex = 0;
             label2.Text = "这是usercontrol占位框";
+
             // 
             // progressBar1
             // 

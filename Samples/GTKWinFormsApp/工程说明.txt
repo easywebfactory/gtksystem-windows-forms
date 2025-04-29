@@ -1,13 +1,19 @@
-窗体设计管理方法，以GTKWinFormsApp工程为例：
+更多详细操作可访问https://www.gtkapp.com/formsdesigner/
 
-一、GTKWinFormsApp.csproj 是引用GTKSystem框架的工程，从Nuget上安装GTKSystem.Windows.FormsDesigner，编译工程即可
+提供三种窗体设计管理方法，以GTKWinFormsApp工程为例：
 
-二、GTKWinFormsApp_Win2.csproj是.net8原生工程，切换框架时，obj文件有异常提示，可以删除obj文件夹，让Visual Studio自动生成即可
+一、GTKWinFormsApp.csproj 是引用GTKSystem框架的工程，从Nuget上安装GTKSystem.Windows.FormsDesigner，编译工程即可。此方法受Visual Studio的窗体设计器自动重置功能影响，如受影响，需要重启vs来解决。
+    （编辑此工程，卸载GTKWinFormsApp_DotNet8.csproj和GTKWinFormsApp_Framework.csproj）
 
-三、GTKWinFormsApp_Win.csproj是.net Framework v4.8原生工程，与GTKSystem框架没有冲突（注意：不要编译此工程，如果编译后出现无法处理的异常，重启工程即可）
+二、使用.net窗体应用工程来管理窗体，使用.net的原生框架打开工程，本框架的控件程序与windows控件兼容，直接切换框架即可，可以打开窗体设计器来设计窗体，无任何限制。
+   （编辑此工程，卸载GTKWinFormsApp.csproj和GTKWinFormsApp_Framework.csproj）
+
+创建方法如下：
+在当前目录下复制创建GTKWinFormsApp.csproj工程文件，重命名为GTKWinFormsApp_win.csproj，直接双击该工程文件打开Visual Studio，移除引用类“GTKSystem.Windows.Forms”，打开工程属性，把框架“输出类型”改成“Windows应用程序”，“windows窗体”勾选“为该项目启动windows窗体”，删除工程下obj目录，即可打开窗体。使用此方法，在切换框架时，会有异常提示，只需删除obj文件夹，让vs自动重新生成即可。
+
+三、使用Framework窗体应用工程来管理窗体，可以打开窗体设计器来设计窗体，无任何限制，并且obj文件夹下的文件也没有冲突，可同时使用。
+（编辑此工程，卸载GTKWinFormsApp.csproj和GTKWinFormsApp_DotNet8.csproj）
   App.config是.net Framework v4.8原生工程的文件
-  创建方法：新建一个winform（Framework）项目工程（如GTKWinFormsApp_Win），选择Framework v4.8（4.7也行，高版本可以提高语言法兼容性），
-  创建工程后，进入工程目录，复制 GTKWinFormsApp_Win.csproj、App.config文件到GTKSystem框架的工程下，用此GTKWinFormsApp_Win.csproj打开工程，显示隐藏文件，把窗体form和usercontrol都加入工程，如果有问题，修正即可。
-  打开工程属性配置，把默认命名空间改成“GTKWinFormsApp”。
 
-  注意：不需要编译GTKWinFormsApp_Win.csproj工程，如果编译，有可能出现异常提示，影响窗体设计，解决此问题，只需要重启工程即可。
+创建方法如下：
+新建一个工程，选择“Windows窗体应用（.Net Framework）”，框架选择V4.7或v4.8，命名为GTKWinFormsApp_win（任意命名），创建成功后，进入工程目录，复制GTKWinFormsApp_win.csproj、App.json文件到GTKWinFormsApp工程（本框架工程）下，双击该文件开打工程，把form窗体包含进该工程，即可打开窗体设计器。如出现任何异常，自行修正即可。

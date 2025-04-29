@@ -2,15 +2,20 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows8.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
+    <UseWindowsForms>True</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Properties\AssemblyInfo.cs" />
     <Compile Remove="System.ComponentModel.cs" />
     <Compile Remove="System.Resources.ResourceManager.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="App.config" />
   </ItemGroup>
 
   <ItemGroup>

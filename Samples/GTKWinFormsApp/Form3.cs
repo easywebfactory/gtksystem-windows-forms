@@ -67,6 +67,7 @@ namespace GTKWinFormsApp
                     System.Threading.Thread.Sleep(20);
                 }
             }));
+         
         }
 
         private void panel3_Paint(object sender, PaintEventArgs e)

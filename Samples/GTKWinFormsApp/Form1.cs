@@ -79,7 +79,7 @@ namespace GTKWinFormsApp
         {
 
             Console.WriteLine(treeView1.SelectedNode?.Text);
-            // b.Title = "test2";
+
             DialogResult result = MessageBox.Show("1、加载数据点yes \n2、不加载数据点no", "加载数据提示", MessageBoxButtons.YesNo);
             if (result == DialogResult.No)
             {
@@ -87,7 +87,7 @@ namespace GTKWinFormsApp
             }
             //1、数据集列表数据源
             List<TestEntity> data = new List<TestEntity>();
-            var createdate = DateTime.Now;
+            var createdate = "2012-09-14 12:32:33";
             data.Add(new TestEntity() { ID = 0, Title = "加载数据点yes加载数据\n点yes加载数据点yes加载数据点yes", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "face-smile-big", PIC = Image.FromFile("./Resources/timg6.jpg") });
             data.Add(new TestEntity() { ID = 1, Title = "test2", Info = "yyyy2", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile("./Resources/timg6.jpg") });
             data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "./Resources/BindingNavigator.Delete.ico", PIC = Image.FromFile("./Resources/timg2.jpg") });
@@ -122,7 +122,7 @@ namespace GTKWinFormsApp
             public string Title { get { return title; } set { title = value; } }
             public string Info { get; set; }
             public bool State { get; set; }
-            public DateTime CreateDate { get; set; }
+            public string CreateDate { get; set; }
             public string Operate { get; set; }
             public string PIC1 { get; set; }
             public Image PIC { get; set; }
@@ -395,15 +395,6 @@ namespace GTKWinFormsApp
             var g = e.Graphics;
             g.Clear(Color.White);
 
-            if (GTKWinFormsApp.Properties.Resources.timg6 != null)
-            {
-                MemoryStream mem = new MemoryStream(GTKWinFormsApp.Properties.Resources.timg6);
-
-                //g.DrawImage(new Bitmap(mem), new Point(0, 0));
-                g.DrawImage(new Bitmap(mem), new Rectangle(0, 0, 192, 108), new Rectangle(0, 0, 1920, 1080), GraphicsUnit.Pixel);
-
-            }
-
             g.FillRectangle(new SolidBrush(Color.AliceBlue), new Rectangle(0, 0, 100, 50));
             // g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new Point(10, 10), new Point(50, 30));
             List<PointF> Rps = new List<PointF>();
@@ -428,7 +419,7 @@ namespace GTKWinFormsApp
             }
 
             g.DrawString("这是Paint Graphics示例效果", new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 60);
-            g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2), new Rectangle(pictureBox2.Width / 2, pictureBox2.Height / 2, pictureBox2.Width, pictureBox2.Height), 0, 270);
+            g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2), new Rectangle(pictureBox2.Width / 2, pictureBox2.Height / 2, pictureBox2.Height, pictureBox2.Height), 0, 270);
 
             g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(50, 60), new PointF(100, 80), new PointF(75, 100) });
             g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(75, 100), new PointF(100, 120), new PointF(120, 100) });

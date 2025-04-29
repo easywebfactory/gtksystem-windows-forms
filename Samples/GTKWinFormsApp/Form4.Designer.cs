@@ -209,11 +209,11 @@ namespace GTKWinFormsApp
             // 
             // button5
             // 
-            button5.ContextMenuStrip = contextMenuStrip1;
+           // button5.ContextMenuStrip = contextMenuStrip1;
             button5.Dock = DockStyle.Top;
             button5.Location = new System.Drawing.Point(0, 0);
             button5.Name = "button5";
-            button5.Size = new System.Drawing.Size(723, 50);
+            button5.Size = new System.Drawing.Size(723, 60);
             button5.TabIndex = 2;
             button5.Text = "button5";
             button5.UseVisualStyleBackColor = true;

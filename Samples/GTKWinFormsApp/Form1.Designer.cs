@@ -636,14 +636,18 @@ namespace GTKWinFormsApp
             // 
             // pictureBox1
             // 
-            pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBox1.BackgroundImage = Image.FromFile("Resources/timg2.jpg");
+            pictureBox1.BackgroundImageLayout = ImageLayout.Tile;
             pictureBox1.Location = new Point(401, 28);
             pictureBox1.Margin = new Padding(4);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(333, 220);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
             pictureBox1.TabIndex = 5;
             pictureBox1.TabStop = false;
+            // pictureBox1.ImageLocation = "Resources/img10.jpg";
+            pictureBox1.Image = Image.FromFile("Resources/img10.jpg");
+            pictureBox1.InitialImage = Image.FromFile("Resources/timg2.jpg");
             // 
             // pictureBox2
             // 
