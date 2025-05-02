@@ -208,7 +208,7 @@ namespace System.Windows.Forms
         }
         private void Widget_LeaveNotifyEvent(object o, LeaveNotifyEventArgs args)
         {
-            if (Cursor != null)
+            if (Cursor != null && this.Widget.Window != null)
             {
                 this.Widget.Window.Cursor = null;
             }
@@ -1141,11 +1141,11 @@ namespace System.Windows.Forms
             {
                 if (ISelf != null)
                     ISelf.Override.OnAddClass();
-                this.Widget.Window.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
+                this.Widget.Window?.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
                 if (invalidateChildren == true && this.Widget is Gtk.Container container)
                 {
                     foreach (var child in container.Children)
-                        child.Window.InvalidateRect(child.Allocation, invalidateChildren);
+                        child.Window?.InvalidateRect(child.Allocation, invalidateChildren);
                 }
                 Refresh();
             }
@@ -1162,7 +1162,7 @@ namespace System.Windows.Forms
             {
                 if (ISelf != null)
                     ISelf.Override.OnAddClass();
-                this.Widget.Window.InvalidateRect(Widget.Allocation, invalidateChildren);
+                this.Widget.Window?.InvalidateRect(Widget.Allocation, invalidateChildren);
             }
         }
 
@@ -1208,7 +1208,7 @@ namespace System.Windows.Forms
 
         public virtual Point PointToClient(Point p)
         {
-            if (Widget != null)
+            if (Widget != null && this.Widget.Window != null)
             {
                 this.Widget.Window.GetOrigin(out int x, out int y);
                 if (p.X > x && p.Y > y)
@@ -1219,7 +1219,7 @@ namespace System.Windows.Forms
 
         public virtual Point PointToScreen(Point p)
         {
-            if (Widget != null)
+            if (Widget != null && this.Widget.Window != null)
             {
                 this.Widget.Window.GetOrigin(out int x, out int y);
                 if (p.X < x && p.Y < y)
@@ -1240,7 +1240,7 @@ namespace System.Windows.Forms
 
         public virtual Rectangle RectangleToClient(Rectangle r)
         {
-            if (Widget != null)
+            if (Widget != null && this.Widget.Window != null)
             {
                 this.Widget.Window.GetPosition(out int x, out int y);
                 if (r.X > x && r.Y > y)
@@ -1251,7 +1251,7 @@ namespace System.Windows.Forms
 
         public virtual Rectangle RectangleToScreen(Rectangle r)
         {
-            if (Widget != null)
+            if (Widget != null && this.Widget.Window != null)
             {
                 this.Widget.Window.GetPosition(out int x, out int y);
                 if (r.X < x && r.Y < y)
@@ -1471,7 +1471,7 @@ namespace System.Windows.Forms
 
         public virtual void Update()
         {
-            if (this.Widget != null)
+            if (this.Widget != null && this.Widget.Window != null)
             {
                 this.Widget.Window.ProcessUpdates(true);
                 this.Widget.QueueDraw();
