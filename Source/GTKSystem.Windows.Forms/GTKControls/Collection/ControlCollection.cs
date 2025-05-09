@@ -197,13 +197,18 @@ namespace System.Windows.Forms
             {
                 if (__owner is Form)
                 {
-                    lay.WidthRequest = Math.Max(-1, Math.Max(lay.Parent.Parent.AllocatedWidth, control.Location.X + control.Width));
-                    lay.HeightRequest = Math.Max(-1, Math.Max(lay.Parent.Parent.AllocatedHeight, control.Location.Y + control.Height));
+                    lay.WidthRequest = Math.Max(-1, Math.Max(lay.Parent.Parent.AllocatedWidth, control.Location.X + control.Width) + Offset.X);
+                    lay.HeightRequest = Math.Max(-1, Math.Max(lay.Parent.Parent.AllocatedHeight, control.Location.Y + control.Height) + Offset.Y);
+                }
+                else if (__owner is GroupBox)
+                {//groupbox没有滚动条
+                    lay.WidthRequest = Math.Max(1, __owner.Width - 4 + Offset.X);
+                    lay.HeightRequest = Math.Max(1, __owner.Height - 4 + Offset.Y);
                 }
                 else
                 {
-                    lay.WidthRequest = Math.Max(-1, Math.Max(__owner.Width - 4, control.Location.X + control.Width));
-                    lay.HeightRequest = Math.Max(-1, Math.Max(__owner.Height - 4, control.Location.Y + control.Height));
+                    lay.WidthRequest = Math.Max(1, Math.Max(__owner.Width - 4, control.Location.X + control.Width) + Offset.X);
+                    lay.HeightRequest = Math.Max(1, Math.Max(__owner.Height - 4, control.Location.Y + control.Height) + Offset.Y);
                 }
                 if (control.Dock == DockStyle.Fill)
                 {
@@ -216,21 +221,25 @@ namespace System.Windows.Forms
                 {
                     control.Widget.HeightRequest = -1;
                     lay.HeightRequest = -1;
+                    lay.WidthRequest = -1;
                 }
                 else if (control.Dock == DockStyle.Right)
                 {
                     control.Widget.HeightRequest = -1;
                     lay.HeightRequest = -1;
+                    lay.WidthRequest = -1;
                 }
                 else if (control.Dock == DockStyle.Top)
                 {
                     control.Widget.WidthRequest = -1;
                     lay.WidthRequest = -1;
+                    lay.HeightRequest = -1;
                 }
                 else if (control.Dock == DockStyle.Bottom)
                 {
                     control.Widget.WidthRequest = -1;
                     lay.WidthRequest = -1;
+                    lay.HeightRequest = -1;
                 }
                 if (lay.IsMapped == true)
                 {
