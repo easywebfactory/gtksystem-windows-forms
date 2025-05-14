@@ -256,7 +256,7 @@ namespace System.Windows.Forms
                         if (control.Dock == DockStyle.Fill)
                             widget.MarginEnd = 0;
                         else if (widget.WidthRequest > 0)
-                            widget.MarginEnd = Math.Max(control.Padding.Right, lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
+                            widget.MarginEnd = Math.Max(0, lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
                         else
                             widget.MarginEnd = 0;
                     }
@@ -272,7 +272,7 @@ namespace System.Windows.Forms
                         if (control.Dock == DockStyle.Fill)
                             widget.MarginBottom = 0;
                         else if (widget.HeightRequest > 0)
-                            widget.MarginBottom = Math.Max(control.Padding.Bottom, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
+                            widget.MarginBottom = Math.Max(0, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
                         else
                             widget.MarginBottom = 0;
                     }

@@ -174,23 +174,15 @@ namespace System.Windows.Forms
         {
             Gtk.ListBoxRow row = new Gtk.ListBoxRow();
             row.HeightRequest = ItemHeight > 0 ? ItemHeight : DefaultItemHeight;
-            row.Add(new Gtk.Label(item.ToString()) { Valign = Align.Center, Halign = Align.Start, Expand = true });
+            row.Add(new Gtk.Label(item.ToString()) { Valign = Align.Center, Halign = Align.Start, Expand = true, Visible = !IsUpdateing });
             self.ListBox.Insert(row, index);
-            if (self.ListBox.IsVisible && !IsUpdateing)
-            {
-                self.ListBox.ShowAll();
-            }
         }
         protected void NativeAdd(object item)
         {
             Gtk.ListBoxRow row = new Gtk.ListBoxRow();
             row.HeightRequest = ItemHeight > 0 ? ItemHeight : DefaultItemHeight;
-            row.Add(new Gtk.Label(item.ToString()) { Valign = Align.Center, Halign = Align.Start, Expand = true });
+            row.Add(new Gtk.Label(item.ToString()) { Valign = Align.Center, Halign = Align.Start, Expand = true, Visible = !IsUpdateing });
             self.ListBox.Add(row);
-            if (self.ListBox.IsVisible && !IsUpdateing)
-            {
-                self.ListBox.ShowAll();
-            }
         }
         protected void NativeClear()
         {

@@ -10,8 +10,6 @@ using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Net.Sockets;
 using System.Reflection;
 
 namespace System.Windows.Forms

@@ -105,7 +105,7 @@ namespace System.Windows.Forms
                 Load?.Invoke(this, e);
             }
         }
-
+        private bool Is_Widget_ButtonPressEvent = false;
         private void Widget_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
             Gtk.Widget owidget = o as Gtk.Widget;
@@ -123,6 +123,18 @@ namespace System.Windows.Forms
                 MouseEventArgs mouseArgs = new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
                 OnMouseDown(mouseArgs);
                 MouseDown?.Invoke(this, mouseArgs);
+                if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
+                {
+                    Is_Widget_ButtonPressEvent = false;
+                    MouseEventArgs mouseArgs2 = new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
+                    OnMouseDoubleClick(mouseArgs2);
+                    MouseDoubleClick?.Invoke(this, mouseArgs2);
+                    DoubleClick?.Invoke(this, EventArgs.Empty);
+                }
+                else
+                {
+                    Is_Widget_ButtonPressEvent = true;
+                }
             }
         }
         private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
@@ -141,15 +153,8 @@ namespace System.Windows.Forms
                 MouseEventArgs mouseArgs = new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
                 OnMouseUp(mouseArgs);
                 MouseUp?.Invoke(this, mouseArgs);
-
-                if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
-                {
-                    MouseEventArgs mouseArgs2 = new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
-                    OnMouseDoubleClick(mouseArgs2);
-                    MouseDoubleClick?.Invoke(this, mouseArgs2);
-                    DoubleClick?.Invoke(this, EventArgs.Empty);
-                }
-                else
+               
+                if (Is_Widget_ButtonPressEvent == true)
                 {
                     OnClick(EventArgs.Empty);
                     MouseEventArgs mouseArgs3 = new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
