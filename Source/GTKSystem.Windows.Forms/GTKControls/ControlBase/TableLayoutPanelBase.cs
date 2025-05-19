@@ -2,11 +2,15 @@
 {
     public sealed class TableLayoutPanelBase : ScrollableBoxBase, IControlGtk
     {
-        public Gtk.Grid grid = new Gtk.Grid();
+         public Gtk.Grid grid;
+        //public Gtk.Grid grid { get => this; }
+        //public GtkControlOverride Override { set; get; }
+
         public TableLayoutPanelBase() : base()
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("TableLayoutPanel");
+            grid = new Gtk.Grid();
             grid.RowHomogeneous = false;
             grid.ColumnHomogeneous = false;
             grid.BaselineRow = 0;
@@ -15,6 +19,9 @@
             grid.BorderWidth = 0;
             grid.Halign = Gtk.Align.Fill;
             grid.Valign = Gtk.Align.Fill;
+
+            this.Halign = Gtk.Align.Start;
+            this.Valign = Gtk.Align.Start;
             this.BorderWidth = 0;
             this.Vexpand = false;
             this.Hexpand = false;

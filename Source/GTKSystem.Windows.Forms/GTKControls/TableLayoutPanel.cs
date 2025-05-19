@@ -36,12 +36,30 @@ namespace System.Windows.Forms
             _controls =new TableLayoutControlCollection(this);
 			_columnStyles = new TableLayoutColumnStyleCollection();
 			_rowStyles = new TableLayoutRowStyleCollection();
+            self.SizeAllocated += Self_SizeAllocated;
+            self.Mapped += Self_Mapped;
+        }
+        private void Self_Mapped(object sender, EventArgs e)
+        {
+            PerformLayout();
+        }
+        private int allocationwidth = 0;
+        private int allocationheight = 0;
+        private void Self_SizeAllocated(object o, Gtk.SizeAllocatedArgs args)
+        {
+            if (args.Allocation.Width != allocationwidth || args.Allocation.Height != allocationheight)
+            {
+                PerformLayout();
+                allocationwidth = args.Allocation.Width;
+                allocationheight = args.Allocation.Height;
+            }
         }
 
         public override void PerformLayout()
         {
             SetColumnsStyles();
             SetRowsStyles();
+            self.QueueResize();
         }
 
         [Browsable(false)]
@@ -134,17 +152,10 @@ namespace System.Windows.Forms
 		{
 			get => _columnStyles;
         }
-        public override Size Size { 
-            get => base.Size;
-            set {
-                base.Size = value;
-                SetColumnsStyles();
-                SetRowsStyles();
-            }
-        }
         private void SetColumnsStyles()
         {
             Size size = this.Size;
+            int panelWidth = size.Width;
             int cidx = 0;
             foreach (ColumnStyle cs in ColumnStyles)
             {
@@ -153,13 +164,15 @@ namespace System.Windows.Forms
                     if (cs.SizeType == SizeType.Absolute)
                     {
                         for (int r = 0; r < RowCount; r++)
+                        {
                             grid.GetChildAt(cidx, r).WidthRequest = Convert.ToInt32(cs.Width);
+                        }
                     }
                     else if (cs.SizeType == SizeType.Percent)
                     {
                         for (int r = 0; r < RowCount; r++)
                         {
-                            grid.GetChildAt(cidx, r).WidthRequest = Convert.ToInt32(size.Width * cs.Width * 0.01);
+                            grid.GetChildAt(cidx, r).WidthRequest = Convert.ToInt32(panelWidth * cs.Width * 0.01);
                         }
                     }
                     cidx++;
@@ -169,6 +182,7 @@ namespace System.Windows.Forms
         private void SetRowsStyles()
         {
             Size size = this.Size;
+            int panelHeight = size.Height;
             int ridx = 0;
             foreach (RowStyle rs in RowStyles)
             {
@@ -176,15 +190,13 @@ namespace System.Windows.Forms
                 {
                     if (rs.SizeType == SizeType.Absolute)
                     {
-                        Console.WriteLine(ColumnCount);
-                        Console.WriteLine(Convert.ToInt32(rs.Height));
                         for (int c = 0; c < ColumnCount; c++)
                             grid.GetChildAt(c, ridx).HeightRequest = Convert.ToInt32(rs.Height);
                     }
                     else if (rs.SizeType == SizeType.Percent)
                     {
                         for (int c = 0; c < ColumnCount; c++)
-                            grid.GetChildAt(c, ridx).HeightRequest = Convert.ToInt32(size.Height * rs.Height * 0.01);
+                            grid.GetChildAt(c, ridx).HeightRequest = Convert.ToInt32(panelHeight * rs.Height * 0.01);
                     }
                     ridx++;
                 }
@@ -304,7 +316,7 @@ namespace System.Windows.Forms
             if (ColumnCount > 0)
             {
                 for (int r = 0; r < RowCount; r++)
-                    list.Add(grid.GetChildAt(0, r).WidthRequest);
+                    list.Add(grid.GetChildAt(0, r).HeightRequest);
             }
             return list.ToArray();
         }

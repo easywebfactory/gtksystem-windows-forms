@@ -182,8 +182,9 @@ namespace GTKSystem.Resources
                     byte[] filebytes = ReadResourceFile(name);
                     if (filebytes == null)
                     {
-                        string _formName = Path.GetExtension(this.BaseName).TrimStart('.');
-                        string[] files = Directory.GetFiles($"./Resources/{_formName}", $"{fileName}.*", SearchOption.AllDirectories);
+                        //string _formName = Path.GetExtension(this.BaseName).TrimStart('.');
+                        //string[] files = Directory.GetFiles($"./Resources/{_formName}", $"{fileName}.*", SearchOption.AllDirectories);
+                        string[] files = Directory.GetFiles($"./Resources", $"{fileName}.*", SearchOption.AllDirectories);
                         if (files != null && files.Length > 0)
                         {
                             fileName = files[0];

@@ -163,12 +163,13 @@ namespace System.Drawing
 			get;
 			set;
 		}
-
-		/// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Pen" /> class with the specified <see cref="T:System.Drawing.Brush" />.</summary>
-		/// <param name="brush">A <see cref="T:System.Drawing.Brush" /> that determines the fill properties of this <see cref="T:System.Drawing.Pen" />.</param>
-		/// <exception cref="T:System.ArgumentNullException">
-		///   <paramref name="brush" /> is <see langword="null" />.</exception>
-		public Pen(Brush brush)
+        private bool _immutable;
+        internal Pen(Color color, bool immutable) : this(color) => _immutable = immutable;
+        /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Pen" /> class with the specified <see cref="T:System.Drawing.Brush" />.</summary>
+        /// <param name="brush">A <see cref="T:System.Drawing.Brush" /> that determines the fill properties of this <see cref="T:System.Drawing.Pen" />.</param>
+        /// <exception cref="T:System.ArgumentNullException">
+        ///   <paramref name="brush" /> is <see langword="null" />.</exception>
+        public Pen(Brush brush)
 		{
 			this.Brush = brush;
 			if (brush is SolidBrush solid)

@@ -21,10 +21,11 @@ namespace System.Windows.Forms
             control.Location = new Drawing.Point(0, 0);
             control.LockLocation = true;
             control.Parent = Container;
-            control.Widget.Margin = 4;
+            control.Widget.Margin = 2;
             control.Widget.Valign = Align.Start;
             control.Widget.Halign = Align.Start;
             control.Widget.Hexpand = false;
+            control.Widget.Vexpand = false;
             if (Container.grid.GetChildAt(column, row) is Gtk.Viewport view)
             {
                 view.Child = control.Widget;
@@ -34,6 +35,8 @@ namespace System.Windows.Forms
                 Gtk.Viewport viewport = new Gtk.Viewport() { Vexpand = false, Hexpand = false };
                 viewport.Valign = Align.Fill;
                 viewport.Halign = Align.Fill;
+                viewport.HscrollPolicy = ScrollablePolicy.Minimum;
+                viewport.VscrollPolicy = ScrollablePolicy.Minimum;
                 viewport.BorderWidth = 0;
                 viewport.Child = control.Widget;
                 Container.grid.Attach(viewport, column, row, 1, 1);
