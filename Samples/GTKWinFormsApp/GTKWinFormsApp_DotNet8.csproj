@@ -5,7 +5,8 @@
     <TargetFramework>net8.0-windows8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>True</UseWindowsForms>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>GTKWinFormsApp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

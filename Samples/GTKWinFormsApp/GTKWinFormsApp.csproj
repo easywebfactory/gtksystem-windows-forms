@@ -8,6 +8,7 @@
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<IsPublishable>False</IsPublishable>
 		<EnableUnsafeBinaryFormatterSerialization>True</EnableUnsafeBinaryFormatterSerialization>
+		<ImplicitUsings>disable</ImplicitUsings>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -26,7 +27,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
-		<PackageReference Include="GTKSystem.Windows.FormsDesigner" Version="1.0.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -43,10 +43,6 @@
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="obj\Debug\net8.0\" />
 	</ItemGroup>
 
 	<ItemGroup>
