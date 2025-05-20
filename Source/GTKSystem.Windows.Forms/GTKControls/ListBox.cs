@@ -174,6 +174,7 @@ namespace System.Windows.Forms
         {
             Gtk.ListBoxRow row = new Gtk.ListBoxRow();
             row.HeightRequest = ItemHeight > 0 ? ItemHeight : DefaultItemHeight;
+            row.Visible = true;
             row.Add(new Gtk.Label(item.ToString()) { Valign = Align.Center, Halign = Align.Start, Expand = true, Visible = !IsUpdateing });
             self.ListBox.Insert(row, index);
         }
@@ -181,6 +182,7 @@ namespace System.Windows.Forms
         {
             Gtk.ListBoxRow row = new Gtk.ListBoxRow();
             row.HeightRequest = ItemHeight > 0 ? ItemHeight : DefaultItemHeight;
+            row.Visible = true;
             row.Add(new Gtk.Label(item.ToString()) { Valign = Align.Center, Halign = Align.Start, Expand = true, Visible = !IsUpdateing });
             self.ListBox.Add(row);
         }

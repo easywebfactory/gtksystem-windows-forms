@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class PictureBoxBase : Gtk.DrawingArea, IControlGtk
+    public sealed class PictureBoxBase : Gtk.Viewport, IControlGtk
     {
         public Gdk.Pixbuf Image;
         public PictureBoxSizeMode SizeMode;
@@ -17,6 +17,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             this.Override = new GtkControlOverride(this);
             this.Override.AddClass("PictureBox");
+            this.BorderWidth = 0;
+            this.ShadowType = Gtk.ShadowType.None;
             this.Events = Gdk.EventMask.AllEventsMask;
         }
 

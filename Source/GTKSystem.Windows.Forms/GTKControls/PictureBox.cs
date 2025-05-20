@@ -14,7 +14,7 @@ namespace System.Windows.Forms
     [DesignerCategory("Component")]
     public partial class PictureBox : Control
     {
-        private readonly PictureBoxBase self = new PictureBoxBase();
+        public readonly PictureBoxBase self = new PictureBoxBase();
         public override object GtkControl => self;
         public PictureBox()
         {
@@ -51,8 +51,15 @@ namespace System.Windows.Forms
         public void CancelAsync() { }
         public new void Load(string url)
         {
+            self.Child?.Destroy();
             if (string.IsNullOrWhiteSpace(url))
             { return; }
+            else if (url.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
+            {
+                //支持动画，动画图片不缩放和定位
+                Gtk.Image image = new Gtk.Image(new Gdk.PixbufAnimation(url));
+                self.Child = image;
+            }
             else if (url.Contains("://") && Uri.TryCreate(url, UriKind.Absolute, out Uri result))
             {
                 GLib.IFile file = GLib.FileFactory.NewForUri(result);
@@ -65,6 +72,7 @@ namespace System.Windows.Forms
                 Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(url.Replace("\\\\", "/").Replace("\\", "/"));
                 this.Image = new Bitmap(0, 0) { Pixbuf = pixbuf };
             }
+
         }
         public void LoadAsync(string url)
         {
