@@ -4,6 +4,7 @@
 	1. 优化容器控件的大小控制
 	2. 添加类库，修正发现的问题
 	3. 更新TableLayoutPanel
+	4. 更新picturebox支持动图
  #### 2025/4/29 V1.3.24.66
 	1. 更新PictureBox、ListView控件
 	2. 更新ListBox、RichTextBox控件，增加内容滚动功能
