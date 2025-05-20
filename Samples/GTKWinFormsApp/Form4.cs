@@ -89,15 +89,5 @@ namespace GTKWinFormsApp
             MessageBox.Show("test message test message test messagetest message test message test message test messagetest message test message test message test messagetest message test message test message test messagetest message test message test message test messagetest message", "疑问", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             MessageBox.Show("test message test message \ntest messagetest message", "警告", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning);
         }
-
-        private void vScrollBar1_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void hScrollBar1_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

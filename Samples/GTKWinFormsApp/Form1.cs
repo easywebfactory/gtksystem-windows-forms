@@ -51,7 +51,14 @@ namespace GTKWinFormsApp
             tabPage.UseVisualStyleBackColor = true;
 
             tabControl1.Controls.Add(tabPage);
+            this.dataGridView1.DoubleClick += DataGridView1_DoubleClick;
         }
+
+        private void DataGridView1_DoubleClick(object sender, EventArgs e)
+        {
+            Console.WriteLine("DataGridView1_DoubleClick");
+        }
+
         private IEnumerable<TreeNode> GetChild(string treeID, IEnumerable<TestDataMode> data)
         {
             List<TreeNode> children = new List<TreeNode>();
@@ -100,9 +107,9 @@ namespace GTKWinFormsApp
 
 
             this.dataGridView1.DataSource = data;
-            this.comboBox1.DisplayMember = "Title";
-            this.comboBox1.ValueMember = "ID";
-            this.comboBox1.DataSource = data;
+            //this.comboBox1.DisplayMember = "Title";
+            //this.comboBox1.ValueMember = "ID";
+            //this.comboBox1.DataSource = data;
             // dataGridView1.Columns[1].Visible = false;
 
             ////2、datatable数据源

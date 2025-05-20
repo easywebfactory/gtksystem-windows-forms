@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gtk;
+using System;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
@@ -10,28 +11,7 @@ namespace GTKWinFormsApp
         public Form2()
         {
             InitializeComponent();
-            // listView1.Items.Add(new ListViewItem("test1", new ListViewGroup("ListViewGroup1", "ListViewGroup1")) { });
-
-          //DataTable dt = new DataTable();
-          //  dt.Columns.Add("ID", typeof(string));
-          //  dt.Columns.Add("CreateDate", typeof(DateTime));
-          //  dt.Rows.Add("user1", DateTime.Now);
-          //  dt.Rows.Add("user2", DateTime.Now.AddDays(1));
-          //  dt.Rows.Add("user3", DateTime.Now.AddDays(2));
-          //  dt.Rows.Add("user4", DateTime.Now.AddDays(3));
-            //Dictionary<int, string> dic = new Dictionary<int, string>();
-            //dic.Add(0, "111");
-            //dic.Add(3, "333");
-            //List<string> list = new List<string>();
-            //list.Add("ddd");
-            //list.Add("rrrr");
-            //Hashtable hashtable = new Hashtable();
-            //hashtable.Add("11", "ddd");
-            //hashtable.Add("22", "rrrr");
-
-            //listBox1.DisplayMember = "CreateDate";
-            //listBox1.DataSource = dt;
-
+ 
             this.FormClosing += Form2_FormClosing;
             this.FormClosed += Form2_FormClosed;
             listView1.MouseDown += ListView1_MouseDown;
@@ -54,8 +34,8 @@ namespace GTKWinFormsApp
             i++;
             listBox1.Items.Add($"异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}");
             listBox1.TopIndex = i;
-           
-            
+
+
             richTextBox1.AppendText($"异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}\n");
             richTextBox1.SelectionStart = richTextBox1.Text.Length;
            // richTextBox1.SelectionLength = 0;
@@ -124,12 +104,7 @@ namespace GTKWinFormsApp
             m.SubItems.Add(new ListViewItem.ListViewSubItem(m, "子列数据1"));
             listView1.Items.Add(m);
         }
-
-        private void listView1_ColumnReordered(object sender, ColumnReorderedEventArgs e)
-        {
-
-        }
-
+ 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             richTextBox1.Text += $"{listBox1.SelectedIndex}-{listBox1.SelectedValue}\n";
