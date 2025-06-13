@@ -42,29 +42,34 @@ namespace System.Windows.Forms
             }
         }
 
+        private bool Is_Self_Realized;
         private void Self_Realized(object sender, EventArgs e)
         {
-            OnSetDataSource();
-            var ws = ((Gtk.Box)self.Children[0].Parent).Children[1] as Gtk.ToggleButton;
-            ws.Toggled += Ws_Toggled;
-            if (DropDownStyle == ComboBoxStyle.DropDownList)
+            if (!Is_Self_Realized)
             {
-                self.Entry.IsEditable = false;
-                self.Entry.CanFocus = false;
-                self.Entry.NoShowAll = true;
-                self.Entry.WidthRequest = 1;
-                ws.WidthRequest = self.WidthRequest;
-                ws.Label = self.Entry.Text;
-                ws.Image = Gtk.Image.NewFromIconName("pan-down", Gtk.IconSize.Button);
-                ws.ImagePosition = Gtk.PositionType.Right;
-                ws.AlwaysShowImage = true;
-                ws.Valign = Align.Center;
-                ws.Yalign = 0.5f;
-                ws.Xalign = 0.95f;
-                ws.Hexpand = true;
-                ws.Image.Halign = Gtk.Align.End;
-                ws.Image.Valign = Gtk.Align.Center;
-                ws.Drawn += Ws_Drawn;
+                Is_Self_Realized = true;
+                OnSetDataSource();
+                var ws = ((Gtk.Box)self.Children[0].Parent).Children[1] as Gtk.ToggleButton;
+                ws.Toggled += Ws_Toggled;
+                if (DropDownStyle == ComboBoxStyle.DropDownList)
+                {
+                    self.Entry.IsEditable = false;
+                    self.Entry.CanFocus = false;
+                    self.Entry.NoShowAll = true;
+                    self.Entry.WidthRequest = 1;
+                    ws.WidthRequest = self.WidthRequest;
+                    ws.Label = self.Entry.Text;
+                    ws.Image = Gtk.Image.NewFromIconName("pan-down", Gtk.IconSize.Button);
+                    ws.ImagePosition = Gtk.PositionType.Right;
+                    ws.AlwaysShowImage = true;
+                    ws.Valign = Align.Center;
+                    ws.Yalign = 0.5f;
+                    ws.Xalign = 0.95f;
+                    ws.Hexpand = true;
+                    ws.Image.Halign = Gtk.Align.End;
+                    ws.Image.Valign = Gtk.Align.Center;
+                    ws.Drawn += Ws_Drawn;
+                }
             }
         }
         public event EventHandler DropDown;

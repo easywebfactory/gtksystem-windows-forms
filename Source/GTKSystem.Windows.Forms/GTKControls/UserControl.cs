@@ -36,9 +36,19 @@ namespace System.Windows.Forms
             contaner.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             _controls = new ControlCollection(this, contaner);
             self.Add(contaner);
-            self.Override.Paint += Override_Paint;
-            self.ParentSet += Self_ParentSet;
+            self.Shown += Self_Shown;
         }
+        private bool Is_Control_Shown = false;
+        private void Self_Shown(object sender, EventArgs e)
+        {
+            if (Is_Control_Shown == false)
+            {
+                Is_Control_Shown = true;
+                OnLoad(EventArgs.Empty);
+                Load?.Invoke(this, e);
+            }
+        }
+
         public override Padding Padding
         {
             get => base.Padding;
@@ -51,27 +61,11 @@ namespace System.Windows.Forms
                 contaner.MarginBottom = value.Bottom;
             }
         }
-        private void Self_ParentSet(object o, ParentSetArgs args)
-        {
-            OnParentChanged(EventArgs.Empty);
-        }
-
-        private void Override_Paint(object sender, PaintEventArgs e)
-        {
-            OnPaint(e);
-        }
-
         public override event EventHandler Load;
         public System.Drawing.SizeF AutoScaleDimensions { get; set; }
         public System.Windows.Forms.AutoScaleMode AutoScaleMode { get; set; }
         public override ControlCollection Controls => _controls;
 
-        protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
-        {
-        }
-        protected override void OnParentChanged(EventArgs e)
-        {
-        }
         public override void SuspendLayout()
         {
 
@@ -79,10 +73,6 @@ namespace System.Windows.Forms
         public override void ResumeLayout(bool performLayout)
         {
 
-        }
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
         }
     }
 }

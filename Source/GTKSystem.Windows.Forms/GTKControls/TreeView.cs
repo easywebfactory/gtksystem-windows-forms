@@ -66,20 +66,25 @@ namespace System.Windows.Forms
             column.AddAttribute(renderertext, "text", 0);
             self.TreeView.AppendColumn(column);
         }
+        private bool Is_TreeView_Realized;
         private void TreeView_Realized(object sender, EventArgs e)
         {
-            if (ImageList != null)
+            if (!Is_TreeView_Realized)
             {
-                Gtk.TreeViewColumn column = ((Gtk.TreeView)sender).Columns[0];
-                if (string.IsNullOrWhiteSpace(ImageKey))
+                Is_TreeView_Realized = true;
+                if (ImageList != null)
                 {
-                    System.Drawing.Image image = ImageList.GetBitmap(ImageIndex);
-                    rendererPixbuf.Pixbuf = image.Pixbuf;
-                }
-                else
-                {
-                    System.Drawing.Image image = ImageList.GetBitmap(ImageKey);
-                    rendererPixbuf.Pixbuf = image.Pixbuf;
+                    Gtk.TreeViewColumn column = ((Gtk.TreeView)sender).Columns[0];
+                    if (string.IsNullOrWhiteSpace(ImageKey))
+                    {
+                        System.Drawing.Image image = ImageList.GetBitmap(ImageIndex);
+                        rendererPixbuf.Pixbuf = image.Pixbuf;
+                    }
+                    else
+                    {
+                        System.Drawing.Image image = ImageList.GetBitmap(ImageKey);
+                        rendererPixbuf.Pixbuf = image.Pixbuf;
+                    }
                 }
             }
         }

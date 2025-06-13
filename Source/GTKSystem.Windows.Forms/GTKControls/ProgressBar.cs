@@ -18,14 +18,18 @@ namespace System.Windows.Forms
         public ProgressBar():base()
         {
             self.Override.sender = this;
-            self.Realized += Control_Realized;
+            self.Realized += Self_Realized;
         }
-
-        private void Control_Realized(object sender, EventArgs e)
+        private bool Is_Self_Realized;
+        private void Self_Realized(object sender, EventArgs e)
         {
-            self.MaxValue = Maximum;
-            self.MinValue = Minimum;
-            self.Value = Value;
+            if (!Is_Self_Realized)
+            {
+                Is_Self_Realized = true;
+                self.MaxValue = Maximum;
+                self.MinValue = Minimum;
+                self.Value = Value;
+            }
         }
 
         public ProgressBarStyle Style { get; set; }

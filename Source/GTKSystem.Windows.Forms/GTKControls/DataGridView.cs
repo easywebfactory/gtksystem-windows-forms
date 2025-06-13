@@ -67,13 +67,17 @@ namespace System.Windows.Forms
                 CellClick(this, new DataGridViewCellEventArgs(column.Index, args.Path.Indices.Last()));
             }
         }
-
+        private bool Is_GridView_Realized;
         private void GridView_Realized(object sender, EventArgs e)
         {
-            OnSetDataSource();
-            _columns.Invalidate();
-            foreach (Binding binding in DataBindings)
-                GridView.AddNotification(binding.PropertyName, propertyNotity);
+            if (!Is_GridView_Realized)
+            {
+                Is_GridView_Realized = true;
+                OnSetDataSource();
+                _columns.Invalidate();
+                foreach (Binding binding in DataBindings)
+                    GridView.AddNotification(binding.PropertyName, propertyNotity);
+            }
         }
         private void propertyNotity(object o, NotifyArgs args)
         {

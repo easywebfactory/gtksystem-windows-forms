@@ -19,22 +19,26 @@ namespace System.Windows.Forms
 		public TrackBar():base()
         {
             self.Override.sender = this;
-            self.Realized += Control_Realized;
+            self.Realized += Self_Realized;
         }
-
-        private void Control_Realized(object sender, EventArgs e)
+        private bool Is_Self_Realized;
+        private void Self_Realized(object sender, EventArgs e)
         {
-            scale = new Gtk.Scale(Orientation== Orientation.Horizontal ? Gtk.Orientation.Horizontal : Gtk.Orientation.Vertical, adjustment);
-            scale.ShowFillLevel = true;
-            scale.DrawValue = false;
-            scale.RoundDigits = 1;
-            scale.Visible = true;
-            scale.Inverted = Orientation == Orientation.Vertical;
-            adjustment.Lower = Minimum;
-            adjustment.Upper = Maximum;
-            adjustment.Value = Value;
-            adjustment.ValueChanged += Control_ValueChanged;
-            self.Child = scale;
+            if (!Is_Self_Realized)
+            {
+                Is_Self_Realized = true;
+                scale = new Gtk.Scale(Orientation == Orientation.Horizontal ? Gtk.Orientation.Horizontal : Gtk.Orientation.Vertical, adjustment);
+                scale.ShowFillLevel = true;
+                scale.DrawValue = false;
+                scale.RoundDigits = 1;
+                scale.Visible = true;
+                scale.Inverted = Orientation == Orientation.Vertical;
+                adjustment.Lower = Minimum;
+                adjustment.Upper = Maximum;
+                adjustment.Value = Value;
+                adjustment.ValueChanged += Control_ValueChanged;
+                self.Child = scale;
+            }
         }
 
         private void Control_ValueChanged(object sender, EventArgs e)

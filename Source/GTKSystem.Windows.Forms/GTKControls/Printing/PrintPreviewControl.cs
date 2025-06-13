@@ -47,13 +47,17 @@ namespace System.Windows.Forms
             ResetBackColor();
             ResetForeColor();
         }
-
+        private bool Is_Self_Realized;
         private void Self_Realized(object? sender, EventArgs e)
         {
-            if (AutoZoom == false)
+            if (!Is_Self_Realized)
             {
-                paper.WidthRequest = (int)Math.Round(_document.PageSetup.GetPaperWidth(Unit.Points) * _zoom / 0.75, 0);
-                paper.HeightRequest = (int)Math.Round(_document.PageSetup.GetPaperHeight(Unit.Points) * _zoom / 0.75, 0);
+                Is_Self_Realized = true;
+                if (AutoZoom == false)
+                {
+                    paper.WidthRequest = (int)Math.Round(_document.PageSetup.GetPaperWidth(Unit.Points) * _zoom / 0.75, 0);
+                    paper.HeightRequest = (int)Math.Round(_document.PageSetup.GetPaperHeight(Unit.Points) * _zoom / 0.75, 0);
+                }
             }
         }
         private void paper_Drawn(object o, Gtk.DrawnArgs args)

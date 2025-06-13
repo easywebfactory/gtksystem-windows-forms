@@ -54,12 +54,16 @@ namespace System.Windows.Forms
                 ((EventHandler)Events["SelectedItemChanged"])?.Invoke(this, e);
             }
         }
-
+        private bool Is_Self_Realized;
         private void Self_Realized(object sender, EventArgs e)
         {
-            OnSetDataSource();
-            foreach (Binding binding in DataBindings)
-                self.ListBox.AddNotification(binding.PropertyName, propertyNotity);
+            if (!Is_Self_Realized)
+            {
+                Is_Self_Realized = true;
+                OnSetDataSource();
+                foreach (Binding binding in DataBindings)
+                    self.ListBox.AddNotification(binding.PropertyName, propertyNotity);
+            }
         }
         private void propertyNotity(object o, NotifyArgs args)
         {

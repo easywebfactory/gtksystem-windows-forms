@@ -12,11 +12,15 @@ namespace System.Windows.Forms
         {
             base.MenuItem.Realized += Control_Realized;
         }
-
+        private bool Is_Control_Realized;
         private void Control_Realized(object sender, EventArgs e)
         {
-            progressBar.MaxValue = Maximum;
-            progressBar.MinValue = Minimum;
+            if (!Is_Control_Realized)
+            {
+                Is_Control_Realized = true;
+                progressBar.MaxValue = Maximum;
+                progressBar.MinValue = Minimum;
+            }
         }
 
         public ToolStripProgressBar(string name) : this()

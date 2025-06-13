@@ -7,6 +7,7 @@
 
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Text;
@@ -60,8 +61,16 @@ namespace System.Windows.Forms
                 widget.Realized += Widget_Realized;
                 widget.ConfigureEvent += Widget_ConfigureEvent;
                 ISelf.Override.PaintGraphics += Override_PaintGraphics;
+                ISelf.Override.Paint += Override_Paint;
                 widget.SizeAllocated += Widget_SizeAllocated;
+                widget.ParentSet += Widget_ParentSet;
             }
+        }
+
+        private void Widget_ParentSet(object o, ParentSetArgs args)
+        {
+            OnParentChanged(EventArgs.Empty);
+            ParentChanged?.Invoke(this, args);
         }
 
         private int size_width = 0;
@@ -522,11 +531,6 @@ namespace System.Windows.Forms
                 Refresh();
             }
         }
-        public virtual event PaintEventHandler Paint
-        {
-            add { ISelf.Override.Paint += value; }
-            remove { ISelf.Override.Paint -= value; }
-        }
         #endregion
         public virtual AccessibleObject AccessibilityObject { get; }
 
@@ -937,7 +941,7 @@ namespace System.Windows.Forms
         public virtual event MouseEventHandler MouseWheel;
         public virtual event EventHandler Move;
         public virtual event EventHandler PaddingChanged;
-        //public virtual event PaintEventHandler Paint;
+        public virtual event PaintEventHandler Paint;
         public virtual event EventHandler ParentChanged;
         public virtual event PreviewKeyDownEventHandler PreviewKeyDown;
         public virtual event QueryAccessibilityHelpEventHandler QueryAccessibilityHelp;
@@ -1026,6 +1030,12 @@ namespace System.Windows.Forms
                 cr.Paint();
                 cr.Restore();
             }
+        }
+
+        private void Override_Paint(object sender, PaintEventArgs e)
+        {
+            OnPaint(e);
+            Paint?.Invoke(this, e);
         }
 
         public virtual DragDropEffects DoDragDrop(object data, DragDropEffects allowedEffects)

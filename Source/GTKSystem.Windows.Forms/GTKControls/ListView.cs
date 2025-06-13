@@ -70,31 +70,35 @@ namespace System.Windows.Forms
             headerView.Hadjustment.Value = scrolledWindow.Hadjustment.Value;
         }
 
-        private bool ControlRealized = false;
+        private bool Is_Control_Realized = false;
         private void Control_Realized(object sender, EventArgs e)
         {
-            if (this.View == View.Details)
+            if (!Is_Control_Realized)
             {
-                header.NoShowAll = false;
-                header.Visible = true;
-                header.ShowAll();
-                headerView.HeightRequest = __headerheight;
-            }
-            foreach (ColumnHeader header in this.Columns)
-            {
-                NativeHeaderAdd(header);
-            }
-            foreach (ListViewGroup g in Groups)
-            {
-                NativeGroupAdd(g, -1);
-            }
-            foreach (ListViewItem item in Items)
-            {
-                NativeAdd(item, -1);
-            }
+                Is_Control_Realized = true;
+                if (this.View == View.Details)
+                {
+                    header.NoShowAll = false;
+                    header.Visible = true;
+                    header.ShowAll();
+                    headerView.HeightRequest = __headerheight;
+                }
+                foreach (ColumnHeader header in this.Columns)
+                {
+                    NativeHeaderAdd(header);
+                }
+                foreach (ListViewGroup g in Groups)
+                {
+                    NativeGroupAdd(g, -1);
+                }
+                foreach (ListViewItem item in Items)
+                {
+                    NativeAdd(item, -1);
+                }
 
-            MultiSelect = MultiSelect == true;
-            self.ShowAll();
+                MultiSelect = MultiSelect == true;
+                self.ShowAll();
+            }
         }
         public bool Sorted { get; set; }
         public System.Windows.Forms.SortOrder Sorting { get; set; }

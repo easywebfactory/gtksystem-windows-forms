@@ -159,78 +159,82 @@ namespace System.Windows.Forms
         }
         public ToolStripItemAlignment Alignment { get => MenuItem.Halign == Gtk.Align.End ? ToolStripItemAlignment.Right : ToolStripItemAlignment.Left; set { MenuItem.Hexpand = true; MenuItem.Halign = Gtk.Align.End; MenuItem.RightJustified = value == ToolStripItemAlignment.Right; } }
         internal Gtk.RadioButton groupradio = new Gtk.RadioButton("");
+        private bool Is_ToolStripItem_Realized;
         private void ToolStripItem_Realized(object sender, EventArgs e)
         {
-            SetStyle((Gtk.MenuItem)sender);
-            Gtk.MenuItem menuItem = (Gtk.MenuItem)sender;
-            if (menuItem.Parent is Gtk.Menu)
+            if (!Is_ToolStripItem_Realized)
             {
-                flagBox.Vexpand = true;
-                flagBox.Hexpand = true;
-                flagBox.WidthRequest = 30;
-                menuItem.StyleContext.AddClass("MenuItem");
-            }
-            if (this.CheckState == CheckState.Checked)
-            {
-                Gtk.CheckButton checkbutton = new Gtk.CheckButton();
-                checkbutton.StyleContext.AddClass("MenuCheck");
-                checkbutton.BorderWidth = 0;
-                checkbutton.Margin = 0;
-                checkbutton.Halign = Gtk.Align.Center;
-                checkbutton.Valign = Gtk.Align.Center;
-                checkbutton.Active = this.Checked;
-                checkbutton.Toggled += Checkbutton_Toggled;
-                flagBox.Child = checkbutton;
-            }
-            else if (this.CheckState == CheckState.Indeterminate)
-            {
-                Gtk.RadioButton checkbutton = new Gtk.RadioButton(((WidgetToolStrip<Gtk.MenuItem>)this.Parent).groupradio);
-                checkbutton.StyleContext.AddClass("MenuCheck");
-                checkbutton.BorderWidth = 0;
-                checkbutton.Margin = 0;
-                checkbutton.Halign = Gtk.Align.Center;
-                checkbutton.Valign = Gtk.Align.Center;
-                checkbutton.Active = this.Checked;
-                checkbutton.Toggled += Checkbutton_Toggled;
-                flagBox.Child = checkbutton;
-            }
-            else
-            {
-                try
+                Is_ToolStripItem_Realized = true;
+                SetStyle((Gtk.MenuItem)sender);
+                Gtk.MenuItem menuItem = (Gtk.MenuItem)sender;
+                if (menuItem.Parent is Gtk.Menu)
                 {
-                    if (DisplayStyle == ToolStripItemDisplayStyle.Text)
-                    {
-                        label.NoShowAll = false;
-                        label.Visible = true;
-                    }
-                    else if (DisplayStyle == ToolStripItemDisplayStyle.Image)
-                    {
-                        label.Visible = false;
-                        label.NoShowAll = true;
-                        if (Image != null && Image.PixbufData != null)
-                        {
-                            Gtk.Image ico1 = new Gtk.Image(new Gdk.Pixbuf(Image.PixbufData).ScaleSimple(20, 20, Gdk.InterpType.Tiles));
-                            ico1.Halign = Gtk.Align.Center;
-                            ico1.Valign = Gtk.Align.Center;
-                            flagBox.Child = ico1;
-                        }
-                    }
-                    else
-                    {
-
-                        if (Image != null && Image.PixbufData != null)
-                        {
-                            Gtk.Image ico1 = new Gtk.Image(new Gdk.Pixbuf(Image.PixbufData).ScaleSimple(20, 20, Gdk.InterpType.Tiles));
-                            ico1.Halign = Gtk.Align.Center;
-                            ico1.Valign = Gtk.Align.Center;
-                            flagBox.Child = ico1;
-                        }
-                    }
+                    flagBox.Vexpand = true;
+                    flagBox.Hexpand = true;
+                    flagBox.WidthRequest = 30;
+                    menuItem.StyleContext.AddClass("MenuItem");
                 }
-                catch { }
-            }
-            menuItem.ShowAll();
+                if (this.CheckState == CheckState.Checked)
+                {
+                    Gtk.CheckButton checkbutton = new Gtk.CheckButton();
+                    checkbutton.StyleContext.AddClass("MenuCheck");
+                    checkbutton.BorderWidth = 0;
+                    checkbutton.Margin = 0;
+                    checkbutton.Halign = Gtk.Align.Center;
+                    checkbutton.Valign = Gtk.Align.Center;
+                    checkbutton.Active = this.Checked;
+                    checkbutton.Toggled += Checkbutton_Toggled;
+                    flagBox.Child = checkbutton;
+                }
+                else if (this.CheckState == CheckState.Indeterminate)
+                {
+                    Gtk.RadioButton checkbutton = new Gtk.RadioButton(((WidgetToolStrip<Gtk.MenuItem>)this.Parent).groupradio);
+                    checkbutton.StyleContext.AddClass("MenuCheck");
+                    checkbutton.BorderWidth = 0;
+                    checkbutton.Margin = 0;
+                    checkbutton.Halign = Gtk.Align.Center;
+                    checkbutton.Valign = Gtk.Align.Center;
+                    checkbutton.Active = this.Checked;
+                    checkbutton.Toggled += Checkbutton_Toggled;
+                    flagBox.Child = checkbutton;
+                }
+                else
+                {
+                    try
+                    {
+                        if (DisplayStyle == ToolStripItemDisplayStyle.Text)
+                        {
+                            label.NoShowAll = false;
+                            label.Visible = true;
+                        }
+                        else if (DisplayStyle == ToolStripItemDisplayStyle.Image)
+                        {
+                            label.Visible = false;
+                            label.NoShowAll = true;
+                            if (Image != null && Image.PixbufData != null)
+                            {
+                                Gtk.Image ico1 = new Gtk.Image(new Gdk.Pixbuf(Image.PixbufData).ScaleSimple(20, 20, Gdk.InterpType.Tiles));
+                                ico1.Halign = Gtk.Align.Center;
+                                ico1.Valign = Gtk.Align.Center;
+                                flagBox.Child = ico1;
+                            }
+                        }
+                        else
+                        {
 
+                            if (Image != null && Image.PixbufData != null)
+                            {
+                                Gtk.Image ico1 = new Gtk.Image(new Gdk.Pixbuf(Image.PixbufData).ScaleSimple(20, 20, Gdk.InterpType.Tiles));
+                                ico1.Halign = Gtk.Align.Center;
+                                ico1.Valign = Gtk.Align.Center;
+                                flagBox.Child = ico1;
+                            }
+                        }
+                    }
+                    catch { }
+                }
+                menuItem.ShowAll();
+            }
         }
 
         private void Checkbutton_Toggled(object sender, EventArgs e)

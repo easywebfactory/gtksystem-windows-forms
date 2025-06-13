@@ -39,9 +39,14 @@ namespace System.Windows.Forms
             self.SizeAllocated += Self_SizeAllocated;
             self.Mapped += Self_Mapped;
         }
+        private bool Is_Self_Mapped;
         private void Self_Mapped(object sender, EventArgs e)
         {
-            PerformLayout();
+            if (!Is_Self_Mapped)
+            {
+                Is_Self_Mapped = true;
+                PerformLayout();
+            }
         }
         private int allocationwidth = 0;
         private int allocationheight = 0;
