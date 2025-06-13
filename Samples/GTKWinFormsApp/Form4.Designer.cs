@@ -196,6 +196,7 @@ namespace GTKWinFormsApp
             button9.TabIndex = 6;
             button9.Text = "警告消息";
             button9.UseVisualStyleBackColor = true;
+            button9.Click += button9_Click;
             // 
             // button8
             // 
@@ -205,6 +206,7 @@ namespace GTKWinFormsApp
             button8.TabIndex = 5;
             button8.Text = "选择颜色";
             button8.UseVisualStyleBackColor = true;
+            button8.Click += button8_Click;
             // 
             // button7
             // 
@@ -214,6 +216,7 @@ namespace GTKWinFormsApp
             button7.TabIndex = 4;
             button7.Text = "浏览文件夹";
             button7.UseVisualStyleBackColor = true;
+            button7.Click += button7_Click;
             // 
             // button6
             // 
@@ -223,6 +226,7 @@ namespace GTKWinFormsApp
             button6.TabIndex = 3;
             button6.Text = "保存文件";
             button6.UseVisualStyleBackColor = true;
+            button6.Click += button6_Click;
             // 
             // treeView1
             // 
@@ -292,6 +296,7 @@ namespace GTKWinFormsApp
             button3.TabIndex = 0;
             button3.Text = "打开文件";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // contextMenuStrip1
             // 
