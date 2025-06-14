@@ -24,7 +24,6 @@ namespace System.Windows.Forms
         public override object GtkControl { get => self; }
         private Gtk.Overlay contanter = new Gtk.Overlay();
         private ObjectCollection _ObjectCollection;
-        public override event EventHandler SizeChanged;
         public Form() : base()
         {
             self.Override.sender = this;
@@ -46,15 +45,8 @@ namespace System.Windows.Forms
             contanter.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             self.ScrollView.Child = contanter;
             _ObjectCollection = new ObjectCollection(this, contanter);
-            self.ResizeChecked += Self_ResizeChecked;
             self.Shown += Control_Shown;
             self.CloseWindowEvent += Self_CloseWindowEvent;
-        }
-
-        private void Self_ResizeChecked(object sender, EventArgs e)
-        {
-            if (SizeChanged != null)
-                SizeChanged(this, EventArgs.Empty);
         }
 
         private bool Self_CloseWindowEvent(object sender, EventArgs e)
