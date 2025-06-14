@@ -13,20 +13,22 @@ C#桌面应用程序跨平台（windows、linux、macos）开发框架，基于G
 ### 安装教程
 默认的情况下，visual studio从Nuget引用GtkSharp编译时，就会自动下载Gtk.zip运行时安装包，并自动解压安装。本开源项目下载包也包含Gtk.zip包，可手动安装。以下是三种环境安装方法：
 
-1、安装GtkSharp后，编译你的工程项目，自动安装（自动下载的库版本比较旧，有bug，建议手动从本项目下载）
+1、安装GtkSharp后，编译你的工程项目，手动从本项目下载运行时库安装，（Visual Studio开发环境必需）。
 安装GtkSharp后，编译你的工程项目时，会自动下载gtk.zip解压到目录$(LOCALAPPDATA)\Gtk\3.24.24配置Gtk环境，目前国内网络限制，可能会出现无法下载的错误。
-如果无法自动下载，本项目提供下载 [https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies](https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies)。
-也可以下载https://github.com/GtkSharp/Dependencies，把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24目录即可。
+自动下载的库版本较低，本项目提供下载 [https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies](https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies)。
+也可以下载https://github.com/GtkSharp/Dependencies（版本比较旧，有bug），把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24目录即可。
 ps: $(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData\Local\Gtk\3.24.24
 
 2、下载exe安装包安装
 本项目提供下载 [https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies](https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies)。
-方法1在国内可能会有网络障碍，并且是比较旧的运行时库，可能有Bug，建议用此方法获取最新版本安装：下载[https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer)，安装后配置电脑变量环境：
+获取最新版本安装：下载[https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer)，安装后配置电脑变量环境：
 ```
 你可以打开电脑属性配置，或者执行以下.bat命令：
 @set GTK3R_PREFIX=C:\Program Files\GTK3-Runtime Win64
 @echo set PATH=%GTK3R_PREFIX%;%%PATH%%
 @set PATH=%GTK3R_PREFIX%;%PATH%
+//如有异常，可尝试添加GTK_DATA_PREFIX变量解决
+@setx GTK_DATA_PREFIX=C:\Program Files\GTK3-Runtime Win64
 ```
 3、使用MSYS软件平台安装，具体操作请网上查询
 
@@ -166,7 +168,10 @@ QQ群：1011147488
 ### 常见问题
   为什么Form窗体设计器打不开？<br/>
   ```
-  答：从NuGet安装GTKSystem.Windows.FormsDesigner，编译工程，检查obj目录下包含GTKWinFormsApp.designer.runtimeconfig.json和GTKWinFormsApp.runtimeconfig.json，然后按以下流程操作：
+  答：有三种方法使用窗体设计器，
+  一）新建一个csharp原生Net框架windows应用程序工程，把相关form界面文件包含进工程，即可使用窗体设计器。  
+  二）新建一个framework框架的windows应用工程，把相关form界面文件包含进工程，即可使用窗体设计器。 
+  三）从NuGet安装GTKSystem.Windows.FormsDesigner，编译工程，检查obj目录下包含GTKWinFormsApp.designer.runtimeconfig.json和GTKWinFormsApp.runtimeconfig.json，然后按以下流程操作：
     1、编译一下 
     2、打开Form窗体
     （如果不能打开窗体，执行下面流程） 
