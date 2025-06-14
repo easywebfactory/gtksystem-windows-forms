@@ -168,7 +168,9 @@ QQ群：1011147488
 ### 常见问题
   为什么Form窗体设计器打不开？<br/>
   ```
-  答：有三种方法使用窗体设计器，
+  详细方法请访问[https://www.gtkapp.com/formsdesigner/](https://www.gtkapp.com/formsdesigner/)。 
+
+  有三种方法使用窗体设计器，
   一）新建一个csharp原生Net框架windows应用程序工程，把相关form界面文件包含进工程，即可使用窗体设计器。  
   二）新建一个framework框架的windows应用工程，把相关form界面文件包含进工程，即可使用窗体设计器。 
   三）从NuGet安装GTKSystem.Windows.FormsDesigner，编译工程，检查obj目录下包含GTKWinFormsApp.designer.runtimeconfig.json和GTKWinFormsApp.runtimeconfig.json，然后按以下流程操作：
