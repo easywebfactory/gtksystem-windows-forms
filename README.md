@@ -64,6 +64,23 @@ linux安装DotNet环境：
   安装方法可以查看微软官网教程：https://learn.microsoft.com/zh-cn/dotnet/core/install/linux-scripted-manual
 ```
 
+MacOS安装gtk环境
+```
+一、应用商店安装：
+	brew install gtk+3
+
+二、源码安装	
+	# 克隆 Gtk-OSX 仓库（gtk-osx-master.zip解压后可本地安装）
+		git clone https://gitlab.gnome.org/GNOME/gtk-osx.git
+		cd gtk-osx
+	# 运行安装脚本
+		/gtk-osx-setup.sh
+```
+MacOS安装dotnet环境
+```
+安装方法请看微软官方教程：https://learn.microsoft.com/zh-cn/dotnet/core/install/macos
+```
+
 ### 开发教程
 1.  项目工程框架选择“window应用程序”改配置UseWindowsForms为false或“控制台应用程序”，.net6及以上版本
 2.  NulGet安装GtkSharp(3.24.24.95)、GTKSystem.Windows.Forms、GTKSystem.Windows.FormsDesigner
@@ -127,11 +144,8 @@ System.Resources.Extensions是空程序dll，不是必须引用，只有VS在窗
 
 企业服务：[https://www.gtkapp.com/vipservice](https://www.gtkapp.com/vipservice)   
 
- ![支持GTKSystem](/pic/love_reward_qrcode_.png)
- ![联系GTKSystem](/pic/contact_weixin.png)
-
 ### 交流/合作/商务/赞助
-QQ群：236066073（满），1011147488
+QQ群：1011147488
 邮箱：438865652@qq.com <br/>
 
 ### 默认风格效果
