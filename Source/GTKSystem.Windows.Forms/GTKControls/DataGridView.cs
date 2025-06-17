@@ -179,7 +179,7 @@ namespace System.Windows.Forms
             set
             {
                 _DataSource = value;
-                if (GridView.IsVisible)
+                if (Is_GridView_Realized == true)
                 {
                     OnSetDataSource();
                 }

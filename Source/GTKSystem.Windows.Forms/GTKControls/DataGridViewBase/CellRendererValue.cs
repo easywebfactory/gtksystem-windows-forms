@@ -203,8 +203,8 @@ namespace System.Windows.Forms.GtkRender
         string ICellRenderer.Markup { get; set; }
         protected override void OnRender(Cairo.Context cr, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
         {
-            widget.StyleContext.AddClass("GridViewCell-Button");
             widget.StyleContext.Save();
+            widget.StyleContext.AddClass("GridViewCell-Button");
             int height = cell_area.Height;
             int y = cell_area.Y;
             if (height > 36)
