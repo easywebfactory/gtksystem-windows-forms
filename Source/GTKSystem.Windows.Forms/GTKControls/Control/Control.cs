@@ -114,7 +114,7 @@ namespace System.Windows.Forms
                 Load?.Invoke(this, e);
             }
         }
-        private bool Is_Widget_ButtonPressEvent = false;
+        private bool Is_DoubleButtonPress = false;
         private void Widget_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
             Gtk.Widget owidget = o as Gtk.Widget;
@@ -134,7 +134,7 @@ namespace System.Windows.Forms
                 MouseDown?.Invoke(this, mouseArgs);
                 if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
                 {
-                    Is_Widget_ButtonPressEvent = false;
+                    Is_DoubleButtonPress = true;
                     MouseEventArgs mouseArgs2 = new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
                     OnMouseDoubleClick(mouseArgs2);
                     MouseDoubleClick?.Invoke(this, mouseArgs2);
@@ -142,7 +142,7 @@ namespace System.Windows.Forms
                 }
                 else
                 {
-                    Is_Widget_ButtonPressEvent = true;
+                    Is_DoubleButtonPress = false;
                 }
             }
         }
@@ -163,7 +163,7 @@ namespace System.Windows.Forms
                 OnMouseUp(mouseArgs);
                 MouseUp?.Invoke(this, mouseArgs);
                
-                if (Is_Widget_ButtonPressEvent == true)
+                if (Is_DoubleButtonPress == false)
                 {
                     OnClick(EventArgs.Empty);
                     MouseEventArgs mouseArgs3 = new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
@@ -171,6 +171,7 @@ namespace System.Windows.Forms
                     Click?.Invoke(this, EventArgs.Empty);
                     MouseClick?.Invoke(this, mouseArgs3);
                 }
+                Is_DoubleButtonPress = false;
                 if (ContextMenuStrip != null)
                 {
                     if (args.Event.Button == 3)
