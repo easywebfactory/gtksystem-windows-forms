@@ -9,6 +9,7 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms.Design;
@@ -139,6 +140,12 @@ namespace System.Windows.Forms
                     OnMouseDoubleClick(mouseArgs2);
                     MouseDoubleClick?.Invoke(this, mouseArgs2);
                     DoubleClick?.Invoke(this, EventArgs.Empty);
+                    GLib.Timeout.Add(300, () =>
+                    {
+                        Is_DoubleButtonPress = false;
+                        return false;
+                    });
+                    args.RetVal = true;
                 }
                 else
                 {
@@ -146,6 +153,7 @@ namespace System.Windows.Forms
                 }
             }
         }
+        
         private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
         {
             Gtk.Widget owidget = o as Gtk.Widget;
@@ -162,16 +170,19 @@ namespace System.Windows.Forms
                 MouseEventArgs mouseArgs = new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
                 OnMouseUp(mouseArgs);
                 MouseUp?.Invoke(this, mouseArgs);
-               
-                if (Is_DoubleButtonPress == false)
+                GLib.Timeout.Add(120, () =>
                 {
-                    OnClick(EventArgs.Empty);
-                    MouseEventArgs mouseArgs3 = new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
-                    OnMouseClick(mouseArgs3);
-                    Click?.Invoke(this, EventArgs.Empty);
-                    MouseClick?.Invoke(this, mouseArgs3);
-                }
-                Is_DoubleButtonPress = false;
+                    if (Is_DoubleButtonPress == false)
+                    {
+                        OnClick(EventArgs.Empty);
+                        MouseEventArgs mouseArgs3 = new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
+                        OnMouseClick(mouseArgs3);
+                        Click?.Invoke(this, EventArgs.Empty);
+                        MouseClick?.Invoke(this, mouseArgs3);
+                    }
+                    return false;
+                });
+
                 if (ContextMenuStrip != null)
                 {
                     if (args.Event.Button == 3)
