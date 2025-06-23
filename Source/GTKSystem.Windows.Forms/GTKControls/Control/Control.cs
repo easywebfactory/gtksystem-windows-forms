@@ -140,12 +140,6 @@ namespace System.Windows.Forms
                     OnMouseDoubleClick(mouseArgs2);
                     MouseDoubleClick?.Invoke(this, mouseArgs2);
                     DoubleClick?.Invoke(this, EventArgs.Empty);
-                    GLib.Timeout.Add(300, () =>
-                    {
-                        Is_DoubleButtonPress = false;
-                        return false;
-                    });
-                    args.RetVal = true;
                 }
                 else
                 {
@@ -170,19 +164,18 @@ namespace System.Windows.Forms
                 MouseEventArgs mouseArgs = new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
                 OnMouseUp(mouseArgs);
                 MouseUp?.Invoke(this, mouseArgs);
-                GLib.Timeout.Add(120, () =>
+                if (Is_DoubleButtonPress == false)
                 {
-                    if (Is_DoubleButtonPress == false)
-                    {
-                        OnClick(EventArgs.Empty);
-                        MouseEventArgs mouseArgs3 = new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
-                        OnMouseClick(mouseArgs3);
-                        Click?.Invoke(this, EventArgs.Empty);
-                        MouseClick?.Invoke(this, mouseArgs3);
-                    }
-                    return false;
-                });
-
+                    OnClick(EventArgs.Empty);
+                    MouseEventArgs mouseArgs3 = new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
+                    OnMouseClick(mouseArgs3);
+                    Click?.Invoke(this, EventArgs.Empty);
+                    MouseClick?.Invoke(this, mouseArgs3);
+                }
+                else
+                {
+                    Is_DoubleButtonPress = false;
+                }
                 if (ContextMenuStrip != null)
                 {
                     if (args.Event.Button == 3)
