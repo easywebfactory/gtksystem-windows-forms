@@ -49,8 +49,8 @@ namespace System.Windows.Forms
         protected WidgetToolStrip(string stripType, string text, System.Drawing.Image image, EventHandler onClick, string name, params object[] args) : base(text, image, onClick, name)
         {
             this.unique_key = Guid.NewGuid().ToString().ToLower();
-            MenuItem = (Gtk.MenuItem)Activator.CreateInstance(typeof(T), args);
-            MenuItem.StyleContext.AddProvider(provider, StyleProviderPriority.User);
+            this.MenuItem = (Gtk.MenuItem)Activator.CreateInstance(typeof(T), args);
+            this.MenuItem.StyleContext.AddProvider(provider, StyleProviderPriority.User);
             if (stripType == "ToolStripSeparator")
             {
                 Created = true;
@@ -65,6 +65,7 @@ namespace System.Windows.Forms
                 this.MenuItem.Halign = Gtk.Align.Fill;
                 this.MenuItem.Vexpand = false;
                 this.MenuItem.Hexpand = true;
+                this.MenuItem.Visible = true;
                 itemBox.Valign = Gtk.Align.Center;
                 itemBox.Halign = Gtk.Align.Start;
                 flagBox.BorderWidth = 0;
@@ -115,7 +116,7 @@ namespace System.Windows.Forms
 
             }
             Created = true;
-
+            this.MenuItem.ShowAll();
         }
 
         private void MenuItem_ButtonReleaseEvent(object o, Gtk.ButtonReleaseEventArgs args)
