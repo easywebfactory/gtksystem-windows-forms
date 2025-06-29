@@ -121,22 +121,21 @@ namespace System.Windows.Forms
             Gtk.Widget owidget = o as Gtk.Widget;
             if (owidget != null && owidget.Window != null)
             {
-                MouseButtons result = MouseButtons.None;
+                MouseButtons button = MouseButtons.None;
                 if (args.Event.Button == 1)
-                    result = MouseButtons.Left;
+                    button = MouseButtons.Left;
                 else if (args.Event.Button == 2)
-                    result = MouseButtons.Middle;
+                    button = MouseButtons.Middle;
                 else if (args.Event.Button == 3)
-                    result = MouseButtons.Right;
-
+                    button = MouseButtons.Right;
                 owidget.Window.GetOrigin(out int x, out int y);//避免事件穿透错误
-                MouseEventArgs mouseArgs = new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
+                MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
                 OnMouseDown(mouseArgs);
                 MouseDown?.Invoke(this, mouseArgs);
                 if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
                 {
                     Is_DoubleButtonPress = true;
-                    MouseEventArgs mouseArgs2 = new MouseEventArgs(result, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
+                    MouseEventArgs mouseArgs2 = new MouseEventArgs(button, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
                     OnMouseDoubleClick(mouseArgs2);
                     MouseDoubleClick?.Invoke(this, mouseArgs2);
                     DoubleClick?.Invoke(this, EventArgs.Empty);
@@ -153,21 +152,21 @@ namespace System.Windows.Forms
             Gtk.Widget owidget = o as Gtk.Widget;
             if (owidget != null && owidget.Window != null)
             {
-                MouseButtons result = MouseButtons.None;
+                MouseButtons button = MouseButtons.None;
                 if (args.Event.Button == 1)
-                    result = MouseButtons.Left;
+                    button = MouseButtons.Left;
                 else if (args.Event.Button == 2)
-                    result = MouseButtons.Middle;
+                    button = MouseButtons.Middle;
                 else if (args.Event.Button == 3)
-                    result = MouseButtons.Right;
+                    button = MouseButtons.Right;
                 owidget.Window.GetOrigin(out int x, out int y);
-                MouseEventArgs mouseArgs = new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
+                MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
                 OnMouseUp(mouseArgs);
                 MouseUp?.Invoke(this, mouseArgs);
                 if (Is_DoubleButtonPress == false)
                 {
                     OnClick(EventArgs.Empty);
-                    MouseEventArgs mouseArgs3 = new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
+                    MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
                     OnMouseClick(mouseArgs3);
                     Click?.Invoke(this, EventArgs.Empty);
                     MouseClick?.Invoke(this, mouseArgs3);
@@ -211,16 +210,25 @@ namespace System.Windows.Forms
             Gtk.Widget owidget = o as Gtk.Widget;
             if (owidget != null && owidget.Window != null)
             {
-                MouseButtons result = MouseButtons.None;
-                // Console.WriteLine(args.Event.State);
+                int clicks = 0;
+                MouseButtons button = MouseButtons.None;
                 if (args.Event.State.HasFlag(Gdk.ModifierType.Button1Mask))
-                    result = MouseButtons.Left;
-                else if (args.Event.State.HasFlag(Gdk.ModifierType.Button2Mask))
-                    result = MouseButtons.Middle;
-                else if (args.Event.State.HasFlag(Gdk.ModifierType.Button3Mask))
-                    result = MouseButtons.Right;
+                {
+                    button |= MouseButtons.Left;
+                    clicks += 1;
+                }
+                if (args.Event.State.HasFlag(Gdk.ModifierType.Button2Mask))
+                {
+                    button |= MouseButtons.Middle;
+                    clicks += 1;
+                }
+                if (args.Event.State.HasFlag(Gdk.ModifierType.Button3Mask))
+                {
+                    button |= MouseButtons.Right;
+                    clicks += 1;
+                }
                 owidget.Window.GetOrigin(out int x, out int y);
-                MouseEventArgs mouseArgs = new MouseEventArgs(result, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 1);
+                MouseEventArgs mouseArgs = new MouseEventArgs(button, clicks, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 1);
                 OnMouseMove(mouseArgs);
                 MouseMove?.Invoke(this, mouseArgs);
             }
@@ -237,7 +245,24 @@ namespace System.Windows.Forms
         }
         private void Widget_ScrollEvent(object o, Gtk.ScrollEventArgs args)
         {
-            MouseEventArgs mouseArgs = new MouseEventArgs(MouseButtons.None, 0, (int)args.Event.X, (int)args.Event.Y, (int)args.Event.DeltaY);
+            int clicks = 0;
+            MouseButtons button = MouseButtons.None;
+            if (args.Event.State.HasFlag(Gdk.ModifierType.Button1Mask))
+            {
+                button |= MouseButtons.Left;
+                clicks += 1;
+            }
+            if (args.Event.State.HasFlag(Gdk.ModifierType.Button2Mask))
+            {
+                button |= MouseButtons.Middle;
+                clicks += 1;
+            }
+            if (args.Event.State.HasFlag(Gdk.ModifierType.Button3Mask))
+            {
+                button |= MouseButtons.Right;
+                clicks += 1;
+            }
+            MouseEventArgs mouseArgs = new MouseEventArgs(button, clicks, (int)args.Event.X, (int)args.Event.Y, (int)args.Event.DeltaY);
             OnMouseWheel(mouseArgs);
             MouseWheel?.Invoke(this, mouseArgs);
         }
