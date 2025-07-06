@@ -137,7 +137,7 @@ namespace System.Windows.Forms
             CellEditable = args.Editable;
         }
         private void Renderer_Edited(object o, EditedArgs args)
-        {
+        {;
             RendererEdited(args.Path, args.NewText);
         }
         internal override DataGridViewCell NewCell(object value = null, Type valueType = null)
@@ -307,12 +307,14 @@ namespace System.Windows.Forms
                 {
                     CellEditable.EditingDone += Editable_EditingDone;
                     CellEditable.FinishEditing();
-                    CellEditable.RemoveWidget();
                     CellEditable.EditingDone -= Editable_EditingDone;
-                    CellEditable = null;
-                    _cellEditablePath = "";
                 }
                 catch { }
+                finally {
+                    CellEditable?.RemoveWidget();
+                    CellEditable = null;
+                    _cellEditing = false;
+                }
             }
         }
         private void Editable_EditingDone(object sender, EventArgs e)
