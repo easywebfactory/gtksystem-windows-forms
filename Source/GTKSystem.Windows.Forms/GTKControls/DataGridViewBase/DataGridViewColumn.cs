@@ -137,7 +137,7 @@ namespace System.Windows.Forms
             CellEditable = args.Editable;
         }
         private void Renderer_Edited(object o, EditedArgs args)
-        {;
+        {
             RendererEdited(args.Path, args.NewText);
         }
         internal override DataGridViewCell NewCell(object value = null, Type valueType = null)
