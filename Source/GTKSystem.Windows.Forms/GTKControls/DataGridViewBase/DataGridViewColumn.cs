@@ -4,6 +4,8 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+using Atk;
+using GLib;
 using Gtk;
 using System.Collections;
 using System.ComponentModel;
@@ -119,6 +121,7 @@ namespace System.Windows.Forms
             CellRendererComboValue renderer = new CellRendererComboValue(this);
             renderer.Editable = true;
             renderer.Edited += Renderer_Edited;
+            renderer.EditingStarted += Renderer_EditingStarted;
             renderer.TextColumn = 0;
             renderer.Height = RowHeight;
             renderer.Model = model;
@@ -127,18 +130,15 @@ namespace System.Windows.Forms
             base.Sizing = TreeViewColumnSizing.GrowOnly;
             _cellRenderer = renderer;
         }
-
+        private void Renderer_EditingStarted(object o, EditingStartedArgs args)
+        {
+            _cellEditing = true;
+            _cellEditablePath = args.Path;
+            CellEditable = args.Editable;
+        }
         private void Renderer_Edited(object o, EditedArgs args)
         {
-            TreePath path = new TreePath(args.Path);
-            var model = _treeView.Model;
-            model.GetIter(out TreeIter iter, path);
-            object cell = model.GetValue(iter, this.Index);
-            if (cell is DataGridViewCell val)
-            {
-                val.Value = args.NewText;
-                _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last());
-            }
+            RendererEdited(args.Path, args.NewText);
         }
         internal override DataGridViewCell NewCell(object value = null, Type valueType = null)
         {
@@ -256,6 +256,9 @@ namespace System.Windows.Forms
         internal Gtk.TreeView _treeView;
         internal DataGridView _gridview;
         internal ICellRenderer _cellRenderer;
+        internal string _cellEditablePath;
+        internal bool _cellEditing;
+        public ICellEditable CellEditable;
         protected DataGridViewColumn(int column, DataGridView ownerGridView, DataGridViewCell cellTemplate) : base()
         {
             if (ownerGridView != null)
@@ -282,21 +285,65 @@ namespace System.Windows.Forms
             renderer.Editable = true;
             renderer.Mode = CellRendererMode.Editable;
             renderer.Edited += Renderer_Edited;
+            renderer.EditingStarted += Renderer_EditingStarted;
             renderer.PlaceholderText = "---";
             renderer.Height = RowHeight;
             base.PackStart(renderer, true);
             base.Sizing = TreeViewColumnSizing.GrowOnly;
-            _cellRenderer = renderer as ICellRenderer;
+            _cellRenderer = renderer as ICellRenderer; 
         }
+
+        private void Renderer_EditingStarted(object o, EditingStartedArgs args)
+        {
+            _cellEditing = true;
+            _cellEditablePath = args.Path;
+            CellEditable = args.Editable;
+        }
+        public void EditableEditingDone()
+        {
+            if (CellEditable != null)
+            {
+                try
+                {
+                    CellEditable.EditingDone += Editable_EditingDone;
+                    CellEditable.FinishEditing();
+                    CellEditable.RemoveWidget();
+                    CellEditable.EditingDone -= Editable_EditingDone;
+                    CellEditable = null;
+                    _cellEditablePath = "";
+                }
+                catch { }
+            }
+        }
+        private void Editable_EditingDone(object sender, EventArgs e)
+        {
+            if (_cellEditing == true)
+            {
+                if (sender is Gtk.Entry enry)
+                {
+                    RendererEdited(_cellEditablePath, enry.Text);
+                }
+                else if (sender is Gtk.ComboBox com)
+                {
+                    RendererEdited(_cellEditablePath, com.Entry.Text);
+                }
+            }
+        }
+
         private void Renderer_Edited(object o, EditedArgs args)
         {
-            TreePath path = new TreePath(args.Path);
+            RendererEdited(args.Path, args.NewText);
+        }
+        public void RendererEdited(string treepath, string value)
+        {
+            _cellEditing = false;
+            TreePath path = new TreePath(treepath);
             var model = _treeView.Model;
             model.GetIter(out TreeIter iter, path);
             object cell = model.GetValue(iter, this.Index);
             if (cell is DataGridViewCell val)
             {
-                val.Value = args.NewText;
+                val.Value = value;
                 _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last());
             }
         }

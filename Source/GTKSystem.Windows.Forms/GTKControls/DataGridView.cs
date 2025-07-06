@@ -4,9 +4,11 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+using Atk;
 using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+using Pango;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
@@ -436,6 +438,13 @@ namespace System.Windows.Forms
         {
             if (CellPainting != null)
                 CellPainting(sender, e);
+        }
+        public void EndEdit()
+        {
+            foreach(DataGridViewColumn column in Columns)
+            {
+                column.EditableEditingDone();
+            }
         }
         //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler BackgroundImageChanged;
