@@ -3,7 +3,7 @@
 一般情况下，单个图片资源可以直接兼容原生使用，可以无需额外配置，图片组资源则必须把图片存放到Resources文件夹下。
 
 #### 创建方法如下：
-在项目下和编译输出目录下创建Resources文件夹，把Resources资源存放的图片、Form.resx文件复制到Resources文件夹，此文件夹和文件全部生成到工程项目编译输出目录下。
+在项目下和编译输出目录下创建Resources文件夹，把Resources资源存放的图片文件复制到Resources文件夹，此文件夹和文件全部生成到工程项目编译输出目录下。
 
 
 ## 二、使用全局共享资源Properties/Resources.resx

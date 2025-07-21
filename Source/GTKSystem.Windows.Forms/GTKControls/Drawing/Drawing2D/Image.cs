@@ -1,3 +1,4 @@
+using GLib;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing.Imaging;
@@ -19,17 +20,57 @@ namespace System.Drawing
         //¡°jpeg¡±, ¡°tiff¡±, ¡°png¡±, ¡°ico¡± or ¡°bmp¡±.
         public byte[] PixbufData
         {
-            get { if (_PixbufData == null && _Pixbuf != null) { _PixbufData = _Pixbuf.SaveToBuffer("bmp"); } return _PixbufData; }
-            set { _PixbufData = value; _Pixbuf = new Gdk.Pixbuf(value); }
+            get { 
+				if (_PixbufData == null && _Pixbuf != null) {
+					try
+					{
+						_PixbufData = _Pixbuf.SaveToBuffer("bmp");
+					}
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                } 
+				return _PixbufData; }
+            set { 
+				_PixbufData = value; 
+				try
+				{
+					_Pixbuf = new Gdk.Pixbuf(value);
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+				}
+			}
         }
         private Gdk.Pixbuf _Pixbuf;
         public Gdk.Pixbuf Pixbuf
         {
             get {
-                if (_Pixbuf == null && _PixbufData != null) { _Pixbuf = new Gdk.Pixbuf(_PixbufData); }
+                if (_Pixbuf == null && _PixbufData != null) {
+                    try
+                    {
+                        _Pixbuf = new Gdk.Pixbuf(_PixbufData);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
                 return _Pixbuf;
             }
-            set { _Pixbuf = value; _PixbufData = value.SaveToBuffer("bmp"); }
+            set { _Pixbuf = value; 
+				
+                try
+                {
+                    _PixbufData = value.SaveToBuffer("bmp");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
         }
 		private string _fileName;
         public string FileName { get=> _fileName; set { _fileName = value; Pixbuf = new Gdk.Pixbuf(value); } }
