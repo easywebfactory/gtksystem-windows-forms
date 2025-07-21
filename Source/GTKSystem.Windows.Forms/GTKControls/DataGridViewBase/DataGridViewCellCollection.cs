@@ -1,7 +1,4 @@
-﻿using Atk;
-using GLib;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.ComponentModel;
 
 namespace System.Windows.Forms
