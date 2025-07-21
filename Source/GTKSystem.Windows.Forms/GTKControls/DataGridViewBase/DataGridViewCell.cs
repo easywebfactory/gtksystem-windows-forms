@@ -37,7 +37,7 @@ namespace System.Windows.Forms
         public Size PreferredSize { get; }
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public DataGridViewRow OwningRow { get; }
+        public DataGridViewRow OwningRow { get => OwningRowInternal; }
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public DataGridViewColumn OwningColumn { get; }
