@@ -1,5 +1,8 @@
 
 ## 更新日志
+ #### 2025/7/24 V1.3.24.71
+	1. 增加NotifyIcon组件
+	2. 更新图像处理程序
  #### 2025/7/6 V1.3.24.70
 	1. DataGridView增加EndEdit功能
 	2. 更新DataGridView控件列处理功能

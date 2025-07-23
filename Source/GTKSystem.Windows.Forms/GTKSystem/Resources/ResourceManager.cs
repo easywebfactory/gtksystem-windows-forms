@@ -178,39 +178,42 @@ namespace GTKSystem.Resources
                 }
                 else
                 {
+                    byte[] filebytes = null;
                     string fileName = name;
-                    byte[] filebytes = ReadResourceFile(name);
-                    if (filebytes == null)
+                    string _formName = Path.GetExtension(this._baseName).TrimStart('.');
+                    if (_formName.EndsWith("Resources"))
+                        _formName = "";
+                    string[] files = Directory.GetFiles($"./Resources/{_formName}", $"{fileName}.*", SearchOption.TopDirectoryOnly);
+                    //string[] files = Directory.GetFiles($"./Resources", $"{fileName}.*", SearchOption.AllDirectories);
+                    if (files != null && files.Length > 0)
                     {
-                        //string _formName = Path.GetExtension(this.BaseName).TrimStart('.');
-                        //string[] files = Directory.GetFiles($"./Resources/{_formName}", $"{fileName}.*", SearchOption.AllDirectories);
-                        string[] files = Directory.GetFiles($"./Resources", $"{fileName}.*", SearchOption.AllDirectories);
-                        if (files != null && files.Length > 0)
-                        {
-                            fileName = files[0];
-                            filebytes = File.ReadAllBytes(files[0]);
-                        }
+                        fileName = files[0];
+                        filebytes = File.ReadAllBytes(files[0]);
+                    }
 
-                    }
-                    if (name.EndsWith(".BackgroundImage"))
+                    if (name.EndsWith(".Icon"))
                     {
-                        return new System.Drawing.Bitmap(filebytes) { FileName = fileName }; 
-                    }
-                    else if (name.EndsWith(".Image"))
-                    {
-                        return new System.Drawing.Bitmap(filebytes) { FileName = fileName }; 
-                    }
-                    else if (name.EndsWith(".Icon"))
-                    {
-                        return new System.Drawing.Icon(filebytes) { FileName = fileName };
-                    }
-                    else if (filebytes == null)
-                    {
-                        return new System.Drawing.Bitmap(0, 0);
+                        if (filebytes != null)
+                        {
+                            return new System.Drawing.Icon(filebytes) { FileName = fileName };
+                        }
+                        else
+                        {
+                            Stream stream = typeof(GTKSystem.Resources.ResourceManager).Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.Panel.ico");
+                            return new Icon(stream);
+                        }
                     }
                     else
                     {
-                        return new System.Drawing.Bitmap(filebytes) { FileName = fileName };
+                        if (filebytes != null)
+                        {
+                            return new System.Drawing.Bitmap(filebytes) { FileName = fileName };
+                        }
+                        else
+                        {
+                            Stream stream = typeof(GTKSystem.Resources.ResourceManager).Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.image-missing16.png");
+                            return new Bitmap(stream);
+                        }
                     }
                 }
             }

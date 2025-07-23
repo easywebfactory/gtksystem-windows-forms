@@ -24,7 +24,7 @@ namespace System.Drawing
 				if (_PixbufData == null && _Pixbuf != null) {
 					try
 					{
-						_PixbufData = _Pixbuf.SaveToBuffer("bmp");
+						_PixbufData = _Pixbuf.SaveToBuffer("png");
 					}
                     catch (Exception ex)
                     {
@@ -64,7 +64,7 @@ namespace System.Drawing
 				
                 try
                 {
-                    _PixbufData = value.SaveToBuffer("bmp");
+                    _PixbufData = value.SaveToBuffer("png");
                 }
                 catch (Exception ex)
                 {
@@ -290,8 +290,7 @@ namespace System.Drawing
 			}
 			filename = System.IO.Path.GetFullPath(filename);
             string extension = IO.Path.GetExtension(filename)?.ToLower();
-            byte[] filebytes =File.ReadAllBytes(filename);
-            Bitmap bitmap = new Bitmap(filebytes);
+            Bitmap bitmap = new Bitmap(filename);
             bitmap.GetImageFormat(extension);
             return bitmap;
 		}

@@ -90,6 +90,8 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
     <None Remove="Resources\System\go-down-symbolic.png" />
     <None Remove="Resources\System\go-next-symbolic.png" />
     <None Remove="Resources\System\help-faq.png" />
+    <None Remove="Resources\System\image-missing16.png" />
+    <None Remove="Resources\System\image-missing48.png" />
     <None Remove="Resources\System\MonthCalendar.ico" />
     <None Remove="Resources\System\Panel.ico" />
     <None Remove="Resources\System\PBAlpha.ico" />
@@ -129,6 +131,8 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
     <EmbeddedResource Include="Resources\System\DateTimePicker.ico" />
     <EmbeddedResource Include="Resources\System\go-down-symbolic.png" />
     <EmbeddedResource Include="Resources\System\help-faq.png" />
+    <EmbeddedResource Include="Resources\System\image-missing16.png" />
+    <EmbeddedResource Include="Resources\System\image-missing48.png" />
     <EmbeddedResource Include="Resources\System\MonthCalendar.ico" />
     <EmbeddedResource Include="Resources\System\Panel.ico" />
     <EmbeddedResource Include="Resources\System\PBAlpha.ico" />

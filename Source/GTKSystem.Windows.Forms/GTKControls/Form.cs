@@ -199,25 +199,19 @@ namespace System.Windows.Forms
                                     self.Icon = this.Icon.Pixbuf;
                                 else if (this.Icon.PixbufData != null)
                                     self.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
-                                else if (this.Icon.FileName != null && System.IO.File.Exists(this.Icon.FileName))
-                                    self.SetIconFromFile(this.Icon.FileName);
-                                else if (this.Icon.FileName != null && System.IO.File.Exists("Resources\\" + this.Icon.FileName))
-                                    self.SetIconFromFile("Resources\\" + this.Icon.FileName);
-                            }
-                            Gtk.HeaderBar titlebar = (Gtk.HeaderBar)self.Titlebar;
-                            Gtk.Image flag = new Gtk.Image(self.Icon);
-                            flag.Visible = true;
-                            titlebar.PackStart(flag);
-                        }
-                        else
-                        {
-                            self.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.view-more.png");
-                        }
+                                else if (System.IO.File.Exists("./Resources/icon.png"))
+                                    self.SetIconFromFile("./Resources/icon.png");
 
+                                Gtk.HeaderBar titlebar = (Gtk.HeaderBar)self.Titlebar;
+                                Gtk.Image flag = new Gtk.Image(self.Icon);
+                                flag.Visible = true;
+                                titlebar.PackStart(flag);
+                            }
+                        }
                     }
                     catch
                     {
-
+                        self.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKApp.Windows.Forms.Resources.System.image-missing16.png");
                     }
                 }
             }

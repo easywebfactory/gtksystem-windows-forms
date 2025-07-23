@@ -39,6 +39,8 @@ namespace System.Drawing
         public Bitmap(string filename, bool useIcm)
         {
             this.FileName = filename;
+            this.Pixbuf = new Gdk.Pixbuf(filename);
+            this.PixbufData = this.Pixbuf.SaveToBuffer("png");
         }
 
         /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Bitmap" /> class from the specified data stream.</summary>
@@ -63,8 +65,14 @@ namespace System.Drawing
         public Bitmap(Stream stream, bool useIcm)
         {
             stream.Position = 0;
-            BinaryReader binaryReader = new BinaryReader(stream);
-            PixbufData = binaryReader.ReadBytes((int)stream.Length);
+            using (BinaryReader reader = new BinaryReader(stream))
+            {
+                byte[] bytes = reader.ReadBytes((int)stream.Length);
+                this.PixbufData = bytes;
+                this.Pixbuf = new Gdk.Pixbuf(bytes);
+                this.Width = this.Pixbuf.Width;
+                this.Height = this.Pixbuf.Height;
+            }
         }
 
         /// <summary>Initializes a new instance of the <see cref="T:System.Drawing.Bitmap" /> class from a specified resource.</summary>
@@ -230,8 +238,7 @@ namespace System.Drawing
         /// <exception cref="T:System.ArgumentException">The height or width of <paramref name="rect" /> is 0.</exception>
         public Bitmap Clone(RectangleF rect, PixelFormat format)
         {
-
-            return new Bitmap((int)rect.Width, (int)rect.Height, format);
+            return new Bitmap((int)rect.Width, (int)rect.Height, format) { PixbufData = (byte[])this.PixbufData.Clone() };
         }
 
         /// <summary>Makes the default transparent color transparent for this <see cref="T:System.Drawing.Bitmap" />.</summary>

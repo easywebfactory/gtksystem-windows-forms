@@ -1298,10 +1298,14 @@ namespace System.Windows.Forms
             }
             public new void Remove(ListViewItem item)
             {
-                base.Remove(item);
-                if( item._flowBoxChild?.Parent is Gtk.FlowBox flow){
-                    flow.Remove(item._flowBoxChild);
-                    item._flowBoxChild.Destroy();
+                if (item != null)
+                {
+                    if (item._flowBoxChild?.Parent is Gtk.FlowBox flow)
+                    {
+                        flow.Remove(item._flowBoxChild);
+                        item._flowBoxChild.Destroy();
+                    }
+                    base.Remove(item);
                 }
             }
             public virtual void RemoveByKey(string key)
