@@ -395,15 +395,15 @@ namespace System.Windows.Forms
             balloonTip.Add(balloonTipText);
 
             if (tipIcon == ToolTipIcon.Info)
-                balloonTip.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKApp.Windows.Forms.Resources.System.dialog-information.png");
+                balloonTip.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.dialog-information.png");
             else if (tipIcon == ToolTipIcon.Warning)
-                balloonTip.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKApp.Windows.Forms.Resources.System.dialog-warning.png");
+                balloonTip.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.dialog-warning.png");
             else if (tipIcon == ToolTipIcon.Error)
-                balloonTip.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKApp.Windows.Forms.Resources.System.dialog-error.png");
+                balloonTip.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.dialog-error.png");
 
             else
             {
-                balloonTip.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKApp.Windows.Forms.Resources.System.dialog-information.png");
+                balloonTip.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.dialog-information.png");
             }
 
             balloonTip.Move(-1000,-1000);
