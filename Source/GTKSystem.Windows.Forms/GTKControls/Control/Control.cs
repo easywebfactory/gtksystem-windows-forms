@@ -30,6 +30,7 @@ namespace System.Windows.Forms
         public virtual Gtk.Container GtkContainer { get => GtkControl as Gtk.Container; }
         public virtual IControlGtk ISelf { get => GtkControl as IControlGtk; }
         public virtual object GtkControl { get; set; }
+        private EventHandlerList handlerList = new EventHandlerList();
         public Control()
         {
             this.unique_key = Guid.NewGuid().ToString().ToLower();
@@ -62,7 +63,7 @@ namespace System.Windows.Forms
                 widget.Realized += Widget_Realized;
                 widget.ConfigureEvent += Widget_ConfigureEvent;
                 ISelf.Override.PaintGraphics += Override_PaintGraphics;
-                ISelf.Override.Paint += Override_Paint;
+                //ISelf.Override.Paint += Override_Paint;
                 widget.SizeAllocated += Widget_SizeAllocated;
                 widget.ParentSet += Widget_ParentSet;
             }
@@ -971,7 +972,7 @@ namespace System.Windows.Forms
         public virtual event MouseEventHandler MouseWheel;
         public virtual event EventHandler Move;
         public virtual event EventHandler PaddingChanged;
-        public virtual event PaintEventHandler Paint;
+        //public virtual event PaintEventHandler Paint;
         public virtual event EventHandler ParentChanged;
         public virtual event PreviewKeyDownEventHandler PreviewKeyDown;
         public virtual event QueryAccessibilityHelpEventHandler QueryAccessibilityHelp;
@@ -1061,11 +1062,16 @@ namespace System.Windows.Forms
                 cr.Restore();
             }
         }
-
+        private object paintEventHandler_paint = new object();
+        public virtual event PaintEventHandler Paint
+        {
+            add { handlerList.AddHandler(paintEventHandler_paint, value); ISelf.Override.Paint += Override_Paint; }
+            remove { handlerList.RemoveHandler(paintEventHandler_paint, value); ISelf.Override.Paint -= Override_Paint; }
+        }
         private void Override_Paint(object sender, PaintEventArgs e)
         {
             OnPaint(e);
-            Paint?.Invoke(this, e);
+            handlerList[paintEventHandler_paint]?.DynamicInvoke(sender, e);
         }
 
         public virtual DragDropEffects DoDragDrop(object data, DragDropEffects allowedEffects)

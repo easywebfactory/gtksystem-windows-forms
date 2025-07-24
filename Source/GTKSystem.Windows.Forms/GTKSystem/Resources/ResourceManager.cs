@@ -102,13 +102,14 @@ namespace GTKSystem.Resources
                         {
                             try
                             {
-                                if(dict.Value is ImageListStreamer streamer)
+                                object obj = dict.Value;
+                                if (obj is ImageListStreamer streamer)
                                 {
                                     streamer.ResourceInfo = GetResourceInfo;
                                     return streamer;
                                 }
                                 else
-                                    return dict.Value;
+                                    return obj;
                             }
                             catch
                             {
