@@ -232,6 +232,8 @@ namespace System.Windows.Forms
                     if (statusIcon != null)
                     {
                         statusIcon.Title = _text;
+                        statusIcon.TooltipText = _text;
+                        
                     }
                 }
             }
@@ -374,7 +376,7 @@ namespace System.Windows.Forms
         {
             ShowBalloonTip(timeout, _balloonTipTitle, _balloonTipText, _balloonTipIcon);
         }
-
+        int offset_bottom = 0;
         public void ShowBalloonTip(int timeout, string tipTitle, string tipText, ToolTipIcon tipIcon)
         {
             Gtk.Window balloonTip = new Gtk.Window(WindowType.Toplevel);
@@ -383,7 +385,7 @@ namespace System.Windows.Forms
             balloonTip.TypeHint = Gdk.WindowTypeHint.Dialog;
             balloonTip.SkipTaskbarHint =false;
 
-            Gtk.Window pwin = Gtk.Window.ListToplevels().FirstOrDefault(x => x.IsActive);
+            Gtk.Window pwin = Gtk.Window.ListToplevels().FirstOrDefault(x => x.IsVisible);
             balloonTip.TransientFor = pwin == null ? Gtk.Window.ListToplevels()[0] : pwin;
 
             balloonTip.WidthRequest = 200;
@@ -400,27 +402,48 @@ namespace System.Windows.Forms
                 balloonTip.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.dialog-warning.png");
             else if (tipIcon == ToolTipIcon.Error)
                 balloonTip.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.dialog-error.png");
-
             else
-            {
                 balloonTip.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.dialog-information.png");
-            }
-
+            
+            balloonTip.DeleteEvent += BalloonTip_DeleteEvent;
             balloonTip.Move(-1000,-1000);
+
+            uint handler = GLib.Timeout.Add((uint)timeout, () =>
+            {
+                try
+                {
+                    if (balloonTip != null)
+                    {
+                        balloonTip.Close();
+                    }
+                }
+                catch (Exception ex) { }
+                return false;
+            });
+            balloonTip.Data.Add("Timeout", handler);
             balloonTip.ShowAll();
             Gdk.Monitor monitor = Gdk.Display.Default.GetMonitorAtWindow(balloonTip.Window);
             int width = monitor.Workarea.Width;
             int height = monitor.Workarea.Height;
-            balloonTip.Move(width - balloonTip.AllocatedWidth - 50, height - balloonTip.AllocatedHeight - 50);
-   
-            GLib.Timeout.Add((uint)timeout, () =>
+            balloonTip.Move(width - balloonTip.AllocatedWidth - 50, height - balloonTip.AllocatedHeight - 50 - offset_bottom);
+            offset_bottom += balloonTip.AllocatedHeight;
+        }
+
+        private void BalloonTip_DeleteEvent(object o, DeleteEventArgs args)
+        {
+            Gtk.Window balloonTip = (Gtk.Window)o;
+            try
             {
-                try
+                if (balloonTip != null)
                 {
-                    balloonTip?.Destroy();
-                }catch { }
-                return false;
-            });
+                    GLib.Timeout.Remove(Convert.ToUInt32(balloonTip.Data["Timeout"]));
+                    offset_bottom -= balloonTip.AllocatedHeight;
+                    if (offset_bottom < 0)
+                        offset_bottom = 0;
+                    balloonTip.Dispose();
+                }
+            }
+            catch (Exception ex) { }
         }
     }
 

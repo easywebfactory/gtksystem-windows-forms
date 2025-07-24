@@ -92,6 +92,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 {
                     this.OnClose();
                     this.Group.CurrentGrab?.Destroy();
+                    this.Dispose();
                     this.Destroy();
                 }
                 else

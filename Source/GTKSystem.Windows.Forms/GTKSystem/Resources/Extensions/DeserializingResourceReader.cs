@@ -1,22 +1,13 @@
 using GTKSystem.IO;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.IO;
-using System.Reflection;
-using System.Resources;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Windows.Forms.Design;
-using System.Xml.Serialization;
 
 namespace GTKSystem.Resources.Extensions
 {
-	public sealed class DeserializingResourceReader : System.Resources.IResourceReader, IEnumerable, IDisposable
+    public sealed class DeserializingResourceReader : System.Resources.IResourceReader, IEnumerable, IDisposable
 	{
 		internal sealed class ResourceEnumerator : IDictionaryEnumerator, IEnumerator
 		{
@@ -979,7 +970,11 @@ namespace GTKSystem.Resources.Extensions
 						{
 							obj = new System.Drawing.Bitmap(value);
 						}
-						else
+                        else if (type == typeof(System.Drawing.Icon))
+                        {
+                            obj = new System.Drawing.Icon(value);
+                        }
+                        else
 						{
 							obj = converter2.ConvertFrom(value);
 						}

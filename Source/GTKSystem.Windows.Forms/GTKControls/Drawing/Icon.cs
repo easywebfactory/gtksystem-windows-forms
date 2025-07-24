@@ -1,4 +1,5 @@
 using Gdk;
+using GLib;
 using GTKSystem.Resources;
 using System.ComponentModel;
 using System.IO;
@@ -108,7 +109,7 @@ namespace System.Drawing
 			get;
 			private set;
 		}
-        public Icon(byte[] bytes)
+        internal Icon(byte[] bytes)
         {
             if (bytes!=null)
             {
@@ -162,7 +163,10 @@ namespace System.Drawing
             {
                 byte[] bytes = reader.ReadBytes((int)stream.Length);
                 this.PixbufData = bytes;
-                this.Pixbuf = new Gdk.Pixbuf(bytes, width, height);
+                if (width > 0 && height > 0)
+                    this.Pixbuf = new Gdk.Pixbuf(bytes, width, height);
+                else
+                    this.Pixbuf = new Gdk.Pixbuf(bytes);
                 this.Width = this.Pixbuf.Width;
                 this.Height = this.Pixbuf.Height;
             }
@@ -256,7 +260,7 @@ namespace System.Drawing
 				foreach(byte data in PixbufData)
                     outputStream.WriteByte(data);
             else if (Pixbuf != null)
-                foreach (byte data in Pixbuf.PixelBytes.Data)
+                foreach (byte data in Pixbuf.SaveToBuffer("png"))
                     outputStream.WriteByte(data);
             else if (FileName != null && System.IO.File.Exists(FileName))
                 foreach (byte data in System.IO.File.ReadAllBytes(FileName))
