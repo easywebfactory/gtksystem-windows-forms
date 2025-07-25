@@ -6,11 +6,8 @@
 
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
-using System.Globalization;
-using System.Runtime.CompilerServices;
 
 namespace System.Windows.Forms
 {
@@ -60,7 +57,7 @@ namespace System.Windows.Forms
                 if (FormClosed != null)
                     FormClosed(this, new FormClosedEventArgs(CloseReason.UserClosing));
             }
-            return closing.Cancel == false;
+            return closing.Cancel;
         }
         private bool Is_Control_Shown = false;
         private void Control_Shown(object sender, EventArgs e)
@@ -149,70 +146,65 @@ namespace System.Windows.Forms
         {
             if (owner == this)
             {
-                throw new InvalidOperationException("OwnsSelfOrOwner");
+                throw new InvalidOperationException("Owns Self Or Owner");
             }
 
             if (base.Visible)
             {
-                throw new InvalidOperationException("ShowDialogOnVisible");
+                throw new InvalidOperationException("Show Window On Visible");
             }
 
             if (!base.Enabled)
             {
-                throw new InvalidOperationException("ShowDialogOnDisabled");
+                throw new InvalidOperationException("Show Window On Disabled");
             }
 
-            if (owner != null && owner is Form parent)
+            if (_Created == false)
             {
-                this.Parent = parent;
-                self.SetPosition(WindowPosition.CenterOnParent);
-                self.DestroyWithParent = true;
-                self.Activate();
-            }
+                _Created = true;
+                if (owner != null && owner is Form parent)
+                {
+                    this.Parent = parent;
+                    self.TransientFor = parent.self;
+                    if (StartPosition == FormStartPosition.CenterParent)
+                        self.SetPosition(WindowPosition.CenterOnParent);
+                    else if (StartPosition == FormStartPosition.CenterScreen)
+                        self.SetPosition(WindowPosition.Center);
+                    else if (StartPosition == FormStartPosition.Manual)
+                        self.SetPosition(WindowPosition.Mouse);
+                    else
+                        self.SetPosition(WindowPosition.None);
+                    self.DestroyWithParent = true;
+                }
 
-            if (self.IsVisible == false)
-            {
-                this.FormBorderStyle = this.FormBorderStyle;
                 if (this.MaximizeBox == false && this.MinimizeBox == false)
                 {
                     self.TypeHint = Gdk.WindowTypeHint.Dialog;
                 }
                 self.Resize(self.DefaultWidth, self.DefaultHeight);
-
-                if (this.WindowState == FormWindowState.Maximized)
+                try
                 {
-                    self.Maximize();
-                }
-                else if (this.WindowState == FormWindowState.Minimized)
-                {
-                    self.Iconify();
-                }
-                if (self.IsMapped == false)
-                {
-                    try
+                    if (this.ShowIcon)
                     {
-                        if (this.ShowIcon)
+                        if (this.Icon != null)
                         {
-                            if (this.Icon != null)
-                            {
-                                if (this.Icon.Pixbuf != null)
-                                    self.Icon = this.Icon.Pixbuf;
-                                else if (this.Icon.PixbufData != null)
-                                    self.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
-                                else if (System.IO.File.Exists("./Resources/icon.png"))
-                                    self.SetIconFromFile("./Resources/icon.png");
+                            if (this.Icon.Pixbuf != null)
+                                self.Icon = this.Icon.Pixbuf;
+                            else if (this.Icon.PixbufData != null)
+                                self.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
+                            else if (System.IO.File.Exists("./Resources/icon.png"))
+                                self.SetIconFromFile("./Resources/icon.png");
 
-                                Gtk.HeaderBar titlebar = (Gtk.HeaderBar)self.Titlebar;
-                                Gtk.Image flag = new Gtk.Image(self.Icon);
-                                flag.Visible = true;
-                                titlebar.PackStart(flag);
-                            }
+                            Gtk.HeaderBar titlebar = (Gtk.HeaderBar)self.Titlebar;
+                            Gtk.Image flag = new Gtk.Image(self.Icon);
+                            flag.Visible = true;
+                            titlebar.PackStart(flag);
                         }
                     }
-                    catch
-                    {
-                        self.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKApp.Windows.Forms.Resources.System.image-missing16.png");
-                    }
+                }
+                catch
+                {
+                    self.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKApp.Windows.Forms.Resources.System.image-missing16.png");
                 }
             }
             self.ShowAll();
@@ -224,20 +216,6 @@ namespace System.Windows.Forms
         }
         public DialogResult ShowDialog(IWin32Window owner)
         {
-            if (owner == this)
-            {
-                throw new ArgumentException("OwnsSelfOrOwner", "showDialog");
-            }
-
-            if (base.Visible)
-            {
-                throw new InvalidOperationException("ShowDialogOnVisible");
-            }
-
-            if (!base.Enabled)
-            {
-                throw new InvalidOperationException("ShowDialogOnDisabled");
-            }
             Show(owner);
             int irun = self.Run();
 
@@ -297,22 +275,29 @@ namespace System.Windows.Forms
         public FormWindowState WindowState {
             get { 
                 return _WindowState;
-            } 
+            }
             set
             {
                 _WindowState = value;
-                if (self.IsMapped)
+
+                if (value == FormWindowState.Maximized)
                 {
-                    if (value == FormWindowState.Maximized)
-                    {
-                        self.Maximize();
-                    }
-                    else if (value == FormWindowState.Minimized)
-                    {
-                        self.Iconify();
-                    }
+                    self.Maximize();
                 }
-            } 
+                else if (value == FormWindowState.Minimized)
+                {
+                    self.Iconify();
+                }
+                else if (self.IsMapped)
+                {
+                    if (self.Window.State.HasFlag(Gdk.WindowState.Fullscreen))
+                        self.Unfullscreen();
+                    else if (self.Window.State.HasFlag(Gdk.WindowState.Maximized))
+                        self.Unmaximize();
+                    else if (self.Window.State.HasFlag(Gdk.WindowState.Iconified))
+                        self.Deiconify();
+                }
+            }
         }
         public DialogResult DialogResult { get; set; }
         public void Close() {

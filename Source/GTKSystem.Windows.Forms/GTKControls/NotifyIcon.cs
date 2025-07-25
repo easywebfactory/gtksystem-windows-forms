@@ -383,17 +383,17 @@ namespace System.Windows.Forms
             balloonTip.DestroyWithParent = true;
             balloonTip.SetPosition(WindowPosition.None);
             balloonTip.TypeHint = Gdk.WindowTypeHint.Dialog;
-            balloonTip.SkipTaskbarHint =false;
+            balloonTip.SkipTaskbarHint =true;
 
             Gtk.Window pwin = Gtk.Window.ListToplevels().FirstOrDefault(x => x.IsVisible);
             balloonTip.TransientFor = pwin == null ? Gtk.Window.ListToplevels()[0] : pwin;
 
             balloonTip.WidthRequest = 200;
-            balloonTip.HeightRequest = 60;
+            balloonTip.HeightRequest = 50;
             balloonTip.Title = tipTitle ?? "";
             balloonTip.Decorated = true;
 
-            Gtk.Label balloonTipText = new Gtk.Label(tipText) { };
+            Gtk.Label balloonTipText = new Gtk.Label(tipText) { Xpad = 20, Ypad = 20, Halign = Align.Start };
             balloonTip.Add(balloonTipText);
 
             if (tipIcon == ToolTipIcon.Info)
@@ -414,7 +414,11 @@ namespace System.Windows.Forms
                 {
                     if (balloonTip != null)
                     {
-                        balloonTip.Close();
+                        offset_bottom -= balloonTip.AllocatedHeight;
+                        if (offset_bottom < 0)
+                            offset_bottom = 0;
+                        balloonTip.Dispose();
+                        balloonTip.Destroy();
                     }
                 }
                 catch (Exception ex) { }
@@ -425,7 +429,7 @@ namespace System.Windows.Forms
             Gdk.Monitor monitor = Gdk.Display.Default.GetMonitorAtWindow(balloonTip.Window);
             int width = monitor.Workarea.Width;
             int height = monitor.Workarea.Height;
-            balloonTip.Move(width - balloonTip.AllocatedWidth - 50, height - balloonTip.AllocatedHeight - 50 - offset_bottom);
+            balloonTip.Move(width - balloonTip.AllocatedWidth - 30, height - balloonTip.AllocatedHeight - 50 - offset_bottom);
             offset_bottom += balloonTip.AllocatedHeight;
         }
 

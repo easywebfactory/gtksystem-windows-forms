@@ -425,7 +425,7 @@ namespace System.Windows.Forms
 
         public override bool UseWaitCursor { get; set; }
         public override int Width { get { return this.Widget.WidthRequest; } set { this.Widget.WidthRequest = value; } }
-        public virtual bool Visible { get { return this.Widget.Visible; } set { this.Widget.Visible = value; this.Widget.NoShowAll = value == false; } }
+        public virtual bool Visible { get { return this.Widget.Visible; } set { this.Widget.NoShowAll = value == false; if (value == true) { this.Widget.ShowAll(); } else { this.Widget.Visible = value; } } }
 
         public override event EventHandler Click;
         public override event EventHandler CheckedChanged;

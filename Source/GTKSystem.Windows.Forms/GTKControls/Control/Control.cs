@@ -7,9 +7,7 @@
 
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms.Design;
@@ -63,7 +61,6 @@ namespace System.Windows.Forms
                 widget.Realized += Widget_Realized;
                 widget.ConfigureEvent += Widget_ConfigureEvent;
                 ISelf.Override.PaintGraphics += Override_PaintGraphics;
-                //ISelf.Override.Paint += Override_Paint;
                 widget.SizeAllocated += Widget_SizeAllocated;
                 widget.ParentSet += Widget_ParentSet;
             }
@@ -547,10 +544,6 @@ namespace System.Windows.Forms
             {
                 if (ISelf.Override.BackColor.HasValue)
                     return ISelf.Override.BackColor.Value;
-                //else if (UseVisualStyleBackColor)
-                //    return Color.FromName("0");
-                //else
-                //    return Color.Transparent; 
                 else
                     return Color.FromName("0");
             }
@@ -891,7 +884,7 @@ namespace System.Windows.Forms
         public virtual string Text { get; set; }
         public virtual Control TopLevelControl { get; }
         public virtual bool UseWaitCursor { get; set; }
-        public virtual bool Visible { get { return this.Widget.Visible; } set { this.Widget.Visible = value; this.Widget.NoShowAll = value == false; } }
+        public virtual bool Visible { get { return this.Widget.Visible; } set { this.Widget.NoShowAll = value == false; if (value == true) { this.Widget.ShowAll(); } else { this.Widget.Visible = value; } } }
 
         protected virtual Size DefaultSize { get; }
         protected virtual Padding DefaultPadding { get; }
