@@ -1,7 +1,8 @@
-﻿/* 这里可以自定义或调整控件样式*/ 
+﻿/* 这里可以自定义或调整控件样式 */ 
 
-.StatusStrip1{ background:red;}
-overlay1 viewport{background:red;}
- 
-.test32{background:red;}
- .test22{background:#334499;}
+.background{background: #fefefe; }
+.titlebar{background: #efefef; border-radius:3px 3px 0px 0px; border-bottom:solid 1px #cfcfcf; }
+
+
+
+
