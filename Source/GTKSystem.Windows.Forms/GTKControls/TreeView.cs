@@ -72,17 +72,18 @@ namespace System.Windows.Forms
             if (!Is_TreeView_Realized)
             {
                 Is_TreeView_Realized = true;
-                if (ImageList != null)
+                if (_imageList != null && _imageList.Images.Count > 0)
                 {
                     Gtk.TreeViewColumn column = ((Gtk.TreeView)sender).Columns[0];
-                    if (string.IsNullOrWhiteSpace(ImageKey))
-                    {
-                        System.Drawing.Image image = ImageList.GetBitmap(ImageIndex);
-                        rendererPixbuf.Pixbuf = image.Pixbuf;
-                    }
-                    else
+                    if (!string.IsNullOrWhiteSpace(ImageKey))
                     {
                         System.Drawing.Image image = ImageList.GetBitmap(ImageKey);
+                        rendererPixbuf.Pixbuf = image.Pixbuf;
+
+                    }
+                    else if (ImageIndex >= 0)
+                    {
+                        System.Drawing.Image image = ImageList.GetBitmap(ImageIndex);
                         rendererPixbuf.Pixbuf = image.Pixbuf;
                     }
                 }
