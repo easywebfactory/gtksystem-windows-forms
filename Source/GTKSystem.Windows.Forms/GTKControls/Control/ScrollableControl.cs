@@ -19,7 +19,7 @@ namespace System.Windows.Forms
 
         protected const int ScrollStateFullDrag = 16;
 
-        private IScrollableBoxBase scrollbase;
+        protected virtual IScrollableBoxBase scrollbase { get; set; }
         public ScrollableControl():base()
         {
             scrollbase = GtkControl as IScrollableBoxBase;

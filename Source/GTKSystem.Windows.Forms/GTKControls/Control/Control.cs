@@ -111,6 +111,7 @@ namespace System.Windows.Forms
                 InitStyle((Gtk.Widget)sender);
                 OnLoad(EventArgs.Empty);
                 Load?.Invoke(this, e);
+                SetDockAnchor(this);
             }
         }
         private bool Is_DoubleButtonPress = false;
@@ -573,6 +574,8 @@ namespace System.Windows.Forms
                 SetAnchorStyles(Widget, _anchor);
                 if (AnchorChanged != null)
                     AnchorChanged(this, EventArgs.Empty);
+
+                SetDockAnchor(this);
             }
         }
         private void SetAnchorStyles(Gtk.Widget widget, AnchorStyles anchorStyles)
@@ -661,38 +664,128 @@ namespace System.Windows.Forms
             set
             {
                 _dock = value;
-                if (value == DockStyle.Fill)
-                {
-                    this.Widget.Halign = Align.Fill;
-                    this.Widget.Valign = Align.Fill;
-                }
-                else if (value == DockStyle.Left)
-                {
-                    this.Widget.Halign = Align.Start;
-                    this.Widget.Valign = Align.Fill;
-                }
-                else if (value == DockStyle.Top)
-                {
-                    this.Widget.Halign = Align.Fill;
-                    this.Widget.Valign = Align.Start;
-                }
-                else if (value == DockStyle.Right)
-                {
-                    this.Widget.Halign = Align.End;
-                    this.Widget.Valign = Align.Fill;
-                }
-                else if (value == DockStyle.Bottom)
-                {
-                    this.Widget.Halign = Align.Fill;
-                    this.Widget.Valign = Align.End;
-                }
-                else if (value == DockStyle.None)
-                {
-                    this.Widget.Halign = Align.Start;
-                    this.Widget.Valign = Align.Start;
-                }
+                SetDockStyles(this.Widget, _dock);
+                
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
+
+                SetDockAnchor(this);
+            }
+        }
+        private void SetDockStyles(Gtk.Widget widget, DockStyle dockStyle)
+        {
+            if (dockStyle == DockStyle.Fill)
+            {
+                widget.Halign = Align.Fill;
+                widget.Valign = Align.Fill;
+            }
+            else if (dockStyle == DockStyle.Left)
+            {
+                widget.Halign = Align.Start;
+                widget.Valign = Align.Fill;
+            }
+            else if (dockStyle == DockStyle.Top)
+            {
+                widget.Halign = Align.Fill;
+                widget.Valign = Align.Start;
+            }
+            else if (dockStyle == DockStyle.Right)
+            {
+                widget.Halign = Align.End;
+                widget.Valign = Align.Fill;
+            }
+            else if (dockStyle == DockStyle.Bottom)
+            {
+                widget.Halign = Align.Fill;
+                widget.Valign = Align.End;
+            }
+            else
+            {
+                widget.Halign = Align.Start;
+                widget.Valign = Align.Start;
+            }
+        }
+        private void SetDockAnchor(Control control)
+        {
+            if (control.Widget.IsRealized)
+            {
+                if (control.Widget.Parent is Gtk.Overlay lay)
+                {
+                    if (control.Dock == DockStyle.Fill)
+                    {
+                        control.Widget.WidthRequest = -1;
+                        control.Widget.HeightRequest = -1;
+                        if (lay.HeightRequest <= lay.Parent.AllocatedHeight)
+                            lay.HeightRequest = -1;
+                        if (lay.WidthRequest <= lay.Parent.AllocatedWidth)
+                            lay.WidthRequest = -1;
+                    }
+                    else if (control.Dock == DockStyle.Left)
+                    {
+                        control.Widget.HeightRequest = -1;
+
+                        if (lay.HeightRequest <= lay.Parent.AllocatedHeight)
+                            lay.HeightRequest = -1;
+                    }
+                    else if (control.Dock == DockStyle.Right)
+                    {
+                        control.Widget.HeightRequest = -1;
+
+                        if (lay.HeightRequest <= lay.Parent.AllocatedHeight)
+                            lay.HeightRequest = -1;
+                    }
+                    else if (control.Dock == DockStyle.Top)
+                    {
+                        control.Widget.WidthRequest = -1;
+
+                        if (lay.WidthRequest <= lay.Parent.AllocatedWidth)
+                            lay.WidthRequest = -1;
+                    }
+                    else if (control.Dock == DockStyle.Bottom)
+                    {
+                        control.Widget.WidthRequest = -1;
+
+                        if (lay.WidthRequest <= lay.Parent.AllocatedWidth)
+                            lay.WidthRequest = -1;
+                    }
+
+                    if (lay.IsMapped == true)
+                    {
+                        Gtk.Widget widget = control.Widget;
+                        if (widget.Halign == Gtk.Align.End)
+                        {
+                            if (widget.WidthRequest > 0)
+                                widget.MarginEnd = Math.Max(0, lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
+                            else
+                                widget.MarginEnd = 0;
+                        }
+                        else if (widget.Halign == Gtk.Align.Fill)
+                        {
+                            if (control.Dock == DockStyle.Fill)
+                                widget.MarginEnd = 0;
+                            else if (widget.WidthRequest > 0)
+                                widget.MarginEnd = Math.Max(0, lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
+                            else
+                                widget.MarginEnd = 0;
+                        }
+                        if (widget.Valign == Gtk.Align.End)
+                        {
+                            if (widget.HeightRequest > 0)
+                                widget.MarginBottom = Math.Max(0, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
+                            else
+                                widget.MarginBottom = 0;
+                        }
+                        else if (widget.Valign == Gtk.Align.Fill)
+                        {
+                            if (control.Dock == DockStyle.Fill)
+                                widget.MarginBottom = 0;
+                            else if (widget.HeightRequest > 0)
+                                widget.MarginBottom = Math.Max(0, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
+                            else
+                                widget.MarginBottom = 0;
+                        }
+                    }
+                }
             }
         }
         public virtual bool Enabled { get { return this.Widget.Sensitive; } set { this.Widget.Sensitive = value; } }
@@ -703,14 +796,7 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (_Font == null)
-                {
-                    var fontdes = this.Widget.PangoContext.FontDescription;
-                    int size = Convert.ToInt32(fontdes.Size / Pango.Scale.PangoScale);
-                    return new Drawing.Font(new Drawing.FontFamily(fontdes.Family), size);
-                }
-                else
-                    return _Font;
+                return _Font;
             }
             set { 
                 _Font = value;
@@ -731,6 +817,8 @@ namespace System.Windows.Forms
                         fdesc.Weight = Pango.Weight.Bold;
                     if (_Font.Italic)
                         fdesc.Style = Pango.Style.Italic;
+
+                    this.Widget.OverrideFont(fdesc);
                 }
                 UpdateStyle();
             }
@@ -857,6 +945,7 @@ namespace System.Windows.Forms
                     DockChanged(this, EventArgs.Empty);
                 if (AnchorChanged != null)
                     AnchorChanged(this, EventArgs.Empty);
+                SetDockAnchor(this);
             }
         }
         public virtual int Width
@@ -876,6 +965,8 @@ namespace System.Windows.Forms
                     DockChanged(this, EventArgs.Empty);
                 if (AnchorChanged != null)
                     AnchorChanged(this, EventArgs.Empty);
+
+                SetDockAnchor(this);
             }
         }
         public virtual int TabIndex { get; set; }

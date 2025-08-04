@@ -19,6 +19,7 @@ namespace System.Windows.Forms
         private Gtk.Application app = Application.Init();
         public FormBase self = new FormBase();
         public override object GtkControl { get => self; }
+        protected override IScrollableBoxBase scrollbase { get => self; set => base.scrollbase = value; }
         private Gtk.Overlay contanter = new Gtk.Overlay();
         private ObjectCollection _ObjectCollection;
         public Form() : base()
@@ -32,7 +33,6 @@ namespace System.Windows.Forms
         }
         private void Init()
         {
-            this.SetScrolledWindow(self);
             contanter.Valign = Gtk.Align.Fill;
             contanter.Halign = Gtk.Align.Fill;
             contanter.Hexpand = true;

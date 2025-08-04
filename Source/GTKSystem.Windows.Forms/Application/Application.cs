@@ -138,9 +138,9 @@ namespace System.Windows.Forms
 .ComboBox entry{border-right-width:0px;  }
 .ComboBox entry.flat{border-right-width:0px;  }
 .ComboBox entry:focus{border-right-width:0px; box-shadow: inset 0px 0px 0px 1px #62a0ea;}
-.ComboBox button{padding-top:0px;padding-bottom:0px;border-width: 1px 1px 1px 1px; border-style: solid; border-color:@frame_color;}
+.ComboBox button{padding-top:1px;padding-bottom:1px;border-width: 1px 1px 1px 1px; border-style: solid; border-color:@frame_color;}
 
-.DropDownList button{padding:0px;}
+.DropDownList button{padding:2px;}
 .SplitContainer{padding:0px;border:0px;box-shadow:none;}
 /* 当有滚动条时，宽高小于60px有异常信息输出 */
 .SplitterPanel{padding:0px;margin:0px;border:0px;box-shadow:none;min-width:60px;min-height:60px;}
@@ -162,8 +162,19 @@ namespace System.Windows.Forms
 .ListView .GroupLine{border-top:inset 1px #6677bb;}
 .ListView .GroupTitle{padding-left:5px;padding-right:5px; color:#6677bb; }
 .ListView .GroupSubTitle{padding-left:5px;padding-right:5px; }
-.StatusStrip{padding:0px; border-width:1px 0px 0px 0px; border-top:solid 1px @frame_color;}
-.ToolStrip button{padding:0px;}
+
+
+.ToolStrip,.MenuStrip{padding:0px;border-radius:0px;min-height:6px;min-width:6px;}
+.ToolStrip>toolitem{padding:0px;}
+.MenuStrip>menuitem{padding:0px;}
+.ToolStrip button,.MenuStrip button{padding-top:0px;padding-bottom:0px; min-height:6px;min-width:6px;border-radius:0px;border-width:1px;}
+.ToolStrip combox,.MenuStrip combox{padding-top:0px;padding-bottom:0px; min-height:6px;min-width:6px;border-radius:0px;border-width:0px;}
+.ToolStrip entry,.MenuStrip entry{padding-top:0px;padding-bottom:0px; min-height:6px;min-width:6px;border-radius:0px;border-width:1px;}
+.ToolStrip levelbar,.MenuStrip levelbar{padding:0px;min-height:6px;min-width:6px;border-radius:0px;border-width:0px;}
+.StatusStrip {border-top:solid 1px @frame_color;}
+.MenuItemButton {background:none; border:none; border-radius:0px;border-width:0px; padding:0px;box-shadow:none; min-width:1px;min-height:1px;}
+.ToolStrip checkbutton,.MenuStrip checkbutton{margin-left:-22px; } 
+.ToolStrip menu button.check,.MenuStrip menu button.check{margin-left:-23px; padding:0px;}
 
 .NumericUpDown{border-width:1px;padding:2px; }
 .NumericUpDown button.up{border-width:0px;padding:0px;}
