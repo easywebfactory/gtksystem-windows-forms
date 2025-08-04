@@ -75,7 +75,6 @@ namespace System.Windows.Forms
 
             public object GetData(string format, bool autoConvert)
             {
-
                 if (format == DataFormats.Text || format == DataFormats.UnicodeText)
                 {
                     string value = string.Empty;
@@ -91,7 +90,7 @@ namespace System.Windows.Forms
                     clipboard.RequestImage((clip, image) =>
                     {
                         bitmap = new Drawing.Bitmap(image.Width, image.Height);
-                        bitmap.Pixbuf = image;
+                        bitmap.Pixbuf = image.Copy();
                     });
                     return bitmap;
                 }
@@ -100,7 +99,7 @@ namespace System.Windows.Forms
                     object result = null;
                     clipboard.RequestContents(Gdk.Selection.Clipboard, new ClipboardReceivedFunc((clip, data) =>
                     {
-                        using (MemoryStream ms = new MemoryStream(data.Data))
+                        using (MemoryStream ms = new MemoryStream((byte[])data.Data.Clone()))
                         {
                             System.Runtime.Serialization.DataContractSerializer dataContract = new Runtime.Serialization.DataContractSerializer(typeof(ClipDataObject));
                             ClipDataObject dataobj = dataContract.ReadObject(ms) as ClipDataObject;
@@ -154,7 +153,7 @@ namespace System.Windows.Forms
                 }
                 else if (format == DataFormats.Bitmap)
                 {
-                    clipboard.Image = (Gdk.Pixbuf)((Drawing.Image)data).Pixbuf.Clone();
+                    clipboard.Image = ((Drawing.Image)data).Pixbuf.Copy();
                 }
                 else
                 {
