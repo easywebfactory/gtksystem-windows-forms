@@ -1696,6 +1696,7 @@ namespace System.Windows.Forms
         public virtual void PerformClick()
         {
             OnClick(EventArgs.Empty);
+            Click?.Invoke(this, new EventArgs());
         }
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         protected virtual void OnClick(EventArgs e)

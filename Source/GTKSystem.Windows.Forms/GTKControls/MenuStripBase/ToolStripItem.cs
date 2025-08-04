@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Gtk;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms.Layout;
 
@@ -326,8 +327,6 @@ namespace System.Windows.Forms
                 Gtk.Widget widget = GetWidget();
                 if (value == ToolStripItemAlignment.Right)
                 {
-                    widget.Halign = Gtk.Align.End;
-                    //widget.MarginStart = 500;
                     if (widget is Gtk.MenuItem item)
                         item.RightJustified = true;
                  
@@ -402,7 +401,16 @@ namespace System.Windows.Forms
         IArrangedElement IArrangedElement.Container => throw new NotImplementedException();
 
         public ArrangedElementCollection Children => throw new NotImplementedException();
+        public virtual void PerformClick()
+        {
+            OnClick(EventArgs.Empty);
+            Click?.Invoke(this, new EventArgs());
+        }
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        protected virtual void OnClick(EventArgs e)
+        {
 
+        }
         public virtual event EventHandler Click;
         public virtual event EventHandler CheckedChanged;
         public virtual event EventHandler CheckStateChanged;
