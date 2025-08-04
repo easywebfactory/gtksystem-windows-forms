@@ -1,28 +1,24 @@
 using Gtk;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 
 namespace System.Windows.Forms
 {
-	[DefaultProperty("Value")]
-	public class ToolStripProgressBar : WidgetToolStrip<Gtk.MenuItem>
+    [DefaultProperty("Value")]
+	public class ToolStripProgressBar : ToolStripItem
     {
-        public ToolStripProgressBar() : base("ToolStripProgressBar", null)
+        public StripToolItem self = new StripToolItem();
+        public override IToolMenuItem Widget { get => self; }
+        internal Gtk.LevelBar progressBar = new Gtk.LevelBar();
+        public ToolStripProgressBar() : base()
         {
-            base.MenuItem.Realized += Control_Realized;
+            progressBar.MaxValue = 100;
+            progressBar.MinValue = 0;
+            progressBar.Orientation = Gtk.Orientation.Horizontal;
+            progressBar.Valign = Align.Center;
+            self.BorderWidth = 0;
+            self.Add(progressBar);
         }
-        private bool Is_Control_Realized;
-        private void Control_Realized(object sender, EventArgs e)
-        {
-            if (!Is_Control_Realized)
-            {
-                Is_Control_Realized = true;
-                progressBar.MaxValue = Maximum;
-                progressBar.MinValue = Minimum;
-            }
-        }
-
         public ToolStripProgressBar(string name) : this()
         {
 
@@ -36,18 +32,29 @@ namespace System.Windows.Forms
 		}
 
 		public int MarqueeAnimationSpeed { get; set; } = 100;
-        public int Maximum { get; set; } = 100;
-        public int Minimum { get; set; } = 0;
+        public int Maximum { get => (int)progressBar.MaxValue; set => progressBar.MaxValue = value; }
+        public int Minimum { get => (int)progressBar.MinValue; set => progressBar.MinValue = value; }
 
         private int _step;
         [DefaultValue(10)]
         public int Step { get; set; }
-        public ProgressBarStyle Style { get; set; }
+        private ProgressBarStyle style;
+        public ProgressBarStyle Style { get => style; 
+            set {
+                style = value;
+                if (style == ProgressBarStyle.Continuous)
+                    progressBar.Mode = LevelBarMode.Continuous;
+                else
+                    progressBar.Mode = LevelBarMode.Discrete;
+            }
+        }
         public int Value
         {
-            get { return (int)Math.Round(progressBar.Value, 0); }
+            get { return (int)progressBar.Value; }
             set
             {
+                progressBar.MaxValue = Maximum;
+                progressBar.MinValue = Minimum;
                 progressBar.Value = value;
             }
         }
@@ -60,13 +67,13 @@ namespace System.Windows.Forms
             }
             set
             {
-                base.Size = value;
                 progressBar.SetSizeRequest(value.Width, value.Height);
+                base.Size = value;
             }
         }
         public void Increment(int value)
 		{
-
+            progressBar.Value = Math.Min(Maximum, Math.Max(Minimum, progressBar.Value + value));
         }
 
 		public void PerformStep()

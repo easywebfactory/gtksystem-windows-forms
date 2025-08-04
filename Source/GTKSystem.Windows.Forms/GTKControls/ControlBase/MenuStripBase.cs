@@ -1,20 +1,22 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Text;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    public sealed class ToolStripBase : Gtk.Toolbar, IControlGtk
+    public class MenuStripBase : Gtk.MenuBar, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
         public Size ImageScalingSize { get; set; } = new Size(20, 20);
-        public ToolStripBase() : base()
+        public MenuStripBase() : base()
         {
             this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("ToolStrip");
+            this.Override.AddClass("MenuStrip");
             this.Hexpand = false;
             this.Vexpand = false;
             this.Valign = Gtk.Align.Start;
             this.Halign = Gtk.Align.Fill;
-            this.ShowArrow = true;
         }
         public void AddClass(string cssClass)
         {

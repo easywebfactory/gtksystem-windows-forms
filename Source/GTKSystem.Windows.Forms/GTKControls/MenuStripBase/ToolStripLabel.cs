@@ -1,18 +1,13 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-using System.ComponentModel;
+﻿using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.Drawing;
-using System.Xml.Linq;
- 
+
 namespace System.Windows.Forms
 {
-    /// <summary>
-    ///  A non selectable ToolStrip item
-    /// </summary>
-    public class ToolStripLabel : WidgetToolStrip<Gtk.MenuItem>
+
+    public class ToolStripLabel : ToolStripItem
     {
+        public StripToolButton self = new StripToolButton();
+        public override IToolMenuItem Widget { get => self; }
         public ToolStripLabel() : this("", null, null, "")
         {
 
@@ -32,9 +27,64 @@ namespace System.Windows.Forms
 
         }
 
-        public ToolStripLabel(string text, Image image, EventHandler onClick, string name) : base(null, text, image, onClick, name)
+        public ToolStripLabel(string text, Image image, EventHandler onClick, string name) : base(text, image, onClick, name)
         {
+            DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText;
+            self.Realized += Self_Realized;
         }
+
+        private void Self_Realized(object? sender, EventArgs e)
+        {
+            //Console.WriteLine(DisplayStyle);
+            SetIcon(DisplayStyle);
+        }
+
+        public override string Name { get => self.Name; set => self.Name = value; }
+        public override string Text { get => self.Label; set => self.Label = value; }
+        public override ToolStripItemDisplayStyle DisplayStyle
+        {
+            get => base.DisplayStyle;
+            set
+            {
+                base.DisplayStyle = value;
+                SetIcon(value);
+            }
+        }
+        private void SetIcon(ToolStripItemDisplayStyle displayStyle)
+        {
+            if (displayStyle == ToolStripItemDisplayStyle.Text)
+            {
+                self.IsImportant = false;
+            }
+            else if (displayStyle == ToolStripItemDisplayStyle.Image)
+            {
+                self.IsImportant = false;
+                if (this.Image?.Pixbuf != null)
+                {
+                    if (self.Parent is ToolStripBase toolbar)
+                    {
+                        self.IconWidget = new Gtk.Image(new Gdk.Pixbuf(this.Image.PixbufData, toolbar.ImageScalingSize.Width, toolbar.ImageScalingSize.Height)) { Visible = true };
+                    }
+                }
+            }
+            else if (displayStyle == ToolStripItemDisplayStyle.ImageAndText)
+            {
+                self.IsImportant = true;
+                if (this.Image?.Pixbuf != null)
+                {
+                    if (self.Parent is ToolStripBase toolbar)
+                    {
+                        self.IconWidget = new Gtk.Image(new Gdk.Pixbuf(this.Image.PixbufData, toolbar.ImageScalingSize.Width, toolbar.ImageScalingSize.Height)) { Visible = true };
+                    }
+                }
+
+            }
+            else
+            {
+                self.IsImportant = false;
+            }
+        }
+
     }
 
 }

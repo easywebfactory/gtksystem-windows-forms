@@ -5,9 +5,8 @@ namespace System.Windows.Forms
 {
     public class ToolStripDropDown : ToolStripItem
     {
-        //public readonly ToolStripDropDownBase self = new ToolStripDropDownBase();
-        public readonly Gtk.Menu self = new Gtk.Menu();
-        public override Gtk.Widget Widget => self;
+        public StripDropDown self = new StripDropDown();
+        public override IToolMenuItem Widget { get => self; }
         public ToolStripDropDown() : base()
         {
 

@@ -4,18 +4,40 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace System.Windows.Forms
 {
     [DesignerCategory("Component")]
-    public partial class MenuStrip : ToolStrip
+    public partial class MenuStrip : Control
     {
-        public MenuStrip() : base("MenuStrip")
+        public MenuStripBase self = new MenuStripBase();
+        public override object GtkControl => self;
+        public ToolStripItemCollection toolStripItemCollection;
+        public MenuStrip() : base()
         {
-            this.self.StyleContext.AddClass("MenuStrip");
-            this.Dock = DockStyle.Top;
+            toolStripItemCollection = new ToolStripItemCollection(this);
+        }
+        public ToolStripItemCollection Items
+        {
+            get
+            {
+                return toolStripItemCollection;
+            }
         }
 
+        private Size _ImageScalingSize;
+        public Size ImageScalingSize
+        {
+            get => _ImageScalingSize;
+            set
+            {
+                _ImageScalingSize = value;
+                self.ImageScalingSize = _ImageScalingSize;
+            }
+        }
+        public ToolStripLayoutStyle LayoutStyle { get; set; }
     }
 }

@@ -17,40 +17,10 @@ namespace System.Windows.Forms
         public ToolStripItemCollection toolStripItemCollection;
         public ToolStrip() : base()
         {
+            self.ToolbarStyle = ToolbarStyle.BothHoriz;
+            self.IconSize = IconSize.SmallToolbar;
             toolStripItemCollection = new ToolStripItemCollection(this);
-            self.ActivateCurrent += ToolStripItem_Activated;
-            //Dock = DockStyle.Top;
         }
-        public ToolStrip(string owner) : base()
-        {
-            self.Hexpand = false;
-            self.Vexpand = false;
-            self.Valign = Gtk.Align.Start;
-            self.Halign = Gtk.Align.Start;
-            toolStripItemCollection = new ToolStripItemCollection(this, owner);
-            self.ActivateCurrent += ToolStripItem_Activated;
-            //Dock = DockStyle.Top;
-        }
-        private void ToolStripItem_Activated(object sender, ActivateCurrentArgs e)
-        {
-            if (DropDownItemClicked != null)
-            {
-                DropDownItemClicked(this, new ToolStripItemClickedEventArgs(new ToolStripItem()));
-            }
-            if (Click != null)
-            {
-                Click(sender, e);
-            }
-            if (CheckedChanged != null)
-            {
-                CheckedChanged(this, e);
-            }
-            if (CheckStateChanged != null)
-            {
-                CheckStateChanged(this, e);
-            }
-        }
-        public override Size Size { get => base.Size; set => base.Size = new Size(value.Width, 30); }
         public ToolStripItemCollection Items
         {
             get
@@ -59,11 +29,42 @@ namespace System.Windows.Forms
             }
         }
 
-        public Size ImageScalingSize { get; set; }
+        private Size _ImageScalingSize;
+        public Size ImageScalingSize {
+            get => _ImageScalingSize;
+            set
+            {
+                _ImageScalingSize = value;
+                self.ImageScalingSize = _ImageScalingSize;
+            }
+        }
         public ToolStripLayoutStyle LayoutStyle { get; set; }
         public override event EventHandler Click;
         public event EventHandler CheckedChanged;
         public event EventHandler CheckStateChanged;
         public event ToolStripItemClickedEventHandler DropDownItemClicked;
+
+        private TextImageRelation textImageRelation;
+        public TextImageRelation TextImageRelation {  
+            get=> textImageRelation; 
+            set {
+                textImageRelation = value;
+                if (value == TextImageRelation.ImageAboveText || value == TextImageRelation.TextAboveImage)
+                {
+                    self.ToolbarStyle = ToolbarStyle.Both;
+                    self.IconSize = IconSize.Dialog;
+                }
+                if (value == TextImageRelation.ImageBeforeText || value == TextImageRelation.TextBeforeImage)
+                {
+                    self.ToolbarStyle = ToolbarStyle.BothHoriz;
+                    self.IconSize = IconSize.SmallToolbar;
+                }
+                //if (value == TextImageRelation.Overlay )
+                //{
+                //    self.ToolbarStyle = ToolbarStyle.BothHoriz;
+                //    self.IconSize = IconSize.SmallToolbar;
+                //}
+            }
+        }
     }
 }

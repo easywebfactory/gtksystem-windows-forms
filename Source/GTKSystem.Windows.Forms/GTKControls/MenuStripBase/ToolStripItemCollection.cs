@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections;
 using System.Drawing;
-using System.Collections;
-using System.Xml.Linq;
-using GLib;
-using Pango;
 
 namespace System.Windows.Forms
 {
@@ -13,39 +7,41 @@ namespace System.Windows.Forms
     {
         private ToolStripItem owner;
         private ToolStrip toolStrip;
+        private MenuStrip menuStrip;
         private StatusStrip statusStrip;
         private Gtk.Menu menu;
         private bool isToolStrip;
         private bool isStatusStrip;
         private bool isMenuStrip;
         private bool isToolStripDropDown;
-
         public ToolStripItemCollection(ToolStrip owner) 
         {
             this.toolStrip = owner;
             isToolStrip = true;
         }
-        public ToolStripItemCollection(ToolStrip toolStrip, string owner)
+ 
+        public ToolStripItemCollection(MenuStrip owner)
         {
-            this.toolStrip = toolStrip;
-            isMenuStrip = owner == "MenuStrip";
+            this.menuStrip = owner;
+            isMenuStrip =true;
         }
         public ToolStripItemCollection(StatusStrip owner)
         {
             this.statusStrip = owner;
             isStatusStrip = true;
         }
-        public ToolStripItemCollection(ToolStripDropDown owner)
-        {
-             this.menu = owner.Widget as Gtk.Menu;
-            isToolStripDropDown = true;
-        }
         public ToolStripItemCollection(ToolStripItem owner)
         {
             this.owner = owner;
-            if(owner.Widget is Gtk.Menu gmenu)
+            if(owner.Widget.MenuItem is Gtk.Menu gmenu)
             {
                 this.menu = gmenu;
+                isToolStripDropDown = true;
+            }
+            else if (owner.Widget.ToolItem is Gtk.MenuToolButton tmenu)
+            {
+                this.menu = new Gtk.Menu();
+                tmenu.Menu = this.menu;
                 isToolStripDropDown = true;
             }
         }
@@ -94,19 +90,19 @@ namespace System.Windows.Forms
             item.Parent = owner;
             if (isToolStrip == true)
             {
-                toolStrip.self.Add(item.Widget);
+                toolStrip.self.Add(item.Widget.ToolItem);
             }
             else if (isStatusStrip == true)
             {
-                statusStrip.self.Add(item.Widget);
+                statusStrip.self.Add(item.Widget.ToolItem);
             }
             else if (isMenuStrip == true)
             {
-                toolStrip.self.Add(item.Widget);
+                menuStrip.self.Add(item.Widget.MenuItem);
             }
             else if (isToolStripDropDown == true)
             {
-                menu.Add(item.Widget);
+                menu.Add(item.Widget.MenuItem);
             }
             else
             {
@@ -115,7 +111,7 @@ namespace System.Windows.Forms
                     this.menu = new Gtk.Menu();
                     owner.MenuItem.Submenu = this.menu;
                 }
-                menu.Add(item.Widget);
+                menu.Add(item.Widget.MenuItem);
             }
 
             base.Add(item);
@@ -142,7 +138,7 @@ namespace System.Windows.Forms
         public new ToolStripItem this[int index]
         {
             get { return base[index]; }
-            set { menu.Insert(value.Widget, index); base[index] = value; }
+            set { menu.Insert(value.Widget.MenuItem, index); base[index] = value; }
         }
     }
 }

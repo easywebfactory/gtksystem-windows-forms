@@ -5,22 +5,28 @@
  * author:chenhongjin
  * date: 2024/1/3
  */
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 
 namespace System.Windows.Forms
 {
 
-    public class ToolStripComboBox : WidgetToolStrip<Gtk.MenuItem>
+    public class ToolStripComboBox : ToolStripItem
     {
+        public StripToolItem self = new StripToolItem();
+        public override IToolMenuItem Widget { get => self; }
+
+        internal Gtk.ComboBoxText comboBox = Gtk.ComboBoxText.NewWithEntry();
         private ObjectCollection __itemsData;
-        public ToolStripComboBox() : base("ToolStripComboBox",null)
+        public ToolStripComboBox() : base()
         {
+            comboBox.HasFrame = false;
+            comboBox.Entry.HasFrame = false;
+            comboBox.Entry.MaxWidthChars = 1;
+            comboBox.Entry.WidthChars = 0;
+            self.Add(comboBox);
             __itemsData = new ObjectCollection(this.comboBox);
-            this.comboBox.Changed += ComboBox_Changed;
+            comboBox.Changed += ComboBox_Changed;
         }
 
         private void ComboBox_Changed(object sender, EventArgs e)
@@ -30,13 +36,11 @@ namespace System.Windows.Forms
             if (SelectedValueChanged != null)
                 SelectedValueChanged(this, e);
         }
-
-        public override Size Size { get => base.Size; set { this.comboBox.WidthRequest = value.Width; this.comboBox.HeightRequest = value.Height; base.Size = value; } }
-
+        public override string Text { get => this.comboBox.Entry.Text; set => this.comboBox.Entry.Text = value; }
         public bool FormattingEnabled { get; set; }
 
         public object SelectedItem { get { return __itemsData[SelectedIndex]; } }
-        public int SelectedIndex { get { return base.comboBox.Active; } }
+        public int SelectedIndex { get { return comboBox.Active; } }
         public new ObjectCollection Items { get { return __itemsData; } }
 
         public event EventHandler SelectedIndexChanged;
