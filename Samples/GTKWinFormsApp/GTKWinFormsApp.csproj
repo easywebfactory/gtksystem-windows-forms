@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<OutputType>Exe</OutputType>
+		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>annotations</Nullable>
 		<UseWindowsForms>False</UseWindowsForms>
@@ -10,7 +10,9 @@
 		<EnableUnsafeBinaryFormatterSerialization>True</EnableUnsafeBinaryFormatterSerialization>
 		<ImplicitUsings>disable</ImplicitUsings>
 	</PropertyGroup>
-
+	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="System.Drawing.EnableUnixSupport" Value="true" />
+	</ItemGroup>
 	<ItemGroup>
 	  <Compile Remove="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
@@ -26,8 +28,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
-		<PackageReference Include="GTKSystem.Windows.FormsDesigner" Version="1.0.0.5" />
+		<PackageReference Include="GTKSystem.Windows.FormsDesigner" Version="1.0.0.6" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -44,10 +49,6 @@
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\..\Source\GTKSystem.Windows.Forms\GTKSystem.Windows.Forms.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -24,7 +24,7 @@ namespace GTKWinFormsApp
 
         private void UserControl11_MouseWheel(object sender, MouseEventArgs e)
         {
-            Console.WriteLine("UserControl11_MouseWheel");
+            Console.WriteLine($"UserControl11_MouseWheel {e.Button},{e.Clicks},({e.X},{e.Y})");
         }
 
         private void UserControl11_Paint(object sender, PaintEventArgs e)

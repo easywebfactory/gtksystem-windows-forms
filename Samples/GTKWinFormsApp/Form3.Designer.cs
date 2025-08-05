@@ -36,15 +36,18 @@ namespace GTKWinFormsApp
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form3));
             menuStrip1 = new MenuStrip();
             toolStripMenuItem1 = new ToolStripMenuItem();
+            子菜单1ToolStripMenuItem = new ToolStripMenuItem();
+            ssssToolStripMenuItem1 = new ToolStripMenuItem();
             ddddToolStripMenuItem = new ToolStripMenuItem();
             ssssToolStripMenuItem = new ToolStripMenuItem();
             bb菜单ToolStripMenuItem = new ToolStripMenuItem();
             bb菜单2ToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator3 = new ToolStripSeparator();
             c菜单ToolStripMenuItem = new ToolStripMenuItem();
-            ssssToolStripMenuItem1 = new ToolStripMenuItem();
+            右对齐按钮ToolStripMenuItem = new ToolStripMenuItem();
             toolStrip2 = new ToolStrip();
             toolStripButton1 = new ToolStripButton();
+            toolStripSeparator5 = new ToolStripSeparator();
             toolStripLabel1 = new ToolStripLabel();
             toolStripSeparator1 = new ToolStripSeparator();
             toolStripDropDownButton1 = new ToolStripDropDownButton();
@@ -56,6 +59,7 @@ namespace GTKWinFormsApp
             toolStripComboBox1 = new ToolStripComboBox();
             toolStripTextBox1 = new ToolStripTextBox();
             toolStripProgressBar1 = new ToolStripProgressBar();
+            toolStripButton2 = new ToolStripButton();
             button1 = new Button();
             contextMenuStrip1 = new ContextMenuStrip(components);
             ddddToolStripMenuItem1 = new ToolStripMenuItem();
@@ -80,6 +84,13 @@ namespace GTKWinFormsApp
             panel5 = new Panel();
             label2 = new Label();
             progressBar1 = new ProgressBar();
+            notifyIcon1 = new NotifyIcon(components);
+            contextMenuStrip2 = new ContextMenuStrip(components);
+            toolStripMenuItem2 = new ToolStripMenuItem();
+            toolStripMenuItem7 = new ToolStripMenuItem();
+            toolStripSeparator4 = new ToolStripSeparator();
+            toolStripMenuItem8 = new ToolStripMenuItem();
+            toolStripComboBox2 = new ToolStripComboBox();
             menuStrip1.SuspendLayout();
             toolStrip2.SuspendLayout();
             contextMenuStrip1.SuspendLayout();
@@ -87,30 +98,47 @@ namespace GTKWinFormsApp
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
+            contextMenuStrip2.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, ssssToolStripMenuItem1 });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, ssssToolStripMenuItem1, 右对齐按钮ToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new Padding(6, 3, 0, 3);
-            menuStrip1.Size = new Size(947, 30);
+            menuStrip1.Size = new Size(960, 32);
             menuStrip1.TabIndex = 1;
             menuStrip1.Text = "menuStrip1";
             // 
             // toolStripMenuItem1
             // 
-            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { ddddToolStripMenuItem, ssssToolStripMenuItem, toolStripSeparator3, c菜单ToolStripMenuItem });
+            toolStripMenuItem1.AutoSize = false;
+            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { 子菜单1ToolStripMenuItem });
+            toolStripMenuItem1.ForeColor = Color.Red;
+            toolStripMenuItem1.Image = (Image)resources.GetObject("toolStripMenuItem1.Image");
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(62, 24);
+            toolStripMenuItem1.Size = new Size(126, 26);
             toolStripMenuItem1.Text = "菜单1";
+            // 
+            // 子菜单1ToolStripMenuItem
+            // 
+            子菜单1ToolStripMenuItem.Name = "子菜单1ToolStripMenuItem";
+            子菜单1ToolStripMenuItem.Size = new Size(146, 26);
+            子菜单1ToolStripMenuItem.Text = "子菜单1";
+            // 
+            // ssssToolStripMenuItem1
+            // 
+            ssssToolStripMenuItem1.AutoSize = false;
+            ssssToolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { ddddToolStripMenuItem, ssssToolStripMenuItem, toolStripSeparator3, c菜单ToolStripMenuItem });
+            ssssToolStripMenuItem1.Image = (Image)resources.GetObject("ssssToolStripMenuItem1.Image");
+            ssssToolStripMenuItem1.Name = "ssssToolStripMenuItem1";
+            ssssToolStripMenuItem1.Size = new Size(126, 26);
+            ssssToolStripMenuItem1.Text = "菜单2";
             // 
             // ddddToolStripMenuItem
             // 
-            ddddToolStripMenuItem.Checked = true;
-            ddddToolStripMenuItem.CheckState = CheckState.Indeterminate;
             ddddToolStripMenuItem.Name = "ddddToolStripMenuItem";
             ddddToolStripMenuItem.Size = new Size(132, 26);
             ddddToolStripMenuItem.Text = "a菜单";
@@ -148,19 +176,21 @@ namespace GTKWinFormsApp
             c菜单ToolStripMenuItem.Size = new Size(132, 26);
             c菜单ToolStripMenuItem.Text = "c菜单";
             // 
-            // ssssToolStripMenuItem1
+            // 右对齐按钮ToolStripMenuItem
             // 
-            ssssToolStripMenuItem1.Name = "ssssToolStripMenuItem1";
-            ssssToolStripMenuItem1.Size = new Size(62, 24);
-            ssssToolStripMenuItem1.Text = "菜单2";
+            右对齐按钮ToolStripMenuItem.Alignment = ToolStripItemAlignment.Right;
+            右对齐按钮ToolStripMenuItem.BackColor = Color.AliceBlue;
+            右对齐按钮ToolStripMenuItem.Name = "右对齐按钮ToolStripMenuItem";
+            右对齐按钮ToolStripMenuItem.Size = new Size(117, 26);
+            右对齐按钮ToolStripMenuItem.Text = " 支持一个右靠";
             // 
             // toolStrip2
             // 
             toolStrip2.ImageScalingSize = new Size(20, 20);
-            toolStrip2.Items.AddRange(new ToolStripItem[] { toolStripButton1, toolStripLabel1, toolStripSeparator1, toolStripDropDownButton1, toolStripSplitButton1, toolStripSeparator2, toolStripComboBox1, toolStripTextBox1, toolStripProgressBar1 });
-            toolStrip2.Location = new Point(0, 30);
+            toolStrip2.Items.AddRange(new ToolStripItem[] { toolStripButton1, toolStripSeparator5, toolStripLabel1, toolStripSeparator1, toolStripDropDownButton1, toolStripSplitButton1, toolStripSeparator2, toolStripComboBox1, toolStripTextBox1, toolStripProgressBar1, toolStripButton2 });
+            toolStrip2.Location = new Point(0, 32);
             toolStrip2.Name = "toolStrip2";
-            toolStrip2.Size = new Size(947, 36);
+            toolStrip2.Size = new Size(960, 40);
             toolStrip2.TabIndex = 2;
             toolStrip2.Text = "toolStrip2";
             // 
@@ -169,19 +199,24 @@ namespace GTKWinFormsApp
             toolStripButton1.Image = (Image)resources.GetObject("toolStripButton1.Image");
             toolStripButton1.ImageTransparentColor = Color.Magenta;
             toolStripButton1.Name = "toolStripButton1";
-            toolStripButton1.Size = new Size(156, 33);
-            toolStripButton1.Text = "toolStripButton1";
+            toolStripButton1.Size = new Size(93, 37);
+            toolStripButton1.Text = "图文菜单";
+            // 
+            // toolStripSeparator5
+            // 
+            toolStripSeparator5.Name = "toolStripSeparator5";
+            toolStripSeparator5.Size = new Size(6, 40);
             // 
             // toolStripLabel1
             // 
             toolStripLabel1.Name = "toolStripLabel1";
-            toolStripLabel1.Size = new Size(57, 33);
-            toolStripLabel1.Text = "Label1";
+            toolStripLabel1.Size = new Size(69, 37);
+            toolStripLabel1.Text = "文本菜单";
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(6, 36);
+            toolStripSeparator1.Size = new Size(6, 40);
             // 
             // toolStripDropDownButton1
             // 
@@ -189,7 +224,7 @@ namespace GTKWinFormsApp
             toolStripDropDownButton1.Image = (Image)resources.GetObject("toolStripDropDownButton1.Image");
             toolStripDropDownButton1.ImageTransparentColor = Color.Magenta;
             toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            toolStripDropDownButton1.Size = new Size(112, 33);
+            toolStripDropDownButton1.Size = new Size(112, 37);
             toolStripDropDownButton1.Text = "下拉列表1";
             // 
             // memnuToolStripMenuItem
@@ -212,8 +247,8 @@ namespace GTKWinFormsApp
             toolStripSplitButton1.Image = (Image)resources.GetObject("toolStripSplitButton1.Image");
             toolStripSplitButton1.ImageTransparentColor = Color.Magenta;
             toolStripSplitButton1.Name = "toolStripSplitButton1";
-            toolStripSplitButton1.Size = new Size(139, 33);
-            toolStripSplitButton1.Text = "SplitButton1";
+            toolStripSplitButton1.Size = new Size(108, 37);
+            toolStripSplitButton1.Text = "按钮菜单";
             // 
             // menuToolStripMenuItem
             // 
@@ -224,30 +259,39 @@ namespace GTKWinFormsApp
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(6, 36);
+            toolStripSeparator2.Size = new Size(6, 40);
             // 
             // toolStripComboBox1
             // 
             toolStripComboBox1.Items.AddRange(new object[] { "1testitem", "2testitem", "3testitem" });
             toolStripComboBox1.Name = "toolStripComboBox1";
-            toolStripComboBox1.Size = new Size(121, 36);
+            toolStripComboBox1.Size = new Size(121, 40);
             // 
             // toolStripTextBox1
             // 
             toolStripTextBox1.Name = "toolStripTextBox1";
-            toolStripTextBox1.Size = new Size(100, 36);
+            toolStripTextBox1.Size = new Size(100, 40);
             // 
             // toolStripProgressBar1
             // 
+            toolStripProgressBar1.Minimum = 10;
             toolStripProgressBar1.Name = "toolStripProgressBar1";
-            toolStripProgressBar1.Size = new Size(90, 33);
-            toolStripProgressBar1.Value = 35;
+            toolStripProgressBar1.Size = new Size(112, 37);
+            toolStripProgressBar1.Value = 20;
+            // 
+            // toolStripButton2
+            // 
+            toolStripButton2.Image = (Image)resources.GetObject("toolStripButton2.Image");
+            toolStripButton2.ImageTransparentColor = Color.Magenta;
+            toolStripButton2.Name = "toolStripButton2";
+            toolStripButton2.Size = new Size(63, 37);
+            toolStripButton2.Text = "测试";
             // 
             // button1
             // 
             button1.Cursor = Cursors.Hand;
-            button1.Font = new Font("Microsoft Sans Serif", 15F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            button1.Location = new Point(508, 101);
+            button1.Font = new Font("Microsoft Sans Serif", 15F, FontStyle.Bold | FontStyle.Italic);
+            button1.Location = new Point(354, 136);
             button1.Name = "button1";
             button1.Size = new Size(278, 59);
             button1.TabIndex = 3;
@@ -278,9 +322,9 @@ namespace GTKWinFormsApp
             // 
             statusStrip1.ImageScalingSize = new Size(20, 20);
             statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, toolStripProgressBar2, toolStripDropDownButton2, toolStripSplitButton2 });
-            statusStrip1.Location = new Point(0, 501);
+            statusStrip1.Location = new Point(0, 568);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(947, 32);
+            statusStrip1.Size = new Size(960, 32);
             statusStrip1.TabIndex = 4;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -344,7 +388,7 @@ namespace GTKWinFormsApp
             label1.AutoSize = true;
             label1.BackColor = Color.FromArgb(192, 255, 192);
             label1.Font = new Font("Tahoma", 15F, FontStyle.Underline);
-            label1.Location = new Point(320, 317);
+            label1.Location = new Point(705, 241);
             label1.Name = "label1";
             label1.Size = new Size(113, 30);
             label1.TabIndex = 5;
@@ -354,7 +398,7 @@ namespace GTKWinFormsApp
             // 
             linkLabel1.AutoSize = true;
             linkLabel1.Font = new Font("Microsoft YaHei UI", 9F);
-            linkLabel1.Location = new Point(508, 189);
+            linkLabel1.Location = new Point(660, 526);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(191, 20);
             linkLabel1.TabIndex = 6;
@@ -365,15 +409,15 @@ namespace GTKWinFormsApp
             // 
             trackBar1.BackColor = SystemColors.ControlLight;
             trackBar1.LargeChange = 6;
-            trackBar1.Location = new Point(333, 101);
+            trackBar1.Location = new Point(354, 230);
             trackBar1.Maximum = 100;
             trackBar1.Name = "trackBar1";
-            trackBar1.Orientation = Orientation.Vertical;
-            trackBar1.Size = new Size(56, 173);
+            trackBar1.Size = new Size(286, 56);
             trackBar1.TabIndex = 7;
             trackBar1.TickFrequency = 2;
             trackBar1.TickStyle = TickStyle.Both;
             trackBar1.Value = 10;
+            trackBar1.Scroll += trackBar1_Scroll;
             // 
             // panel1
             // 
@@ -384,9 +428,9 @@ namespace GTKWinFormsApp
             panel1.Controls.Add(button4);
             panel1.Controls.Add(button2);
             panel1.Controls.Add(button3);
-            panel1.Location = new Point(506, 265);
+            panel1.Location = new Point(350, 330);
             panel1.Name = "panel1";
-            panel1.Size = new Size(346, 144);
+            panel1.Size = new Size(507, 144);
             panel1.TabIndex = 8;
             // 
             // button4
@@ -421,7 +465,7 @@ namespace GTKWinFormsApp
             // panel3
             // 
             panel3.BorderStyle = BorderStyle.FixedSingle;
-            panel3.Location = new Point(29, 101);
+            panel3.Location = new Point(36, 136);
             panel3.Name = "panel3";
             panel3.Size = new Size(250, 135);
             panel3.TabIndex = 9;
@@ -431,9 +475,9 @@ namespace GTKWinFormsApp
             // 
             panel5.AutoScroll = true;
             panel5.Controls.Add(label2);
-            panel5.Location = new Point(29, 268);
+            panel5.Location = new Point(36, 339);
             panel5.Name = "panel5";
-            panel5.Size = new Size(250, 95);
+            panel5.Size = new Size(250, 121);
             panel5.TabIndex = 10;
             // 
             // label2
@@ -448,19 +492,63 @@ namespace GTKWinFormsApp
             // progressBar1
             // 
             progressBar1.Cursor = Cursors.WaitCursor;
-            progressBar1.Location = new Point(29, 427);
+            progressBar1.Location = new Point(36, 517);
             progressBar1.Name = "progressBar1";
-            progressBar1.Size = new Size(758, 29);
+            progressBar1.Size = new Size(596, 29);
             progressBar1.Step = 1;
             progressBar1.TabIndex = 11;
             progressBar1.Value = 10;
+            // 
+            // notifyIcon1
+            // 
+            notifyIcon1.ContextMenuStrip = contextMenuStrip2;
+            notifyIcon1.Icon = (Icon)resources.GetObject("notifyIcon1.Icon");
+            notifyIcon1.Text = "notifyIcon1";
+            notifyIcon1.Visible = true;
+            // 
+            // contextMenuStrip2
+            // 
+            contextMenuStrip2.ImageScalingSize = new Size(20, 20);
+            contextMenuStrip2.Items.AddRange(new ToolStripItem[] { toolStripMenuItem2, toolStripMenuItem7, toolStripSeparator4, toolStripMenuItem8 });
+            contextMenuStrip2.Name = "contextMenuStrip2";
+            contextMenuStrip2.Size = new Size(184, 82);
+            contextMenuStrip2.Text = "test test1";
+            // 
+            // toolStripMenuItem2
+            // 
+            toolStripMenuItem2.Name = "toolStripMenuItem2";
+            toolStripMenuItem2.Size = new Size(183, 24);
+            toolStripMenuItem2.Text = "显示窗口";
+            // 
+            // toolStripMenuItem7
+            // 
+            toolStripMenuItem7.Name = "toolStripMenuItem7";
+            toolStripMenuItem7.Size = new Size(183, 24);
+            toolStripMenuItem7.Text = "关闭应用";
+            // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(180, 6);
+            // 
+            // toolStripMenuItem8
+            // 
+            toolStripMenuItem8.Name = "toolStripMenuItem8";
+            toolStripMenuItem8.Size = new Size(183, 24);
+            toolStripMenuItem8.Text = "隐藏窗口任务栏";
+            // 
+            // toolStripComboBox2
+            // 
+            toolStripComboBox2.Items.AddRange(new object[] { "1111111", "222", "333333" });
+            toolStripComboBox2.Name = "toolStripComboBox2";
+            toolStripComboBox2.Size = new Size(121, 28);
             // 
             // Form3
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
-            ClientSize = new Size(947, 533);
+            ClientSize = new Size(960, 600);
             ContextMenuStrip = contextMenuStrip1;
             Controls.Add(progressBar1);
             Controls.Add(panel5);
@@ -469,13 +557,12 @@ namespace GTKWinFormsApp
             Controls.Add(trackBar1);
             Controls.Add(linkLabel1);
             Controls.Add(label1);
-            Controls.Add(statusStrip1);
             Controls.Add(button1);
             Controls.Add(toolStrip2);
             Controls.Add(menuStrip1);
+            Controls.Add(statusStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
-            MinimizeBox = false;
             Name = "Form3";
             ShowInTaskbar = false;
             Text = "默认风格界面";
@@ -490,6 +577,7 @@ namespace GTKWinFormsApp
             panel1.ResumeLayout(false);
             panel5.ResumeLayout(false);
             panel5.PerformLayout();
+            contextMenuStrip2.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -541,5 +629,16 @@ namespace GTKWinFormsApp
         private ToolStripMenuItem c菜单ToolStripMenuItem;
         private ProgressBar progressBar1;
         private Button button4;
+        private NotifyIcon notifyIcon1;
+        private ContextMenuStrip contextMenuStrip2;
+        private ToolStripMenuItem toolStripMenuItem2;
+        private ToolStripMenuItem toolStripMenuItem7;
+        private ToolStripSeparator toolStripSeparator4;
+        private ToolStripMenuItem toolStripMenuItem8;
+        private ToolStripComboBox toolStripComboBox2;
+        private ToolStripMenuItem 子菜单1ToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator5;
+        private ToolStripMenuItem 右对齐按钮ToolStripMenuItem;
+        private ToolStripButton toolStripButton2;
     }
 }

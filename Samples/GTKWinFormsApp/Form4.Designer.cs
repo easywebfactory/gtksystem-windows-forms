@@ -78,7 +78,7 @@ namespace GTKWinFormsApp
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.FixedPanel = FixedPanel.Panel1;
+            splitContainer1.FixedPanel = FixedPanel.Panel2;
             splitContainer1.Location = new Point(0, 51);
             splitContainer1.Name = "splitContainer1";
             // 
@@ -123,7 +123,7 @@ namespace GTKWinFormsApp
             button1.BackgroundImage = Properties.Resources.timg;
             button1.Location = new Point(24, 45);
             button1.Name = "button1";
-            button1.Size = new Size(153, 340);
+            button1.Size = new Size(453, 340);
             button1.TabIndex = 0;
             button1.Text = "测试按钮1";
             button1.UseVisualStyleBackColor = true;
@@ -231,6 +231,7 @@ namespace GTKWinFormsApp
             // treeView1
             // 
             treeView1.ImageKey = "img11.jpg";
+            treeView1.ImageIndex = 0;
             treeView1.ImageList = imageList1;
             treeView1.Location = new Point(63, 181);
             treeView1.Name = "treeView1";

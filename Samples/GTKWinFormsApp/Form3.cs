@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gtk;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,10 +20,75 @@ namespace GTKWinFormsApp
             InitializeComponent();
 
             UserControl11 userControl11 = new UserControl11();
+            //userControl11.Location = new Point(300,300);
             panel5.Controls.Add(userControl11);
+            // Controls.Add(userControl11);
             this.SizeChanged += Form3_SizeChanged;
 
             this.Shown += Form3_Shown;
+            panel1.Click += Panel1_Click;
+            panel1.DoubleClick += Panel1_DoubleClick;
+
+         
+            toolStripMenuItem2.Click += ToolStripMenuItem2_Click;
+            toolStripMenuItem7.Click += ToolStripMenuItem7_Click;
+            toolStripMenuItem8.Click += ToolStripMenuItem8_Click;
+         
+            this.FormClosing += Form3_FormClosing;
+ 
+            this.Load += Form3_Load;
+        }
+ 
+        private void Form3_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //this.Hide();
+            //this.Visible = false;
+            //e.Cancel = true;
+
+        }
+
+        private void ToolStripMenuItem8_Click(object? sender, EventArgs e)
+        {
+            this.ShowInTaskbar = false;
+            this.Visible = false;
+            //this.Hide();
+        }
+
+        private void ToolStripMenuItem7_Click(object? sender, EventArgs e)
+        {
+            this.ShowInTaskbar = true;
+            this.Visible = false;
+            this.Close();
+            
+        }
+
+        private void ToolStripMenuItem2_Click(object? sender, EventArgs e)
+        {
+            notifyIcon1.ShowBalloonTip(10000, "C# 桌面应用程序跨平台界面框架", "一次编译，跨平台运行，支持Windows、Linux、MacOS \n便于开发跨平台winform软件，便于将C# winform升级为跨平台软件", ToolTipIcon.Warning);
+            this.WindowState = FormWindowState.Normal;
+            this.Visible = true;
+            this.Show();
+        }
+
+        NotifyIcon notifyIcon;
+        private void NotifyIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            notifyIcon.ShowBalloonTip(20000);
+        }
+
+        private void Panel1_DoubleClick(object? sender, EventArgs e)
+        {
+            Console.WriteLine("Panel1_DoubleClick");
+        }
+
+        private void Panel1_Click(object? sender, EventArgs e)
+        {
+            Console.WriteLine("Panel1_Click");
+            Graphics g1 = panel5.CreateGraphics();
+            g1.DrawRectangle(new Pen(Brushes.Red, 2), new Rectangle(10, 10, 200, 60));
+            g1.FillRectangle(Brushes.AliceBlue, new RectangleF(10, 10, 200, 60));
+            g1.Dispose();
+            panel5.Refresh();
         }
 
         private void Form3_Shown(object sender, EventArgs e)
@@ -67,11 +133,12 @@ namespace GTKWinFormsApp
                     System.Threading.Thread.Sleep(20);
                 }
             }));
-         
+
         }
 
         private void panel3_Paint(object sender, PaintEventArgs e)
         {
+
             var g = e.Graphics;
 
             GraphicsPath path = new GraphicsPath();

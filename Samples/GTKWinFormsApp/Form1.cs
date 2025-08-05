@@ -19,6 +19,13 @@ namespace GTKWinFormsApp
 
             InitializeComponent();
             this.Load += Form1_Load;
+            //dataGridView1.Click += DataGridView1_Click;
+            //dataGridView1.DoubleClick += DataGridView1_DoubleClick;
+        }
+
+        private void DataGridView1_Click(object? sender, EventArgs e)
+        {
+            Console.WriteLine("DataGridView1_Click");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -51,7 +58,8 @@ namespace GTKWinFormsApp
             tabPage.UseVisualStyleBackColor = true;
 
             tabControl1.Controls.Add(tabPage);
-            this.dataGridView1.DoubleClick += DataGridView1_DoubleClick;
+            dataGridView1.Click += DataGridView1_Click;
+            dataGridView1.DoubleClick += DataGridView1_DoubleClick;
         }
 
         private void DataGridView1_DoubleClick(object sender, EventArgs e)
@@ -82,6 +90,7 @@ namespace GTKWinFormsApp
         }
 
         TestEntity b = new TestEntity();
+
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -107,19 +116,26 @@ namespace GTKWinFormsApp
 
 
             this.dataGridView1.DataSource = data;
+
+
             //this.comboBox1.DisplayMember = "Title";
             //this.comboBox1.ValueMember = "ID";
             //this.comboBox1.DataSource = data;
             // dataGridView1.Columns[1].Visible = false;
 
-            ////2、datatable数据源
-            //DataTable dt = new DataTable();
-            //dt.Columns.Add("ID", typeof(string));
-            //dt.Columns.Add("CreateDate1", typeof(DateTime));
-            //dt.Columns.Add("State", typeof(bool));
-            //dt.Rows.Add("test1dddd", DateTime.Now, true);
-            //dt.Rows.Add("test2", DateTime.Now.AddDays(5), false);
-            ////  this.dataGridView1.Columns.Clear();
+            this.dataGridView1.Columns.RemoveAt(this.dataGridView1.Columns.Count - 1);
+
+            //2、datatable数据源
+            DataTable dt = new DataTable();
+            dt.Columns.Add("ID", typeof(string));
+            dt.Columns.Add("CreateDate", typeof(DateTime));
+
+            dt.Columns.Add("State", typeof(bool));
+
+            dt.Rows.Add("test1dddd", DateTime.Now, true);
+            dt.Rows.Add("test2", DateTime.Now.AddDays(5), false);
+            //  this.dataGridView1.Columns.Clear();
+
             //this.dataGridView1.DataSource = dt;
         }
         public class TestEntity
@@ -138,14 +154,21 @@ namespace GTKWinFormsApp
 
         private void button2_Click(object sender, EventArgs e)
         {
-            DataGridViewTextBoxColumn column = new DataGridViewTextBoxColumn();
-            column.HeaderText = "test1";
-            column.MinimumWidth = 6;
-            column.Name = "test1";
-            column.Width = 225;
-            column.DataPropertyName = "test1";
+            dataGridView1.EndEdit();
+            foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+                Console.WriteLine(row.Cells[2].Value);
+            Console.WriteLine("====================");
+            foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
+                Console.WriteLine(cell.Value);
 
-            dataGridView1.Columns.Add(column);
+            //DataGridViewTextBoxColumn column = new DataGridViewTextBoxColumn();
+            //column.HeaderText = "test1";
+            //column.MinimumWidth = 6;
+            //column.Name = "test1";
+            //column.Width = 225;
+            //column.DataPropertyName = "test1";
+
+            //dataGridView1.Columns.Add(column);
 
             ColorDialog cd = new ColorDialog();
             if (textBox1.Text.Length >= 6)
@@ -163,19 +186,6 @@ namespace GTKWinFormsApp
                 textBox1.Text = "#" + cd.Color.Name;
                 textBox1.BackColor = ColorTranslator.FromHtml(textBox1.Text);
             }
-
-            //DialogResult result = MessageBox.Show(this, " 弹窗测试 ", "信息提示", MessageBoxButtons.OKCancel);
-            //Console.WriteLine(result.ToString());
-            //if (result == DialogResult.OK)
-            //{
-            //    Console.WriteLine("DialogResult.OK");
-            //    label2.Text = "你选择了 确定";
-            //}
-            //if (result == DialogResult.Cancel)
-            //{
-            //    Console.WriteLine("DialogResult.Cancel");
-            //    label2.Text = "你选择了 取消";
-            //}
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)

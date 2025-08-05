@@ -34,26 +34,26 @@ namespace GTKWinFormsApp
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
-            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("组头标题", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("ListViewGroup2", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "ListView 定义视图模式",
             "View.SmallIcon",
             "View.LargeIcon",
             "View.Details",
             "View.List"}, 1);
-            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("ListViewGroup2", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
             "ListView 分组",
             "listView1.Groups.Add()",
             "432321"}, 0);
-            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem("ListView 控件提供了使用不同布局或视图中显示一组数据项的基础结构。 例如，用户可能需要在表格中显示数据项，并同时对表格的列进行排序。", 0);
-            System.Windows.Forms.ListViewItem listViewItem11 = new System.Windows.Forms.ListViewItem("ListView 派生自 ListBox。 通常，该控件的项为数据集合的成员，并且表示为 ListViewItem 对象", 0);
-            System.Windows.Forms.ListViewItem listViewItem12 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("ListView 控件提供了使用不同布局或视图中显示一组数据项的基础结构。 例如，用户可能需要在表格中显示数据项，并同时对表格的列进行排序。", 0);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("组头标题", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("ListView 派生自 ListBox。 通常，该控件的项为数据集合的成员，并且表示为 ListViewItem 对象", 0);
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem(new string[] {
             "ListViewItem 是一个 ContentControl 且只能包含单个子元素。 但是，该子元素可以是任何视觉元素。"}, 0, System.Drawing.Color.Blue, System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255))))), null);
-            System.Windows.Forms.ListViewItem listViewItem13 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem(new string[] {
             "将数据绑定到 ListView",
             "listView1.Items.Add();"}, 0);
-            System.Windows.Forms.ListViewItem listViewItem14 = new System.Windows.Forms.ListViewItem("什么是 ListView？", 0);
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("什么是 ListView？", 0);
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -93,35 +93,32 @@ namespace GTKWinFormsApp
             this.listView1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
-            listViewGroup3.Header = "组头标题";
-            listViewGroup3.Name = "listViewGroup1";
-            listViewGroup4.Header = "ListViewGroup2";
-            listViewGroup4.Name = "listViewGroup2";
-            this.listView1.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup3,
-            listViewGroup4});
             this.listView1.HideSelection = false;
-            listViewItem8.Group = listViewGroup4;
-            listViewItem8.StateImageIndex = 0;
-            listViewItem9.Group = listViewGroup4;
-            listViewItem9.StateImageIndex = 0;
-            listViewItem10.Group = listViewGroup3;
-            listViewItem10.StateImageIndex = 0;
-            listViewItem11.Group = listViewGroup3;
-            listViewItem11.StateImageIndex = 0;
-            listViewItem12.Group = listViewGroup3;
-            listViewItem12.StateImageIndex = 0;
-            listViewItem13.Group = listViewGroup4;
-            listViewItem13.StateImageIndex = 0;
-            listViewItem14.StateImageIndex = 0;
+            listViewGroup1.Header = "ListViewGroup2";
+            listViewGroup1.Name = "listViewGroup2";
+            listViewItem1.Group = listViewGroup1;
+            listViewItem1.StateImageIndex = 0;
+            listViewItem2.Group = listViewGroup1;
+            listViewItem2.StateImageIndex = 0;
+            listViewGroup2.Header = "组头标题";
+            listViewGroup2.Name = "listViewGroup1";
+            listViewItem3.Group = listViewGroup2;
+            listViewItem3.StateImageIndex = 0;
+            listViewItem4.Group = listViewGroup2;
+            listViewItem4.StateImageIndex = 0;
+            listViewItem5.Group = listViewGroup2;
+            listViewItem5.StateImageIndex = 0;
+            listViewItem6.Group = listViewGroup1;
+            listViewItem6.StateImageIndex = 0;
+            listViewItem7.StateImageIndex = 0;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem8,
-            listViewItem9,
-            listViewItem10,
-            listViewItem11,
-            listViewItem12,
-            listViewItem13,
-            listViewItem14});
+            listViewItem1,
+            listViewItem2,
+            listViewItem3,
+            listViewItem4,
+            listViewItem5,
+            listViewItem6,
+            listViewItem7});
             this.listView1.LargeImageList = this.imageList1;
             this.listView1.Location = new System.Drawing.Point(4, 21);
             this.listView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);

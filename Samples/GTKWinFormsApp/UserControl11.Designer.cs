@@ -50,6 +50,7 @@ namespace GTKWinFormsApp
             BackColor = System.Drawing.Color.LightGreen;
             Controls.Add(button1);
             Name = "UserControl11";
+            AutoScroll = true;
             Size = new System.Drawing.Size(186, 143);
             Load += UserControl11_Load;
             Scroll += UserControl11_Scroll;

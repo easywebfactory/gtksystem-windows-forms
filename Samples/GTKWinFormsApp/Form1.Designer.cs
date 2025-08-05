@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Drawing;
 
+
 namespace GTKWinFormsApp
 {
     partial class Form1
@@ -151,6 +152,8 @@ namespace GTKWinFormsApp
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(154, 28);
             comboBox1.TabIndex = 1;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDown;
+            comboBox1.SelectedIndex = 0;
             // 
             // textBox1
             // 
@@ -168,7 +171,7 @@ namespace GTKWinFormsApp
             dataGridViewCellStyle7.ForeColor = Color.Red;
             dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
             dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.BackColor = SystemColors.Control;
+            dataGridViewCellStyle8.BackColor = SystemColors.MenuBar;
             dataGridViewCellStyle8.Font = new Font("Microsoft YaHei UI", 9F);
             dataGridViewCellStyle8.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
@@ -365,7 +368,7 @@ namespace GTKWinFormsApp
             // 
             // dateTimePicker1
             // 
-            dateTimePicker1.CustomFormat = "yyyy年MM年dd HH时mm分ss秒";
+            dateTimePicker1.CustomFormat = "yyyy年MM月dd HH时mm分ss秒";
             dateTimePicker1.Format = DateTimePickerFormat.Custom;
             dateTimePicker1.Location = new Point(63, 112);
             dateTimePicker1.Margin = new Padding(4);
@@ -667,11 +670,10 @@ namespace GTKWinFormsApp
             pictureBox1.Margin = new Padding(4);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(333, 220);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
             pictureBox1.TabIndex = 5;
             pictureBox1.TabStop = false;
             pictureBox1.ImageLocation = "Resources/kenan.gif";
-            pictureBox1.Click += (o, a) => { Console.WriteLine("pictureBox1"); };
             // 
             // pictureBox2
             // 
