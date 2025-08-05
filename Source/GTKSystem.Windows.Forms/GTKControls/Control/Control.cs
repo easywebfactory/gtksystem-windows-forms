@@ -326,6 +326,7 @@ namespace System.Windows.Forms
             if (this.Widget != null && this.Widget.IsMapped)
                 ISelf.Override.OnAddClass();
         }
+        CssProvider provider = new CssProvider();
         protected virtual void SetStyle(Gtk.Widget widget)
         {
             StringBuilder style = new StringBuilder();
@@ -334,7 +335,7 @@ namespace System.Windows.Forms
             {
                 if (this._image != null && this._image.PixbufData != null)
                 {
-                    string imgdir = $"Resources/{widget.WidgetPath.IterGetName(0)}";
+                    string imgdir = $"./Resources/{widget.WidgetPath.IterGetName(0)}";
                     string imguri = $"{imgdir}/{widget.Name}_image.png";
                     if (!File.Exists(imguri))
                     {
@@ -403,7 +404,7 @@ namespace System.Windows.Forms
                 }
                 else if (this._backgroundImage != null && this._backgroundImage.PixbufData != null)
                 {
-                    string bgimgdir = $"Resources/{widget.WidgetPath.IterGetName(0)}";
+                    string bgimgdir = $"./Resources/{widget.WidgetPath.IterGetName(0)}";
                     string bgimguri = $"{bgimgdir}/{widget.Name}_bgimage.png";
                     Gdk.Pixbuf bgpixbuf = new Gdk.Pixbuf(this._backgroundImage.PixbufData);
                     if (!File.Exists(bgimguri))
@@ -513,11 +514,10 @@ namespace System.Windows.Forms
                         css.AppendLine($".{styleClassName} text{{{style.ToString()}}}");
                         css.AppendLine($".{styleClassName} .view{{{style.ToString()}}}");
                     }
-                    CssProvider provider = new CssProvider();
+                    if (widget.StyleContext.HasClass(styleClassName))
+                        widget.StyleContext.RemoveProvider(provider);
                     if (provider.LoadFromData(css.ToString()))
                     {
-                        if (widget.StyleContext.HasClass(styleClassName))
-                            widget.StyleContext.RemoveProvider(provider);
                         widget.StyleContext.AddProvider(provider, StyleProviderPriority.User);
                         widget.StyleContext.AddClass(styleClassName);
                     }
