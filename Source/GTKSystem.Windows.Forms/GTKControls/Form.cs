@@ -271,15 +271,19 @@ namespace System.Windows.Forms
             }
         }
         public FormStartPosition StartPosition { get; set; }
-        private FormWindowState _WindowState = FormWindowState.Normal;
         public FormWindowState WindowState {
             get { 
-                return _WindowState;
+                if (self.Window.State.HasFlag(Gdk.WindowState.Fullscreen))
+                    return FormWindowState.Maximized;
+                else if (self.Window.State.HasFlag(Gdk.WindowState.Maximized))
+                    return FormWindowState.Maximized;
+                else if (self.Window.State.HasFlag(Gdk.WindowState.Iconified))
+                    return FormWindowState.Minimized;
+                else
+                    return FormWindowState.Normal;
             }
             set
             {
-                _WindowState = value;
-
                 if (value == FormWindowState.Maximized)
                 {
                     self.Maximize();
