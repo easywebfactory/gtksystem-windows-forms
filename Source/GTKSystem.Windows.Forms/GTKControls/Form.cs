@@ -149,17 +149,12 @@ namespace System.Windows.Forms
                 throw new InvalidOperationException("Owns Self Or Owner");
             }
 
-            if (base.Visible)
-            {
-                throw new InvalidOperationException("Show Window On Visible");
-            }
-
             if (!base.Enabled)
             {
                 throw new InvalidOperationException("Show Window On Disabled");
             }
 
-            if (_Created == false)
+            if (_Created == false && self.IsRealized == false)
             {
                 _Created = true;
                 if (owner != null && owner is Form parent)
@@ -343,12 +338,10 @@ namespace System.Windows.Forms
         }
         public override void ResumeLayout(bool resume)
         {
-            _Created = resume == false;
         }
 
         public override void PerformLayout()
         {
-            _Created = true;
         }
         public bool Activate()
         {
