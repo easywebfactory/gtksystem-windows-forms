@@ -392,9 +392,10 @@ namespace System.Windows.Forms
             balloonTip.SkipTaskbarHint = true;
             balloonTip.WidthRequest = 200;
             balloonTip.HeightRequest = 50;
-            balloonTip.Title = tipTitle ?? "";
             balloonTip.Decorated = true;
+            balloonTip.KeepAbove = true;
 
+            balloonTip.Title = tipTitle ?? "";
             Gtk.Label balloonTipText = new Gtk.Label(tipText) { Xpad = 20, Ypad = 20, Halign = Align.Start };
             balloonTip.Add(balloonTipText);
 
