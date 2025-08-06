@@ -52,7 +52,7 @@ namespace GTKSystem.Resources
             {
                 //string resourceDirctory = System.AppContext.BaseDirectory.Replace("\\", "/") + $"Resources";//linux路径必须用/
                 //string resourceDirctory = Environment.CurrentDirectory.Replace("\\", "/") + $"Resources";//linux路径必须用/
-                string filepath = $"./{Path.GetExtension(_baseName).TrimStart('.')}.resx"; //linux路径必须用/
+                string filepath = Path.Combine(Application.StartupPath, $"./{Path.GetExtension(_baseName).TrimStart('.')}.resx"); //linux路径必须用/
                 if (System.IO.File.Exists(filepath))
                 {
                     try
@@ -184,7 +184,8 @@ namespace GTKSystem.Resources
                     string _formName = Path.GetExtension(this._baseName).TrimStart('.');
                     if (_formName.EndsWith("Resources"))
                         _formName = "";
-                    string[] files = Directory.GetFiles($"./Resources/{_formName}", $"{fileName}.*", SearchOption.TopDirectoryOnly);
+
+                    string[] files = Directory.GetFiles(Path.Combine(Application.StartupPath, "Resources", _formName), $"{fileName}.*", SearchOption.TopDirectoryOnly);
                     //string[] files = Directory.GetFiles($"./Resources", $"{fileName}.*", SearchOption.AllDirectories);
                     if (files != null && files.Length > 0)
                     {

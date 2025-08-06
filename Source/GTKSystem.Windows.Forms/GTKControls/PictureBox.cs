@@ -56,8 +56,12 @@ namespace System.Windows.Forms
             { return; }
             else if (url.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
             {
+                if (url.Contains("//") == false)
+                {
+                    url = Path.Combine(Application.StartupPath, url);
+                }
                 //支持动画，动画图片不缩放和定位
-                Gtk.Image image = new Gtk.Image(new Gdk.PixbufAnimation(url));
+                Gtk.Image image = new Gtk.Image(new Gdk.PixbufAnimation(url.Replace("\\\\", "/").Replace("\\", "/")));
                 self.Child = image;
             }
             else if (url.Contains("://") && Uri.TryCreate(url, UriKind.Absolute, out Uri result))
@@ -69,6 +73,10 @@ namespace System.Windows.Forms
             }
             else
             {
+                if (url.Contains("//") == false)
+                {
+                    url = Path.Combine(Application.StartupPath, url);
+                }
                 Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(url.Replace("\\\\", "/").Replace("\\", "/"));
                 this.Image = new Bitmap(0, 0) { Pixbuf = pixbuf };
             }

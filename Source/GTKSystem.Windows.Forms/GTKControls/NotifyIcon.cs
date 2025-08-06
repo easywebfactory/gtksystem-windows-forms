@@ -6,6 +6,7 @@
  */
 using Gtk;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 
 namespace System.Windows.Forms
 {
@@ -380,14 +381,15 @@ namespace System.Windows.Forms
         public void ShowBalloonTip(int timeout, string tipTitle, string tipText, ToolTipIcon tipIcon)
         {
             Gtk.Window balloonTip = new Gtk.Window(WindowType.Toplevel);
-            balloonTip.DestroyWithParent = true;
+            balloonTip.DestroyWithParent = false;
             balloonTip.SetPosition(WindowPosition.None);
             balloonTip.TypeHint = Gdk.WindowTypeHint.Dialog;
-            balloonTip.SkipTaskbarHint =true;
-
-            Gtk.Window pwin = Gtk.Window.ListToplevels().FirstOrDefault(x => x.IsVisible);
-            balloonTip.TransientFor = pwin == null ? Gtk.Window.ListToplevels()[0] : pwin;
-
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                Gtk.Window pwin = Gtk.Window.ListToplevels().FirstOrDefault(x => x.IsVisible);
+                balloonTip.TransientFor = pwin == null ? Gtk.Window.ListToplevels()[0] : pwin;
+            }
+            balloonTip.SkipTaskbarHint = true;
             balloonTip.WidthRequest = 200;
             balloonTip.HeightRequest = 50;
             balloonTip.Title = tipTitle ?? "";

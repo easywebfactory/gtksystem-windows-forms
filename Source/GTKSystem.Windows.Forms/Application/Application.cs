@@ -1,12 +1,8 @@
 ﻿using Gtk;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace System.Windows.Forms
@@ -53,7 +49,15 @@ namespace System.Windows.Forms
                     return module.FileName;
             }
         }
-        public static string StartupPath { get { return System.IO.Directory.GetCurrentDirectory(); } }
+        public static string StartupPath { get {
+                string appstart = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                if (!File.Exists($"{appstart}/GTKSystem.Windows.Forms.dll"))
+                {
+                    appstart = Path.GetDirectoryName(Path.Combine(Directory.GetCurrentDirectory(), typeof(System.Windows.Forms.Application).Assembly.Location));
+                }
+                return appstart;
+            } 
+        }
 
         private static readonly object internalSyncObject = new object();
         public static CultureInfo CurrentCulture
@@ -188,11 +192,7 @@ namespace System.Windows.Forms
 .PropertyGrid button{background:#eeeeee;}
 ";
 
-                string appdirectory = "./";// StartupPath; //由于linux系统常用到环境变量路径，会导至Directory/Environment获取到的当前目录不正确
-                if (!File.Exists($"{appdirectory}/GTKSystem.Windows.Forms.dll"))
-                {
-                    appdirectory = Path.GetDirectoryName(ExecutablePath);
-                }
+                string appdirectory = StartupPath;
                 string resourcepath = Path.Combine(appdirectory, "Resources");
                 string themepath = Path.Combine(appdirectory, "theme");
                 string themesetuppath = Path.Combine(themepath, "setup.theme");

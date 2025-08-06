@@ -335,7 +335,7 @@ namespace System.Windows.Forms
             {
                 if (this._image != null && this._image.PixbufData != null)
                 {
-                    string imgdir = $"./Resources/{widget.WidgetPath.IterGetName(0)}";
+                    string imgdir = Path.Combine(Application.StartupPath, "Resources", widget.WidgetPath.IterGetName(0)).Replace("\\", "/");
                     string imguri = $"{imgdir}/{widget.Name}_image.png";
                     if (!File.Exists(imguri))
                     {
@@ -404,7 +404,7 @@ namespace System.Windows.Forms
                 }
                 else if (this._backgroundImage != null && this._backgroundImage.PixbufData != null)
                 {
-                    string bgimgdir = $"./Resources/{widget.WidgetPath.IterGetName(0)}";
+                    string bgimgdir = Path.Combine(Application.StartupPath, "Resources", widget.WidgetPath.IterGetName(0)).Replace("\\","/");
                     string bgimguri = $"{bgimgdir}/{widget.Name}_bgimage.png";
                     Gdk.Pixbuf bgpixbuf = new Gdk.Pixbuf(this._backgroundImage.PixbufData);
                     if (!File.Exists(bgimguri))

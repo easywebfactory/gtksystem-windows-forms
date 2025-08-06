@@ -285,11 +285,9 @@ namespace System.Drawing
 		{
 			if (!System.IO.File.Exists(filename))
 			{
-				filename = System.IO.Path.GetFullPath(filename);
 				throw new FileNotFoundException(filename);
 			}
-			filename = System.IO.Path.GetFullPath(filename);
-            string extension = IO.Path.GetExtension(filename)?.ToLower();
+			string extension = IO.Path.GetExtension(filename)?.ToLower();
             Bitmap bitmap = new Bitmap(filename);
             bitmap.GetImageFormat(extension);
             return bitmap;

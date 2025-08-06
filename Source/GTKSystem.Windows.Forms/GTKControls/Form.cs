@@ -8,6 +8,7 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace System.Windows.Forms
 {
@@ -187,8 +188,8 @@ namespace System.Windows.Forms
                                 self.Icon = this.Icon.Pixbuf;
                             else if (this.Icon.PixbufData != null)
                                 self.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
-                            else if (System.IO.File.Exists("./Resources/icon.png"))
-                                self.SetIconFromFile("./Resources/icon.png");
+                            else if (System.IO.File.Exists(Path.Combine(Application.StartupPath, "Resources/icon.png")))
+                                self.SetIconFromFile(Path.Combine(Application.StartupPath, "Resources/icon.png"));
 
                             Gtk.HeaderBar titlebar = (Gtk.HeaderBar)self.Titlebar;
                             Gtk.Image flag = new Gtk.Image(self.Icon);
@@ -202,9 +203,13 @@ namespace System.Windows.Forms
                     self.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKApp.Windows.Forms.Resources.System.image-missing16.png");
                 }
             }
+            else
+            {
+                self.Visible = true;
+            }
             self.ShowAll();
-        }
 
+        }
         public DialogResult ShowDialog()
         {
             return ShowDialog(null);
@@ -274,6 +279,8 @@ namespace System.Windows.Forms
                     return FormWindowState.Maximized;
                 else if (self.Window.State.HasFlag(Gdk.WindowState.Iconified))
                     return FormWindowState.Minimized;
+                else if (self.Window.State.HasFlag(Gdk.WindowState.Withdrawn))
+                    return FormWindowState.Minimized;
                 else
                     return FormWindowState.Normal;
             }
@@ -293,7 +300,7 @@ namespace System.Windows.Forms
                         self.Unfullscreen();
                     else if (self.Window.State.HasFlag(Gdk.WindowState.Maximized))
                         self.Unmaximize();
-                    else if (self.Window.State.HasFlag(Gdk.WindowState.Iconified))
+                    else
                         self.Deiconify();
                 }
             }
@@ -330,7 +337,25 @@ namespace System.Windows.Forms
         public bool MinimizeBox { get; set; } = true;
         public double Opacity { get { return self.Opacity; } set { self.Opacity = value; } }
         public bool ShowIcon { get; set; } = true;
-        public bool ShowInTaskbar { get { return self.SkipTaskbarHint == false; } set { self.SkipTaskbarHint = value == false; } }
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, long dwNewLong);
+
+        [DllImport("user32.dll")]
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        private const int GWL_EXSTYLE = -20;
+        private const long WS_EX_TOOLWINDOW = 0x00000080L;
+        private const long WS_EX_APPWINDOW = 0x00040000L;
+
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        private const int SW_HIDE = 0;
+        private const int SW_SHOW = 5;
+        public bool ShowInTaskbar { get { return self.SkipTaskbarHint == false; } 
+            set { 
+                self.SkipTaskbarHint = value == false;
+            } 
+        }
         public System.Drawing.Icon Icon { get; set; }
         public override void SuspendLayout()
         {
