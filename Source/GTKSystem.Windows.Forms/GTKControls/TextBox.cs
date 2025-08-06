@@ -4,8 +4,7 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
-using Atk;
-using GLib;
+
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
@@ -25,36 +24,56 @@ namespace System.Windows.Forms
             self.Valign = Gtk.Align.Start;
             self.Halign = Gtk.Align.Start;
             self.Changed += Self_Changed;
-            self.TextInserted += Self_TextInserted;
-            self.KeyPressEvent += Self_KeyPressEvent;
+            self.WidgetEvent += Self_WidgetEvent;
         }
 
-        private void Self_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
+        private void Self_WidgetEvent(object o, WidgetEventArgs args)
         {
-            if (KeyDown != null)
+            if (args.Event is Gdk.EventKey eventkey)
             {
-                if (args.Event is Gdk.EventKey eventkey)
+                if (args.Event.Type == Gdk.EventType.KeyPress)
                 {
                     Keys keys = (Keys)eventkey.HardwareKeycode;
-                    KeyDown(this, new KeyEventArgs(keys));
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.Mod1Mask))
+                        keys |= Keys.Alt;
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.ControlMask))
+                        keys |= Keys.Control;
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.ShiftMask))
+                        keys |= Keys.Shift;
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.LockMask))
+                        keys |= Keys.CapsLock;
+                    OnKeyDown(new KeyEventArgs(keys));
+                    KeyDown?.Invoke(this, new KeyEventArgs(keys));
+
+                }
+                else if (args.Event.Type == Gdk.EventType.KeyRelease)
+                {
+                    Keys keys = (Keys)eventkey.HardwareKeycode;
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.Mod1Mask))
+                        keys |= Keys.Alt;
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.ControlMask))
+                        keys |= Keys.Control;
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.ShiftMask))
+                        keys |= Keys.Shift;
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.LockMask))
+                        keys |= Keys.CapsLock;
+                    OnKeyUp(new KeyEventArgs(keys));
+                    KeyUp?.Invoke(this, new KeyEventArgs(keys));
+                    KeyPress?.Invoke(this, new KeyPressEventArgs(Convert.ToChar(keys)));
+
                 }
             }
         }
-
         public override event KeyEventHandler KeyDown;
-        private void Self_TextInserted(object o, TextInsertedArgs args)
+        public override event KeyEventHandler KeyUp;
+        public override event KeyPressEventHandler KeyPress;
+        protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (KeyDown != null && this.GetType().Name == "TextBox")
-            {
-                string keytext = args.NewText.ToUpper();
-                if (char.IsNumber(args.NewText[0]))
-                    keytext = "D" + keytext;
-                var keyv = Enum.GetValues(typeof(Keys)).Cast<Keys>().Where(k => {
-                    return Enum.GetName(typeof(Keys), k) == keytext;
-                });
-                foreach (var key in keyv) 
-                    KeyDown(this, new KeyEventArgs(key));
-            }
+
+        }
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+
         }
 
         private void Self_Changed(object sender, EventArgs e)

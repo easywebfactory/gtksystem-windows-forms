@@ -65,7 +65,6 @@ namespace System.Windows.Forms
                 widget.ParentSet += Widget_ParentSet;
             }
         }
-
         private void Widget_ParentSet(object o, ParentSetArgs args)
         {
             OnParentChanged(EventArgs.Empty);
@@ -283,27 +282,32 @@ namespace System.Windows.Forms
         }
         private void Widget_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
         {
-            if (KeyDown != null)
-            {
-                if (args.Event is Gdk.EventKey eventkey)
-                {
-                    Keys keys = (Keys)eventkey.HardwareKeycode;
-                    if (eventkey.State.HasFlag(Gdk.ModifierType.Mod1Mask))
-                        keys |= Keys.Alt;
-                    if (eventkey.State.HasFlag(Gdk.ModifierType.ControlMask))
-                        keys |= Keys.Control;
-                    if (eventkey.State.HasFlag(Gdk.ModifierType.ShiftMask))
-                        keys |= Keys.Shift;
-                    if (eventkey.State.HasFlag(Gdk.ModifierType.LockMask))
-                        keys |= Keys.CapsLock;
-                    OnKeyDown(new KeyEventArgs(keys));
-                    KeyDown(this, new KeyEventArgs(keys));
-                }
-            }
+            Gdk.EventKey eventkey = args.Event;
+            Keys keys = (Keys)eventkey.HardwareKeycode;
+            if (eventkey.State.HasFlag(Gdk.ModifierType.Mod1Mask))
+                keys |= Keys.Alt;
+            if (eventkey.State.HasFlag(Gdk.ModifierType.ControlMask))
+                keys |= Keys.Control;
+            if (eventkey.State.HasFlag(Gdk.ModifierType.ShiftMask))
+                keys |= Keys.Shift;
+            if (eventkey.State.HasFlag(Gdk.ModifierType.LockMask))
+                keys |= Keys.CapsLock;
+            OnKeyDown(new KeyEventArgs(keys));
+            KeyDown?.Invoke(this, new KeyEventArgs(keys));
         }
         private void Widget_KeyReleaseEvent(object o, KeyReleaseEventArgs args)
         {
-            Keys keys = (Keys)args.Event.HardwareKeycode;
+            Gdk.EventKey eventkey = args.Event;
+            Keys keys = (Keys)eventkey.HardwareKeycode;
+            if (eventkey.State.HasFlag(Gdk.ModifierType.Mod1Mask))
+                keys |= Keys.Alt;
+            if (eventkey.State.HasFlag(Gdk.ModifierType.ControlMask))
+                keys |= Keys.Control;
+            if (eventkey.State.HasFlag(Gdk.ModifierType.ShiftMask))
+                keys |= Keys.Shift;
+            if (eventkey.State.HasFlag(Gdk.ModifierType.LockMask))
+                keys |= Keys.CapsLock;
+ 
             OnKeyUp(new KeyEventArgs(keys));
             KeyUp?.Invoke(this, new KeyEventArgs(keys));
             KeyPress?.Invoke(this, new KeyPressEventArgs(Convert.ToChar(keys)));
