@@ -84,6 +84,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         
         protected override bool OnDrawn(Cairo.Context cr)
         {
+            bool returndrawn = base.OnDrawn(cr);
             int width = this.AllocatedWidth;
             int height = this.AllocatedHeight;
             Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, width, height);
@@ -100,7 +101,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 
             Override.OnPaint(cr, rec);
 
-            return base.OnDrawn(cr);
+            return returndrawn;
         }
         private void DrawnSource(Cairo.Context cr, Gdk.Pixbuf image, PictureBoxSizeMode sizeMode, int width,int height)
         {
