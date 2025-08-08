@@ -18,7 +18,6 @@ namespace System.Windows.Forms
         public virtual bool Created { get; set; }
         public virtual bool Checked { get; set; }
         public virtual CheckState CheckState { get; set; }
-        internal Gtk.Image DefaultImage = new Gtk.Image("image-missing", Gtk.IconSize.Menu);
         public virtual System.Drawing.Image Image { get; set; }
         public ToolStripItem()
         {
@@ -143,8 +142,6 @@ namespace System.Windows.Forms
         }
         private ToolStripItemCollection dropDownItems;
 
-        //public virtual event EventHandler Disposed;
-
         public virtual ToolStripItemCollection DropDownItems
         {
             get
@@ -153,7 +150,6 @@ namespace System.Windows.Forms
             }
         }
         public virtual string Name { get; set; }
-        //public virtual string Text { get { return base.Label; } set { base.Label = value; } }
         public virtual string Text { get; set; }
         public virtual Color ImageTransparentColor { get; set; }
         public virtual ToolStripItemDisplayStyle DisplayStyle { get; set; }
@@ -162,8 +158,6 @@ namespace System.Windows.Forms
         public virtual Drawing.Image BackgroundImage { get; set; }
 
         public virtual ImageLayout BackgroundImageLayout { get; set; }
-
-        //public virtual bool Enabled { get; set; }
         public virtual string ToolTipText { get; set; }
         public virtual ContentAlignment ImageAlign { get; set; }
         public virtual int ImageIndex { get; set; }
@@ -238,10 +232,14 @@ namespace System.Windows.Forms
         public virtual int MergeIndex { get; set; }
         public virtual MergeAction MergeAction { get; set; }
 
-
-
-        public virtual bool Enabled { get; set; }
-
+        public virtual bool Enabled { get { return GetWidget().Sensitive; } set { GetWidget().Sensitive = value; } }
+        public virtual bool Visible { get { return GetWidget().Visible; }
+            set { 
+                Gtk.Widget widget = GetWidget();
+                widget.NoShowAll = value == false;
+                if (value == true) { widget.ShowAll(); } else { widget.Visible = value; }
+            }
+        }
         //  public virtual bool Focused { get { return this.IsFocus; } }
 
         private Font _Font;
@@ -450,6 +448,15 @@ namespace System.Windows.Forms
         public virtual event EventHandler SizeChanged;
         public virtual event EventHandler TextChanged;
         public virtual event EventHandler VisibleChanged;
+
+        public new void Dispose()
+        {
+            Image?.Dispose();
+            BackgroundImage?.Dispose();
+            GetWidget()?.Dispose();
+            GC.SuppressFinalize(this);
+            base.Dispose();
+        }
     }
 
 }
