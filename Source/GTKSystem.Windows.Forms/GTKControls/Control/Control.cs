@@ -339,14 +339,17 @@ namespace System.Windows.Forms
             {
                 if (this._image != null && this._image.PixbufData != null)
                 {
-                    string imgdir = Path.Combine(Application.StartupPath, "Resources", widget.WidgetPath.IterGetName(0)).Replace("\\", "/");
+                    string imgdir = Path.Combine("Resources", widget.WidgetPath.IterGetName(0)).Replace("\\", "/");
                     string imguri = $"{imgdir}/{widget.Name}_image.png";
-                    if (!File.Exists(imguri))
+                    string filepath = Path.Combine(Application.StartupPath, imguri);
+                    if (!File.Exists(filepath))
                     {
-                        if (!Directory.Exists(imgdir))
-                            Directory.CreateDirectory(imgdir);
+                        string filedir = Path.Combine(Application.StartupPath, imgdir);
+                        if (!Directory.Exists(filedir))
+                            Directory.CreateDirectory(filedir);
+
                         Gdk.Pixbuf imagepixbuf = new Gdk.Pixbuf(this._image.PixbufData);
-                        imagepixbuf.Save(imguri, "png");
+                        imagepixbuf.Save(filepath, "png");
                     }
                     style.AppendFormat("background:url(\"{0}\")", imguri);
                     style.Append(" no-repeat");
@@ -408,14 +411,17 @@ namespace System.Windows.Forms
                 }
                 else if (this._backgroundImage != null && this._backgroundImage.PixbufData != null)
                 {
-                    string bgimgdir = Path.Combine(Application.StartupPath, "Resources", widget.WidgetPath.IterGetName(0)).Replace("\\","/");
-                    string bgimguri = $"{bgimgdir}/{widget.Name}_bgimage.png";
                     Gdk.Pixbuf bgpixbuf = new Gdk.Pixbuf(this._backgroundImage.PixbufData);
-                    if (!File.Exists(bgimguri))
+                    string bgimgdir = Path.Combine("Resources", widget.WidgetPath.IterGetName(0)).Replace("\\", "/");
+                    string bgimguri = $"{bgimgdir}/{widget.Name}_bgimage.png";
+                    string filepath = Path.Combine(Application.StartupPath, bgimguri);
+                    if (!File.Exists(filepath))
                     {
-                        if (!Directory.Exists(bgimgdir))
-                            Directory.CreateDirectory(bgimgdir);
-                        bgpixbuf.Save(bgimguri, "png");
+                        string filedir = Path.Combine(Application.StartupPath, bgimgdir);
+                        if (!Directory.Exists(filedir))
+                            Directory.CreateDirectory(filedir);
+
+                        bgpixbuf.Save(filepath, "png");
                     }
                     style.AppendFormat("background-image:url(\"{0}\");", bgimguri);
                     if (this.BackgroundImageLayout == ImageLayout.Tile)
