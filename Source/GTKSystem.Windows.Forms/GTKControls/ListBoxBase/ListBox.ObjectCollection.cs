@@ -120,18 +120,12 @@ namespace System.Windows.Forms
                 {
                     if (_owner._sorted)
                     {
-                        if (_owner.IsHandleCreated)
-                        {
-                            _owner.NativeInsert(index, item);
-                        }
+                        _owner.NativeInsert(index, item);
                     }
                     else
                     {
                         index = Count - 1;
-                        if (_owner.IsHandleCreated)
-                        {
-                            _owner.NativeAdd(item);
-                        }
+                        _owner.NativeAdd(item);
                     }
 
                     successful = true;
@@ -217,10 +211,7 @@ namespace System.Windows.Forms
             {
                 // update the width.. to reset Scrollbars..
                 // Clear the selection state.
-                if (_owner.IsHandleCreated)
-                {
-                    _owner.NativeClear();
-                }
+                _owner.NativeClear();
                 InnerArray.Clear();
             }
 
@@ -290,21 +281,17 @@ namespace System.Windows.Forms
                 else
                 {
                     InnerArray.Insert(index, item);
-                    if (_owner.IsHandleCreated)
+                    bool successful = false;
+                    try
                     {
-                        bool successful = false;
-
-                        try
+                        _owner.NativeInsert(index, item);
+                        successful = true;
+                    }
+                    finally
+                    {
+                        if (!successful)
                         {
-                            _owner.NativeInsert(index, item);
-                            successful = true;
-                        }
-                        finally
-                        {
-                            if (!successful)
-                            {
-                                InnerArray.RemoveAt(index);
-                            }
+                            InnerArray.RemoveAt(index);
                         }
                     }
                 }
@@ -338,40 +325,29 @@ namespace System.Windows.Forms
                 // Update InnerArray before calling NativeRemoveAt to ensure that when
                 // SelectedIndexChanged is raised (by NativeRemoveAt), InnerArray's state matches wrapped LB state.
                 InnerArray.RemoveAt(index);
-
-                if (_owner.IsHandleCreated)
-                {
-                    _owner.NativeRemoveAt(index);
-                }
+                _owner.NativeRemoveAt(index);
             }
 
             internal void SetItemInternal(int index, object value)
             {
                 InnerArray.SetItem(index, value);
-
-                // If the native control has been created, and the display text of the new list item object
-                // is different to the current text in the native list item, recreate the native list item...
-                if (_owner.IsHandleCreated)
+                bool selected = (_owner.SelectedIndex == index);
+                if (string.Compare(_owner.GetItemText(value), _owner.NativeGetItemText(index), true, CultureInfo.CurrentCulture) != 0)
                 {
-                    bool selected = (_owner.SelectedIndex == index);
-                    if (string.Compare(_owner.GetItemText(value), _owner.NativeGetItemText(index), true, CultureInfo.CurrentCulture) != 0)
+                    _owner.NativeRemoveAt(index);
+                    _owner.SelectedItems.SetSelected(index, false);
+                    _owner.NativeInsert(index, value);
+                    if (selected)
                     {
-                        _owner.NativeRemoveAt(index);
-                        _owner.SelectedItems.SetSelected(index, false);
-                        _owner.NativeInsert(index, value);
-                        if (selected)
-                        {
-                            _owner.SelectedIndex = index;
-                        }
+                        _owner.SelectedIndex = index;
                     }
-                    else
+                }
+                else
+                {
+                    if (selected)
                     {
-                        // FOR COMPATIBILITY REASONS
-                        if (selected)
-                        {
-                            _owner.OnSelectedIndexChanged(EventArgs.Empty); // will fire selectedvaluechanged
+                        _owner.OnSelectedIndexChanged(EventArgs.Empty); // will fire selectedvaluechanged
 
-                        }
                     }
                 }
             }

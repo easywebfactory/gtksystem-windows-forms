@@ -262,13 +262,6 @@ namespace System.Windows.Forms
 
             internal void SetItemInternal(int index, object value)
             {
-                // If the native control has been created, and the display text of the new list item object
-                // is different to the current text in the native list item, recreate the native list item...
-                if (!_owner.IsHandleCreated)
-                {
-                    return;
-                }
-
                 bool selected = (index == _owner.SelectedIndex);
 
                 if (string.Compare(_owner.GetItemText(value), _owner.NativeGetItemText(index), true, CultureInfo.CurrentCulture) != 0)

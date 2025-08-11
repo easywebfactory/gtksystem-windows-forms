@@ -890,7 +890,7 @@ namespace System.Windows.Forms
 
         public virtual bool IsDisposed { get; }
 
-        public virtual bool IsHandleCreated { get => this.Widget.IsRealized; }
+        public virtual bool IsHandleCreated { get => this.Widget.Handle != IntPtr.Zero; }
 
         public virtual bool IsMirrored { get; }
 
