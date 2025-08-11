@@ -4,11 +4,9 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
-using Atk;
 using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using Pango;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
@@ -77,6 +75,8 @@ namespace System.Windows.Forms
                 Is_GridView_Realized = true;
                 OnSetDataSource();
                 _columns.Invalidate();
+                AllowUserToOrderColumnsChanged?.Invoke(this, EventArgs.Empty);
+                AllowUserToResizeColumnsChanged?.Invoke(this, EventArgs.Empty);
                 foreach (Binding binding in DataBindings)
                     GridView.AddNotification(binding.PropertyName, propertyNotity);
             }
@@ -420,7 +420,49 @@ namespace System.Windows.Forms
                     GridView.Selection.UnselectIter(Rows[rowindex].TreeIter);
             });
         }
+        public bool AllowUserToAddRows { get; set; }
+        public bool AllowUserToDeleteRows { get; set; }
 
+        private bool _AllowUserToOrderColumns = true;
+        public bool AllowUserToOrderColumns { get => _AllowUserToOrderColumns;
+            set {
+                _AllowUserToOrderColumns = value;
+                if(AllowUserToOrderColumnsChanged==null)
+                    AllowUserToOrderColumnsChanged += DataGridView_AllowUserToOrderColumnsChanged;
+                else
+                    AllowUserToOrderColumnsChanged(this, EventArgs.Empty); 
+            }
+        }
+
+        private void DataGridView_AllowUserToOrderColumnsChanged(object? sender, EventArgs e)
+        {
+            foreach (var item in GridView.Columns)
+            {
+                item.Reorderable = _AllowUserToOrderColumns;
+            }
+        }
+
+        private bool _AllowUserToResizeColumns = true;
+        public bool AllowUserToResizeColumns { get => AllowUserToResizeColumns;
+            set
+            {
+                _AllowUserToResizeColumns = value;
+                if (AllowUserToResizeColumnsChanged == null)
+                    AllowUserToResizeColumnsChanged += DataGridView_AllowUserToResizeColumnsChanged;
+                else
+                    AllowUserToResizeColumnsChanged(this, EventArgs.Empty);
+            }
+        }
+
+        private void DataGridView_AllowUserToResizeColumnsChanged(object? sender, EventArgs e)
+        {
+            foreach (var item in GridView.Columns)
+            {
+                item.Resizable = _AllowUserToResizeColumns;
+            }
+        }
+
+        public bool AllowUserToResizeRows { get => GridView.Reorderable; set => GridView.Reorderable = value; }
         public override void BeginInit()
         {
             _Created = false;
@@ -462,7 +504,7 @@ namespace System.Windows.Forms
         public event EventHandler AlternatingRowsDefaultCellStyleChanged;
         [Obsolete("此事件未实现，自行开发")]
         public event EventHandler AllowUserToResizeRowsChanged;
-        [Obsolete("此事件未实现，自行开发")]
+ 
         public event EventHandler AllowUserToResizeColumnsChanged;
         [Obsolete("此事件未实现，自行开发")]
         public event EventHandler AllowUserToDeleteRowsChanged;
@@ -474,7 +516,7 @@ namespace System.Windows.Forms
         public event DataGridViewSortCompareEventHandler SortCompare;
         //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler SelectionChanged;
-        [Obsolete("此事件未实现，自行开发")]
+ 
         public event EventHandler AllowUserToOrderColumnsChanged;
         //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler StyleChanged;

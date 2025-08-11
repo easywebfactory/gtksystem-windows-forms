@@ -9,6 +9,7 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Forms.Design;
 using System.Windows.Forms.Layout;
@@ -536,6 +537,45 @@ namespace System.Windows.Forms
         }
         protected virtual void SetStyle(ControlStyles styles, bool value)
         {
+        }
+
+        public static Point MousePosition
+        {
+            get
+            {
+                Gdk.Display.Default.GetPointer(out int x, out int y, out Gdk.ModifierType mod);
+                return new Point(x, y);
+            }
+        }
+        public static MouseButtons MouseButtons
+        {
+            get
+            {
+                Gdk.Display.Default.GetPointer(out int x, out int y, out Gdk.ModifierType mod);
+                MouseButtons result = MouseButtons.None;
+                if (mod.HasFlag(Gdk.ModifierType.Button1Mask))
+                    result |= MouseButtons.Left;
+                else if (mod.HasFlag(Gdk.ModifierType.Button2Mask))
+                    result |= MouseButtons.Middle;
+                else if (mod.HasFlag(Gdk.ModifierType.Button3Mask))
+                    result |= MouseButtons.Right;
+                return result;
+            }
+        }
+        public static Keys ModifierKeys
+        {
+            get
+            {
+                Gdk.Display.Default.GetPointer(out int x, out int y, out Gdk.ModifierType mod);
+                Keys result = Keys.None;
+                if (mod.HasFlag(Gdk.ModifierType.ControlMask))
+                    result |= Keys.Control;
+                else if (mod.HasFlag(Gdk.ModifierType.Mod1Mask))
+                    result |= Keys.Alt;
+                else if (mod.HasFlag(Gdk.ModifierType.ShiftMask))
+                    result |= Keys.Shift;
+                return result;
+            }
         }
 
         #region 背景
