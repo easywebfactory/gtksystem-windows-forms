@@ -323,13 +323,12 @@ namespace System.Windows.Forms
         }
         protected virtual void UpdateStyle()
         {
-            if (this.Widget != null && this.Widget.IsMapped)
-                SetStyle(this.Widget);
-        }
-        protected virtual void UpdateBackgroundStyle()
-        {
-            if (this.Widget != null && this.Widget.IsMapped)
-                ISelf.Override.OnAddClass();
+            GLib.Timeout.Add(1, () =>
+            {
+                if (this.Widget != null && this.Widget.IsMapped)
+                    SetStyle(this.Widget);
+                return false;
+            });
         }
         CssProvider provider = new CssProvider();
         protected virtual void SetStyle(Gtk.Widget widget)
@@ -580,7 +579,7 @@ namespace System.Windows.Forms
 
         #region 背景
         private Drawing.Image _image;
-        public virtual System.Drawing.Image Image { get => _image; set => _image = value; }
+        public virtual System.Drawing.Image Image { get => _image; set { _image = value; UpdateStyle(); } }
         public virtual System.Drawing.ContentAlignment ImageAlign { get; set; }
 
         public virtual bool UseVisualStyleBackColor { get; set; } = true;
@@ -588,7 +587,7 @@ namespace System.Windows.Forms
         private ImageLayout _backgroundImageLayout;
         public virtual ImageLayout BackgroundImageLayout { get => _backgroundImageLayout; set { _backgroundImageLayout = value; if (ISelf != null) { ISelf.Override.BackgroundImageLayout = value; } } }
         private Drawing.Image _backgroundImage;
-        public virtual Drawing.Image BackgroundImage { get => _backgroundImage; set { _backgroundImage = value; if (ISelf != null) { ISelf.Override.BackgroundImage = value; Refresh(); } } }
+        public virtual Drawing.Image BackgroundImage { get => _backgroundImage; set { _backgroundImage = value; if (ISelf != null) { ISelf.Override.BackgroundImage = value;  } UpdateStyle(); } }
         public virtual Color BackColor
         {
             get
