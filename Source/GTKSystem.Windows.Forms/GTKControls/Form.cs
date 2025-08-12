@@ -40,7 +40,9 @@ namespace System.Windows.Forms
             contanter.Vexpand = true;
             contanter.MarginBottom = 0;
             contanter.MarginEnd = 0;
-            contanter.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
+            Gtk.Viewport viewport = new Gtk.Viewport() { Halign = Align.Fill, Valign = Align.Fill, BorderWidth = 0 };
+            viewport.StyleContext.AddClass("background");
+            contanter.Add(viewport);
             self.ScrollView.Child = contanter;
             _ObjectCollection = new ObjectCollection(this, contanter);
             self.Shown += Control_Shown;
