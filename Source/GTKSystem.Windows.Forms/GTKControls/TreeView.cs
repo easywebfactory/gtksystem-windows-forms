@@ -371,6 +371,14 @@ namespace System.Windows.Forms
                 }
             }
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            root.Nodes.Clear();
+            Store.Clear();
+            Store.Dispose();
+            base.Dispose(disposing);
+        }
         private class CellRendererIcon : Gtk.CellRendererPixbuf
         {
             public TreeView _treeView;

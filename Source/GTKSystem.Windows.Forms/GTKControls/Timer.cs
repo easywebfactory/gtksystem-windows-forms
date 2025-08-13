@@ -22,6 +22,7 @@ namespace System.Windows.Forms
 
         public Timer(IContainer container) : this()
         {
+            container.Add(this);
         }
         private void TimersTimer_Elapsed(object sender, Timers.ElapsedEventArgs e)
         {
@@ -56,12 +57,10 @@ namespace System.Windows.Forms
 
         protected override void Dispose(bool disposing)
         {
+            TimersTimer.Stop();
+            TimersTimer.Enabled = false;
             TimersTimer.Dispose();
-            base.Dispose();
-        }
-        protected new void Dispose()
-        {
-            Dispose(true);
+            base.Dispose(disposing);
         }
     }
 }

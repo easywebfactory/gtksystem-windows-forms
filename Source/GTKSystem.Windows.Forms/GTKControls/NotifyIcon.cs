@@ -318,23 +318,8 @@ namespace System.Windows.Forms
         }
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                if (statusIcon != null) {
-                    statusIcon.Dispose();
-                    _icon = null;
-                    Text = string.Empty;
-                    _contextMenuStrip = null;
-                }
-            }
-            else
-            {
-                if (statusIcon != null)
-                {
-                    statusIcon.Dispose();
-                }
-            }
-
+            statusIcon?.Dispose();
+            _contextMenuStrip = null;
             base.Dispose(disposing);
         }
 

@@ -5,7 +5,6 @@
  * author:chenhongjin
  */
 
-using GLib;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 
@@ -24,6 +23,10 @@ namespace System.Windows.Forms
         private void Self_Clicked(object sender, EventArgs e)
         {
             if (Click != null && self.IsVisible) {
+                if (self.Toplevel is FormBase form)
+                {
+                    ((Form)form.Data["Control"]).DialogResult = DialogResult;
+                }
                 OnClick(EventArgs.Empty);
                 Click(this, EventArgs.Empty);
             }
@@ -34,6 +37,7 @@ namespace System.Windows.Forms
         public override event EventHandler Click;
         protected override void OnClick(EventArgs e)
         {
+
         }
         public override RightToLeft RightToLeft { get { return self.Direction == Gtk.TextDirection.Rtl ? RightToLeft.Yes : RightToLeft.No; } set { self.Direction = value == RightToLeft.Yes ? Gtk.TextDirection.Rtl : Gtk.TextDirection.Ltr; } }
         public System.Drawing.ContentAlignment TextAlign
@@ -91,5 +95,6 @@ namespace System.Windows.Forms
             }
         }
         private System.Drawing.ContentAlignment textAlign;
+        public DialogResult DialogResult { get; set; }
     }
 }

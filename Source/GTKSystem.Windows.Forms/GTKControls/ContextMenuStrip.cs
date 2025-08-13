@@ -14,7 +14,7 @@ namespace System.Windows.Forms
         
         }
         public ContextMenuStrip(IContainer container) {
-        
+            container.Add(this);
         }
         protected void SetVisibleCore(bool visible) { }
     }

@@ -41,7 +41,7 @@ namespace System.Windows.Forms
             contanter.MarginBottom = 0;
             contanter.MarginEnd = 0;
             Gtk.Viewport viewport = new Gtk.Viewport() { Halign = Align.Fill, Valign = Align.Fill, BorderWidth = 0 };
-            viewport.StyleContext.AddClass("background");
+            viewport.StyleContext.AddClass("Form");
             contanter.Add(viewport);
             self.ScrollView.Child = contanter;
             _ObjectCollection = new ObjectCollection(this, contanter);
@@ -59,7 +59,10 @@ namespace System.Windows.Forms
             {
                 if (FormClosed != null)
                     FormClosed(this, new FormClosedEventArgs(CloseReason.UserClosing));
+
+                this.Dispose();
             }
+
             return closing.Cancel;
         }
         private bool Is_Control_Shown = false;
@@ -68,64 +71,10 @@ namespace System.Windows.Forms
             if (Is_Control_Shown == false)
             {
                 Is_Control_Shown = true;
-                if (self.Titlebar is Gtk.HeaderBar titlebar)
-                {
-                    titlebar.DecorationLayout = "menu:close";
-                    if (formBorderStyle == FormBorderStyle.FixedToolWindow || formBorderStyle == FormBorderStyle.SizableToolWindow)
-                    {
-                    }
-                    else
-                    {
-                        if (MaximizeBox == true)
-                        {
-                            Gtk.Button maximize = new Gtk.Button("window-maximize-symbolic", IconSize.SmallToolbar) { Name = "maximize", Visible = true, Relief = ReliefStyle.None, Valign = Align.Center, Halign = Align.Center };
-                            maximize.StyleContext.AddClass("maximize");
-                            maximize.StyleContext.AddClass("titlebutton");
-                            maximize.Clicked += Maximize_Clicked;
-                            titlebar.PackEnd(maximize);
-                        }
-                        if (MinimizeBox == true)
-                        {
-                            Gtk.Button minimize = new Gtk.Button("window-minimize-symbolic", IconSize.SmallToolbar) { Name = "minimize", Visible = true, Relief = ReliefStyle.None, Valign = Align.Center, Halign = Align.Center };
-                            minimize.StyleContext.AddClass("minimize");
-                            minimize.StyleContext.AddClass("titlebutton");
-                            minimize.Clicked += Minimize_Clicked;
-                            titlebar.PackEnd(minimize);
-                        }
-                    }
-                }
                 OnLoadHandler();
             }
             OnShownHandler();
         }
-
-        private void Close_Clicked(object sender, EventArgs e)
-        {
-            self.CloseWindow();
-        }
-
-        private void Maximize_Clicked(object sender, EventArgs e)
-        {
-            Gtk.Button maximize = (Gtk.Button)sender;
-            if (maximize.Name == "restore")
-            {
-                self.Unmaximize();
-                maximize.Image = Gtk.Image.NewFromIconName("window-maximize-symbolic", IconSize.SmallToolbar);
-                maximize.Name = "maximize";
-            }
-            else
-            {
-                self.Maximize();
-                maximize.Image = Gtk.Image.NewFromIconName("window-restore-symbolic", IconSize.SmallToolbar);
-                maximize.Name = "restore";
-            }
-        }
-
-        private void Minimize_Clicked(object sender, EventArgs e)
-        {
-            self.Iconify();
-        }
-
         public override event ScrollEventHandler Scroll
         {
             add { self.Scroll += value; }
@@ -151,12 +100,6 @@ namespace System.Windows.Forms
             {
                 throw new InvalidOperationException("Owns Self Or Owner");
             }
-
-            if (!base.Enabled)
-            {
-                throw new InvalidOperationException("Show Window On Disabled");
-            }
-
             if (_Created == false && self.IsRealized == false)
             {
                 _Created = true;
@@ -164,20 +107,24 @@ namespace System.Windows.Forms
                 {
                     this.Parent = parent;
                     self.TransientFor = parent.self;
-                    if (StartPosition == FormStartPosition.CenterParent)
-                        self.SetPosition(WindowPosition.CenterOnParent);
-                    else if (StartPosition == FormStartPosition.CenterScreen)
-                        self.SetPosition(WindowPosition.Center);
-                    else if (StartPosition == FormStartPosition.Manual)
-                        self.SetPosition(WindowPosition.Mouse);
-                    else
-                        self.SetPosition(WindowPosition.None);
                     self.DestroyWithParent = true;
                 }
+                if (StartPosition == FormStartPosition.CenterScreen)
+                    self.SetPosition(WindowPosition.Center);
+                else if (StartPosition == FormStartPosition.Manual)
+                    self.SetPosition(WindowPosition.Mouse);
+                else if (this.Parent != null && StartPosition == FormStartPosition.CenterParent)
+                    self.SetPosition(WindowPosition.CenterOnParent);
+                else
+                    self.SetPosition(WindowPosition.Center);
 
                 if (this.MaximizeBox == false && this.MinimizeBox == false)
                 {
                     self.TypeHint = Gdk.WindowTypeHint.Dialog;
+                }
+                else if (this.MaximizeBox == false)
+                {
+                    self.Resizable = false;
                 }
                 self.Resize(self.DefaultWidth, self.DefaultHeight);
                 try
@@ -190,19 +137,35 @@ namespace System.Windows.Forms
                                 self.Icon = this.Icon.Pixbuf;
                             else if (this.Icon.PixbufData != null)
                                 self.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
-                            else if (System.IO.File.Exists(Path.Combine(Application.StartupPath, "Resources/icon.png")))
-                                self.SetIconFromFile(Path.Combine(Application.StartupPath, "Resources/icon.png"));
 
-                            Gtk.HeaderBar titlebar = (Gtk.HeaderBar)self.Titlebar;
-                            Gtk.Image flag = new Gtk.Image(self.Icon);
-                            flag.Visible = true;
-                            titlebar.PackStart(flag);
+                            if (self is Gtk.Dialog dia)
+                            {
+                                Gtk.HeaderBar titlebar = (Gtk.HeaderBar)self.Titlebar;
+                                Gtk.Image flag = new Gtk.Image(self.Icon);
+                                flag.Visible = true;
+                                titlebar.PackStart(flag);
+                            }
+                        }
+                        else
+                        {
+                            bool hasicon = false;
+                            if (System.IO.File.Exists(Path.Combine(Application.StartupPath, "Resources/icon.png")))
+                                hasicon = self.SetIconFromFile(Path.Combine(Application.StartupPath, "Resources/icon.png"));
+                            else if (System.IO.File.Exists(Path.Combine(Application.StartupPath, "Resources/icon.ico")))
+                                hasicon = self.SetIconFromFile(Path.Combine(Application.StartupPath, "Resources/icon.ico"));
+                            if (hasicon ==true && self is Gtk.Dialog dia)
+                            {
+                                Gtk.HeaderBar titlebar = (Gtk.HeaderBar)self.Titlebar;
+                                Gtk.Image flag = new Gtk.Image(self.Icon);
+                                flag.Visible = true;
+                                titlebar.PackStart(flag);
+                            }
                         }
                     }
                 }
                 catch
                 {
-                    self.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKApp.Windows.Forms.Resources.System.image-missing16.png");
+                    self.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.image-missing16.png");
                 }
             }
             else
@@ -210,17 +173,26 @@ namespace System.Windows.Forms
                 self.Visible = true;
             }
             self.ShowAll();
-
         }
         public DialogResult ShowDialog()
         {
             return ShowDialog(null);
         }
+         
         public DialogResult ShowDialog(IWin32Window owner)
         {
+            Gtk.Widget parent = null;
+            if (owner != null && self is Gtk.Dialog && owner is Form f)
+            {
+                parent = f.Widget;
+                parent.Sensitive = false;
+            }
             Show(owner);
             int irun = self.Run();
-
+            if (parent != null)
+            {
+                parent.Sensitive = true;
+            }
             return this.DialogResult;
         }
 
@@ -308,11 +280,13 @@ namespace System.Windows.Forms
             }
         }
         public DialogResult DialogResult { get; set; }
-        public void Close() {
+        public void Close()
+        {
             if (self != null)
             {
                 self.CloseWindow();
             }
+            this.Dispose();
         }
         public override void Hide()
         {
@@ -339,25 +313,7 @@ namespace System.Windows.Forms
         public bool MinimizeBox { get; set; } = true;
         public double Opacity { get { return self.Opacity; } set { self.Opacity = value; } }
         public bool ShowIcon { get; set; } = true;
-        [DllImport("user32.dll")]
-        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, long dwNewLong);
-
-        [DllImport("user32.dll")]
-        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-        private const int GWL_EXSTYLE = -20;
-        private const long WS_EX_TOOLWINDOW = 0x00000080L;
-        private const long WS_EX_APPWINDOW = 0x00040000L;
-
-        [DllImport("user32.dll")]
-        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-        private const int SW_HIDE = 0;
-        private const int SW_SHOW = 5;
-        public bool ShowInTaskbar { get { return self.SkipTaskbarHint == false; } 
-            set { 
-                self.SkipTaskbarHint = value == false;
-            } 
-        }
+        public bool ShowInTaskbar { get { return self.SkipTaskbarHint == false; } set { self.SkipTaskbarHint = value == false; } }
         public System.Drawing.Icon Icon { get; set; }
         public override void SuspendLayout()
         {

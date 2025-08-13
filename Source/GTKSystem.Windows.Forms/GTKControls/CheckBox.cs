@@ -42,5 +42,62 @@ namespace System.Windows.Forms
             set { self.Inconsistent = value == CheckState.Indeterminate; self.Active = value == CheckState.Checked; } }
         public event EventHandler CheckedChanged;
         public virtual event EventHandler CheckStateChanged;
+        public System.Drawing.ContentAlignment TextAlign
+        {
+            get { return textAlign; }
+            set
+            {
+                textAlign = value;
+                if (value == System.Drawing.ContentAlignment.TopLeft)
+                {
+                    self.Xalign = 0.0f;
+                    self.Yalign = 0.0f;
+                }
+                else if (value == System.Drawing.ContentAlignment.TopCenter)
+                {
+                    self.Xalign = 0.5f;
+                    self.Yalign = 0.0f;
+                }
+                else if (value == System.Drawing.ContentAlignment.TopRight)
+                {
+                    self.Xalign = 1.0f;
+                    self.Yalign = 0.0f;
+                }
+                else if (value == System.Drawing.ContentAlignment.MiddleLeft)
+                {
+                    self.Xalign = 0.0f;
+                    self.Yalign = 0.5f;
+                }
+                else if (value == System.Drawing.ContentAlignment.MiddleCenter)
+                {
+                    self.Xalign = 0.5f;
+                    self.Yalign = 0.5f;
+                }
+                else if (value == System.Drawing.ContentAlignment.MiddleRight)
+                {
+                    self.Xalign = 1.0f;
+                    self.Yalign = 0.5f;
+                }
+                else if (value == System.Drawing.ContentAlignment.BottomLeft)
+                {
+                    self.Xalign = 0.0f;
+                    self.Yalign = 1.0f;
+                }
+                else if (value == System.Drawing.ContentAlignment.BottomCenter)
+                {
+                    self.Xalign = 0.5f;
+                    self.Yalign = 1.0f;
+                }
+                else if (value == System.Drawing.ContentAlignment.BottomRight)
+                {
+                    self.Xalign = 1.0f;
+                    self.Yalign = 1.0f;
+                }
+
+            }
+        }
+        private System.Drawing.ContentAlignment textAlign;
+        public System.Windows.Forms.Appearance Appearance { get => self.DrawIndicator ? Appearance.Normal : Appearance.Button; set { self.DrawIndicator = value == Appearance.Normal; } }
+        public bool AutoEllipsis { get; set; }
     }
 }

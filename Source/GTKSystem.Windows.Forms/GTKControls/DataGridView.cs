@@ -488,6 +488,18 @@ namespace System.Windows.Forms
                 column.EditableEditingDone();
             }
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            _DataSource = null;
+            _rows.Clear();
+            _columns.Clear();
+            _collect.Clear();
+            Store.Clear();
+            Store.Dispose();
+            base.Dispose(disposing);
+        }
+
         //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler BackgroundImageChanged;
         [Obsolete("此事件未实现，自行开发")]

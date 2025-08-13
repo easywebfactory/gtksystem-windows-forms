@@ -448,14 +448,17 @@ namespace System.Windows.Forms
         public virtual event EventHandler SizeChanged;
         public virtual event EventHandler TextChanged;
         public virtual event EventHandler VisibleChanged;
-
-        public new void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            Image?.Dispose();
-            BackgroundImage?.Dispose();
-            GetWidget()?.Dispose();
-            GC.SuppressFinalize(this);
-            base.Dispose();
+            try
+            {
+                GetWidget()?.Dispose();
+                Image?.Dispose();
+                BackgroundImage?.Dispose();
+                GC.SuppressFinalize(this);
+            }
+            catch (Exception ex) { }
+            base.Dispose(disposing);
         }
     }
 

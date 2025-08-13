@@ -1672,29 +1672,29 @@ namespace System.Windows.Forms
         {
 
         }
-
-        public new void Dispose()
-        {
-            Dispose(true);
-            base.Dispose();
-        }
-
         protected override void Dispose(bool disposing)
         {
             try
             {
-                if (surface != null)
-                    surface.Dispose();
-                if (context != null)
-                    context.Dispose();
-
-                if (this.Widget != null)
+                this.Widget?.Dispose();
+                this.GtkControl = null;
+                surface?.Dispose();
+                context?.Dispose();
+                Image?.Dispose();
+                BackgroundImage?.Dispose();
+            }
+            catch { }
+            try
+            {
+                if (Controls != null)
                 {
-                    this.Widget.Destroy();
-                    this.GtkControl = null;
+                    foreach (Control c in Controls)
+                        c?.Dispose();
+                    Controls.Clear();
                 }
             }
             catch { }
+            GC.SuppressFinalize(this);
             base.Dispose(disposing);
         }
 
