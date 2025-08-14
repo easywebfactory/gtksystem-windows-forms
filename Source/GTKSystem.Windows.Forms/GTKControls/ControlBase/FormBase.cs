@@ -1,155 +1,10 @@
-﻿using GLib;
+﻿
 using Gtk;
+using System.Reflection;
 using System.Windows.Forms;
-
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
-    /// <summary>
-    /// 继承gtkwindow，对话模式标题栏显示大小化按钮
-    /// </summary>
-    public sealed class FormBase2 : Gtk.Window, IControlGtk, IScrollableBoxBase, IWin32Window
-    {
-        public readonly Gtk.ScrolledWindow ScrollView = new Gtk.ScrolledWindow();
-        public GtkControlOverride Override { get; set; }
-        public bool AutoScroll
-        {
-            get => ScrollView.VscrollbarPolicy == Gtk.PolicyType.Automatic;
-            set
-            {
-                if (value == true)
-                {
-                    if (VScroll)
-                        ScrollView.VscrollbarPolicy = Gtk.PolicyType.Automatic;
-                    if (HScroll)
-                        ScrollView.HscrollbarPolicy = Gtk.PolicyType.Automatic;
-                }
-                else
-                {
-                    ScrollView.VscrollbarPolicy = Gtk.PolicyType.External;
-                    ScrollView.HscrollbarPolicy = Gtk.PolicyType.External;
-                }
-            }
-        }
-        public bool VScroll { get; set; } = true;
-        public bool HScroll { get; set; } = true;
-
-        public delegate bool CloseWindowHandler(object sender, EventArgs e);
-        public event CloseWindowHandler CloseWindowEvent;
-        public event System.Windows.Forms.ScrollEventHandler Scroll;
-        public Gtk.Box ContentArea = new Gtk.Box(Gtk.Orientation.Vertical, 0);
-
-        public FormBase2() : base(WindowType.Toplevel)
-        {
-            this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("Form");
-            this.WindowPosition = Gtk.WindowPosition.Center;
-            this.BorderWidth = 0;
-            this.ContentArea.BorderWidth = 0;
-            this.ContentArea.Spacing = 0;
-            this.ContentArea.Homogeneous = false;
-
-            this.SetDefaultSize(100, 100);
-            this.TypeHint = Gdk.WindowTypeHint.Normal;
-            this.AppPaintable = false;
-            this.Deletable = true;
-            this.Decorated = true;
-
-            ScrollView.BorderWidth = 0;
-            ScrollView.Valign = Gtk.Align.Fill;
-            ScrollView.Halign = Gtk.Align.Fill;
-            ScrollView.Hexpand = true;
-            ScrollView.Vexpand = true;
-            ScrollView.OverlayScrolling = true;
-            ScrollView.KineticScrolling = true;
-            ScrollView.HscrollbarPolicy = PolicyType.Automatic;
-            ScrollView.VscrollbarPolicy = PolicyType.Automatic;
-            ScrollView.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
-            ScrollView.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
-            this.ContentArea.PackStart(ScrollView, true, true, 0);
-            base.Add(ContentArea);
-            this.KeyReleaseEvent += FormBase_KeyReleaseEvent;
-            this.Drawn += FormBase_Drawn;
-            this.DeleteEvent += FormBase_DeleteEvent;
-        }
-        private void FormBase_KeyReleaseEvent(object o, KeyReleaseEventArgs args)
-        {
-            if (args.Event.Key == Gdk.Key.Escape)
-            {
-                DialogResult result = MessageBox.Show(this, "你正在关闭该窗口，确定要关闭吗？", "Esc按键操作提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result == DialogResult.Yes)
-                {
-                    closingCancel = false;
-                    this.Close();
-                }
-                else
-                {
-                    closingCancel = true;
-                }
-            }
-        }
-
-        private bool closingCancel;
-        private void FormBase_DeleteEvent(object o, DeleteEventArgs args)
-        {
-            closingCancel = CloseWindowEvent(this, EventArgs.Empty);
-            args.RetVal = closingCancel;
-            IsBlockRuning = false;
-        }
-        private void FormBase_Drawn(object o, DrawnArgs args)
-        {
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnPaint(args.Cr, rec);
-        }
-        private void Vadjustment_ValueChanged(object sender, EventArgs e)
-        {
-            if (Scroll != null)
-            {
-                Gtk.Adjustment adj = (Gtk.Adjustment)sender;
-                Scroll(this, new System.Windows.Forms.ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj.Value > adj.StepIncrement ? (adj.Value - adj.StepIncrement) : adj.Value), (int)adj.Value, ScrollOrientation.VerticalScroll));
-            }
-        }
-
-        private void Hadjustment_ValueChanged(object sender, EventArgs e)
-        {
-            if (Scroll != null)
-            {
-                Gtk.Adjustment adj = (Gtk.Adjustment)sender;
-                Scroll(this, new System.Windows.Forms.ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj.Value > adj.StepIncrement ? (adj.Value - adj.StepIncrement) : adj.Value), (int)adj.Value, ScrollOrientation.HorizontalScroll));
-            }
-        }
-        public void CloseWindow()
-        {
-            IsBlockRuning = false;
-            this.Close();
-            this.Dispose();
-        }
-        bool IsBlockRuning = false;
-        public int Run()
-        {
-            this.KeepAbove = true;
-            IsBlockRuning = true;
-            while (IsBlockRuning)
-            {
-                if (Gtk.Application.EventsPending())
-                    Gtk.Application.RunIteration(true);
-                System.Threading.Thread.Sleep(0);
-            }
-
-            return 0;
-        }
-        public void AddClass(string cssClass)
-        {
-            this.Override.AddClass(cssClass);
-        }
-        public new void Add(Gtk.Widget child)
-        {
-            ScrollView.Child = child;
-        }
-    }
-    /// <summary>
-    /// 继承gtkdialog，对话模式标题栏不显示大小化按钮
-    /// </summary>
     public sealed class FormBase : Gtk.Dialog, IControlGtk, IScrollableBoxBase, IWin32Window
     {
         public readonly Gtk.ScrolledWindow ScrollView = new Gtk.ScrolledWindow();
@@ -185,10 +40,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Override.AddClass("Form");
             this.WindowPosition = Gtk.WindowPosition.Center;
             this.BorderWidth = 0;
-            this.ContentArea.BorderWidth = 0;
-            this.ContentArea.Spacing = 0;
-            this.ContentArea.Homogeneous = false;
-
+            ((Gtk.HeaderBar)Titlebar).DecorationLayout = "menu:minimize,maximize,close";
             this.SetDefaultSize(100, 100);
             this.TypeHint = Gdk.WindowTypeHint.Normal;
             this.AppPaintable = false;
@@ -209,7 +61,24 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             ScrollView.VscrollbarPolicy = PolicyType.Automatic;
             ScrollView.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
             ScrollView.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
+            this.ContentArea.BorderWidth = 0;
+            this.ContentArea.Spacing = 0;
+            this.ContentArea.Homogeneous = false;
             this.ContentArea.PackStart(ScrollView, true, true, 0);
+        }
+        public new Gdk.Pixbuf Icon
+        {
+            get => base.Icon;
+            set
+            {
+                base.Icon = value;
+                if (value != null && base.Titlebar != null && base.Titlebar is Gtk.HeaderBar titlebar)
+                {
+                    Gtk.Image flag = new Gtk.Image(value.ScaleSimple(24, 24, Gdk.InterpType.Bilinear));
+                    flag.Visible = true;
+                    titlebar.PackStart(flag);
+                }
+            }
         }
         private bool closingCancel;
         private void FormBase_DeleteEvent(object o, DeleteEventArgs args)

@@ -8,7 +8,6 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.InteropServices;
 
 namespace System.Windows.Forms
 {
@@ -137,29 +136,13 @@ namespace System.Windows.Forms
                                 self.Icon = this.Icon.Pixbuf;
                             else if (this.Icon.PixbufData != null)
                                 self.Icon = new Gdk.Pixbuf(this.Icon.PixbufData);
-
-                            if (self is Gtk.Dialog dia)
-                            {
-                                Gtk.HeaderBar titlebar = (Gtk.HeaderBar)self.Titlebar;
-                                Gtk.Image flag = new Gtk.Image(self.Icon);
-                                flag.Visible = true;
-                                titlebar.PackStart(flag);
-                            }
                         }
                         else
                         {
-                            bool hasicon = false;
                             if (System.IO.File.Exists(Path.Combine(Application.StartupPath, "Resources/icon.png")))
-                                hasicon = self.SetIconFromFile(Path.Combine(Application.StartupPath, "Resources/icon.png"));
+                                self.Icon = new Gdk.Pixbuf(Path.Combine(Application.StartupPath, "Resources/icon.png"));
                             else if (System.IO.File.Exists(Path.Combine(Application.StartupPath, "Resources/icon.ico")))
-                                hasicon = self.SetIconFromFile(Path.Combine(Application.StartupPath, "Resources/icon.ico"));
-                            if (hasicon ==true && self is Gtk.Dialog dia)
-                            {
-                                Gtk.HeaderBar titlebar = (Gtk.HeaderBar)self.Titlebar;
-                                Gtk.Image flag = new Gtk.Image(self.Icon);
-                                flag.Visible = true;
-                                titlebar.PackStart(flag);
-                            }
+                                self.Icon = new Gdk.Pixbuf(Path.Combine(Application.StartupPath, "Resources/icon.ico"));
                         }
                     }
                 }
@@ -181,18 +164,8 @@ namespace System.Windows.Forms
          
         public DialogResult ShowDialog(IWin32Window owner)
         {
-            Gtk.Widget parent = null;
-            if (owner != null && self is Gtk.Dialog && owner is Form f)
-            {
-                parent = f.Widget;
-                parent.Sensitive = false;
-            }
             Show(owner);
             int irun = self.Run();
-            if (parent != null)
-            {
-                parent.Sensitive = true;
-            }
             return this.DialogResult;
         }
 
