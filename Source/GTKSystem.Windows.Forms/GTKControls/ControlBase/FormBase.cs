@@ -264,8 +264,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         }
         public void CloseWindow()
         {
-            this.Dispose();
-            this.Destroy();
+            if (!CloseWindowEvent(this, EventArgs.Empty))
+            {
+                this.Dispose();
+                this.Destroy();
+            }
         }
 
         public void AddClass(string cssClass)
