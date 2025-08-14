@@ -126,8 +126,8 @@ namespace System.Windows.Forms
    background-color: @theme_base_color; color: @theme_text_color;
 }
 .DefaultThemeStyle button{padding:4px 3px;}
+.titlebar{border-radius: 0px; border-bottom: solid 1px #cfcfcf;}
 .BorderNone{border-style:none;box-shadow:none;}
-
 .BorderFixedSingle{border-width:0px;border-style:none;padding:1px;box-shadow: inset 0px 0px 0px 1px @frame_color;}
 .BorderFixed3D{border-width:0px;border-style:none; padding:2px; box-shadow: inset 1px 1px 1px 2px @frame3d_color;}
 
