@@ -99,7 +99,7 @@ MacOS安装dotnet环境
 
 工具一、从NuGet上安装GTKSystem.Windows.FormsDesigner类库，此类库可以在编译工程时修正窗体设计器。
 
-工具二、下载本插件工具，关闭visual studio，直接双击GTKWinformVSIXProject.vsix文件安装（本框架下的工程，Studio没有添加Form模板项，需要安装此插件）
+工具二、使用本项目插件工具（在项目下载包里），关闭visual studio，直接双击GTKWinformVSIXProject.vsix文件安装（本框架下的工程，Studio没有添加Form模板项，需要安装此插件）
 
 插件会安装两个功能：
 
@@ -154,12 +154,12 @@ QQ群：1011147488
 ### 默认风格效果
 ![demo效果](/pic/native-2.png)
 
-### 自定义风格效果
-![工具栏菜单](/pic/native-1.png)
+### 自定义皮肤效果
+![自定义皮肤](/pic/showwork1.png)
 
 
 ### 支持各种主题风格界面（windows xp、vista、7、8、10，macOS系列，等等）
-#### 主题风格，window10黑色风格界面
+#### 主题风格，window10风格界面
 ![mwindow10黑色风格界面](/pic/Windows-10-White.png)
 
 ### 常见问题
