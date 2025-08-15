@@ -29,8 +29,6 @@ namespace System.Windows.Forms
                 {
                     if (widget is Gtk.RadioButton group)
                     {
-                        ((Gtk.RadioButton)o).Group = new Gtk.RadioButton[0];
-                        //加入容器内的第一个radio配组
                         ((Gtk.RadioButton)o).JoinGroup(group);
                         break;
                     }

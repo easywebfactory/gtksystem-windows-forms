@@ -124,12 +124,14 @@ namespace System.Windows.Forms
                     this.ItemCheck(checkBox, new ItemCheckEventArgs(item.Index, box.Active == true ? CheckState.Checked : CheckState.Unchecked, box.Active == false ? CheckState.Checked : CheckState.Unchecked));
                 }
             };
+            checkbox.self.Visible = true;
             Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
             boxitem.HeightRequest = this.ItemHeight;
             if (this.MultiColumn && this.ColumnWidth > 0)
             {
                 boxitem.WidthRequest = this.ColumnWidth;
             }
+            boxitem.Visible = true;
             boxitem.Valign = Gtk.Align.Start;
             boxitem.Halign = Gtk.Align.Start;
             boxitem.TooltipText = checkbox.Text;
