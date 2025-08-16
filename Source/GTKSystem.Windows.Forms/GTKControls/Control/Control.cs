@@ -115,7 +115,7 @@ namespace System.Windows.Forms
             }
         }
         private bool Is_DoubleButtonPress = false;
-        private void Widget_ButtonPressEvent(object o, ButtonPressEventArgs args)
+        protected virtual void Widget_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
             Gtk.Widget owidget = o as Gtk.Widget;
             if (owidget != null && owidget.Window != null)
@@ -142,8 +142,8 @@ namespace System.Windows.Forms
                 }
             }
         }
-        
-        private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
+
+        protected virtual void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
         {
             Gtk.Widget owidget = o as Gtk.Widget;
             if (!Is_DoubleButtonPress && owidget != null && owidget.Window != null)
