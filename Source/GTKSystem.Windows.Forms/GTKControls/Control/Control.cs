@@ -131,6 +131,7 @@ namespace System.Windows.Forms
                 MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
                 OnMouseDown(mouseArgs);
                 MouseDown?.Invoke(this, mouseArgs);
+                Is_DoubleButtonPress = false;
                 if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
                 {
                     Is_DoubleButtonPress = true;
@@ -139,17 +140,13 @@ namespace System.Windows.Forms
                     MouseDoubleClick?.Invoke(this, mouseArgs2);
                     DoubleClick?.Invoke(this, EventArgs.Empty);
                 }
-                else
-                {
-                    Is_DoubleButtonPress = false;
-                }
             }
         }
         
         private void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
         {
             Gtk.Widget owidget = o as Gtk.Widget;
-            if (owidget != null && owidget.Window != null)
+            if (!Is_DoubleButtonPress && owidget != null && owidget.Window != null)
             {
                 MouseButtons button = MouseButtons.None;
                 if (args.Event.Button == 1)
@@ -162,18 +159,12 @@ namespace System.Windows.Forms
                 MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
                 OnMouseUp(mouseArgs);
                 MouseUp?.Invoke(this, mouseArgs);
-                if (Is_DoubleButtonPress == false)
-                {
-                    OnClick(EventArgs.Empty);
-                    MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
-                    OnMouseClick(mouseArgs3);
-                    Click?.Invoke(this, EventArgs.Empty);
-                    MouseClick?.Invoke(this, mouseArgs3);
-                }
-                else
-                {
-                    Is_DoubleButtonPress = false;
-                }
+
+                OnClick(EventArgs.Empty);
+                MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
+                OnMouseClick(mouseArgs3);
+                Click?.Invoke(this, EventArgs.Empty);
+                MouseClick?.Invoke(this, mouseArgs3);
                 if (ContextMenuStrip != null)
                 {
                     if (args.Event.Button == 3)
@@ -311,7 +302,7 @@ namespace System.Windows.Forms
  
             OnKeyUp(new KeyEventArgs(keys));
             KeyUp?.Invoke(this, new KeyEventArgs(keys));
-            KeyPress?.Invoke(this, new KeyPressEventArgs(Convert.ToChar(keys)));
+            KeyPress?.Invoke(this, new KeyPressEventArgs(Convert.ToChar(eventkey.HardwareKeycode)));
         }
 
         #endregion

@@ -148,20 +148,17 @@ namespace System.Windows.Forms
 
         public bool UseCompatibleStateImageBehavior { get; set; }
         public System.Windows.Forms.View View { get; set; }
-        private int _fontSize;
+        private int _fontSize = 12;
         internal int FontSize
         {
             get
             {
-                if (_fontSize < 5)
+                if (Font?.Size != null && Font.Size > 5)
                 {
-                    if (Font?.Size != null && Font.Size > 5)
-                    {
-                        if (Font.Unit == GraphicsUnit.Point)
-                            _fontSize = (int)Font.Size * 96 / 72;
-                        else
-                            _fontSize = (int)Font.Size;
-                    }
+                    if (Font.Unit == GraphicsUnit.Point)
+                        _fontSize = (int)Font.Size * 96 / 72;
+                    else
+                        _fontSize = (int)Font.Size;
                 }
                 return _fontSize;
             }

@@ -59,8 +59,7 @@ namespace System.Windows.Forms
                         keys |= Keys.CapsLock;
                     OnKeyUp(new KeyEventArgs(keys));
                     KeyUp?.Invoke(this, new KeyEventArgs(keys));
-                    KeyPress?.Invoke(this, new KeyPressEventArgs(Convert.ToChar(keys)));
-
+                    KeyPress?.Invoke(this, new KeyPressEventArgs(Convert.ToChar(eventkey.HardwareKeycode)));
                 }
             }
         }

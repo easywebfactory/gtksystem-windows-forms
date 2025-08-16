@@ -66,30 +66,30 @@ namespace System.Windows.Forms
         {
             DropDownOpening?.Invoke(this, EventArgs.Empty);
         }
-
+        private bool isDoubleClick = false;
         private void _widget_ButtonReleaseEvent(object o, Gtk.ButtonReleaseEventArgs args)
         {
-            Gtk.Widget widget = (Gtk.Widget)o;
-            MouseButtons button = MouseButtons.None;
-            if (args.Event.State.HasFlag(Gdk.ModifierType.Button1Mask))
-                button = MouseButtons.Left;
-            else if (args.Event.State.HasFlag(Gdk.ModifierType.Button2Mask))
-                button = MouseButtons.Middle;
-            else if (args.Event.State.HasFlag(Gdk.ModifierType.Button3Mask))
-                button = MouseButtons.Right;
+            if (!isDoubleClick)
+            {
+                Gtk.Widget widget = (Gtk.Widget)o;
+                MouseButtons button = MouseButtons.None;
+                if (args.Event.State.HasFlag(Gdk.ModifierType.Button1Mask))
+                    button = MouseButtons.Left;
+                else if (args.Event.State.HasFlag(Gdk.ModifierType.Button2Mask))
+                    button = MouseButtons.Middle;
+                else if (args.Event.State.HasFlag(Gdk.ModifierType.Button3Mask))
+                    button = MouseButtons.Right;
 
-            widget.Window.GetOrigin(out int x1, out int y1);
-
-            MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x1, (int)args.Event.XRoot - y1, 0);
-            MouseUp?.Invoke(this, mouseArgs3);
-            MouseClick?.Invoke(this, mouseArgs3);
-            DropDownItemClicked?.Invoke(this, new ToolStripItemClickedEventArgs(this));
+                widget.Window.GetOrigin(out int x1, out int y1);
+                Click?.Invoke(this, new EventArgs());
+                MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x1, (int)args.Event.XRoot - y1, 0);
+                MouseUp?.Invoke(this, mouseArgs3);
+                MouseClick?.Invoke(this, mouseArgs3);
+                DropDownItemClicked?.Invoke(this, new ToolStripItemClickedEventArgs(this));
+            }
         }
-
         private void _widget_ButtonPressEvent(object o, Gtk.ButtonPressEventArgs args)
         {
-            //Console.WriteLine("_widget_ButtonPressEvent");
-
             Gtk.Widget widget = (Gtk.Widget)o;
             MouseButtons button = MouseButtons.None;
             if (args.Event.State.HasFlag(Gdk.ModifierType.Button1Mask))
@@ -102,20 +102,17 @@ namespace System.Windows.Forms
             widget.Window.GetOrigin(out int x1, out int y1);
             MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x1, (int)args.Event.XRoot - y1, 0);
             MouseDown?.Invoke(this, mouseArgs);
-
+            isDoubleClick = false;
             if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
             {
+                isDoubleClick = true;
                 DoubleClick?.Invoke(this, new EventArgs());
                 ButtonDoubleClick?.Invoke(this, new EventArgs());
             }
-            else
-                Click?.Invoke(this, new EventArgs());
         }
 
         private void Widget_Clicked(object? sender, EventArgs e)
         {
-            //Console.WriteLine("Widget_Clicked");
-
             ButtonClick?.Invoke(this, new EventArgs());
         }
         protected ToolStripItem(string text, Drawing.Image image, EventHandler onClick) : this(text, image, onClick, "")
