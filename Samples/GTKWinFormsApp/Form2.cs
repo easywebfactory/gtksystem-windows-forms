@@ -1,4 +1,4 @@
-﻿using Gtk;
+﻿
 using System;
 using System.Data;
 using System.Drawing;
@@ -20,12 +20,13 @@ namespace GTKWinFormsApp
 
         private void ListView1_MouseDown(object sender, MouseEventArgs e)
         {
+;
             ListViewItem item = listView1.GetItemAt(e.X, e.Y);
             if (item != null)
             {
-                Console.WriteLine(item.Text);
+                Console.WriteLine($"{e.X},{e.Y},{item.Text}");
             }
-            listView1.Items.Remove(item);
+            //listView1.Items.Remove(item);
         }
 
         int i = 4;
@@ -38,8 +39,8 @@ namespace GTKWinFormsApp
 
             richTextBox1.AppendText($"异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}\n");
             richTextBox1.SelectionStart = richTextBox1.Text.Length;
-           // richTextBox1.SelectionLength = 0;
-            richTextBox1.Focus();
+            // richTextBox1.SelectionLength = 0;
+            //richTextBox1.Focus();
         }
         private void Form2_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -82,7 +83,7 @@ namespace GTKWinFormsApp
 
         private void listView1_Click(object sender, EventArgs e)
         {
-
+            Console.WriteLine("listView1_Click");
         }
 
         private void button1_Click(object sender, EventArgs e)
