@@ -11,15 +11,15 @@ C#桌面应用程序跨平台（windows、linux、macos）开发框架，基于G
 使用DotNet Csharp为开发语言，使用GTK3.24.24.95作为表单UI，重写C#的System.Windows.Forms组件，在应用时，兼容原生C#程序组件。
 
 ### 安装教程
-默认的情况下，visual studio从Nuget引用GtkSharp编译时，就会自动下载Gtk.zip运行时安装包，并自动解压安装。本开源项目下载包也包含Gtk.zip包，可手动安装。以下是三种环境安装方法：
+默认的情况下，visual studio从Nuget引用GtkSharp编译时，就会自动下载Gtk.zip运行时安装包，并自动解压安装。本开源项目下载包也包含Gtk.zip包，可手动安装。以下是2种环境安装方法：
 
-1、安装GtkSharp后，编译你的工程项目，手动从本项目下载运行时库安装，（Visual Studio开发环境必需）。
+1）安装GtkSharp后，编译你的工程项目，手动从本项目下载运行时库安装，（Visual Studio开发环境必需）。
 安装GtkSharp后，编译你的工程项目时，会自动下载gtk.zip解压到目录$(LOCALAPPDATA)\Gtk\3.24.24配置Gtk环境，目前国内网络限制，可能会出现无法下载的错误。
 自动下载的库版本较低，本项目提供下载 [https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies](https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies)。
 也可以下载https://github.com/GtkSharp/Dependencies（版本比较旧，有bug），把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24目录即可。
 ps: $(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData\Local\Gtk\3.24.24
 
-2、下载exe安装包安装
+2）下载exe安装包安装
 本项目提供下载 [https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies](https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies)。
 获取最新版本安装：下载[https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer)，安装后配置电脑变量环境：
 ```
@@ -32,8 +32,6 @@ ps: $(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData
 //解决方法：修改C:\Program Files\Intel\WiFi\bin\zlib1.dll的名称或删除该文件
 //注意：修改该文件可能对intel wifi正常运行的影响
 ```
-3、使用MSYS软件平台安装，具体操作请网上查询
-
 windows安装DotNet环境：
 ```
   从微软官网下载安装包https://dotnet.microsoft.com/zh-cn/download
@@ -99,13 +97,13 @@ MacOS安装dotnet环境
 
 工具一、从NuGet上安装GTKSystem.Windows.FormsDesigner类库，此类库可以在编译工程时修正窗体设计器。
 
-工具二、使用本项目插件工具（在项目下载包里），关闭visual studio，直接双击GTKWinformVSIXProject.vsix文件安装（本框架下的工程，Studio没有添加Form模板项，需要安装此插件）
+工具二、使用本项目插件工具（在项目下载包里），可以有效清理缓存、修正窗体设计器，关闭visual studio，直接双击GTKAppVSIX.vsix文件安装（本框架下的工程，Studio没有添加Form模板项，需要安装此插件）
 
 插件会安装两个功能：
 
 1、新建项的Form窗体模板、用户控件模板。
 
-2、工程右键菜单。
+2、修正窗体设计器。
 
 ![输入图片说明](pic/vs_vsix.jpeg)
 
@@ -159,8 +157,7 @@ QQ群：1011147488
 
 
 ### 支持各种主题风格界面（windows xp、vista、7、8、10，macOS系列，等等）
-#### 主题风格，window10风格界面
-![mwindow10黑色风格界面](/pic/Windows-10-White.png)
+![mwindow10风格界面](/pic/Windows-10-White.png)
 
 ### 常见问题
   为什么Form窗体设计器打不开？<br/>
@@ -168,9 +165,10 @@ QQ群：1011147488
   详细方法请访问[https://www.gtkapp.com/formsdesigner/](https://www.gtkapp.com/formsdesigner/)。 
 
   有三种方法使用窗体设计器，
-  一）新建一个csharp原生Net框架windows应用程序工程，把相关form界面文件包含进工程，即可使用窗体设计器。  
-  二）新建一个framework框架的windows应用工程，把相关form界面文件包含进工程，即可使用窗体设计器。 
-  三）从NuGet安装GTKSystem.Windows.FormsDesigner，重新编译工程，如无法打开，重启visual studio，重复前面操作
+  一）从NuGet安装GTKSystem.Windows.FormsDesigner，安装项目下载包里的VisualStudio插件，重新编译工程、修复窗体设计器。  
+  二）切换成原生Net框架windows应用程序工程，把相关form界面文件包含进工程，即可使用窗体设计器。  
+  三）切换成framework框架的windows应用工程，把相关form界面文件包含进工程，即可使用窗体设计器。 
+
  ```
 ### 参与贡献
 1. https://www.gtkapp.com
