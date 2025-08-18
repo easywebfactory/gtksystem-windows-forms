@@ -109,13 +109,13 @@ namespace System.Windows.Forms
                     self.DestroyWithParent = true;
                 }
                 if (StartPosition == FormStartPosition.CenterScreen)
-                    self.SetPosition(WindowPosition.Center);
+                    self.WindowPosition = WindowPosition.Center;
                 else if (StartPosition == FormStartPosition.Manual)
-                    self.SetPosition(WindowPosition.Mouse);
+                    self.WindowPosition = WindowPosition.Mouse;
                 else if (this.Parent != null && StartPosition == FormStartPosition.CenterParent)
-                    self.SetPosition(WindowPosition.CenterOnParent);
+                    self.WindowPosition = WindowPosition.CenterOnParent;
                 else
-                    self.SetPosition(WindowPosition.Center);
+                    self.WindowPosition = WindowPosition.Center;
 
                 if (this.MaximizeBox == false && this.MinimizeBox == false)
                 {
