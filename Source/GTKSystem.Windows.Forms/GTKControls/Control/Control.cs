@@ -5,12 +5,14 @@
  * author:chenhongjin
  */
 
+using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms.Design;
 using System.Windows.Forms.Layout;
 
@@ -1120,9 +1122,9 @@ namespace System.Windows.Forms
         public virtual event EventHandler Load;
         public virtual IAsyncResult BeginInvoke(Delegate method, params object[] args)
         {
-            System.Threading.Tasks.Task task = System.Threading.Tasks.Task.Factory.StartNew(state =>
+            System.Threading.Tasks.Task<object> task = System.Threading.Tasks.Task.Factory.StartNew(state =>
             {
-                method.DynamicInvoke((object[])state);
+               return method.DynamicInvoke((object[])state);
             }, args);
 
             return task;
@@ -1138,12 +1140,64 @@ namespace System.Windows.Forms
         }
         public virtual object EndInvoke(IAsyncResult asyncResult)
         {
-            if (asyncResult is System.Threading.Tasks.Task task)
+            if (asyncResult is Task<object> task1)
             {
-                if (task.IsCompleted == false && task.IsCanceled == false && task.IsFaulted == false)
-                    task.GetAwaiter().GetResult();
+                try
+                {
+                    if (task1.IsCompleted == true)
+                    {
+                        return task1.Result;
+                    }
+                    else if (task1.IsCanceled == true)
+                    {
+                        return null;
+                    }
+                    else if (task1.IsFaulted == true)
+                    {
+                        return task1.Exception;
+                    }
+                    else
+                    {
+                        return task1.GetAwaiter().GetResult();
+                    }
+                }
+                finally
+                {
+                    task1.Dispose();
+                }
             }
-            return asyncResult.AsyncState;
+            else if (asyncResult is System.Threading.Tasks.Task task2)
+            {
+                try
+                {
+                    if (task2.IsCompleted == true)
+                    {
+                        task2.Dispose();
+                        return null;
+                    }
+                    else if (task2.IsCanceled == true)
+                    {
+                        task2.Dispose();
+                        return null;
+                    }
+                    else if (task2.IsFaulted == true)
+                    {
+                        task2.Dispose();
+                        return task2.Exception;
+                    }
+                    else
+                    {
+                        task2.Dispose();
+                        return null;
+                    }
+                }
+                finally
+                {
+                    task2.Dispose();
+                }
+            }
+
+            return null;
         }
 
         public virtual void BringToFront()
@@ -1351,23 +1405,23 @@ namespace System.Windows.Forms
         public virtual object Invoke(Delegate method, params object[] args)
         {
             object result = null;
-            GLib.Idle.Add(() => {
-                result = method.DynamicInvoke(args);
+            Gdk.Threads.AddIdle(0, () => {
+                result = method?.DynamicInvoke(args);
                 return false;
             });
             return result;
         }
         public virtual void Invoke(Action method)
         {
-            GLib.Idle.Add(() => {
-                method.Invoke();
+            Gdk.Threads.AddIdle(0, () => {
+                method?.Invoke();
                 return false;
             });
         }
         public virtual ENTRY Invoke<ENTRY>(Func<ENTRY> method)
         {
             ENTRY result = default(ENTRY);
-            GLib.Idle.Add(() => {
+            Gdk.Threads.AddIdle(0, () => {
                 result = method.Invoke();
                 return false;
             });

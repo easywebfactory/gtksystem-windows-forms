@@ -14,16 +14,13 @@ namespace System.Windows.Forms
     [ToolboxItemFilter("System.Windows.Forms")]
     public class Timer : Component
     {
-        private System.Timers.Timer TimersTimer;
         private protected EventHandler? _onTimer;
-        private int _interval = 100;
+        private uint _interval = 100;
         private bool _enabled;
+        private uint _timerId = 0;
         private readonly object _syncObj = new();
         public Timer() : base()
         {
-            TimersTimer = new Timers.Timer(_interval);
-            TimersTimer.AutoReset = true;
-            TimersTimer.Elapsed += TimersTimer_Elapsed;
         }
 
         public Timer(IContainer container) : this()
@@ -41,37 +38,72 @@ namespace System.Windows.Forms
         }
         protected virtual void OnTick(EventArgs e)
         {
-            if (_onTimer != null)
-            {
-                lock (_syncObj)
-                    Gtk.Application.Invoke(_onTimer);
-            }
+            _onTimer?.Invoke(this, EventArgs.Empty);
         }
         public object Tag { get; set; }
 
         [DefaultValue(false)]
-        public virtual bool Enabled { get => TimersTimer.Enabled; set => TimersTimer.Enabled = value; }
+        public virtual bool Enabled { get => _enabled;
+            set
+            {
+                lock (_syncObj)
+                {
+                    if (_enabled != value)
+                    {
+                        _enabled = value;
+                        if (value)
+                        {
+                            _timerId = Gdk.Threads.AddTimeout(0, _interval, () =>
+                            {
+                                OnTick(EventArgs.Empty);
+                                return true;
+                            });
+                        }
+                        else
+                        {
+                            if (_timerId != 0)
+                                GLib.Timeout.Remove(_timerId);
+                        }
+                    }
+                }
+            }
+
+        }
 
         [DefaultValue(100)]
-        public int Interval { get => (int)TimersTimer.Interval; set => TimersTimer.Interval = value; }
+        public int Interval { get => (int)_interval; 
+            set {
+                lock (_syncObj)
+                {
+                    if (_interval != value)
+                    {
+                        _interval = (uint)value;
+                        if (_enabled)
+                        {
+                            Enabled = false;
+                            Enabled = true;
+                        }
+                    }
+                }
+            }
+        }
 
         public void Start()
         {
-            TimersTimer.Start();
+            Enabled = true;
         }
 
         public void Stop()
         {
-            TimersTimer.Stop();
+            Enabled = false;
         }
 
         public override string ToString() => $"{base.ToString()}, Interval: {Interval}";
 
         protected override void Dispose(bool disposing)
         {
-            TimersTimer.Stop();
-            TimersTimer.Enabled = false;
-            TimersTimer.Dispose();
+            if (_timerId != 0)
+                GLib.Timeout.Remove(_timerId);
             base.Dispose(disposing);
         }
     }
