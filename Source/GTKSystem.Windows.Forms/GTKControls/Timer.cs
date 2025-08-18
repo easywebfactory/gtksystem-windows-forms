@@ -14,9 +14,15 @@ namespace System.Windows.Forms
     [ToolboxItemFilter("System.Windows.Forms")]
     public class Timer : Component
     {
-        readonly System.Timers.Timer TimersTimer = new Timers.Timer();
-        public Timer()
+        private System.Timers.Timer TimersTimer;
+        private protected EventHandler? _onTimer;
+        private int _interval = 100;
+        private bool _enabled;
+        private readonly object _syncObj = new();
+        public Timer() : base()
         {
+            TimersTimer = new Timers.Timer(_interval);
+            TimersTimer.AutoReset = true;
             TimersTimer.Elapsed += TimersTimer_Elapsed;
         }
 
@@ -26,14 +32,21 @@ namespace System.Windows.Forms
         }
         private void TimersTimer_Elapsed(object sender, Timers.ElapsedEventArgs e)
         {
-            if (Tick != null)
-                Gtk.Application.Invoke(Tick);
+            OnTick(EventArgs.Empty);
         }
-
-        [Bindable(true)]
-        [DefaultValue(null)]
-        [Localizable(false)]
-        [TypeConverter(typeof(StringConverter))]
+        public event EventHandler Tick
+        {
+            add => _onTimer += value;
+            remove => _onTimer -= value;
+        }
+        protected virtual void OnTick(EventArgs e)
+        {
+            if (_onTimer != null)
+            {
+                lock (_syncObj)
+                    Gtk.Application.Invoke(_onTimer);
+            }
+        }
         public object Tag { get; set; }
 
         [DefaultValue(false)]
@@ -42,7 +55,6 @@ namespace System.Windows.Forms
         [DefaultValue(100)]
         public int Interval { get => (int)TimersTimer.Interval; set => TimersTimer.Interval = value; }
 
-        public event EventHandler Tick;
         public void Start()
         {
             TimersTimer.Start();
@@ -53,7 +65,7 @@ namespace System.Windows.Forms
             TimersTimer.Stop();
         }
 
-        public override string ToString() { return "System.Windows.Forms.Timer"; }
+        public override string ToString() => $"{base.ToString()}, Interval: {Interval}";
 
         protected override void Dispose(bool disposing)
         {

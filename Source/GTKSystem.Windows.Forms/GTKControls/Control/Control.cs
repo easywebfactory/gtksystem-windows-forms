@@ -165,6 +165,7 @@ namespace System.Windows.Forms
                 OnMouseClick(mouseArgs3);
                 Click?.Invoke(this, EventArgs.Empty);
                 MouseClick?.Invoke(this, mouseArgs3);
+             
                 if (ContextMenuStrip != null)
                 {
                     if (args.Event.Button == 3)
@@ -174,6 +175,7 @@ namespace System.Windows.Forms
                     }
                 }
             }
+            Is_DoubleButtonPress = false;
         }
 
         private void Widget_EnterNotifyEvent(object o, EnterNotifyEventArgs args)
@@ -1439,14 +1441,7 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null && this.Widget.IsVisible)
             {
-                if (ISelf != null)
-                    ISelf.Override.OnAddClass();
                 this.Widget.QueueDraw();
-                if (this.Widget is Gtk.Container container)
-                {
-                    foreach (var child in container.Children)
-                        child.QueueDraw();
-                }
             }
         }
 
