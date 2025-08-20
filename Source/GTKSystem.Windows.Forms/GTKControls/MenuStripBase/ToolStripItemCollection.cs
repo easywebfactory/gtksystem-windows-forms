@@ -80,7 +80,11 @@ namespace System.Windows.Forms
 
         public ToolStripItem Add(string text, Image image, EventHandler onClick)
         {
-            ToolStripItem toolStripItem = new ToolStripLabel();
+            ToolStripMenuItem toolStripItem = new ToolStripMenuItem();
+            toolStripItem.Text = text;
+            toolStripItem.Image = image;
+            if (onClick != null)
+                toolStripItem.Click += onClick;
             AddMemu(toolStripItem);
             return toolStripItem;
         }
