@@ -45,9 +45,6 @@ namespace System.Windows.Forms
         private System.Drawing.Image _backgroundImage;
         public override Image BackgroundImage { get => _backgroundImage; set { _backgroundImage = value; self.BackgroundImage = value.Pixbuf; } }
 
-        [DefaultValue(BorderStyle.None)]
-        public override BorderStyle BorderStyle { get; set; }
-
         public void CancelAsync() { }
         public new void Load(string url)
         {

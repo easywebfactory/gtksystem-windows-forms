@@ -1,5 +1,6 @@
 ﻿
 using Gtk;
+using System.ComponentModel;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -37,7 +38,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public FormBase() : base("title", null, DialogFlags.UseHeaderBar | DialogFlags.DestroyWithParent)
         {
             this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("Form");
             this.WindowPosition = Gtk.WindowPosition.Center;
             this.BorderWidth = 0;
             ((Gtk.HeaderBar)Titlebar).DecorationLayout = "menu:minimize,maximize,close";
@@ -65,6 +65,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.ContentArea.Spacing = 0;
             this.ContentArea.Homogeneous = false;
             this.ContentArea.PackStart(ScrollView, true, true, 0);
+            this.ContentArea.StyleContext.AddClass("Form");
         }
         public new Gdk.Pixbuf Icon
         {
@@ -142,7 +143,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 
         public void AddClass(string cssClass)
         {
-            this.Override.AddClass(cssClass);
+            this.StyleContext.AddClass(cssClass);
         }
         public new void Add(Gtk.Widget child)
         {

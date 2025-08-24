@@ -20,7 +20,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             base.Vexpand = false;
             base.VscrollbarPolicy = Gtk.PolicyType.External;
             base.HscrollbarPolicy = Gtk.PolicyType.External;
-            base.OverlayScrolling = false;
+            base.OverlayScrolling = true;
             base.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
             base.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
         }
