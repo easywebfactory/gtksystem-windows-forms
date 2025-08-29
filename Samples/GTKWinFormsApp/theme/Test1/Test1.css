@@ -1,0 +1,139 @@
+/* NOTES to contributors:
+ * use 4 spaces indents, and keep code ALIGNED and ORDERED */
+
+/* default */
+
+
+#Test1 .Form {
+    background-color: rgb(255,228,192);
+    background-image: url("Test1_bgimage.png");
+    background-position: left top;
+    background-repeat: no-repeat;
+}
+
+#Test1 #dataGridView1 header * {
+    margin: 0px;
+    padding: 0px;
+    background-color: rgb(40,128,192);
+    color: #ffffff;
+}
+
+#Test1 #tableLayoutPanel1 .Panel > viewport {
+    border: none;
+    box-shadow: none;
+}
+
+#Test1 .PictureBox {
+    border: solid 1px #cccccc;
+}
+
+#Test1 > box > scrolledwindow button {
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 1px 1px #cccccc;
+    font-weight: 900;
+    color: #555555;
+}
+
+#Test1 #button9 {
+    background-image: url("dialog-error.png");
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+}
+
+#Test1 #button10 {
+    background-image: url("edit-undo-rtl.png");
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+}
+
+#Test1 #button11 {
+    background-image: url("emblem-urgent.png");
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+}
+
+#Test1 #button12 {
+    background-image: url("emblem-important.png");
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+}
+
+#Test1 #button13 {
+    background-image: url("dialog-warning.png");
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+}
+
+#Test1 #button14 {
+    background-image: url("document-print.png");
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+}
+
+#Test1 #button15 {
+    background-image: url("emblem-default.png");
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+}
+
+    #Test1 #button9:hover, #Test1 #button10:hover, #Test1 #button11:hover, #Test1 #button12:hover, #Test1 #button13:hover, #Test1 #button14:hover, #Test1 #button15:hover {
+        background-color: #cccccc
+    }
+
+
+#Test1 #label16 {
+    background-image: url("alarm-symbolic.symbolic.png");
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+}
+/* 帮助，打印*/
+#Test1 #button16 {
+    background-image: url("auth-sim-missing-symbolic.symbolic.png");
+    background-position: 10% center;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+    padding: 1px 20px;
+}
+
+#Test1 #button17 {
+    background-image: url("printer-printing.png");
+    background-position: 10% center;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+    padding: 1px 20px;
+}
+/* 流程按钮*/
+
+#Test1 #radioButton1, #Test1 #radioButton2, #Test1 #radioButton3, #Test1 #radioButton4, #Test1 #radioButton5, #Test1 #radioButton6 {
+    background-image: url("flowbutton.png");
+    background-size: 100% 100%;
+    border: none;
+    box-shadow: none;
+    color: #666666;
+}
+
+    #Test1 #radioButton1:hover, #Test1 #radioButton2:hover, #Test1 #radioButton3:hover, #Test1 #radioButton4:hover, #Test1 #radioButton5:hover, #Test1 #radioButton6:hover {
+        color: blue;
+    }
+
+    #Test1 #radioButton1:checked, #Test1 #radioButton2:checked, #Test1 #radioButton3:checked, #Test1 #radioButton4:checked, #Test1 #radioButton5:checked, #Test1 #radioButton6:checked {
+        background-image: url("flowbutton_checked.png");
+        color: white;
+    }

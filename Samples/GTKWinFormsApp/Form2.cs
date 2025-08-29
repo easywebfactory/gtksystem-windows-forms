@@ -88,22 +88,25 @@ namespace GTKWinFormsApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //listView1.Clear();
             listView1.Groups.Add("listViewGroup11", "listViewGroup11");
             listView1.Groups.Add("listViewGroup21", "listViewGroup21");
-            listView1.Items.Add(new ListViewItem("同时添加分组和数据") { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[0] });
-            listView1.Items.Add(new ListViewItem("向指定分组添加数据") { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[1] });
+            for (int i = 0; i < 20; i++)
+            {
+                //listView1.Clear();
+                listView1.Items.Add(new ListViewItem("同时添加分组和数据") { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[0] });
+                listView1.Items.Add(new ListViewItem("向指定分组添加数据") { ForeColor = Color.Red, BackColor = Color.Yellow, Group = listView1.Groups[1] });
 
-            ListViewItem m = new ListViewItem("这是一种添加多栏数据的方法", 0);
-            m.Checked = true;
-            m.Selected = true;
-            m.ForeColor = Color.Green;
-            m.BackColor = Color.Yellow;
-            m.SubItems.Add(new ListViewItem.ListViewSubItem(m, "子列数据1", Color.HotPink, Color.Gray, new Font(FontFamily.GenericSansSerif, 16)));
-            m.SubItems.Add(new ListViewItem.ListViewSubItem(m, "子列数据2"));
-            m.SubItems.Add(new ListViewItem.ListViewSubItem(m, "子列数据3子列数据3子列数据3"));
-            m.SubItems.Add(new ListViewItem.ListViewSubItem(m, "子列数据1"));
-            listView1.Items.Add(m);
+                ListViewItem m = new ListViewItem("这是一种添加多栏数据的方法", 0);
+                m.Checked = true;
+                m.Selected = true;
+                m.ForeColor = Color.Green;
+                m.BackColor = Color.Yellow;
+                m.SubItems.Add(new ListViewItem.ListViewSubItem(m, "子列数据1", Color.HotPink, Color.Gray, new Font(FontFamily.GenericSansSerif, 16)));
+                m.SubItems.Add(new ListViewItem.ListViewSubItem(m, "子列数据2"));
+                m.SubItems.Add(new ListViewItem.ListViewSubItem(m, "子列数据3子列数据3子列数据3"));
+                m.SubItems.Add(new ListViewItem.ListViewSubItem(m, "子列数据1"));
+                listView1.Items.Add(m);
+            }
         }
  
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)

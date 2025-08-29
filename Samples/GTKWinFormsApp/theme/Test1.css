@@ -1,0 +1,157 @@
+/* NOTES to contributors:
+ * use 4 spaces indents, and keep code ALIGNED and ORDERED */
+
+/* default */
+ 
+#Test1 .Form {
+    background-color: rgb(255,228,192);
+    background-image: url("Test1/Test1_bgimage.png");
+    background-position: left top;
+    background-repeat: no-repeat;
+}
+
+#Test1 .Form button {
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 1px 1px #cccccc;
+    font-weight: 900;
+    color: #555555;
+    border-radius: 5px;
+    background-clip: border-box;
+}
+
+#Test1 #dataGridView1 header * {
+    margin: 0px;
+    padding: 0px;
+    background-color: rgb(40,128,192);
+    color: #ffffff;
+    border-radius: 0px;
+    border-width:1px;
+}
+#Test1 #button9 {
+    background-image: url("Test1/dialog-error.png");
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+    background-clip: padding-box;
+}
+
+#Test1 #button10 {
+    background-image: url("Test1/edit-undo-rtl.png");
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+}
+
+#Test1 #button11 {
+    background-image: url("Test1/emblem-urgent.png");
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+}
+
+#Test1 #button12 {
+    background-image: url("Test1/emblem-important.png");
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+}
+
+#Test1 #button13 {
+    background-image: url("Test1/dialog-warning.png");
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+}
+
+#Test1 #button14 {
+    background-image: url("Test1/document-print.png");
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+}
+
+#Test1 #button15 {
+    background-image: url("Test1/emblem-default.png");
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+}
+
+    #Test1 #button9:hover, #Test1 #button10:hover, #Test1 #button11:hover, #Test1 #button12:hover, #Test1 #button13:hover, #Test1 #button14:hover, #Test1 #button15:hover {
+        background-color: rgb(40,128,192);
+        border: solid 1px rgb(40,128,192);
+        box-shadow: none;
+        color: #ffffff;
+        border-radius: 5px;
+        background-clip: border-box;
+        background-blend-mode:color;
+    }
+
+
+#Test1 #label16 {
+    background-image: url("Test1/alarm-symbolic.symbolic.png");
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+}
+/* 帮助，打印*/
+#Test1 #button16 {
+    background-image: url("Test1/auth-sim-missing-symbolic.symbolic.png");
+    background-position: 10% center;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+    padding: 1px 20px;
+}
+
+#Test1 #button17 {
+    background-image: url("Test1/printer-printing.png");
+    background-position: 10% center;
+    background-repeat: no-repeat;
+    border: solid 1px #c3c3c3;
+    box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
+    padding: 1px 20px;
+}
+#Test1 #button16:hover, #Test1 #button17:hover {
+    background-color:rgb(40,128,192);
+}
+/* 流程按钮*/
+
+#Test1 #radioButton2, #Test1 #radioButton3, #Test1 #radioButton4, #Test1 #radioButton5 {
+    background-image: url("Test1/flowbutton.png");
+    background-size: 100% 100%;
+    border: none;
+    box-shadow: none;
+    color: #666666;
+}
+#Test1 #radioButton1 {
+    background-image: url("Test1/flowbutton.png");
+    background-size: auto 100%;
+    background-position:right center;
+    border: none;
+    box-shadow: none;
+    color: #666666;
+}
+#Test1 #radioButton6 {
+    background-image: url("Test1/flowbutton.png");
+    background-size: auto 100%;
+    background-position: left center;
+    border: none;
+    box-shadow: none;
+    color: #666666;
+}
+    #Test1 #radioButton1:hover, #Test1 #radioButton2:hover, #Test1 #radioButton3:hover, #Test1 #radioButton4:hover, #Test1 #radioButton5:hover, #Test1 #radioButton6:hover {
+        color: blue;
+    }
+
+    #Test1 #radioButton1:checked, #Test1 #radioButton2:checked, #Test1 #radioButton3:checked, #Test1 #radioButton4:checked, #Test1 #radioButton5:checked, #Test1 #radioButton6:checked {
+        background-image: url("Test1/flowbutton_checked.png");
+        color: white;
+    }

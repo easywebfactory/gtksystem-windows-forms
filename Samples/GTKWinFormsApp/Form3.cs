@@ -1,4 +1,4 @@
-﻿using Gtk;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,17 +28,25 @@ namespace GTKWinFormsApp
             this.Shown += Form3_Shown;
             panel1.Click += Panel1_Click;
             panel1.DoubleClick += Panel1_DoubleClick;
+            button5.Click += Button5_Click;
 
-         
+
             toolStripMenuItem2.Click += ToolStripMenuItem2_Click;
             toolStripMenuItem7.Click += ToolStripMenuItem7_Click;
             toolStripMenuItem8.Click += ToolStripMenuItem8_Click;
-         
+
             this.FormClosing += Form3_FormClosing;
- 
+
             this.Load += Form3_Load;
+
         }
- 
+
+        private void Button5_Click(object? sender, EventArgs e)
+        {
+            Test1 test1 = new Test1();
+            test1.Show();
+        }
+
         private void Form3_FormClosing(object sender, FormClosingEventArgs e)
         {
             //this.Hide();
@@ -50,23 +58,20 @@ namespace GTKWinFormsApp
         private void ToolStripMenuItem8_Click(object? sender, EventArgs e)
         {
             this.ShowInTaskbar = false;
-            this.Visible = false;
-            //this.Hide();
+            //this.Visible = false;
+            this.Hide();
         }
 
         private void ToolStripMenuItem7_Click(object? sender, EventArgs e)
         {
-            this.ShowInTaskbar = true;
-            this.Visible = false;
             this.Close();
-            
         }
 
         private void ToolStripMenuItem2_Click(object? sender, EventArgs e)
         {
             notifyIcon1.ShowBalloonTip(10000, "C# 桌面应用程序跨平台界面框架", "一次编译，跨平台运行，支持Windows、Linux、MacOS \n便于开发跨平台winform软件，便于将C# winform升级为跨平台软件", ToolTipIcon.Warning);
+            this.ShowInTaskbar = true;
             this.WindowState = FormWindowState.Normal;
-            this.Visible = true;
             this.Show();
         }
 
@@ -93,6 +98,7 @@ namespace GTKWinFormsApp
 
         private void Form3_Shown(object sender, EventArgs e)
         {
+
             // SwitchBox switchBox = new SwitchBox();
             //switchBox.Location = new Point(100, 100);
             //panel1.Controls.Add(switchBox);
@@ -133,7 +139,7 @@ namespace GTKWinFormsApp
                     System.Threading.Thread.Sleep(20);
                 }
             }));
-
+ 
         }
 
         private void panel3_Paint(object sender, PaintEventArgs e)
@@ -181,14 +187,14 @@ namespace GTKWinFormsApp
         private void ssssToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Form2 f1 = new Form2();
-            f1.Show(this);
+            DialogResult res = f1.ShowDialog(this);
+            Console.WriteLine(res);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             Form4 f = new Form4();
-            DialogResult res = f.ShowDialog();
-            Console.WriteLine(res);
+            f.Show(this);
         }
 
         private void panel5_Scroll(object sender, System.Windows.Forms.ScrollEventArgs e)
@@ -204,7 +210,24 @@ namespace GTKWinFormsApp
         private void button4_Click(object sender, EventArgs e)
         {
             Form2 f1 = new Form2();
-            f1.Show(this);
+            f1.ShowDialog(this);
+        }
+
+        private void toolStripSplitButton1_Click(object sender, EventArgs e)
+        {
+            //MessageBox.Show("ddddddd");
+            Console.WriteLine("toolStripSplitButton1_Click");
+        }
+
+        private void toolStripSplitButton1_DoubleClick(object sender, EventArgs e)
+        {
+            Console.WriteLine("toolStripSplitButton1_DoubleClick");
+            //MessageBox.Show("toolStripSplitButton1_DoubleClick");
+        }
+
+        private void toolStripSplitButton1_MouseUp(object sender, MouseEventArgs e)
+        {
+            //MessageBox.Show("toolStripSplitButton1_MouseUp");
         }
     }
 }

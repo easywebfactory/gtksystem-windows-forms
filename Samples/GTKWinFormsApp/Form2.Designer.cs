@@ -165,7 +165,7 @@ namespace GTKWinFormsApp
             // timer1
             // 
             timer1.Enabled = true;
-            timer1.Interval = 2000;
+            timer1.Interval = 3000;
             timer1.Tick += Timer1_Tick;
             // 
             // label2

@@ -441,6 +441,17 @@ namespace GTKWinFormsApp
             button7.UseVisualStyleBackColor = false;
             button7.Click += button7_Click;
             // 
+            // tabPage1
+            // 
+            tabPage1.Controls.Add(splitContainer1);
+            tabPage1.Location = new Point(4, 29);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(1179, 426);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "数据表格示例";
+            tabPage1.UseVisualStyleBackColor = true;
+            // 
             // tabControl1
             // 
             tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -455,23 +466,13 @@ namespace GTKWinFormsApp
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(1187, 459);
             tabControl1.TabIndex = 4;
-            // 
-            // tabPage1
-            // 
-            tabPage1.Controls.Add(splitContainer1);
-            tabPage1.Location = new Point(4, 29);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(1179, 426);
-            tabPage1.TabIndex = 0;
-            tabPage1.Text = "数据表格示例";
-            tabPage1.UseVisualStyleBackColor = true;
+
             // 
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
             splitContainer1.FixedPanel = FixedPanel.Panel1;
-            splitContainer1.Location = new Point(3, 3);
+            splitContainer1.Location = new Point(0, 0);
             splitContainer1.Margin = new Padding(4);
             splitContainer1.Name = "splitContainer1";
             splitContainer1.Orientation = Orientation.Horizontal;
@@ -665,15 +666,15 @@ namespace GTKWinFormsApp
             // pictureBox1
             // 
             pictureBox1.BackgroundImage = Properties.Resources.RC;
-            pictureBox1.Image = Properties.Resources.timg;
+            //pictureBox1.Image = Properties.Resources.timg;
             pictureBox1.Location = new Point(401, 28);
             pictureBox1.Margin = new Padding(4);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(333, 220);
-            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 5;
             pictureBox1.TabStop = false;
-            pictureBox1.ImageLocation = "Resources/kenan.gif";
+            pictureBox1.ImageLocation = "./Resources/kenan.gif";
             // 
             // pictureBox2
             // 

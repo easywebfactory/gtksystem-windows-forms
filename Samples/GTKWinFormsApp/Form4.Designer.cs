@@ -1,4 +1,4 @@
-﻿
+﻿ 
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -288,6 +288,8 @@ namespace GTKWinFormsApp
             button4.TabIndex = 0;
             button4.Text = "button4";
             button4.UseVisualStyleBackColor = true;
+            button4.DialogResult=DialogResult.OK;
+
             // 
             // button3
             // 
