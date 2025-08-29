@@ -30,7 +30,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="GTKSystem.Windows.FormsDesigner" Version="1.0.0.7" />
+	  <PackageReference Include="GTKSystem.Windows.FormsDesigner" Version="1.0.0.8" />
 	</ItemGroup>
 
 	<ItemGroup>
