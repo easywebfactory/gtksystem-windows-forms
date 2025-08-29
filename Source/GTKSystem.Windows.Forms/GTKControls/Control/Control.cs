@@ -751,83 +751,85 @@ namespace System.Windows.Forms
         }
         private void SetDockAnchor(Control control)
         {
-            if (control.Widget.IsRealized)
+            Gtk.Widget widget = control.Widget;
+            if (widget.IsRealized)
             {
-                if (control.Widget.Parent is Gtk.Overlay lay)
+                if (widget.Parent is Gtk.Overlay lay)
                 {
+                    int framewidth = lay.AllocatedWidth;
+                    int frameheight = lay.AllocatedHeight;
+                    if (lay.Parent is IControlGtk)
+                    {
+                        if (lay.Parent.WidthRequest > -1)
+                            framewidth = lay.Parent.WidthRequest;
+                        if (lay.Parent.HeightRequest > -1)
+                            frameheight = lay.Parent.HeightRequest;
+                    }
                     if (control.Dock == DockStyle.Fill)
                     {
-                        control.Widget.WidthRequest = -1;
-                        control.Widget.HeightRequest = -1;
-                        if (lay.HeightRequest <= lay.Parent.AllocatedHeight)
+                        widget.WidthRequest = -1;
+                        widget.HeightRequest = -1;
+                        if (lay.HeightRequest <= frameheight)
                             lay.HeightRequest = -1;
-                        if (lay.WidthRequest <= lay.Parent.AllocatedWidth)
+                        if (lay.WidthRequest <= framewidth)
                             lay.WidthRequest = -1;
                     }
                     else if (control.Dock == DockStyle.Left)
                     {
-                        control.Widget.HeightRequest = -1;
-
-                        if (lay.HeightRequest <= lay.Parent.AllocatedHeight)
+                        widget.HeightRequest = -1;
+                        if (lay.HeightRequest <= frameheight)
                             lay.HeightRequest = -1;
                     }
                     else if (control.Dock == DockStyle.Right)
                     {
-                        control.Widget.HeightRequest = -1;
-
-                        if (lay.HeightRequest <= lay.Parent.AllocatedHeight)
+                        widget.HeightRequest = -1;
+                        if (lay.HeightRequest <= frameheight)
                             lay.HeightRequest = -1;
                     }
                     else if (control.Dock == DockStyle.Top)
                     {
-                        control.Widget.WidthRequest = -1;
-
-                        if (lay.WidthRequest <= lay.Parent.AllocatedWidth)
+                        widget.WidthRequest = -1;
+                        if (lay.WidthRequest <= framewidth)
                             lay.WidthRequest = -1;
                     }
                     else if (control.Dock == DockStyle.Bottom)
                     {
-                        control.Widget.WidthRequest = -1;
-
-                        if (lay.WidthRequest <= lay.Parent.AllocatedWidth)
+                        widget.WidthRequest = -1;
+                        if (lay.WidthRequest <= framewidth)
                             lay.WidthRequest = -1;
                     }
 
-                    if (lay.IsMapped == true)
+                    if (widget.Halign == Gtk.Align.End)
                     {
-                        Gtk.Widget widget = control.Widget;
-                        if (widget.Halign == Gtk.Align.End)
-                        {
-                            if (widget.WidthRequest > 0)
-                                widget.MarginEnd = Math.Max(0, lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
-                            else
-                                widget.MarginEnd = 0;
-                        }
-                        else if (widget.Halign == Gtk.Align.Fill)
-                        {
-                            if (control.Dock == DockStyle.Fill)
-                                widget.MarginEnd = 0;
-                            else if (widget.WidthRequest > 0)
-                                widget.MarginEnd = Math.Max(0, lay.AllocatedWidth - widget.MarginStart - widget.WidthRequest);
-                            else
-                                widget.MarginEnd = 0;
-                        }
-                        if (widget.Valign == Gtk.Align.End)
-                        {
-                            if (widget.HeightRequest > 0)
-                                widget.MarginBottom = Math.Max(0, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
-                            else
-                                widget.MarginBottom = 0;
-                        }
-                        else if (widget.Valign == Gtk.Align.Fill)
-                        {
-                            if (control.Dock == DockStyle.Fill)
-                                widget.MarginBottom = 0;
-                            else if (widget.HeightRequest > 0)
-                                widget.MarginBottom = Math.Max(0, lay.AllocatedHeight - widget.MarginTop - widget.HeightRequest);
-                            else
-                                widget.MarginBottom = 0;
-                        }
+                        if (widget.WidthRequest > 0)
+                            widget.MarginEnd = Math.Max(0, framewidth - widget.MarginStart - widget.WidthRequest);
+                        else
+                            widget.MarginEnd = 0;
+                    }
+                    else if (widget.Halign == Gtk.Align.Fill)
+                    {
+                        if (control.Dock == DockStyle.Fill)
+                            widget.MarginEnd = 0;
+                        else if (widget.WidthRequest > 0)
+                            widget.MarginEnd = Math.Max(0, framewidth - widget.MarginStart - widget.WidthRequest);
+                        else
+                            widget.MarginEnd = 0;
+                    }
+                    if (widget.Valign == Gtk.Align.End)
+                    {
+                        if (widget.HeightRequest > 0)
+                            widget.MarginBottom = Math.Max(0, frameheight - widget.MarginTop - widget.HeightRequest);
+                        else
+                            widget.MarginBottom = 0;
+                    }
+                    else if (widget.Valign == Gtk.Align.Fill)
+                    {
+                        if (control.Dock == DockStyle.Fill)
+                            widget.MarginBottom = 0;
+                        else if (widget.HeightRequest > 0)
+                            widget.MarginBottom = Math.Max(0, frameheight - widget.MarginTop - widget.HeightRequest);
+                        else
+                            widget.MarginBottom = 0;
                     }
                 }
             }

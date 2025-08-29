@@ -367,7 +367,8 @@ namespace System.Windows.Forms
         public virtual Size Size { get=> _size; 
             set { _size = value;
                 Gtk.Widget widget = GetWidget();
-                widget.SetSizeRequest(value.Width, value.Height);
+                //widget.SetSizeRequest(value.Width, value.Height);
+                widget.SetSizeRequest(value.Width, -1);
             } 
         }
 

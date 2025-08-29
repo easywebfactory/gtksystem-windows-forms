@@ -155,8 +155,8 @@ namespace GTKSystem.Resources
         public override object GetObject(string name, CultureInfo culture)
         {
             object result = GetObject(name);
-            var stack = new StackTrace(true);
-            System.Reflection.MethodInfo method = (System.Reflection.MethodInfo)stack.GetFrame(1).GetMethod();
+            System.Diagnostics.StackFrame frame = new StackFrame(1);
+            System.Reflection.MethodInfo method = (System.Reflection.MethodInfo)frame.GetMethod();
             if (method.ReturnType.Name == "Object" || method.ReturnType.Name.Equals(result.GetType().Name))
             {
                 return result;

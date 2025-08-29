@@ -29,8 +29,9 @@ namespace System.Windows.Forms
             self.Valign = Gtk.Align.Fill;
             self.Hexpand = false;
             self.Vexpand = false;
+            base.Anchor = AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left;
         }
-
+        public override AnchorStyles Anchor { get; set; }
         public override DockStyle Dock { get { return DockStyle.Fill; } set { } }
         public override Size Size { get; set; }
         public override int Width { get; set; }

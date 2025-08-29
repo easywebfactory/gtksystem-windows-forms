@@ -4,14 +4,10 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
- 
-using GLib;
+
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Common;
 using System.Drawing;
-using static System.Windows.Forms.TableLayoutControlCollection;
 
 namespace System.Windows.Forms
 {
@@ -29,7 +25,7 @@ namespace System.Windows.Forms
         private TableLayoutControlCollection _controls;
 		private TableLayoutColumnStyleCollection _columnStyles;
 		private TableLayoutRowStyleCollection _rowStyles;
-        public Gtk.Grid grid => self.grid;
+        public Gtk.Grid grid => self;
         public TableLayoutPanel():base()
         {
             self.Override.sender = this;
