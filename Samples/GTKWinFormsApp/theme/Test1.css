@@ -84,15 +84,13 @@
     box-shadow: 0px 2px 1px 1px #c3c3c3,inset 0px -1px 2px 1px #cccccc;
 }
 
-    #Test1 #button9:hover, #Test1 #button10:hover, #Test1 #button11:hover, #Test1 #button12:hover, #Test1 #button13:hover, #Test1 #button14:hover, #Test1 #button15:hover {
-        background-color: rgb(40,128,192);
-        border: solid 1px rgb(40,128,192);
-        box-shadow: none;
-        color: #ffffff;
-        border-radius: 5px;
-        background-clip: border-box;
-        background-blend-mode:color;
-    }
+#Test1 #button9:hover, #Test1 #button10:hover, #Test1 #button11:hover, #Test1 #button12:hover, #Test1 #button13:hover, #Test1 #button14:hover, #Test1 #button15:hover {
+    background-color: rgb(40,128,192);
+    border: solid 1px rgb(40,128,192);
+    color: #ffffff;
+    border-radius: 5px;
+    background-clip: border-box;
+}
 
 
 #Test1 #label16 {
