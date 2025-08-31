@@ -23,38 +23,27 @@ namespace System.Windows.Forms
             {
                 __ownerControl = owner.GtkControl as Gtk.Container;
                 __owner = owner;
-                __ownerControl.Mapped += __ownerControl_Mapped;
-                __ownerControl.ResizeChecked += __ownerControl_ResizeChecked;
+                __ownerControl.Realized += __ownerControl_Realized;
             }
-
             public ControlCollection(Control owner, Gtk.Container ownerContainer)
             {
                 __ownerControl = ownerContainer;
                 __owner = owner;
-                __ownerControl.Mapped += __ownerControl_Mapped;
-                __ownerControl.ResizeChecked += __ownerControl_ResizeChecked;
+                __ownerControl.Realized += __ownerControl_Realized;
             }
-            //ResizeChecked可重置布局
-            private void __ownerControl_ResizeChecked(object sender, EventArgs e)
+            private bool is__ownerControl_Realized;
+            private void __ownerControl_Realized(object? sender, EventArgs e)
             {
-                if (sender is Gtk.Overlay lay)
+                if (is__ownerControl_Realized == false)
                 {
-                    ResizeMapped(lay);
-                }
-            }
-
-            private bool is__ownerControl_Mapped = false;
-            private void __ownerControl_Mapped(object sender, EventArgs e)
-            {
-                if (is__ownerControl_Mapped == false)
-                {
-                    is__ownerControl_Mapped = true;
+                    is__ownerControl_Realized = true;
                     if (sender is Gtk.Overlay lay)
                     {
                         ResizeMapped(lay);
                     }
                 }
             }
+
             private void ResizeMapped(Gtk.Overlay lay)
             {
                 foreach (object item in this)

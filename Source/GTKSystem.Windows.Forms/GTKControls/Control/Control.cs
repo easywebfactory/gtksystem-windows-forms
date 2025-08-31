@@ -765,6 +765,14 @@ namespace System.Windows.Forms
                         if (lay.Parent.HeightRequest > -1)
                             frameheight = lay.Parent.HeightRequest;
                     }
+                    else if (lay.Parent.Parent is IControlGtk)
+                    {
+                        if (lay.Parent.Parent.WidthRequest > -1)
+                            framewidth = lay.Parent.Parent.WidthRequest;
+                        if (lay.Parent.Parent.HeightRequest > -1)
+                            frameheight = lay.Parent.Parent.HeightRequest;
+                    }
+
                     if (control.Dock == DockStyle.Fill)
                     {
                         widget.WidthRequest = -1;
