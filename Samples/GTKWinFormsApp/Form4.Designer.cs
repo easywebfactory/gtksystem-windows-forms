@@ -123,7 +123,7 @@ namespace GTKWinFormsApp
             button1.BackgroundImage = Properties.Resources.timg;
             button1.Location = new Point(24, 45);
             button1.Name = "button1";
-            button1.Size = new Size(453, 340);
+            button1.Size = new Size(153, 340);
             button1.TabIndex = 0;
             button1.Text = "测试按钮1";
             button1.UseVisualStyleBackColor = true;
@@ -153,6 +153,7 @@ namespace GTKWinFormsApp
             // 
             // groupBox1
             // 
+            groupBox1.Anchor= AnchorStyles.Left| AnchorStyles.Right;
             groupBox1.Controls.Add(button10);
             groupBox1.Location = new Point(107, 429);
             groupBox1.Margin = new Padding(3, 4, 3, 4);

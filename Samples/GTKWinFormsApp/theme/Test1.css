@@ -125,6 +125,7 @@
 #Test1 #radioButton2, #Test1 #radioButton3, #Test1 #radioButton4, #Test1 #radioButton5 {
     background-image: url("Test1/flowbutton.png");
     background-size: 100% 100%;
+    background-color:rgba(0,0,0,0);
     border: none;
     box-shadow: none;
     color: #666666;
@@ -132,7 +133,8 @@
 #Test1 #radioButton1 {
     background-image: url("Test1/flowbutton.png");
     background-size: auto 100%;
-    background-position:right center;
+    background-position: right center;
+    background-color: rgba(0,0,0,0);
     border: none;
     box-shadow: none;
     color: #666666;
@@ -141,15 +143,18 @@
     background-image: url("Test1/flowbutton.png");
     background-size: auto 100%;
     background-position: left center;
+    background-color: rgba(0,0,0,0);
     border: none;
     box-shadow: none;
     color: #666666;
 }
     #Test1 #radioButton1:hover, #Test1 #radioButton2:hover, #Test1 #radioButton3:hover, #Test1 #radioButton4:hover, #Test1 #radioButton5:hover, #Test1 #radioButton6:hover {
         color: blue;
+        background-color: rgba(0,0,0,0);
     }
 
     #Test1 #radioButton1:checked, #Test1 #radioButton2:checked, #Test1 #radioButton3:checked, #Test1 #radioButton4:checked, #Test1 #radioButton5:checked, #Test1 #radioButton6:checked {
         background-image: url("Test1/flowbutton_checked.png");
         color: white;
+        background-color: rgba(0,0,0,0);
     }

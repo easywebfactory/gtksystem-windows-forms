@@ -20,7 +20,8 @@ namespace GTKWinFormsApp
             InitializeComponent();
 
             UserControl11 userControl11 = new UserControl11();
-            //userControl11.Location = new Point(300,300);
+            //userControl11.Location = new Point(300, 300);
+            //userControl11.Size = new Size(200,500);
             panel5.Controls.Add(userControl11);
             // Controls.Add(userControl11);
             this.SizeChanged += Form3_SizeChanged;

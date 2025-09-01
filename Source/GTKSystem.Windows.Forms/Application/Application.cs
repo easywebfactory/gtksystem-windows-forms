@@ -166,7 +166,7 @@ namespace System.Windows.Forms
 .ListView .GroupLine{border-top:inset 1px #6677bb;}
 .ListView .GroupTitle{padding-left:5px;padding-right:5px; color:#6677bb; }
 .ListView .GroupSubTitle{padding-left:5px;padding-right:5px; }
-
+.GroupBox>border{border: solid 1px rgba(76, 66, 66, 0.3);}
 
 .ToolStrip,.MenuStrip{padding:0px;border-radius:0px;min-height:6px;min-width:6px;}
 .ToolStrip>toolitem{padding:0px;}

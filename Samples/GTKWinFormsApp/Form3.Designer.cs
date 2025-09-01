@@ -182,10 +182,9 @@ namespace GTKWinFormsApp
             // 右对齐按钮ToolStripMenuItem
             // 
             右对齐按钮ToolStripMenuItem.Alignment = ToolStripItemAlignment.Right;
-            右对齐按钮ToolStripMenuItem.BackColor = Color.AliceBlue;
             右对齐按钮ToolStripMenuItem.Name = "右对齐按钮ToolStripMenuItem";
             右对齐按钮ToolStripMenuItem.Size = new Size(117, 26);
-            右对齐按钮ToolStripMenuItem.Text = " 支持一个右靠";
+            右对齐按钮ToolStripMenuItem.Text = "一个右靠菜单";
             // 
             // toolStrip2
             // 
@@ -432,6 +431,7 @@ namespace GTKWinFormsApp
             panel1.AutoScroll = true;
             panel1.BackColor = Color.MistyRose;
             panel1.BorderStyle = BorderStyle.FixedSingle;
+
             panel1.Controls.Add(button4);
             panel1.Controls.Add(button2);
             panel1.Controls.Add(button3);
