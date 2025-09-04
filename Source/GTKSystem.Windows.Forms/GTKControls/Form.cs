@@ -189,16 +189,16 @@ namespace System.Windows.Forms
         }
         public SizeF AutoScaleDimensions { get; set; }
         public AutoScaleMode AutoScaleMode { get; set; }
-        public FormBorderStyle formBorderStyle = FormBorderStyle.Sizable;
+        private FormBorderStyle formBorderStyle = FormBorderStyle.Sizable;
         public FormBorderStyle FormBorderStyle
         {
             get { return formBorderStyle; }
             set {
                 formBorderStyle = value;
-                self.Resizable = value == FormBorderStyle.Sizable || value == FormBorderStyle.SizableToolWindow;
+                self.Resizable = value == FormBorderStyle.Sizable || value == FormBorderStyle.SizableToolWindow || value == FormBorderStyle.None;
                 if (value == FormBorderStyle.None)
                 {
-                    self.Decorated = false; //删除工具栏
+                    self.Decorated = false;
                 }
                 else if (value == FormBorderStyle.FixedToolWindow)
                 {
