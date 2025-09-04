@@ -193,7 +193,8 @@ namespace System.Windows.Forms
         public FormBorderStyle FormBorderStyle
         {
             get { return formBorderStyle; }
-            set {
+            set
+            {
                 formBorderStyle = value;
                 self.Resizable = value == FormBorderStyle.Sizable || value == FormBorderStyle.SizableToolWindow || value == FormBorderStyle.None;
                 if (value == FormBorderStyle.None)
