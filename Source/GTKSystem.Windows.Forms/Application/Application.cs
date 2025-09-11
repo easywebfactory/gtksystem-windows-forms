@@ -177,8 +177,9 @@ namespace System.Windows.Forms
 .ToolStrip levelbar,.MenuStrip levelbar{padding:0px;min-height:6px;min-width:6px;border-radius:0px;border-width:0px;}
 .StatusStrip {border-top:solid 1px @frame_color;}
 .MenuItemButton {background-color:transparent;background:none; border:none; border-radius:0px;border-width:0px; padding:0px;box-shadow:none; min-width:1px;min-height:1px;}
-.ToolStrip checkbutton,.MenuStrip checkbutton{margin-left:-22px; } 
-.ToolStrip menu button.check,.MenuStrip menu button.check{margin-left:-23px; padding:0px;}
+.ToolStrip checkbutton,.MenuStrip checkbutton{margin-left:-20px; padding:0px; } 
+.ToolStrip menu button image,.MenuStrip menu button image{margin-left:-22px;}
+.ToolStrip menu button image+label,.MenuStrip menu button image+label{margin-left:-2px; }
 .ContextMenuStrip button image{margin-left:-22px; }
 .ContextMenuStrip button image+label{margin-left:-2px; }
 .ContextMenuStrip checkbutton{margin-left:-22px;}
