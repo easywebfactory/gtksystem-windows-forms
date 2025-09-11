@@ -176,10 +176,12 @@ namespace System.Windows.Forms
 .ToolStrip entry,.MenuStrip entry{padding-top:0px;padding-bottom:0px; min-height:6px;min-width:6px;border-radius:0px;border-width:1px;}
 .ToolStrip levelbar,.MenuStrip levelbar{padding:0px;min-height:6px;min-width:6px;border-radius:0px;border-width:0px;}
 .StatusStrip {border-top:solid 1px @frame_color;}
-.MenuItemButton {background:none; border:none; border-radius:0px;border-width:0px; padding:0px;box-shadow:none; min-width:1px;min-height:1px;}
+.MenuItemButton {background-color:transparent;background:none; border:none; border-radius:0px;border-width:0px; padding:0px;box-shadow:none; min-width:1px;min-height:1px;}
 .ToolStrip checkbutton,.MenuStrip checkbutton{margin-left:-22px; } 
 .ToolStrip menu button.check,.MenuStrip menu button.check{margin-left:-23px; padding:0px;}
-
+.ContextMenuStrip button image{margin-left:-22px; }
+.ContextMenuStrip button image+label{margin-left:-2px; }
+.ContextMenuStrip checkbutton{margin-left:-22px;}
 .NumericUpDown{border-width:1px;padding:2px; }
 .NumericUpDown button.up{border-width:0px;padding:0px;}
 .NumericUpDown button.down{border-width:0px;padding:0px;}

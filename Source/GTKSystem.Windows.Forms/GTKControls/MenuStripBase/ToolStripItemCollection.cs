@@ -88,7 +88,10 @@ namespace System.Windows.Forms
             AddMemu(toolStripItem);
             return toolStripItem;
         }
-
+        public new void Add(ToolStripItem item)
+        {
+            AddMemu(item);
+        }
         public int AddMemu(ToolStripItem item)
         {
             item.Parent = owner;

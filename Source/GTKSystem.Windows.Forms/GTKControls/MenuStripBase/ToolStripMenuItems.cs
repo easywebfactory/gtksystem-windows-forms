@@ -1,4 +1,6 @@
-﻿namespace System.Windows.Forms
+﻿using Gtk;
+
+namespace System.Windows.Forms
 {
     public interface IToolMenuItem
     {
@@ -15,17 +17,50 @@
 
     public class StripMenuItem : Gtk.MenuItem, IToolMenuItem
     {
-        public StripMenuItem()
+        public Gtk.CheckButton checkButton = new Gtk.CheckButton() { Visible = true };
+        public StripMenuItem() : base()
         {
             base.Visible = true;
+            checkButton.ImagePosition = PositionType.Left;
+            checkButton.Halign = Align.Start;
+            checkButton.Expand = true;
+            checkButton.Hexpand = true;
+            checkButton.Xalign = 0f;
+            checkButton.DrawIndicator = false;
+            checkButton.Relief = ReliefStyle.None;
+            base.Add(checkButton);
         }
         public Gtk.Widget ToolItem { get; }
         public Gtk.Widget MenuItem { get => this; }
-        public string Text { get => base.Label; set => base.Label = value; }
+        public string Text { get => checkButton.Label; set => checkButton.Label = value; }
         public ToolStripItemDisplayStyle DisplayStyle { get; set; }
-        public bool Checked { get; set; }
-        public CheckState CheckState { get; set; }
-        public Gdk.Pixbuf Image { get; set; }
+        public bool Checked { get => checkButton.DrawIndicator; set => checkButton.DrawIndicator = value; }
+        public CheckState CheckState { get => checkButton.Active == true ? CheckState.Checked : CheckState.Unchecked; set => checkButton.Active = value == CheckState.Checked; }
+        private Gdk.Pixbuf _Image;
+        public Gdk.Pixbuf Image
+        {
+            get => _Image; set
+            {
+                _Image = value;
+                if (value == null)
+                {
+                    checkButton.DrawIndicator = false;
+                    checkButton.AlwaysShowImage = false;
+                }
+                else
+                {
+                    checkButton.DrawIndicator = false;
+                    checkButton.AlwaysShowImage = true;
+                    checkButton.Image = new Gtk.Image(value);
+                }
+            }
+        }
+        protected override void Dispose(bool disposing)
+        {
+            _Image?.Dispose();
+            checkButton.Dispose();
+            base.Dispose(disposing);
+        }
     }
     public class StripToolButton : Gtk.ToolButton, IToolMenuItem
     {

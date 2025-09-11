@@ -10,10 +10,11 @@ namespace System.Windows.Forms
 {
     public class ContextMenuStrip:ToolStripDropDownMenu
     {
-        public ContextMenuStrip() { 
-        
+        public ContextMenuStrip() {
+            self.StyleContext.AddClass("ContextMenuStrip");
         }
-        public ContextMenuStrip(IContainer container) {
+        public ContextMenuStrip(IContainer container) : this()
+        {
             container.Add(this);
         }
         protected void SetVisibleCore(bool visible) { }
