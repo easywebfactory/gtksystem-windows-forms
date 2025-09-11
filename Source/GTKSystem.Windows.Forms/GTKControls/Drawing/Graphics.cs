@@ -13,21 +13,20 @@ namespace System.Drawing
         public Cairo.Context context;
         private Gdk.Rectangle rectangle;
         private Gtk.Widget widget;
-        public static Cairo.Context Context;
+        private Image image;
         #region 用于输入与输出的数值调整差值
         internal double diff_left { get; set; }
         internal double diff_top { get; set; }
         //internal int diff_right { get; set; }
         //internal int diff_bottom { get; set; }
         #endregion
-        internal Graphics(Gtk.Widget widget, Cairo.Context context, Gdk.Rectangle rectangle)
+        internal Graphics(Gtk.Widget widget, Cairo.Context context, Gdk.Rectangle rectangle) : this(context, rectangle)
         {
-            Graphics.Context = context;
-
             this.widget = widget;
-            this.context = context;
-            this.rectangle = rectangle;
-            this.Clip = new Region(new Rectangle(this.rectangle.X, this.rectangle.Y, this.rectangle.Width, this.rectangle.Height));
+        }
+        internal Graphics(Image widget, Cairo.Context context, Gdk.Rectangle rectangle) : this(context, rectangle)
+        {
+            this.image = widget;
         }
         internal Graphics(Cairo.Context context, Gdk.Rectangle rectangle)
         {
@@ -1531,9 +1530,9 @@ namespace System.Drawing
         {
             try
             {
-                if (this.widget is Image image && Graphics.simisurface != null && Graphics.simisurface.Status == Cairo.Status.Success)
+                if (this.image != null && Graphics.simisurface != null && Graphics.simisurface.Status == Cairo.Status.Success)
                 {
-                    image.Pixbuf = new Pixbuf(Graphics.simisurface, 0, 0, image.Width, image.Height);
+                    this.image.Pixbuf = new Pixbuf(Graphics.simisurface, 0, 0, this.image.Width, this.image.Height);
                 }
             }
             finally

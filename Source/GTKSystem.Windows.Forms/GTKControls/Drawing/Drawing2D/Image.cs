@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 namespace System.Drawing
 {
     [Serializable]
-	public abstract class Image : Gtk.Widget, IDisposable, ICloneable, ISerializable//,MarshalByRefObject
+	public abstract class Image : MarshalByRefObject, IDisposable, ICloneable, ISerializable
     {
         #region 只取图像byte[]数据 
         internal Image(byte[] pixbuf)
@@ -374,7 +374,6 @@ namespace System.Drawing
                 _Pixbuf.Dispose();
             if (_PixbufData != null)
                 _PixbufData = null;
-			base.Dispose(disposing);
         }
 		private ImageFormat GetImageFormat(string extension)
 		{
