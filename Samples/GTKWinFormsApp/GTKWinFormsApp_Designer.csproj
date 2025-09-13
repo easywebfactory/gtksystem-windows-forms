@@ -10,11 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="gtkobj\**" />
     <Compile Remove="obj\**" />
-    <EmbeddedResource Remove="gtkobj\**" />
     <EmbeddedResource Remove="obj\**" />
-    <None Remove="gtkobj\**" />
     <None Remove="obj\**" />
   </ItemGroup>
 
