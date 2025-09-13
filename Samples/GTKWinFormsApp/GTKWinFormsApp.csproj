@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<OutputType>WinExe</OutputType>
+		<OutputType>Exe</OutputType>
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>annotations</Nullable>
 		<UseWindowsForms>False</UseWindowsForms>
@@ -11,6 +11,14 @@
 		<ImplicitUsings>disable</ImplicitUsings>
 		<GenerateResourceWarnOnBinaryFormatterUse>false</GenerateResourceWarnOnBinaryFormatterUse>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <Optimize>True</Optimize>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="obj\**" />
+	  <EmbeddedResource Remove="obj\**" />
+	  <None Remove="obj\**" />
+	</ItemGroup>
 	<ItemGroup>
 		<RuntimeHostConfigurationOption Include="System.Drawing.EnableUnixSupport" Value="true" />
 	</ItemGroup>
@@ -19,7 +27,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="App.config" />
 	  <None Remove="TestData1.json" />
 	</ItemGroup>
 
@@ -27,10 +34,6 @@
 	  <Content Include="TestData1.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Include="GTKSystem.Windows.FormsDesigner" Version="1.0.0.8" />
 	</ItemGroup>
 
 	<ItemGroup>

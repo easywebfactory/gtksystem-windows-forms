@@ -40,6 +40,13 @@ namespace GTKWinFormsApp
 
             this.Load += Form3_Load;
 
+            ddddToolStripMenuItem1.Click += DdddToolStripMenuItem1_Click;
+        }
+
+        private void DdddToolStripMenuItem1_Click(object? sender, EventArgs e)
+        {
+            var p = sender as ToolStripMenuItem;
+
         }
 
         private void Button5_Click(object? sender, EventArgs e)
@@ -183,6 +190,12 @@ namespace GTKWinFormsApp
             //g.DrawPath(new Pen(gradientBrush, 2), path);
 
             //g.FillPath(brush, path);
+            Image image = new Bitmap(500,300);
+            Graphics gg = Graphics.FromImage(image);
+            gg.DrawString("test文本gggggggg", new Font(GenericFontFamilies.Serif.ToString(), 20), new SolidBrush(Color.Red), new PointF(10, 50));
+            gg.Flush();
+
+            g.DrawImageUnscaled(image, 0, 0);
         }
 
         private void ssssToolStripMenuItem1_Click(object sender, EventArgs e)

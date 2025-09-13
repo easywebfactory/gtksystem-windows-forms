@@ -10,6 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="gtkobj\**" />
+    <Compile Remove="obj\**" />
+    <EmbeddedResource Remove="gtkobj\**" />
+    <EmbeddedResource Remove="obj\**" />
+    <None Remove="gtkobj\**" />
+    <None Remove="obj\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Properties\AssemblyInfo.cs" />
     <Compile Remove="System.ComponentModel.cs" />
     <Compile Remove="System.Resources.ResourceManager.cs" />

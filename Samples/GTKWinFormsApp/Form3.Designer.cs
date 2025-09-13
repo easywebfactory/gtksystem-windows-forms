@@ -314,6 +314,7 @@ namespace GTKWinFormsApp
             // ddddToolStripMenuItem1
             // 
             ddddToolStripMenuItem1.Name = "ddddToolStripMenuItem1";
+            ddddToolStripMenuItem1.Image = (Image)resources.GetObject("ssssToolStripMenuItem.Image");
             ddddToolStripMenuItem1.Size = new Size(118, 24);
             ddddToolStripMenuItem1.Text = "dddd";
             // 
