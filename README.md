@@ -128,8 +128,8 @@ GTKSystem.Windows.Forms是必须引用
 ```
 <Project>
 	<PropertyGroup>
-		<BaseIntermediateOutputPath>obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
-		<IntermediateOutputPath>$(BaseIntermediateOutputPath)\$(TargetFramework)\</IntermediateOutputPath>
+		<BaseIntermediateOutputPath>obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+		<IntermediateOutputPath>$(BaseIntermediateOutputPath)\$(TargetFramework)</IntermediateOutputPath>
 	</PropertyGroup>
 </Project>
 ```
