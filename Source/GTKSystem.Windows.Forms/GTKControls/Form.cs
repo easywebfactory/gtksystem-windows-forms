@@ -107,6 +107,7 @@ namespace System.Windows.Forms
                     this.Parent = parent;
                     self.TransientFor = parent.self;
                     self.DestroyWithParent = true;
+                    parent.self.Group.AddWindow(self);
                 }
                 if (StartPosition == FormStartPosition.CenterScreen)
                     self.WindowPosition = WindowPosition.Center;
@@ -117,11 +118,7 @@ namespace System.Windows.Forms
                 else
                     self.WindowPosition = WindowPosition.Center;
 
-                if (this.MaximizeBox == false && this.MinimizeBox == false)
-                {
-                    self.TypeHint = Gdk.WindowTypeHint.Dialog;
-                }
-                else if (this.MaximizeBox == false)
+                if (this.MaximizeBox == false)
                 {
                     self.Resizable = false;
                 }
@@ -153,7 +150,11 @@ namespace System.Windows.Forms
             }
             else
             {
-                self.Visible = true;
+                foreach (var item in this.self.Group.ListWindows())
+                {
+                    item.Visible = true;
+                    item.Window.Show();
+                }
             }
             self.ShowAll();
         }
@@ -201,20 +202,9 @@ namespace System.Windows.Forms
                 {
                     self.Decorated = false;
                 }
-                else if (value == FormBorderStyle.FixedToolWindow)
-                {
-                    self.Decorated = true;
-                    self.TypeHint = Gdk.WindowTypeHint.Dialog;
-                }
-                else if (value == FormBorderStyle.SizableToolWindow)
-                {
-                    self.Decorated = true;
-                    self.TypeHint = Gdk.WindowTypeHint.Dialog;
-                }
                 else
                 {
                     self.Decorated = true;
-                    self.TypeHint = Gdk.WindowTypeHint.Normal;
                 }
             }
         }
@@ -283,8 +273,8 @@ namespace System.Windows.Forms
                 contanter.MarginBottom = value.Bottom;
             }
         }
-        public bool MaximizeBox { get; set; } = true;
-        public bool MinimizeBox { get; set; } = true;
+        public bool MaximizeBox { get => self.MaximizeBox; set => self.MaximizeBox = value; }
+        public bool MinimizeBox { get => self.MinimizeBox; set => self.MinimizeBox = value; }
         public double Opacity { get { return self.Opacity; } set { self.Opacity = value; } }
         public bool ShowIcon { get; set; } = true;
         public bool ShowInTaskbar { get { return self.SkipTaskbarHint == false; } set { self.SkipTaskbarHint = value == false; } }

@@ -2,6 +2,7 @@
 using Gtk;
 using System.ComponentModel;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
@@ -35,14 +36,45 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public delegate bool CloseWindowHandler(object sender, EventArgs e);
         public event CloseWindowHandler CloseWindowEvent;
         public event System.Windows.Forms.ScrollEventHandler Scroll;
+
+        private Gtk.Button minimize = null;
+        private Gtk.Button maximize = null;
         public FormBase() : base("title", null, DialogFlags.UseHeaderBar | DialogFlags.DestroyWithParent)
         {
             this.Override = new GtkControlOverride(this);
             this.WindowPosition = Gtk.WindowPosition.Center;
             this.BorderWidth = 0;
-            ((Gtk.HeaderBar)Titlebar).DecorationLayout = "menu:minimize,maximize,close";
+            if(Titlebar is Gtk.HeaderBar headerbar)
+            {
+                headerbar.DecorationLayout = "menu:close";
+                maximize = new Gtk.Button("window-maximize-symbolic", IconSize.SmallToolbar)
+                {
+                    Name = "maximize",
+                    Visible = true,
+                    Relief = ReliefStyle.None,
+                    Valign = Align.Center,
+                    Halign = Align.Center
+                };
+                maximize.StyleContext.AddClass("maximize");
+                maximize.StyleContext.AddClass("titlebutton");
+                maximize.Clicked += maximize_Clicked;
+                headerbar.PackEnd(maximize);
+                minimize = new Gtk.Button("window-minimize-symbolic", IconSize.SmallToolbar)
+                {
+                    Name = "minimize",
+                    Visible = true,
+                    Relief = ReliefStyle.None,
+                    Valign = Align.Center,
+                    Halign = Align.Center
+                };
+                minimize.StyleContext.AddClass("minimize");
+                minimize.StyleContext.AddClass("titlebutton");
+                minimize.Clicked += minimize_Clicked;
+                headerbar.PackEnd(minimize);
+            }
+          
             this.SetDefaultSize(100, 100);
-            this.TypeHint = Gdk.WindowTypeHint.Normal;
+            this.TypeHint = Gdk.WindowTypeHint.Dialog;
             this.AppPaintable = false;
             this.Deletable = true;
             this.Decorated = true;
@@ -67,6 +99,50 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.ContentArea.PackStart(ScrollView, true, true, 0);
             this.ContentArea.StyleContext.AddClass("Form");
         }
+
+        private void maximize_Clicked(object? sender, EventArgs e)
+        {
+            var maximize = sender as Gtk.Button;
+            if (maximize.Name == "restore")
+            {
+                this.Unmaximize();
+                maximize.Image = Gtk.Image.NewFromIconName("window-maximize-symbolic", IconSize.SmallToolbar);
+                maximize.Name = "maximize";
+            }
+            else
+            {
+                this.Maximize();
+                if (maximize != null)
+                {
+                    maximize.Image = Gtk.Image.NewFromIconName("window-restore-symbolic", IconSize.SmallToolbar);
+                    maximize.Name = "restore";
+                }
+            }
+        }
+
+        private void minimize_Clicked(object? sender, EventArgs e)
+        {
+            this.Iconify();
+        }
+        public bool MaximizeBox
+        {
+            get => maximize.Visible;
+            set
+            {
+                maximize.NoShowAll = true;
+                maximize.Visible = value;
+            }
+        }
+        public bool MinimizeBox
+        {
+            get => minimize.Visible;
+            set
+            {
+                minimize.NoShowAll = true;
+                minimize.Visible = value;
+            }
+        }
+ 
         public new Gdk.Pixbuf Icon
         {
             get => base.Icon;
