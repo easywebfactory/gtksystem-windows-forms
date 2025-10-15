@@ -369,11 +369,7 @@ namespace System.Windows.Forms
             balloonTip.DestroyWithParent = false;
             balloonTip.SetPosition(WindowPosition.None);
             balloonTip.TypeHint = Gdk.WindowTypeHint.Dialog;
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-                Gtk.Window pwin = Gtk.Window.ListToplevels().FirstOrDefault(x => x.IsVisible);
-                balloonTip.TransientFor = pwin == null ? Gtk.Window.ListToplevels()[0] : pwin;
-            }
+            balloonTip.TransientFor = Gtk.Window.ListToplevels()[0];
             balloonTip.SkipTaskbarHint = true;
             balloonTip.WidthRequest = 200;
             balloonTip.HeightRequest = 50;
@@ -420,7 +416,6 @@ namespace System.Windows.Forms
             balloonTip.Move(width - balloonTip.AllocatedWidth - 30, height - balloonTip.AllocatedHeight - 50 - offset_bottom);
             offset_bottom += balloonTip.AllocatedHeight;
         }
-
         private void BalloonTip_DeleteEvent(object o, DeleteEventArgs args)
         {
             Gtk.Window balloonTip = (Gtk.Window)o;

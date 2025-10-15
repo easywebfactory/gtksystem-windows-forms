@@ -350,9 +350,26 @@ namespace System.Windows.Forms
         }
         public static void Run(Form mainForm)
         {
+            if (mainForm.ShowInTaskbar == false)
+            {
+                Gtk.Window pw = new Gtk.Window(Gtk.WindowType.Toplevel);
+                pw.WindowPosition = Gtk.WindowPosition.Center;
+                pw.Decorated = false;
+                pw.WidthRequest = 1;
+                pw.HeightRequest = 1;
+                pw.SkipTaskbarHint = true;
+                mainForm.self.TransientFor = pw;
+                pw.Shown += Pw_Shown;
+                pw.Show();
+            }
             mainForm.self.Destroyed += Control_Destroyed;
             mainForm.Show();
             Gtk.Application.Run();
+        }
+        private static void Pw_Shown(object? sender, EventArgs e)
+        {
+            Gtk.Window pw = (Gtk.Window)sender;
+            pw.Window.Hide();
         }
         private static void Control_Destroyed(object sender, EventArgs e)
         {
