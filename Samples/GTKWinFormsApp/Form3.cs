@@ -65,8 +65,6 @@ namespace GTKWinFormsApp
 
         private void ToolStripMenuItem8_Click(object? sender, EventArgs e)
         {
-            this.ShowInTaskbar = false;
-            //this.Visible = false;
             this.Hide();
         }
 
@@ -78,7 +76,6 @@ namespace GTKWinFormsApp
         private void ToolStripMenuItem2_Click(object? sender, EventArgs e)
         {
             notifyIcon1.ShowBalloonTip(10000, "C# 桌面应用程序跨平台界面框架", "一次编译，跨平台运行，支持Windows、Linux、MacOS \n便于开发跨平台winform软件，便于将C# winform升级为跨平台软件", ToolTipIcon.Warning);
-            this.ShowInTaskbar = true;
             this.WindowState = FormWindowState.Normal;
             this.Show();
         }

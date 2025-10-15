@@ -553,7 +553,7 @@ namespace GTKWinFormsApp
             // 
             toolStripMenuItem8.Name = "toolStripMenuItem8";
             toolStripMenuItem8.Size = new Size(183, 24);
-            toolStripMenuItem8.Text = "隐藏窗口任务栏";
+            toolStripMenuItem8.Text = "隐藏窗口";
             // 
             // toolStripComboBox2
             // 
@@ -594,6 +594,8 @@ namespace GTKWinFormsApp
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "默认风格界面";
+            //MaximizeBox = false;
+            MinimizeBox = false;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             toolStrip2.ResumeLayout(false);
