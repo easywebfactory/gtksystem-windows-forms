@@ -41,15 +41,27 @@ namespace System.Windows.Forms
         private bool _visible;
 
         Gtk.StatusIcon statusIcon = null;
-
+        Gtk.Window statuswin;
         public NotifyIcon()
         {
             statusIcon = Gtk.StatusIcon.NewFromIconName("image-missing");
             statusIcon.ButtonPressEvent += StatusIcon_ButtonPressEvent;
             statusIcon.ButtonReleaseEvent += StatusIcon_ButtonReleaseEvent;
             statusIcon.Activate += StatusIcon_Activate;
+            statuswin = new Gtk.Window(WindowType.Toplevel);
+            statuswin.WindowPosition = Gtk.WindowPosition.Center;
+            statuswin.Decorated = false;
+            statuswin.WidthRequest = 1;
+            statuswin.HeightRequest = 1;
+            statuswin.SkipTaskbarHint = true;
+            statuswin.Shown += statuswin_Shown;
+            statuswin.Show();
         }
-
+        private static void statuswin_Shown(object? sender, EventArgs e)
+        {
+            Gtk.Window pw = (Gtk.Window)sender;
+            pw.Window.Hide();
+        }
         private void StatusIcon_Activate(object sender, EventArgs e)
         {
             OnClick(EventArgs.Empty);
@@ -320,6 +332,8 @@ namespace System.Windows.Forms
         {
             statusIcon?.Dispose();
             _contextMenuStrip = null;
+            statuswin?.Dispose();
+            statuswin?.Destroy();
             base.Dispose(disposing);
         }
 
@@ -363,19 +377,19 @@ namespace System.Windows.Forms
             ShowBalloonTip(timeout, _balloonTipTitle, _balloonTipText, _balloonTipIcon);
         }
         int offset_bottom = 0;
+        int offset_index = 0;
         public void ShowBalloonTip(int timeout, string tipTitle, string tipText, ToolTipIcon tipIcon)
         {
             Gtk.Window balloonTip = new Gtk.Window(WindowType.Toplevel);
-            balloonTip.DestroyWithParent = false;
+            balloonTip.DestroyWithParent = true;
             balloonTip.SetPosition(WindowPosition.None);
             balloonTip.TypeHint = Gdk.WindowTypeHint.Dialog;
-            balloonTip.TransientFor = Gtk.Window.ListToplevels()[0];
+            balloonTip.TransientFor = statuswin;
             balloonTip.SkipTaskbarHint = true;
             balloonTip.WidthRequest = 200;
             balloonTip.HeightRequest = 50;
             balloonTip.Decorated = true;
             balloonTip.KeepAbove = true;
-
             balloonTip.Title = tipTitle ?? "";
             Gtk.Label balloonTipText = new Gtk.Label(tipText) { Xpad = 20, Ypad = 20, Halign = Align.Start };
             balloonTip.Add(balloonTipText);
@@ -390,7 +404,7 @@ namespace System.Windows.Forms
                 balloonTip.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.dialog-information.png");
             
             balloonTip.DeleteEvent += BalloonTip_DeleteEvent;
-            balloonTip.Move(-1000,-1000);
+            balloonTip.Move(-1000, -1000);
 
             uint handler = GLib.Timeout.Add((uint)timeout, () =>
             {
@@ -398,8 +412,8 @@ namespace System.Windows.Forms
                 {
                     if (balloonTip != null)
                     {
-                        offset_bottom -= balloonTip.AllocatedHeight;
-                        if (offset_bottom < 0)
+                        offset_index -= 1;
+                        if (offset_index <= 0)
                             offset_bottom = 0;
                         balloonTip.Dispose();
                         balloonTip.Destroy();
@@ -410,11 +424,18 @@ namespace System.Windows.Forms
             });
             balloonTip.Data.Add("Timeout", handler);
             balloonTip.ShowAll();
+            balloonTip.NoShowAll = true;
             Gdk.Monitor monitor = Gdk.Display.Default.GetMonitorAtWindow(balloonTip.Window);
             int width = monitor.Workarea.Width;
             int height = monitor.Workarea.Height;
-            balloonTip.Move(width - balloonTip.AllocatedWidth - 30, height - balloonTip.AllocatedHeight - 50 - offset_bottom);
+            int offsetY = height - balloonTip.AllocatedHeight - 50 - offset_bottom;
+            if (offsetY < 0)
+            {
+                offset_bottom = 0;
+            }
+            balloonTip.Move(width - balloonTip.AllocatedWidth - 30, offsetY);
             offset_bottom += balloonTip.AllocatedHeight;
+            offset_index += 1;
         }
         private void BalloonTip_DeleteEvent(object o, DeleteEventArgs args)
         {
@@ -424,8 +445,8 @@ namespace System.Windows.Forms
                 if (balloonTip != null)
                 {
                     GLib.Timeout.Remove(Convert.ToUInt32(balloonTip.Data["Timeout"]));
-                    offset_bottom -= balloonTip.AllocatedHeight;
-                    if (offset_bottom < 0)
+                    offset_index -= 1;
+                    if (offset_index <= 0)
                         offset_bottom = 0;
                     balloonTip.Dispose();
                 }
