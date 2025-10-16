@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
@@ -14,30 +15,39 @@ namespace System.Windows.Forms
         }
 
         private static string appDataDirectory { get {
-                string[] assemblyFullName = Assembly.GetEntryAssembly().FullName.Split(',');
+                AssemblyName assembly = Assembly.GetEntryAssembly().GetName();
+                string[] assemblyFullName = assembly.FullName.Split(',');
                 string _namespace = assemblyFullName[0];
-                AssemblyName assembly = Assembly.GetExecutingAssembly().GetName();
                 return Path.Combine(_namespace, assembly.Name, assembly.Version.ToString());
             }
         }
 
         public static string CommonAppDataPath {
             get {
-                return Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),appDataDirectory);
+                string dir = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),appDataDirectory);
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+                return dir;
             } 
         }
         public static string UserAppDataPath
         {
             get
             {
-                return Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),appDataDirectory);
+                string dir = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), appDataDirectory);
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+                return dir;
             }
         }
         public static string LocalUserAppDataPath
         {
             get
             {
-                return Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),appDataDirectory);
+                string dir = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),appDataDirectory);
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+                return dir;
             }
         }
         public static string ExecutablePath { 
@@ -50,7 +60,7 @@ namespace System.Windows.Forms
             }
         }
         public static string StartupPath { get {
-                string appstart = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                string appstart = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 if (!File.Exists($"{appstart}/GTKSystem.Windows.Forms.dll"))
                 {
                     appstart = Path.GetDirectoryName(Path.Combine(Directory.GetCurrentDirectory(), typeof(System.Windows.Forms.Application).Assembly.Location));
