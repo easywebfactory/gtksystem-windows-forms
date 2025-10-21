@@ -50,22 +50,29 @@ namespace System.Windows.Forms
                 return dir;
             }
         }
+        private static string _excutablepath;
         public static string ExecutablePath { 
             get {
-                System.Diagnostics.ProcessModule module = System.Diagnostics.Process.GetCurrentProcess().MainModule;
-                if (module.ModuleName.ToLower() == "dotnet" || module.ModuleName.ToLower() == "dotnet.exe")
-                    return Assembly.GetEntryAssembly().Location;
-                else
-                    return module.FileName;
+                if (_excutablepath == null)
+                {
+                    System.Diagnostics.ProcessModule module = System.Diagnostics.Process.GetCurrentProcess().MainModule;
+                    if (module.ModuleName.ToLower() == "dotnet" || module.ModuleName.ToLower() == "dotnet.exe")
+                        _excutablepath = Assembly.GetEntryAssembly().Location;
+                    else
+                        _excutablepath = module.FileName;
+                }
+                return _excutablepath;
             }
         }
+        private static string _startuppath;
         public static string StartupPath { get {
-                string appstart = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                if (!File.Exists($"{appstart}/GTKSystem.Windows.Forms.dll"))
+                if (_startuppath == null)
                 {
-                    appstart = Path.GetDirectoryName(Path.Combine(Directory.GetCurrentDirectory(), typeof(System.Windows.Forms.Application).Assembly.Location));
+                    string appstart = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    Directory.SetCurrentDirectory(appstart);
+                    _startuppath = appstart;
                 }
-                return appstart;
+                return _startuppath;
             } 
         }
 

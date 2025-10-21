@@ -136,10 +136,10 @@ namespace System.Windows.Forms
                         }
                         else
                         {
-                            if (System.IO.File.Exists(Path.Combine(Application.StartupPath, "Resources/icon.png")))
-                                self.Icon = new Gdk.Pixbuf(Path.Combine(Application.StartupPath, "Resources/icon.png"));
-                            else if (System.IO.File.Exists(Path.Combine(Application.StartupPath, "Resources/icon.ico")))
-                                self.Icon = new Gdk.Pixbuf(Path.Combine(Application.StartupPath, "Resources/icon.ico"));
+                            if (System.IO.File.Exists("Resources/icon.png"))
+                                self.Icon = new Gdk.Pixbuf("Resources/icon.png");
+                            else if (System.IO.File.Exists("Resources/icon.ico"))
+                                self.Icon = new Gdk.Pixbuf("Resources/icon.ico");
                         }
                     }
                 }

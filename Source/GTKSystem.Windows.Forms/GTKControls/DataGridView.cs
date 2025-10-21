@@ -39,11 +39,10 @@ namespace System.Windows.Forms
             _columns = new DataGridViewColumnCollection(this);
             _rows = new DataGridViewRowCollection(this);
             _collect = new ControlBindingsCollection(this);
-            GridView.Realized += GridView_Realized;
+            self.Realized += Self_Realized;
             GridView.RowActivated += GridView_RowActivated;
             GridView.Selection.Changed += Selection_Changed;
         }
-
         private List<int> _selectedBandIndexes = new List<int>();
         private void Selection_Changed(object sender, EventArgs e)
         {
@@ -68,7 +67,7 @@ namespace System.Windows.Forms
             }
         }
         private bool Is_GridView_Realized;
-        private void GridView_Realized(object sender, EventArgs e)
+        private void Self_Realized(object sender, EventArgs e)
         {
             if (!Is_GridView_Realized)
             {
@@ -497,6 +496,7 @@ namespace System.Windows.Forms
             _collect.Clear();
             Store.Clear();
             Store.Dispose();
+            self.GridView.Dispose();
             base.Dispose(disposing);
         }
 

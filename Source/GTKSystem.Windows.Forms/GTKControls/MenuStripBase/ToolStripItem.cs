@@ -19,6 +19,39 @@ namespace System.Windows.Forms
         public virtual bool Checked { get; set; }
         public virtual CheckState CheckState { get; set; }
         public virtual System.Drawing.Image Image { get; set; }
+        private static Dictionary<string, string> fontLanguages = new Dictionary<string, string>();
+        static ToolStripItem()
+        {
+            if (fontLanguages.Count == 0)
+            {
+                fontLanguages.Add("宋体", "SimSun");
+                fontLanguages.Add("黑体", "SimHei");
+                fontLanguages.Add("微软雅黑", "Microsoft Yahei");
+                fontLanguages.Add("微软正黑", "Microsoft JhengHei");
+                fontLanguages.Add("微軟正黑體", "Microsoft JhengHei");
+                fontLanguages.Add("楷体", "KaiTi");
+                fontLanguages.Add("新宋体", "NSimSun");
+                fontLanguages.Add("仿宋", "FangSong");
+                fontLanguages.Add("標楷體", "BiauKai");
+                fontLanguages.Add("新細明體", "PMingLiU");
+                fontLanguages.Add("細明體", "MingLiU");
+                //macos
+                fontLanguages.Add("苹方", "PingFang SC");
+                fontLanguages.Add("华文黑体", "STHeiti");
+                fontLanguages.Add("华文楷体", "STKaiti");
+                fontLanguages.Add("华文宋体", "STSong");
+                fontLanguages.Add("华文仿宋", "STFangsong");
+                fontLanguages.Add("华文中宋", "STZhongsong");
+                fontLanguages.Add("华文琥珀", "STHupo");
+                fontLanguages.Add("华文新魏", "STXinwei");
+                fontLanguages.Add("华文隶书", "STLiti");
+                fontLanguages.Add("华文行楷", "STXingkai");
+                //open
+                fontLanguages.Add("思源黑体", "Source Han Sans CN");
+                fontLanguages.Add("思源宋体", "Source Han Serif SC");
+                fontLanguages.Add("文泉驿微米黑", "WenQuanYi Micro Hei");
+            }
+        }
         public ToolStripItem()
         {
             dropDownItems = new ToolStripItemCollection(this);
@@ -252,48 +285,25 @@ namespace System.Windows.Forms
                 if (_Font != null)
                 {
                     Gtk.Widget widget = GetWidget();
-                    Dictionary<string, string> fontLanguage = new Dictionary<string, string>();
-                    fontLanguage.Add("宋体", "SimSun");
-                    fontLanguage.Add("黑体", "SimHei");
-                    fontLanguage.Add("微软雅黑", "Microsoft Yahei");
-                    fontLanguage.Add("微软正黑", "Microsoft JhengHei");
-                    fontLanguage.Add("微軟正黑體", "Microsoft JhengHei");
-                    fontLanguage.Add("楷体", "KaiTi");
-                    fontLanguage.Add("新宋体", "NSimSun");
-                    fontLanguage.Add("仿宋", "FangSong");
-                    fontLanguage.Add("標楷體", "BiauKai");
-                    fontLanguage.Add("新細明體", "PMingLiU");
-                    fontLanguage.Add("細明體", "MingLiU");
-                    //macos
-                    fontLanguage.Add("苹方", "PingFang SC");
-                    fontLanguage.Add("华文黑体", "STHeiti");
-                    fontLanguage.Add("华文楷体", "STKaiti");
-                    fontLanguage.Add("华文宋体", "STSong");
-                    fontLanguage.Add("华文仿宋", "STFangsong");
-                    fontLanguage.Add("华文中宋", "STZhongsong");
-                    fontLanguage.Add("华文琥珀", "STHupo");
-                    fontLanguage.Add("华文新魏", "STXinwei");
-                    fontLanguage.Add("华文隶书", "STLiti");
-                    fontLanguage.Add("华文行楷", "STXingkai");
-                    //open
-                    fontLanguage.Add("思源黑体", "Source Han Sans CN");
-                    fontLanguage.Add("思源宋体", "Source Han Serif SC");
-                    fontLanguage.Add("文泉驿微米黑", "WenQuanYi Micro Hei");
+                    Pango.FontDescription fdesc = widget.PangoContext.FontDescription;
                     string fontfamily = _Font.Name;
                     if (string.IsNullOrWhiteSpace(fontfamily) == false)
                     {
-                        if (fontLanguage.ContainsKey(fontfamily))
+                        if (fontLanguages.TryGetValue(fontfamily, out string enname))
                         {
-                            _Font = new Font(fontLanguage[fontfamily], value.Size, value.Style, value.Unit, value.GdiCharSet);
+                            fdesc.Family = enname;
+                            _Font = new Font(enname, value.Size, value.Style, value.Unit, value.GdiCharSet);
                         }
-                        else if (!widget.PangoContext.Families.Any(o => o.Name == fontfamily))
+                        else if (widget.PangoContext.Families.Any(o => o.Name == fontfamily))
                         {
-                            _Font = new Font("", value.Size, value.Style, value.Unit, value.GdiCharSet);
-                            Console.WriteLine($"\"{_Font.Name}\" font name is not supported, only English names are supported. Please confirm that the font name is correct or replace it with an English name");
+                            fdesc.Family = fontfamily;
                         }
+                        //else
+                        //{
+                        //    Console.WriteLine($"\"{_Font.Name}\" font name is not supported, only English names are supported. Please confirm that the font name is correct or replace it with an English name");
+                        //    _Font = new Font(fdesc.Family, value.Size, value.Style, value.Unit, value.GdiCharSet);
+                        //}
                     }
-                    Pango.FontDescription fdesc = widget.PangoContext.FontDescription;
-                    fdesc.Family = _Font.Name;
                     if (_Font.Unit == GraphicsUnit.Point)
                         fdesc.Size = Convert.ToInt32(_Font.Size * Pango.Scale.PangoScale * 96 / 72);
                     else
