@@ -92,6 +92,7 @@ MacOS安装dotnet环境
 ### 如何运行软件
 1. windows下：直接编译发布运行，Debug目录的demo_app.exe文件或demo_app.dll文件都可以直接运行。
 2. linux和macos上：执行命令运行dotnet demo_app.dll。
+1. 通过visual studio发布成单一文件程序，直接双击即可运行（可能需要授权：sudo chmod +x demoapp）。
 
 ### VisualStudio插件安装
 
@@ -124,7 +125,7 @@ MacOS安装dotnet环境
 2、引用GTKSystem.Windows.Forms <br/>
 GTKSystem.Windows.Forms是必须引用
 
-3、新建添加配置文件Directory.Build.props，配置如下：
+3、【可选项】新建添加配置文件Directory.Build.props，此配置是为了区分窗体设计工程的obj目录（参考下面窗体设计器的用法，不是必需的），配置如下：
 ```
 <Project>
 	<PropertyGroup>
