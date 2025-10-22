@@ -14,7 +14,8 @@ namespace System.Windows.Forms
             Init();
         }
 
-        private static string appDataDirectory { get {
+        private static string appDataDirectory {
+            get {
                 AssemblyName assembly = Assembly.GetEntryAssembly().GetName();
                 string[] assemblyFullName = assembly.FullName.Split(',');
                 string _namespace = assemblyFullName[0];
@@ -55,11 +56,23 @@ namespace System.Windows.Forms
             get {
                 if (_excutablepath == null)
                 {
-                    System.Diagnostics.ProcessModule module = System.Diagnostics.Process.GetCurrentProcess().MainModule;
-                    if (module.ModuleName.ToLower() == "dotnet" || module.ModuleName.ToLower() == "dotnet.exe")
-                        _excutablepath = Assembly.GetEntryAssembly().Location;
+                    var args = Environment.GetCommandLineArgs();
+                    if (args.Length > 0)
+                    {
+                        _excutablepath = args[0];
+                    }
                     else
-                        _excutablepath = module.FileName;
+                    {
+#if NET6_0_OR_GREATER
+                        _excutablepath = Assembly.GetEntryAssembly().Location;
+                        if (string.IsNullOrWhiteSpace(_excutablepath))
+                            _excutablepath = Environment.ProcessPath;
+#else
+                        _excutablepath = Assembly.GetEntryAssembly().Location;
+                        if (string.IsNullOrWhiteSpace(_excutablepath))
+                            _excutablepath = Path.Combine(AppContext.BaseDirectory, Assembly.GetEntryAssembly()?.GetName().Name);
+#endif
+                    }
                 }
                 return _excutablepath;
             }
@@ -68,8 +81,11 @@ namespace System.Windows.Forms
         public static string StartupPath { get {
                 if (_startuppath == null)
                 {
-                    string appstart = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                    Directory.SetCurrentDirectory(appstart);
+                    string appstart = AppContext.BaseDirectory;
+                    if (string.IsNullOrWhiteSpace(appstart))
+                        appstart = Directory.GetCurrentDirectory();
+                    else
+                        Directory.SetCurrentDirectory(appstart);
                     _startuppath = appstart;
                 }
                 return _startuppath;

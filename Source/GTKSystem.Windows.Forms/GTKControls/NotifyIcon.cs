@@ -330,7 +330,6 @@ namespace System.Windows.Forms
         }
         protected override void Dispose(bool disposing)
         {
-            statusIcon?.Dispose();
             _contextMenuStrip = null;
             statuswin?.Dispose();
             statuswin?.Destroy();
