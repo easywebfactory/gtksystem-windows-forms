@@ -298,13 +298,6 @@ namespace System.Windows.Forms
                                     Console.WriteLine(themefolder + "=》目录不存在");
                                 }
                             }
-                            if (nameValue.TryGetValue("ThemeCssPath", out string themecss))
-                            {
-                                if (File.Exists(themecss))
-                                {
-                                    cssBuilder.AppendFormat("@import url(\"{0}\");", themecss).AppendLine();
-                                }
-                            }
                         }
                     }
                     if (nameValue.TryGetValue("UseCustomStyle", out string customstyle))
@@ -346,8 +339,6 @@ namespace System.Windows.Forms
                     setupthemecontent.AppendLine("Name=mytheme");
                     setupthemecontent.AppendLine("/* 主题文件所在文件夹 */");
                     setupthemecontent.AppendLine("ThemeFolder=theme");
-                    setupthemecontent.AppendLine("/* css文件路径 */");
-                    setupthemecontent.AppendLine("ThemeCssPath=theme/mytheme/theme.css");
 
                     setupthemecontent.AppendLine().AppendLine("[custom style]");
                     setupthemecontent.AppendLine("/* 自由定义样式文件 */");
