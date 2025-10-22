@@ -92,7 +92,7 @@ MacOS安装dotnet环境
 ### 如何运行软件
 1. windows下：直接编译发布运行，Debug目录的demo_app.exe文件或demo_app.dll文件都可以直接运行。
 2. linux和macos上：执行命令运行dotnet demo_app.dll。
-1. 通过visual studio发布成单一文件程序，直接双击即可运行（可能需要授权：sudo chmod +x demoapp）。
+3. 通过visual studio发布成独立程序（包含环境运行时库），直接双击即可运行（可能需要授权：sudo chmod +x demoapp）。
 
 ### VisualStudio插件安装
 
