@@ -70,7 +70,7 @@ namespace System.Windows.Forms
 #else
                         _excutablepath = Assembly.GetEntryAssembly().Location;
                         if (string.IsNullOrWhiteSpace(_excutablepath))
-                            _excutablepath = Path.Combine(AppContext.BaseDirectory, Assembly.GetEntryAssembly()?.GetName().Name);
+                            _excutablepath = Path.Combine(AppContext.BaseDirectory, Assembly.GetEntryAssembly()?.GetName().Name, ".dll");
 #endif
                     }
                 }
