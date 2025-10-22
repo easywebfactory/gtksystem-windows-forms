@@ -57,9 +57,6 @@ namespace GTKWinFormsApp
 
         private void Form3_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //this.Hide();
-            //this.Visible = false;
-            //e.Cancel = true;
 
         }
 
