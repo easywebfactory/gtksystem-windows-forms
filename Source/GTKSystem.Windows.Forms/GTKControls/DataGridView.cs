@@ -410,27 +410,27 @@ namespace System.Windows.Forms
                 return strc;
             }
         }
-        public bool NativeRowGetSelected(int rowindex)
+        public bool NativeRowGetSelected(TreeIter rowiter)
         {
             switch (SelectionMode)
             {
                 case DataGridViewSelectionMode.FullRowSelect:
                 case DataGridViewSelectionMode.RowHeaderSelect:
-                    var path = Store.GetPath(Rows[rowindex].TreeIter);
+                    var path = Store.GetPath(rowiter);
                     return GridView.Selection.GetSelectedRows().Any(p => p.Equals(path));
                     break;
                 default:
                     return false;
             }
         }
-        public void NativeRowSetSelected(int rowindex,bool selected)
+        public void NativeRowSetSelected(TreeIter rowiter,bool selected)
         {
             Gtk.Application.Invoke(delegate
             {
                 if (selected)
-                    GridView.Selection.SelectIter(Rows[rowindex].TreeIter);
+                    GridView.Selection.SelectIter(rowiter);
                 else
-                    GridView.Selection.UnselectIter(Rows[rowindex].TreeIter);
+                    GridView.Selection.UnselectIter(rowiter);
             });
         }
         public bool AllowUserToAddRows { get; set; }

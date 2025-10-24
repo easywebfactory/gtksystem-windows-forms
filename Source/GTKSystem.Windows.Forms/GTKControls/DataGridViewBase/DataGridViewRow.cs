@@ -41,7 +41,7 @@ namespace System.Windows.Forms
 
         public DataGridViewTriState Resizable { get; set; }
 
-        public bool Selected { get => DataGridView.NativeRowGetSelected(Index); set => DataGridView.NativeRowSetSelected(Index, value); }
+        public bool Selected { get => DataGridView.NativeRowGetSelected(this.TreeIter); set => DataGridView.NativeRowSetSelected(this.TreeIter, value); }
         //public bool Selected { get; set; }
 
         public DataGridViewElementStates State { get { return DataGridViewElementStates.None; } }
