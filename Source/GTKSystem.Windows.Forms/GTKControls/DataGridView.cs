@@ -4,9 +4,11 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+using Atk;
 using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+using Pango;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
@@ -42,17 +44,25 @@ namespace System.Windows.Forms
             self.Realized += Self_Realized;
             GridView.RowActivated += GridView_RowActivated;
             GridView.Selection.Changed += Selection_Changed;
+            GridView.ColumnsChanged += GridView_ColumnsChanged;
         }
-        private List<int> _selectedBandIndexes = new List<int>();
+
+        private void GridView_ColumnsChanged(object sender, EventArgs e)
+        {
+            foreach (var item in GridView.Columns)
+            {
+                item.Clicked -= Item_Clicked;
+                item.Clicked += Item_Clicked;
+            }
+        }
+
+        private void Item_Clicked(object sender, EventArgs e)
+        {
+            _selectedColumnIndex = ((DataGridViewColumn)sender).Index;
+        }
+        private int _selectedColumnIndex = -1;
         private void Selection_Changed(object sender, EventArgs e)
         {
-            _selectedBandIndexes.Clear();
-            TreePath[] treePaths = GridView.Selection.GetSelectedRows();
-            foreach (TreePath path in treePaths)
-            {
-                int idx = path.Indices.Last();
-                _selectedBandIndexes.Add(idx);
-            }
             if (SelectionChanged != null && Created)
                 SelectionChanged(this, e);
         }
@@ -63,7 +73,17 @@ namespace System.Windows.Forms
             if (CellClick != null)
             {
                 DataGridViewColumn column = args.Column as DataGridViewColumn;
-                CellClick(this, new DataGridViewCellEventArgs(column.Index, args.Path.Indices.Last()));
+                if (Store.GetIter(out TreeIter iter, args.Path))
+                {
+                    foreach (DataGridViewRow row in Rows)
+                    {
+                        if (iter.Equals(row.TreeIter))
+                        {
+                            CellClick(this, new DataGridViewCellEventArgs(column.Index, row.Index));
+                            break;
+                        }
+                    }
+                }
             }
         }
         private bool Is_GridView_Realized;
@@ -131,24 +151,16 @@ namespace System.Windows.Forms
                 switch (_SelectionMode)
                 {
                     case DataGridViewSelectionMode.CellSelect:
-                        {
-                            GridView.Selection.Mode = Gtk.SelectionMode.None;
-                            break;
-                        }
-
+                        GridView.Selection.Mode = Gtk.SelectionMode.None;
+                        break;
                     case DataGridViewSelectionMode.FullColumnSelect:
                     case DataGridViewSelectionMode.ColumnHeaderSelect:
-                        {
-                            GridView.Selection.Mode = Gtk.SelectionMode.Multiple;
-                            break;
-                        }
-
+                        GridView.Selection.Mode = Gtk.SelectionMode.None;
+                        break;
                     case DataGridViewSelectionMode.FullRowSelect:
                     case DataGridViewSelectionMode.RowHeaderSelect:
-                        {
-                            GridView.Selection.Mode = Gtk.SelectionMode.Multiple;
-                            break;
-                        }
+                        GridView.Selection.Mode = Gtk.SelectionMode.Multiple;
+                        break;
                 }
                 
             } }
@@ -301,46 +313,39 @@ namespace System.Windows.Forms
                 switch (SelectionMode)
                 {
                     case DataGridViewSelectionMode.CellSelect:
-                        {
-                            int cols = Store.NColumns;
-                            Store.Foreach(new TreeModelForeachFunc((model, path, iter) => {
-                                for (int i = 0; i < cols; i++)
-                                {
-                                    DataGridViewCell cell = (DataGridViewCell)model.GetValue(iter, i);
-                                    if (cell.Selected)
-                                        stcc.Add(cell);
-                                }
-                                return false;
-                            }));
-                            break;
-                        }
-
+                        ////暂不支持cell选择
+                        //int cols = Store.NColumns;
+                        //Store.Foreach(new TreeModelForeachFunc((model, path, iter) => {
+                        //    for (int i = 0; i < cols; i++)
+                        //    {
+                        //        DataGridViewCell cell = (DataGridViewCell)model.GetValue(iter, i);
+                        //        if (cell.Selected)
+                        //            stcc.Add(cell);
+                        //    }
+                        //    return false;
+                        //}));
+                        break;
                     case DataGridViewSelectionMode.FullColumnSelect:
                     case DataGridViewSelectionMode.ColumnHeaderSelect:
-                        {
-                            foreach (int columnIndex in _selectedBandIndexes)
-                            {
-                                foreach (DataGridViewRow dataGridViewRow in Rows)   // unshares all rows!
-                                {
-                                    stcc.Add(dataGridViewRow.Cells[columnIndex]);
-                                }
-                            }
-                            break;
-                        }
-
+                        ////暂不支持column选择
+                        //if (_selectedColumnIndex > -1 && _selectedColumnIndex < Columns.Count)
+                        //{
+                        //    foreach (DataGridViewRow dataGridViewRow in Rows)
+                        //    {
+                        //        stcc.Add(dataGridViewRow.Cells[_selectedColumnIndex]);
+                        //    }
+                        //}
+                        break;
                     case DataGridViewSelectionMode.FullRowSelect:
                     case DataGridViewSelectionMode.RowHeaderSelect:
+                        foreach (DataGridViewRow dataGridViewRow in SelectedRows)
                         {
-                            foreach (int rowIndex in _selectedBandIndexes)
+                            foreach (DataGridViewCell dataGridViewCell in dataGridViewRow.Cells)
                             {
-                                DataGridViewRow dataGridViewRow = (DataGridViewRow)Rows[rowIndex];
-                                foreach (DataGridViewCell dataGridViewCell in dataGridViewRow.Cells)
-                                {
-                                    stcc.Add(dataGridViewCell);
-                                }
+                                stcc.Add(dataGridViewCell);
                             }
-                            break;
                         }
+                        break;
                 }
 
                 return stcc;
@@ -361,11 +366,8 @@ namespace System.Windows.Forms
                         break;
                     case DataGridViewSelectionMode.FullColumnSelect:
                     case DataGridViewSelectionMode.ColumnHeaderSelect:
-                        foreach (int columnIndex in _selectedBandIndexes)
-                        {
-                            strc.Add(Columns[columnIndex]);
-                        }
-
+                        if (_selectedColumnIndex > -1 && _selectedColumnIndex < Columns.Count)
+                            strc.Add(Columns[_selectedColumnIndex]);
                         break;
                 }
 
@@ -387,9 +389,20 @@ namespace System.Windows.Forms
                         break;
                     case DataGridViewSelectionMode.FullRowSelect:
                     case DataGridViewSelectionMode.RowHeaderSelect:
-                        foreach (int rowIndex in _selectedBandIndexes)
+                        TreePath[] treePaths = GridView.Selection.GetSelectedRows();
+                        foreach (TreePath path in treePaths)
                         {
-                            strc.Add(Rows[rowIndex]);
+                            if (Store.GetIter(out TreeIter iter, path))
+                            {
+                                foreach (DataGridViewRow row in Rows.SharedList)
+                                {
+                                    if (iter.Equals(row.TreeIter))
+                                    {
+                                        strc.Add(row);
+                                        break;
+                                    }
+                                }
+                            }
                         }
                         break;
                 }
@@ -403,7 +416,8 @@ namespace System.Windows.Forms
             {
                 case DataGridViewSelectionMode.FullRowSelect:
                 case DataGridViewSelectionMode.RowHeaderSelect:
-                    return _selectedBandIndexes.Any(i => i == rowindex);
+                    var path = Store.GetPath(Rows[rowindex].TreeIter);
+                    return GridView.Selection.GetSelectedRows().Any(p => p.Equals(path));
                     break;
                 default:
                     return false;
