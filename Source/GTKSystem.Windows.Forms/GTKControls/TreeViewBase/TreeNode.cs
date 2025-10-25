@@ -184,7 +184,7 @@ namespace System.Windows.Forms
         }
         public void Remove()
         {
-            TreeView?.RemoveNode(this);
+            parent?.nodes?.Remove(this);
         }
         public object Clone()
         {

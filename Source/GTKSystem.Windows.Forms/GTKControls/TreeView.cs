@@ -95,7 +95,8 @@ namespace System.Windows.Forms
             if (AfterExpand != null && ((Gtk.TreeView)o).IsVisible)
             {
                 TreeNode result = null;
-                GetNodeChild(root, args.Path.Indices, ref result);
+                if (_store.GetIter(out TreeIter iter, args.Path))
+                    GetNodeChild(root, iter, ref result);
                 AfterExpand(this, new TreeViewEventArgs(result, TreeViewAction.Expand));
             }
         }
@@ -105,7 +106,8 @@ namespace System.Windows.Forms
             if (AfterCollapse != null && ((Gtk.TreeView)o).IsVisible)
             {
                 TreeNode result = null;
-                GetNodeChild(root, args.Path.Indices, ref result);
+                if (_store.GetIter(out TreeIter iter, args.Path))
+                    GetNodeChild(root, iter, ref result);
                 AfterCollapse(this, new TreeViewEventArgs(result, TreeViewAction.Collapse));
             }
         }
@@ -121,7 +123,8 @@ namespace System.Windows.Forms
                 {
                     TreePath currpath = paths.Last();
                     TreeNode result = null;
-                    GetNodeChild(root, currpath.Indices, ref result);
+                    if (_store.GetIter(out TreeIter iter, currpath))
+                        GetNodeChild(root, iter, ref result);
                     cancelEventArgs = new TreeViewCancelEventArgs(result, false, TreeViewAction.ByMouse);
 
                     BeforeSelect?.Invoke(this, cancelEventArgs);
@@ -282,7 +285,7 @@ namespace System.Windows.Forms
         {
             return self.TreeView.GetRowExpanded(_store.GetPath(node.TreeIter));
         }
-        internal void RemoveNode(TreeNode node)
+        internal void NativeRemoveNode(TreeNode node)
         {
             _store.Remove(ref node.TreeIter);
         }
@@ -319,7 +322,8 @@ namespace System.Windows.Forms
                 if (paths.Length > 0)
                 {
                     TreeNode result = null;
-                    GetNodeChild(root, paths.Last().Indices, ref result);
+                    if (_store.GetIter(out TreeIter iter, paths.Last()))
+                        GetNodeChild(root, iter, ref result);
                     return result;
                 }
                 else { return null; }
@@ -355,23 +359,37 @@ namespace System.Windows.Forms
         public event TreeViewEventHandler AfterSelect;
         public event TreeViewEventHandler AfterCollapse;
         public event TreeViewEventHandler AfterExpand;
-        private void GetNodeChild(TreeNode node, int[] indices, ref TreeNode result)
+        //private void GetNodeChild(TreeNode node, int[] indices, ref TreeNode result)
+        //{
+        //    string nodeIndex= string.Join(",", indices);
+        //    foreach (TreeNode child in node.Nodes)
+        //    {
+        //        if (child.Index == nodeIndex)
+        //        {
+        //            result = child;
+        //            return;
+        //        }
+        //        else if (nodeIndex.Length >= child.Index.Length)
+        //        {
+        //            GetNodeChild(child, indices, ref result);
+        //        }
+        //    }
+        //}
+        private void GetNodeChild(TreeNode node, TreeIter iter, ref TreeNode result)
         {
-            string nodeIndex= string.Join(",", indices);
             foreach (TreeNode child in node.Nodes)
             {
-                if (child.Index == nodeIndex)
+                if (iter.Equals(child.TreeIter))
                 {
                     result = child;
                     return;
                 }
-                else if (nodeIndex.Length >= child.Index.Length)
+                else
                 {
-                    GetNodeChild(child, indices, ref result);
+                    GetNodeChild(child, iter, ref result);
                 }
             }
         }
-
         protected override void Dispose(bool disposing)
         {
             root.Nodes.Clear();

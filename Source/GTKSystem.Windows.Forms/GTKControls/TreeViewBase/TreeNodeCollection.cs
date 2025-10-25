@@ -68,14 +68,14 @@ namespace System.Windows.Forms
             if (owner.TreeView != null)
             {
                 foreach (TreeNode node in this)
-                    owner.TreeView.RemoveNode(node);
+                    owner.TreeView.NativeRemoveNode(node);
             }
             base.Clear();
         }
         public new void Remove(TreeNode node)
         {
             if (owner.TreeView != null)
-                this.owner.TreeView.RemoveNode(node);
+                this.owner.TreeView.NativeRemoveNode(node);
             base.Remove(node);
         }
         public new void RemoveAt(int index)

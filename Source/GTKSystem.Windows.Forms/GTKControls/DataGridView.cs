@@ -58,9 +58,9 @@ namespace System.Windows.Forms
 
         private void Item_Clicked(object sender, EventArgs e)
         {
-            _selectedColumnIndex = ((DataGridViewColumn)sender).Index;
+            _selectedColumn = ((DataGridViewColumn)sender);
         }
-        private int _selectedColumnIndex = -1;
+        private DataGridViewColumn _selectedColumn;
         private void Selection_Changed(object sender, EventArgs e)
         {
             if (SelectionChanged != null && Created)
@@ -313,28 +313,9 @@ namespace System.Windows.Forms
                 switch (SelectionMode)
                 {
                     case DataGridViewSelectionMode.CellSelect:
-                        ////暂不支持cell选择
-                        //int cols = Store.NColumns;
-                        //Store.Foreach(new TreeModelForeachFunc((model, path, iter) => {
-                        //    for (int i = 0; i < cols; i++)
-                        //    {
-                        //        DataGridViewCell cell = (DataGridViewCell)model.GetValue(iter, i);
-                        //        if (cell.Selected)
-                        //            stcc.Add(cell);
-                        //    }
-                        //    return false;
-                        //}));
                         break;
                     case DataGridViewSelectionMode.FullColumnSelect:
                     case DataGridViewSelectionMode.ColumnHeaderSelect:
-                        ////暂不支持column选择
-                        //if (_selectedColumnIndex > -1 && _selectedColumnIndex < Columns.Count)
-                        //{
-                        //    foreach (DataGridViewRow dataGridViewRow in Rows)
-                        //    {
-                        //        stcc.Add(dataGridViewRow.Cells[_selectedColumnIndex]);
-                        //    }
-                        //}
                         break;
                     case DataGridViewSelectionMode.FullRowSelect:
                     case DataGridViewSelectionMode.RowHeaderSelect:
@@ -366,8 +347,8 @@ namespace System.Windows.Forms
                         break;
                     case DataGridViewSelectionMode.FullColumnSelect:
                     case DataGridViewSelectionMode.ColumnHeaderSelect:
-                        if (_selectedColumnIndex > -1 && _selectedColumnIndex < Columns.Count)
-                            strc.Add(Columns[_selectedColumnIndex]);
+                        if (_selectedColumn != null)
+                            strc.Add(_selectedColumn);
                         break;
                 }
 
@@ -410,7 +391,7 @@ namespace System.Windows.Forms
                 return strc;
             }
         }
-        public bool NativeRowGetSelected(TreeIter rowiter)
+        internal bool NativeRowGetSelected(TreeIter rowiter)
         {
             switch (SelectionMode)
             {
@@ -423,7 +404,7 @@ namespace System.Windows.Forms
                     return false;
             }
         }
-        public void NativeRowSetSelected(TreeIter rowiter,bool selected)
+        internal void NativeRowSetSelected(TreeIter rowiter,bool selected)
         {
             Gtk.Application.Invoke(delegate
             {
