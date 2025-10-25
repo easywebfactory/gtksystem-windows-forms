@@ -359,22 +359,7 @@ namespace System.Windows.Forms
         public event TreeViewEventHandler AfterSelect;
         public event TreeViewEventHandler AfterCollapse;
         public event TreeViewEventHandler AfterExpand;
-        //private void GetNodeChild(TreeNode node, int[] indices, ref TreeNode result)
-        //{
-        //    string nodeIndex= string.Join(",", indices);
-        //    foreach (TreeNode child in node.Nodes)
-        //    {
-        //        if (child.Index == nodeIndex)
-        //        {
-        //            result = child;
-        //            return;
-        //        }
-        //        else if (nodeIndex.Length >= child.Index.Length)
-        //        {
-        //            GetNodeChild(child, indices, ref result);
-        //        }
-        //    }
-        //}
+
         private void GetNodeChild(TreeNode node, TreeIter iter, ref TreeNode result)
         {
             foreach (TreeNode child in node.Nodes)
