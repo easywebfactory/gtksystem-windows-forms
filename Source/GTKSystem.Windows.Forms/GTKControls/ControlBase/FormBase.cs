@@ -53,7 +53,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                     Visible = true,
                     Relief = ReliefStyle.None,
                     Valign = Align.Center,
-                    Halign = Align.Center
+                    Halign = Align.Center,
+                    AlwaysShowImage = true
                 };
                 maximize.StyleContext.AddClass("maximize");
                 maximize.StyleContext.AddClass("titlebutton");
@@ -65,7 +66,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                     Visible = true,
                     Relief = ReliefStyle.None,
                     Valign = Align.Center,
-                    Halign = Align.Center
+                    Halign = Align.Center,
+                    AlwaysShowImage = true
                 };
                 minimize.StyleContext.AddClass("minimize");
                 minimize.StyleContext.AddClass("titlebutton");
@@ -74,7 +76,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             }
           
             this.SetDefaultSize(100, 100);
-            this.TypeHint = Gdk.WindowTypeHint.Dialog;
+            this.TypeHint = Gdk.WindowTypeHint.Normal;
             this.AppPaintable = false;
             this.Deletable = true;
             this.Decorated = true;
@@ -108,15 +110,14 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 this.Unmaximize();
                 maximize.Image = Gtk.Image.NewFromIconName("window-maximize-symbolic", IconSize.SmallToolbar);
                 maximize.Name = "maximize";
+                maximize.StyleContext.RemoveClass("restore");
             }
             else
             {
                 this.Maximize();
-                if (maximize != null)
-                {
-                    maximize.Image = Gtk.Image.NewFromIconName("window-restore-symbolic", IconSize.SmallToolbar);
-                    maximize.Name = "restore";
-                }
+                maximize.Image = Gtk.Image.NewFromIconName("window-restore-symbolic", IconSize.SmallToolbar);
+                maximize.Name = "restore";
+                maximize.StyleContext.AddClass("restore");
             }
         }
 
