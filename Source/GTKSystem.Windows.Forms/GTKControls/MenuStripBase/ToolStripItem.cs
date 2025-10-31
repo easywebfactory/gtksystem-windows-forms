@@ -1,6 +1,7 @@
 ﻿using Gtk;
 using System.ComponentModel;
 using System.Drawing;
+using System.Text;
 using System.Windows.Forms.Layout;
 
 namespace System.Windows.Forms
@@ -57,6 +58,7 @@ namespace System.Windows.Forms
             dropDownItems = new ToolStripItemCollection(this);
             this.unique_key = Guid.NewGuid().ToString().ToLower();
             Gtk.Widget _widget = this.Widget.ToolItem ?? this.Widget.MenuItem;
+            _widget.Realized += _widget_Realized;
             _widget.ButtonPressEvent += _widget_ButtonPressEvent;
             _widget.ButtonReleaseEvent += _widget_ButtonReleaseEvent;
             if (_widget is Gtk.ToolButton widget)
@@ -74,6 +76,16 @@ namespace System.Windows.Forms
                 widget3.Activated += Widget3_Activated;
             }
         }
+        private bool _widgetRealized = false;
+        private void _widget_Realized(object? sender, EventArgs e)
+        {
+            if (!_widgetRealized)
+            {
+                _widgetRealized = true;
+                InitStyle((Gtk.Widget)sender);
+            }
+        }
+
         private void Widget3_Activated(object? sender, EventArgs e)
         {
             DropDownOpened?.Invoke(this, EventArgs.Empty);
@@ -161,6 +173,100 @@ namespace System.Windows.Forms
 
             if (onClick != null)
                 Click += onClick;
+        }
+        protected virtual void InitStyle(Gtk.Widget widget)
+        {
+            SetStyle(widget);
+        }
+        protected virtual void UpdateStyle()
+        {
+            Gtk.Widget widget = GetWidget();
+            GLib.Timeout.Add(1, () =>
+            {
+                if (widget != null && widget.IsMapped)
+                    SetStyle(widget);
+                return false;
+            });
+        }
+        CssProvider provider = new CssProvider();
+        protected virtual void SetStyle(Gtk.Widget widget)
+        {
+            StringBuilder style = new StringBuilder();
+
+            if (this._BackColor.Name != "0")
+            {
+                Color backColor = this._BackColor;
+                string color = $"rgba({backColor.R},{backColor.G},{backColor.B},{backColor.A})";
+                style.AppendFormat("background-color:{0};background:{0};", color);
+            }
+
+            if (this._ForeColor.Name != "0")
+            {
+                Color foreColor = this._ForeColor;
+                string color = $"rgba({foreColor.R},{foreColor.G},{foreColor.B},{foreColor.A})";
+                style.AppendFormat("color:{0};", color);
+            }
+
+            if (this._Font != null)
+            {
+                Font font = this._Font;
+                if (font.Unit == GraphicsUnit.Pixel)
+                    style.AppendFormat("font-size:{0}px;", font.Size);
+                else if (font.Unit == GraphicsUnit.Inch)
+                    style.AppendFormat("font-size:{0}in;", font.Size);
+                else if (font.Unit == GraphicsUnit.Point)
+                    style.AppendFormat("font-size:{0}pt;", font.Size);
+                else if (font.Unit == GraphicsUnit.Millimeter)
+                    style.AppendFormat("font-size:{0}mm;", font.Size);
+                else if (font.Unit == GraphicsUnit.Document)
+                    style.AppendFormat("font-size:{0}cm;", font.Size);
+                else if (font.Unit == GraphicsUnit.Display)
+                    style.AppendFormat("font-size:{0}pc;", font.Size);
+                else
+                    style.AppendFormat("font-size:{0}pt;", font.Size);
+
+                if (string.IsNullOrWhiteSpace(font.FontFamily?.Name) == false)
+                {
+                    if (fontLanguages.TryGetValue(font.FontFamily.Name, out string enname))
+                        style.AppendFormat("font-family:\"{0}\";", enname);
+                    else
+                        style.AppendFormat("font-family:\"{0}\";", font.FontFamily.Name);
+                }
+                if (font.Bold)
+                {
+                    style.Append("font-weight:bold;");
+                }
+                if (font.Italic)
+                {
+                    style.Append("font-style:italic;");
+                }
+                if (font.Underline)
+                {
+                    style.Append("text-decoration:underline;");
+                }
+                if (font.Strikeout)
+                {
+                    style.Append("text-decoration:line-through;");
+                }
+            }
+            if (style.Length > 10)
+            {
+                string styleClassName = $"s{unique_key}";
+                StringBuilder css = new StringBuilder();
+                css.AppendLine($".{styleClassName}>button{{{style.ToString()}}}");
+                css.AppendLine($".{styleClassName}>checkbutton{{{style.ToString()}}}");
+
+                if (provider.LoadFromData(css.ToString()))
+                {
+                    if (widget.StyleContext.HasClass(styleClassName))
+                    {
+                        widget.StyleContext.RemoveClass(styleClassName);
+                        Gtk.StyleContext.RemoveProviderForScreen(Gdk.Screen.Default, provider);
+                    }
+                    Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, provider, StyleProviderPriority.User);
+                    widget.StyleContext.AddClass(styleClassName);
+                }
+            }
         }
         public virtual void CreateControl() { }
         public virtual ToolStripItemCollection Items
@@ -282,39 +388,7 @@ namespace System.Windows.Forms
             set
             {
                 _Font = value;
-                if (_Font != null)
-                {
-                    Gtk.Widget widget = GetWidget();
-                    Pango.FontDescription fdesc = widget.PangoContext.FontDescription;
-                    string fontfamily = _Font.Name;
-                    if (string.IsNullOrWhiteSpace(fontfamily) == false)
-                    {
-                        if (fontLanguages.TryGetValue(fontfamily, out string enname))
-                        {
-                            fdesc.Family = enname;
-                            _Font = new Font(enname, value.Size, value.Style, value.Unit, value.GdiCharSet);
-                        }
-                        else if (widget.PangoContext.Families.Any(o => o.Name == fontfamily))
-                        {
-                            fdesc.Family = fontfamily;
-                        }
-                        //else
-                        //{
-                        //    Console.WriteLine($"\"{_Font.Name}\" font name is not supported, only English names are supported. Please confirm that the font name is correct or replace it with an English name");
-                        //    _Font = new Font(fdesc.Family, value.Size, value.Style, value.Unit, value.GdiCharSet);
-                        //}
-                    }
-                    if (_Font.Unit == GraphicsUnit.Point)
-                        fdesc.Size = Convert.ToInt32(_Font.Size * Pango.Scale.PangoScale * 96 / 72);
-                    else
-                        fdesc.Size = Convert.ToInt32(_Font.Size * Pango.Scale.PangoScale);
-                    if (_Font.Bold)
-                        fdesc.Weight = Pango.Weight.Bold;
-                    if (_Font.Italic)
-                        fdesc.Style = Pango.Style.Italic;
-
-                    widget.OverrideFont(fdesc);
-                }
+                UpdateStyle();
             }
         }
 
@@ -324,8 +398,7 @@ namespace System.Windows.Forms
             get { return _ForeColor; }
             set { 
                 _ForeColor = value;
-                Gtk.Widget widget = GetWidget();
-                widget.OverrideColor(Gtk.StateFlags.Normal, new Gdk.RGBA() { Alpha = (1.0 * _ForeColor.A / 0xff), Red = (1.0 * _ForeColor.R / 0xff), Green = (1.0 * _ForeColor.G / 0xff), Blue = (1.0 * _ForeColor.B / 0xff) });
+                UpdateStyle();
             }
         }
         private Color _BackColor;
@@ -333,9 +406,7 @@ namespace System.Windows.Forms
             get => _BackColor;
             set {
                 _BackColor = value;
-                Gtk.Widget widget = GetWidget();
-                widget.OverrideBackgroundColor(Gtk.StateFlags.Normal, new Gdk.RGBA() { Alpha= (1.0 * _BackColor.A / 0xff), Red = (1.0 * _BackColor.R / 0xff), Green = (1.0 * _BackColor.G / 0xff), Blue = (1.0 * _BackColor.B / 0xff) });
-                widget.OverrideBackgroundColor(Gtk.StateFlags.Prelight, new Gdk.RGBA() { Alpha = (1.0 * _BackColor.A / 0xff), Red = (0.95 * _BackColor.R / 0xff), Green = (0.95 * _BackColor.G / 0xff), Blue = (0.95 * _BackColor.B / 0xff) });
+                UpdateStyle();
             }
         }
         public virtual bool HasChildren { get; }

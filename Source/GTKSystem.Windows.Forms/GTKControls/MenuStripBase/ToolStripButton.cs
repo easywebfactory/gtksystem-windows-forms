@@ -48,7 +48,7 @@ namespace System.Windows.Forms
         }
 
         public override string Name { get => self.Name; set => self.Name = value; }
-        public override string Text { get=> self.Label; set=> self.Label = value; }
+        public override string Text { get=> self.Text; set=> self.Text = value; }
         public override ToolStripItemDisplayStyle DisplayStyle { 
             get => base.DisplayStyle;
             set { 
@@ -69,7 +69,7 @@ namespace System.Windows.Forms
                 {
                     if (self.Parent is ToolStripBase toolbar)
                     {
-                        self.IconWidget = new Gtk.Image(new Gdk.Pixbuf(this.Image.PixbufData, toolbar.ImageScalingSize.Width, toolbar.ImageScalingSize.Height)) { Visible = true };
+                        self.Image = new Gdk.Pixbuf(this.Image.PixbufData, toolbar.ImageScalingSize.Width, toolbar.ImageScalingSize.Height);
                     }
                 }
             }
@@ -80,7 +80,7 @@ namespace System.Windows.Forms
                 {
                     if (self.Parent is ToolStripBase toolbar)
                     {
-                        self.IconWidget = new Gtk.Image(new Gdk.Pixbuf(this.Image.PixbufData, toolbar.ImageScalingSize.Width, toolbar.ImageScalingSize.Height)) { Visible = true };
+                        self.Image = new Gdk.Pixbuf(this.Image.PixbufData, toolbar.ImageScalingSize.Width, toolbar.ImageScalingSize.Height);
                     }
                 }
             }

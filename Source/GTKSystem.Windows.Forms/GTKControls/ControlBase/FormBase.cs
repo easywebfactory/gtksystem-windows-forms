@@ -84,6 +84,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Close += FormBase_Close;
             this.Response += FormBase_Response;
             this.DeleteEvent += FormBase_DeleteEvent;
+            this.WindowStateEvent += FormBase_WindowStateEvent;
             ScrollView.BorderWidth = 0;
             ScrollView.Valign = Gtk.Align.Fill;
             ScrollView.Halign = Gtk.Align.Fill;
@@ -102,22 +103,33 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.ContentArea.StyleContext.AddClass("Form");
         }
 
+        private void FormBase_WindowStateEvent(object o, WindowStateEventArgs args)
+        {
+            if (args.Event.NewWindowState.HasFlag(Gdk.WindowState.Maximized))
+            {
+                maximize.Image = Gtk.Image.NewFromIconName("window-restore-symbolic", IconSize.SmallToolbar);
+                maximize.Name = "restore";
+                maximize.StyleContext.AddClass("restore");
+            }
+            else
+            {
+                maximize.Image = Gtk.Image.NewFromIconName("window-maximize-symbolic", IconSize.SmallToolbar);
+                maximize.Name = "maximize";
+                maximize.StyleContext.RemoveClass("restore");
+            }
+        }
         private void maximize_Clicked(object? sender, EventArgs e)
         {
             var maximize = sender as Gtk.Button;
             if (maximize.Name == "restore")
             {
                 this.Unmaximize();
-                maximize.Image = Gtk.Image.NewFromIconName("window-maximize-symbolic", IconSize.SmallToolbar);
                 maximize.Name = "maximize";
-                maximize.StyleContext.RemoveClass("restore");
             }
             else
             {
                 this.Maximize();
-                maximize.Image = Gtk.Image.NewFromIconName("window-restore-symbolic", IconSize.SmallToolbar);
                 maximize.Name = "restore";
-                maximize.StyleContext.AddClass("restore");
             }
         }
 

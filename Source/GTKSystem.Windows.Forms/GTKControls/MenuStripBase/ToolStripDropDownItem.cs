@@ -37,7 +37,7 @@ namespace System.Windows.Forms
             SetIcon(DisplayStyle);
         }
         public override string Name { get => self.Name; set => self.Name = value; }
-        public override string Text { get => self.Label; set => self.Label = value; }
+        public override string Text { get => self.Text; set => self.Text = value; }
         public override ToolStripItemDisplayStyle DisplayStyle
         {
             get => base.DisplayStyle;
@@ -60,15 +60,15 @@ namespace System.Windows.Forms
                 {
                     if (self.IconSize == Gtk.IconSize.LargeToolbar)
                     {
-                        self.IconWidget = new Gtk.Image(new Gdk.Pixbuf(this.Image.PixbufData, 30, 30)) { Visible = true };
+                        self.Image = new Gdk.Pixbuf(this.Image.PixbufData, 30, 30);
                     }
                     else if (self.IconSize == Gtk.IconSize.Dialog)
                     {
-                        self.IconWidget = new Gtk.Image(new Gdk.Pixbuf(this.Image.PixbufData, 50, 50)) { Visible = true };
+                        self.Image = new Gdk.Pixbuf(this.Image.PixbufData, 50, 50);
                     }
                     else
                     {
-                        self.IconWidget = new Gtk.Image(new Gdk.Pixbuf(this.Image.PixbufData, 20, 20)) { Visible = true };
+                        self.Image = new Gdk.Pixbuf(this.Image.PixbufData, 20, 20);
                     }
                 }
             }
@@ -79,15 +79,15 @@ namespace System.Windows.Forms
                 {
                     if (self.IconSize == Gtk.IconSize.LargeToolbar)
                     {
-                        self.IconWidget = new Gtk.Image(new Gdk.Pixbuf(this.Image.PixbufData, 30, 30)) { Visible = true };
+                        self.Image = new Gdk.Pixbuf(this.Image.PixbufData, 30, 30);
                     }
                     else if (self.IconSize == Gtk.IconSize.Dialog)
                     {
-                        self.IconWidget = new Gtk.Image(new Gdk.Pixbuf(this.Image.PixbufData, 50, 50)) { Visible = true };
+                        self.Image = new Gdk.Pixbuf(this.Image.PixbufData, 50, 50);
                     }
                     else
                     {
-                        self.IconWidget = new Gtk.Image(new Gdk.Pixbuf(this.Image.PixbufData, 20, 20)) { Visible = true };
+                        self.Image = new Gdk.Pixbuf(this.Image.PixbufData, 20, 20);
                     }
                 }
 
@@ -99,30 +99,25 @@ namespace System.Windows.Forms
                 {
                     if (self.IconSize == Gtk.IconSize.LargeToolbar)
                     {
-                        self.IconWidget = new Gtk.Image(new Gdk.Pixbuf(this.Image.PixbufData, 30, 30)) { Visible = true };
+                        self.Image = new Gdk.Pixbuf(this.Image.PixbufData, 30, 30);
                     }
                     else if (self.IconSize == Gtk.IconSize.Dialog)
                     {
-                        self.IconWidget = new Gtk.Image(new Gdk.Pixbuf(this.Image.PixbufData, 50, 50)) { Visible = true };
+                        self.Image = new Gdk.Pixbuf(this.Image.PixbufData, 50, 50);
                     }
                     else
                     {
-                        self.IconWidget = new Gtk.Image(new Gdk.Pixbuf(this.Image.PixbufData, 20, 20)) { Visible = true };
+                        self.Image = new Gdk.Pixbuf(this.Image.PixbufData, 20, 20);
                     }
                 }
             }
         }
-        //public override string Text { get => base.Text; set => base.Text = value; } //+ " ▼"
-
-
         [Browsable(false)]
         public bool HasDropDown { get; }
        
         [Browsable(false)]
-        public virtual bool HasDropDownItems { get; }
+        public virtual bool HasDropDownItems { get=> DropDownItems != null && DropDownItems.Count > 0; }
 
-        //public ToolStripItemCollection DropDownItems { get; }
-       
         [Browsable(false)]
         public ToolStripDropDownDirection DropDownDirection { get; set; }
       

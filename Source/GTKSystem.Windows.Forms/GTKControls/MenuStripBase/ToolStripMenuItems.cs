@@ -64,14 +64,23 @@ namespace System.Windows.Forms
     }
     public class StripToolButton : Gtk.ToolButton, IToolMenuItem
     {
-        public StripToolButton() : base(null, "") { }
+        public StripToolButton() : base(null, "") {}
         public Gtk.Widget ToolItem { get => this; }
         public Gtk.Widget MenuItem { get; }
         public string Text { get => base.Label; set => base.Label = value; }
         public ToolStripItemDisplayStyle DisplayStyle { get; set; }
         public bool Checked { get; set; }
         public CheckState CheckState { get; set; }
-        public Gdk.Pixbuf Image { get; set; }
+        private Gdk.Pixbuf _image;
+        public Gdk.Pixbuf Image
+        {
+            get => _image;
+            set
+            {
+                _image = value;
+                this.IconWidget = new Gtk.Image(value) { Visible = true };
+            }
+        }
     }
     public class StripMenuToolButton : Gtk.MenuToolButton, IToolMenuItem
     {
@@ -82,7 +91,16 @@ namespace System.Windows.Forms
         public ToolStripItemDisplayStyle DisplayStyle { get; set; }
         public bool Checked { get; set; }
         public CheckState CheckState { get; set; }
-        public Gdk.Pixbuf Image { get; set; }
+        private Gdk.Pixbuf _image;
+        public Gdk.Pixbuf Image
+        {
+            get => _image;
+            set
+            {
+                _image = value;
+                this.IconWidget = new Gtk.Image(value) { Visible = true };
+            }
+        }
     }
     public class StripToolItem : Gtk.ToolItem, IToolMenuItem
     {
