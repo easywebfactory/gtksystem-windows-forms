@@ -253,6 +253,7 @@ namespace System.Windows.Forms
             {
                 string styleClassName = $"s{unique_key}";
                 StringBuilder css = new StringBuilder();
+                css.AppendLine($".{styleClassName}{{{style.ToString()}}}");
                 css.AppendLine($".{styleClassName}>button{{{style.ToString()}}}");
                 css.AppendLine($".{styleClassName}>checkbutton{{{style.ToString()}}}");
 
