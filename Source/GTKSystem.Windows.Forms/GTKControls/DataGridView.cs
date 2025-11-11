@@ -4,11 +4,9 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
-using Atk;
 using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using Pango;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
@@ -99,6 +97,12 @@ namespace System.Windows.Forms
                 foreach (Binding binding in DataBindings)
                     GridView.AddNotification(binding.PropertyName, propertyNotity);
             }
+            GridView.SetStateFlags(Gtk.StateFlags.Normal, true);
+            GLib.Timeout.Add(500, () =>
+            {
+                this.Refresh();
+                return false;
+            });
         }
         private void propertyNotity(object o, NotifyArgs args)
         {
@@ -465,6 +469,11 @@ namespace System.Windows.Forms
         public override void EndInit()
         {
             _Created = true;
+        }
+        public override void Refresh()
+        {
+            GridView.SetStateFlags(Gtk.StateFlags.Selected, true);
+            base.Refresh();
         }
         public void ClearSelection()
         {
