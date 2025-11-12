@@ -97,12 +97,7 @@ namespace System.Windows.Forms
                 foreach (Binding binding in DataBindings)
                     GridView.AddNotification(binding.PropertyName, propertyNotity);
             }
-            GridView.SetStateFlags(Gtk.StateFlags.Normal, true);
-            GLib.Timeout.Add(500, () =>
-            {
-                this.Refresh();
-                return false;
-            });
+            this.Refresh();
         }
         private void propertyNotity(object o, NotifyArgs args)
         {
@@ -472,7 +467,13 @@ namespace System.Windows.Forms
         }
         public override void Refresh()
         {
-            GridView.SetStateFlags(Gtk.StateFlags.Selected, true);
+            GridView.UnsetStateFlags(Gtk.StateFlags.Selected);
+            GLib.Idle.Add(() =>
+            {
+                GridView.SetStateFlags(Gtk.StateFlags.Selected, true);
+                GridView.QueueDraw();
+                return false;
+            });
             base.Refresh();
         }
         public void ClearSelection()
