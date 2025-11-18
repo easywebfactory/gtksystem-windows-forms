@@ -232,9 +232,9 @@ namespace System.Windows.Forms
                 if (window != null)
                 {
                     ActiveWindow = window;
-                    irun = ShowCore(ActiveWindow, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon);
+                    irun = ShowCore(window, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon);
                 }
-                else if (ActiveWindow?.Window != null)
+                else if (ActiveWindow != null)
                 {
                     irun = ShowCore(ActiveWindow, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon);
                 }
