@@ -152,8 +152,8 @@ namespace System.Windows.Forms
             {
                 foreach (var item in this.self.Group.ListWindows())
                 {
-                    item.Visible = true;
-                    item.Window.Show();
+                    item.Deiconify();
+                    item.Present();
                 }
             }
             self.ShowAll();
@@ -241,6 +241,7 @@ namespace System.Windows.Forms
                     else
                         self.Deiconify();
                 }
+                self.Present();
             }
         }
         public DialogResult DialogResult { get; set; }

@@ -165,13 +165,16 @@ namespace System.Windows.Forms
                 OnMouseDown(mouseArgs);
                 MouseDown?.Invoke(this, mouseArgs);
                 Is_DoubleButtonPress = false;
-                if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
+                if (args.Event.Button == 1)
                 {
-                    Is_DoubleButtonPress = true;
-                    MouseEventArgs mouseArgs2 = new MouseEventArgs(button, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
-                    OnMouseDoubleClick(mouseArgs2);
-                    MouseDoubleClick?.Invoke(this, mouseArgs2);
-                    DoubleClick?.Invoke(this, EventArgs.Empty);
+                    if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
+                    {
+                        Is_DoubleButtonPress = true;
+                        MouseEventArgs mouseArgs2 = new MouseEventArgs(button, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
+                        OnMouseDoubleClick(mouseArgs2);
+                        MouseDoubleClick?.Invoke(this, mouseArgs2);
+                        DoubleClick?.Invoke(this, EventArgs.Empty);
+                    }
                 }
             }
         }
@@ -189,22 +192,24 @@ namespace System.Windows.Forms
                 else if (args.Event.Button == 3)
                     button = MouseButtons.Right;
                 owidget.Window.GetOrigin(out int x, out int y);
+                if (args.Event.Button == 1)
+                {
+                    OnClick(EventArgs.Empty);
+                    MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
+                    OnMouseClick(mouseArgs3);
+                    Click?.Invoke(this, EventArgs.Empty);
+                    MouseClick?.Invoke(this, mouseArgs3);
+                }
                 MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
                 OnMouseUp(mouseArgs);
                 MouseUp?.Invoke(this, mouseArgs);
-
-                OnClick(EventArgs.Empty);
-                MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
-                OnMouseClick(mouseArgs3);
-                Click?.Invoke(this, EventArgs.Empty);
-                MouseClick?.Invoke(this, mouseArgs3);
-             
-                if (ContextMenuStrip != null)
+                if (args.Event.Button == 3)
                 {
-                    if (args.Event.Button == 3)
+                    if (ContextMenuStrip != null)
                     {
                         ContextMenuStrip.Widget.ShowAll();
                         ((Gtk.Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
+                        args.RetVal = true;
                     }
                 }
             }

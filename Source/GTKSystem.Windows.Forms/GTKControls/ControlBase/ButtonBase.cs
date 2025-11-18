@@ -1,4 +1,6 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿using Gdk;
+
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public sealed class ButtonBase: Gtk.Button, IControlGtk
     {
@@ -10,6 +12,17 @@
             base.Valign = Gtk.Align.Start;
             base.Halign = Gtk.Align.Start;
         }
+        public System.Windows.Forms.DialogResult DialogResult { get; set; }
+        protected override bool OnButtonPressEvent(EventButton evnt)
+        {
+            if (this.Toplevel is FormBase form)
+            {
+                ((System.Windows.Forms.Form)form.Data["Control"]).DialogResult = DialogResult;
+            }
+            base.OnButtonPressEvent(evnt);
+            return false;
+        }
+        public new string Text { get => ((Gtk.Label)Child).Text; set => ((Gtk.Label)Child).Text = value; }
         protected override void OnShown()
         {
             Override.OnAddClass();

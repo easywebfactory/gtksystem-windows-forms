@@ -18,27 +18,8 @@ namespace System.Windows.Forms
         public Button() : base()
         {
             self.Override.sender = this;
-            self.Clicked += Self_Clicked;
         }
-        private void Self_Clicked(object sender, EventArgs e)
-        {
-            if (Click != null && self.IsVisible) {
-                if (self.Toplevel is FormBase form)
-                {
-                    ((Form)form.Data["Control"]).DialogResult = DialogResult;
-                }
-                OnClick(EventArgs.Empty);
-                Click(this, EventArgs.Empty);
-            }
-        }
-
-        public override string Text { get => ((Gtk.Label)self.Child).Text; set => ((Gtk.Label)self.Child).Text = value; }
-
-        public override event EventHandler Click;
-        protected override void OnClick(EventArgs e)
-        {
-
-        }
+        public override string Text { get => self.Text; set => self.Text = value; }
         public override RightToLeft RightToLeft { get { return self.Direction == Gtk.TextDirection.Rtl ? RightToLeft.Yes : RightToLeft.No; } set { self.Direction = value == RightToLeft.Yes ? Gtk.TextDirection.Rtl : Gtk.TextDirection.Ltr; } }
         public System.Drawing.ContentAlignment TextAlign
         {
@@ -95,6 +76,6 @@ namespace System.Windows.Forms
             }
         }
         private System.Drawing.ContentAlignment textAlign;
-        public DialogResult DialogResult { get; set; }
+        public DialogResult DialogResult { get => self.DialogResult; set => self.DialogResult = value; }
     }
 }
