@@ -49,7 +49,6 @@ namespace System.Windows.Forms
             scrolledWindow.Halign = Gtk.Align.Fill;
             scrolledWindow.Valign = Gtk.Align.Fill;
             scrolledWindow.Add(flowBoxContainer);
-            scrolledWindow.OverlayScrolling = false;
             scrolledWindow.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
             headerView = new Gtk.Layout(null, null);
             headerView.Halign = Gtk.Align.Fill;

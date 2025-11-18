@@ -229,12 +229,19 @@ namespace System.Windows.Forms
             else
             {
                 Gtk.Window window = Gtk.Window.ListToplevels().LastOrDefault(o => o is FormBase && o.IsActive);
-                if(window != null)
+                if (window != null)
                 {
                     ActiveWindow = window;
+                    irun = ShowCore(ActiveWindow, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon);
                 }
-                //irun = ShowMessageDialogCore(null, Gtk.WindowPosition.Center, text, caption, buttons, icon, defaultButton, options, showHelp);
-                irun = ShowCore(ActiveWindow, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon);
+                else if (ActiveWindow?.Window != null)
+                {
+                    irun = ShowCore(ActiveWindow, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon);
+                }
+                else
+                {
+                    irun = ShowCore(null, Gtk.WindowPosition.Center, text, caption, buttons, icon);
+                }
             }
 
             Gtk.ResponseType resp = (Gtk.ResponseType)Enum.Parse(typeof(Gtk.ResponseType), irun.ToString());

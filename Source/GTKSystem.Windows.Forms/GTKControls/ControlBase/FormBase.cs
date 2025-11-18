@@ -1,8 +1,6 @@
 ﻿
+using Gdk;
 using Gtk;
-using System.ComponentModel;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
@@ -90,8 +88,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             ScrollView.Halign = Gtk.Align.Fill;
             ScrollView.Hexpand = true;
             ScrollView.Vexpand = true;
-            ScrollView.OverlayScrolling = true;
-            ScrollView.KineticScrolling = true;
             ScrollView.HscrollbarPolicy = PolicyType.Automatic;
             ScrollView.VscrollbarPolicy = PolicyType.Automatic;
             ScrollView.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
@@ -102,7 +98,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.ContentArea.PackStart(ScrollView, true, true, 0);
             this.ContentArea.StyleContext.AddClass("Form");
         }
-
         private void FormBase_WindowStateEvent(object o, WindowStateEventArgs args)
         {
             if (args.Event.NewWindowState.HasFlag(Gdk.WindowState.Maximized))
@@ -170,39 +165,29 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 }
             }
         }
-        private bool closingCancel;
         private void FormBase_DeleteEvent(object o, DeleteEventArgs args)
         {
-            closingCancel = CloseWindowEvent(this, EventArgs.Empty);
-            args.RetVal = closingCancel;
+            args.RetVal = !isCloseWindow;
         }
-
         private void FormBase_Close(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show(this, "你正在关闭该窗口，确定要关闭吗？", "Esc按键操作提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
-                closingCancel = false;
                 this.Respond(ResponseType.DeleteEvent);
             }
-            else
+        }
+        private void FormBase_Response(object o, ResponseArgs args)
+        {
+            if (args.ResponseId == ResponseType.DeleteEvent)
             {
-                closingCancel = true;
+                this.CloseWindow();
             }
         }
-
         private void FormBase_Drawn(object o, DrawnArgs args)
         {
             Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
             Override.OnPaint(args.Cr, rec);
-        }
-
-        private void FormBase_Response(object o, ResponseArgs args)
-        {
-            if (args.ResponseId == ResponseType.DeleteEvent && closingCancel == false)
-            {
-                ((Gtk.Window)this).Close();
-            }
         }
         private void Vadjustment_ValueChanged(object sender, EventArgs e)
         {
@@ -221,13 +206,23 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 Scroll(this, new System.Windows.Forms.ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj.Value > adj.StepIncrement ? (adj.Value - adj.StepIncrement) : adj.Value), (int)adj.Value, ScrollOrientation.HorizontalScroll));
             }
         }
-        public void CloseWindow()
+
+        private bool isCloseWindow;
+        public bool CloseWindow()
         {
+            isCloseWindow = false;
             if (!CloseWindowEvent(this, EventArgs.Empty))
             {
                 this.Dispose();
                 this.Destroy();
+                isCloseWindow = true;
             }
+            else if (this.TypeHint == WindowTypeHint.Dialog)
+            {
+                Run();
+                isCloseWindow = true;
+            }
+            return isCloseWindow;
         }
 
         public void AddClass(string cssClass)

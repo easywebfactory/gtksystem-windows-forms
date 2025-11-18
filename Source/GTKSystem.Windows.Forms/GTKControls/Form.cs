@@ -166,6 +166,7 @@ namespace System.Windows.Forms
         public DialogResult ShowDialog(IWin32Window owner)
         {
             Show(owner);
+            self.TypeHint = Gdk.WindowTypeHint.Dialog;
             int irun = self.Run();
             return this.DialogResult;
         }
@@ -249,9 +250,11 @@ namespace System.Windows.Forms
         {
             if (self != null)
             {
-                self.CloseWindow();
+                if (self.CloseWindow())
+                {
+                    this.Dispose();
+                }
             }
-            this.Dispose();
         }
         public override void Hide()
         {
@@ -274,8 +277,10 @@ namespace System.Windows.Forms
                 contanter.MarginBottom = value.Bottom;
             }
         }
-        public bool MaximizeBox { get => self.MaximizeBox; set => self.MaximizeBox = value; }
-        public bool MinimizeBox { get => self.MinimizeBox; set => self.MinimizeBox = value; }
+        public bool MaximizeBox { get => self.MaximizeBox; set => self.MaximizeBox = value && _ControlBox; }
+        public bool MinimizeBox { get => self.MinimizeBox; set => self.MinimizeBox = value && _ControlBox; }
+        private bool _ControlBox = true;
+        public bool ControlBox { get => _ControlBox; set { _ControlBox = value; self.MinimizeBox = value; self.MaximizeBox = value; self.Deletable = value;  } }
         public double Opacity { get { return self.Opacity; } set { self.Opacity = value; } }
         public bool ShowIcon { get; set; } = true;
         public bool ShowInTaskbar { get { return self.SkipTaskbarHint == false; } set { self.SkipTaskbarHint = value == false; } }
