@@ -181,7 +181,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             if (args.ResponseId == ResponseType.DeleteEvent)
             {
-                this.CloseWindow();
+                this.CloseWindow(true);
             }
         }
         private void FormBase_Drawn(object o, DrawnArgs args)
@@ -208,7 +208,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         }
 
         private bool isCloseWindow;
-        public bool CloseWindow()
+        public bool CloseWindow(bool isResponse = false)
         {
             isCloseWindow = false;
             if (!CloseWindowEvent(this, EventArgs.Empty))
@@ -217,7 +217,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 this.Destroy();
                 isCloseWindow = true;
             }
-            else if (this.TypeHint == WindowTypeHint.Dialog)
+            else if (this.TypeHint == WindowTypeHint.Dialog && isResponse == true)
             {
                 Run();
                 isCloseWindow = true;
