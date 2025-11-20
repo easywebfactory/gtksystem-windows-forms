@@ -57,7 +57,7 @@ namespace System.Windows.Forms
         {
             dropDownItems = new ToolStripItemCollection(this);
             this.unique_key = Guid.NewGuid().ToString().ToLower();
-            Gtk.Widget _widget = this.Widget.ToolItem ?? this.Widget.MenuItem;
+            Gtk.Widget _widget = GetWidget();
             _widget.Realized += _widget_Realized;
             _widget.ButtonPressEvent += _widget_ButtonPressEvent;
             _widget.ButtonReleaseEvent += _widget_ButtonReleaseEvent;
@@ -118,41 +118,44 @@ namespace System.Windows.Forms
             {
                 Gtk.Widget widget = (Gtk.Widget)o;
                 MouseButtons button = MouseButtons.None;
-                if (args.Event.State.HasFlag(Gdk.ModifierType.Button1Mask))
+                if (args.Event.Button == 1)
                     button = MouseButtons.Left;
-                else if (args.Event.State.HasFlag(Gdk.ModifierType.Button2Mask))
+                else if (args.Event.Button == 2)
                     button = MouseButtons.Middle;
-                else if (args.Event.State.HasFlag(Gdk.ModifierType.Button3Mask))
+                else if (args.Event.Button == 3)
                     button = MouseButtons.Right;
 
                 widget.Window.GetOrigin(out int x1, out int y1);
-                Click?.Invoke(this, new EventArgs());
                 MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x1, (int)args.Event.XRoot - y1, 0);
-                MouseUp?.Invoke(this, mouseArgs3);
                 MouseClick?.Invoke(this, mouseArgs3);
+                Click?.Invoke(this, new EventArgs());
                 DropDownItemClicked?.Invoke(this, new ToolStripItemClickedEventArgs(this));
+                MouseUp?.Invoke(this, mouseArgs3);
             }
         }
         private void _widget_ButtonPressEvent(object o, Gtk.ButtonPressEventArgs args)
         {
             Gtk.Widget widget = (Gtk.Widget)o;
             MouseButtons button = MouseButtons.None;
-            if (args.Event.State.HasFlag(Gdk.ModifierType.Button1Mask))
+            if (args.Event.Button == 1)
                 button = MouseButtons.Left;
-            else if (args.Event.State.HasFlag(Gdk.ModifierType.Button2Mask))
+            else if (args.Event.Button == 2)
                 button = MouseButtons.Middle;
-            else if (args.Event.State.HasFlag(Gdk.ModifierType.Button3Mask))
+            else if (args.Event.Button == 3)
                 button = MouseButtons.Right;
 
             widget.Window.GetOrigin(out int x1, out int y1);
             MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x1, (int)args.Event.XRoot - y1, 0);
             MouseDown?.Invoke(this, mouseArgs);
             isDoubleClick = false;
-            if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
+            if (args.Event.Button == 1)
             {
-                isDoubleClick = true;
-                DoubleClick?.Invoke(this, new EventArgs());
-                ButtonDoubleClick?.Invoke(this, new EventArgs());
+                if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
+                {
+                    isDoubleClick = true;
+                    DoubleClick?.Invoke(this, new EventArgs());
+                    ButtonDoubleClick?.Invoke(this, new EventArgs());
+                }
             }
         }
 
