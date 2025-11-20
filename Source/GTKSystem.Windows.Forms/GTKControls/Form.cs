@@ -210,21 +210,14 @@ namespace System.Windows.Forms
             }
         }
         public FormStartPosition StartPosition { get; set; }
+        private FormWindowState _WindowState = FormWindowState.Normal;
         public FormWindowState WindowState {
-            get { 
-                if (self.Window.State.HasFlag(Gdk.WindowState.Fullscreen))
-                    return FormWindowState.Maximized;
-                else if (self.Window.State.HasFlag(Gdk.WindowState.Maximized))
-                    return FormWindowState.Maximized;
-                else if (self.Window.State.HasFlag(Gdk.WindowState.Iconified))
-                    return FormWindowState.Minimized;
-                else if (self.Window.State.HasFlag(Gdk.WindowState.Withdrawn))
-                    return FormWindowState.Minimized;
-                else
-                    return FormWindowState.Normal;
+            get {
+                return _WindowState;
             }
             set
             {
+                _WindowState = value;
                 if (value == FormWindowState.Maximized)
                 {
                     self.Maximize();
@@ -235,14 +228,9 @@ namespace System.Windows.Forms
                 }
                 else if (self.IsMapped)
                 {
-                    if (self.Window.State.HasFlag(Gdk.WindowState.Fullscreen))
-                        self.Unfullscreen();
-                    else if (self.Window.State.HasFlag(Gdk.WindowState.Maximized))
-                        self.Unmaximize();
-                    else
-                        self.Deiconify();
+                    self.Deiconify();
+                    self.Present();
                 }
-                self.Present();
             }
         }
         public DialogResult DialogResult { get; set; }
