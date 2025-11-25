@@ -181,7 +181,13 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             if (args.ResponseId == ResponseType.DeleteEvent)
             {
-                this.CloseWindow(true);
+                if (this.CloseWindow(true))
+                {
+                    if(this.Data["Control"] is Form from1)
+                    {
+                        from1.Dispose();
+                    }
+                }
             }
         }
         private void FormBase_Drawn(object o, DrawnArgs args)

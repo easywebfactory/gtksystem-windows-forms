@@ -240,7 +240,7 @@ namespace System.Windows.Forms
             {
                 if (self.CloseWindow())
                 {
-                    this.Dispose();
+                    this.Dispose(true);
                 }
             }
         }

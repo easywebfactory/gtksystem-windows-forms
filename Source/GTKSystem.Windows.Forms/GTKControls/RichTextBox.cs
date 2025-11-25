@@ -42,7 +42,6 @@ namespace System.Windows.Forms
         public virtual bool ReadOnly { get { return self.TextView.CanFocus; } set { self.TextView.CanFocus = value; } }
         public override bool Focus()
         {
-            Application.DoEvents();
             self.TextView.Buffer.GetSelectionBounds(out TextIter start, out TextIter end);
             self.TextView.ScrollToIter(start, 0, false, 0, 1);
             self.TextView.IsFocus = true;
@@ -94,7 +93,8 @@ namespace System.Windows.Forms
             TextIter enditer = self.TextView.Buffer.GetIterAtOffset(start + length);
             self.TextView.Buffer.SelectRange(startiter, enditer);
             self.TextView.HasFocus = true;
-            self.TextView.IsFocus = true;        }
+            self.TextView.IsFocus = true;       
+        }
         public void InsertTextAtCursor(string text)
         {
             if (text == null) return;
