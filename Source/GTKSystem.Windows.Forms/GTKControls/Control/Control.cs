@@ -4,14 +4,12 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
-
+ 
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms.Design;
 using System.Windows.Forms.Layout;
 
@@ -31,6 +29,7 @@ namespace System.Windows.Forms
         public virtual object GtkControl { get; set; }
         private EventHandlerList handlerList = new EventHandlerList();
         private static Dictionary<string, string> fontLanguages = new Dictionary<string, string>();
+        internal static Dictionary<Gdk.Key, int> keyboardMap = new Dictionary<Gdk.Key, int>();
         static Control()
         {
             if (fontLanguages.Count == 0)
@@ -62,6 +61,173 @@ namespace System.Windows.Forms
                 fontLanguages.Add("思源宋体", "Source Han Serif SC");
                 fontLanguages.Add("文泉驿微米黑", "WenQuanYi Micro Hei");
             }
+            if (keyboardMap.Count == 0)
+            {
+                keyboardMap = new Dictionary<Gdk.Key, int>{
+                { Gdk.Key.BackSpace,8},
+                { Gdk.Key.Tab,9},
+                { Gdk.Key.ISO_Left_Tab,9},
+                { Gdk.Key.KP_Tab,9},
+                { Gdk.Key.Return,13},
+                { Gdk.Key.KP_Enter,13},
+                { Gdk.Key.Shift_L,16},
+                { Gdk.Key.Shift_R,161},
+                { Gdk.Key.Shift_Lock,10},
+                { Gdk.Key.Control_L,17},
+                { Gdk.Key.Control_R,163},
+                { Gdk.Key.Alt_L,18},
+                { Gdk.Key.Alt_R,165},
+                { Gdk.Key.Pause,19},
+                { Gdk.Key.Caps_Lock,20},
+                { Gdk.Key.VoidSymbol,20},
+                { Gdk.Key.Escape,27},
+                { Gdk.Key.space,32},
+                { Gdk.Key.Prior,33},
+                { Gdk.Key.KP_Prior,33},
+                { Gdk.Key.Next,34},
+                { Gdk.Key.KP_Page_Down,34},
+                { Gdk.Key.End,35},
+                { Gdk.Key.KP_End,35},
+                { Gdk.Key.Home,36},
+                { Gdk.Key.KP_Home,36},
+                { Gdk.Key.Left,37},
+                { Gdk.Key.KP_Left,37},
+                { Gdk.Key.KP_Up,38},
+                { Gdk.Key.Right,39},
+                { Gdk.Key.KP_Right,39},
+                { Gdk.Key.Down,40},
+                { Gdk.Key.KP_Down,40},
+                { Gdk.Key.Insert,45},
+                { Gdk.Key.Delete,46},
+                { Gdk.Key.KP_Delete,46},
+                { Gdk.Key.Key_0,48},
+                { Gdk.Key.Key_1,49},
+                { Gdk.Key.Key_2,50},
+                { Gdk.Key.Key_3,51},
+                { Gdk.Key.Key_4,52},
+                { Gdk.Key.Key_5,53},
+                { Gdk.Key.Key_6,54},
+                { Gdk.Key.Key_7,55},
+                { Gdk.Key.Key_8,56},
+                { Gdk.Key.Key_9,57},
+                { Gdk.Key.parenright,48},
+                { Gdk.Key.exclam,49},
+                { Gdk.Key.at,50},
+                { Gdk.Key.numbersign,51},
+                { Gdk.Key.dollar,52},
+                { Gdk.Key.percent,53},
+                { Gdk.Key.asciicircum,54},
+                { Gdk.Key.ampersand,55},
+                { Gdk.Key.asterisk,56},
+                { Gdk.Key.parenleft,57},
+                { Gdk.Key.A,65},
+                { Gdk.Key.B,66},
+                { Gdk.Key.C,67},
+                { Gdk.Key.D,68},
+                { Gdk.Key.E,69},
+                { Gdk.Key.F,70},
+                { Gdk.Key.G,71},
+                { Gdk.Key.H,72},
+                { Gdk.Key.I,73},
+                { Gdk.Key.J,74},
+                { Gdk.Key.K,75},
+                { Gdk.Key.L,76},
+                { Gdk.Key.M,77},
+                { Gdk.Key.N,78},
+                { Gdk.Key.O,79},
+                { Gdk.Key.P,80},
+                { Gdk.Key.Q,81},
+                { Gdk.Key.R,82},
+                { Gdk.Key.S,83},
+                { Gdk.Key.T,84},
+                { Gdk.Key.U,85},
+                { Gdk.Key.V,86},
+                { Gdk.Key.W,87},
+                { Gdk.Key.X,88},
+                { Gdk.Key.Y,89},
+                { Gdk.Key.Z,90},
+                { Gdk.Key.a,65},
+                { Gdk.Key.b,66},
+                { Gdk.Key.c,67},
+                { Gdk.Key.d,68},
+                { Gdk.Key.e,69},
+                { Gdk.Key.f,70},
+                { Gdk.Key.g,71},
+                { Gdk.Key.h,72},
+                { Gdk.Key.i,73},
+                { Gdk.Key.j,74},
+                { Gdk.Key.k,75},
+                { Gdk.Key.l,76},
+                { Gdk.Key.m,77},
+                { Gdk.Key.n,78},
+                { Gdk.Key.o,79},
+                { Gdk.Key.p,80},
+                { Gdk.Key.q,81},
+                { Gdk.Key.r,82},
+                { Gdk.Key.s,83},
+                { Gdk.Key.t,84},
+                { Gdk.Key.u,85},
+                { Gdk.Key.v,86},
+                { Gdk.Key.w,87},
+                { Gdk.Key.x,88},
+                { Gdk.Key.y,89},
+                { Gdk.Key.z,90},
+                { Gdk.Key.Meta_L,91},
+                { Gdk.Key.Meta_R,92},
+                { Gdk.Key.approximate,93},
+                { Gdk.Key.KP_0,96},
+                { Gdk.Key.KP_1,97},
+                { Gdk.Key.KP_2,98},
+                { Gdk.Key.KP_3,99},
+                { Gdk.Key.KP_4,100},
+                { Gdk.Key.KP_5,101},
+                { Gdk.Key.KP_6,102},
+                { Gdk.Key.KP_7,103},
+                { Gdk.Key.KP_8,104},
+                { Gdk.Key.KP_9,105},
+                { Gdk.Key.KP_Multiply,106},
+                { Gdk.Key.KP_Add,107},
+                { Gdk.Key.KP_Subtract,109},
+                { Gdk.Key.KP_Decimal,110},
+                { Gdk.Key.KP_Divide,111},
+                { Gdk.Key.F1,112},
+                { Gdk.Key.F2,113},
+                { Gdk.Key.F3,114},
+                { Gdk.Key.F4,115},
+                { Gdk.Key.F5,116},
+                { Gdk.Key.F6,117},
+                { Gdk.Key.F7,118},
+                { Gdk.Key.F8,119},
+                { Gdk.Key.F9,120},
+                { Gdk.Key.F10,121},
+                { Gdk.Key.F11,122},
+                { Gdk.Key.F12,123},
+                { Gdk.Key.Num_Lock,144},
+                { Gdk.Key.Scroll_Lock,145},
+                { Gdk.Key.period,190},
+                { Gdk.Key.greater,190},
+                { Gdk.Key.slash,191},
+                { Gdk.Key.question,191},
+                { Gdk.Key.quoteleft,192},
+                { Gdk.Key.asciitilde,192},
+                { Gdk.Key.braceleft,219},
+                { Gdk.Key.bracketleft,219},
+                { Gdk.Key.backslash,220},
+                { Gdk.Key.bar,220},
+                { Gdk.Key.braceright,221},
+                { Gdk.Key.bracketright,221},
+                { Gdk.Key.apostrophe,222},
+                { Gdk.Key.quotedbl,222},
+                { Gdk.Key.semicolon,186},
+                { Gdk.Key.colon,186},
+                { Gdk.Key.equal,187},
+                { Gdk.Key.plus,187},
+                { Gdk.Key.comma,188},
+                { Gdk.Key.less,188},
+                { Gdk.Key.minus,189},
+                { Gdk.Key.underscore,189},
+                };
+            }
         }
         public Control()
         {
@@ -82,23 +248,261 @@ namespace System.Windows.Forms
                 }
                 widget.Data["Control"] = this;
                 widget.StyleContext.AddClass("DefaultThemeStyle");
-                widget.ButtonPressEvent += Widget_ButtonPressEvent;
-                widget.ButtonReleaseEvent += Widget_ButtonReleaseEvent;
-                widget.EnterNotifyEvent += Widget_EnterNotifyEvent;
-                widget.MotionNotifyEvent += Widget_MotionNotifyEvent;
-                widget.LeaveNotifyEvent += Widget_LeaveNotifyEvent;
-                widget.ScrollEvent += Widget_ScrollEvent;
-                widget.FocusInEvent += Widget_FocusInEvent;
-                widget.FocusOutEvent += Widget_FocusOutEvent;
-                widget.KeyPressEvent += Widget_KeyPressEvent;
-                widget.KeyReleaseEvent += Widget_KeyReleaseEvent;
                 widget.Realized += Widget_Realized;
-                widget.ConfigureEvent += Widget_ConfigureEvent;
                 ISelf.Override.PaintGraphics += Override_PaintGraphics;
                 widget.SizeAllocated += Widget_SizeAllocated;
                 widget.ParentSet += Widget_ParentSet;
+                widget.WidgetEvent += Widget_WidgetEvent;
             }
         }
+        #region events
+        private bool WidgetRealized = false;
+        private void Widget_Realized(object sender, EventArgs e)
+        {
+            if (WidgetRealized == false)
+            {
+                WidgetRealized = true;
+                InitStyle((Gtk.Widget)sender);
+                OnLoad(EventArgs.Empty);
+                Load?.Invoke(this, e);
+                SetDockAnchor(this);
+            }
+        }
+
+        private bool Is_DoubleButtonPress = false;
+        private void Widget_WidgetEvent(object o, WidgetEventArgs args)
+        {
+            Gtk.Widget owidget = o as Gtk.Widget;
+            if (owidget.IsRealized)
+            {
+                if (args.Event.Type == Gdk.EventType.MotionNotify)
+                {
+                    int clicks = 0;
+                    Gdk.EventMotion eventmotion = args.Event as Gdk.EventMotion;
+                    MouseButtons button = MouseButtons.None;
+                    if (eventmotion.State.HasFlag(Gdk.ModifierType.Button1Mask))
+                    {
+                        button |= MouseButtons.Left;
+                        clicks += 1;
+                    }
+                    if (eventmotion.State.HasFlag(Gdk.ModifierType.Button2Mask))
+                    {
+                        button |= MouseButtons.Middle;
+                        clicks += 1;
+                    }
+                    if (eventmotion.State.HasFlag(Gdk.ModifierType.Button3Mask))
+                    {
+                        button |= MouseButtons.Right;
+                        clicks += 1;
+                    }
+                    owidget.Window.GetOrigin(out int x, out int y);
+                    MouseEventArgs mouseArgs = new MouseEventArgs(button, clicks, (int)eventmotion.XRoot - x, (int)eventmotion.YRoot - y, 1);
+                    OnMouseMove(mouseArgs);
+                    MouseMove?.Invoke(this, mouseArgs);
+                }
+                else if (args.Event.Type == Gdk.EventType.KeyPress)
+                {
+                    Gdk.EventKey eventkey = args.Event as Gdk.EventKey;
+                    Keys keys = (Keys)eventkey.HardwareKeycode;
+                    if (keyboardMap.TryGetValue(eventkey.Key, out int keycode))
+                    {
+                        keys = (Keys)keycode;
+                        if (eventkey.Key.Equals(Gdk.Key.VoidSymbol) && eventkey.HardwareKeycode == 20)
+                            keys = Keys.CapsLock;
+                    }
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.Mod1Mask))
+                        keys |= Keys.Alt;
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.ControlMask))
+                        keys |= Keys.Control;
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.ShiftMask))
+                        keys |= Keys.Shift;
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.LockMask))
+                        keys |= Keys.CapsLock;
+                    KeyEventArgs keyargs = new KeyEventArgs(keys);
+                    OnKeyDown(keyargs);
+                    KeyDown?.Invoke(this, keyargs);
+                    args.RetVal = keyargs.SuppressKeyPress;
+                }
+                else if (args.Event.Type == Gdk.EventType.KeyRelease)
+                {
+                    Gdk.EventKey eventkey = args.Event as Gdk.EventKey;
+                    Keys keys = (Keys)eventkey.HardwareKeycode;
+                    if (keyboardMap.TryGetValue(eventkey.Key, out int keycode))
+                    {
+                        keys = (Keys)keycode;
+                        if (eventkey.Key.Equals(Gdk.Key.VoidSymbol) && eventkey.HardwareKeycode == 20)
+                            keys = Keys.CapsLock;
+                    }
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.Mod1Mask))
+                        keys |= Keys.Alt;
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.ControlMask))
+                        keys |= Keys.Control;
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.ShiftMask))
+                        keys |= Keys.Shift;
+                    if (eventkey.State.HasFlag(Gdk.ModifierType.LockMask))
+                        keys |= Keys.CapsLock;
+                    KeyEventArgs keyargs = new KeyEventArgs(keys);
+                    OnKeyUp(keyargs);
+                    KeyUp?.Invoke(this, keyargs);
+                    args.RetVal = keyargs.SuppressKeyPress;
+                    if (!keyargs.SuppressKeyPress)
+                        KeyPress?.Invoke(this, new KeyPressEventArgs(Convert.ToChar(keycode)));
+                }
+                else if (args.Event.Type == Gdk.EventType.ButtonPress)
+                {
+                    Gdk.EventButton eventbutton = args.Event as Gdk.EventButton;
+                    MouseButtons button = MouseButtons.None;
+                    if (eventbutton.Button == 1)
+                        button = MouseButtons.Left;
+                    else if (eventbutton.Button == 2)
+                        button = MouseButtons.Middle;
+                    else if (eventbutton.Button == 3)
+                        button = MouseButtons.Right;
+                    owidget.Window.GetOrigin(out int x, out int y);//避免事件穿透错误
+                    MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
+                    OnMouseDown(mouseArgs);
+                    MouseDown?.Invoke(this, mouseArgs);
+                }
+                else if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
+                {
+                    Gdk.EventButton eventbutton = args.Event as Gdk.EventButton;
+                    if (eventbutton.Button == 1)
+                    {
+                        Is_DoubleButtonPress = true;
+                        MouseButtons button = MouseButtons.None;
+                        if (eventbutton.Button == 1)
+                            button = MouseButtons.Left;
+                        else if (eventbutton.Button == 2)
+                            button = MouseButtons.Middle;
+                        else if (eventbutton.Button == 3)
+                            button = MouseButtons.Right;
+                        owidget.Window.GetOrigin(out int x, out int y);//避免事件穿透错误
+
+                        MouseEventArgs mouseArgs2 = new MouseEventArgs(button, 2, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
+                        OnMouseDoubleClick(mouseArgs2);
+                        MouseDoubleClick?.Invoke(this, mouseArgs2);
+                        DoubleClick?.Invoke(this, EventArgs.Empty);
+                    }
+                }
+                else if (args.Event.Type == Gdk.EventType.ButtonRelease)
+                {
+                    Gdk.EventButton eventbutton = args.Event as Gdk.EventButton;
+                    MouseButtons button = MouseButtons.None;
+                    if (eventbutton.Button == 1)
+                        button = MouseButtons.Left;
+                    else if (eventbutton.Button == 2)
+                        button = MouseButtons.Middle;
+                    else if (eventbutton.Button == 3)
+                        button = MouseButtons.Right;
+                    owidget.Window.GetOrigin(out int x, out int y);
+                    if (eventbutton.Button == 1 && Is_DoubleButtonPress == false)
+                    {
+                        OnClick(EventArgs.Empty);
+                        MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
+                        OnMouseClick(mouseArgs3);
+                        Click?.Invoke(this, EventArgs.Empty);
+                        MouseClick?.Invoke(this, mouseArgs3);
+                    }
+                    MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
+                    OnMouseUp(mouseArgs);
+                    MouseUp?.Invoke(this, mouseArgs);
+                    if (eventbutton.Button == 3)
+                    {
+                        if (ContextMenuStrip != null)
+                        {
+                            ContextMenuStrip.Widget.ShowAll();
+                            ((Gtk.Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
+                            args.RetVal = true;
+                        }
+                    }
+                    Is_DoubleButtonPress = false;
+                }
+                else if (args.Event.Type == Gdk.EventType.Configure)
+                {
+                    OnMove(EventArgs.Empty);
+                    Move?.Invoke(this, EventArgs.Empty);
+                }
+                else if (args.Event.Type == Gdk.EventType.EnterNotify)
+                {
+                    if (Cursor != null)
+                    {
+                        if (Cursor.CursorType == Gdk.CursorType.CursorIsPixmap)
+                        {
+                            this.Widget.Window.Cursor = new Gdk.Cursor(((Gtk.Widget)o).Display, Cursor.CursorPixbuf, Cursor.CursorsXY.X, Cursor.CursorsXY.Y);
+                        }
+                        else
+                        {
+                            this.Widget.Window.Cursor = new Gdk.Cursor(((Gtk.Widget)o).Display, Cursor.CursorType);
+                        }
+                    }
+                    OnMouseEnter(EventArgs.Empty);
+                    OnMouseHover(EventArgs.Empty);
+                    Enter?.Invoke(this, EventArgs.Empty);
+                    MouseEnter?.Invoke(this, EventArgs.Empty);
+                    MouseHover?.Invoke(this, EventArgs.Empty);
+                }
+                else if (args.Event.Type == Gdk.EventType.LeaveNotify)
+                {
+                    if (Cursor != null && this.Widget.Window != null)
+                    {
+                        this.Widget.Window.Cursor = null;
+                    }
+                    OnMouseLeave(EventArgs.Empty);
+                    Leave?.Invoke(this, EventArgs.Empty);
+                    MouseLeave?.Invoke(this, EventArgs.Empty);
+                }
+                else if (args.Event.Type == Gdk.EventType.FocusChange)
+                {
+                    Gdk.EventFocus eventfocus = args.Event as Gdk.EventFocus;
+                    if (eventfocus.In)
+                    {
+                        GotFocus?.Invoke(this, EventArgs.Empty);
+                    }
+                    else
+                    {
+                        CancelEventArgs cancelEventArgs = new CancelEventArgs(false);
+                        LostFocus?.Invoke(this, EventArgs.Empty);
+                        OnValidating(cancelEventArgs);
+                        Validating?.Invoke(this, cancelEventArgs);
+                        if (Validated != null && cancelEventArgs.Cancel == false)
+                        {
+                            OnValidated(cancelEventArgs);
+                            Validated(this, cancelEventArgs);
+                        }
+                    }
+                }
+                else if (args.Event.Type == Gdk.EventType.Scroll)
+                {
+                    int clicks = 0;
+                    Gdk.EventScroll eventscroll = args.Event as Gdk.EventScroll;
+                    MouseButtons button = MouseButtons.None;
+                    if (eventscroll.State.HasFlag(Gdk.ModifierType.Button1Mask))
+                    {
+                        button |= MouseButtons.Left;
+                        clicks += 1;
+                    }
+                    if (eventscroll.State.HasFlag(Gdk.ModifierType.Button2Mask))
+                    {
+                        button |= MouseButtons.Middle;
+                        clicks += 1;
+                    }
+                    if (eventscroll.State.HasFlag(Gdk.ModifierType.Button3Mask))
+                    {
+                        button |= MouseButtons.Right;
+                        clicks += 1;
+                    }
+                    int delta = (int)eventscroll.DeltaY;
+                    if (eventscroll.Direction == Gdk.ScrollDirection.Left || eventscroll.Direction == Gdk.ScrollDirection.Right)
+                    {
+                        delta = (int)eventscroll.DeltaX;
+                    }
+                    MouseEventArgs mouseArgs = new MouseEventArgs(button, clicks, (int)eventscroll.X, (int)eventscroll.Y, delta);
+                    OnMouseWheel(mouseArgs);
+                    MouseWheel?.Invoke(this, mouseArgs);
+                }
+            }
+        }
+
         private void Widget_ParentSet(object o, ParentSetArgs args)
         {
             OnParentChanged(EventArgs.Empty);
@@ -128,221 +532,6 @@ namespace System.Windows.Forms
                 if (LocationChanged != null)
                     LocationChanged(this, EventArgs.Empty);
             }
-        }
-        private void Widget_ConfigureEvent(object o, ConfigureEventArgs args)
-        {
-            OnMove(EventArgs.Empty);
-            Move?.Invoke(this, args);
-        }
-        #region events
-        private bool WidgetRealized = false;
-        private void Widget_Realized(object sender, EventArgs e)
-        {
-            if (WidgetRealized == false)
-            {
-                WidgetRealized = true;
-                InitStyle((Gtk.Widget)sender);
-                OnLoad(EventArgs.Empty);
-                Load?.Invoke(this, e);
-                SetDockAnchor(this);
-            }
-        }
-        private bool Is_DoubleButtonPress = false;
-        protected virtual void Widget_ButtonPressEvent(object o, ButtonPressEventArgs args)
-        {
-            Gtk.Widget owidget = o as Gtk.Widget;
-            if (owidget != null && owidget.Window != null)
-            {
-                MouseButtons button = MouseButtons.None;
-                if (args.Event.Button == 1)
-                    button = MouseButtons.Left;
-                else if (args.Event.Button == 2)
-                    button = MouseButtons.Middle;
-                else if (args.Event.Button == 3)
-                    button = MouseButtons.Right;
-                owidget.Window.GetOrigin(out int x, out int y);//避免事件穿透错误
-                MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
-                OnMouseDown(mouseArgs);
-                MouseDown?.Invoke(this, mouseArgs);
-                Is_DoubleButtonPress = false;
-                if (args.Event.Button == 1)
-                {
-                    if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
-                    {
-                        Is_DoubleButtonPress = true;
-                        MouseEventArgs mouseArgs2 = new MouseEventArgs(button, 2, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
-                        OnMouseDoubleClick(mouseArgs2);
-                        MouseDoubleClick?.Invoke(this, mouseArgs2);
-                        DoubleClick?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-            }
-        }
-
-        protected virtual void Widget_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
-        {
-            Gtk.Widget owidget = o as Gtk.Widget;
-            if (!Is_DoubleButtonPress && owidget != null && owidget.Window != null)
-            {
-                MouseButtons button = MouseButtons.None;
-                if (args.Event.Button == 1)
-                    button = MouseButtons.Left;
-                else if (args.Event.Button == 2)
-                    button = MouseButtons.Middle;
-                else if (args.Event.Button == 3)
-                    button = MouseButtons.Right;
-                owidget.Window.GetOrigin(out int x, out int y);
-                if (args.Event.Button == 1)
-                {
-                    OnClick(EventArgs.Empty);
-                    MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
-                    OnMouseClick(mouseArgs3);
-                    Click?.Invoke(this, EventArgs.Empty);
-                    MouseClick?.Invoke(this, mouseArgs3);
-                }
-                MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 0);
-                OnMouseUp(mouseArgs);
-                MouseUp?.Invoke(this, mouseArgs);
-                if (args.Event.Button == 3)
-                {
-                    if (ContextMenuStrip != null)
-                    {
-                        ContextMenuStrip.Widget.ShowAll();
-                        ((Gtk.Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
-                        args.RetVal = true;
-                    }
-                }
-            }
-            Is_DoubleButtonPress = false;
-        }
-
-        private void Widget_EnterNotifyEvent(object o, EnterNotifyEventArgs args)
-        {
-            if (Cursor != null)
-            {
-                if (Cursor.CursorType == Gdk.CursorType.CursorIsPixmap)
-                {
-                    this.Widget.Window.Cursor = new Gdk.Cursor(((Gtk.Widget)o).Display, Cursor.CursorPixbuf, Cursor.CursorsXY.X, Cursor.CursorsXY.Y);
-                }
-                else
-                {
-                    this.Widget.Window.Cursor = new Gdk.Cursor(((Gtk.Widget)o).Display, Cursor.CursorType);
-                }
-            }
-            OnMouseEnter(EventArgs.Empty);
-            OnMouseHover(EventArgs.Empty);
-            Enter?.Invoke(this, args);
-            MouseEnter?.Invoke(this, args);
-            MouseHover?.Invoke(this, args);
-        }
-        private void Widget_MotionNotifyEvent(object o, MotionNotifyEventArgs args)
-        {
-            Gtk.Widget owidget = o as Gtk.Widget;
-            if (owidget != null && owidget.Window != null)
-            {
-                int clicks = 0;
-                MouseButtons button = MouseButtons.None;
-                if (args.Event.State.HasFlag(Gdk.ModifierType.Button1Mask))
-                {
-                    button |= MouseButtons.Left;
-                    clicks += 1;
-                }
-                if (args.Event.State.HasFlag(Gdk.ModifierType.Button2Mask))
-                {
-                    button |= MouseButtons.Middle;
-                    clicks += 1;
-                }
-                if (args.Event.State.HasFlag(Gdk.ModifierType.Button3Mask))
-                {
-                    button |= MouseButtons.Right;
-                    clicks += 1;
-                }
-                owidget.Window.GetOrigin(out int x, out int y);
-                MouseEventArgs mouseArgs = new MouseEventArgs(button, clicks, (int)args.Event.XRoot - x, (int)args.Event.YRoot - y, 1);
-                OnMouseMove(mouseArgs);
-                MouseMove?.Invoke(this, mouseArgs);
-            }
-        }
-        private void Widget_LeaveNotifyEvent(object o, LeaveNotifyEventArgs args)
-        {
-            if (Cursor != null && this.Widget.Window != null)
-            {
-                this.Widget.Window.Cursor = null;
-            }
-            OnMouseLeave(EventArgs.Empty);
-            Leave?.Invoke(this, EventArgs.Empty);
-            MouseLeave?.Invoke(this, EventArgs.Empty);
-        }
-        private void Widget_ScrollEvent(object o, Gtk.ScrollEventArgs args)
-        {
-            int clicks = 0;
-            MouseButtons button = MouseButtons.None;
-            if (args.Event.State.HasFlag(Gdk.ModifierType.Button1Mask))
-            {
-                button |= MouseButtons.Left;
-                clicks += 1;
-            }
-            if (args.Event.State.HasFlag(Gdk.ModifierType.Button2Mask))
-            {
-                button |= MouseButtons.Middle;
-                clicks += 1;
-            }
-            if (args.Event.State.HasFlag(Gdk.ModifierType.Button3Mask))
-            {
-                button |= MouseButtons.Right;
-                clicks += 1;
-            }
-            MouseEventArgs mouseArgs = new MouseEventArgs(button, clicks, (int)args.Event.X, (int)args.Event.Y, (int)args.Event.DeltaY);
-            OnMouseWheel(mouseArgs);
-            MouseWheel?.Invoke(this, mouseArgs);
-        }
-        private void Widget_FocusInEvent(object o, FocusInEventArgs args)
-        {
-            GotFocus?.Invoke(this, args);
-        }
-        private void Widget_FocusOutEvent(object o, FocusOutEventArgs args)
-        {
-            CancelEventArgs cancelEventArgs = new CancelEventArgs(false);
-            LostFocus?.Invoke(this, args);
-            OnValidating(cancelEventArgs);
-            Validating?.Invoke(this, cancelEventArgs);
-            if (Validated != null && cancelEventArgs.Cancel == false)
-            {
-                OnValidated(cancelEventArgs);
-                Validated(this, cancelEventArgs);
-            }
-        }
-        private void Widget_KeyPressEvent(object o, Gtk.KeyPressEventArgs args)
-        {
-            Gdk.EventKey eventkey = args.Event;
-            Keys keys = (Keys)eventkey.HardwareKeycode;
-            if (eventkey.State.HasFlag(Gdk.ModifierType.Mod1Mask))
-                keys |= Keys.Alt;
-            if (eventkey.State.HasFlag(Gdk.ModifierType.ControlMask))
-                keys |= Keys.Control;
-            if (eventkey.State.HasFlag(Gdk.ModifierType.ShiftMask))
-                keys |= Keys.Shift;
-            if (eventkey.State.HasFlag(Gdk.ModifierType.LockMask))
-                keys |= Keys.CapsLock;
-            OnKeyDown(new KeyEventArgs(keys));
-            KeyDown?.Invoke(this, new KeyEventArgs(keys));
-        }
-        private void Widget_KeyReleaseEvent(object o, KeyReleaseEventArgs args)
-        {
-            Gdk.EventKey eventkey = args.Event;
-            Keys keys = (Keys)eventkey.HardwareKeycode;
-            if (eventkey.State.HasFlag(Gdk.ModifierType.Mod1Mask))
-                keys |= Keys.Alt;
-            if (eventkey.State.HasFlag(Gdk.ModifierType.ControlMask))
-                keys |= Keys.Control;
-            if (eventkey.State.HasFlag(Gdk.ModifierType.ShiftMask))
-                keys |= Keys.Shift;
-            if (eventkey.State.HasFlag(Gdk.ModifierType.LockMask))
-                keys |= Keys.CapsLock;
- 
-            OnKeyUp(new KeyEventArgs(keys));
-            KeyUp?.Invoke(this, new KeyEventArgs(keys));
-            KeyPress?.Invoke(this, new KeyPressEventArgs(Convert.ToChar(eventkey.HardwareKeycode)));
         }
 
         #endregion

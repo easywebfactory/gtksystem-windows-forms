@@ -30,8 +30,28 @@ namespace System.Windows.Forms
             __itemsData = new ObjectCollection(this);
             self.Realized += Self_Realized;
             self.Changed += Self_Changed;
+            self.GrabNotify += Self_GrabNotify;
+            self.MoveActive += Self_MoveActive;
         }
 
+        public event EventHandler DropDown;
+        public event EventHandler DropDownClosed;
+        private void Self_MoveActive(object o, MoveActiveArgs args)
+        {
+            self.QueueDraw();
+        }
+
+        private void Self_GrabNotify(object o, GrabNotifyArgs args)
+        {
+            if (args.WasGrabbed)
+            {
+                DropDownClosed?.Invoke(this, EventArgs.Empty);
+            }
+            else
+            {
+                DropDown?.Invoke(this, EventArgs.Empty);
+            }
+        }
         private void Self_Changed(object sender, EventArgs e)
         {
             if (self.IsVisible)
@@ -49,10 +69,9 @@ namespace System.Windows.Forms
             {
                 Is_Self_Realized = true;
                 OnSetDataSource();
-                var ws = ((Gtk.Box)self.Children[0].Parent).Children[1] as Gtk.ToggleButton;
-                ws.Toggled += Ws_Toggled;
                 if (DropDownStyle == ComboBoxStyle.DropDownList)
                 {
+                    var ws = ((Gtk.Box)self.Children[0].Parent).Children[1] as Gtk.ToggleButton;
                     self.Entry.IsEditable = false;
                     self.Entry.CanFocus = false;
                     self.Entry.NoShowAll = true;
@@ -61,31 +80,52 @@ namespace System.Windows.Forms
                     ws.WidthRequest = self.WidthRequest;
                     ws.DrawIndicator = true;
                     ws.Drawn += Ws_Drawn;
+
+                    var window = Gtk.Window.ListToplevels().Where(w => w.WindowType == WindowType.Popup);
+                    foreach (Gtk.Window w in window)
+                    {
+                        if (w.AttachedTo is ComboBoxBase cbb && cbb.WidgetPath.Equals(self.WidgetPath))
+                        {
+                            w.SizeAllocated += W_SizeAllocated;
+                            w.Shown += W_Shown;
+                            break;
+                        }
+                    }
                 }
             }
         }
-
         private void Ws_Drawn(object o, DrawnArgs args)
         {
             var ws = o as Gtk.ToggleButton;
             string text = self.ActiveText;
             Pango.Layout layout = ws.CreatePangoLayout(text);
             args.Cr.Save();
-            args.Cr.Translate(10, 3);
+            args.Cr.Translate(10, 5);
             args.Cr.Rectangle(0, 0, ws.AllocatedWidth - 35, ws.AllocatedHeight - 5);
             args.Cr.Clip();
             Pango.CairoHelper.ShowLayout(args.Cr, layout);
             args.Cr.Restore();
         }
-
-        public event EventHandler DropDown;
-        private void Ws_Toggled(object sender, EventArgs e)
+        private void W_SizeAllocated(object o, SizeAllocatedArgs args)
         {
-            if (DropDown != null)
+            Gtk.Window w = (Gtk.Window)o;
+            if (w.Window != null && w.Window.IsVisible == false)
             {
-                DropDown(this, e);
+                self.Window.GetOrigin(out int x, out int y);
+                w.Window.Move(x - 5, y + self.AllocatedHeight);
+                GLib.Timeout.Add(100, () =>
+                {
+                    w.Window.Show();
+                    return false;
+                });
             }
         }
+        private void W_Shown(object sender, EventArgs e)
+        {
+            Gtk.Window w= (Gtk.Window)sender;
+            w.Window.Hide();
+        }
+
         private ComboBoxStyle _DropDownStyle;
         public ComboBoxStyle DropDownStyle { 
             get=> _DropDownStyle; 
@@ -103,7 +143,6 @@ namespace System.Windows.Forms
                 }
             }
         }
-
 
         public override string Text { get => self.Entry.Text; set { self.Entry.Text = value; } }
         public object SelectedItem { 

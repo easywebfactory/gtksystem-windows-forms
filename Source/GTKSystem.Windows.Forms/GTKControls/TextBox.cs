@@ -24,57 +24,7 @@ namespace System.Windows.Forms
             self.Valign = Gtk.Align.Start;
             self.Halign = Gtk.Align.Start;
             self.Changed += Self_Changed;
-            self.WidgetEvent += Self_WidgetEvent;
         }
-
-        private void Self_WidgetEvent(object o, WidgetEventArgs args)
-        {
-            if (args.Event is Gdk.EventKey eventkey)
-            {
-                if (args.Event.Type == Gdk.EventType.KeyPress)
-                {
-                    Keys keys = (Keys)eventkey.HardwareKeycode;
-                    if (eventkey.State.HasFlag(Gdk.ModifierType.Mod1Mask))
-                        keys |= Keys.Alt;
-                    if (eventkey.State.HasFlag(Gdk.ModifierType.ControlMask))
-                        keys |= Keys.Control;
-                    if (eventkey.State.HasFlag(Gdk.ModifierType.ShiftMask))
-                        keys |= Keys.Shift;
-                    if (eventkey.State.HasFlag(Gdk.ModifierType.LockMask))
-                        keys |= Keys.CapsLock;
-                    OnKeyDown(new KeyEventArgs(keys));
-                    KeyDown?.Invoke(this, new KeyEventArgs(keys));
-
-                }
-                else if (args.Event.Type == Gdk.EventType.KeyRelease)
-                {
-                    Keys keys = (Keys)eventkey.HardwareKeycode;
-                    if (eventkey.State.HasFlag(Gdk.ModifierType.Mod1Mask))
-                        keys |= Keys.Alt;
-                    if (eventkey.State.HasFlag(Gdk.ModifierType.ControlMask))
-                        keys |= Keys.Control;
-                    if (eventkey.State.HasFlag(Gdk.ModifierType.ShiftMask))
-                        keys |= Keys.Shift;
-                    if (eventkey.State.HasFlag(Gdk.ModifierType.LockMask))
-                        keys |= Keys.CapsLock;
-                    OnKeyUp(new KeyEventArgs(keys));
-                    KeyUp?.Invoke(this, new KeyEventArgs(keys));
-                    KeyPress?.Invoke(this, new KeyPressEventArgs(Convert.ToChar(eventkey.HardwareKeycode)));
-                }
-            }
-        }
-        public override event KeyEventHandler KeyDown;
-        public override event KeyEventHandler KeyUp;
-        public override event KeyPressEventHandler KeyPress;
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-
-        }
-        protected override void OnKeyUp(KeyEventArgs e)
-        {
-
-        }
-
         private void Self_Changed(object sender, EventArgs e)
         {
             if (TextChanged != null && self.IsVisible) { TextChanged(this, EventArgs.Empty); }
@@ -109,8 +59,6 @@ namespace System.Windows.Forms
             get { self.GetSelectionBounds(out int start, out int end); return start; }
             set { Select(value, SelectionLength); }
         }
-
-        [System.ComponentModel.Browsable(false)]
         public virtual int SelectionLength
         {
             get { self.GetSelectionBounds(out int start, out int end); return end - start; }
@@ -123,7 +71,24 @@ namespace System.Windows.Forms
         {
             self.SelectRegion(start, start + length);
         }
-        
+        public string SelectedText
+        {
+            get
+            {
+                if (self.GetSelectionBounds(out int start, out int end))
+                    return self.Text.Substring(start, end - start);
+                else
+                    return string.Empty;
+            }
+            set
+            {
+                if (self.GetSelectionBounds(out int start, out int end))
+                {
+                    self.DeleteSelection();
+                    self.InsertText(value, ref start);
+                }
+            }
+        }
         public void InsertTextAtCursor(string text)
         {
             if(text == null) return;

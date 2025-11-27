@@ -19,8 +19,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             {
                 ((System.Windows.Forms.Form)form.Data["Control"]).DialogResult = DialogResult;
             }
-            base.OnButtonPressEvent(evnt);
-            return false;
+            return base.OnButtonPressEvent(evnt);
         }
         public new string Text { get => ((Gtk.Label)Child).Text; set => ((Gtk.Label)Child).Text = value; }
         protected override void OnShown()

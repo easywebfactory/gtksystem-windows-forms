@@ -1,4 +1,6 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿using Gdk;
+
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public sealed class CheckBoxBase : Gtk.CheckButton, IControlGtk
     {
@@ -9,6 +11,11 @@
             this.Override.AddClass("CheckBox");
             base.Valign = Gtk.Align.Start;
             base.Halign = Gtk.Align.Start;
+        }
+        protected override bool OnButtonPressEvent(EventButton evnt)
+        {
+            base.OnButtonPressEvent(evnt);
+            return false;
         }
         protected override void OnShown()
         {

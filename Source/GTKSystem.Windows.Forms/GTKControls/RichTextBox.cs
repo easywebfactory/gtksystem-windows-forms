@@ -4,11 +4,9 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
-using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
-using System.Text;
 
 namespace System.Windows.Forms
 {
@@ -78,7 +76,6 @@ namespace System.Windows.Forms
             set { Select(value, SelectionLength); }
         }
         
-        [System.ComponentModel.Browsable(false)]
         public virtual int SelectionLength
         {
             get { self.TextView.Buffer.GetSelectionBounds(out TextIter start, out TextIter end); return end.Offset - start.Offset; }
@@ -92,8 +89,25 @@ namespace System.Windows.Forms
             TextIter startiter = self.TextView.Buffer.GetIterAtOffset(start);
             TextIter enditer = self.TextView.Buffer.GetIterAtOffset(start + length);
             self.TextView.Buffer.SelectRange(startiter, enditer);
-            self.TextView.HasFocus = true;
-            self.TextView.IsFocus = true;       
+        }
+        public string SelectedText
+        {
+            get
+            {
+                if (self.TextView.Buffer.GetSelectionBounds(out TextIter start, out TextIter end))
+                    return self.TextView.Buffer.GetText(start, end, false);
+                else
+                    return string.Empty;
+            }
+            set
+            {
+                if (self.TextView.Buffer.GetSelectionBounds(out TextIter start, out TextIter end))
+                {
+                    //self.TextView.Buffer.Insert(ref start, value);
+                    self.TextView.Buffer.DeleteSelection(false, false);
+                    self.TextView.Buffer.InsertAtCursor(value);
+                }
+            }
         }
         public void InsertTextAtCursor(string text)
         {

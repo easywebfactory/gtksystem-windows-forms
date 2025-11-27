@@ -181,9 +181,9 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             if (args.ResponseId == ResponseType.DeleteEvent)
             {
-                if (this.CloseWindow(true))
+                if (this.Data["Control"] is Form from1)
                 {
-                    if(this.Data["Control"] is Form from1)
+                    if (this.CloseWindow(true))
                     {
                         from1.Dispose();
                     }

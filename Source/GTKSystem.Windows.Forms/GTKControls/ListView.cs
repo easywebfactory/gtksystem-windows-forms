@@ -9,7 +9,6 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using Pango;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 
@@ -93,7 +92,7 @@ namespace System.Windows.Forms
                     NativeAdd(item, -1);
                 }
 
-                MultiSelect = MultiSelect == true;
+                MultiSelect = _MultiSelect == true;
                 self.ShowAll();
             }
         }
@@ -469,8 +468,6 @@ namespace System.Windows.Forms
                 fistcell.HeightRequest = boxitem.HeightRequest;
 
                 CheckBox checkBox = new CheckBox();
-                checkBox.Checked = item.Checked;
-                checkBox.CheckedChanged += CheckBox_CheckedChanged;
                 Gtk.CheckButton checkboxself = checkBox.self;
                 checkboxself.Halign = Gtk.Align.Start;
                 checkboxself.Valign = Gtk.Align.Start;
@@ -478,6 +475,7 @@ namespace System.Windows.Forms
                 checkboxself.DrawIndicator = this.CheckBoxes == true;
                 checkboxself.Relief = ReliefStyle.None;
                 checkboxself.Label = item.Text;
+                checkboxself.Active = item.Checked;
                 checkboxself.WidgetEvent += Checkboxself_WidgetEvent;
                 if (checkboxself.Child is Gtk.Label label)
                 {
@@ -652,12 +650,24 @@ namespace System.Windows.Forms
                     self.ShowAll();
             }
         }
-
-        private void CheckBox_CheckedChanged(object? sender, EventArgs e)
+        private void Checkboxself_WidgetEvent(object o, WidgetEventArgs args)
+        {
+            if (args.Event.Type is Gdk.EventType.ButtonRelease && args.Event is Gdk.EventButton event2 && event2.Button == 1)
+            {
+                Gtk.CheckButton checkButton = (Gtk.CheckButton)o;
+                checkButton.Active = !checkButton.Active;
+                if (event2.X < 25)
+                {
+                    OnCheckedChanged(checkButton.Data["Control"]);
+                    args.RetVal = true;
+                }
+            }
+        }
+        private void OnCheckedChanged(object? sender)
         {
             CheckBox box = sender as CheckBox;
             Gtk.FlowBoxChild checkitem = box.self.Parent.Parent.Parent.Parent as Gtk.FlowBoxChild;
-            ListViewItem thisitem = this.Items.Find(m => m.Index == Convert.ToInt32(checkitem.Data["ItemId"]));
+            ListViewItem thisitem = this.Items.Find(m => m._flowBoxChild.Handle == checkitem.Handle);
             if (thisitem != null)
             {
                 thisitem.Checked = box.self.Active;
@@ -665,45 +675,12 @@ namespace System.Windows.Forms
                 {
                     ItemCheck(sender, new ItemCheckEventArgs(checkitem.Index, box.self.Active ? CheckState.Checked : CheckState.Unchecked, box.self.Active ? CheckState.Unchecked : CheckState.Checked));
                 }
-                if (ItemChecked != null)
+                if (ItemChecked != null && box.self.Active == true)
                 {
                     ItemChecked(sender, new ItemCheckedEventArgs(thisitem));
                 }
             }
         }
-
-        private void Checkboxself_WidgetEvent(object o, WidgetEventArgs args)
-        {
-            if (args.Event.Type is Gdk.EventType.ButtonPress && args.Event is Gdk.EventButton event1)
-            {
-                if (event1.Button == 1 && event1.X > 25)
-                {
-                    self.Window.GetOrigin(out int x, out int y);
-                    event1.X = event1.XRoot - x;
-                    event1.Y = event1.YRoot - y;
-                    this.Widget_ButtonPressEvent(self, new ButtonPressEventArgs() { Args = new Gdk.EventButton[] { event1 } });
-                }
-            }
-            if (args.Event.Type is Gdk.EventType.ButtonRelease && args.Event is Gdk.EventButton event2)
-            {
-                if (event2.Button == 1 && event2.X > 25)
-                {
-                    Gtk.FlowBoxChild childitem = (Gtk.FlowBoxChild)(((Gtk.CheckButton)o).Parent.Parent.Parent.Parent);
-                    Gtk.FlowBox flowBox1 = childitem.Parent as Gtk.FlowBox;
-
-                    if (MultiSelect == false || Control.ModifierKeys.HasFlag(Keys.Control) == false)
-                        flowBox1.UnselectAll();
-                    flowBox1.SelectChild(childitem);
-
-                    self.Window.GetOrigin(out int x, out int y);
-                    event2.X = event2.XRoot - x;
-                    event2.Y = event2.YRoot - y;
-                    this.Widget_ButtonReleaseEvent(self, new ButtonReleaseEventArgs() { Args = new Gdk.EventButton[] { event2 } });
-                    args.RetVal = true;
-                }
-            }
-        }
-
         internal void NativeGroupAdd(ListViewGroup group, int position)
         {
             if (self.IsRealized)
@@ -788,8 +765,8 @@ namespace System.Windows.Forms
                 _flow.MinChildrenPerLine = 0u;
                 _flow.Halign = Gtk.Align.Fill;
                 _flow.Valign = Gtk.Align.Start;
-                _flow.SelectionMode = MultiSelect == false ? Gtk.SelectionMode.Single : Gtk.SelectionMode.Multiple;
-                _flow.ActivateOnSingleClick = MultiSelect == false;
+                _flow.SelectionMode = _MultiSelect == false ? Gtk.SelectionMode.Single : Gtk.SelectionMode.Multiple;
+                _flow.ActivateOnSingleClick = _MultiSelect == false;
                 _flow.SortFunc = new Gtk.FlowBoxSortFunc((fbc1, fbc2) =>
                 {
                     if (SortColumn != null)
@@ -804,8 +781,8 @@ namespace System.Windows.Forms
                     else
                         return 0;
                 });
-                _flow.ChildActivated += _flow_ChildActivated;
                 _flow.SelectedChildrenChanged += _flow_SelectedChildrenChanged;
+                _flow.ButtonReleaseEvent += _flow_ButtonReleaseEvent;
                 hBox.PackStart(_flow, false, true, 0);
 
                 if (ShowGroups == true && this.View != View.List && this.View != View.Tile)
@@ -832,68 +809,51 @@ namespace System.Windows.Forms
             }
         }
 
+        private void _flow_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
+        {
+            Gtk.FlowBox widget = (Gtk.FlowBox)o;
+            if (_MultiSelect == false || ModifierKeys.HasFlag(Keys.Control) == false)
+            {
+                foreach (var group in GetAllGroups())
+                {
+                    if (group.FlowBox.Handle != widget.Handle)
+                        group.FlowBox.UnselectAll();
+                }
+            }
+            if (ItemActivate != null)
+                ItemActivate(this, EventArgs.Empty);
+        }
         private void _flow_SelectedChildrenChanged(object sender, EventArgs e)
         {
             Gtk.FlowBox widget = (Gtk.FlowBox)sender;
-            if (MultiSelect == true)
+            List<IntPtr> selecteds = new List<IntPtr>();
+            foreach (var group in GetAllGroups())
             {
-                if (ItemActivate != null)
-                    ItemActivate(this, e);
-
-                List<int> selecteds = new List<int>();
-                foreach (var group in GetAllGroups())
+                foreach (FlowBoxChild o in group.FlowBox.SelectedChildren)
                 {
-                    foreach (FlowBoxChild o in group.FlowBox.SelectedChildren)
-                    {
-                        if (o.IsSelected)
-                        {
-                            int id = Convert.ToInt32(o.Data["ItemId"]);
-                            selecteds.Add(id);
-                        }
-                    }
+                    selecteds.Add(o.Handle);
                 }
-                foreach (ListViewItem item in Items)
+            }
+            foreach (ListViewItem item in Items)
+            {
+                if (selecteds.Contains(item._flowBoxChild.Handle))
                 {
-                    if (selecteds.Contains(item.Index))
+                    if (item._selected == false)
                     {
-                        if (item.Selected == false)
-                        {
-                            item.Selected = true;
-                            if (ItemSelectionChanged != null)
-                                ItemSelectionChanged(this, new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
-                        }
-                    }
-                    else if (item.Selected == true)
-                    {
-                        item.Selected = false;
+                        item._selected = true;
                         if (ItemSelectionChanged != null)
                             ItemSelectionChanged(this, new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
                     }
                 }
+                else if (item._selected == true)
+                {
+                    item._selected = false;
+                    if (ItemSelectionChanged != null)
+                        ItemSelectionChanged(this, new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
+                }
             }
-
             if (SelectedIndexChanged != null)
                 SelectedIndexChanged(this, e);
-        }
-        private void _flow_ChildActivated(object o, Gtk.ChildActivatedArgs args)
-        {
-            Gtk.FlowBox widget = (Gtk.FlowBox)o;
-            ListViewItem item = this.Items.Find(m => m.Index == Convert.ToInt32(args.Child.Data["ItemId"]));
-            if (item != null)
-            {
-                item._selected = args.Child.IsSelected;
-                foreach (var group in GetAllGroups())
-                {
-                    if (group.FlowBox.Equals(widget) == false)
-                    {
-                        group.FlowBox.UnselectAll();
-                    }
-                }
-                if (ItemActivate != null)
-                    ItemActivate(this, args);
-                if (ItemSelectionChanged != null)
-                    ItemSelectionChanged(this, new ListViewItemSelectionChangedEventArgs(item, item.Index, item.Selected));
-            }
         }
 
         private bool IsCacheUpdate;
