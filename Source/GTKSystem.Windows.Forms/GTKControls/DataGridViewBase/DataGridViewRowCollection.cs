@@ -173,8 +173,7 @@ namespace System.Windows.Forms
         {
             get
             {
-                DataGridViewRow dataGridViewRow = SharedRow(index);
-                return dataGridViewRow;
+                return SharedRow(index);
             }
         }
         protected DataGridView DataGridView { get { return dataGridView; } }
@@ -470,16 +469,10 @@ namespace System.Windows.Forms
         }
         public DataGridViewRow SharedRow(int rowIndex)
         {
-            bool hasiter = dataGridView.Store.GetIter(out TreeIter iter,new TreePath(new int[] { rowIndex }));
-            if (hasiter)
-            {
-                foreach (DataGridViewRow item in items)
-                {
-                    if(item.TreeIter.Equals(iter.UserData))
-                        return item;
-                }
-            }
-            return (DataGridViewRow)SharedList[rowIndex];
+            if (items.Count > rowIndex)
+                return (DataGridViewRow)items[rowIndex];
+            else
+                return null;
         }
         //**************************************
         protected virtual void OnCollectionChanged(CollectionChangeEventArgs e)

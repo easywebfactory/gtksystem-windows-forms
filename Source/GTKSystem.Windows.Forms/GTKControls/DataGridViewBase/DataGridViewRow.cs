@@ -41,14 +41,19 @@ namespace System.Windows.Forms
 
         public DataGridViewTriState Resizable { get; set; }
 
-        public bool Selected { get => DataGridView.NativeRowGetSelected(this.TreeIter); set => DataGridView.NativeRowSetSelected(this.TreeIter, value); }
-        //public bool Selected { get; set; }
+        public bool Selected { get => DataGridView.NativeRowGetSelected(this.TreeIter); set => DataGridView?.NativeRowSetSelected(this.TreeIter, value); }
 
         public DataGridViewElementStates State { get { return DataGridViewElementStates.None; } }
 
         public ContextMenuStrip ContextMenuStrip { get; set; }
-
-        public bool Visible { get; set; }
+        private bool _visible = true;
+        public bool Visible { get => _visible; 
+            set { 
+                _visible = value;
+                if (DataGridView != null)
+                    DataGridView.IsReFilter = true;
+            }
+        }
 
         public AccessibleObject AccessibilityObject { get; }
 

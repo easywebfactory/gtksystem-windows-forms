@@ -4,6 +4,7 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+using Cairo;
 using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
@@ -24,7 +25,7 @@ namespace System.Windows.Forms
         private ControlBindingsCollection _collect;
         internal Gtk.TreeStore Store = new TreeStore(typeof(DataGridViewCell));
         public Gtk.TreeView GridView { get { return self.GridView; } }
-        public DataGridView():base()
+        public DataGridView() : base()
         {
             self.Override.sender = this;
             this.BorderStyle = BorderStyle.FixedSingle;
@@ -35,7 +36,7 @@ namespace System.Windows.Forms
             GridView.HeadersClickable = true;
             GridView.HeadersVisible = true;
             GridView.ActivateOnSingleClick = false;
-           
+
             _columns = new DataGridViewColumnCollection(this);
             _rows = new DataGridViewRowCollection(this);
             _collect = new ControlBindingsCollection(this);
@@ -44,7 +45,6 @@ namespace System.Windows.Forms
             GridView.Selection.Changed += Selection_Changed;
             GridView.ColumnsChanged += GridView_ColumnsChanged;
         }
-
         private void GridView_ColumnsChanged(object sender, EventArgs e)
         {
             foreach (var item in GridView.Columns)
@@ -123,9 +123,11 @@ namespace System.Windows.Forms
             GridView.CollapseRow(Store.GetPath(row.TreeIter));
         }
         private bool _MultiSelect = true;
-        public bool MultiSelect { 
-            get => _MultiSelect; 
-            set {
+        public bool MultiSelect
+        {
+            get => _MultiSelect;
+            set
+            {
                 _MultiSelect = value;
                 GridView.ActivateOnSingleClick = !_MultiSelect;
                 if (_SelectionMode == DataGridViewSelectionMode.CellSelect)
@@ -139,13 +141,15 @@ namespace System.Windows.Forms
                     else
                         GridView.Selection.Mode = Gtk.SelectionMode.Single;
                 }
-            } 
+            }
         }
 
         private DataGridViewSelectionMode _SelectionMode = DataGridViewSelectionMode.RowHeaderSelect;
-        public DataGridViewSelectionMode SelectionMode {
+        public DataGridViewSelectionMode SelectionMode
+        {
             get => _SelectionMode;
-            set {
+            set
+            {
                 _SelectionMode = value;
                 switch (_SelectionMode)
                 {
@@ -161,15 +165,16 @@ namespace System.Windows.Forms
                         GridView.Selection.Mode = Gtk.SelectionMode.Multiple;
                         break;
                 }
-                
-            } }
+
+            }
+        }
         public string Markup { get; set; } = "...";
         public bool ReadOnly { get; set; }
         public int RowHeadersWidth { get; set; }
         public int ColumnHeadersHeight { get; set; }
         public DataGridViewColumnHeadersHeightSizeMode ColumnHeadersHeightSizeMode
         {
-            get;set;
+            get; set;
         }
         public DataGridViewAutoSizeRowsMode AutoSizeRowsMode { get; set; }
         private DataGridViewRow _RowTemplate;
@@ -262,7 +267,7 @@ namespace System.Windows.Forms
             Type[] _entityType = _type.GetGenericArguments();
             if (_entityType.Length == 1)
             {
-                PropertyInfo[] pros = _entityType[0].GetProperties(BindingFlags.Public|BindingFlags.Instance);
+                PropertyInfo[] pros = _entityType[0].GetProperties(BindingFlags.Public | BindingFlags.Instance);
                 foreach (PropertyInfo pro in pros)
                 {
                     if (_columns.Exists(m => m.DataPropertyName == pro.Name) == false)
@@ -403,7 +408,7 @@ namespace System.Windows.Forms
                     return false;
             }
         }
-        internal void NativeRowSetSelected(TreeIter rowiter,bool selected)
+        internal void NativeRowSetSelected(TreeIter rowiter, bool selected)
         {
             Gtk.Application.Invoke(delegate
             {
@@ -413,17 +418,30 @@ namespace System.Windows.Forms
                     GridView.Selection.UnselectIter(rowiter);
             });
         }
+        internal bool IsReFilter = false;
+        internal void NativeReFilter()
+        {
+            if (IsReFilter)
+            {
+                Gtk.TreeModelFilter filter = GridView.Model as Gtk.TreeModelFilter;
+                filter?.Refilter();
+                IsReFilter = false;
+            }
+        }
         public bool AllowUserToAddRows { get; set; }
         public bool AllowUserToDeleteRows { get; set; }
 
         private bool _AllowUserToOrderColumns = true;
-        public bool AllowUserToOrderColumns { get => _AllowUserToOrderColumns;
-            set {
+        public bool AllowUserToOrderColumns
+        {
+            get => _AllowUserToOrderColumns;
+            set
+            {
                 _AllowUserToOrderColumns = value;
-                if(AllowUserToOrderColumnsChanged==null)
+                if (AllowUserToOrderColumnsChanged == null)
                     AllowUserToOrderColumnsChanged += DataGridView_AllowUserToOrderColumnsChanged;
                 else
-                    AllowUserToOrderColumnsChanged(this, EventArgs.Empty); 
+                    AllowUserToOrderColumnsChanged(this, EventArgs.Empty);
             }
         }
 
@@ -436,7 +454,9 @@ namespace System.Windows.Forms
         }
 
         private bool _AllowUserToResizeColumns = true;
-        public bool AllowUserToResizeColumns { get => AllowUserToResizeColumns;
+        public bool AllowUserToResizeColumns
+        {
+            get => AllowUserToResizeColumns;
             set
             {
                 _AllowUserToResizeColumns = value;
@@ -467,6 +487,7 @@ namespace System.Windows.Forms
         }
         public override void Refresh()
         {
+            NativeReFilter();
             GridView.UnsetStateFlags(Gtk.StateFlags.Selected);
             GLib.Idle.Add(() =>
             {
@@ -487,12 +508,48 @@ namespace System.Windows.Forms
         }
         public void EndEdit()
         {
-            foreach(DataGridViewColumn column in Columns)
+            foreach (DataGridViewColumn column in Columns)
             {
                 column.EditableEditingDone();
             }
         }
 
+        private int _FirstDisplayedScrollingRowIndex;
+        public int FirstDisplayedScrollingRowIndex
+        {
+            get => _FirstDisplayedScrollingRowIndex;
+            set
+            {
+                _FirstDisplayedScrollingRowIndex = value;
+                var grid = GridView;
+                if (grid.NColumns > 0)
+                {
+                    int y_offset = 0;
+                    int maxi = Rows.Count;
+                    for (int i = 0; i < _FirstDisplayedScrollingRowIndex && i < maxi; i++)
+                    {
+                        var rec = grid.GetCellArea(new TreePath([i]), grid.Columns[0]);
+                        y_offset += rec.Height + 2;
+                    }
+                    self.ScrollView(-1, y_offset);
+                }
+            }
+        }
+        private int _FirstDisplayedScrollingColumnIndex;
+        public int FirstDisplayedScrollingColumnIndex
+        {
+            get => _FirstDisplayedScrollingColumnIndex;
+            set
+            {
+                _FirstDisplayedScrollingColumnIndex = value;
+                var grid = GridView;
+                if (_FirstDisplayedScrollingColumnIndex > -1 && grid.NColumns > _FirstDisplayedScrollingColumnIndex)
+                {
+                    int x_offset = grid.GetColumn(_FirstDisplayedScrollingColumnIndex).XOffset;
+                    self.ScrollView(x_offset, -1);
+                }
+            }
+        }
         protected override void Dispose(bool disposing)
         {
             _DataSource = null;
@@ -521,7 +578,7 @@ namespace System.Windows.Forms
         public event EventHandler AlternatingRowsDefaultCellStyleChanged;
         [Obsolete("此事件未实现，自行开发")]
         public event EventHandler AllowUserToResizeRowsChanged;
- 
+
         public event EventHandler AllowUserToResizeColumnsChanged;
         [Obsolete("此事件未实现，自行开发")]
         public event EventHandler AllowUserToDeleteRowsChanged;
@@ -533,7 +590,7 @@ namespace System.Windows.Forms
         public event DataGridViewSortCompareEventHandler SortCompare;
         //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler SelectionChanged;
- 
+
         public event EventHandler AllowUserToOrderColumnsChanged;
         //[Obsolete("此事件未实现，自行开发")]
         //public event EventHandler StyleChanged;

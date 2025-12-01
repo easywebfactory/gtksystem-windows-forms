@@ -400,15 +400,14 @@ namespace System.Windows.Forms
             set
             {
                 _topIndex = value;
-                Application.DoEvents();
-                int topheight = 0;
+                int y_offset = 0;
                 int maxi = self.ListBox.Children.Length;
-                for (int ii = 0; ii <= _topIndex && ii < maxi; ii++)
+                for (int i = 0; i < _topIndex && i < maxi; i++)
                 {
-                    self.ListBox.Children[ii].GetPreferredHeight(out int mini_height, out int natural_height);
-                    topheight += natural_height;
+                    self.ListBox.Children[i].GetPreferredHeight(out int mini_height, out int natural_height);
+                    y_offset += natural_height;
                 }
-                self.Vadjustment.Value = topheight - self.AllocatedHeight;
+                self.ScrollView(-1, y_offset);
             }
         }
         public override bool Focus()

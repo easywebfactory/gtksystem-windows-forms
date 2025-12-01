@@ -66,6 +66,22 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 }
             }
         }
+        public bool ScrollView(double hscrollValue, double vscrollValue)
+        {
+            bool res = false;
+            if (hscrollValue > -1 && base.HscrollbarPolicy != Gtk.PolicyType.Never && base.HscrollbarPolicy != Gtk.PolicyType.External)
+            {
+                res = true;
+                base.Hadjustment.Value = hscrollValue;
+            }
+            if (vscrollValue > -1 && base.VscrollbarPolicy != Gtk.PolicyType.Never && base.VscrollbarPolicy != Gtk.PolicyType.External)
+            {
+                res = true;
+                base.Vadjustment.Value = vscrollValue;
+            }
+
+            return res;
+        }
         protected override void OnShown()
         {
             Override.OnAddClass();
