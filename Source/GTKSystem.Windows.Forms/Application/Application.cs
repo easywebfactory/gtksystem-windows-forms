@@ -202,8 +202,8 @@ namespace System.Windows.Forms
 .GroupBox>border{border: solid 1px rgba(76, 66, 66, 0.3);}
 
 .ToolStrip,.MenuStrip{padding:0px;border-radius:0px;min-height:6px;min-width:6px;}
-.ToolStrip>toolitem{padding:0px;}
-.MenuStrip>menuitem{padding:0px;}
+.ToolStrip>toolbutton,.ToolStrip>toolbutton label{padding:0px;margin:0px;}
+.MenuStrip>menuitem,.MenuStrip>menuitem label{padding:0px;margin:0px;}
 .ToolStrip button,.MenuStrip button{padding-top:0px;padding-bottom:0px; min-height:6px;min-width:6px;border-radius:0px;border-width:1px;}
 .ToolStrip combox,.MenuStrip combox{padding-top:0px;padding-bottom:0px; min-height:6px;min-width:6px;border-radius:0px;border-width:0px;}
 .ToolStrip entry,.MenuStrip entry{padding-top:0px;padding-bottom:0px; min-height:6px;min-width:6px;border-radius:0px;border-width:1px;}
@@ -213,6 +213,8 @@ namespace System.Windows.Forms
 .ToolStrip checkbutton,.MenuStrip checkbutton{margin-left:-20px; padding:0px; } 
 .ToolStrip menu button image,.MenuStrip menu button image{margin-left:-22px;}
 .ToolStrip menu button image+label,.MenuStrip menu button image+label{margin-left:-2px; }
+.ToolStrip>separator,.MenuStrip>separator{padding:0px;margin:2px;}
+
 .ContextMenuStrip button image{margin-left:-22px; }
 .ContextMenuStrip button image+label{margin-left:-2px; }
 .ContextMenuStrip checkbutton{margin-left:-22px;}

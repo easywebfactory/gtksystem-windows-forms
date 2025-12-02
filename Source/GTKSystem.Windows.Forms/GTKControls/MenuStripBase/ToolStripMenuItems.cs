@@ -17,7 +17,7 @@ namespace System.Windows.Forms
 
     public class StripMenuItem : Gtk.MenuItem, IToolMenuItem
     {
-        public Gtk.CheckButton checkButton = new Gtk.CheckButton() { Visible = true };
+        public Gtk.CheckButton checkButton = new Gtk.CheckButton() { Visible = true, Relief = ReliefStyle.None };
         public StripMenuItem() : base()
         {
             base.Visible = true;
@@ -27,7 +27,6 @@ namespace System.Windows.Forms
             checkButton.Hexpand = true;
             checkButton.Xalign = 0f;
             checkButton.DrawIndicator = false;
-            checkButton.Relief = ReliefStyle.None;
             base.Add(checkButton);
         }
         public Gtk.Widget ToolItem { get; }
@@ -64,7 +63,7 @@ namespace System.Windows.Forms
     }
     public class StripToolButton : Gtk.ToolButton, IToolMenuItem
     {
-        public StripToolButton() : base(null, "") {}
+        public StripToolButton() : base(null, "") { this.Homogeneous = false; }
         public Gtk.Widget ToolItem { get => this; }
         public Gtk.Widget MenuItem { get; }
         public string Text { get => base.Label; set => base.Label = value; }
@@ -84,7 +83,7 @@ namespace System.Windows.Forms
     }
     public class StripMenuToolButton : Gtk.MenuToolButton, IToolMenuItem
     {
-        public StripMenuToolButton() : base(null, "") { }
+        public StripMenuToolButton() : base(null, "") { this.Homogeneous = false; }
         public Gtk.Widget ToolItem { get => this; }
         public Gtk.Widget MenuItem { get; }
         public string Text { get => base.Label; set => base.Label = value; }
@@ -104,7 +103,7 @@ namespace System.Windows.Forms
     }
     public class StripToolItem : Gtk.ToolItem, IToolMenuItem
     {
-        public StripToolItem() : base() {  }
+        public StripToolItem() : base() { this.Homogeneous = false; }
         public Gtk.Widget ToolItem { get => this; }
         public Gtk.Widget MenuItem { get; }
         public string Text { get; set; }
