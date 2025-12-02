@@ -5,6 +5,7 @@
  * author:chenhongjin
  */
 using Gtk;
+using Pango;
 using System.Collections;
 using System.ComponentModel;
 
@@ -63,7 +64,6 @@ namespace System.Windows.Forms
             foreach (DataGridViewRow row in dataGridViewRows)
             {
                 row.DataGridView = dataGridView;
-                row.Index = rowindex;
                 DataGridViewCellStyle _cellStyle = dataGridView.DefaultCellStyle;
                 if (dataGridView.RowsDefaultCellStyle != null)
                     _cellStyle = dataGridView.RowsDefaultCellStyle;
@@ -101,7 +101,6 @@ namespace System.Windows.Forms
         }
         private void AddGtkStore(TreeIter parent, ref int rowindex, DataGridViewRow row)
         {
-            row.Index = rowindex;
             row.DataGridView = dataGridView;
             DataGridViewCellStyle _cellStyle = dataGridView.DefaultCellStyle;
             if (dataGridView.RowsDefaultCellStyle != null)
@@ -160,11 +159,6 @@ namespace System.Windows.Forms
                 items.Insert(idx, row);
                 row.TreeIter = InsertGtkStore(idx, row.Cells);
                 idx++;
-            }
-            int newindex = idx;
-            for (int i = idx; i < items.Count; i++)
-            {
-                ((DataGridViewRow)items[i]).Index = idx;
             }
         }
 
@@ -234,7 +228,7 @@ namespace System.Windows.Forms
             int start = items.Count;
             for (int i = 0; i < count; i++)
             {
-                DataGridViewRow row = new DataGridViewRow() { Index = start + i };
+                DataGridViewRow row = new DataGridViewRow();
                 AddGtkStore(row);
                 items.Add(row);
             }
@@ -453,18 +447,17 @@ namespace System.Windows.Forms
             InsertGtkStore(rowIndex, dataGridViewRows);
         }
         public virtual void Remove(DataGridViewRow dataGridViewRow) {
-            RemoveAt(dataGridViewRow.Index);
+            Gtk.TreeIter iter = dataGridViewRow.TreeIter;
+            if (iter.UserData != null)
+                dataGridView.Store.Remove(ref iter);
+            items.Remove(dataGridViewRow);
         }
         public virtual void RemoveAt(int index) {
-            if (dataGridView.Store.GetIter(out TreeIter iter, new TreePath(new int[] { index })))
-            {
-                dataGridView.Store.Remove(ref iter);
-            }
-            items.RemoveAt(index);
-            //reset id
-            for (int i = 0; i < items.Count; i++)
-            {
-                ((DataGridViewRow)items[i]).Index = i;
+            if (Count > index) {
+                Gtk.TreeIter iter = ((DataGridViewRow)items[index]).TreeIter;
+                if (iter.UserData != null)
+                    dataGridView.Store.Remove(ref iter);   
+                items.RemoveAt(index);
             }
         }
         public DataGridViewRow SharedRow(int rowIndex)

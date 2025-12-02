@@ -8,6 +8,7 @@ using Cairo;
 using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+using Pango;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
@@ -418,16 +419,6 @@ namespace System.Windows.Forms
                     GridView.Selection.UnselectIter(rowiter);
             });
         }
-        internal bool IsReFilter = false;
-        internal void NativeReFilter()
-        {
-            if (IsReFilter)
-            {
-                Gtk.TreeModelFilter filter = GridView.Model as Gtk.TreeModelFilter;
-                filter?.Refilter();
-                IsReFilter = false;
-            }
-        }
         public bool AllowUserToAddRows { get; set; }
         public bool AllowUserToDeleteRows { get; set; }
 
@@ -487,7 +478,6 @@ namespace System.Windows.Forms
         }
         public override void Refresh()
         {
-            NativeReFilter();
             GridView.UnsetStateFlags(Gtk.StateFlags.Selected);
             GLib.Idle.Add(() =>
             {

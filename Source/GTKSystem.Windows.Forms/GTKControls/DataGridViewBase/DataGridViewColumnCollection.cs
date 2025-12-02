@@ -136,7 +136,7 @@ namespace System.Windows.Forms
                 __owner.GridView.Model = __owner.Store;
             }
             __owner.Store.DefaultSortFunc = new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) => { return 0; });
-            for (int i=0;i < __owner.Store.NColumns; i++)
+            for (int i = 0; i < __owner.Store.NColumns; i++)
             {
                 __owner.Store.SetSortFunc(i, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
                 {
@@ -145,10 +145,10 @@ namespace System.Windows.Forms
                     DataGridViewCell v2 = m.GetValue(t2, sortid) as DataGridViewCell;
                     if (v1?.Value == null || v2?.Value == null)
                         return 0;
-                    else if(int.TryParse(v1.Value.ToString(), out int rv1) && int.TryParse(v2.Value.ToString(), out int rv2))
-                        return (rv2 - rv1);
-                    else if (DateTime.TryParse(v1.Value.ToString(), out DateTime rd1) && DateTime.TryParse(v2.Value.ToString(), out DateTime rd2))
-                        return (int)((rd2 - rd1).TotalSeconds);
+                    else if (v1.GetType().IsValueType && long.TryParse(v2.Value.ToString(), out long rv2))
+                        return rv2.CompareTo(v1.Value);
+                    else if (v1.GetType().Name == "DateTime")
+                        return ((DateTime)v2.Value).CompareTo(v1.Value);
                     else
                         return v2.Value.ToString().CompareTo(v1.Value.ToString());
                 }));

@@ -5,9 +5,23 @@ namespace System.Windows.Forms
 {
     public class DataGridViewRow
     {
-        public int Index { get; internal set; }
+        public int Index
+        {
+            get
+            {
+                if (Parent == null)
+                {
+                    return DataGridView.Rows.IndexOf(this);
+                }
+                else
+                {
+                    return Parent.Children.IndexOf(this);
+                }
+            }
+        }
         public TreeIter TreeIter { get; internal set; }
         public DataGridView DataGridView { get; set; }
+        public DataGridViewRow Parent { get; set; }
         private DataGridViewCellCollection _cell;
         private DataGridViewRowCollection _children;
         public DataGridViewRow()
@@ -46,14 +60,7 @@ namespace System.Windows.Forms
         public DataGridViewElementStates State { get { return DataGridViewElementStates.None; } }
 
         public ContextMenuStrip ContextMenuStrip { get; set; }
-        private bool _visible = true;
-        public bool Visible { get => _visible; 
-            set { 
-                _visible = value;
-                if (DataGridView != null)
-                    DataGridView.IsReFilter = true;
-            }
-        }
+        public bool Visible { get; set; } = true;
 
         public AccessibleObject AccessibilityObject { get; }
 
