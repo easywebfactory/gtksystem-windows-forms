@@ -64,6 +64,7 @@ namespace System.Windows.Forms
             foreach (DataGridViewRow row in dataGridViewRows)
             {
                 row.DataGridView = dataGridView;
+                row.Parent = parentRow;
                 DataGridViewCellStyle _cellStyle = dataGridView.DefaultCellStyle;
                 if (dataGridView.RowsDefaultCellStyle != null)
                     _cellStyle = dataGridView.RowsDefaultCellStyle;
@@ -102,6 +103,7 @@ namespace System.Windows.Forms
         private void AddGtkStore(TreeIter parent, ref int rowindex, DataGridViewRow row)
         {
             row.DataGridView = dataGridView;
+            row.Parent = parentRow;
             DataGridViewCellStyle _cellStyle = dataGridView.DefaultCellStyle;
             if (dataGridView.RowsDefaultCellStyle != null)
                 _cellStyle = dataGridView.RowsDefaultCellStyle;
@@ -142,6 +144,8 @@ namespace System.Windows.Forms
             int idx = rowIndex;
             foreach (DataGridViewRow row in dataGridViewRows)
             {
+                row.DataGridView = dataGridView;
+                row.Parent = parentRow;
                 DataGridViewCellStyle _cellStyle = dataGridView.DefaultCellStyle;
                 if (dataGridView.RowsDefaultCellStyle != null)
                     _cellStyle = dataGridView.RowsDefaultCellStyle;
@@ -229,8 +233,7 @@ namespace System.Windows.Forms
             for (int i = 0; i < count; i++)
             {
                 DataGridViewRow row = new DataGridViewRow();
-                AddGtkStore(row);
-                items.Add(row);
+                Add(row);
             }
 
             return start + count;
@@ -264,7 +267,16 @@ namespace System.Windows.Forms
         }
         public virtual void Clear()
         {
-            dataGridView.Store.Clear();
+            if(parentRow == null)
+                dataGridView.Store.Clear();
+            else
+            {
+                foreach(DataGridViewRow row in items)
+                {
+                    Gtk.TreeIter iter = row.TreeIter;
+                    dataGridView.Store.Remove(ref iter);
+                }
+            }
             items.Clear();
         }
         public virtual bool Contains(DataGridViewRow dataGridViewRow)

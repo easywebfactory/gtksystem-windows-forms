@@ -29,7 +29,7 @@ namespace System.Windows.Forms
             _cell = new DataGridViewCellCollection(this);
         }
         public DataGridViewCellCollection Cells { get { return _cell; } }
-        public DataGridViewRowCollection Children { get => _children ?? new DataGridViewRowCollection(DataGridView, this); }
+        public DataGridViewRowCollection Children { get { if (_children == null) { _children = new DataGridViewRowCollection(DataGridView, this); } return _children; } }
         public object DataBoundItem { get; }
         public DataGridViewCellStyle DefaultCellStyle { get; set; }
 
