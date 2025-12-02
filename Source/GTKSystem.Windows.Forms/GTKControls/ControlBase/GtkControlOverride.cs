@@ -83,7 +83,9 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public void OnPaint(Cairo.Context cr, Gdk.Rectangle area)
         {
             if (PaintGraphics != null) {
+                cr.Save();
                 PaintGraphics(cr, new Rectangle(area.X, area.Y, area.Width, area.Height));
+                cr.Restore();
             }
             if (Paint != null)
                 Paint(sender, new PaintEventArgs(new Graphics(container, cr, area), new Rectangle(area.X, area.Y, area.Width, area.Height)));

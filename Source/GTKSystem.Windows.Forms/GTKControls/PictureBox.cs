@@ -73,7 +73,7 @@ namespace System.Windows.Forms
         }
         public void LoadAsync(string url)
         {
-            Threading.Tasks.Task.Run(() => Load(url));
+            Threading.Tasks.Task.Run(() => Gdk.Threads.AddIdle(0, () => { Load(url); return false; }));
         }
 
         public override void EndInit()

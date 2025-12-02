@@ -89,15 +89,19 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, width, height);
             if (_drawBackgroundImage != null)
             {
+                cr.Save();
                 Gdk.CairoHelper.SetSourcePixbuf(cr, _drawBackgroundImage, 0, 0);
                 cr.Paint();
+                cr.Restore();
             }
             bool returndrawn = base.OnDrawn(cr);
             Override.OnPaint(cr, rec);
             if (_drawImage != null)
             {
+                cr.Save();
                 Gdk.CairoHelper.SetSourcePixbuf(cr, _drawImage, 0, 0);
                 cr.Paint();
+                cr.Restore();
             }
             return returndrawn;
         }
