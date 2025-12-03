@@ -98,9 +98,9 @@ namespace System.Windows.Forms
                 foreach (Binding binding in DataBindings)
                     GridView.AddNotification(binding.PropertyName, propertyNotity);
 
-                if (SortedColumn != null)
+                if (_sortedColumn != null)
                 {
-                    Store.SetSortColumnId(SortedColumn.SortColumnId, SortedColumn.SortOrder);
+                    Store.SetSortColumnId(_sortedColumn.SortColumnId, _sortedColumn.SortOrder);
                 }
             }
             this.Refresh();
@@ -491,15 +491,15 @@ namespace System.Windows.Forms
             if (direction == ListSortDirection.Ascending)
             {
                 _sortOrder = SortOrder.Ascending;
-                dataGridViewColumn.SortOrder = SortType.Ascending;
-                Store.SetSortColumnId(dataGridViewColumn.SortColumnId, SortType.Ascending);
+                _sortedColumn.SortOrder = SortType.Ascending;
             }
             else if (direction == ListSortDirection.Descending)
             {
                 _sortOrder = SortOrder.Descending;
-                dataGridViewColumn.SortOrder = SortType.Descending;
-                Store.SetSortColumnId(dataGridViewColumn.SortColumnId, SortType.Descending);
+                _sortedColumn.SortOrder = SortType.Descending;
             }
+            if(self.IsRealized)
+                Store.SetSortColumnId(_sortedColumn.SortColumnId, _sortedColumn.SortOrder);
         }
         public override void BeginInit()
         {
