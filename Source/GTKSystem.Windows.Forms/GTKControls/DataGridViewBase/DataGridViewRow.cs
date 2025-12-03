@@ -60,7 +60,36 @@ namespace System.Windows.Forms
         public DataGridViewElementStates State { get { return DataGridViewElementStates.None; } }
 
         public ContextMenuStrip ContextMenuStrip { get; set; }
-        public bool Visible { get; set; } = true;
+        private bool _visible = true;
+        /// <summary>
+        /// 此属性无法还原行位置，建议结合列排序使用，利用排序定行位
+        /// </summary>
+        public bool Visible
+        {
+            get => _visible;
+            set
+            {
+                if (value != _visible)
+                {
+                    _visible = value;
+                    if (DataGridView != null && DataGridView.self.IsVisible)
+                    {
+                        //通过增删行实现隐藏，无法还原行位置
+                        if (_visible == false)
+                        {
+                            Gtk.TreeIter iter = this.TreeIter;
+                            if (Gtk.TreeIter.Zero.Equals(this.TreeIter) == false && this.TreeIter.UserData != null)
+                                DataGridView.Store.Remove(ref iter);
+                            this.TreeIter = Gtk.TreeIter.Zero;
+                        }
+                        else if (Gtk.TreeIter.Zero.Equals(this.TreeIter))
+                        {
+                            DataGridView.Rows.AddGtkStore(this);
+                        }
+                    }
+                }
+            }
+        }
 
         public AccessibleObject AccessibilityObject { get; }
 

@@ -75,7 +75,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
           
             this.SetDefaultSize(100, 100);
             this.TypeHint = Gdk.WindowTypeHint.Normal;
-            this.AppPaintable = false;
             this.Deletable = true;
             this.Decorated = true;
             this.Drawn += FormBase_Drawn;

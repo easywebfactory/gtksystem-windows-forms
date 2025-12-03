@@ -245,6 +245,10 @@ namespace System.Windows.Forms
                     else
                         _columns.Add(new DataGridViewColumn(this) { Name = col.ColumnName, HeaderText = col.ColumnName, DataPropertyName = col.ColumnName, ValueType = col.DataType });
                 }
+                else
+                {
+                    _columns.Find(m => m.DataPropertyName == col.ColumnName).ValueType = col.DataType;
+                }
             }
             _columns.Invalidate();
 
@@ -279,6 +283,10 @@ namespace System.Windows.Forms
                             _columns.Add(new DataGridViewImageColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
                         else
                             _columns.Add(new DataGridViewColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
+                    }
+                    else
+                    {
+                        _columns.Find(m => m.DataPropertyName == pro.Name).ValueType = pro.PropertyType;
                     }
                 }
                 _columns.Invalidate();
@@ -467,6 +475,27 @@ namespace System.Windows.Forms
         }
 
         public bool AllowUserToResizeRows { get => GridView.Reorderable; set => GridView.Reorderable = value; }
+        private DataGridViewColumn _sortedColumn;
+        public DataGridViewColumn SortedColumn => _sortedColumn;
+
+        private SortOrder _sortOrder;
+        public SortOrder SortOrder => _sortOrder;
+        public virtual void Sort(DataGridViewColumn dataGridViewColumn, ListSortDirection direction)
+        {
+            _sortedColumn= dataGridViewColumn;
+            if (direction == ListSortDirection.Ascending)
+            {
+                _sortOrder = SortOrder.Ascending;
+                dataGridViewColumn.SortOrder = SortType.Ascending;
+                Store.SetSortColumnId(dataGridViewColumn.SortColumnId, SortType.Ascending);
+            }
+            else if (direction == ListSortDirection.Descending)
+            {
+                _sortOrder = SortOrder.Descending;
+                dataGridViewColumn.SortOrder = SortType.Descending;
+                Store.SetSortColumnId(dataGridViewColumn.SortColumnId, SortType.Descending);
+            }
+        }
         public override void BeginInit()
         {
             _Created = false;

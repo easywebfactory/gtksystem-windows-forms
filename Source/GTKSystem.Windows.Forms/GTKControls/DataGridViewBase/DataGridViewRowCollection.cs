@@ -58,7 +58,7 @@ namespace System.Windows.Forms
             else
                 return dataGridView.Store.AppendValues(parent, cells.ConvertAll(o => o).Take(ncolumns).ToArray());
         }
-        private void AddGtkStore(params DataGridViewRow[] dataGridViewRows)
+        internal void AddGtkStore(params DataGridViewRow[] dataGridViewRows)
         {
             int rowindex = items.Count;
             foreach (DataGridViewRow row in dataGridViewRows)
@@ -100,7 +100,7 @@ namespace System.Windows.Forms
                 }
             }
         }
-        private void AddGtkStore(TreeIter parent, ref int rowindex, DataGridViewRow row)
+        internal void AddGtkStore(TreeIter parent, ref int rowindex, DataGridViewRow row)
         {
             row.DataGridView = dataGridView;
             row.Parent = parentRow;
@@ -139,7 +139,7 @@ namespace System.Windows.Forms
             else
                 return dataGridView.Store.InsertWithValues(rowIndex, cells.ConvertAll(o => o).Take(ncolumns).ToArray());
         }
-        private void InsertGtkStore(int rowIndex, params DataGridViewRow[] dataGridViewRows)
+        internal void InsertGtkStore(int rowIndex, params DataGridViewRow[] dataGridViewRows)
         {
             int idx = rowIndex;
             foreach (DataGridViewRow row in dataGridViewRows)

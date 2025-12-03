@@ -4,12 +4,9 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
-using Atk;
-using GLib;
 using Gtk;
 using System.Collections;
 using System.ComponentModel;
-using System.Reflection;
 using System.Windows.Forms.GtkRender;
 
 namespace System.Windows.Forms
@@ -267,6 +264,8 @@ namespace System.Windows.Forms
                 _treeView = ownerGridView.GridView;
             }
             _cellTemplate = cellTemplate;
+            base.Resizable = true;
+            base.Sizing = TreeViewColumnSizing.GrowOnly;
         }
         public DataGridViewColumn(DataGridView ownerGridView) : this(ownerGridView, new DataGridViewTextBoxCell())
         {
@@ -289,7 +288,6 @@ namespace System.Windows.Forms
             renderer.PlaceholderText = "---";
             renderer.Height = RowHeight;
             base.PackStart(renderer, true);
-            base.Sizing = TreeViewColumnSizing.GrowOnly;
             _cellRenderer = renderer as ICellRenderer; 
         }
 
