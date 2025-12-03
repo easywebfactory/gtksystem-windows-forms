@@ -97,6 +97,11 @@ namespace System.Windows.Forms
                 AllowUserToResizeColumnsChanged?.Invoke(this, EventArgs.Empty);
                 foreach (Binding binding in DataBindings)
                     GridView.AddNotification(binding.PropertyName, propertyNotity);
+
+                if (SortedColumn != null)
+                {
+                    Store.SetSortColumnId(SortedColumn.SortColumnId, SortedColumn.SortOrder);
+                }
             }
             this.Refresh();
         }
