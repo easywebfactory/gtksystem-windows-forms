@@ -4,12 +4,10 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
-using Atk;
+
 using Gdk;
 using GLib;
 using Gtk;
-using Pango;
-
 namespace System.Windows.Forms.GtkRender
 {
     public interface ICellRenderer
@@ -42,12 +40,7 @@ namespace System.Windows.Forms.GtkRender
             {
                 if (value != null)
                 {
-                    DataGridViewCellStyle style = value.Style;
-                    if (style == null)
-                        style = ColumnStyle;
-                    if (style == null)
-                        style = value.InheritedStyle;
-
+                    DataGridViewCellStyle style = utility.GetStyle(this.Column, value);
                     utility.SetTextWithStyle(this, style, value.Value);
                 }
             }
@@ -72,12 +65,8 @@ namespace System.Windows.Forms.GtkRender
             {
                 if (value != null)
                 {
-                    this.Active = (value.Value?.ToString() == "1" || value.Value?.ToString()?.ToLower() == "true");
-                    DataGridViewCellStyle style = value.Style;
-                    if (style == null)
-                        style = ColumnStyle;
-                    if (style == null)
-                        style = value.InheritedStyle;
+                    this.Active = (value.Value?.ToString() == "True" || value.Value?.ToString() == "true" || value.Value?.ToString() == "1");
+                    DataGridViewCellStyle style = utility.GetStyle(this.Column, value);
                     utility.SetControlWithStyle(this, style);
                 }
             }
@@ -105,11 +94,7 @@ namespace System.Windows.Forms.GtkRender
             {
                 if (value != null)
                 {
-                    DataGridViewCellStyle style = value.Style;
-                    if (style == null)
-                        style = ColumnStyle;
-                    if (style == null)
-                        style = value.InheritedStyle;
+                    DataGridViewCellStyle style = utility.GetStyle(this.Column, value);
                     utility.SetTextWithStyle(this, style, value.Value);
                 }
             }
@@ -136,11 +121,7 @@ namespace System.Windows.Forms.GtkRender
                 {
                     try
                     {
-                        DataGridViewCellStyle style = value.Style;
-                        if (style == null)
-                            style = ColumnStyle;
-                        if (style == null)
-                            style = value.InheritedStyle;
+                        DataGridViewCellStyle style = utility.GetStyle(this.Column, value);
                         utility.SetControlWithStyle(this, style);
                         if (typeof(Drawing.Image).Equals(value.ValueType) || typeof(Drawing.Bitmap).Equals(value.ValueType))
                         {
@@ -188,11 +169,7 @@ namespace System.Windows.Forms.GtkRender
             {
                 if (value != null)
                 {
-                    DataGridViewCellStyle style = value.Style;
-                    if (style == null)
-                        style = ColumnStyle;
-                    if (style == null)
-                        style = value.InheritedStyle;
+                    DataGridViewCellStyle style = utility.GetStyle(this.Column, value);
                     utility.SetTextWithStyle(this, style, value.Value);
                     base.SetAlignment(0.5f, 0.5f);
                 }
@@ -205,22 +182,43 @@ namespace System.Windows.Forms.GtkRender
         {
             widget.StyleContext.Save();
             widget.StyleContext.AddClass("GridViewCell-Button");
-            int height = cell_area.Height;
-            int y = cell_area.Y;
-            if (height > 36)
-            {
-                y = y + (cell_area.Height - 36) / 2;
-                height = 36;
-            }
-            widget.StyleContext.RenderFrame(cr, cell_area.X + 3, y, cell_area.Width - 6, height);
-            widget.StyleContext.RenderBackground(cr, cell_area.X + 3, y, cell_area.Width - 6, height);
+            int areax = cell_area.X + 5;
+            int areay = cell_area.Y + 3;
+            int width = cell_area.Width - 10;
+            int height = cell_area.Height - 6;
+            if (width < 1)
+                width = 1;
+            if (height < 1)
+                height = 1;
+            widget.StyleContext.RenderFrame(cr, areax, areay, width, height);
+            widget.StyleContext.RenderBackground(cr, areax, areay, width, height);
             widget.StyleContext.Restore();
-            base.OnRender(cr, widget, new Gdk.Rectangle(background_area.X, background_area.Y, background_area.Width, background_area.Height), new Gdk.Rectangle(cell_area.X, cell_area.Y, cell_area.Width, cell_area.Height), flags);
+            base.OnRender(cr, widget, new Gdk.Rectangle(background_area.X, background_area.Y, background_area.Width, background_area.Height), new Gdk.Rectangle(areax, areay, width, height), flags);
         }
     }
 
     public class CellReandererUtility
     {
+        internal DataGridViewCellStyle GetStyle(DataGridViewColumn col, DataGridViewCell cell)
+        {
+            DataGridViewCellStyle style = cell.Style;
+            if (style == null)
+                style = cell.RowStyle;
+
+            if (style == null)
+            {
+                if (cell.DataGridView.AlternatingRowsDefaultCellStyle != null && cell.OwningRowInternal.Index % 2 == 1)
+                    style = cell.DataGridView.AlternatingRowsDefaultCellStyle;
+                else
+                    style = cell.DataGridView.RowsDefaultCellStyle;
+            }
+            if (style == null)
+            {
+                style = col.DefaultCellStyle ?? cell.DataGridView.DefaultCellStyle;
+            }
+
+            return style;
+        }
         internal void SetControlWithStyle(CellRenderer cell, DataGridViewCellStyle cellstyle)
         {
             if (cellstyle != null)

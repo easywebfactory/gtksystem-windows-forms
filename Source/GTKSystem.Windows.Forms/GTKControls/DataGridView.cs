@@ -186,7 +186,7 @@ namespace System.Windows.Forms
         private DataGridViewRow _RowTemplate;
         public DataGridViewRow RowTemplate
         {
-            get { return _RowTemplate ??= new DataGridViewRow(); }
+            get { _RowTemplate ??= new DataGridViewRow(); _RowTemplate.DefaultCellStyle ??= new DataGridViewCellStyle(); return _RowTemplate; }
             set { _RowTemplate = value; }
         }
         public DataGridViewCellStyle DefaultCellStyle { get; set; }

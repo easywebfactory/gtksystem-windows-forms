@@ -5,7 +5,6 @@
  * author:chenhongjin
  */
 using Gtk;
-using Pango;
 using System.Collections;
 using System.ComponentModel;
 
@@ -65,19 +64,6 @@ namespace System.Windows.Forms
             {
                 row.DataGridView = dataGridView;
                 row.Parent = parentRow;
-                DataGridViewCellStyle _cellStyle = dataGridView.DefaultCellStyle;
-                if (dataGridView.RowsDefaultCellStyle != null)
-                    _cellStyle = dataGridView.RowsDefaultCellStyle;
-                if (rowindex % 2 != 0 && dataGridView.AlternatingRowsDefaultCellStyle != null)
-                    _cellStyle = dataGridView.AlternatingRowsDefaultCellStyle;
-                if (row.DefaultCellStyle != null)
-                    _cellStyle = row.DefaultCellStyle;
-
-                foreach (DataGridViewCell cell in row.Cells)
-                {
-                    cell.RowIndex = rowindex;
-                    cell.RowStyle = _cellStyle;
-                }
                 items.Add(row);
                 rowindex++;
                 if (row.TreeIter.Equals(TreeIter.Zero))
@@ -104,17 +90,6 @@ namespace System.Windows.Forms
         {
             row.DataGridView = dataGridView;
             row.Parent = parentRow;
-            DataGridViewCellStyle _cellStyle = dataGridView.DefaultCellStyle;
-            if (dataGridView.RowsDefaultCellStyle != null)
-                _cellStyle = dataGridView.RowsDefaultCellStyle;
-            if (rowindex % 2 != 0 && dataGridView.AlternatingRowsDefaultCellStyle != null)
-                _cellStyle = dataGridView.AlternatingRowsDefaultCellStyle;
-            if (row.DefaultCellStyle != null)
-                _cellStyle = row.DefaultCellStyle;
-
-            foreach (DataGridViewCell cell in row.Cells)
-                cell.RowStyle = _cellStyle;
-
             items.Add(row);
             row.TreeIter = AddGtkStore(parent, row.Cells);
             rowindex++;
@@ -146,20 +121,6 @@ namespace System.Windows.Forms
             {
                 row.DataGridView = dataGridView;
                 row.Parent = parentRow;
-                DataGridViewCellStyle _cellStyle = dataGridView.DefaultCellStyle;
-                if (dataGridView.RowsDefaultCellStyle != null)
-                    _cellStyle = dataGridView.RowsDefaultCellStyle;
-                if (idx % 2 != 0 && dataGridView.AlternatingRowsDefaultCellStyle != null)
-                    _cellStyle = dataGridView.AlternatingRowsDefaultCellStyle;
-                if (row.DefaultCellStyle != null)
-                    _cellStyle = row.DefaultCellStyle;
-
-                foreach (DataGridViewCell cell in row.Cells)
-                {
-                    cell.RowIndex = idx;
-                    cell.RowStyle = _cellStyle;
-                }
-
                 items.Insert(idx, row);
                 row.TreeIter = InsertGtkStore(idx, row.Cells);
                 idx++;

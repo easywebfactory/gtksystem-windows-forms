@@ -358,6 +358,7 @@ namespace System.Windows.Forms
         internal void AtrributesClone(DataGridViewCell newcell)
         {
             newcell.Style = _cellTemplate.Style?.Clone();
+            newcell.OwningRowInternal = _cellTemplate.OwningRowInternal;
             newcell.ReadOnly = _cellTemplate.ReadOnly;
         }
         public void SetGridViewDefaultStyle(DataGridViewCellStyle cellStyle)

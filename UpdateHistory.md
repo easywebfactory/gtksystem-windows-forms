@@ -6,7 +6,7 @@
 	3. 优化combobox控件
 	4. 优化listview控件
 	5. 优化菜单布局
-	6. 更新datagridview功能
+	6. 更新datagridview功能，优化多层次样式属性
  #### 2025/11/19 V1.3.26.82
 	1. 更新菜单背景色
 	2. 更新datagridview刷新功能

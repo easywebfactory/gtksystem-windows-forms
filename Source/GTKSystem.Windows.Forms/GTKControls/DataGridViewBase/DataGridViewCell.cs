@@ -9,7 +9,7 @@ namespace System.Windows.Forms
     public abstract class DataGridViewCell
     {
         internal DataGridViewRow OwningRowInternal { get; set; }
-        public DataGridView DataGridView { get; set; }
+        public DataGridView DataGridView { get => OwningRowInternal.DataGridView; }
         protected DataGridViewCell() { }
         public object Value { get; set; }
 
@@ -27,7 +27,7 @@ namespace System.Windows.Forms
         private bool _Selected;
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual bool Selected { get => _Selected; set { _Selected = value; DataGridView?.GridView.QueueDraw(); } }
-        public int RowIndex { get; internal set; }
+        public int RowIndex { get => OwningRowInternal.Index; }
 
         public virtual bool Resizable { get; }
 
@@ -43,8 +43,8 @@ namespace System.Windows.Forms
         public DataGridViewColumn OwningColumn { get; }
 
         public bool IsInEditMode { get; }
-        internal DataGridViewCellStyle RowStyle { get; set; }
-        public DataGridViewCellStyle InheritedStyle { get => RowStyle; }
+        internal DataGridViewCellStyle RowStyle { get => OwningRowInternal.DefaultCellStyle; }
+        public DataGridViewCellStyle InheritedStyle { get; }
 
         public AccessibleObject AccessibilityObject { get; }
         public int ColumnIndex { get; internal set; }
