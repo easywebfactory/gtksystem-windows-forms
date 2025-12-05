@@ -352,7 +352,7 @@ namespace System.Windows.Forms
             DataGridViewTextBoxCell newcell = new DataGridViewTextBoxCell();
             AtrributesClone(newcell);
             newcell.Value = value;
-            newcell.ValueType = valueType;
+            newcell.ValueType = valueType ?? typeof(string);
             return newcell;
         }
         internal void AtrributesClone(DataGridViewCell newcell)

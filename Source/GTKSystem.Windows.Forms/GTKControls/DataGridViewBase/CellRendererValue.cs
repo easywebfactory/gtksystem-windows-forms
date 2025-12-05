@@ -183,17 +183,13 @@ namespace System.Windows.Forms.GtkRender
             widget.StyleContext.Save();
             widget.StyleContext.AddClass("GridViewCell-Button");
             int areax = cell_area.X + 5;
-            int areay = cell_area.Y + 3;
             int width = cell_area.Width - 10;
-            int height = cell_area.Height - 6;
             if (width < 1)
                 width = 1;
-            if (height < 1)
-                height = 1;
-            widget.StyleContext.RenderFrame(cr, areax, areay, width, height);
-            widget.StyleContext.RenderBackground(cr, areax, areay, width, height);
+            widget.StyleContext.RenderFrame(cr, areax, cell_area.Y, width, cell_area.Height);
+            widget.StyleContext.RenderBackground(cr, areax, cell_area.Y, width, cell_area.Height);
             widget.StyleContext.Restore();
-            base.OnRender(cr, widget, new Gdk.Rectangle(background_area.X, background_area.Y, background_area.Width, background_area.Height), new Gdk.Rectangle(areax, areay, width, height), flags);
+            base.OnRender(cr, widget, background_area, new Gdk.Rectangle(areax, cell_area.Y, width, cell_area.Height), flags);
         }
     }
 

@@ -84,7 +84,7 @@ namespace System.Windows.Forms
                         }
                         else if (Gtk.TreeIter.Zero.Equals(this.TreeIter))
                         {
-                            DataGridView.Rows.AddGtkStore(this);
+                            DataGridView.Rows.AddRowsStore(this);
                         }
                     }
                 }
