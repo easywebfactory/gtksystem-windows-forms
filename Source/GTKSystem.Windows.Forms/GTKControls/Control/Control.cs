@@ -496,9 +496,10 @@ namespace System.Windows.Forms
                     {
                         delta = (int)eventscroll.DeltaX;
                     }
-                    MouseEventArgs mouseArgs = new MouseEventArgs(button, clicks, (int)eventscroll.X, (int)eventscroll.Y, delta);
+                    HandledMouseEventArgs mouseArgs = new HandledMouseEventArgs(button, clicks, (int)eventscroll.X, (int)eventscroll.Y, delta);
                     OnMouseWheel(mouseArgs);
                     MouseWheel?.Invoke(this, mouseArgs);
+                    args.RetVal = mouseArgs.Handled;
                 }
             }
         }
