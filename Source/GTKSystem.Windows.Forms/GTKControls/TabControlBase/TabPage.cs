@@ -23,6 +23,7 @@ namespace System.Windows.Forms
         {
             _controls = new ControlCollection(this, self.Content);
             this.Dock = DockStyle.Fill;
+            _tabLabel.StyleContext.AddClass("tablabel");
         }
 
         public TabPage(string text):this()
