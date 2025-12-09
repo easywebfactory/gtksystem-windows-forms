@@ -4,7 +4,6 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
-using Cairo;
 using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
@@ -12,6 +11,7 @@ using Pango;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Reflection;
 
 namespace System.Windows.Forms
@@ -42,10 +42,45 @@ namespace System.Windows.Forms
             _rows = new DataGridViewRowCollection(this);
             _collect = new ControlBindingsCollection(this);
             self.Realized += Self_Realized;
-            GridView.RowActivated += GridView_RowActivated;
             GridView.Selection.Changed += Selection_Changed;
             GridView.ColumnsChanged += GridView_ColumnsChanged;
+            GridView.ButtonReleaseEvent += GridView_ButtonReleaseEvent;
         }
+
+        private void GridView_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
+        {
+            if (CellClick != null)
+            {
+                Gtk.Widget widget = o as Gtk.Widget;
+                if (widget.Window.Handle.Equals(args.Event.Window.Parent.Handle) && GridView.GetPathAtPos((int)args.Event.X, (int)args.Event.Y, out TreePath path, out TreeViewColumn column))
+                {
+                    if(Store.GetIter(out TreeIter iter, path))
+                    {
+                        DataGridViewRow row = GetRowByIter(Rows, iter, path.Depth);
+                        if (row != null) {
+                            CellClick(this, new DataGridViewCellEventArgs(((DataGridViewColumn)column).Index, row.Index));
+                        }
+                    }
+                }
+            }
+        }
+        private DataGridViewRow GetRowByIter(DataGridViewRowCollection rows, TreeIter iter, int depth)
+        {
+            foreach (DataGridViewRow row in rows.SharedList)
+            {
+                if (row.TreeIter.Equals(iter))
+                {
+                    return row;
+                    break;
+                }
+                else if (depth > 1 && row.Children.Count > 0)
+                {
+                    return GetRowByIter(row.Children, iter, --depth);
+                }
+            }
+            return null;
+        }
+
         private void GridView_ColumnsChanged(object sender, EventArgs e)
         {
             foreach (var item in GridView.Columns)
@@ -64,26 +99,6 @@ namespace System.Windows.Forms
         {
             if (SelectionChanged != null && Created)
                 SelectionChanged(this, e);
-        }
-
-        private void GridView_RowActivated(object o, RowActivatedArgs args)
-        {
-            //单行选择有效
-            if (CellClick != null)
-            {
-                DataGridViewColumn column = args.Column as DataGridViewColumn;
-                if (Store.GetIter(out TreeIter iter, args.Path))
-                {
-                    foreach (DataGridViewRow row in Rows)
-                    {
-                        if (iter.Equals(row.TreeIter))
-                        {
-                            CellClick(this, new DataGridViewCellEventArgs(column.Index, row.Index));
-                            break;
-                        }
-                    }
-                }
-            }
         }
         private bool Is_GridView_Realized;
         private void Self_Realized(object sender, EventArgs e)
@@ -112,11 +127,15 @@ namespace System.Windows.Forms
         }
         public event EventHandler SelectionChanged;
         public event DataGridViewCellEventHandler CellClick;
-        internal void CellValueChanagedHandler(int column, int row)
+        internal void CellValueChanagedHandler(int column, TreeIter iter, TreePath path)
         {
             if (CellValueChanged != null)
             {
-                CellValueChanged(this, new DataGridViewCellEventArgs(column, row));
+                DataGridViewRow row = GetRowByIter(Rows, iter, path.Depth);
+                if (row != null)
+                {
+                    CellValueChanged(this, new DataGridViewCellEventArgs(column, row.Index));
+                }
             }
         }
         public event DataGridViewCellEventHandler CellValueChanged;

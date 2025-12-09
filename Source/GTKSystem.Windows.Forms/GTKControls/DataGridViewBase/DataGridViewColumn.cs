@@ -50,7 +50,7 @@ namespace System.Windows.Forms
             {
                 CellRendererToggleValue tggle = (CellRendererToggleValue)o;
                 val.Value = tggle.Active == false;
-                _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last());
+                _gridview.CellValueChanagedHandler(this.Index, iter, path);
             }
         }
         internal override DataGridViewCell NewCell(object value = null, Type valueType = null)
@@ -93,7 +93,7 @@ namespace System.Windows.Forms
             {
                 CellRendererToggleValue tggle = (CellRendererToggleValue)o;
                 val.Value = tggle.Active == false;
-                _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last());
+                _gridview.CellValueChanagedHandler(this.Index, iter, path);
             }
         }
         internal override DataGridViewCell NewCell(object value = null, Type valueType = null)
@@ -182,17 +182,6 @@ namespace System.Windows.Forms
             base.SortMode = DataGridViewColumnSortMode.NotSortable;
             base.Sizing = TreeViewColumnSizing.GrowOnly;
             _cellRenderer = renderer;
-        }
-        private void TreeView_RowActivated(object o, RowActivatedArgs args)
-        {
-            if (args.Column.Handle == this.Handle)
-            {
-                if (args.Column.Cells[0] is CellRendererText cell)
-                {
-                    TreePath path = args.Path;
-                    _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last());
-                }
-            }
         }
         internal override DataGridViewCell NewCell(object value = null, Type valueType = null)
         {
@@ -344,7 +333,7 @@ namespace System.Windows.Forms
             if (cell is DataGridViewCell val)
             {
                 val.Value = value;
-                _gridview.CellValueChanagedHandler(this.Index, path.Indices.Last());
+                _gridview.CellValueChanagedHandler(this.Index, iter, path);
             }
         }
         internal virtual DataGridViewCell NewCell(object value = null, Type valueType = null)

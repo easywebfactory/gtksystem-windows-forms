@@ -125,8 +125,7 @@ namespace System.Windows.Forms
                 else if (args.Event.Button == 3)
                     button = MouseButtons.Right;
 
-                widget.Window.GetOrigin(out int x1, out int y1);
-                MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x1, (int)args.Event.XRoot - y1, 0);
+                MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)args.Event.X, (int)args.Event.X, 0);
                 MouseClick?.Invoke(this, mouseArgs3);
                 Click?.Invoke(this, new EventArgs());
                 DropDownItemClicked?.Invoke(this, new ToolStripItemClickedEventArgs(this));
@@ -144,8 +143,7 @@ namespace System.Windows.Forms
             else if (args.Event.Button == 3)
                 button = MouseButtons.Right;
 
-            widget.Window.GetOrigin(out int x1, out int y1);
-            MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)args.Event.XRoot - x1, (int)args.Event.XRoot - y1, 0);
+            MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)args.Event.X, (int)args.Event.X, 0);
             MouseDown?.Invoke(this, mouseArgs);
             isDoubleClick = false;
             if (args.Event.Button == 1)

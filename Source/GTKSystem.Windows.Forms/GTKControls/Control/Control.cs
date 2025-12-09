@@ -273,7 +273,7 @@ namespace System.Windows.Forms
         private void Widget_WidgetEvent(object o, WidgetEventArgs args)
         {
             Gtk.Widget owidget = o as Gtk.Widget;
-            if (owidget.IsRealized)
+            if (owidget.IsRealized && owidget.Window.Handle.Equals(args.Event.Window.Parent.Handle))
             {
                 if (args.Event.Type == Gdk.EventType.MotionNotify)
                 {
@@ -295,8 +295,7 @@ namespace System.Windows.Forms
                         button |= MouseButtons.Right;
                         clicks += 1;
                     }
-                    owidget.Window.GetOrigin(out int x, out int y);
-                    MouseEventArgs mouseArgs = new MouseEventArgs(button, clicks, (int)eventmotion.XRoot - x, (int)eventmotion.YRoot - y, 1);
+                    MouseEventArgs mouseArgs = new MouseEventArgs(button, clicks, (int)eventmotion.X, (int)eventmotion.Y, 1);
                     OnMouseMove(mouseArgs);
                     MouseMove?.Invoke(this, mouseArgs);
                 }
@@ -358,8 +357,7 @@ namespace System.Windows.Forms
                         button = MouseButtons.Middle;
                     else if (eventbutton.Button == 3)
                         button = MouseButtons.Right;
-                    owidget.Window.GetOrigin(out int x, out int y);//避免事件穿透错误
-                    MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
+                    MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)eventbutton.X, (int)eventbutton.Y, 0);
                     OnMouseDown(mouseArgs);
                     MouseDown?.Invoke(this, mouseArgs);
                 }
@@ -376,9 +374,7 @@ namespace System.Windows.Forms
                             button = MouseButtons.Middle;
                         else if (eventbutton.Button == 3)
                             button = MouseButtons.Right;
-                        owidget.Window.GetOrigin(out int x, out int y);//避免事件穿透错误
-
-                        MouseEventArgs mouseArgs2 = new MouseEventArgs(button, 2, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
+                        MouseEventArgs mouseArgs2 = new MouseEventArgs(button, 2, (int)eventbutton.X, (int)eventbutton.Y, 0);
                         OnMouseDoubleClick(mouseArgs2);
                         MouseDoubleClick?.Invoke(this, mouseArgs2);
                         DoubleClick?.Invoke(this, EventArgs.Empty);
@@ -394,16 +390,15 @@ namespace System.Windows.Forms
                         button = MouseButtons.Middle;
                     else if (eventbutton.Button == 3)
                         button = MouseButtons.Right;
-                    owidget.Window.GetOrigin(out int x, out int y);
                     if (eventbutton.Button == 1 && Is_DoubleButtonPress == false)
                     {
                         OnClick(EventArgs.Empty);
-                        MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
+                        MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)eventbutton.X, (int)eventbutton.Y, 0);
                         OnMouseClick(mouseArgs3);
                         Click?.Invoke(this, EventArgs.Empty);
                         MouseClick?.Invoke(this, mouseArgs3);
                     }
-                    MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
+                    MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)eventbutton.X, (int)eventbutton.Y, 0);
                     OnMouseUp(mouseArgs);
                     MouseUp?.Invoke(this, mouseArgs);
                     if (eventbutton.Button == 3)
@@ -1657,8 +1652,7 @@ namespace System.Windows.Forms
             if (Widget != null && this.Widget.Window != null)
             {
                 this.Widget.Window.GetOrigin(out int x, out int y);
-                if (p.X > x && p.Y > y)
-                    return new Point(p.X - x, p.Y - y);
+                return new Point(p.X - x, p.Y - y);
             }
             return new Point(p.X, p.Y);
         }
@@ -1668,8 +1662,7 @@ namespace System.Windows.Forms
             if (Widget != null && this.Widget.Window != null)
             {
                 this.Widget.Window.GetOrigin(out int x, out int y);
-                if (p.X < x && p.Y < y)
-                    return new Point(p.X + x, p.Y + y);
+                return new Point(p.X + x, p.Y + y);
             }
             return new Point(p.X, p.Y);
         }
