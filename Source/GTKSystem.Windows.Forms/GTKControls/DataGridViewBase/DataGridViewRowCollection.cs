@@ -81,22 +81,14 @@ namespace System.Windows.Forms
             else
                 return dataGridView.Store.AppendValues(parent, cells.ConvertAll(o => o).Take(ncolumns).ToArray());
         }
-        internal void AddRowsStore(params DataGridViewRow[] dataGridViewRows)
+        internal void AddRowsStore(DataGridViewRow dataGridViewRow)
         {
-            foreach (DataGridViewRow row in dataGridViewRows)
-            {
-                row.DataGridView = dataGridView;
-                row.Parent = parentRow;
-                row.TreeIter = AddCellsStore(row.Cells);
-                items.Add(row);
-            }
-        }
-        internal void AddRowsStore(TreeIter parent, DataGridViewRow row)
-        {
-            row.DataGridView = dataGridView;
-            row.Parent = parentRow;
-            row.TreeIter = AddCellsStore(parent, row.Cells);
-            items.Add(row);
+            dataGridViewRow.DataGridView = dataGridView;
+            dataGridViewRow.Parent = parentRow;
+            if (parentRow == null)
+                dataGridViewRow.TreeIter = AddCellsStore(dataGridViewRow.Cells);
+            else
+                dataGridViewRow.TreeIter = AddCellsStore(parentRow.TreeIter, dataGridViewRow.Cells);
         }
         private TreeIter InsertCellsStore(int rowIndex, DataGridViewCellCollection cells)
         {
@@ -113,33 +105,42 @@ namespace System.Windows.Forms
             else
                 return dataGridView.Store.InsertWithValues(rowIndex, cells.ConvertAll(o => o).Take(ncolumns).ToArray());
         }
-        internal void InsertRowsStore(int rowIndex, params DataGridViewRow[] dataGridViewRows)
+        private TreeIter InsertCellsStore(TreeIter parent, int rowIndex, DataGridViewCellCollection cells)
         {
-            int idx = rowIndex;
-            foreach (DataGridViewRow row in dataGridViewRows)
-            {
-                row.DataGridView = dataGridView;
-                row.Parent = parentRow;
-                row.TreeIter = InsertCellsStore(idx, row.Cells);
-                items.Insert(idx, row);
-                idx++;
-            }
+            int ncolumns = dataGridView.Store.NColumns;
+            int columnscount = dataGridView.Columns.Count;
+            for (int i = cells.Count; i < columnscount; i++)
+                cells.Add(dataGridView.Columns[i].NewCell());
+            for (int i = cells.Count; i < ncolumns; i++)
+                cells.Add(new DataGridViewTextBoxCell());
+            for (int i = 0; i < ncolumns; i++)
+                cells[i].ColumnIndex = i;
+            if (ncolumns == cells.Count)
+                return dataGridView.Store.InsertWithValues(parent, rowIndex, cells.ConvertAll(o => o).ToArray());
+            else
+                return dataGridView.Store.InsertWithValues(parent, rowIndex, cells.ConvertAll(o => o).Take(ncolumns).ToArray());
         }
-
+        internal void InsertRowsStore(int rowIndex, DataGridViewRow dataGridViewRow)
+        {
+            dataGridViewRow.DataGridView = dataGridView;
+            dataGridViewRow.Parent = parentRow;
+            dataGridViewRow.TreeIter = InsertCellsStore(rowIndex, dataGridViewRow.Cells);
+        }
+        internal void InsertRowsStore(TreeIter parent, int rowIndex, DataGridViewRow dataGridViewRow)
+        {
+            dataGridViewRow.DataGridView = dataGridView;
+            dataGridViewRow.Parent = parentRow;
+            dataGridViewRow.TreeIter = InsertCellsStore(parent, rowIndex, dataGridViewRow.Cells);
+        }
         public virtual int Add()
         {
             DataGridViewRow row = new DataGridViewRow();
-            AddRowsStore(row);
-            return row.Index;
+            return Add(row);
         }
         public virtual int Add(DataGridViewRow dataGridViewRow)
         {
-            if (parentRow == null)
-                AddRowsStore(dataGridViewRow);
-            else
-                AddRowsStore(parentRow.TreeIter, dataGridViewRow);
-
-            return dataGridViewRow.Index;
+            AddRowsStore(dataGridViewRow);
+            return items.Add(dataGridViewRow);
         }
         public virtual int Add(params object[] values)
         {
@@ -184,16 +185,9 @@ namespace System.Windows.Forms
             if (this.dataGridView.Store.NColumns < this.dataGridView.GridView.Columns.Length)
                 this.dataGridView.Columns.Invalidate();
 
-            if (parentRow == null)
-                AddRowsStore(dataGridViewRows);
-            else
+            foreach (DataGridViewRow row in dataGridViewRows)
             {
-                if (parentRow.TreeIter.UserData == IntPtr.Zero)
-                    throw new NullReferenceException("parent row not stored");
-                foreach (DataGridViewRow row in dataGridViewRows)
-                {
-                    AddRowsStore(parentRow.TreeIter, row);
-                }
+                Add(row);
             }
         }
         public virtual void Clear()
@@ -362,11 +356,12 @@ namespace System.Windows.Forms
                     newRow.Cells.Add(dataGridView.Columns[i].NewCell(values[i]));
             }
 
-            InsertRowsStore(rowIndex, newRow);
+            Insert(rowIndex, newRow);
         }
         public virtual void Insert(int rowIndex, DataGridViewRow dataGridViewRow)
         {
             InsertRowsStore(rowIndex, dataGridViewRow);
+            items.Insert(rowIndex, dataGridViewRow);
         }
 
         public virtual void Insert(int rowIndex, int count) {
@@ -387,7 +382,12 @@ namespace System.Windows.Forms
         public virtual void InsertCopy(int indexSource, int indexDestination) { }
         public virtual void InsertRange(int rowIndex, params DataGridViewRow[] dataGridViewRows)
         {
-            InsertRowsStore(rowIndex, dataGridViewRows);
+            int idx = rowIndex;
+            foreach (DataGridViewRow row in dataGridViewRows)
+            {
+                Insert(idx, row);
+                idx++;
+            }
         }
         public virtual void Remove(DataGridViewRow dataGridViewRow) {
             Gtk.TreeIter iter = dataGridViewRow.TreeIter;
@@ -457,7 +457,7 @@ namespace System.Windows.Forms
             items.CopyTo(array, index);
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        public IEnumerator GetEnumerator()
         {
             return items.GetEnumerator();
         }

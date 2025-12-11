@@ -126,37 +126,77 @@ namespace System.Windows.Forms
         public void Invalidate()
         {
             int count = Count;
-            if (count > __owner.Store.NColumns)
+            if (__owner.UseModelFilter)
             {
-                object[] columnTypes = new object[count];
-                __owner.Store.Clear();
-                __owner.Store = new Gtk.TreeStore(Array.ConvertAll(columnTypes, o => typeof(DataGridViewCell)));
-                __owner.GridView.Model = __owner.Store;
-            }
-            else if (__owner.GridView.Model == null)
-            {
-                __owner.GridView.Model = __owner.Store;
-            }
-
-            __owner.Store.DefaultSortFunc = new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) => { return 0; });
-            for (int i = 0; i < __owner.Store.NColumns && i< count; i++)
-            {
-                if (this[i].SortMode != DataGridViewColumnSortMode.NotSortable)
+                if (count > __owner.Store.NColumns)
                 {
-                    __owner.Store.SetSortFunc(i, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
+                    object[] columnTypes = new object[count];
+                    __owner.Store.Clear();
+                    __owner.Store = new Gtk.TreeStore(Array.ConvertAll(columnTypes, o => typeof(DataGridViewCell)));
+
+                    Gtk.TreeModelFilter modelFilter = new TreeModelFilter(__owner.Store, null);
+                    modelFilter.VisibleFunc = new TreeModelFilterVisibleFunc((model, iter) =>
                     {
-                        ((Gtk.TreeStore)m).GetSortColumnId(out int sortid, out Gtk.SortType order);
-                        DataGridViewCell v1 = m.GetValue(t1, sortid) as DataGridViewCell;
-                        DataGridViewCell v2 = m.GetValue(t2, sortid) as DataGridViewCell;
-                        if (v1?.Value == null || v2?.Value == null)
-                            return 0;
-                        else if (v1.ValueType.IsValueType && long.TryParse(v1.Value.ToString(), out long rv1) && long.TryParse(v2.Value.ToString(), out long rv2))
-                            return rv1.CompareTo(rv2);
-                        else if (v1.ValueType.Name == "DateTime")
-                            return ((DateTime)v1.Value).CompareTo((DateTime)v2.Value);
+                        if (model.GetValue(iter, 0) is DataGridViewCell cell)
+                            return cell.OwningRowInternal.Visible;
                         else
-                            return v1.Value.ToString().CompareTo(v2.Value.ToString());
-                    }));
+                            return true;
+                    });
+
+                    __owner.GridView.Model = modelFilter;
+                }
+                else if (__owner.GridView.Model == null)
+                {
+                    Gtk.TreeModelFilter modelFilter = new TreeModelFilter(__owner.Store, null);
+                    modelFilter.VisibleFunc = new TreeModelFilterVisibleFunc((model, iter) =>
+                    {
+                        if (model.GetValue(iter, 0) is DataGridViewCell cell)
+                            return cell.OwningRowInternal.Visible;
+                        else
+                            return true;
+                    });
+                    __owner.GridView.Model = modelFilter;
+                }
+
+                foreach (DataGridViewColumn col in this)
+                {
+                    col.SortColumnId = -1;
+                }
+            }
+            else
+            {
+                if (count > __owner.Store.NColumns)
+                {
+                    object[] columnTypes = new object[count];
+                    __owner.Store.Clear();
+                    __owner.Store = new Gtk.TreeStore(Array.ConvertAll(columnTypes, o => typeof(DataGridViewCell)));
+                    __owner.GridView.Model = __owner.Store;
+                }
+                else if (__owner.GridView.Model == null)
+                {
+                    __owner.GridView.Model = __owner.Store;
+                }
+
+                __owner.Store.DefaultSortFunc = new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) => { return 0; });
+                for (int i = 0; i < __owner.Store.NColumns && i < count; i++)
+                {
+                    if (this[i].SortMode != DataGridViewColumnSortMode.NotSortable)
+                    {
+                        __owner.Store.SetSortFunc(i, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
+                        {
+                            ((Gtk.TreeStore)m).GetSortColumnId(out int sortid, out Gtk.SortType order);
+                            DataGridViewCell v1 = m.GetValue(t1, sortid) as DataGridViewCell;
+                            DataGridViewCell v2 = m.GetValue(t2, sortid) as DataGridViewCell;
+                            if (v1?.Value == null || v2?.Value == null)
+                                return 0;
+                            else if (v1.ValueType.IsValueType && long.TryParse(v1.Value.ToString(), out long rv1) && long.TryParse(v2.Value.ToString(), out long rv2))
+                                return rv1.CompareTo(rv2);
+                            else if (v1.ValueType.Name == "DateTime")
+                                return ((DateTime)v1.Value).CompareTo((DateTime)v2.Value);
+                            else
+                                return v1.Value.ToString().CompareTo(v2.Value.ToString());
+                        }));
+                    }
                 }
             }
         }

@@ -273,7 +273,7 @@ namespace System.Windows.Forms
         private void Widget_WidgetEvent(object o, WidgetEventArgs args)
         {
             Gtk.Widget owidget = o as Gtk.Widget;
-            if (owidget.IsRealized && owidget.Window.Handle.Equals(args.Event.Window.Parent.Handle))
+            if (owidget.IsRealized)
             {
                 if (args.Event.Type == Gdk.EventType.MotionNotify)
                 {
@@ -295,7 +295,8 @@ namespace System.Windows.Forms
                         button |= MouseButtons.Right;
                         clicks += 1;
                     }
-                    MouseEventArgs mouseArgs = new MouseEventArgs(button, clicks, (int)eventmotion.X, (int)eventmotion.Y, 1);
+                    owidget.Window.GetOrigin(out int x, out int y);
+                    MouseEventArgs mouseArgs = new MouseEventArgs(button, clicks, (int)eventmotion.XRoot - x, (int)eventmotion.YRoot - y, 1);
                     OnMouseMove(mouseArgs);
                     MouseMove?.Invoke(this, mouseArgs);
                 }
@@ -347,7 +348,7 @@ namespace System.Windows.Forms
                     if (!keyargs.SuppressKeyPress)
                         KeyPress?.Invoke(this, new KeyPressEventArgs(Convert.ToChar(keycode)));
                 }
-                else if (args.Event.Type == Gdk.EventType.ButtonPress)
+                else if (args.Event.Type == Gdk.EventType.ButtonPress || args.Event.Type == Gdk.EventType.TouchBegin || args.Event.Type == Gdk.EventType.PadButtonPress)
                 {
                     Gdk.EventButton eventbutton = args.Event as Gdk.EventButton;
                     MouseButtons button = MouseButtons.None;
@@ -357,7 +358,8 @@ namespace System.Windows.Forms
                         button = MouseButtons.Middle;
                     else if (eventbutton.Button == 3)
                         button = MouseButtons.Right;
-                    MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)eventbutton.X, (int)eventbutton.Y, 0);
+                    owidget.Window.GetOrigin(out int x, out int y);
+                    MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
                     OnMouseDown(mouseArgs);
                     MouseDown?.Invoke(this, mouseArgs);
                 }
@@ -374,13 +376,14 @@ namespace System.Windows.Forms
                             button = MouseButtons.Middle;
                         else if (eventbutton.Button == 3)
                             button = MouseButtons.Right;
-                        MouseEventArgs mouseArgs2 = new MouseEventArgs(button, 2, (int)eventbutton.X, (int)eventbutton.Y, 0);
+                        owidget.Window.GetOrigin(out int x, out int y);
+                        MouseEventArgs mouseArgs2 = new MouseEventArgs(button, 2, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
                         OnMouseDoubleClick(mouseArgs2);
                         MouseDoubleClick?.Invoke(this, mouseArgs2);
                         DoubleClick?.Invoke(this, EventArgs.Empty);
                     }
                 }
-                else if (args.Event.Type == Gdk.EventType.ButtonRelease)
+                else if (args.Event.Type == Gdk.EventType.ButtonRelease || args.Event.Type == Gdk.EventType.TouchEnd || args.Event.Type == Gdk.EventType.PadButtonRelease)
                 {
                     Gdk.EventButton eventbutton = args.Event as Gdk.EventButton;
                     MouseButtons button = MouseButtons.None;
@@ -390,15 +393,17 @@ namespace System.Windows.Forms
                         button = MouseButtons.Middle;
                     else if (eventbutton.Button == 3)
                         button = MouseButtons.Right;
+
+                    owidget.Window.GetOrigin(out int x, out int y);
                     if (eventbutton.Button == 1 && Is_DoubleButtonPress == false)
                     {
                         OnClick(EventArgs.Empty);
-                        MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)eventbutton.X, (int)eventbutton.Y, 0);
+                        MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
                         OnMouseClick(mouseArgs3);
                         Click?.Invoke(this, EventArgs.Empty);
                         MouseClick?.Invoke(this, mouseArgs3);
                     }
-                    MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)eventbutton.X, (int)eventbutton.Y, 0);
+                    MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
                     OnMouseUp(mouseArgs);
                     MouseUp?.Invoke(this, mouseArgs);
                     if (eventbutton.Button == 3)

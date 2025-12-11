@@ -262,12 +262,15 @@ namespace System.Windows.Forms
             {
                 if (_columns.Exists(m => m.DataPropertyName == col.ColumnName) == false)
                 {
-                    if (col.DataType.Name == "Boolean")
-                        _columns.Add(new DataGridViewCheckBoxColumn(this) { Name = col.ColumnName, HeaderText = col.ColumnName, DataPropertyName = col.ColumnName, ValueType = col.DataType });
-                    else if (col.DataType.Name == "Image" || col.DataType.Name == "Bitmap")
-                        _columns.Add(new DataGridViewImageColumn(this) { Name = col.ColumnName, HeaderText = col.ColumnName, DataPropertyName = col.ColumnName, ValueType = col.DataType });
-                    else
-                        _columns.Add(new DataGridViewColumn(this) { Name = col.ColumnName, HeaderText = col.ColumnName, DataPropertyName = col.ColumnName, ValueType = col.DataType });
+                    if (AutoGenerateColumns)
+                    {
+                        if (col.DataType.Name == "Boolean")
+                            _columns.Add(new DataGridViewCheckBoxColumn(this) { Name = col.ColumnName, HeaderText = col.ColumnName, DataPropertyName = col.ColumnName, ValueType = col.DataType });
+                        else if (col.DataType.Name == "Image" || col.DataType.Name == "Bitmap")
+                            _columns.Add(new DataGridViewImageColumn(this) { Name = col.ColumnName, HeaderText = col.ColumnName, DataPropertyName = col.ColumnName, ValueType = col.DataType });
+                        else
+                            _columns.Add(new DataGridViewColumn(this) { Name = col.ColumnName, HeaderText = col.ColumnName, DataPropertyName = col.ColumnName, ValueType = col.DataType });
+                    }
                 }
                 else
                 {
@@ -301,12 +304,15 @@ namespace System.Windows.Forms
                 {
                     if (_columns.Exists(m => m.DataPropertyName == pro.Name) == false)
                     {
-                        if (pro.PropertyType.Name == "Boolean")
-                            _columns.Add(new DataGridViewCheckBoxColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
-                        else if (pro.PropertyType.Name == "Image" || pro.PropertyType.Name == "Bitmap")
-                            _columns.Add(new DataGridViewImageColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
-                        else
-                            _columns.Add(new DataGridViewColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
+                        if (AutoGenerateColumns)
+                        {
+                            if (pro.PropertyType.Name == "Boolean")
+                                _columns.Add(new DataGridViewCheckBoxColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
+                            else if (pro.PropertyType.Name == "Image" || pro.PropertyType.Name == "Bitmap")
+                                _columns.Add(new DataGridViewImageColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
+                            else
+                                _columns.Add(new DataGridViewColumn(this) { Name = pro.Name, HeaderText = pro.Name, DataPropertyName = pro.Name, ValueType = pro.PropertyType });
+                        }
                     }
                     else
                     {
@@ -412,14 +418,9 @@ namespace System.Windows.Forms
                         {
                             if (Store.GetIter(out TreeIter iter, path))
                             {
-                                foreach (DataGridViewRow row in Rows.SharedList)
-                                {
-                                    if (iter.Equals(row.TreeIter))
-                                    {
-                                        strc.Add(row);
-                                        break;
-                                    }
-                                }
+                                DataGridViewRow row = GetRowByIter(Rows, iter, path.Depth);
+                                if (row != null)
+                                    strc.Add(row);
                             }
                         }
                         break;
@@ -451,6 +452,11 @@ namespace System.Windows.Forms
                     GridView.Selection.UnselectIter(rowiter);
             });
         }
+        public bool AutoGenerateColumns { get; set; } = true;
+        /// <summary>
+        /// 是否起用过滤功能，用于row.visible功能，同时禁用列排序
+        /// </summary>
+        public bool UseModelFilter { get; set; }
         public bool AllowUserToAddRows { get; set; }
         public bool AllowUserToDeleteRows { get; set; }
 

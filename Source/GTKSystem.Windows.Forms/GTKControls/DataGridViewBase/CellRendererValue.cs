@@ -117,7 +117,7 @@ namespace System.Windows.Forms.GtkRender
         {
             set
             {
-                if (value != null)
+                if (value != null && value.Value != null)
                 {
                     try
                     {

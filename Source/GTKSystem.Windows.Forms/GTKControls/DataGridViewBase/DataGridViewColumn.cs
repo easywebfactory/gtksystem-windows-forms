@@ -533,14 +533,15 @@ namespace System.Windows.Forms
         }
         public override string ToString() { return this.GetType().Name; }
         //protected override void Dispose(bool disposing) {  }
-        private int _index;
+        private int _index = -1;
         public int Index
         {
             get => _index;
             internal set
             {
                 _index = value; if (_SortMode != DataGridViewColumnSortMode.NotSortable) { base.SortColumnId = value; }
-                foreach (var cell in base.Cells) { base.AddAttribute(cell, "cellvalue", _index); }
+                if (_index >= 0)
+                    foreach (var cell in base.Cells) { base.AddAttribute(cell, "cellvalue", _index); }
             }
         }
     }

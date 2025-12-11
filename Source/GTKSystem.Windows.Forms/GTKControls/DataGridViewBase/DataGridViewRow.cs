@@ -20,7 +20,7 @@ namespace System.Windows.Forms
             }
         }
         public TreeIter TreeIter { get; internal set; }
-        public DataGridView DataGridView { get; set; }
+        public DataGridView DataGridView { get; internal set; }
         public DataGridViewRow Parent { get; set; }
         private DataGridViewCellCollection _cell;
         private DataGridViewRowCollection _children;
@@ -61,9 +61,6 @@ namespace System.Windows.Forms
 
         public ContextMenuStrip ContextMenuStrip { get; set; }
         private bool _visible = true;
-        /// <summary>
-        /// 此属性无法还原行位置，建议结合列排序使用，利用排序定行位
-        /// </summary>
         public bool Visible
         {
             get => _visible;
@@ -71,26 +68,46 @@ namespace System.Windows.Forms
             {
                 if (value != _visible)
                 {
-                    _visible = value;
-                    if (DataGridView != null && DataGridView.self.IsVisible)
+                    if (DataGridView.GridView.Model is Gtk.TreeModelFilter filter)
                     {
-                        //通过增删行实现隐藏，无法还原行位置
-                        if (_visible == false)
+                        //当dataGridView.UseModelFilter = true时使用此模式，列不支持排序
+                        _visible = value;
+                        filter.Refilter();
+                    }
+                    else
+                    {
+                        //当dataGridView.UseModelFilter = false时使用此模式，列支持排序
+                        if (DataGridView != null)
                         {
-                            Gtk.TreeIter iter = this.TreeIter;
-                            if (Gtk.TreeIter.Zero.Equals(this.TreeIter) == false && this.TreeIter.UserData != null)
-                                DataGridView.Store.Remove(ref iter);
-                            this.TreeIter = Gtk.TreeIter.Zero;
+                            if (value == false)
+                            {
+                                Gtk.TreeIter iter = this.TreeIter;
+                                if (Gtk.TreeIter.Zero.Equals(this.TreeIter) == false && this.TreeIter.UserData != null)
+                                    DataGridView.Store.Remove(ref iter);
+                                this.TreeIter = Gtk.TreeIter.Zero;
+                            }
+                            else if (Gtk.TreeIter.Zero.Equals(this.TreeIter))
+                            {
+                                int idx = Index + 1;
+                                int count = DataGridView.Rows.Count;
+                                for (int i = idx; i < count; i++)
+                                {
+                                    DataGridViewRow row = DataGridView.Rows[i];
+                                    if (row.Visible)
+                                    {
+                                        TreePath path = DataGridView.Store.GetPath(row.TreeIter);
+                                        if (path != null)
+                                            DataGridView.Rows.InsertRowsStore(path.Indices.Last(), this);
+                                        break;
+                                    }
+                                }
+                            }
                         }
-                        else if (Gtk.TreeIter.Zero.Equals(this.TreeIter))
-                        {
-                            DataGridView.Rows.AddRowsStore(this);
-                        }
+                        _visible = value;
                     }
                 }
             }
         }
-
         public AccessibleObject AccessibilityObject { get; }
 
         public int GetHeight(int index)
