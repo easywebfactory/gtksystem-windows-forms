@@ -275,7 +275,7 @@ namespace System.Windows.Forms
             Gtk.Widget owidget = o as Gtk.Widget;
             if (owidget.IsRealized)
             {
-                if (args.Event.Type == Gdk.EventType.MotionNotify)
+                if (args.Event.Type == Gdk.EventType.MotionNotify || args.Event.Type == Gdk.EventType.TouchpadSwipe)
                 {
                     int clicks = 0;
                     Gdk.EventMotion eventmotion = args.Event as Gdk.EventMotion;

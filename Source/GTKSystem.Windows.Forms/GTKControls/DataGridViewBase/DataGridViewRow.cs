@@ -66,40 +66,37 @@ namespace System.Windows.Forms
             get => _visible;
             set
             {
-                if (value != _visible)
+                if (value != _visible && DataGridView != null)
                 {
-                    if (DataGridView.GridView.Model is Gtk.TreeModelFilter filter)
+                    if (DataGridView.UseModelFilter == true && DataGridView.GridView.Model is Gtk.TreeModelFilter filter)
                     {
-                        //当dataGridView.UseModelFilter = true时使用此模式，列不支持排序
+                        //此模式列不支持排序
                         _visible = value;
                         filter.Refilter();
                     }
                     else
                     {
-                        //当dataGridView.UseModelFilter = false时使用此模式，列支持排序
-                        if (DataGridView != null)
+                        //使用此模式列支持排序
+                        if (value == false)
                         {
-                            if (value == false)
+                            Gtk.TreeIter iter = this.TreeIter;
+                            if (Gtk.TreeIter.Zero.Equals(this.TreeIter) == false && this.TreeIter.UserData != null)
+                                DataGridView.Store.Remove(ref iter);
+                            this.TreeIter = Gtk.TreeIter.Zero;
+                        }
+                        else if (Gtk.TreeIter.Zero.Equals(this.TreeIter))
+                        {
+                            int idx = Index + 1;
+                            int count = DataGridView.Rows.Count;
+                            for (int i = idx; i < count; i++)
                             {
-                                Gtk.TreeIter iter = this.TreeIter;
-                                if (Gtk.TreeIter.Zero.Equals(this.TreeIter) == false && this.TreeIter.UserData != null)
-                                    DataGridView.Store.Remove(ref iter);
-                                this.TreeIter = Gtk.TreeIter.Zero;
-                            }
-                            else if (Gtk.TreeIter.Zero.Equals(this.TreeIter))
-                            {
-                                int idx = Index + 1;
-                                int count = DataGridView.Rows.Count;
-                                for (int i = idx; i < count; i++)
+                                DataGridViewRow row = DataGridView.Rows[i];
+                                if (row.Visible)
                                 {
-                                    DataGridViewRow row = DataGridView.Rows[i];
-                                    if (row.Visible)
-                                    {
-                                        TreePath path = DataGridView.Store.GetPath(row.TreeIter);
-                                        if (path != null)
-                                            DataGridView.Rows.InsertRowsStore(path.Indices.Last(), this);
-                                        break;
-                                    }
+                                    TreePath path = DataGridView.Store.GetPath(row.TreeIter);
+                                    if (path != null)
+                                        DataGridView.Rows.InsertRowsStore(path.Indices.Last(), this);
+                                    break;
                                 }
                             }
                         }
