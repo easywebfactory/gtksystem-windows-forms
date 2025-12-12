@@ -105,15 +105,15 @@ namespace GTKWinFormsApp
             //1、数据集列表数据源
             List<TestEntity> data = new List<TestEntity>();
             var createdate = "2012-09-14 12:32:33";
-            data.Add(new TestEntity() { ID = 0, Title = "加载数据点yes加载数据\n点yes加载数据点yes加载数据点yes", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "face-smile-big", PIC = Image.FromFile(Application.StartupPath + "/Resources/timg6.jpg") });
-            data.Add(new TestEntity() { ID = 1, Title = "test2", Info = "yyyy2", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile(Application.StartupPath + "/Resources/timg6.jpg") });
+            data.Add(new TestEntity() { ID = 0, Title = "加载数据点yes加载数据\n点yes加载数据点yes加载数据点yes", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "face-smile-big" });
+            data.Add(new TestEntity() { ID = 1, Title = "test2", Info = "yyyy2", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "" });
             data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = Application.StartupPath + "/Resources/BindingNavigator.Delete.ico", PIC = Image.FromFile(Application.StartupPath + "/Resources/timg2.jpg") });
             data.Add(new TestEntity() { ID = 4, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile(Application.StartupPath + "/Resources/timg2.jpg") });
 
             data.Add(new TestEntity() { ID = 5, Title = "网络图片异步加载", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://gitlab.gnome.org/uploads/-/system/project/avatar/13319/gi-docgen.png?width=48", PIC = Image.FromFile(Application.StartupPath + "/Resources/timg2.jpg") });
             data.Add(new TestEntity() { ID = 6, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile(Application.StartupPath + "/Resources/timg2.jpg") });
             for (int i = 0; i < 10; i++)
-                data.Add(new TestEntity() { ID = i + 7, Title = "网络图片异步加载" + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString(), PIC = Image.FromFile(Application.StartupPath + "/Resources/timg2.jpg") });
+                data.Add(new TestEntity() { ID = i + 7, Title = "网络图片异步加载" + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString() });
 
 
             this.dataGridView1.DataSource = data;

@@ -208,6 +208,7 @@ namespace GTKWinFormsApp
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(500, 335);
             dataGridView1.TabIndex = 2;
+            //dataGridView1.AutoSizeRowsMode= DataGridViewAutoSizeRowsMode.None;
             // 
             // ID
             // 
