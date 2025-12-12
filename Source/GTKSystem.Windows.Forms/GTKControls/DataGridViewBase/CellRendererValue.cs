@@ -123,11 +123,11 @@ namespace System.Windows.Forms.GtkRender
                     {
                         DataGridViewCellStyle style = utility.GetStyle(this.Column, value);
                         utility.SetControlWithStyle(this, style);
-                        if (typeof(Drawing.Image).Equals(value.ValueType) || typeof(Drawing.Bitmap).Equals(value.ValueType))
+                        if (value.ValueType.Name == "Bitmap" || value.ValueType.Name == "Image")
                         {
                             this.Pixbuf = ((Drawing.Image)value.Value).Pixbuf;
                         }
-                        else if (value.ValueType == typeof(byte[]))
+                        else if (value.ValueType.IsArray)
                         {
                             this.Pixbuf = new Pixbuf((byte[])value.Value);
                         }
@@ -140,7 +140,8 @@ namespace System.Windows.Forms.GtkRender
                     {
                         this.IconName = "image-missing";
                     }
-                }
+                }else
+                    this.IconName = "image-missing";
             }
         }
         public DataGridViewCellStyle ColumnStyle { get; set; }
@@ -212,7 +213,6 @@ namespace System.Windows.Forms.GtkRender
             {
                 style = col.DefaultCellStyle ?? cell.DataGridView.DefaultCellStyle;
             }
-
             return style;
         }
         internal void SetControlWithStyle(CellRenderer cell, DataGridViewCellStyle cellstyle)
@@ -250,11 +250,10 @@ namespace System.Windows.Forms.GtkRender
         {
             if (cellstyle != null)
             {
-                if (cellstyle?.WrapMode == DataGridViewTriState.True)
+                if (cellstyle.WrapMode == DataGridViewTriState.True)
                 {
                     cell.WrapMode = Pango.WrapMode.WordChar;
-                    cell.WrapWidth = 0;
-                    cell.WidthChars = 0;
+                    cell.WrapWidth = cell.WidthChars;
                 }
                 if (cellstyle.ForeColor.Name != "0")
                     cell.ForegroundRgba = new Gdk.RGBA() { Alpha = cellstyle.ForeColor.A / 255f, Blue = cellstyle.ForeColor.B / 255f, Green = cellstyle.ForeColor.G / 255f, Red = cellstyle.ForeColor.R / 255f };
@@ -278,9 +277,6 @@ namespace System.Windows.Forms.GtkRender
                     cell.SetAlignment(0.5f, 1f);
                 else if (cellstyle.Alignment == DataGridViewContentAlignment.BottomRight)
                     cell.SetAlignment(1.0f, 1f);
-
-                if (cellstyle.WrapMode != DataGridViewTriState.NotSet)
-                    cell.WrapMode = cellstyle.WrapMode == DataGridViewTriState.True ? Pango.WrapMode.WordChar : Pango.WrapMode.Word;
             }
         }
         internal string GetFormatText(object text, DataGridViewCellStyle cellstyle)

@@ -35,66 +35,12 @@ namespace System.Windows.Forms
             column.DataGridView = __owner;
             column.Index = Count;
             column.DisplayIndex = column.Index;
-            column.SetGridViewDefaultStyle(__owner.DefaultCellStyle);
-
-            DataGridViewCellStyle _cellStyle = column.DefaultCellStyle;
-            if (__owner.ColumnHeadersDefaultCellStyle != null)
-                _cellStyle = __owner.ColumnHeadersDefaultCellStyle;
-
-            if (_cellStyle != null)
-            {
-                Gtk.Button header = ((Gtk.Button)column.Button);
-                string style = "";
-                if (_cellStyle.BackColor.Name != "0")
-                {
-                    string backcolor = $"rgba({_cellStyle.BackColor.R},{_cellStyle.BackColor.G},{_cellStyle.BackColor.B},{_cellStyle.BackColor.A})";
-                    style += $".columnheaderbackcolor{{background-color:{backcolor};}} ";
-                    header.StyleContext.AddClass("columnheaderbackcolor");
-                }
-                if (_cellStyle.ForeColor.Name != "0")
-                {
-                    string forecolor = $"rgba({_cellStyle.ForeColor.R},{_cellStyle.ForeColor.G},{_cellStyle.ForeColor.B},{_cellStyle.ForeColor.A})";
-                    style += $".columnheaderforecolor{{color:{forecolor};}} ";
-                    header.StyleContext.AddClass("columnheaderforecolor");
-                }
-                if (style.Length > 9)
-                {
-                    Gtk.CssProvider css = new Gtk.CssProvider();
-                    css.LoadFromData(style);
-                    header.StyleContext.AddProvider(css, StyleProviderPriority.User);
-                }
-                switch (_cellStyle.Alignment)
-                {
-                    case DataGridViewContentAlignment.TopLeft:
-                    case DataGridViewContentAlignment.MiddleLeft:
-                    case DataGridViewContentAlignment.BottomLeft:
-                        column.Alignment = 0f;
-                        break;
-
-                    case DataGridViewContentAlignment.TopCenter:
-                    case DataGridViewContentAlignment.MiddleCenter:
-                    case DataGridViewContentAlignment.BottomCenter:
-                        column.Alignment = 0.5f;
-                        break;
-
-                    case DataGridViewContentAlignment.TopRight:
-                    case DataGridViewContentAlignment.MiddleRight:
-                    case DataGridViewContentAlignment.BottomRight:
-                        column.Alignment = 1.0f;
-                        break;
-
-                    default:
-                        column.Alignment = 0f;
-                        break;
-                }
-            }
-
             base.Add(column);
-            if (__owner.self.IsRealized)
+            GridView.AppendColumn(column);
+            if (GridView.IsRealized)
             {
                 Invalidate();
             }
-            GridView.AppendColumn(column);
             OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, column));
         }
         public new void AddRange(IEnumerable<DataGridViewColumn> columns)
@@ -144,6 +90,10 @@ namespace System.Windows.Forms
                     });
 
                     __owner.GridView.Model = modelFilter;
+                    foreach (DataGridViewColumn col in this)
+                    {
+                        col.SortColumnId = -1;
+                    }
                 }
                 else if (__owner.GridView.Model == null)
                 {
@@ -156,11 +106,10 @@ namespace System.Windows.Forms
                             return true;
                     });
                     __owner.GridView.Model = modelFilter;
-                }
-
-                foreach (DataGridViewColumn col in this)
-                {
-                    col.SortColumnId = -1;
+                    foreach (DataGridViewColumn col in this)
+                    {
+                        col.SortColumnId = -1;
+                    }
                 }
             }
             else
@@ -171,33 +120,57 @@ namespace System.Windows.Forms
                     __owner.Store.Clear();
                     __owner.Store = new Gtk.TreeStore(Array.ConvertAll(columnTypes, o => typeof(DataGridViewCell)));
                     __owner.GridView.Model = __owner.Store;
+                    __owner.Store.DefaultSortFunc = new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) => { return 0; });
+                    for (int i = 0; i < __owner.Store.NColumns && i < count; i++)
+                    {
+                        if (this[i].SortMode != DataGridViewColumnSortMode.NotSortable)
+                        {
+                            __owner.Store.SetSortFunc(i, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
+                            {
+                                ((Gtk.TreeStore)m).GetSortColumnId(out int sortid, out Gtk.SortType order);
+                                DataGridViewCell v1 = m.GetValue(t1, sortid) as DataGridViewCell;
+                                DataGridViewCell v2 = m.GetValue(t2, sortid) as DataGridViewCell;
+                                if (v1?.Value == null || v2?.Value == null)
+                                    return 0;
+                                else if (v1.ValueType.IsValueType && long.TryParse(v1.Value.ToString(), out long rv1) && long.TryParse(v2.Value.ToString(), out long rv2))
+                                    return rv1.CompareTo(rv2);
+                                else if (v1.ValueType.Name == "DateTime")
+                                    return ((DateTime)v1.Value).CompareTo((DateTime)v2.Value);
+                                else
+                                    return v1.Value.ToString().CompareTo(v2.Value.ToString());
+                            }));
+                        }
+                    }
                 }
                 else if (__owner.GridView.Model == null)
                 {
                     __owner.GridView.Model = __owner.Store;
-                }
-
-                __owner.Store.DefaultSortFunc = new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) => { return 0; });
-                for (int i = 0; i < __owner.Store.NColumns && i < count; i++)
-                {
-                    if (this[i].SortMode != DataGridViewColumnSortMode.NotSortable)
+                    __owner.Store.DefaultSortFunc = new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) => { return 0; });
+                    for (int i = 0; i < __owner.Store.NColumns && i < count; i++)
                     {
-                        __owner.Store.SetSortFunc(i, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
+                        if (this[i].SortMode != DataGridViewColumnSortMode.NotSortable)
                         {
-                            ((Gtk.TreeStore)m).GetSortColumnId(out int sortid, out Gtk.SortType order);
-                            DataGridViewCell v1 = m.GetValue(t1, sortid) as DataGridViewCell;
-                            DataGridViewCell v2 = m.GetValue(t2, sortid) as DataGridViewCell;
-                            if (v1?.Value == null || v2?.Value == null)
-                                return 0;
-                            else if (v1.ValueType.IsValueType && long.TryParse(v1.Value.ToString(), out long rv1) && long.TryParse(v2.Value.ToString(), out long rv2))
-                                return rv1.CompareTo(rv2);
-                            else if (v1.ValueType.Name == "DateTime")
-                                return ((DateTime)v1.Value).CompareTo((DateTime)v2.Value);
-                            else
-                                return v1.Value.ToString().CompareTo(v2.Value.ToString());
-                        }));
+                            __owner.Store.SetSortFunc(i, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
+                            {
+                                ((Gtk.TreeStore)m).GetSortColumnId(out int sortid, out Gtk.SortType order);
+                                DataGridViewCell v1 = m.GetValue(t1, sortid) as DataGridViewCell;
+                                DataGridViewCell v2 = m.GetValue(t2, sortid) as DataGridViewCell;
+                                if (v1?.Value == null || v2?.Value == null)
+                                    return 0;
+                                else if (v1.ValueType.IsValueType && long.TryParse(v1.Value.ToString(), out long rv1) && long.TryParse(v2.Value.ToString(), out long rv2))
+                                    return rv1.CompareTo(rv2);
+                                else if (v1.ValueType.Name == "DateTime")
+                                    return ((DateTime)v1.Value).CompareTo((DateTime)v2.Value);
+                                else
+                                    return v1.Value.ToString().CompareTo(v2.Value.ToString());
+                            }));
+                        }
                     }
                 }
+            }
+            foreach (DataGridViewColumn col in this)
+            {
+                col.UpdateDefaultStyle();
             }
         }
         public int GetColumnCount(DataGridViewElementStates includeFilter)

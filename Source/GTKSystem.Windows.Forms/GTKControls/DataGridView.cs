@@ -205,7 +205,10 @@ namespace System.Windows.Forms
         private DataGridViewRow _RowTemplate;
         public DataGridViewRow RowTemplate
         {
-            get { _RowTemplate ??= new DataGridViewRow(); _RowTemplate.DefaultCellStyle ??= new DataGridViewCellStyle(); return _RowTemplate; }
+            get { _RowTemplate ??= new DataGridViewRow(); 
+                _RowTemplate.DefaultCellStyle = new DataGridViewCellStyle(); 
+                return _RowTemplate; 
+            }
             set { _RowTemplate = value; }
         }
         public DataGridViewCellStyle DefaultCellStyle { get; set; }
@@ -260,7 +263,8 @@ namespace System.Windows.Forms
         {
             foreach (DataColumn col in dt.Columns)
             {
-                if (_columns.Exists(m => m.DataPropertyName == col.ColumnName) == false)
+                DataGridViewColumn column = _columns.Find(m => m.DataPropertyName == col.ColumnName);
+                if (column == null)
                 {
                     if (AutoGenerateColumns)
                     {
@@ -274,7 +278,7 @@ namespace System.Windows.Forms
                 }
                 else
                 {
-                    _columns.Find(m => m.DataPropertyName == col.ColumnName).ValueType = col.DataType;
+                    column.ValueType = col.DataType;
                 }
             }
             _columns.Invalidate();
@@ -302,7 +306,8 @@ namespace System.Windows.Forms
                 PropertyInfo[] pros = _entityType[0].GetProperties(BindingFlags.Public | BindingFlags.Instance);
                 foreach (PropertyInfo pro in pros)
                 {
-                    if (_columns.Exists(m => m.DataPropertyName == pro.Name) == false)
+                    DataGridViewColumn column = _columns.Find(m => m.DataPropertyName == pro.Name);
+                    if (column == null)
                     {
                         if (AutoGenerateColumns)
                         {
@@ -316,7 +321,7 @@ namespace System.Windows.Forms
                     }
                     else
                     {
-                        _columns.Find(m => m.DataPropertyName == pro.Name).ValueType = pro.PropertyType;
+                        column.ValueType = pro.PropertyType;
                     }
                 }
                 _columns.Invalidate();
