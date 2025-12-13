@@ -4,8 +4,8 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+
 using Gtk;
-using Pango;
 using System.ComponentModel;
 
 namespace System.Windows.Forms
@@ -24,7 +24,15 @@ namespace System.Windows.Forms
         public virtual DataGridViewColumn this[string columnName] { get { return base.Find(m => m.Name == columnName); } }
 
         protected DataGridView DataGridView { get { return __owner; } }
-        
+        private void AddInternal(DataGridViewColumn column)
+        {
+            column.DataGridView = __owner;
+            column.Index = Count;
+            //column.DisplayIndex = column.Index;
+            base.Add(column);
+            GridView.AppendColumn(column);
+            OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, column));
+        }
         public void Add(string columnName, string headerText)
         {
             DataGridViewColumn column = new DataGridViewColumn() { Name = columnName, HeaderText = headerText };
@@ -32,22 +40,13 @@ namespace System.Windows.Forms
         }
         public new void Add(DataGridViewColumn column)
         {
-            column.DataGridView = __owner;
-            column.Index = Count;
-            column.DisplayIndex = column.Index;
-            base.Add(column);
-            GridView.AppendColumn(column);
-            if (GridView.IsRealized)
-            {
-                Invalidate();
-            }
-            OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, column));
+            AddInternal(column);
         }
         public new void AddRange(IEnumerable<DataGridViewColumn> columns)
         {
             foreach (DataGridViewColumn column in columns)
             {
-                Add(column);
+                AddInternal(column);
             }
         }
         public new bool Remove(DataGridViewColumn column)
@@ -76,6 +75,10 @@ namespace System.Windows.Forms
             {
                 if (count > __owner.Store.NColumns)
                 {
+                    foreach (DataGridViewColumn column in this)
+                    {
+                        column.SortColumnId = -1;
+                    }
                     object[] columnTypes = new object[count];
                     __owner.Store.Clear();
                     __owner.Store = new Gtk.TreeStore(Array.ConvertAll(columnTypes, o => typeof(DataGridViewCell)));
@@ -88,15 +91,14 @@ namespace System.Windows.Forms
                         else
                             return true;
                     });
-
                     __owner.GridView.Model = modelFilter;
-                    foreach (DataGridViewColumn col in this)
-                    {
-                        col.SortColumnId = -1;
-                    }
                 }
                 else if (__owner.GridView.Model == null)
                 {
+                    foreach (DataGridViewColumn column in this)
+                    {
+                        column.SortColumnId = -1;
+                    }
                     Gtk.TreeModelFilter modelFilter = new TreeModelFilter(__owner.Store, null);
                     modelFilter.VisibleFunc = new TreeModelFilterVisibleFunc((model, iter) =>
                     {
@@ -106,10 +108,6 @@ namespace System.Windows.Forms
                             return true;
                     });
                     __owner.GridView.Model = modelFilter;
-                    foreach (DataGridViewColumn col in this)
-                    {
-                        col.SortColumnId = -1;
-                    }
                 }
             }
             else
@@ -121,11 +119,13 @@ namespace System.Windows.Forms
                     __owner.Store = new Gtk.TreeStore(Array.ConvertAll(columnTypes, o => typeof(DataGridViewCell)));
                     __owner.GridView.Model = __owner.Store;
                     __owner.Store.DefaultSortFunc = new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) => { return 0; });
-                    for (int i = 0; i < __owner.Store.NColumns && i < count; i++)
+
+                    foreach(DataGridViewColumn column in this)
                     {
-                        if (this[i].SortMode != DataGridViewColumnSortMode.NotSortable)
+                        int colIndex = column.Index;
+                        if (column.SortMode != DataGridViewColumnSortMode.NotSortable)
                         {
-                            __owner.Store.SetSortFunc(i, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
+                            __owner.Store.SetSortFunc(colIndex, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
                             {
                                 ((Gtk.TreeStore)m).GetSortColumnId(out int sortid, out Gtk.SortType order);
                                 DataGridViewCell v1 = m.GetValue(t1, sortid) as DataGridViewCell;
@@ -146,11 +146,12 @@ namespace System.Windows.Forms
                 {
                     __owner.GridView.Model = __owner.Store;
                     __owner.Store.DefaultSortFunc = new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) => { return 0; });
-                    for (int i = 0; i < __owner.Store.NColumns && i < count; i++)
+                    foreach (DataGridViewColumn column in this)
                     {
-                        if (this[i].SortMode != DataGridViewColumnSortMode.NotSortable)
+                        int colIndex = column.Index;
+                        if (column.SortMode != DataGridViewColumnSortMode.NotSortable)
                         {
-                            __owner.Store.SetSortFunc(i, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
+                            __owner.Store.SetSortFunc(colIndex, new Gtk.TreeIterCompareFunc((Gtk.ITreeModel m, Gtk.TreeIter t1, Gtk.TreeIter t2) =>
                             {
                                 ((Gtk.TreeStore)m).GetSortColumnId(out int sortid, out Gtk.SortType order);
                                 DataGridViewCell v1 = m.GetValue(t1, sortid) as DataGridViewCell;

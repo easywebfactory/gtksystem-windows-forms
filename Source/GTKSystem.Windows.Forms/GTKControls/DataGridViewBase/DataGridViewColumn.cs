@@ -5,7 +5,6 @@
  * author:chenhongjin
  */
 using Gtk;
- 
 using System.Collections;
 using System.ComponentModel;
 using System.Data.Common;
@@ -360,19 +359,6 @@ namespace System.Windows.Forms
                     _cellRenderer.WrapWidth = Width;
                 }
             }
-            if (_gridview != null)
-            {
-                if (_gridview.AutoSizeRowsMode == DataGridViewAutoSizeRowsMode.AllCells || _gridview.AutoSizeRowsMode == DataGridViewAutoSizeRowsMode.DisplayedCells || _gridview.AutoSizeRowsMode == DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders || _gridview.AutoSizeRowsMode == DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders)
-                {
-                    _cellRenderer.Height = -1;
-                }
-                else
-                {
-                    _cellRenderer.Height = RowHeight;
-                }
-                if (_gridview.GridView.IsRealized)
-                    this.QueueResize();
-            }
         }
         Gtk.CssProvider css = new Gtk.CssProvider();
         public void UpdateDefaultStyle()
@@ -389,12 +375,22 @@ namespace System.Windows.Forms
                     _cellRenderer.Editable = true;
                     _cellRenderer.Activatable = true;
                 }
-
+                if (_gridview.AutoSizeRowsMode == DataGridViewAutoSizeRowsMode.AllCells || _gridview.AutoSizeRowsMode == DataGridViewAutoSizeRowsMode.DisplayedCells || _gridview.AutoSizeRowsMode == DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders || _gridview.AutoSizeRowsMode == DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders)
+                {
+                    _cellRenderer.Height = -1;
+                }
+                else
+                {
+                    _cellRenderer.Height = RowHeight;
+                }
                 if (_gridview.DefaultCellStyle != null && _gridview.DefaultCellStyle.WrapMode == DataGridViewTriState.True)
                 {
                     _cellRenderer.WrapMode = Pango.WrapMode.WordChar;
                     _cellRenderer.WrapWidth = Width;
                 }
+                if (_gridview.GridView.IsRealized)
+                    this.QueueResize();
+
                 DataGridViewCellStyle _cellStyle = this.DefaultCellStyle;
                 if (_cellStyle == null && _gridview.ColumnHeadersDefaultCellStyle != null)
                     _cellStyle = _gridview.ColumnHeadersDefaultCellStyle;
@@ -512,8 +508,17 @@ namespace System.Windows.Forms
 
         public DataGridViewElementStates State { get { return DataGridViewElementStates.None; } internal set { } }
         public string HeaderText { get { return this.Title; } set { this.Title = value; } }
-        private int _DisplayIndex;
-        public int DisplayIndex { get => _DisplayIndex; set { _DisplayIndex = value; } }
+        public int DisplayIndex
+        {
+            get => Array.IndexOf(_treeView.Columns, (TreeViewColumn)this);
+            set
+            {
+                if (_gridview != null && value >= 0 &&_gridview.Columns.Count > value && this.Handle != _treeView.Columns[value].Handle)
+                {
+                    _treeView.MoveColumnAfter((TreeViewColumn)this, _treeView.Columns[value]);
+                }
+            }
+        }
         public new int Width { get { return base.FixedWidth; } set { base.FixedWidth = value; _cellRenderer.WidthChars = value; } }
         public Type ValueType { get; set; } = typeof(string);
         public string ToolTipText { get; set; }
@@ -594,12 +599,12 @@ namespace System.Windows.Forms
             {
                 _index = value;
                 if (_SortMode != DataGridViewColumnSortMode.NotSortable)
-                { 
-                    base.SortColumnId = value; 
+                {
+                    base.SortColumnId = value;
                 }
                 if (_index >= 0)
                 {
-                    foreach (var cell in base.Cells) { base.AddAttribute(cell, "cellvalue", _index); }
+                    base.AddAttribute(base.Cells[0], "cellvalue", _index);
                 }
             }
         }
