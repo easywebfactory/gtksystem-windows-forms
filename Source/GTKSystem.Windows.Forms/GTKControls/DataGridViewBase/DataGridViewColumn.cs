@@ -390,7 +390,7 @@ namespace System.Windows.Forms
                     _cellRenderer.Activatable = true;
                 }
 
-                if (_gridview.DefaultCellStyle.WrapMode == DataGridViewTriState.True)
+                if (_gridview.DefaultCellStyle != null && _gridview.DefaultCellStyle.WrapMode == DataGridViewTriState.True)
                 {
                     _cellRenderer.WrapMode = Pango.WrapMode.WordChar;
                     _cellRenderer.WrapWidth = Width;
