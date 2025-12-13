@@ -123,7 +123,7 @@ namespace System.Windows.Forms.GtkRender
                     {
                         DataGridViewCellStyle style = utility.GetStyle(this.Column, value);
                         utility.SetControlWithStyle(this, style);
-                        if (value.ValueType.Name == "Bitmap" || value.ValueType.Name == "Image")
+                        if (value.Value is System.Drawing.Image)
                         {
                             this.Pixbuf = ((Drawing.Image)value.Value).Pixbuf;
                         }
@@ -162,6 +162,7 @@ namespace System.Windows.Forms.GtkRender
             utility = new CellReandererUtility();
             this.SetAlignment(0.5f, 0.5f);
             this.Ellipsize = Pango.EllipsizeMode.End;
+            this.Editable = false;
         }
         [Property("cellvalue")]
         public DataGridViewCell CellValue
@@ -179,6 +180,7 @@ namespace System.Windows.Forms.GtkRender
         public DataGridViewCellStyle ColumnStyle { get; set; }
         public bool Activatable { get; set; }
         string ICellRenderer.Markup { get; set; }
+        public new bool Editable { get; set; }
         protected override void OnRender(Cairo.Context cr, Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle cell_area, CellRendererState flags)
         {
             widget.StyleContext.Save();

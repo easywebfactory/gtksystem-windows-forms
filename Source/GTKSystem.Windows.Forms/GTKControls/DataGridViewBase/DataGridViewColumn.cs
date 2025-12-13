@@ -118,6 +118,7 @@ namespace System.Windows.Forms
             _items = new ObjectCollection(this);
             CellRendererComboValue renderer = new CellRendererComboValue(this);
             renderer.Editable = true;
+            renderer.Mode = CellRendererMode.Editable;
             renderer.Edited += Renderer_Edited;
             renderer.EditingStarted += Renderer_EditingStarted;
             renderer.TextColumn = 0;
@@ -202,6 +203,7 @@ namespace System.Windows.Forms
             var renderer = new CellRendererPixbufValue(this);
             //renderer.IconName = "face-smile";
             renderer.Height = RowHeight;
+            renderer.Editable = false;
             base.PackStart(renderer, false);
             _cellRenderer = renderer;
         }
@@ -377,6 +379,17 @@ namespace System.Windows.Forms
         {
             if (_gridview != null)
             {
+                if (_ReadOnly || _gridview.ReadOnly)
+                {
+                    _cellRenderer.Editable = false;
+                    _cellRenderer.Activatable = false;
+                }
+                else
+                {
+                    _cellRenderer.Editable = true;
+                    _cellRenderer.Activatable = true;
+                }
+
                 if (_gridview.DefaultCellStyle.WrapMode == DataGridViewTriState.True)
                 {
                     _cellRenderer.WrapMode = Pango.WrapMode.WordChar;
