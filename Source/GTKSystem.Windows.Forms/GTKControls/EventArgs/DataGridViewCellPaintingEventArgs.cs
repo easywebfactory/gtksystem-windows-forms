@@ -26,12 +26,12 @@ namespace System.Windows.Forms
                                                  DataGridViewAdvancedBorderStyle advancedBorderStyle,
                                                  DataGridViewPaintParts paintParts)
         {
-            if ((paintParts & ~DataGridViewPaintParts.All) != 0)
-            {
-                throw new ArgumentException("string.Format(SR.DataGridView_InvalidDataGridViewPaintPartsCombination, nameof(paintParts)), nameof(paintParts)");
-            }
+            //if ((paintParts & ~DataGridViewPaintParts.All) != 0)
+            //{
+            //    throw new ArgumentException("string.Format(SR.DataGridView_InvalidDataGridViewPaintPartsCombination, nameof(paintParts)), nameof(paintParts)");
+            //}
 
-            _dataGridView = dataGridView ?? throw new ArgumentNullException(nameof(dataGridView));
+            //_dataGridView = dataGridView ?? throw new ArgumentNullException(nameof(dataGridView));
             Graphics = graphics ?? throw new ArgumentNullException(nameof(graphics));
             ClipBounds = clipBounds;
             CellBounds = cellBounds;
@@ -78,79 +78,17 @@ namespace System.Windows.Forms
 
         public void Paint(Rectangle clipBounds, DataGridViewPaintParts paintParts)
         {
-            if (RowIndex < -1 || RowIndex >= _dataGridView.Rows.Count)
-            {
-                throw new InvalidOperationException("SR.DataGridViewElementPaintingEventArgs_RowIndexOutOfRange");
-            }
-            if (ColumnIndex < -1 || ColumnIndex >= _dataGridView.Columns.Count)
-            {
-                throw new InvalidOperationException("SR.DataGridViewElementPaintingEventArgs_ColumnIndexOutOfRange");
-            }
 
-            //_dataGridView.GetCellInternal(ColumnIndex, RowIndex).PaintInternal(Graphics,
-            //                                                                   clipBounds,
-            //                                                                   CellBounds,
-            //                                                                   RowIndex,
-            //                                                                   State,
-            //                                                                   Value,
-            //                                                                   FormattedValue,
-            //                                                                   ErrorText,
-            //                                                                   CellStyle,
-            //                                                                   AdvancedBorderStyle,
-            //                                                                   paintParts);
         }
 
         public void PaintBackground(Rectangle clipBounds, bool cellsPaintSelectionBackground)
         {
-            if (RowIndex < -1 || RowIndex >= _dataGridView.Rows.Count)
-            {
-                throw new InvalidOperationException("SR.DataGridViewElementPaintingEventArgs_RowIndexOutOfRange");
-            }
-            if (ColumnIndex < -1 || ColumnIndex >= _dataGridView.Columns.Count)
-            {
-                throw new InvalidOperationException("SR.DataGridViewElementPaintingEventArgs_ColumnIndexOutOfRange");
-            }
 
-            DataGridViewPaintParts paintParts = DataGridViewPaintParts.Background | DataGridViewPaintParts.Border;
-            if (cellsPaintSelectionBackground)
-            {
-                paintParts |= DataGridViewPaintParts.SelectionBackground;
-            }
-            //_dataGridView.GetCellInternal(ColumnIndex, RowIndex).PaintInternal(Graphics,
-            //                                                                   clipBounds,
-            //                                                                   CellBounds,
-            //                                                                   RowIndex,
-            //                                                                   State,
-            //                                                                   Value,
-            //                                                                   FormattedValue,
-            //                                                                   ErrorText,
-            //                                                                   CellStyle,
-            //                                                                   AdvancedBorderStyle,
-            //                                                                   paintParts);
         }
 
         public void PaintContent(Rectangle clipBounds)
         {
-            if (RowIndex < -1 || RowIndex >= _dataGridView.Rows.Count)
-            {
-                throw new InvalidOperationException("SR.DataGridViewElementPaintingEventArgs_RowIndexOutOfRange");
-            }
-            if (ColumnIndex < -1 || ColumnIndex >= _dataGridView.Columns.Count)
-            {
-                throw new InvalidOperationException("SR.DataGridViewElementPaintingEventArgs_ColumnIndexOutOfRange");
-            }
 
-            //_dataGridView.GetCellInternal(ColumnIndex, RowIndex).PaintInternal(Graphics,
-            //                                                                   clipBounds,
-            //                                                                   CellBounds,
-            //                                                                   RowIndex,
-            //                                                                   State,
-            //                                                                   Value,
-            //                                                                   FormattedValue,
-            //                                                                   ErrorText,
-            //                                                                   CellStyle,
-            //                                                                   AdvancedBorderStyle,
-            //                                                                   DataGridViewPaintParts.ContentBackground | DataGridViewPaintParts.ContentForeground | DataGridViewPaintParts.ErrorIcon);
         }
 
         internal void SetProperties(Graphics graphics,

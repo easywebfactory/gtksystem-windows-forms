@@ -12,34 +12,23 @@ namespace System.Windows.Forms
         public DataGridView DataGridView { get => OwningRowInternal.DataGridView; }
         protected DataGridViewCell() { }
         public object Value { get; set; }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string ToolTipText { get; set; }
-        [Bindable(true)]
-        [DefaultValue(null)]
-        [Localizable(false)]
-        [TypeConverter(typeof(StringConverter))]
         public object Tag { get; set; }
-        [Browsable(true)]
         public DataGridViewCellStyle Style { get; set; }
 
         public Size Size { get; }
         private bool _Selected;
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual bool Selected { get => _Selected; set { _Selected = value; DataGridView?.GridView.QueueDraw(); } }
-        public int RowIndex { get => OwningRowInternal.Index; }
+        public int RowIndex { get => OwningRowInternal == null ? -1 : OwningRowInternal.Index; }
 
         public virtual bool Resizable { get; }
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual bool ReadOnly { get; set; }
 
         public Size PreferredSize { get; }
 
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public DataGridViewRow OwningRow { get => OwningRowInternal; }
 
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public DataGridViewColumn OwningColumn { get; }
 
         public bool IsInEditMode { get; }
@@ -50,20 +39,16 @@ namespace System.Windows.Forms
         public int ColumnIndex { get; internal set; }
 
         public Rectangle ContentBounds { get; }
-        [DefaultValue(null)]
         public virtual ContextMenuStrip ContextMenuStrip { get; set; }
 
         public virtual object DefaultNewRowValue { get; }
 
         public virtual bool Displayed { get; }
 
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public object EditedFormattedValue { get; }
 
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public virtual Type EditType { get; }
 
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public Rectangle ErrorIconBounds { get; }
 
         public string ErrorText { get; set; }
@@ -81,13 +66,14 @@ namespace System.Windows.Forms
         public DataGridViewElementStates InheritedState { get; }
         private Type _valueType;
         public virtual Type ValueType { get { return _valueType == null ? Value?.GetType() : _valueType; } set { _valueType = value; } }
-        
+        public void OnCellPainting(DataGridViewCellPaintingEventArgs args)
+        {
+            OwningRowInternal?.DataGridView?.OnCellPainting(this, args);
+        }
     }
     public class DataGridViewTextBoxCell : DataGridViewCell
     {
-        //public DataGridViewTextBoxCell(DataGridViewRow dataGridViewRow) {
-         
-        //}
+
     }
     public class DataGridViewCheckBoxCell : DataGridViewCell
     {

@@ -28,9 +28,13 @@ namespace System.Windows.Forms
         {
             column.DataGridView = __owner;
             column.Index = Count;
-            //column.DisplayIndex = column.Index;
             base.Add(column);
             GridView.AppendColumn(column);
+            if (__owner.GridView.IsRealized)
+            {
+                if (__owner.Store.NColumns < __owner.GridView.Columns.Length)
+                    __owner.Columns.Invalidate();
+            }
             OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, column));
         }
         public void Add(string columnName, string headerText)
@@ -48,6 +52,8 @@ namespace System.Windows.Forms
             {
                 AddInternal(column);
             }
+            if (__owner.Store.NColumns < __owner.GridView.Columns.Length)
+                __owner.Columns.Invalidate();
         }
         public new bool Remove(DataGridViewColumn column)
         {
