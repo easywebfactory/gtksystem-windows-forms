@@ -71,11 +71,13 @@ namespace System.Windows.Forms
                 OnSetDataSource();
                 if (DropDownStyle == ComboBoxStyle.DropDownList)
                 {
-                    var ws = ((Gtk.Box)self.Children[0].Parent).Children[1] as Gtk.ToggleButton;
+                    Gtk.Box box =(Gtk.Box)self.Entry.Parent;
+                    var ws = box.Children[1] as Gtk.ToggleButton;
                     self.Entry.IsEditable = false;
                     self.Entry.CanFocus = false;
                     self.Entry.NoShowAll = true;
                     self.Entry.WidthRequest = 1;
+                    self.Entry.Opacity = 0;
                     self.Entry.Visible = false;
                     ws.WidthRequest = self.WidthRequest;
                     ws.DrawIndicator = true;
@@ -109,21 +111,34 @@ namespace System.Windows.Forms
         private void W_SizeAllocated(object o, SizeAllocatedArgs args)
         {
             Gtk.Window w = (Gtk.Window)o;
-            if (w.Window != null && w.Window.IsVisible == false)
+            if (w.Window != null && w.Window.IsVisible)
             {
                 self.Window.GetOrigin(out int x, out int y);
-                w.Window.Move(x - 5, y + self.AllocatedHeight);
-                GLib.Timeout.Add(100, () =>
+                int wx = x - 5;
+                int wy = y + self.AllocatedHeight - 4;
+                w.Window.GetOrigin(out int wx1, out int wy1);
+                if (wx != wx1)
                 {
-                    w.Window.Show();
-                    return false;
-                });
+                    w.Window.Move(wx, wy);
+                    GLib.Timeout.Add(50, () =>
+                    {
+                        w.Window.GetOrigin(out int x1, out int y1);
+                        if (wx == x1 && wy == y1)
+                        {
+                            w.Window.Opacity = 1;
+                            w.Window.Show();
+                            return false;
+                        }
+                        w.Window.Move(wx, wy);
+                        return true;
+                    });
+                }
             }
         }
         private void W_Shown(object sender, EventArgs e)
         {
             Gtk.Window w= (Gtk.Window)sender;
-            w.Window.Hide();
+            w.Window.Opacity = 0;
         }
 
         private ComboBoxStyle _DropDownStyle;
