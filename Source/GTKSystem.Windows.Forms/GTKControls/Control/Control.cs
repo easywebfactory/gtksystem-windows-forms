@@ -1686,7 +1686,7 @@ namespace System.Windows.Forms
         {
             if (Widget != null && this.Widget.Window != null)
             {
-                this.Widget.Window.GetPosition(out int x, out int y);
+                this.Widget.Window.GetOrigin(out int x, out int y);
                 if (r.X > x && r.Y > y)
                     return new Rectangle(r.X - x, r.Y - y, r.Width, r.Height);
             }
@@ -1697,7 +1697,7 @@ namespace System.Windows.Forms
         {
             if (Widget != null && this.Widget.Window != null)
             {
-                this.Widget.Window.GetPosition(out int x, out int y);
+                this.Widget.Window.GetOrigin(out int x, out int y);
                 if (r.X < x && r.Y < y)
                     return new Rectangle(r.X + x, r.Y + y, r.Width, r.Height);
             }

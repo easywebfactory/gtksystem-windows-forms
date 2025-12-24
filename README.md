@@ -85,7 +85,7 @@ MacOS安装dotnet环境
 
 ### 开发教程
 1.  项目工程框架选择“window应用程序”，改配置\<UseWindowsForms\>为false，.net6及以上版本
-2.  NulGet安装GtkSharp(3.24.24.95)、GTKSystem.Windows.Forms、GTKSystem.Windows.FormsDesigner
+2.  NulGet安装GtkSharp(3.24.24.95)、GTKSystem.Windows.Forms
 3.  检查form表单是否有使用图像资源，如使用需新建System.Resources.ResourceManager和System.ComponentModel.ComponentResourceManager，具体请看下面内容。
 4.  安装本下载包里的【VisualStudio开发插件】，用于添加窗体创建模板。
 
@@ -94,7 +94,7 @@ MacOS安装dotnet环境
 2. linux和macos上：执行命令运行dotnet demo_app.dll。
 3. 通过visual studio发布成独立程序（包含环境运行时库），直接双击即可运行（可能需要授权：sudo chmod +x demoapp）。
 
-### VisualStudio插件安装
+### VisualStudio插件安装[可选装]
 
 工具一、从NuGet上安装GTKSystem.Windows.FormsDesigner类库，此类库可以在编译工程时修正窗体设计器。
 
@@ -125,7 +125,9 @@ MacOS安装dotnet环境
 2、引用GTKSystem.Windows.Forms <br/>
 GTKSystem.Windows.Forms是必须引用
 
-3、【可选项】新建添加配置文件Directory.Build.props，此配置是为了区分窗体设计工程的obj目录（参考下面窗体设计器的用法，不是必需的），配置如下：
+3、【可选项】新建添加配置文件Directory.Build.props，此配置是为了区分窗体设计工程的obj目录，
+<br/><b>此配置主要是用于双工程方法，用C#原生窗体工程管理窗体</b>，项目演示工程即使用此方法，详细的使用教程可以访问[https://www.gtkapp.com/formsdesigner](https://www.gtkapp.com/formsdesigner)  
+<br/>配置如下：
 ```
 <Project>
 	<PropertyGroup>
@@ -134,17 +136,13 @@ GTKSystem.Windows.Forms是必须引用
 	</PropertyGroup>
 </Project>
 ```
-
-4、【可选项】从NuGet安装GTKSystem.Windows.FormsDesigner，用于开启窗体设计器。<br/>
- 使用窗体设计器有几种方法，详细的使用教程可以访问[https://www.gtkapp.com/formsdesigner](https://www.gtkapp.com/formsdesigner)   
-
  
-5、【可选项】新建System.Resources.ResourceManager类<br/>
+4、【可选项】新建System.Resources.ResourceManager类<br/>
 在项目下新建System.Resources.ResourceManager类，继承GTKSystem.Resources.ResourceManager，用于覆盖原生System.Resources.ResourceManager类。
 GTKSystem.Resources.ResourceManager实现了项目资源文件和图像文件读取。
 *如果项目里没有使用资源图像文件，可以不用新建此文件**。
 
-6、【可选项】新建System.ComponentModel.ComponentResourceManager类<br/>
+5、【可选项】新建System.ComponentModel.ComponentResourceManager类<br/>
 在项目下新建System.ComponentModel.ComponentResourceManager类，继承GTKSystem.ComponentModel.ComponentResourceManager，用于覆盖原生System.ComponentModel.ComponentResourceManager类。<br/>
 GTKSystem.ComponentModel.ComponentResourceManager实现了项目资源文件和图像文件读取（调用GTKSystem.Resources.ResourceManager）。
 *如果项目里没有使用资源图像文件，可以不用新建此文件*。
