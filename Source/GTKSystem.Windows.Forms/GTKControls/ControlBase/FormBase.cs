@@ -7,24 +7,24 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public sealed class FormBase : Gtk.Dialog, IControlGtk, IScrollableBoxBase, IWin32Window
     {
-        public readonly Gtk.ScrolledWindow ScrollView = new Gtk.ScrolledWindow();
+        public readonly Gtk.ScrolledWindow ScrolledView = new Gtk.ScrolledWindow();
         public GtkControlOverride Override { get; set; }
         public bool AutoScroll
         {
-            get => ScrollView.VscrollbarPolicy == Gtk.PolicyType.Automatic;
+            get => ScrolledView.VscrollbarPolicy == Gtk.PolicyType.Automatic;
             set
             {
                 if (value == true)
                 {
                     if (VScroll)
-                        ScrollView.VscrollbarPolicy = Gtk.PolicyType.Automatic;
+                        ScrolledView.VscrollbarPolicy = Gtk.PolicyType.Automatic;
                     if (HScroll)
-                        ScrollView.HscrollbarPolicy = Gtk.PolicyType.Automatic;
+                        ScrolledView.HscrollbarPolicy = Gtk.PolicyType.Automatic;
                 }
                 else
                 {
-                    ScrollView.VscrollbarPolicy = Gtk.PolicyType.External;
-                    ScrollView.HscrollbarPolicy = Gtk.PolicyType.External;
+                    ScrolledView.VscrollbarPolicy = Gtk.PolicyType.External;
+                    ScrolledView.HscrollbarPolicy = Gtk.PolicyType.External;
                 }
             }
         }
@@ -82,19 +82,19 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Response += FormBase_Response;
             this.DeleteEvent += FormBase_DeleteEvent;
             this.WindowStateEvent += FormBase_WindowStateEvent;
-            ScrollView.BorderWidth = 0;
-            ScrollView.Valign = Gtk.Align.Fill;
-            ScrollView.Halign = Gtk.Align.Fill;
-            ScrollView.Hexpand = true;
-            ScrollView.Vexpand = true;
-            ScrollView.HscrollbarPolicy = PolicyType.Automatic;
-            ScrollView.VscrollbarPolicy = PolicyType.Automatic;
-            ScrollView.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
-            ScrollView.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
+            ScrolledView.BorderWidth = 0;
+            ScrolledView.Valign = Gtk.Align.Fill;
+            ScrolledView.Halign = Gtk.Align.Fill;
+            ScrolledView.Hexpand = true;
+            ScrolledView.Vexpand = true;
+            ScrolledView.HscrollbarPolicy = PolicyType.Automatic;
+            ScrolledView.VscrollbarPolicy = PolicyType.Automatic;
+            ScrolledView.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
+            ScrolledView.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
             this.ContentArea.BorderWidth = 0;
             this.ContentArea.Spacing = 0;
             this.ContentArea.Homogeneous = false;
-            this.ContentArea.PackStart(ScrollView, true, true, 0);
+            this.ContentArea.PackStart(ScrolledView, true, true, 0);
             this.ContentArea.StyleContext.AddClass("Form");
         }
         private void FormBase_WindowStateEvent(object o, WindowStateEventArgs args)
@@ -236,7 +236,24 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         }
         public new void Add(Gtk.Widget child)
         {
-            ScrollView.Child = child;
+            ScrolledView.Child = child;
+        }
+        public Gtk.ScrolledWindow ScrolledWindow { get => ScrolledView; }
+        public bool ScrollView(double hscrollValue, double vscrollValue)
+        {
+            bool res = false;
+            if (hscrollValue > -1 && ScrolledView.HscrollbarPolicy != Gtk.PolicyType.Never && ScrolledView.HscrollbarPolicy != Gtk.PolicyType.External)
+            {
+                res = true;
+                ScrolledView.Hadjustment.Value = hscrollValue;
+            }
+            if (vscrollValue > -1 && ScrolledView.VscrollbarPolicy != Gtk.PolicyType.Never && ScrolledView.VscrollbarPolicy != Gtk.PolicyType.External)
+            {
+                res = true;
+                ScrolledView.Vadjustment.Value = vscrollValue;
+            }
+
+            return res;
         }
     }
 

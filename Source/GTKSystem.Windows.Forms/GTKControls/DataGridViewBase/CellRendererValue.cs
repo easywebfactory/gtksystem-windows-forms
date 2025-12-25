@@ -12,7 +12,7 @@ namespace System.Windows.Forms.GtkRender
 {
     public interface ICellRenderer
     {
-        DataGridViewCell CellValue { set; }
+        DataGridViewRow CellValue { set; }
         DataGridViewCellStyle ColumnStyle { set; }
         Pango.WrapMode WrapMode { get; set; }
         int WrapWidth { get; set; }
@@ -26,23 +26,23 @@ namespace System.Windows.Forms.GtkRender
 
     public class CellRendererValue : CellRendererText, ICellRenderer
     {
+        int ColumnIndex;
         private DataGridViewColumn Column;
         private CellReandererUtility utility;
         public CellRendererValue(DataGridViewColumn view)
         {
             Column = view;
+            ColumnIndex = view.Index;
             utility = new CellReandererUtility();
         }
         [Property("cellvalue")]
-        public DataGridViewCell CellValue
+        public DataGridViewRow CellValue
         {
             set
             {
-                if (value != null)
-                {
-                    DataGridViewCellStyle style = utility.GetStyle(this.Column, value);
-                    utility.SetTextWithStyle(this, style, value.Value);
-                }
+                DataGridViewCell cell = value.Cells[Column.Index];
+                DataGridViewCellStyle style = utility.GetStyle(this.Column, cell);
+                utility.SetTextWithStyle(this, style, cell.Value);
             }
         }
         public DataGridViewCellStyle ColumnStyle { get; set; }
@@ -51,24 +51,24 @@ namespace System.Windows.Forms.GtkRender
     }
     public class CellRendererToggleValue : CellRendererToggle, ICellRenderer
     {
+        int ColumnIndex;
         DataGridViewColumn Column;
         private CellReandererUtility utility;
         public CellRendererToggleValue(DataGridViewColumn view)
         {
             Column = view;
+            ColumnIndex = view.Index;
             utility = new CellReandererUtility();
         }
         [Property("cellvalue")]
-        public DataGridViewCell CellValue
+        public DataGridViewRow CellValue
         {
             set
             {
-                if (value != null)
-                {
-                    this.Active = (value.Value?.ToString() == "True" || value.Value?.ToString() == "true" || value.Value?.ToString() == "1");
-                    DataGridViewCellStyle style = utility.GetStyle(this.Column, value);
-                    utility.SetControlWithStyle(this, style);
-                }
+                DataGridViewCell cell = value.Cells[Column.Index];
+                this.Active = (cell.Value?.ToString() == "True" || cell.Value?.ToString() == "true" || cell.Value?.ToString() == "1");
+                DataGridViewCellStyle style = utility.GetStyle(this.Column, cell);
+                utility.SetControlWithStyle(this, style);
             }
         }
         public DataGridViewCellStyle ColumnStyle { get; set; }
@@ -80,23 +80,23 @@ namespace System.Windows.Forms.GtkRender
     }
     public class CellRendererComboValue : CellRendererCombo, ICellRenderer
     {
+        int ColumnIndex;
         DataGridViewColumn Column;
         private CellReandererUtility utility;
         public CellRendererComboValue(DataGridViewColumn view)
         {
             Column = view;
+            ColumnIndex = view.Index;
             utility = new CellReandererUtility();
         }
         [Property("cellvalue")]
-        public DataGridViewCell CellValue
+        public DataGridViewRow CellValue
         {
             set
             {
-                if (value != null)
-                {
-                    DataGridViewCellStyle style = utility.GetStyle(this.Column, value);
-                    utility.SetTextWithStyle(this, style, value.Value);
-                }
+                DataGridViewCell cell = value.Cells[Column.Index];
+                DataGridViewCellStyle style = utility.GetStyle(this.Column, cell);
+                utility.SetTextWithStyle(this, style, cell.Value);
             }
         }
         public DataGridViewCellStyle ColumnStyle { get; set; }
@@ -105,43 +105,49 @@ namespace System.Windows.Forms.GtkRender
     }
     public class CellRendererPixbufValue : CellRendererPixbuf, ICellRenderer
     {
+        int ColumnIndex;
         DataGridViewColumn Column;
         private CellReandererUtility utility;
         public CellRendererPixbufValue(DataGridViewColumn view)
         {
             Column = view;
+            ColumnIndex = view.Index;
             utility = new CellReandererUtility();
         }
         [Property("cellvalue")]
-        public DataGridViewCell CellValue
+        public DataGridViewRow CellValue
         {
             set
             {
-                if (value != null && value.Value != null)
+                DataGridViewCell cell = value.Cells[Column.Index];
+                DataGridViewCellStyle style = utility.GetStyle(this.Column, cell);
+                utility.SetControlWithStyle(this, style);
+                if (cell.Value == null)
+                {
+                    this.IconName = "image-missing";
+                }
+                else
                 {
                     try
                     {
-                        DataGridViewCellStyle style = utility.GetStyle(this.Column, value);
-                        utility.SetControlWithStyle(this, style);
-                        if (value.Value is System.Drawing.Image)
+                        if (cell.Value is System.Drawing.Image)
                         {
-                            this.Pixbuf = ((Drawing.Image)value.Value).Pixbuf;
+                            this.Pixbuf = ((Drawing.Image)cell.Value).Pixbuf;
                         }
-                        else if (value.ValueType.IsArray)
+                        else if (cell.ValueType.IsArray)
                         {
-                            this.Pixbuf = new Pixbuf((byte[])value.Value);
+                            this.Pixbuf = new Pixbuf((byte[])cell.Value);
                         }
                         else
                         {
-                            this.Pixbuf = new Gdk.Pixbuf(value.Value.ToString().Replace("\\\\", "//").Replace("\\", "/"));
+                            this.Pixbuf = new Gdk.Pixbuf(cell.Value.ToString().Replace("\\\\", "//").Replace("\\", "/"));
                         }
                     }
                     catch
                     {
                         this.IconName = "image-missing";
                     }
-                }else
-                    this.IconName = "image-missing";
+                }
             }
         }
         public DataGridViewCellStyle ColumnStyle { get; set; }
@@ -154,27 +160,27 @@ namespace System.Windows.Forms.GtkRender
     }
     public class CellRendererButtonValue : CellRendererText, ICellRenderer
     {
+        int ColumnIndex;
         DataGridViewColumn Column;
         private CellReandererUtility utility;
         public CellRendererButtonValue(DataGridViewColumn view)
         {
             Column = view;
+            ColumnIndex = view.Index;
             utility = new CellReandererUtility();
             this.SetAlignment(0.5f, 0.5f);
             this.Ellipsize = Pango.EllipsizeMode.End;
             this.Editable = false;
         }
         [Property("cellvalue")]
-        public DataGridViewCell CellValue
+        public DataGridViewRow CellValue
         {
             set
             {
-                if (value != null)
-                {
-                    DataGridViewCellStyle style = utility.GetStyle(this.Column, value);
-                    utility.SetTextWithStyle(this, style, value.Value);
-                    base.SetAlignment(0.5f, 0.5f);
-                }
+                DataGridViewCell cell = value.Cells[Column.Index];
+                DataGridViewCellStyle style = utility.GetStyle(this.Column, cell);
+                utility.SetTextWithStyle(this, style, cell.Value);
+                base.SetAlignment(0.5f, 0.5f);
             }
         }
         public DataGridViewCellStyle ColumnStyle { get; set; }
@@ -206,7 +212,7 @@ namespace System.Windows.Forms.GtkRender
 
             if (style == null)
             {
-                if (cell.DataGridView.AlternatingRowsDefaultCellStyle != null && cell.OwningRowInternal.Index % 2 == 1)
+                if (cell.DataGridView.AlternatingRowsDefaultCellStyle != null && cell.OwningRow.Index % 2 == 1)
                     style = cell.DataGridView.AlternatingRowsDefaultCellStyle;
                 else
                     style = cell.DataGridView.RowsDefaultCellStyle;

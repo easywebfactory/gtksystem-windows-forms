@@ -7,9 +7,7 @@
 using Gtk;
 using System.Collections;
 using System.ComponentModel;
-using System.Data.Common;
 using System.Drawing;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Forms.GtkRender;
 
@@ -47,12 +45,12 @@ namespace System.Windows.Forms
             TreePath path = new TreePath(args.Path);
             var model = _treeView.Model;
             model.GetIter(out TreeIter iter, path);
-            object cell = model.GetValue(iter, this.Index);
-            if (cell is DataGridViewCell val)
+            object row = model.GetValue(iter, 0);
+            if (row is DataGridViewRow val)
             {
                 CellRendererToggleValue tggle = (CellRendererToggleValue)o;
-                val.Value = tggle.Active == false;
-                _gridview.CellValueChanagedHandler(this.Index, iter, path);
+                val.Cells[Index].Value = tggle.Active == false;
+                _gridview.CellValueChanagedHandler(Index, iter, path);
             }
         }
         internal override DataGridViewCell NewCell(object value = null, Type valueType = null)
@@ -88,12 +86,12 @@ namespace System.Windows.Forms
             TreePath path = new TreePath(args.Path);
             var model = _treeView.Model;
             model.GetIter(out TreeIter iter, path);
-            object cell = model.GetValue(iter, this.Index);
-            if (cell is DataGridViewCell val)
+            object row = model.GetValue(iter, 0);
+            if (row is DataGridViewRow val)
             {
                 CellRendererToggleValue tggle = (CellRendererToggleValue)o;
-                val.Value = tggle.Active == false;
-                _gridview.CellValueChanagedHandler(this.Index, iter, path);
+                val.Cells[Index].Value = tggle.Active == false;
+                _gridview.CellValueChanagedHandler(Index, iter, path);
             }
         }
         internal override DataGridViewCell NewCell(object value = null, Type valueType = null)
@@ -272,7 +270,7 @@ namespace System.Windows.Forms
             renderer.Mode = CellRendererMode.Editable;
             renderer.Edited += Renderer_Edited;
             renderer.EditingStarted += Renderer_EditingStarted;
-            renderer.PlaceholderText = "---";
+            renderer.PlaceholderText = "";
             renderer.Height = RowHeight;
             base.PackStart(renderer, true);
             _cellRenderer = renderer as ICellRenderer; 
@@ -327,11 +325,11 @@ namespace System.Windows.Forms
             TreePath path = new TreePath(treepath);
             var model = _treeView.Model;
             model.GetIter(out TreeIter iter, path);
-            object cell = model.GetValue(iter, this.Index);
-            if (cell is DataGridViewCell val)
+            object row = model.GetValue(iter, 0);
+            if (row is DataGridViewRow val)
             {
-                val.Value = value;
-                _gridview.CellValueChanagedHandler(this.Index, iter, path);
+                val.Cells[Index].Value = value;
+                _gridview.CellValueChanagedHandler(Index, iter, path);
             }
             this.QueueResize();
         }
@@ -346,7 +344,7 @@ namespace System.Windows.Forms
         internal void AtrributesClone(DataGridViewCell newcell)
         {
             newcell.Style = _cellTemplate.Style?.Clone();
-            newcell.OwningRowInternal = _cellTemplate.OwningRowInternal;
+            newcell.OwningRow = _cellTemplate.OwningRow;
             newcell.ReadOnly = _cellTemplate.ReadOnly;
         }
         public void SetDefaultStyle(DataGridViewCellStyle cellStyle)
@@ -590,21 +588,18 @@ namespace System.Windows.Forms
         {
             return RowHeight;
         }
-        public override string ToString() { return this.GetType().Name; }
         private int _index = -1;
         public int Index
         {
             get => _index;
             internal set
             {
+                if (_index == -1)
+                    base.AddAttribute(base.Cells[0], "cellvalue", 0);
                 _index = value;
                 if (_SortMode != DataGridViewColumnSortMode.NotSortable)
                 {
-                    base.SortColumnId = value;
-                }
-                if (_index >= 0)
-                {
-                    base.AddAttribute(base.Cells[0], "cellvalue", _index);
+                    base.SortColumnId = _index;
                 }
             }
         }

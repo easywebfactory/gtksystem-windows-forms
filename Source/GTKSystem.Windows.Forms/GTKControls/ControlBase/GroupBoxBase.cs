@@ -1,10 +1,5 @@
 ﻿using Gtk;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
@@ -12,8 +7,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
     {
         public GtkControlOverride Override { get; set; }
         public bool AutoScroll { get; set; }
-        public bool HScroll { get; set; } = false;
-        public bool VScroll { get; set; } = false;
+        public bool HScroll { get; set; }
+        public bool VScroll { get; set; }
 
         public GroupBoxBase() : base()
         {
@@ -49,6 +44,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             child.Halign = align;
             child.Expand = expand;
             base.Add(child);
+        }
+        public Gtk.ScrolledWindow ScrolledWindow { get; }
+        public bool ScrollView(double hscrollValue, double vscrollValue)
+        {
+            return false;
         }
     }
 }

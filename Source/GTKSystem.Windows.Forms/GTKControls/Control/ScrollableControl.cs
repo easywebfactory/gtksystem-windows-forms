@@ -1,4 +1,5 @@
-﻿using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+﻿using Gtk;
+using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms.Layout;
@@ -69,6 +70,28 @@ namespace System.Windows.Forms
         {
             add { if (scrollbase != null) { scrollbase.Scroll += value; } }
             remove { if (scrollbase != null) { scrollbase.Scroll -= value; } }
+        }
+        public void ScrollControlIntoView(System.Windows.Forms.Control activeControl)
+        {
+            if (activeControl != null && activeControl.Widget != null && scrollbase != null && AutoScroll == true)
+            {
+                if (this.Widget != null)
+                {
+                    activeControl.Widget.Window.GetOrigin(out int sx, out int sy);
+                    this.Widget.Window.GetOrigin(out int px, out int py);
+                    int hvalue = HScroll ? sx - px : -1;
+                    int vvalue = VScroll ? sy - py : -1;
+                    if (this.Widget is Gtk.Window win)
+                    {
+                        vvalue -= 20;
+                        if (win.Titlebar != null)
+                            vvalue -= win.Titlebar.AllocatedHeight;
+                    }
+                    Gtk.ScrolledWindow scrolled = scrollbase.ScrolledWindow;
+                    scrollbase.ScrollView(hvalue + scrolled.Hadjustment.Value, vvalue + scrolled.Vadjustment.Value);
+
+                }
+            }
         }
     }
 }

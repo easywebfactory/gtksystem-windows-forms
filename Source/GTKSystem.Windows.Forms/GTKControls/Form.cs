@@ -21,7 +21,7 @@ namespace System.Windows.Forms
         public override object GtkControl { get => self; }
         protected override IScrollableBoxBase scrollbase { get => self; set => base.scrollbase = value; }
         private Gtk.Overlay contanter = new Gtk.Overlay();
-        private ObjectCollection _ObjectCollection;
+        private ControlCollection _ObjectCollection;
         public Form() : base()
         {
             self.Override.sender = this;
@@ -42,8 +42,8 @@ namespace System.Windows.Forms
             Gtk.Viewport viewport = new Gtk.Viewport() { Halign = Align.Fill, Valign = Align.Fill, BorderWidth = 0 };
             viewport.StyleContext.AddClass("Form");
             contanter.Add(viewport);
-            self.ScrollView.Child = contanter;
-            _ObjectCollection = new ObjectCollection(this, contanter);
+            self.ScrolledView.Child = contanter;
+            _ObjectCollection = new ControlCollection(this, contanter);
             self.Shown += Control_Shown;
             self.CloseWindowEvent += Self_CloseWindowEvent;
         }
@@ -252,7 +252,7 @@ namespace System.Windows.Forms
             }
         }
 
-        public new ObjectCollection Controls { get { return _ObjectCollection; } }
+        public override ControlCollection Controls { get { return _ObjectCollection; } }
         public override Padding Padding
         {
             get => base.Padding;
@@ -289,20 +289,10 @@ namespace System.Windows.Forms
             return self.Activate();
         }
         public bool TopMost { get { return self.IsActive; } set { self.KeepAbove = value; } }
+        public bool KeyPreview { get; set; }
         public MenuStrip MainMenuStrip { get; set; }
 
         public override IntPtr Handle => self.Handle;
-
-        public class ObjectCollection : ControlCollection
-        {
-            Gtk.Container __owner;
-            public ObjectCollection(Control control, Gtk.Container owner) : base(control, owner)
-            {
-                __owner = owner;
-            }
-
-        }
-
         public class MdiLayout
         {
         }

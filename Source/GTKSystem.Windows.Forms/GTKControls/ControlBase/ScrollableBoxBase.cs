@@ -66,6 +66,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 }
             }
         }
+        public Gtk.ScrolledWindow ScrolledWindow { get => this; }
         public bool ScrollView(double hscrollValue, double vscrollValue)
         {
             bool res = false;

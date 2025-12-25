@@ -24,9 +24,13 @@ namespace System.Windows.Forms
         public DataGridViewRow Parent { get; set; }
         private DataGridViewCellCollection _cell;
         private DataGridViewRowCollection _children;
-        public DataGridViewRow()
+        public DataGridViewRow() : this(null)
+        {
+        }
+        public DataGridViewRow(object databounditem)
         {
             _cell = new DataGridViewCellCollection(this);
+            DataBoundItem = databounditem;
         }
         public DataGridViewCellCollection Cells { get { return _cell; } }
         public DataGridViewRowCollection Children { get { if (_children == null) { _children = new DataGridViewRowCollection(DataGridView, this); } return _children; } }

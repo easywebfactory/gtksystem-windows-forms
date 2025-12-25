@@ -7,11 +7,9 @@
 using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using Pango;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
-using System.Data.Common;
 using System.Reflection;
 
 namespace System.Windows.Forms
@@ -24,7 +22,7 @@ namespace System.Windows.Forms
         private DataGridViewColumnCollection _columns;
         private DataGridViewRowCollection _rows;
         private ControlBindingsCollection _collect;
-        internal Gtk.TreeStore Store = new TreeStore(typeof(DataGridViewCell));
+        internal Gtk.TreeStore Store = new TreeStore(typeof(DataGridViewRow));
         public Gtk.TreeView GridView { get { return self.GridView; } }
         public DataGridView() : base()
         {
@@ -281,13 +279,11 @@ namespace System.Windows.Forms
                     column.ValueType = col.DataType;
                 }
             }
-            _columns.Invalidate();
-
             if (_columns.Count > 0)
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    DataGridViewRow newRow = new DataGridViewRow();
+                    DataGridViewRow newRow = new DataGridViewRow(dr);
                     foreach (DataGridViewColumn col in _columns)
                     {
                         object cellvalue = dt.Columns.Contains(col.DataPropertyName) ? dr[col.DataPropertyName] : null;
@@ -324,8 +320,6 @@ namespace System.Windows.Forms
                         column.ValueType = pro.PropertyType;
                     }
                 }
-                _columns.Invalidate();
-
                 if (_columns.Count > 0)
                 {
                     IEnumerator reader = ((IEnumerable)_DataSource).GetEnumerator();
@@ -333,7 +327,7 @@ namespace System.Windows.Forms
                     {
                         object obj = reader.Current;
                         Type type = obj.GetType();
-                        DataGridViewRow newRow = new DataGridViewRow();
+                        DataGridViewRow newRow = new DataGridViewRow(obj);
                         foreach (DataGridViewColumn col in _columns)
                         {
                             object cellvalue = type.GetProperty(col.DataPropertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty)?.GetValue(obj);
@@ -352,6 +346,20 @@ namespace System.Windows.Forms
             }
         }
         public DataGridViewRowCollection Rows { get { return _rows; } }
+        public int RowCount { 
+            get => _rows.Count; 
+            set { 
+                while (value > _rows.Count) { _rows.RemoveAt(_rows.Count - 1); }  
+            }
+        }
+        public DataGridViewRow CurrentRow
+        {
+            get
+            {
+                var selectedrows = SelectedRows;
+                return selectedrows.Count > 0 ? selectedrows[selectedrows.Count - 1] : null;
+            }
+        }
         [Browsable(false)]
         public DataGridViewSelectedCellCollection SelectedCells
         {
@@ -440,8 +448,7 @@ namespace System.Windows.Forms
             {
                 case DataGridViewSelectionMode.FullRowSelect:
                 case DataGridViewSelectionMode.RowHeaderSelect:
-                    var path = Store.GetPath(rowiter);
-                    return GridView.Selection.GetSelectedRows().Any(p => p.Equals(path));
+                    return (GridView.Selection.GetSelected(out TreeIter iter) && iter.Equals(rowiter));
                     break;
                 default:
                     return false;
@@ -606,13 +613,10 @@ namespace System.Windows.Forms
         }
         protected override void Dispose(bool disposing)
         {
-            _DataSource = null;
             _rows.Clear();
             _columns.Clear();
             _collect.Clear();
-            Store.Clear();
-            Store.Dispose();
-            self.GridView.Dispose();
+            _DataSource = null;
             base.Dispose(disposing);
         }
 
