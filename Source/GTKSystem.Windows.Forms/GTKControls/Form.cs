@@ -189,6 +189,10 @@ namespace System.Windows.Forms
                 self.SetDefaultSize(value.Width, value.Height);
             }
         }
+        private Point _location = new Point();
+        public override Point Location { get => _location; set { Left = value.X; Top = value.Y; } }
+        public override int Left { get => _location.X; set { _location.X = value; self.Move(_location.X, _location.Y); } }
+        public override int Top { get => _location.Y; set { _location.Y = value; self.Move(_location.X, _location.Y); } }
         public SizeF AutoScaleDimensions { get; set; }
         public AutoScaleMode AutoScaleMode { get; set; }
         private FormBorderStyle formBorderStyle = FormBorderStyle.Sizable;
@@ -288,7 +292,10 @@ namespace System.Windows.Forms
         {
             return self.Activate();
         }
-        public bool TopMost { get { return self.IsActive; } set { self.KeepAbove = value; } }
+        public bool TopMost { 
+            get { return self.IsActive; } 
+            set { self.KeepAbove = value; self.Activate();} 
+        }
         public bool KeyPreview { get; set; }
         public MenuStrip MainMenuStrip { get; set; }
 
