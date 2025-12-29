@@ -32,8 +32,7 @@ namespace System.Windows.Forms
         {
             self.Override.sender = this;
             root = new TreeNode(this);
-            root.Index = "-1";
-            root.Name = "__root";
+            root.Name = "__root__";
             _store = new Gtk.TreeStore(typeof(string), typeof(bool), typeof(int), typeof(string));
             self.TreeView.Selection.Mode = Gtk.SelectionMode.Single;
             self.TreeView.Model = _store;
@@ -147,8 +146,6 @@ namespace System.Windows.Forms
         internal void LoadNodeValue(TreeNode node, TreeIter parent)
         {
             TreeIter iter = parent.Equals(TreeIter.Zero) ? Store.AppendValues(node.Text, node.Checked, node.ImageIndex, node.ImageKey) : Store.AppendValues(parent, node.Text, node.Checked, node.ImageIndex, node.ImageKey);
-            TreePath path = Store.GetPath(iter);
-            node.Index = string.Join(",", path.Indices);
             node.TreeIter = iter;
             foreach (TreeNode child in node.Nodes)
             {
@@ -160,8 +157,6 @@ namespace System.Windows.Forms
             if (node != null && parent != null) 
             {
                 var iter = Store.InsertWithValues(parent.TreeIter, position, node.Text, node.Checked, node.ImageIndex, node.ImageKey);
-                Gtk.TreePath path = Store.GetPath(iter);
-                node.Index = string.Join(",", path.Indices);
                 node.TreeIter = iter;
                 foreach (TreeNode node2 in node.Nodes)
                     LoadNodeValue(node2, node.TreeIter);
@@ -274,12 +269,13 @@ namespace System.Windows.Forms
         }
         internal void SetExpandNode(TreeNode node, bool all)
         {
-            self.TreeView.ExpandRow(_store.GetPath(node.TreeIter), all);
+            if (!TreeIter.Zero.Equals(node.TreeIter))
+                self.TreeView.ExpandRow(_store.GetPath(node.TreeIter), all);
         }
         internal void SetCollapseNode(TreeNode node)
         {
-            
-            self.TreeView.CollapseRow(_store.GetPath(node.TreeIter));
+            if (!TreeIter.Zero.Equals(node.TreeIter))
+                self.TreeView.CollapseRow(_store.GetPath(node.TreeIter));
         }
         internal bool GetNodeExpanded(TreeNode node)
         {
@@ -287,7 +283,9 @@ namespace System.Windows.Forms
         }
         internal void NativeRemoveNode(TreeNode node)
         {
-            _store.Remove(ref node.TreeIter);
+            TreeIter iter = node.TreeIter;
+            if (!TreeIter.Zero.Equals(iter))
+                _store.Remove(ref iter);
         }
         public bool ShowLines { get=> self.TreeView.EnableTreeLines; set { self.TreeView.EnableTreeLines = true; self.TreeView.EnableGridLines = Gtk.TreeViewGridLines.Horizontal; } }
         public bool ShowNodeToolsTips { get; set; }

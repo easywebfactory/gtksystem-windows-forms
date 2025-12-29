@@ -2,16 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Diagnostics.CodeAnalysis;
+using Gtk;
 using System.Runtime.Serialization;
+using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
-    public class TreeNode: ICloneable, ISerializable, IEquatable<TreeNode>
+    public partial class TreeNode: MarshalByRefObject, ICloneable, ISerializable
     {
-        //格式，各级索引并集：0,1,2,3....
-        private string index = "";
-        public string Index { get { return index; } internal set { index = value ?? ""; } }
+        public int Index
+        {
+            get
+            {
+                if (parent == null)
+                {
+                    return -1;
+                }
+                else
+                {
+                    return parent.Nodes.IndexOf(this);
+                }
+            }
+        }
         internal Gtk.TreeIter TreeIter = Gtk.TreeIter.Zero;
         private TreeNode parent;
         internal TreeView treeView;
@@ -113,9 +125,9 @@ namespace System.Windows.Forms
         }
         protected void GetFullPath(TreeNode node, List<string> paths)
         {
-            paths.Add(node.Text);
-            if (node.Parent != null && node.Parent.index != "-1")
+            if (node.Parent != null && node.Parent.Name != "__root__")
             {
+                paths.Add(node.Text);
                 GetFullPath(node.Parent, paths);
             }
         }
@@ -147,12 +159,14 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (parent == null)
+                if (parent == null || parent.Name == "__root__")
+                {
                     return 0;
-                else if (TreeView != null && parent.Equals(TreeView.root))
-                    return 0;
+                }
                 else
+                {
                     return parent.Level + 1;
+                }
             }
         }
         private int _imageIndex;
@@ -171,7 +185,8 @@ namespace System.Windows.Forms
         public string StateImageKey { get; set; }
         public object Tag { get; set; }
 
-        public void Expand(){
+        public void Expand()
+        {
             TreeView?.SetExpandNode(this, false);
         }
         public void ExpandAll()
@@ -194,11 +209,6 @@ namespace System.Windows.Forms
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             //throw new NotImplementedException();
-        }
-
-        public bool Equals([AllowNull] TreeNode other)
-        {
-            return other != null && other.Index == this.Index && other.Name == this.Name && other.Text == this.Text && other.Level == this.Level;
         }
     }
 }

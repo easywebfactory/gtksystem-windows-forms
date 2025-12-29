@@ -583,16 +583,9 @@ namespace System.Windows.Forms
             {
                 _FirstDisplayedScrollingRowIndex = value;
                 var grid = GridView;
-                if (grid.NColumns > 0)
+                if (grid.NColumns > 0 && Rows.Count > value)
                 {
-                    int y_offset = 0;
-                    int maxi = Rows.Count;
-                    for (int i = 0; i < _FirstDisplayedScrollingRowIndex && i < maxi; i++)
-                    {
-                        var rec = grid.GetCellArea(new TreePath([i]), grid.Columns[0]);
-                        y_offset += rec.Height + 2;
-                    }
-                    self.ScrollView(-1, y_offset);
+                    grid.ScrollToCell(new TreePath([value]), null, false, 0, 0);
                 }
             }
         }
