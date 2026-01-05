@@ -1001,6 +1001,15 @@ namespace System.Windows.Forms
                         if (lay.Parent.Parent.HeightRequest > -1)
                             frameheight = lay.Parent.Parent.HeightRequest;
                     }
+                    else if (lay.Name == "Form")
+                    {
+                        if (lay.Parent.Parent.Parent.Parent is FormBase form)
+                        {
+                            form.GetDefaultSize(out int width, out int height);
+                            framewidth = width;
+                            frameheight = height;
+                        }
+                    }
 
                     if (control.Dock == DockStyle.Fill)
                     {
