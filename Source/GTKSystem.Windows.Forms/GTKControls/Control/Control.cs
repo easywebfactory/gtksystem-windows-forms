@@ -321,7 +321,13 @@ namespace System.Windows.Forms
                     KeyEventArgs keyargs = new KeyEventArgs(keys);
                     OnKeyDown(keyargs);
                     KeyDown?.Invoke(this, keyargs);
-                    args.RetVal = keyargs.SuppressKeyPress;
+                    args.RetVal = keyargs.Handled;
+                    if (!keyargs.SuppressKeyPress)
+                    {
+                        KeyPressEventArgs keypress = new KeyPressEventArgs(Convert.ToChar(keycode));
+                        KeyPress?.Invoke(this, keypress);
+                        args.RetVal = keyargs.Handled || keypress.Handled;
+                    }
                 }
                 else if (args.Event.Type == Gdk.EventType.KeyRelease)
                 {
@@ -344,9 +350,7 @@ namespace System.Windows.Forms
                     KeyEventArgs keyargs = new KeyEventArgs(keys);
                     OnKeyUp(keyargs);
                     KeyUp?.Invoke(this, keyargs);
-                    args.RetVal = keyargs.SuppressKeyPress;
-                    if (!keyargs.SuppressKeyPress)
-                        KeyPress?.Invoke(this, new KeyPressEventArgs(Convert.ToChar(keycode)));
+                    args.RetVal = keyargs.Handled;
                 }
                 else if (args.Event.Type == Gdk.EventType.ButtonPress || args.Event.Type == Gdk.EventType.TouchBegin || args.Event.Type == Gdk.EventType.PadButtonPress)
                 {

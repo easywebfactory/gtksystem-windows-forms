@@ -217,6 +217,15 @@ namespace System.Windows.Forms
         private FormWindowState _WindowState = FormWindowState.Normal;
         public FormWindowState WindowState {
             get {
+                if (self.Window != null)
+                {
+                    if (self.Window.State.HasFlag(Gdk.WindowState.Iconified))
+                        _WindowState = FormWindowState.Minimized;
+                    else if(self.Window.State.HasFlag(Gdk.WindowState.Maximized) || self.Window.State.HasFlag(Gdk.WindowState.Fullscreen))
+                        _WindowState = FormWindowState.Maximized;
+                    else
+                        _WindowState = FormWindowState.Normal;
+                }
                 return _WindowState;
             }
             set

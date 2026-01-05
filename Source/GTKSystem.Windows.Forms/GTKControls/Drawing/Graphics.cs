@@ -1,6 +1,7 @@
 
 using Cairo;
 using Gdk;
+using Gtk;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -195,42 +196,44 @@ namespace System.Drawing
             }
             else if (pen.Brush is LinearGradientBrush lbrush)
             {
-                double maxsize = Math.Max(diff_left + lbrush.Rectangle.Right, diff_top + lbrush.Rectangle.Bottom); //渐变角度定为方形45度
-                using Cairo.LinearGradient gradient = new Cairo.LinearGradient(diff_left + lbrush.Rectangle.Left, diff_top + lbrush.Rectangle.Top, maxsize, maxsize);
+                using Cairo.LinearGradient gradient = new Cairo.LinearGradient(diff_left + lbrush.Rectangle.Left, diff_top + lbrush.Rectangle.Top, diff_left + lbrush.Rectangle.Right, diff_top + lbrush.Rectangle.Bottom);
+                if (lbrush.WrapMode == Drawing2D.WrapMode.Clamp)
+                    gradient.Extend = Extend.None;
+                else
+                    gradient.Extend = Extend.Repeat;
                 int linearcount = lbrush.LinearColors.Length;
                 int idx = 0;
                 foreach (Color color in lbrush.LinearColors)
+                {
                     gradient.AddColorStop((++idx) / linearcount, new Cairo.Color(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f));
-
-                Cairo.Matrix matrix = new Cairo.Matrix(1, 0, 0, 1, 0, 0);
-                matrix.Rotate(Math.PI * 45 / 180);//弧度
-                gradient.Matrix = matrix;
-                using Cairo.Pattern pattern = Cairo.Pattern.Lookup(gradient.Handle, false);
-                this.context.SetSource(pattern);
+                }
+                if (lbrush.Angle != 0)
+                {
+                    Cairo.Matrix matrix = new Cairo.Matrix(1, 0, 0, 1, 0, 0);
+                    matrix.Rotate(Math.PI * lbrush.Angle / 180);
+                    gradient.Matrix = matrix;
+                }
+                this.context.SetSource(gradient);
             }
             else if (pen.Brush is HatchBrush hbrush)
             {
+                this.context.SetSourceRGBA(hbrush.BackgroundColor.R / 255f, hbrush.BackgroundColor.G / 255f, hbrush.BackgroundColor.B / 255f, hbrush.BackgroundColor.A / 255f);
+                this.context.Paint();
                 this.context.SetSourceRGBA(hbrush.ForegroundColor.R / 255f, hbrush.ForegroundColor.G / 255f, hbrush.ForegroundColor.B / 255f, hbrush.ForegroundColor.A / 255f);
             }
             else if (pen.Brush is PathGradientBrush pbrush)
             {
-                double maxsize = Math.Max(diff_left + pbrush.Rectangle.Right, diff_top + pbrush.Rectangle.Bottom); //渐变角度定为方形45度
-                using Cairo.LinearGradient gradient = new Cairo.LinearGradient(diff_left + pbrush.Rectangle.Left, diff_top + pbrush.Rectangle.Top, maxsize, maxsize);
-                int linearcount = pbrush.SurroundColors.Length;
-                double centeridx = Math.Floor((double)linearcount / 2);
-                int idx = 0;
+                //此笔刷固定为径向渐变
+                float radius = Math.Max(pbrush.Rectangle.Width, pbrush.Rectangle.Height);
+                int linearcount = pbrush.SurroundColors.Length + 1;
+                using Cairo.RadialGradient gradient = new Cairo.RadialGradient(diff_left + pbrush.CenterPoint.X, diff_top + pbrush.CenterPoint.Y, radius/ linearcount, diff_left + pbrush.CenterPoint.X, diff_top + pbrush.CenterPoint.Y, radius);
+                gradient.AddColorStop(1 / linearcount, new Cairo.Color(pbrush.CenterColor.R / 255f, pbrush.CenterColor.G / 255f, pbrush.CenterColor.B / 255f, pbrush.CenterColor.A / 255f));
+                int idx = 1;
                 foreach (Color color in pbrush.SurroundColors)
                 {
-                    if (idx == centeridx)
-                        gradient.AddColorStop((++idx) / linearcount, new Cairo.Color(pbrush.CenterColor.R / 255f, pbrush.CenterColor.G / 255f, pbrush.CenterColor.B / 255f, pbrush.CenterColor.A / 255f));
-                    else
-                        gradient.AddColorStop((++idx) / linearcount, new Cairo.Color(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f));
+                    gradient.AddColorStop((++idx) / linearcount, new Cairo.Color(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f));
                 }
-                Cairo.Matrix matrix = new Cairo.Matrix(1, 0, 0, 1, 0, 0);
-                matrix.Rotate(Math.PI * 45 / 180);//弧度
-                gradient.Matrix = matrix;
-                using Cairo.Pattern pattern = Cairo.Pattern.Lookup(gradient.Handle, false);
-                this.context.SetSource(pattern);
+                this.context.SetSource(gradient);
             }
             else
             {
@@ -516,7 +519,6 @@ namespace System.Drawing
                 this.context.Stroke();
             }
             this.context.Restore();
-            QueueDraw();
         }
         public void DrawIcon(Icon icon, Rectangle targetRect)
         {
@@ -620,7 +622,6 @@ namespace System.Drawing
 
                 this.context.Paint();
                 this.context.Restore();
-                QueueDraw();
             }
 
         }
@@ -797,7 +798,6 @@ namespace System.Drawing
                 }
                 this.context.Stroke();
                 this.context.Restore();
-                QueueDraw();
             }
         }
         public void DrawLine(Pen pen, Point pt1, Point pt2)
@@ -951,15 +951,11 @@ namespace System.Drawing
                             text = text.Substring(0, text.Length - 1);
                     }
                     float textSize = str.emSize < 1 ? 14f : str.emSize;
-                    FontFamily font = str.family;
-                    string family = font?.Name;
-                    if (this.widget != null)
+                    string family = str.family?.Name;
+                    if (string.IsNullOrWhiteSpace(family) && this.widget != null)
                     {
                         Pango.Context pangocontext = this.widget.PangoContext;
-                        if (string.IsNullOrWhiteSpace(family) || pangocontext.Families.Any(f => f.Name == family) == false)
-                        {
-                            family = pangocontext.FontDescription.Family;
-                        }
+                        family = pangocontext.FontDescription.Family;
                     }
 
                     this.context.SelectFontFace(family, str.style == 2 ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, str.style == 1 ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
@@ -1079,13 +1075,12 @@ namespace System.Drawing
             this.SetTranslateWithDifference(0, 0);
             this.SetSourcePen(pen, isfill);
             this.context.NewPath();
-            this.context.Rectangle(x, y, width, height);
+            this.context.Rectangle(x + 2, y, width, height);
             if (isfill)
                 this.context.Fill();
             else
                 this.context.Stroke();
             this.context.Restore();
-            QueueDraw();
         }
         public void DrawRectangle(Pen pen, Rectangle rect)
         {
@@ -1138,33 +1133,48 @@ namespace System.Drawing
             if (string.IsNullOrEmpty(text) == false)
             {
                 this.context.Save();
-                string family = font?.Name;
-                float textSize = 14f;
                 if (font != null)
                 {
-                    textSize = font.Size;
+                    double textSize = font.Size;
                     if (font.Unit == GraphicsUnit.Point)
                         textSize = font.Size * 1 / 72 * 96;
-                    if (font.Unit == GraphicsUnit.Inch)
+                    else if (font.Unit == GraphicsUnit.Inch)
                         textSize = font.Size * 96;
+                    this.context.SetFontSize(textSize);
+                    this.context.SelectFontFace(font.Name, font.Style.HasFlag(FontStyle.Italic) ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, font.Style.HasFlag(FontStyle.Bold) ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
                 }
-                if (this.widget != null)
+                this.SetSourcePen(new Pen(brush, 1), false);
+                TextExtents textext = this.context.TextExtents(text);
+                if (format == null)
                 {
-                    Pango.Context pangocontext = this.widget.PangoContext;
-                    if (string.IsNullOrWhiteSpace(family) || pangocontext.Families.Any(f => f.Name == family) == false)
+                    this.SetTranslateWithDifference(layoutRectangle.X + 5, layoutRectangle.Y + textext.Height);
+                }
+                else
+                {
+                    double hAlign = 0, vAlign = 0;
+                    if (format.Alignment == StringAlignment.Center)
+                        hAlign -= textext.Width / 2;
+                    else if (format.Alignment == StringAlignment.Far && format.FormatFlags.HasFlag(StringFormatFlags.DirectionRightToLeft) == false)
+                        hAlign -= textext.Width;
+
+                    if (format.LineAlignment == StringAlignment.Center)
+                        vAlign -= textext.Height / 2;
+                    else if (format.LineAlignment == StringAlignment.Far)
+                        vAlign -= textext.Height;
+
+                    if (format.FormatFlags.HasFlag(StringFormatFlags.DirectionVertical))
                     {
-                        family = pangocontext.FontDescription.Family;
+                        this.context.Rotate(90 * Math.PI / 180);
+                        this.SetTranslateWithDifference(layoutRectangle.Y + hAlign + 5, 0 - layoutRectangle.X - textext.Height / 2);
+                    }
+                    else
+                    {
+                        this.SetTranslateWithDifference(layoutRectangle.X + hAlign + 5, layoutRectangle.Y + textext.Height + vAlign);
                     }
                 }
-                this.context.SetFontSize(textSize);
-                this.context.SelectFontFace(family, font.Style.HasFlag(FontStyle.Italic) ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, font.Style.HasFlag(FontStyle.Bold) ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
-                TextExtents textext = this.context.TextExtents(text);
-                this.SetTranslateWithDifference(layoutRectangle.X, layoutRectangle.Y + textSize);
-                this.SetSourcePen(new Pen(brush, 1), false);
                 this.context.ShowText(text);
                 this.context.Stroke();
                 this.context.Restore();
-                QueueDraw();
             }
         }
         public void DrawString(string s, Font font, Brush brush, float x, float y)
@@ -1540,10 +1550,6 @@ namespace System.Drawing
                 this.widget?.QueueDraw();
             }
         }
-        private void QueueDraw()
-        {
-
-        }
         [EditorBrowsable(EditorBrowsableState.Never)]
         public object GetContextInfo()
         {
@@ -1624,58 +1630,62 @@ namespace System.Drawing
 
         public SizeF MeasureString(string text, Font font)
         {
-            throw null;
+            return MeasureString(text, font, new SizeF(-1, -1), StringFormat.GenericDefault, out int charactersFitted, out int linesFilled);
         }
 
         public SizeF MeasureString(string text, Font font, PointF origin, StringFormat stringFormat)
         {
-            throw null;
+            return MeasureString(text, font, new SizeF(origin) { Width = -1, Height = -1 }, stringFormat, out int charactersFitted, out int linesFilled);
         }
 
         public SizeF MeasureString(string text, Font font, SizeF layoutArea)
         {
-            throw null;
+            return MeasureString(text, font, layoutArea, StringFormat.GenericDefault, out int charactersFitted, out int linesFilled);
         }
 
         public SizeF MeasureString(string text, Font font, SizeF layoutArea, StringFormat stringFormat)
         {
-            throw null;
+            return MeasureString(text,font, layoutArea, stringFormat, out int charactersFitted, out int linesFilled);
         }
 
         public SizeF MeasureString(string text, Font font, SizeF layoutArea, StringFormat stringFormat, out int charactersFitted, out int linesFilled)
         {
-            throw null;
-        }
-
-        public SizeF MeasureString(string text, Font font, int width)
-        {
-            return MeasureString(text, font, width, StringFormat.GenericDefault);
-        }
-
-        public SizeF MeasureString(string text, Font font, int width, StringFormat format)
-        {
-            float textSize = 14f;
-            string family = font?.Name;
+            this.context.Save();
+            double textSize = 14;
             if (font != null)
             {
                 textSize = font.Size;
                 if (font.Unit == GraphicsUnit.Point)
                     textSize = font.Size * 1 / 72 * 96;
-                if (font.Unit == GraphicsUnit.Inch)
+                else if (font.Unit == GraphicsUnit.Inch)
                     textSize = font.Size * 96;
+                this.context.SetFontSize(textSize);
+                this.context.SelectFontFace(font.Name, font.Style.HasFlag(FontStyle.Italic) ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, font.Style.HasFlag(FontStyle.Bold) ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
             }
-            if (this.widget != null)
-            {
-                Pango.Context pangocontext = this.widget.PangoContext;
-                if (string.IsNullOrWhiteSpace(family) || pangocontext.Families.Any(f => f.Name == family) == false)
-                {
-                    family = pangocontext.FontDescription.Family;
-                }
-            }
-            this.context.SelectFontFace(family, font.Italic ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, font.Bold ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
-            this.context.SetFontSize(textSize);
-            var extents = this.context.TextExtents(text);
-            return new SizeF((float)Math.Max(width, extents.Width), (float)extents.Height);
+            TextExtents textext = this.context.TextExtents(text);
+            float width = (float)textext.Width;
+            float height = (float)textext.Height;
+            this.context.Restore();
+
+            SizeF result = new SizeF(width, height);
+            if (layoutArea.Width > -1)
+                result.Width = Math.Min(layoutArea.Width, width);
+            if (layoutArea.Height > -1)
+                result.Height = Math.Min(layoutArea.Height, height);
+
+            charactersFitted = text.Length;
+            linesFilled = Math.Max(1, Convert.ToInt32(result.Height / textSize));
+            return result;
+        }
+
+        public SizeF MeasureString(string text, Font font, int width)
+        {
+            return MeasureString(text, font, new SizeF(width, -1), StringFormat.GenericDefault, out int charactersFitted, out int linesFilled);
+        }
+
+        public SizeF MeasureString(string text, Font font, int width, StringFormat format)
+        {
+            return MeasureString(text, font, new SizeF(width, -1), format, out int charactersFitted, out int linesFilled);
         }
 
         public void MultiplyTransform(Drawing2D.Matrix matrix)
