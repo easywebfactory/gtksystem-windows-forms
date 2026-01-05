@@ -207,12 +207,7 @@ namespace System.Drawing
                 {
                     gradient.AddColorStop((++idx) / linearcount, new Cairo.Color(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f));
                 }
-                if (lbrush.Angle != 0)
-                {
-                    Cairo.Matrix matrix = new Cairo.Matrix(1, 0, 0, 1, 0, 0);
-                    matrix.Rotate(Math.PI * lbrush.Angle / 180);
-                    gradient.Matrix = matrix;
-                }
+                gradient.Matrix = lbrush.cairomatrix;
                 this.context.SetSource(gradient);
             }
             else if (pen.Brush is HatchBrush hbrush)
@@ -293,7 +288,6 @@ namespace System.Drawing
             this.context.NewPath();
             double radius = Math.Min(width / 2, height / 2);
             this.context.Arc(x + radius, y + radius, radius, Math.PI * startAngle / 180, Math.PI * (startAngle + sweepAngle) / 180);
-            //this.context.ArcNegative(x, y, Math.Min(width / 2, height / 2), Math.PI * startAngle / 180, Math.PI * sweepAngle / 180); //œ‡∑¥Œª÷√
             this.context.Stroke();
             this.context.Restore();
         }
