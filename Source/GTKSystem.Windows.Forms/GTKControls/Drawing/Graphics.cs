@@ -939,11 +939,6 @@ namespace System.Drawing
                 else if (o is GraphicsPath.StringMode str)
                 {
                     string text = str.text;
-                    if (str.layoutRect.Width > 0)
-                    {
-                        while (text.Length > 0 && this.context.TextExtents(text).Width > str.layoutRect.Width)
-                            text = text.Substring(0, text.Length - 1);
-                    }
                     float textSize = str.emSize < 1 ? 14f : str.emSize;
                     string family = str.family?.Name;
                     if (string.IsNullOrWhiteSpace(family) && this.widget != null)
@@ -955,7 +950,34 @@ namespace System.Drawing
                     this.context.SelectFontFace(family, str.style == 2 ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, str.style == 1 ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
                     this.context.SetFontSize(textSize);
                     TextExtents textext = this.context.TextExtents(text);
-                    this.context.MoveTo(str.layoutRect.X, str.layoutRect.Y + textext.Height);
+
+                    if (str.format == null)
+                    {
+                        this.context.MoveTo(str.layoutRect.X, str.layoutRect.Y + textext.Height);
+                    }
+                    else
+                    {
+                        double hAlign = 0, vAlign = 0;
+                        if (str.format.Alignment == StringAlignment.Center)
+                            hAlign -= textext.Width / 2;
+                        else if (str.format.Alignment == StringAlignment.Far && str.format.FormatFlags.HasFlag(StringFormatFlags.DirectionRightToLeft) == false)
+                            hAlign -= textext.Width;
+
+                        if (str.format.LineAlignment == StringAlignment.Center)
+                            vAlign -= textext.Height / 2;
+                        else if (str.format.LineAlignment == StringAlignment.Far)
+                            vAlign -= textext.Height;
+
+                        if (str.format.FormatFlags.HasFlag(StringFormatFlags.DirectionVertical))
+                        {
+                            this.context.Rotate(90 * Math.PI / 180);
+                            this.context.MoveTo(str.layoutRect.Y + hAlign, 0 - str.layoutRect.X - textext.Height / 2);
+                        }
+                        else
+                        {
+                            this.context.MoveTo(str.layoutRect.X + hAlign, str.layoutRect.Y + textext.Height + vAlign);
+                        }
+                    }
                     this.context.ShowText(text);
                 }
                 else if (o is GraphicsPath.PathMode addpath)
