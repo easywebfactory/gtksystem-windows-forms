@@ -22,8 +22,9 @@ namespace System.Windows.Forms
         public TabPage() : base()
         {
             _controls = new ControlCollection(this, self.Content);
-            this.Dock = DockStyle.Fill;
             _tabLabel.StyleContext.AddClass("tablabel");
+            self.Halign = Gtk.Align.Fill; 
+            self.Valign = Gtk.Align.Fill;
         }
 
         public TabPage(string text):this()
@@ -47,7 +48,7 @@ namespace System.Windows.Forms
             {
                 return DockStyle.Fill;
             }
-            set { base.Dock = DockStyle.Fill; }
+            set { }
         }
         public override string Text { get { return _tabLabel.Text; } set { _tabLabel.Text = value; } }
         public Gtk.Label TabLabel { get { return _tabLabel; } }
@@ -69,7 +70,6 @@ namespace System.Windows.Forms
                 self.Content.MarginBottom = value.Bottom;
             }
         }
-        private Size _size;
-        public override Size Size { get => _size; set { _size = value; } }
+        public override Size Size { get; set; }
     }
 }

@@ -20,39 +20,6 @@ namespace System.Windows.Forms
         public virtual bool Checked { get; set; }
         public virtual CheckState CheckState { get; set; }
         public virtual System.Drawing.Image Image { get; set; }
-        private static Dictionary<string, string> fontLanguages = new Dictionary<string, string>();
-        static ToolStripItem()
-        {
-            if (fontLanguages.Count == 0)
-            {
-                fontLanguages.Add("宋体", "SimSun");
-                fontLanguages.Add("黑体", "SimHei");
-                fontLanguages.Add("微软雅黑", "Microsoft Yahei");
-                fontLanguages.Add("微软正黑", "Microsoft JhengHei");
-                fontLanguages.Add("微軟正黑體", "Microsoft JhengHei");
-                fontLanguages.Add("楷体", "KaiTi");
-                fontLanguages.Add("新宋体", "NSimSun");
-                fontLanguages.Add("仿宋", "FangSong");
-                fontLanguages.Add("標楷體", "BiauKai");
-                fontLanguages.Add("新細明體", "PMingLiU");
-                fontLanguages.Add("細明體", "MingLiU");
-                //macos
-                fontLanguages.Add("苹方", "PingFang SC");
-                fontLanguages.Add("华文黑体", "STHeiti");
-                fontLanguages.Add("华文楷体", "STKaiti");
-                fontLanguages.Add("华文宋体", "STSong");
-                fontLanguages.Add("华文仿宋", "STFangsong");
-                fontLanguages.Add("华文中宋", "STZhongsong");
-                fontLanguages.Add("华文琥珀", "STHupo");
-                fontLanguages.Add("华文新魏", "STXinwei");
-                fontLanguages.Add("华文隶书", "STLiti");
-                fontLanguages.Add("华文行楷", "STXingkai");
-                //open
-                fontLanguages.Add("思源黑体", "Source Han Sans CN");
-                fontLanguages.Add("思源宋体", "Source Han Serif SC");
-                fontLanguages.Add("文泉驿微米黑", "WenQuanYi Micro Hei");
-            }
-        }
         public ToolStripItem()
         {
             dropDownItems = new ToolStripItemCollection(this);
@@ -226,12 +193,9 @@ namespace System.Windows.Forms
                 else
                     style.AppendFormat("font-size:{0}pt;", font.Size);
 
-                if (string.IsNullOrWhiteSpace(font.FontFamily?.Name) == false)
+                if (string.IsNullOrWhiteSpace(font.FontFamily.Name) == false)
                 {
-                    if (fontLanguages.TryGetValue(font.FontFamily.Name, out string enname))
-                        style.AppendFormat("font-family:\"{0}\";", enname);
-                    else
-                        style.AppendFormat("font-family:\"{0}\";", font.FontFamily.Name);
+                    style.AppendFormat("font-family:\"{0}\";", font.FontFamily.Name);
                 }
                 if (font.Bold)
                 {

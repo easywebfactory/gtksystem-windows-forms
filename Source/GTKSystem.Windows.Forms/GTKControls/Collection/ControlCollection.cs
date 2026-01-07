@@ -5,6 +5,7 @@
  * author:chenhongjin
  */
 
+using Gtk;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
@@ -23,51 +24,12 @@ namespace System.Windows.Forms
             {
                 __ownerControl = owner.GtkControl as Gtk.Container;
                 __owner = owner;
-                __ownerControl.Realized += __ownerControl_Realized;
             }
             public ControlCollection(Control owner, Gtk.Container ownerContainer)
             {
                 __ownerControl = ownerContainer;
                 __owner = owner;
-                __ownerControl.Realized += __ownerControl_Realized;
             }
-            private bool is__ownerControl_Realized;
-            private void __ownerControl_Realized(object? sender, EventArgs e)
-            {
-                if (is__ownerControl_Realized == false)
-                {
-                    is__ownerControl_Realized = true;
-                    if (sender is Gtk.Overlay lay)
-                    {
-                        ResizeMapped(lay);
-                    }
-                }
-            }
-
-            private void ResizeMapped(Gtk.Overlay lay)
-            {
-                foreach (object item in this)
-                {
-                    if (item is Control control)
-                    {
-                        control.Widget.MarginStart = Math.Max(0, control.Widget.MarginStart + Offset.X);
-                        control.Widget.MarginTop = Math.Max(0, control.Widget.MarginTop + Offset.Y);
-                    }
-                    else if (item is Gtk.Widget widget)
-                    {
-                        widget.MarginStart = Math.Max(0, widget.MarginStart + Offset.X);
-                        widget.MarginTop = Math.Max(0, widget.MarginTop + Offset.Y);
-                    }
-                }
-                foreach (object item in this)
-                {
-                    if (item is Control control)
-                    {
-                        SetOverlaySize(lay, control);
-                    }
-                }
-            }
-
             internal Drawing.Point Offset = new Drawing.Point(0, 0);
 
             private void NativeAdd(object item)
@@ -99,13 +61,17 @@ namespace System.Windows.Forms
                         }
                         else if (item is Control control)
                         {
+                            control.LocationOffset.Offset(Offset.X, Offset.Y);
+                            control.Widget.MarginTop = Math.Max(0, control.Widget.MarginTop + Offset.Y);
+                            control.Widget.MarginStart = Math.Max(0, control.Widget.MarginStart + Offset.X);
                             lay.AddOverlay(control.Widget);
                             if(control.Widget is Gtk.Label || control.Widget is Gtk.Button || control.Widget is Gtk.Entry || control.Widget is Gtk.TextView || control.Widget is Gtk.ScrolledWindow)
                                 lay.SetOverlayPassThrough(control.Widget, true);
-                            SetOverlaySize(lay, control);
                         }
                         else if (item is Gtk.Widget widget)
                         {
+                            widget.MarginTop = Math.Max(0, widget.MarginTop + Offset.Y);
+                            widget.MarginStart = Math.Max(0, widget.MarginStart + Offset.X);
                             lay.AddOverlay(widget);
                         }
                     }
@@ -159,25 +125,6 @@ namespace System.Windows.Forms
                 catch
                 {
                     throw;
-                }
-            }
-
-            private void SetOverlaySize(Gtk.Overlay lay, Control control)
-            {
-                if (__owner is Form)
-                {
-                    lay.WidthRequest = Math.Max(-1, Math.Max(lay.WidthRequest, control.Location.X + control.Width) + Offset.X);
-                    lay.HeightRequest = Math.Max(-1, Math.Max(lay.HeightRequest, control.Location.Y + control.Height) + Offset.Y);
-                }
-                else if (__owner is GroupBox)
-                {//groupbox没有滚动条
-                    lay.WidthRequest = Math.Max(-1, __owner.Width - 4 + Offset.X);
-                    lay.HeightRequest = Math.Max(-1, __owner.Height - 4 + Offset.Y);
-                }
-                else
-                {
-                    lay.WidthRequest = Math.Max(-1, Math.Max(__owner.Width - 4, control.Location.X + control.Width) + Offset.X);
-                    lay.HeightRequest = Math.Max(-1, Math.Max(__owner.Height - 4, control.Location.Y + control.Height) + Offset.Y);
                 }
             }
             public virtual void Add(Gtk.Widget value)

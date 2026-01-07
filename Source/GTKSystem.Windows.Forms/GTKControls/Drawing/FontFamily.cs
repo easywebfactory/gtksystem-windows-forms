@@ -11,6 +11,39 @@ namespace System.Drawing
     //     in styles. This class cannot be inherited.
     public sealed class FontFamily : MarshalByRefObject, IDisposable
     {
+        private static Dictionary<string, string> fontLanguages = new Dictionary<string, string>();
+        static FontFamily()
+        {
+            if (fontLanguages.Count == 0)
+            {
+                fontLanguages.Add("宋体", "SimSun");
+                fontLanguages.Add("黑体", "SimHei");
+                fontLanguages.Add("微软雅黑", "Microsoft Yahei");
+                fontLanguages.Add("微软正黑", "Microsoft JhengHei");
+                fontLanguages.Add("微軟正黑體", "Microsoft JhengHei");
+                fontLanguages.Add("楷体", "KaiTi");
+                fontLanguages.Add("新宋体", "NSimSun");
+                fontLanguages.Add("仿宋", "FangSong");
+                fontLanguages.Add("標楷體", "BiauKai");
+                fontLanguages.Add("新細明體", "PMingLiU");
+                fontLanguages.Add("細明體", "MingLiU");
+                //macos
+                fontLanguages.Add("苹方", "PingFang SC");
+                fontLanguages.Add("华文黑体", "STHeiti");
+                fontLanguages.Add("华文楷体", "STKaiti");
+                fontLanguages.Add("华文宋体", "STSong");
+                fontLanguages.Add("华文仿宋", "STFangsong");
+                fontLanguages.Add("华文中宋", "STZhongsong");
+                fontLanguages.Add("华文琥珀", "STHupo");
+                fontLanguages.Add("华文新魏", "STXinwei");
+                fontLanguages.Add("华文隶书", "STLiti");
+                fontLanguages.Add("华文行楷", "STXingkai");
+                //open
+                fontLanguages.Add("思源黑体", "Source Han Sans CN");
+                fontLanguages.Add("思源宋体", "Source Han Serif SC");
+                fontLanguages.Add("文泉驿微米黑", "WenQuanYi Micro Hei");
+            }
+        }
         //
         // 摘要:
         //     Initializes a new System.Drawing.FontFamily from the specified generic font family.
@@ -53,7 +86,10 @@ namespace System.Drawing
         //     on the computer running the application. -or- name specifies a font that is not
         //     a TrueType font.
         public FontFamily(string name, FontCollection fontCollection) {
-            this.Name = name;
+            if (fontLanguages.TryGetValue(name, out string enname))
+                this.Name = enname;
+            else
+                this.Name = name;
         }
 
 
@@ -210,7 +246,7 @@ namespace System.Drawing
         //
         // 返回结果:
         //     true if the specified System.Drawing.FontStyle is available; otherwise, false.
-        public bool IsStyleAvailable(FontStyle style) { return false; }
+        public bool IsStyleAvailable(FontStyle style) { return true; }
         //
         // 摘要:
         //     Converts this System.Drawing.FontFamily to a human-readable string representation.

@@ -28,39 +28,9 @@ namespace System.Windows.Forms
         public virtual IControlGtk ISelf { get => GtkControl as IControlGtk; }
         public virtual object GtkControl { get; set; }
         private EventHandlerList handlerList = new EventHandlerList();
-        private static Dictionary<string, string> fontLanguages = new Dictionary<string, string>();
         internal static Dictionary<Gdk.Key, int> keyboardMap = new Dictionary<Gdk.Key, int>();
         static Control()
         {
-            if (fontLanguages.Count == 0)
-            {
-                fontLanguages.Add("宋体", "SimSun");
-                fontLanguages.Add("黑体", "SimHei");
-                fontLanguages.Add("微软雅黑", "Microsoft Yahei");
-                fontLanguages.Add("微软正黑", "Microsoft JhengHei");
-                fontLanguages.Add("微軟正黑體", "Microsoft JhengHei");
-                fontLanguages.Add("楷体", "KaiTi");
-                fontLanguages.Add("新宋体", "NSimSun");
-                fontLanguages.Add("仿宋", "FangSong");
-                fontLanguages.Add("標楷體", "BiauKai");
-                fontLanguages.Add("新細明體", "PMingLiU");
-                fontLanguages.Add("細明體", "MingLiU");
-                //macos
-                fontLanguages.Add("苹方", "PingFang SC");
-                fontLanguages.Add("华文黑体", "STHeiti");
-                fontLanguages.Add("华文楷体", "STKaiti");
-                fontLanguages.Add("华文宋体", "STSong");
-                fontLanguages.Add("华文仿宋", "STFangsong");
-                fontLanguages.Add("华文中宋", "STZhongsong");
-                fontLanguages.Add("华文琥珀", "STHupo");
-                fontLanguages.Add("华文新魏", "STXinwei");
-                fontLanguages.Add("华文隶书", "STLiti");
-                fontLanguages.Add("华文行楷", "STXingkai");
-                //open
-                fontLanguages.Add("思源黑体", "Source Han Sans CN");
-                fontLanguages.Add("思源宋体", "Source Han Serif SC");
-                fontLanguages.Add("文泉驿微米黑", "WenQuanYi Micro Hei");
-            }
             if (keyboardMap.Count == 0)
             {
                 keyboardMap = new Dictionary<Gdk.Key, int>{
@@ -265,7 +235,11 @@ namespace System.Windows.Forms
                 InitStyle((Gtk.Widget)sender);
                 OnLoad(EventArgs.Empty);
                 Load?.Invoke(this, e);
-                SetDockAnchor(this);
+
+                if (_dock != DockStyle.None)
+                    SetDockStyles(this.Widget, _dock);
+                else if (_anchor != AnchorStyles.None)
+                    SetAnchorStyles(this.Widget, _anchor);
             }
         }
 
@@ -711,12 +685,9 @@ namespace System.Windows.Forms
                     else
                         style.AppendFormat("font-size:{0}pt;", font.Size);
 
-                    if (string.IsNullOrWhiteSpace(font.FontFamily?.Name) == false)
+                    if (string.IsNullOrWhiteSpace(font.FontFamily.Name) == false)
                     {
-                        if (fontLanguages.TryGetValue(font.FontFamily.Name, out string enname))
-                            style.AppendFormat("font-family:\"{0}\";", enname);
-                        else
-                            style.AppendFormat("font-family:\"{0}\";", font.FontFamily.Name);
+                        style.AppendFormat("font-family:\"{0}\";", font.FontFamily.Name);
                     }
                     if (font.Bold)
                     {
@@ -847,46 +818,73 @@ namespace System.Windows.Forms
                 SetAnchorStyles(Widget, _anchor);
                 if (AnchorChanged != null)
                     AnchorChanged(this, EventArgs.Empty);
-
-                SetDockAnchor(this);
             }
         }
         private void SetAnchorStyles(Gtk.Widget widget, AnchorStyles anchorStyles)
         {
-            if (anchorStyles.HasFlag(AnchorStyles.Left) && anchorStyles.HasFlag(AnchorStyles.Right))
+            if (widget.IsRealized && widget is not FormBase)
             {
-                widget.Halign = Gtk.Align.Fill;
-            }
-            else if (anchorStyles.HasFlag(AnchorStyles.Left))
-            {
-                widget.Halign = Gtk.Align.Start;
-            }
-            else if (anchorStyles.HasFlag(AnchorStyles.Right))
-            {
-                widget.Halign = Gtk.Align.End;
-            }
-            else
-            {
-                widget.Halign = Gtk.Align.Start;
-            }
+                if (widget.Parent is Gtk.Overlay lay)
+                {
+                    int framewidth = lay.AllocatedWidth;
+                    int frameheight = lay.AllocatedHeight;
 
-            if (anchorStyles.HasFlag(AnchorStyles.Top) && anchorStyles.HasFlag(AnchorStyles.Bottom))
-            {
-                widget.Valign = Gtk.Align.Fill;
-            }
-            else if (anchorStyles.HasFlag(AnchorStyles.Top))
-            {
-                widget.Valign = Gtk.Align.Start;
-            }
-            else if (anchorStyles.HasFlag(AnchorStyles.Bottom))
-            {
-                widget.Valign = Gtk.Align.End;
-            }
-            else
-            {
-                widget.Valign = Gtk.Align.Start;
-            }
+                    if (anchorStyles.HasFlag(AnchorStyles.Left) && anchorStyles.HasFlag(AnchorStyles.Right))
+                    {
+                        if (widget.WidthRequest > 0)
+                            widget.MarginEnd = Math.Max(0, framewidth - widget.MarginStart - widget.WidthRequest);
+                        else
+                            widget.MarginEnd = 0;
+
+                        widget.Halign = Gtk.Align.Fill;
+                    }
+                    else if (anchorStyles.HasFlag(AnchorStyles.Left))
+                    {
+                        widget.Halign = Gtk.Align.Start;
+                    }
+                    else if (anchorStyles.HasFlag(AnchorStyles.Right))
+                    {
+                        if (widget.WidthRequest > 0)
+                            widget.MarginEnd = Math.Max(0, framewidth - widget.MarginStart - widget.WidthRequest);
+                        else
+                            widget.MarginEnd = 0;
+
+                        widget.Halign = Gtk.Align.End;
+                    }
+                    else
+                    {
+                        widget.Halign = Gtk.Align.Start;
+                    }
+
+                    if (anchorStyles.HasFlag(AnchorStyles.Top) && anchorStyles.HasFlag(AnchorStyles.Bottom))
+                    {
+                        if (widget.HeightRequest > 0)
+                            widget.MarginBottom = Math.Max(0, frameheight - widget.MarginTop - widget.HeightRequest);
+                        else
+                            widget.MarginBottom = 0;
+
+                        widget.Valign = Gtk.Align.Fill;
+                    }
+                    else if (anchorStyles.HasFlag(AnchorStyles.Top))
+                    {
+                        widget.Valign = Gtk.Align.Start;
+                    }
+                    else if (anchorStyles.HasFlag(AnchorStyles.Bottom))
+                    {
+                        if (widget.HeightRequest > 0)
+                            widget.MarginBottom = Math.Max(0, frameheight - widget.MarginTop - widget.HeightRequest);
+                        else
+                            widget.MarginBottom = 0;
+
+                        widget.Valign = Gtk.Align.End;
+                    }
+                    else
+                    {
+                        widget.Valign = Gtk.Align.Start;
+                    }
+                }
         }
+    }
         public virtual Point AutoScrollOffset { get; set; }
         private bool _autoSize;
         public virtual bool AutoSize
@@ -895,7 +893,7 @@ namespace System.Windows.Forms
             set
             {
                 _autoSize = value;
-                if (_autoSize == true) { this.Widget.WidthRequest = -1; this.Widget.HeightRequest = -1; } else { Size = _size; }
+                if (_autoSize == false) { Size = _size; }
             }
         }
         public virtual BindingContext BindingContext { get; set; }
@@ -938,144 +936,63 @@ namespace System.Windows.Forms
             {
                 _dock = value;
                 SetDockStyles(this.Widget, _dock);
-                
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
-
-                SetDockAnchor(this);
             }
         }
         private void SetDockStyles(Gtk.Widget widget, DockStyle dockStyle)
         {
-            if (dockStyle == DockStyle.Fill)
-            {
-                widget.Halign = Align.Fill;
-                widget.Valign = Align.Fill;
-            }
-            else if (dockStyle == DockStyle.Left)
-            {
-                widget.Halign = Align.Start;
-                widget.Valign = Align.Fill;
-            }
-            else if (dockStyle == DockStyle.Top)
-            {
-                widget.Halign = Align.Fill;
-                widget.Valign = Align.Start;
-            }
-            else if (dockStyle == DockStyle.Right)
-            {
-                widget.Halign = Align.End;
-                widget.Valign = Align.Fill;
-            }
-            else if (dockStyle == DockStyle.Bottom)
-            {
-                widget.Halign = Align.Fill;
-                widget.Valign = Align.End;
-            }
-            else
-            {
-                widget.Halign = Align.Start;
-                widget.Valign = Align.Start;
-            }
-        }
-        private void SetDockAnchor(Control control)
-        {
-            Gtk.Widget widget = control.Widget;
-            if (widget.IsRealized)
+            if (widget.IsRealized && widget is not FormBase)
             {
                 if (widget.Parent is Gtk.Overlay lay)
                 {
-                    int framewidth = lay.AllocatedWidth;
-                    int frameheight = lay.AllocatedHeight;
-                    if (lay.Parent is IControlGtk)
+                    if (dockStyle == DockStyle.Fill)
                     {
-                        if (lay.Parent.WidthRequest > -1)
-                            framewidth = lay.Parent.WidthRequest;
-                        if (lay.Parent.HeightRequest > -1)
-                            frameheight = lay.Parent.HeightRequest;
+                        if (widget.WidthRequest + widget.MarginStart + widget.MarginStart > lay.AllocatedWidth)
+                            widget.WidthRequest = Math.Max(10, lay.AllocatedWidth - widget.MarginStart - widget.MarginStart);
+                        if (widget.HeightRequest+ widget.MarginTop + widget.MarginTop > lay.AllocatedHeight)
+                            widget.HeightRequest = Math.Max(10, lay.AllocatedHeight - widget.MarginTop - widget.MarginTop);
+                        widget.MarginEnd = Math.Min(3, widget.MarginStart);
+                        widget.MarginBottom = Math.Min(3, widget.MarginTop);
+                        widget.Halign = Align.Fill;
+                        widget.Valign = Align.Fill;
                     }
-                    else if (lay.Parent.Parent is IControlGtk)
+                    else if (dockStyle == DockStyle.Left)
                     {
-                        if (lay.Parent.Parent.WidthRequest > -1)
-                            framewidth = lay.Parent.Parent.WidthRequest;
-                        if (lay.Parent.Parent.HeightRequest > -1)
-                            frameheight = lay.Parent.Parent.HeightRequest;
+                        if (widget.HeightRequest + widget.MarginTop + widget.MarginTop > lay.AllocatedHeight)
+                            widget.HeightRequest = Math.Max(10, lay.AllocatedHeight - widget.MarginTop - widget.MarginTop);
+                        widget.MarginBottom = Math.Min(3, widget.MarginTop);
+                        widget.Halign = Align.Start;
+                        widget.Valign = Align.Fill;
                     }
-                    else if (lay.Name == "Form")
+                    else if (dockStyle == DockStyle.Top)
                     {
-                        if (lay.Parent.Parent.Parent.Parent is FormBase form)
-                        {
-                            form.GetDefaultSize(out int width, out int height);
-                            framewidth = width;
-                            frameheight = height;
-                        }
+                        if (widget.WidthRequest + widget.MarginStart + widget.MarginStart > lay.AllocatedWidth)
+                            widget.WidthRequest = Math.Max(10, lay.AllocatedWidth - widget.MarginStart - widget.MarginStart);
+                        widget.MarginEnd = Math.Min(3, widget.MarginStart);
+                        widget.Halign = Align.Fill;
+                        widget.Valign = Align.Start;
                     }
-
-                    if (control.Dock == DockStyle.Fill)
+                    else if (dockStyle == DockStyle.Right)
                     {
-                        widget.WidthRequest = -1;
-                        widget.HeightRequest = -1;
-                        if (lay.HeightRequest <= frameheight)
-                            lay.HeightRequest = -1;
-                        if (lay.WidthRequest <= framewidth)
-                            lay.WidthRequest = -1;
+                        if (widget.HeightRequest + widget.MarginTop + widget.MarginTop > lay.AllocatedHeight)
+                            widget.HeightRequest = Math.Max(10, lay.AllocatedHeight - widget.MarginTop - widget.MarginTop);
+                        widget.MarginBottom = Math.Min(3, widget.MarginTop);
+                        widget.Halign = Align.End;
+                        widget.Valign = Align.Fill;
                     }
-                    else if (control.Dock == DockStyle.Left)
+                    else if (dockStyle == DockStyle.Bottom)
                     {
-                        widget.HeightRequest = -1;
-                        if (lay.HeightRequest <= frameheight)
-                            lay.HeightRequest = -1;
+                        if (widget.WidthRequest + widget.MarginStart + widget.MarginStart > lay.AllocatedWidth)
+                            widget.WidthRequest = Math.Max(10, lay.AllocatedWidth - widget.MarginStart - widget.MarginStart);
+                        widget.MarginEnd = Math.Min(3, widget.MarginStart);
+                        widget.Halign = Align.Fill;
+                        widget.Valign = Align.End;
                     }
-                    else if (control.Dock == DockStyle.Right)
+                    else
                     {
-                        widget.HeightRequest = -1;
-                        if (lay.HeightRequest <= frameheight)
-                            lay.HeightRequest = -1;
-                    }
-                    else if (control.Dock == DockStyle.Top)
-                    {
-                        widget.WidthRequest = -1;
-                        if (lay.WidthRequest <= framewidth)
-                            lay.WidthRequest = -1;
-                    }
-                    else if (control.Dock == DockStyle.Bottom)
-                    {
-                        widget.WidthRequest = -1;
-                        if (lay.WidthRequest <= framewidth)
-                            lay.WidthRequest = -1;
-                    }
-
-                    if (widget.Halign == Gtk.Align.End)
-                    {
-                        if (widget.WidthRequest > 0)
-                            widget.MarginEnd = Math.Max(0, framewidth - widget.MarginStart - widget.WidthRequest);
-                        else
-                            widget.MarginEnd = 0;
-                    }
-                    else if (widget.Halign == Gtk.Align.Fill)
-                    {
-                        if (control.Dock == DockStyle.Fill)
-                            widget.MarginEnd = 0;
-                        else if (widget.WidthRequest > 0)
-                            widget.MarginEnd = Math.Max(0, framewidth - widget.MarginStart - widget.WidthRequest);
-                        else
-                            widget.MarginEnd = 0;
-                    }
-                    if (widget.Valign == Gtk.Align.End)
-                    {
-                        if (widget.HeightRequest > 0)
-                            widget.MarginBottom = Math.Max(0, frameheight - widget.MarginTop - widget.HeightRequest);
-                        else
-                            widget.MarginBottom = 0;
-                    }
-                    else if (widget.Valign == Gtk.Align.Fill)
-                    {
-                        if (control.Dock == DockStyle.Fill)
-                            widget.MarginBottom = 0;
-                        else if (widget.HeightRequest > 0)
-                            widget.MarginBottom = Math.Max(0, frameheight - widget.MarginTop - widget.HeightRequest);
-                        else
-                            widget.MarginBottom = 0;
+                        widget.Halign = Align.Start;
+                        widget.Valign = Align.Start;
                     }
                 }
             }
@@ -1117,12 +1034,13 @@ namespace System.Windows.Forms
         public virtual bool IsMirrored { get; }
 
         public virtual LayoutEngine LayoutEngine { get; }
+        internal Drawing.Point LocationOffset = new Drawing.Point(0, 0);
         public virtual int Top
         {
-            get => this.Widget.MarginTop;
+            get => Math.Max(0, this.Widget.MarginTop - LocationOffset.Y);
             set
             {
-                this.Widget.MarginTop = value;
+                this.Widget.MarginTop = Math.Max(0, value + LocationOffset.Y);
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
                 if (AnchorChanged != null)
@@ -1131,10 +1049,10 @@ namespace System.Windows.Forms
         }
         public virtual int Left
         {
-            get => this.Widget.MarginStart;
+            get => Math.Max(0, this.Widget.MarginStart - LocationOffset.X);
             set
             {
-                this.Widget.MarginStart = value;
+                this.Widget.MarginStart = Math.Max(0, value + LocationOffset.X);
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
                 if (AnchorChanged != null)
@@ -1187,16 +1105,8 @@ namespace System.Windows.Forms
                 _size = value;
                 if (AutoSize == false)
                 {
-                    if (this.Widget is Gtk.Button)
-                    {
-                        Width = value.Width > 6 ? value.Width - 6 : value.Width;
-                        Height = value.Height > 6 ? value.Height - 6 : value.Height;
-                    }
-                    else
-                    {
-                        Width = value.Width;
-                        Height = value.Height;
-                    }
+                    Width = value.Width;
+                    Height = value.Height;
                 }
             }
         }
@@ -1217,7 +1127,6 @@ namespace System.Windows.Forms
                     DockChanged(this, EventArgs.Empty);
                 if (AnchorChanged != null)
                     AnchorChanged(this, EventArgs.Empty);
-                SetDockAnchor(this);
             }
         }
         public virtual int Width
@@ -1237,8 +1146,6 @@ namespace System.Windows.Forms
                     DockChanged(this, EventArgs.Empty);
                 if (AnchorChanged != null)
                     AnchorChanged(this, EventArgs.Empty);
-
-                SetDockAnchor(this);
             }
         }
         public virtual int TabIndex { get; set; }

@@ -124,9 +124,6 @@ namespace System.Drawing
         //     emSize is less than or equal to 0, evaluates to infinity, or is not a valid number.
         public Font(string familyName, float emSize, FontStyle style) : this(new FontFamily(familyName), emSize, style, GraphicsUnit.Point, 1, false)
         {
-            this.FontFamily = new FontFamily(familyName);
-            this.Size = emSize;
-            this.Style = style;
         }
         //
         // 摘要:
@@ -314,7 +311,7 @@ namespace System.Drawing
         //   T:System.ArgumentNullException:
         //     family is null
         public Font(FontFamily family, float emSize, FontStyle style, GraphicsUnit unit, byte gdiCharSet, bool gdiVerticalFont) {
-            this.Name = family?.Name;
+            this.Name = family.Name;
             this.FontFamily = family;
             this.Size = emSize;
             this.Style = style;

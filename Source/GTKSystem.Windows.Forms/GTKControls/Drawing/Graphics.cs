@@ -1159,11 +1159,11 @@ namespace System.Drawing
                     if (format.FormatFlags.HasFlag(StringFormatFlags.DirectionVertical))
                     {
                         this.context.Rotate(90 * Math.PI / 180);
-                        this.SetTranslateWithDifference(layoutRectangle.Y + hAlign + 5, 0 - layoutRectangle.X - textext.Height / 2);
+                        this.SetTranslateWithDifference(layoutRectangle.Y + hAlign + 2, 0 - layoutRectangle.X - textext.Height / 2);
                     }
                     else
                     {
-                        this.SetTranslateWithDifference(layoutRectangle.X + hAlign + 5, layoutRectangle.Y + textext.Height + vAlign);
+                        this.SetTranslateWithDifference(layoutRectangle.X + hAlign + 2, layoutRectangle.Y + textext.Height + vAlign);
                     }
                 }
                 this.context.ShowText(text);
