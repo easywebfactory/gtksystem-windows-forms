@@ -9,6 +9,7 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Forms.Design;
 using System.Windows.Forms.Layout;
@@ -235,11 +236,11 @@ namespace System.Windows.Forms
                 InitStyle((Gtk.Widget)sender);
                 OnLoad(EventArgs.Empty);
                 Load?.Invoke(this, e);
-
                 if (_dock != DockStyle.None)
                     SetDockStyles(this.Widget, _dock);
                 else if (_anchor != AnchorStyles.None)
                     SetAnchorStyles(this.Widget, _anchor);
+                CheckResize(BoundsSpecified.All);
             }
         }
 
@@ -484,6 +485,7 @@ namespace System.Windows.Forms
 
         private void Widget_ParentSet(object o, ParentSetArgs args)
         {
+            CheckResize(BoundsSpecified.All);
             OnParentChanged(EventArgs.Empty);
             ParentChanged?.Invoke(this, args);
         }
@@ -512,10 +514,21 @@ namespace System.Windows.Forms
                     LocationChanged(this, EventArgs.Empty);
             }
         }
-
         #endregion
 
         //===================
+        internal void CheckResize(BoundsSpecified bounds)
+        {
+            Gtk.Widget widget = this.Widget;
+            if (widget.IsRealized && widget.Parent is Gtk.Overlay lay)
+            {
+                if (bounds.HasFlag(BoundsSpecified.Width) && lay.AllocatedWidth > 1 && lay.AllocatedWidth < widget.MarginStart + widget.WidthRequest && widget.Halign != Align.Fill)
+                    lay.WidthRequest = widget.MarginStart + widget.WidthRequest;
+
+                if (bounds.HasFlag(BoundsSpecified.Height) && lay.AllocatedHeight > 1 && lay.AllocatedHeight < widget.MarginTop + widget.HeightRequest && widget.Valign != Align.Fill)
+                    lay.HeightRequest = widget.MarginTop + widget.HeightRequest;
+            }
+        }
         protected virtual void InitStyle(Gtk.Widget widget)
         {
             SetStyle(widget);
@@ -1041,6 +1054,7 @@ namespace System.Windows.Forms
             set
             {
                 this.Widget.MarginTop = Math.Max(0, value + LocationOffset.Y);
+                CheckResize(BoundsSpecified.Height);
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
                 if (AnchorChanged != null)
@@ -1053,6 +1067,7 @@ namespace System.Windows.Forms
             set
             {
                 this.Widget.MarginStart = Math.Max(0, value + LocationOffset.X);
+                CheckResize(BoundsSpecified.Width);
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
                 if (AnchorChanged != null)
@@ -1123,6 +1138,7 @@ namespace System.Windows.Forms
             set
             {
                 this.Widget.HeightRequest = Math.Max(-1, value);
+                CheckResize(BoundsSpecified.Height);
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
                 if (AnchorChanged != null)
@@ -1142,6 +1158,7 @@ namespace System.Windows.Forms
             set
             {
                 this.Widget.WidthRequest = Math.Max(-1, value);
+                CheckResize(BoundsSpecified.Width);
                 if (DockChanged != null)
                     DockChanged(this, EventArgs.Empty);
                 if (AnchorChanged != null)

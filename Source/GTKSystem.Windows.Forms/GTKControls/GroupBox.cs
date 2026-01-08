@@ -18,18 +18,16 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         private Gtk.Overlay contaner = new Gtk.Overlay();
         private ControlCollection _controls = null;
-
+        Gtk.Overlay overlay = new Gtk.Overlay();
         public GroupBox() : base()
         {
             self.Override.sender = this;
             _controls = new ControlCollection(this, contaner);
             _controls.Offset.Offset(0, -20);
-            contaner.MarginStart = 0;
-            contaner.MarginTop = 0;
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
-            contaner.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
-            self.Child = contaner;
+            overlay.AddOverlay(contaner);
+            self.Child = overlay;
         }
 
         public override string Text { get { return self.Label; } set { self.Label = value; } }
@@ -40,10 +38,10 @@ namespace System.Windows.Forms
             set
             {
                 base.Padding = value;
-                contaner.MarginStart = value.Left;
-                contaner.MarginTop = value.Top;
-                contaner.MarginEnd = value.Right;
-                contaner.MarginBottom = value.Bottom;
+                overlay.MarginStart = value.Left;
+                overlay.MarginTop = value.Top;
+                overlay.MarginEnd = value.Right;
+                overlay.MarginBottom = value.Bottom;
             }
         }
         public override void SuspendLayout()

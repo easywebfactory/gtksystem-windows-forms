@@ -28,7 +28,6 @@ namespace System.Windows.Forms
             contaner.Hexpand = false;
             contaner.Vexpand = false;
             contaner.BorderWidth = 0;
-            contaner.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             self.Add(contaner);
         }
         public override ControlCollection Controls => _controls;

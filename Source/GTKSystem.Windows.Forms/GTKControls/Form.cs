@@ -35,11 +35,6 @@ namespace System.Windows.Forms
         {
             contanter.Valign = Gtk.Align.Fill;
             contanter.Halign = Gtk.Align.Fill;
-            contanter.Hexpand = true;
-            contanter.Vexpand = true;
-            contanter.MarginBottom = 0;
-            contanter.MarginEnd = 0;
-            contanter.Name = "Form";
             Gtk.Viewport viewport = new Gtk.Viewport() { Halign = Align.Fill, Valign = Align.Fill, BorderWidth = 0 };
             viewport.StyleContext.AddClass("Form");
             contanter.Add(viewport);

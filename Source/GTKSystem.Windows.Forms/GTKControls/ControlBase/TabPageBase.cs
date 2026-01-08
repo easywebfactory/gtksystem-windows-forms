@@ -15,7 +15,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Content.Halign = Align.Fill;
             this.Content.Valign = Align.Fill;
             this.Content.Expand = false;
-            this.Content.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             base.Halign = Align.Fill;
             base.Valign = Align.Fill;
             base.Add(Content);

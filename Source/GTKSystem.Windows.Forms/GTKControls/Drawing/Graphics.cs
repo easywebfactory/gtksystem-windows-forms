@@ -1,7 +1,6 @@
 
 using Cairo;
 using Gdk;
-using Gtk;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -15,6 +14,7 @@ namespace System.Drawing
         private Gdk.Rectangle rectangle;
         private Gtk.Widget widget;
         private Image image;
+        private Cairo.Surface imagesurface;
         #region 用于输入与输出的数值调整差值
         internal double diff_left { get; set; }
         internal double diff_top { get; set; }
@@ -28,6 +28,23 @@ namespace System.Drawing
         internal Graphics(Image widget, Cairo.Context context, Gdk.Rectangle rectangle) : this(context, rectangle)
         {
             this.image = widget;
+        }
+        internal Graphics(Image widget)
+        {
+            int _width = widget.Width;
+            int _height = widget.Height;
+
+            if (_width < 1)
+                throw new ArgumentOutOfRangeException("Image.Width不能小于等于0");
+            if (_height < 1)
+                throw new ArgumentOutOfRangeException("Image.Height不能小于等于0");
+
+            this.image = widget;
+            this.rectangle = new Gdk.Rectangle(this.rectangle.X, this.rectangle.Y, _width, _height);
+            this.Clip = new Region(new Rectangle(this.rectangle.X, this.rectangle.Y, _width, _height));
+            imagesurface = new Cairo.ImageSurface(Cairo.Format.Argb32, _width, _height);
+            this.context = new Cairo.Context(imagesurface);
+            image.Pixbuf = new Pixbuf(imagesurface, 0, 0, _width, _height);
         }
         internal Graphics(Cairo.Context context, Gdk.Rectangle rectangle)
         {
@@ -555,9 +572,6 @@ namespace System.Drawing
                 Gdk.Pixbuf newimg = new Gdk.Pixbuf(surface, 0, 0, width, height);
                 img.CopyArea(x, y, width, height, newimg, 0, 0);
                 this.context.Save();
-                this.SetTranslateWithDifference(x, y);
-                Gdk.CairoHelper.SetSourcePixbuf(this.context, newimg, 0, 0);
-
                 using (var p = this.context.GetSource())
                 {
                     if (p is Cairo.SurfacePattern pattern)
@@ -574,6 +588,8 @@ namespace System.Drawing
                             pattern.Filter = Cairo.Filter.Best;
                     }
                 }
+                this.SetTranslateWithDifference(x, y);
+                Gdk.CairoHelper.SetSourcePixbuf(this.context, newimg, 0, 0);
                 this.context.Paint();
                 this.context.Restore();
             }
@@ -1517,53 +1533,36 @@ namespace System.Drawing
         {
             throw null;
         }
-        private static Cairo.ImageSurface imagesurface;
-        private static Cairo.Surface simisurface;
-        private static Cairo.Context imagecontext;
         /// <summary>
-        /// 使用此方法必须要执行Flush()方法输出Image
+        /// 使用此方法必须要在最后执行Flush()方法输出Image
         /// </summary>
         /// <param name="image"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static Graphics FromImage(Image image)
         {
-            int _width = image.Width;
-            int _height = image.Height;
-
-            if (_width < 1)
-                throw new ArgumentOutOfRangeException("Image.Width不能小于等于0");
-            if (_height < 1)
-                throw new ArgumentOutOfRangeException("Image.Height不能小于等于0");
-
-            if (imagesurface == null)
-                imagesurface = new Cairo.ImageSurface(Cairo.Format.Argb32, _width, _height);
-
-            simisurface?.Dispose();
-            simisurface = imagesurface.CreateSimilar(Cairo.Content.ColorAlpha, _width, _height);
-            imagecontext?.Dispose();
-            imagecontext = new Cairo.Context(simisurface);
-            image.Pixbuf = new Pixbuf(simisurface, 0, 0, image.Width, image.Height);
-            return new Drawing.Graphics(image, imagecontext, new Gdk.Rectangle(0, 0, _width, _height));
+            return new Drawing.Graphics(image);
         }
-
         public void Flush()
         {
-            Flush(FlushIntention.Flush);
+            Flush(FlushIntention.Sync);
         }
 
         public void Flush(FlushIntention intention)
         {
             try
             {
-                if (this.image != null && Graphics.simisurface != null && Graphics.simisurface.Status == Cairo.Status.Success)
+                if (this.image != null && imagesurface != null && imagesurface.Status == Cairo.Status.Success)
                 {
-                    this.image.Pixbuf = new Pixbuf(Graphics.simisurface, 0, 0, this.image.Width, this.image.Height);
+                    this.image.Pixbuf = new Pixbuf(imagesurface, 0, 0, this.image.Width, this.image.Height);
                 }
             }
             finally
             {
-                this.widget?.QueueDraw();
+                if (intention == FlushIntention.Sync)
+                {
+                    imagesurface?.Dispose();
+                    context?.Dispose();
+                }
             }
         }
         [EditorBrowsable(EditorBrowsableState.Never)]

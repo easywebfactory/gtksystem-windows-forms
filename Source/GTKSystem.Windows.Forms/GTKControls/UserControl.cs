@@ -26,14 +26,9 @@ namespace System.Windows.Forms
         {
             self.Override.sender = this;
             contaner = new Gtk.Overlay();
-            contaner.MarginStart = 0;
-            contaner.MarginTop = 0;
             contaner.BorderWidth = 0;
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
-            contaner.Hexpand = false;
-            contaner.Vexpand = false;
-            contaner.Add(new Gtk.Fixed() { Halign = Align.Fill, Valign = Align.Fill });
             _controls = new ControlCollection(this, contaner);
             self.Add(contaner);
             self.Shown += Self_Shown;
