@@ -191,6 +191,7 @@ namespace System.Windows.Forms
 
             }
         }
+        public bool VirtualMode { get => true; set { } }
         public string Markup { get; set; } = "...";
         public bool ReadOnly { get; set; }
         public int RowHeadersWidth { get; set; }

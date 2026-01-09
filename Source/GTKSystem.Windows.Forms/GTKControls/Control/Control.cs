@@ -1866,8 +1866,6 @@ namespace System.Windows.Forms
         {
             try
             {
-                this.Widget?.Dispose();
-                this.GtkControl = null;
                 surface?.Dispose();
                 context?.Dispose();
                 Image?.Dispose();
