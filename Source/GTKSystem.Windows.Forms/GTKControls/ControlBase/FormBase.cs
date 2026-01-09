@@ -220,6 +220,10 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             {
                 this.Dispose();
                 this.Destroy();
+                if (this.Data["Control"] is Form from1)
+                {
+                    from1.Dispose();
+                }
                 isCloseWindow = true;
             }
             else if (this.TypeHint == WindowTypeHint.Dialog && isResponse == true)
