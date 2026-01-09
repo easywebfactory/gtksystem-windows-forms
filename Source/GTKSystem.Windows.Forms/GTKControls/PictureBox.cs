@@ -35,15 +35,17 @@ namespace System.Windows.Forms
             set
             {
                 _image = value;
-                if (_image != null)
-                    self.Image = _image.Pixbuf;
+                self.Image = _image?.Pixbuf;
             }
         }
         public System.Drawing.Image ErrorImage { get; set; }
 
         public override ImageLayout BackgroundImageLayout { get => self.BackgroundImageLayout; set => self.BackgroundImageLayout = value; }
         private System.Drawing.Image _backgroundImage;
-        public override Image BackgroundImage { get => _backgroundImage; set { _backgroundImage = value; self.BackgroundImage = value.Pixbuf; } }
+        public override Image BackgroundImage { 
+            get => _backgroundImage; 
+            set { _backgroundImage = value; self.BackgroundImage = value?.Pixbuf; } 
+        }
 
         public void CancelAsync() { }
         public new void Load(string url)

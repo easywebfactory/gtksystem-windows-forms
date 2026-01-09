@@ -1,5 +1,4 @@
-﻿using GLib;
-using GTKSystem.Windows.Forms.Utility;
+﻿
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
@@ -32,6 +31,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             if (_image != null && this.IsRealized)
                 _drawImage = ScaleDrawnSource(_image, _sizeMode, this.AllocatedWidth, this.AllocatedHeight);
+            else
+                _drawImage = null;
         }
         private Gdk.Pixbuf _drawBackgroundImage;
         private Gdk.Pixbuf _backgroundImage;
@@ -56,6 +57,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             if (_backgroundImage != null && this.IsRealized)
                 _drawBackgroundImage = ScaleDrawnBackground(_backgroundImage, _backgroundImageLayout, this.AllocatedWidth, this.AllocatedHeight);
+            else
+                _drawBackgroundImage = null;
         }
         public Size MaximumSize { get; set; }
         public Size MinimumSize { get; set; }
@@ -105,71 +108,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             }
             return returndrawn;
         }
-        private void DrawnSource(Cairo.Context cr, Gdk.Pixbuf image, PictureBoxSizeMode sizeMode, int width,int height)
-        {
-            if (sizeMode == PictureBoxSizeMode.Normal)
-            {
-                //从左上角开始原图铺开
-                Gdk.CairoHelper.SetSourcePixbuf(cr, image, 0, 0);
-            }
-            else if (sizeMode == PictureBoxSizeMode.StretchImage)
-            { //自由缩放取全图铺满
-                Gdk.CairoHelper.SetSourcePixbuf(cr, image.ScaleSimple(width, height, Gdk.InterpType.Nearest), 0, 0);
-            }
-            else if (sizeMode == PictureBoxSizeMode.CenterImage)
-            {
-                //取原图中间
-                int offsetx = (width - image.Width) / 2;
-                int offsety = (height - image.Height) / 2;
-                Gdk.CairoHelper.SetSourcePixbuf(cr, image, offsetx, offsety);
-            }
-            else if (sizeMode == PictureBoxSizeMode.Zoom)
-            {
-                //原图比例缩放，显示全图
-                double scaleW = width * 1f / image.Width;
-                double scaleH = height * 1f / image.Height;
-                if (scaleW > scaleH)
-                    Gdk.CairoHelper.SetSourcePixbuf(cr, image.ScaleSimple((int)(image.Width * scaleH), height, Gdk.InterpType.Nearest), 0, 0);
-                else
-                    Gdk.CairoHelper.SetSourcePixbuf(cr, image.ScaleSimple(width, (int)(image.Height * scaleW), Gdk.InterpType.Nearest), 0, 0);
-            }
-            else if (sizeMode == PictureBoxSizeMode.AutoSize)
-            {
-                //原图不缩放，撑开PictureBox
-                if (this.WidthRequest < image.Width)
-                    this.WidthRequest = image.Width;
-                if (this.HeightRequest < image.Height)
-                    this.HeightRequest = image.Height;
-                if (this.WidthRequest < MinimumSize.Width)
-                    this.WidthRequest = MinimumSize.Width;
-                if (this.HeightRequest < MinimumSize.Height)
-                    this.HeightRequest = MinimumSize.Height;
-                if (this.WidthRequest > MaximumSize.Width)
-                    this.WidthRequest = MaximumSize.Width;
-                if (this.HeightRequest > MaximumSize.Height)
-                    this.HeightRequest = MaximumSize.Height;
-
-                Gdk.CairoHelper.SetSourcePixbuf(cr, image, 0, 0);
-            }
-            else if (sizeMode == PictureBoxSizeMode.Tile)
-            {
-                //平铺背景图，原图铺满
-                for (int y = 0; y < height; y += image.Height)
-                {
-                    for (int x = 0; x < width; x += image.Width)
-                    {
-                        Gdk.CairoHelper.SetSourcePixbuf(cr, image, x, y);
-                        cr.Paint();
-                    }
-                }
-            }
-            else
-            {
-                Gdk.CairoHelper.SetSourcePixbuf(cr, image, 0, 0);
-            }
-            cr.Paint();
-        }
-
         private Gdk.Pixbuf ScaleDrawnSource(Gdk.Pixbuf image, PictureBoxSizeMode sizeMode, int width, int height)
         {
             Gdk.Pixbuf result = null;
@@ -179,8 +117,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 result = image;
             }
             else if (sizeMode == PictureBoxSizeMode.StretchImage)
-            { //自由缩放取全图铺满
-
+            { 
+                //自由缩放取全图铺满
                 result = image.ScaleSimple(width, height, Gdk.InterpType.Nearest);
             }
             else if (sizeMode == PictureBoxSizeMode.CenterImage)
@@ -189,12 +127,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 int offsetx = (width - image.Width) / 2;
                 int offsety = (height - image.Height) / 2;
                 Cairo.ImageSurface imageSurface = new Cairo.ImageSurface(Cairo.Format.Argb32, width, height);
-                Cairo.Surface imageSurface2 = imageSurface.CreateSimilar(Cairo.Content.ColorAlpha, width, height);
-                result = new Gdk.Pixbuf(imageSurface2, 0, 0, width, height);
-                image.CopyArea(Math.Max(0, -offsetx), Math.Max(0, -offsety), width, height, result, Math.Max(0, offsetx), Math.Max(0, offsety));
-                imageSurface2.Dispose();
+                result = new Gdk.Pixbuf(imageSurface, 0, 0, width, height);
+                int copy_width = offsetx > 0 ? image.Width : width;
+                int copy_height = offsety > 0 ? image.Height : height;
+                image.CopyArea(Math.Max(0, -offsetx), Math.Max(0, -offsety), copy_width, copy_height, result, Math.Max(0, offsetx), Math.Max(0, offsety));
                 imageSurface.Dispose();
- 
             }
             else if (sizeMode == PictureBoxSizeMode.Zoom)
             {
@@ -213,36 +150,41 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             else if (sizeMode == PictureBoxSizeMode.AutoSize)
             {
                 //原图不缩放，撑开PictureBox
-                if (this.WidthRequest < image.Width)
-                    this.WidthRequest = image.Width;
-                if (this.HeightRequest < image.Height)
-                    this.HeightRequest = image.Height;
-                if (this.WidthRequest < MinimumSize.Width)
-                    this.WidthRequest = MinimumSize.Width;
-                if (this.HeightRequest < MinimumSize.Height)
-                    this.HeightRequest = MinimumSize.Height;
-                if (this.WidthRequest > MaximumSize.Width)
-                    this.WidthRequest = MaximumSize.Width;
-                if (this.HeightRequest > MaximumSize.Height)
-                    this.HeightRequest = MaximumSize.Height;
+                if (MaximumSize.Width > 0 && MaximumSize.Height > 0 && image.Width > MaximumSize.Width && image.Height > MaximumSize.Height)
+                    result = image.ScaleSimple(MaximumSize.Width, MaximumSize.Height, Gdk.InterpType.Nearest);
+                else if (MaximumSize.Width > 0 && image.Width > MaximumSize.Width)
+                    result = image.ScaleSimple(MaximumSize.Width, image.Height, Gdk.InterpType.Nearest);
+                else if (MaximumSize.Width > 0 && image.Height > MaximumSize.Height)
+                    result = image.ScaleSimple(image.Width, MaximumSize.Height, Gdk.InterpType.Nearest);
+                else
+                    result = image;
 
-                result = image;
+                if (MinimumSize.Width > 0 && MinimumSize.Height > 0 && result.Width < MinimumSize.Width && result.Height < MinimumSize.Height)
+                    result = result.ScaleSimple(MinimumSize.Width, MinimumSize.Height, Gdk.InterpType.Nearest);
+                else if (MinimumSize.Width > 0 && result.Width < MinimumSize.Width)
+                    result = result.ScaleSimple(MinimumSize.Width, result.Height, Gdk.InterpType.Nearest);
+                else if (MinimumSize.Height > 0 && result.Height < MinimumSize.Height)
+                    result = result.ScaleSimple(result.Width, MinimumSize.Height, Gdk.InterpType.Nearest);
+
+                if (this.WidthRequest < result.Width)
+                    this.WidthRequest = result.Width;
+                if (this.HeightRequest < result.Height)
+                    this.HeightRequest = result.Height;
             }
             else if (sizeMode == PictureBoxSizeMode.Tile)
             {
                 Cairo.ImageSurface imageSurface = new Cairo.ImageSurface(Cairo.Format.Argb32, width, height);
-                Cairo.Surface imageSurface2 = imageSurface.CreateSimilar(Cairo.Content.ColorAlpha, width, height);
-                result = new Gdk.Pixbuf(imageSurface2, 0, 0, width, height);
-
+                result = new Gdk.Pixbuf(imageSurface, 0, 0, width, height);
+                int copywidth = Math.Min(width, image.Width);
+                int copyheight = Math.Min(height, image.Height);
                 //平铺背景图，原图铺满
                 for (int y = 0; y < height; y += image.Height)
                 {
                     for (int x = 0; x < width; x += image.Width)
                     {
-                        image.CopyArea(0, 0, width, height, result, x, y);
+                        image.CopyArea(0, 0, Math.Min(copywidth, width - x), Math.Min(copyheight, height - y), result, x, y);
                     }
                 }
-                imageSurface2.Dispose();
                 imageSurface.Dispose();
             }
             else
@@ -271,10 +213,10 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 int offsetx = (width - image.Width) / 2;
                 int offsety = (height - image.Height) / 2;
                 Cairo.ImageSurface imageSurface = new Cairo.ImageSurface(Cairo.Format.Argb32, width, height);
-                Cairo.Surface imageSurface2 = imageSurface.CreateSimilar(Cairo.Content.ColorAlpha, width, height);
-                result = new Gdk.Pixbuf(imageSurface2, 0, 0, width, height);
-                image.CopyArea(Math.Max(0, -offsetx), Math.Max(0, -offsety), width, height, result, Math.Max(0, offsetx), Math.Max(0, offsety));
-                imageSurface2.Dispose();
+                result = new Gdk.Pixbuf(imageSurface, 0, 0, width, height);
+                int copy_width = offsetx > 0 ? image.Width : width;
+                int copy_height = offsety > 0 ? image.Height : height;
+                image.CopyArea(Math.Max(0, -offsetx), Math.Max(0, -offsety), copy_width, copy_height, result, Math.Max(0, offsetx), Math.Max(0, offsety));
                 imageSurface.Dispose();
             }
             else if (layoutMode == ImageLayout.Zoom)
@@ -294,18 +236,17 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             else if (layoutMode == ImageLayout.Tile)
             {
                 Cairo.ImageSurface imageSurface = new Cairo.ImageSurface(Cairo.Format.Argb32, width, height);
-                Cairo.Surface imageSurface2 = imageSurface.CreateSimilar(Cairo.Content.ColorAlpha, width, height);
-                result = new Gdk.Pixbuf(imageSurface2, 0, 0, width, height);
-
+                result = new Gdk.Pixbuf(imageSurface, 0, 0, width, height);
+                int copywidth = Math.Min(width, image.Width);
+                int copyheight = Math.Min(height, image.Height);
                 //平铺背景图，原图铺满
                 for (int y = 0; y < height; y += image.Height)
                 {
                     for (int x = 0; x < width; x += image.Width)
                     {
-                        image.CopyArea(0, 0, width, height, result, x, y);
+                        image.CopyArea(0, 0, Math.Min(copywidth, width - x), Math.Min(copyheight, height - y), result, x, y);
                     }
                 }
-                imageSurface2.Dispose();
                 imageSurface.Dispose();
             }
             else
