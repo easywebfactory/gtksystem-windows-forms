@@ -472,19 +472,19 @@ namespace System.Windows.Forms
                 checkboxself.Halign = Gtk.Align.Start;
                 checkboxself.Valign = Gtk.Align.Start;
                 checkboxself.BorderWidth = 0;
-                checkboxself.DrawIndicator = this.CheckBoxes == true;
+                checkboxself.StyleContext.AddClass("ButtonNone");
+                checkboxself.Xalign = 0.0f;
                 checkboxself.Relief = ReliefStyle.None;
                 checkboxself.Label = item.Text;
                 checkboxself.Active = item.Checked;
                 checkboxself.WidgetEvent += Checkboxself_WidgetEvent;
                 if (checkboxself.Child is Gtk.Label label)
                 {
-                    label.Hexpand = true;
-                    label.Vexpand = true;
                     label.Halign = Gtk.Align.Start;
                     label.Valign = Gtk.Align.Start;
-                    label.Xalign = 0;
-                    label.Yalign = 0;
+                    label.Xalign = 0f;
+                    label.Yalign = 0f;
+                    label.WidthRequest = fistcell.WidthRequest;
                     if (item.ForeColor.HasValue)
                     {
                         label.Attributes = new Pango.AttrList();
@@ -492,12 +492,21 @@ namespace System.Windows.Forms
                         label.Attributes.Insert(fg);
                     }
                 }
-                fistcell.Put(checkboxself, padding, 0);
+                if (this.CheckBoxes == true)
+                {
+                    checkboxself.DrawIndicator = true;
+                    fistcell.Put(checkboxself, padding, 0);
+                }
+                else
+                {
+                    checkboxself.DrawIndicator = false;
+                    fistcell.Put(checkboxself, padding, -4);
+                }
                 Gtk.Viewport viewport = new Viewport();
                 viewport.WidthRequest = boxitem.WidthRequest;
                 viewport.BorderWidth = 0;
                 viewport.Add(fistcell);
-                hBox.PackStart(viewport, false, true, 0);
+                hBox.PackStart(viewport, false, false, 0);
 
                 if (this.View == View.Details)
                 {
@@ -561,6 +570,7 @@ namespace System.Windows.Forms
                                 sublabel.Halign = Gtk.Align.Start;
                                 sublabel.Valign = Gtk.Align.Fill;
                                 sublabel.Xalign = 0.0f;
+                                sublabel.Yalign = 0f;
                                 sublabel.Ellipsize = Pango.EllipsizeMode.End;
                                 sublabel.Text = subitem.Text;
                                 sublayout.Put(sublabel, padding, 0);

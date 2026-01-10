@@ -77,27 +77,15 @@ namespace System.Windows.Forms
                     self.Entry.CanFocus = false;
                     self.Entry.NoShowAll = true;
                     self.Entry.WidthRequest = 1;
-                    self.Entry.Opacity = 0;
-                    self.Entry.Visible = false;
                     ws.WidthRequest = self.WidthRequest;
                     ws.DrawIndicator = true;
                     ws.Drawn += Ws_Drawn;
-
-                    var window = Gtk.Window.ListToplevels().Where(w => w.WindowType == WindowType.Popup);
-                    foreach (Gtk.Window w in window)
-                    {
-                        if (w.AttachedTo is ComboBoxBase cbb && cbb.WidgetPath.Equals(self.WidgetPath))
-                        {
-                            w.SizeAllocated += W_SizeAllocated;
-                            w.Shown += W_Shown;
-                            break;
-                        }
-                    }
                 }
             }
         }
         private void Ws_Drawn(object o, DrawnArgs args)
         {
+            self.Entry.Visible = false;
             var ws = o as Gtk.ToggleButton;
             string text = self.ActiveText;
             Pango.Layout layout = ws.CreatePangoLayout(text);
@@ -108,39 +96,6 @@ namespace System.Windows.Forms
             Pango.CairoHelper.ShowLayout(args.Cr, layout);
             args.Cr.Restore();
         }
-        private void W_SizeAllocated(object o, SizeAllocatedArgs args)
-        {
-            Gtk.Window w = (Gtk.Window)o;
-            if (w.Window != null && w.Window.IsVisible)
-            {
-                self.Window.GetOrigin(out int x, out int y);
-                int wx = x - 5;
-                int wy = y + self.AllocatedHeight - 4;
-                w.Window.GetOrigin(out int wx1, out int wy1);
-                if (wx != wx1)
-                {
-                    w.Window.Move(wx, wy);
-                    GLib.Timeout.Add(50, () =>
-                    {
-                        w.Window.GetOrigin(out int x1, out int y1);
-                        if (wx == x1 && wy == y1)
-                        {
-                            w.Window.Opacity = 1;
-                            w.Window.Show();
-                            return false;
-                        }
-                        w.Window.Move(wx, wy);
-                        return true;
-                    });
-                }
-            }
-        }
-        private void W_Shown(object sender, EventArgs e)
-        {
-            Gtk.Window w= (Gtk.Window)sender;
-            w.Window.Opacity = 0;
-        }
-
         private ComboBoxStyle _DropDownStyle;
         public ComboBoxStyle DropDownStyle { 
             get=> _DropDownStyle; 
