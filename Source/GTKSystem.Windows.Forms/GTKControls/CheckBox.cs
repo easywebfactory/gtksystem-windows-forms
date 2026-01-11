@@ -4,6 +4,7 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+using GLib;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 
@@ -34,7 +35,11 @@ namespace System.Windows.Forms
                 CheckStateChanged(this, EventArgs.Empty);
         }
 
-        public override string Text { get { return self.Label; } set { self.Label = value; } }
+        public override string Text
+        {
+            get { if (self.Child is Gtk.Label label) { return label.Text; } else return self.Label; }
+            set { if (self.Child is Gtk.Label label) { label.Text = value; } else self.Label = value; }
+        }
         public  bool Checked { get { return self.Active; } 
             set { self.Active = value; if (self.IsRealized) { self.Inconsistent = false; } } }
         public CheckState CheckState { 
