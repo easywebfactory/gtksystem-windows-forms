@@ -27,7 +27,7 @@ namespace System.Windows.Forms
             _flow.Orientation = Gtk.Orientation.Horizontal;
             _flow.MinChildrenPerLine = 1;
             _flow.MaxChildrenPerLine = 30;
-            _flow.Halign = Gtk.Align.Start;
+            _flow.Halign = Gtk.Align.Fill;
             _flow.Valign = Gtk.Align.Fill;
             _flow.ChildActivated += Control_ChildActivated;
             self.AutoScroll = true;
@@ -45,7 +45,7 @@ namespace System.Windows.Forms
         }
 
         public int ColumnWidth { get; set; }
-        public bool MultiColumn { get { return _flow.Orientation == Gtk.Orientation.Vertical; } set { if (value == false) { _flow.Orientation = Gtk.Orientation.Horizontal; } else { _flow.Orientation = Gtk.Orientation.Vertical; } } }
+        public bool MultiColumn { get { return _flow.Orientation == Gtk.Orientation.Vertical; } set { if (value == false) { _flow.Orientation = Gtk.Orientation.Horizontal; _flow.Valign = Gtk.Align.Start; } else { _flow.Orientation = Gtk.Orientation.Vertical; _flow.Valign = Gtk.Align.Fill; } } }
         public bool HorizontalScrollbar { get; set; }
         public bool FormattingEnabled { get; set; }
         public int ItemHeight { get; set; }

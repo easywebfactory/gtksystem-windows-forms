@@ -31,16 +31,10 @@ namespace System.Windows.Forms
             self.Realized += Self_Realized;
             self.Changed += Self_Changed;
             self.GrabNotify += Self_GrabNotify;
-            self.MoveActive += Self_MoveActive;
         }
 
         public event EventHandler DropDown;
         public event EventHandler DropDownClosed;
-        private void Self_MoveActive(object o, MoveActiveArgs args)
-        {
-            self.QueueDraw();
-        }
-
         private void Self_GrabNotify(object o, GrabNotifyArgs args)
         {
             if (args.WasGrabbed)
