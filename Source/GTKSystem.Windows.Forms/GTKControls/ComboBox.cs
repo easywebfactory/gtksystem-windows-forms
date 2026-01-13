@@ -63,18 +63,17 @@ namespace System.Windows.Forms
             {
                 Is_Self_Realized = true;
                 OnSetDataSource();
-                if (DropDownStyle == ComboBoxStyle.DropDownList)
-                {
-                    Gtk.Box box =(Gtk.Box)self.Entry.Parent;
-                    var ws = box.Children[1] as Gtk.ToggleButton;
-                    self.Entry.IsEditable = false;
-                    self.Entry.CanFocus = false;
-                    self.Entry.NoShowAll = true;
-                    self.Entry.WidthRequest = 1;
-                    ws.WidthRequest = self.WidthRequest;
-                    ws.DrawIndicator = true;
-                    ws.Drawn += Ws_Drawn;
-                }
+                Gtk.Box box = (Gtk.Box)self.Entry.Parent;
+                var ws = box.Children[1] as Gtk.ToggleButton;
+                self.Entry.IsEditable = false;
+                self.Entry.CanFocus = false;
+                self.Entry.NoShowAll = true;
+                self.Entry.WidthRequest = 1;
+                ws.WidthRequest = self.WidthRequest;
+                ws.DrawIndicator = true;
+                ws.Drawn += Ws_Drawn;
+                Gtk.Accessible obj = (Gtk.Accessible)self.PopupAccessible;
+                obj.Widget.ShowNow();
             }
         }
         private void Ws_Drawn(object o, DrawnArgs args)
