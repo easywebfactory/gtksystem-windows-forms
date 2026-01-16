@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
+using System.Xml.Linq;
 
 namespace System.Drawing
 {
@@ -1176,32 +1177,41 @@ namespace System.Drawing
                     this.context.SelectFontFace(font.Name, font.Style.HasFlag(FontStyle.Italic) ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, font.Style.HasFlag(FontStyle.Bold) ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
                 }
                 this.SetSourcePen(new Pen(brush, 1), false);
+                double fontsize = this.context.FontExtents.Height;
+                double desent = this.context.FontExtents.Descent;
                 TextExtents textext = this.context.TextExtents(text);
                 if (format == null)
                 {
-                    this.SetTranslateWithDifference(layoutRectangle.X + 5, layoutRectangle.Y + textext.Height);
+                    this.SetTranslateWithDifference(layoutRectangle.X + 5, layoutRectangle.Y + fontsize);
                 }
                 else
                 {
+
                     double hAlign = 0, vAlign = 0;
                     if (format.Alignment == StringAlignment.Center)
-                        hAlign -= textext.Width / 2;
+                        hAlign -= textext.Width / 2 + desent / 2;
                     else if (format.Alignment == StringAlignment.Far && format.FormatFlags.HasFlag(StringFormatFlags.DirectionRightToLeft) == false)
                         hAlign -= textext.Width;
 
                     if (format.LineAlignment == StringAlignment.Center)
-                        vAlign -= textext.Height / 2;
+                        vAlign = textext.Height / 2 - desent / 2;
+                    else if (format.LineAlignment == StringAlignment.Far && format.FormatFlags.HasFlag(StringFormatFlags.DirectionVertical))
+                    {
+                        vAlign = textext.Height / 2 + desent + desent;
+                    }
                     else if (format.LineAlignment == StringAlignment.Far)
-                        vAlign -= textext.Height;
+                    {
+                        vAlign = -textext.Height / 2;
+                    }
 
                     if (format.FormatFlags.HasFlag(StringFormatFlags.DirectionVertical))
                     {
                         this.context.Rotate(90 * Math.PI / 180);
-                        this.SetTranslateWithDifference(layoutRectangle.Y + hAlign + 2, 0 - layoutRectangle.X - textext.Height / 2);
+                        this.SetTranslateWithDifference(layoutRectangle.Y + hAlign + 2, 0 - layoutRectangle.X + vAlign);
                     }
                     else
                     {
-                        this.SetTranslateWithDifference(layoutRectangle.X + hAlign + 2, layoutRectangle.Y + textext.Height + vAlign);
+                        this.SetTranslateWithDifference(layoutRectangle.X + hAlign + 2, layoutRectangle.Y + vAlign);
                     }
                 }
                 this.context.ShowText(text);
@@ -1677,9 +1687,11 @@ namespace System.Drawing
                 this.context.SetFontSize(textSize);
                 this.context.SelectFontFace(font.Name, font.Style.HasFlag(FontStyle.Italic) ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, font.Style.HasFlag(FontStyle.Bold) ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
             }
+            float fontheight = (float)this.context.FontExtents.Height;
             TextExtents textext = this.context.TextExtents(text);
             float width = (float)textext.Width;
-            float height = (float)this.context.FontExtents.Height;
+            float height = fontheight;
+
             this.context.Restore();
             SizeF result = new SizeF(width, height);
             if (layoutArea.Width > -1)
@@ -1688,7 +1700,7 @@ namespace System.Drawing
                 result.Height = Math.Min(layoutArea.Height, height);
 
             charactersFitted = text.Length;
-            linesFilled = Math.Max(1, Convert.ToInt32(result.Height / textSize));
+            linesFilled = Math.Max(1, Convert.ToInt32(result.Height / fontheight));
             return result;
         }
 
