@@ -63,6 +63,7 @@ namespace System.Windows.Forms
                         {
                             if (_timerId != 0)
                                 GLib.Timeout.Remove(_timerId);
+                            _timerId = 0;
                         }
                     }
                 }
