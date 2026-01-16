@@ -1679,9 +1679,8 @@ namespace System.Drawing
             }
             TextExtents textext = this.context.TextExtents(text);
             float width = (float)textext.Width;
-            float height = (float)textext.Height;
+            float height = (float)this.context.FontExtents.Height;
             this.context.Restore();
-
             SizeF result = new SizeF(width, height);
             if (layoutArea.Width > -1)
                 result.Width = Math.Min(layoutArea.Width, width);
