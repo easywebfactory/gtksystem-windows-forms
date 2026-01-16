@@ -406,23 +406,24 @@ namespace System.Windows.Forms
         {
             if (self.IsRealized)
             {
-                Gtk.FlowBoxChild boxitem = new Gtk.FlowBoxChild();
-                boxitem.TooltipText = item.Text;
-                boxitem.Data.Add("ItemId", item.Index);
-                boxitem.Halign = Gtk.Align.Start;
-                boxitem.Valign = Gtk.Align.Start;
-                boxitem.BorderWidth = 0;
-                boxitem.Margin = 0;
-                boxitem.WidthRequest = Columns.Count > 0 ? Columns[0].Width : Width;
-                boxitem.HeightRequest = FontSize + 10;
-                item._flowBoxChild = boxitem;
+                int padding = 5;
+               
+                Gtk.FlowBoxChild flowitem = new Gtk.FlowBoxChild();
+                flowitem.TooltipText = item.Text;
+                flowitem.Data.Add("ItemId", item.Index);
+                flowitem.Halign = Gtk.Align.Start;
+                flowitem.Valign = Gtk.Align.Start;
+                flowitem.BorderWidth = 0;
+                flowitem.Margin = 0;
+                flowitem.HeightRequest = FontSize + 10;
+                item._flowBoxChild = flowitem;
                 BoxBase hBox = new BoxBase(Gtk.Orientation.Horizontal, 0);
                 if (item.BackColor.HasValue)
                 {
                     hBox.Override.BackColor = Drawing.Color.FromArgb(180, item.BackColor.Value);
                 }
                 hBox.Valign = Gtk.Align.Fill;
-                hBox.Halign = Gtk.Align.Start;
+                hBox.Halign = Gtk.Align.Fill;
                 hBox.BorderWidth = 0;
                 hBox.Spacing = 0;
                 hBox.Homogeneous = false;
@@ -431,13 +432,13 @@ namespace System.Windows.Forms
                 {
                     if (item.SubItems != null && item.SubItems.Count > col.Index)
                     {
-                        boxitem.Data.Add(col.Index, item.SubItems[col.Index].Text);
+                        flowitem.Data.Add(col.Index, item.SubItems[col.Index].Text);
                     }
                     else
-                        boxitem.Data.Add(col.Index, string.Empty);
+                        flowitem.Data.Add(col.Index, string.Empty);
                 }
 
-                boxitem.Add(hBox);
+                flowitem.Add(hBox);
 
                 Gtk.FlowBox flowBox = DefaultGroup.FlowBox;
                 if (this.ShowGroups == true && this.View != View.List && this.View != View.Tile)
@@ -453,38 +454,33 @@ namespace System.Windows.Forms
                 }
 
                 if (position == -1)
-                    flowBox.Add(boxitem);
+                    flowBox.Add(flowitem);
                 else
-                    flowBox.Insert(boxitem, position);
+                    flowBox.Insert(flowitem, position);
 
-                int padding = 5;
-                Gtk.Layout fistcell = new Gtk.Layout(new Adjustment(IntPtr.Zero), new Adjustment(IntPtr.Zero));
-                fistcell.Halign = Gtk.Align.Start;
+                Gtk.Overlay fistcell = new Gtk.Overlay();
+                fistcell.Halign = Gtk.Align.Fill;
                 fistcell.Valign = Gtk.Align.Fill;
-                fistcell.Hexpand = true;
-                fistcell.Vexpand = true;
-                fistcell.BorderWidth = 0;
-                fistcell.WidthRequest = boxitem.WidthRequest - padding;
-                fistcell.HeightRequest = boxitem.HeightRequest;
-
+                fistcell.BorderWidth = 1;
+                if (Columns.Count > 0)
+                    fistcell.WidthRequest = Columns[0].Width;
+                else
+                    fistcell.WidthRequest = Width - padding - padding;
                 CheckBox checkBox = new CheckBox();
                 Gtk.CheckButton checkboxself = checkBox.self;
                 checkboxself.Halign = Gtk.Align.Start;
-                checkboxself.Valign = Gtk.Align.Start;
+                checkboxself.Valign = Gtk.Align.Center;
                 checkboxself.BorderWidth = 0;
-                checkboxself.StyleContext.AddClass("ButtonNone");
-                checkboxself.Xalign = 0.0f;
                 checkboxself.Relief = ReliefStyle.None;
+                checkboxself.StyleContext.AddClass("ButtonNone");
                 checkboxself.Label = item.Text;
                 checkboxself.Active = item.Checked;
+                checkboxself.DrawIndicator = this.CheckBoxes;
                 checkboxself.WidgetEvent += Checkboxself_WidgetEvent;
                 if (checkboxself.Child is Gtk.Label label)
                 {
                     label.Halign = Gtk.Align.Start;
                     label.Valign = Gtk.Align.Start;
-                    label.Xalign = 0f;
-                    label.Yalign = 0f;
-                    label.WidthRequest = fistcell.WidthRequest;
                     if (item.ForeColor.HasValue)
                     {
                         label.Attributes = new Pango.AttrList();
@@ -492,31 +488,29 @@ namespace System.Windows.Forms
                         label.Attributes.Insert(fg);
                     }
                 }
-                if (this.CheckBoxes == true)
-                {
-                    checkboxself.DrawIndicator = true;
-                    fistcell.Put(checkboxself, padding, 0);
-                }
+
+                if (fistcell.WidthRequest == -1)
+                    fistcell.Add(checkboxself);
                 else
-                {
-                    checkboxself.DrawIndicator = false;
-                    fistcell.Put(checkboxself, padding, -4);
-                }
+                    fistcell.AddOverlay(checkboxself);
+
+                checkboxself.Xalign = 0.0f;
+                checkboxself.Yalign = 0.5f;
                 Gtk.Viewport viewport = new Viewport();
-                viewport.WidthRequest = boxitem.WidthRequest;
                 viewport.BorderWidth = 0;
                 viewport.Add(fistcell);
-                hBox.PackStart(viewport, false, false, 0);
+                hBox.PackStart(viewport, true, true, 0);
 
                 if (this.View == View.Details)
                 {
                     header.Visible = true;
-                    flowBox.MinChildrenPerLine = 1;
-                    flowBox.MaxChildrenPerLine = 1;
-
                     if (this.SmallImageList != null)
                     {
-                        int imageheight = this.SmallImageList.ImageSize.Height;
+                        int width = this.SmallImageList.ImageSize.Width;
+                        int height = this.SmallImageList.ImageSize.Height;
+                        if (height > flowitem.HeightRequest)
+                            flowitem.HeightRequest = height;
+
                         checkboxself.AlwaysShowImage = true;
                         checkboxself.ImagePosition = PositionType.Left;
                         if (!string.IsNullOrWhiteSpace(item.ImageKey))
@@ -524,10 +518,7 @@ namespace System.Windows.Forms
                             Drawing.Image img = this.SmallImageList.GetBitmap(item.ImageKey);
                             if (img != null)
                             {
-                                if (imageheight > FontSize + 5)
-                                    checkboxself.Image = new Gtk.Image(img.Pixbuf.ScaleSimple(FontSize + 5, FontSize + 5, Gdk.InterpType.Bilinear));
-                                else
-                                    checkboxself.Image = new Gtk.Image(img.Pixbuf);
+                                checkboxself.Image = new Gtk.Image(img.Pixbuf) { WidthRequest = width, HeightRequest = height, Halign = Align.Start };
                             }
                         }
                         else if (item.ImageIndex > -1)
@@ -535,10 +526,7 @@ namespace System.Windows.Forms
                             Drawing.Image img = this.SmallImageList.GetBitmap(item.ImageIndex);
                             if (img != null)
                             {
-                                if (imageheight > FontSize + 5)
-                                    checkboxself.Image = new Gtk.Image(img.Pixbuf.ScaleSimple(FontSize + 5, FontSize + 5, Gdk.InterpType.Bilinear));
-                                else
-                                    checkboxself.Image = new Gtk.Image(img.Pixbuf);
+                                checkboxself.Image = new Gtk.Image(img.Pixbuf) { WidthRequest = width, HeightRequest = height, Halign = Align.Start };
                             }
                         }
                     }
@@ -547,11 +535,10 @@ namespace System.Windows.Forms
                     {
                         if (index > 0)
                         {
-                            Gtk.Layout sublayout = new Gtk.Layout(new Adjustment(IntPtr.Zero), new Adjustment(IntPtr.Zero));
-                            sublayout.Halign = Gtk.Align.Start;
+                            Gtk.Overlay sublayout = new Gtk.Overlay();
+                            sublayout.Halign = Gtk.Align.Fill;
                             sublayout.Valign = Gtk.Align.Fill;
-                            sublayout.WidthRequest = col.Width - padding;
-                            sublayout.HeightRequest = fistcell.HeightRequest;
+                            sublayout.WidthRequest = col.Width;
                             if (item.SubItems != null && item.SubItems.Count > index)
                             {
                                 ListViewItem.ListViewSubItem subitem = item.SubItems[index];
@@ -564,22 +551,21 @@ namespace System.Windows.Forms
                                     Pango.AttrForeground fg = new Pango.AttrForeground(Convert.ToUInt16(subitem.ForeColor.Value.R * 257), Convert.ToUInt16(subitem.ForeColor.Value.G * 257), Convert.ToUInt16(subitem.ForeColor.Value.B * 257));
                                     sublabel.Attributes.Insert(fg);
                                 }
-                                sublabel.WidthRequest = col.Width - padding;
                                 sublabel.WidthChars = 0;
                                 sublabel.MaxWidthChars = 0;
-                                sublabel.Halign = Gtk.Align.Start;
-                                sublabel.Valign = Gtk.Align.Fill;
+                                sublabel.Halign = Gtk.Align.Fill;
+                                sublabel.Valign = Gtk.Align.Center;
+                                sublabel.MarginStart = padding;
                                 sublabel.Xalign = 0.0f;
-                                sublabel.Yalign = 0f;
+                                sublabel.Yalign = 0.5f;
                                 sublabel.Ellipsize = Pango.EllipsizeMode.End;
                                 sublabel.Text = subitem.Text;
-                                sublayout.Put(sublabel, padding, 0);
+                                sublayout.AddOverlay(sublabel);
                             }
                             Gtk.Viewport sviewport = new Viewport();
-                            sviewport.WidthRequest = col.Width;
                             sviewport.BorderWidth = 0;
                             sviewport.Add(sublayout);
-                            hBox.PackStart(sviewport, false, true, 0);
+                            hBox.PackStart(sviewport, true, true, 0);
                         }
                         index++;
                     }
@@ -587,50 +573,15 @@ namespace System.Windows.Forms
                 else
                 {
                     header.Visible = false;
-                    if (this.View == View.SmallIcon)
+                    if (this.View == View.LargeIcon)
                     {
-                        flowBox.MinChildrenPerLine = 1;
-                        flowBox.MaxChildrenPerLine = 999;
-                        if (this.SmallImageList != null)
-                        {
-                            int imageheight = this.SmallImageList.ImageSize.Height;
-                            checkboxself.AlwaysShowImage = true;
-                            checkboxself.ImagePosition = PositionType.Left;
-                            if (!string.IsNullOrWhiteSpace(item.ImageKey))
-                            {
-                                Drawing.Image img = this.SmallImageList.GetBitmap(item.ImageKey);
-                                if (img != null)
-                                {
-                                    if (imageheight > FontSize + 5)
-                                        checkboxself.Image = new Gtk.Image(img.Pixbuf.ScaleSimple(FontSize + 5, FontSize + 5, Gdk.InterpType.Bilinear));
-                                    else
-                                        checkboxself.Image = new Gtk.Image(img.Pixbuf);
-                                }
-                            }
-                            else if (item.ImageIndex > -1)
-                            {
-                                Drawing.Image img = this.SmallImageList.GetBitmap(item.ImageIndex);
-                                if (img != null)
-                                {
-                                    if (imageheight > FontSize + 5)
-                                        checkboxself.Image = new Gtk.Image(img.Pixbuf.ScaleSimple(FontSize + 5, FontSize + 5, Gdk.InterpType.Bilinear));
-                                    else
-                                        checkboxself.Image = new Gtk.Image(img.Pixbuf);
-                                }
-                            }
-
-                        }
-                    }
-                    else if (this.View == View.LargeIcon)
-                    {
-                        flowBox.MinChildrenPerLine = 1;
-                        flowBox.MaxChildrenPerLine = 999;
                         if (this.LargeImageList != null)
                         {
                             int width = this.LargeImageList.ImageSize.Width;
                             int height = this.LargeImageList.ImageSize.Height;
-                            fistcell.WidthRequest = width + 40;
-                            fistcell.HeightRequest = height + FontSize + 12;
+                            flowitem.WidthRequest = width + 40;
+                            flowitem.HeightRequest = height + FontSize + 20;
+
                             checkboxself.AlwaysShowImage = true;
                             checkboxself.ImagePosition = PositionType.Top;
                             if (!string.IsNullOrWhiteSpace(item.ImageKey))
@@ -653,7 +604,32 @@ namespace System.Windows.Forms
                     }
                     else
                     {
-                        boxitem.Halign = Gtk.Align.Fill;
+                        if (this.SmallImageList != null)
+                        {
+                            int width = this.SmallImageList.ImageSize.Width;
+                            int height = this.SmallImageList.ImageSize.Height;
+                            if (height > flowitem.HeightRequest)
+                                flowitem.HeightRequest = height;
+
+                            checkboxself.AlwaysShowImage = true;
+                            checkboxself.ImagePosition = PositionType.Left;
+                            if (!string.IsNullOrWhiteSpace(item.ImageKey))
+                            {
+                                Drawing.Image img = this.SmallImageList.GetBitmap(item.ImageKey);
+                                if (img != null)
+                                {
+                                    checkboxself.Image = new Gtk.Image(img.Pixbuf) { WidthRequest = width, HeightRequest = height, Halign = Align.Start };
+                                }
+                            }
+                            else if (item.ImageIndex > -1)
+                            {
+                                Drawing.Image img = this.SmallImageList.GetBitmap(item.ImageIndex);
+                                if (img != null)
+                                {
+                                    checkboxself.Image = new Gtk.Image(img.Pixbuf) { WidthRequest = width, HeightRequest = height, Halign = Align.Start };
+                                }
+                            }
+                        }
                     }
                 }
                 if (IsCacheUpdate == false)
@@ -739,8 +715,9 @@ namespace System.Windows.Forms
                         {
                             groupbox.NoShowAll = true;
                             groupbox.Visible = false;
-                            _flow.StyleContext.AddClass("GridBorder");
                         }
+                        if (this.View == View.Details)
+                            _flow.StyleContext.AddClass("GridBorder");
                     }
                     else
                     {
@@ -748,8 +725,9 @@ namespace System.Windows.Forms
                         {
                             defbox.NoShowAll = false;
                             defbox.Visible = true;
-                            DefaultGroup.FlowBox.StyleContext.RemoveClass("GridBorder");
                         }
+                        if (this.View == View.Details)
+                            _flow.StyleContext.AddClass("GridBorder");
                     }
 
                     hBox.PackStart(groupbox, false, false, 0);
@@ -771,7 +749,7 @@ namespace System.Windows.Forms
                 _flow.BorderWidth = 0;
                 _flow.Homogeneous = false;
                 _flow.Orientation = Gtk.Orientation.Horizontal;
-                _flow.MaxChildrenPerLine = 500u;
+                _flow.MaxChildrenPerLine = 50u;
                 _flow.MinChildrenPerLine = 0u;
                 _flow.Halign = Gtk.Align.Fill;
                 _flow.Valign = Gtk.Align.Start;

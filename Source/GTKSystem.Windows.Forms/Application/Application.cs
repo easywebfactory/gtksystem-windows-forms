@@ -160,7 +160,8 @@ namespace System.Windows.Forms
 }
 .DefaultThemeStyle button{padding:4px 3px;}
 .titlebar{border-radius: 0px; border-bottom: solid 1px #cfcfcf;}
-.ButtonNone{padding:0px;border-style:none;box-shadow:none;min-height:1px;min-width:1px;margin:0px;border-radius:0px;}
+.ButtonNone{padding:0px;margin:0px;border-radius:0px;border-style:none;box-shadow:none;}
+.ButtonNone.check,.ButtonNone check{padding-top:0px;padding-bottom:0px;;margin-top:0px;margin-bottom:0px;}
 .BorderNone{border-style:none;box-shadow:none;}
 .BorderFixedSingle{border-width:0px;border-style:none;padding:1px;box-shadow: inset 0px 0px 0px 1px @frame_color;}
 .BorderFixed3D{border-width:0px;border-style:none; padding:2px; box-shadow: inset 1px 1px 1px 2px @frame3d_color;}
@@ -192,7 +193,7 @@ namespace System.Windows.Forms
 .ListView checkbutton {padding:0px;}
 .ListView .Label{background-color:transparent;} 
 .ListView flowboxchild {padding:0px;}
-.ListView flowboxchild viewport{padding:2px 0px;}
+.ListView flowboxchild viewport{padding:0px;}
 .ListView .GridBorder viewport{box-shadow: inset -1px -1px #eeeeee;}
 .ListViewHeader {background-color:@theme_bg_color; opacity:0.88;padding:0px;min-height:6px; }
 .ListViewHeader button{box-shadow:inset -1px 0px @frame_color;border-width:0px; border-radius:0px; padding:0px 0px 5px 0px;min-height:20px;min-width:6px;margin:0px; }
