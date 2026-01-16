@@ -102,8 +102,7 @@ namespace System.Windows.Forms
 
         protected override void Dispose(bool disposing)
         {
-            if (_timerId != 0)
-                GLib.Timeout.Remove(_timerId);
+            Enabled = false;
             base.Dispose(disposing);
         }
     }

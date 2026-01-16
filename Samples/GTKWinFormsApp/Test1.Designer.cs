@@ -31,10 +31,10 @@ namespace GTKWinFormsApp
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Test1));
+            components = new System.ComponentModel.Container();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
             dataGridView1 = new DataGridView();
             id = new DataGridViewTextBoxColumn();
             project = new DataGridViewTextBoxColumn();
@@ -93,6 +93,7 @@ namespace GTKWinFormsApp
             radioButton4 = new RadioButton();
             radioButton5 = new RadioButton();
             radioButton6 = new RadioButton();
+            timer1 = new Timer(components);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             panel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -112,26 +113,26 @@ namespace GTKWinFormsApp
             // 
             // dataGridView1
             // 
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(224, 224, 224);
-            dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(40, 128, 192);
-            dataGridViewCellStyle2.Font = new Font("Microsoft YaHei UI", 9F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle7.BackColor = Color.FromArgb(224, 224, 224);
+            dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = Color.FromArgb(40, 128, 192);
+            dataGridViewCellStyle8.Font = new Font("Microsoft YaHei UI", 9F);
+            dataGridViewCellStyle8.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
+            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { id, project, state, testnum });
             dataGridView1.Location = new Point(33, 240);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = Color.FromArgb(192, 192, 192);
-            dataGridViewCellStyle3.ForeColor = Color.FromArgb(0, 0, 0);
-            dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = Color.FromArgb(192, 192, 192);
+            dataGridViewCellStyle9.ForeColor = Color.FromArgb(0, 0, 0);
+            dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle9;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(291, 598);
             dataGridView1.TabIndex = 0;
@@ -209,11 +210,10 @@ namespace GTKWinFormsApp
             panel2.Controls.Add(label3);
             panel2.Controls.Add(label2);
             panel2.Dock = DockStyle.Fill;
-            panel2.Location = new Point(3, 3);
+            panel2.Location = new Point(4, 4);
             panel2.Name = "panel2";
-            panel2.Size = new Size(170, 259);
+            panel2.Size = new Size(168, 258);
             panel2.TabIndex = 0;
-            panel2.BorderStyle = BorderStyle.None;
             // 
             // label5
             // 
@@ -284,11 +284,10 @@ namespace GTKWinFormsApp
             panel3.Controls.Add(pictureBox_CC2);
             panel3.Controls.Add(pictureBox_PC2);
             panel3.Dock = DockStyle.Fill;
-            panel3.Location = new Point(179, 3);
+            panel3.Location = new Point(179, 4);
             panel3.Name = "panel3";
-            panel3.Size = new Size(170, 259);
+            panel3.Size = new Size(169, 258);
             panel3.TabIndex = 1;
-            panel3.BorderStyle = BorderStyle.None;
             // 
             // label9
             // 
@@ -356,11 +355,10 @@ namespace GTKWinFormsApp
             panel4.Controls.Add(label11);
             panel4.Controls.Add(label10);
             panel4.Dock = DockStyle.Fill;
-            panel4.Location = new Point(3, 268);
+            panel4.Location = new Point(4, 269);
             panel4.Name = "panel4";
-            panel4.Size = new Size(170, 260);
+            panel4.Size = new Size(168, 258);
             panel4.TabIndex = 2;
-            panel4.BorderStyle = BorderStyle.None;
             // 
             // pictureBox_PC3
             // 
@@ -401,11 +399,10 @@ namespace GTKWinFormsApp
             panel5.Controls.Add(label13);
             panel5.Controls.Add(label12);
             panel5.Dock = DockStyle.Fill;
-            panel5.Location = new Point(179, 268);
+            panel5.Location = new Point(179, 269);
             panel5.Name = "panel5";
-            panel5.Size = new Size(170, 260);
+            panel5.Size = new Size(169, 258);
             panel5.TabIndex = 3;
-            panel5.BorderStyle = BorderStyle.None;
             // 
             // label15
             // 
@@ -748,11 +745,16 @@ namespace GTKWinFormsApp
             radioButton6.TextAlign = ContentAlignment.MiddleCenter;
             radioButton6.UseVisualStyleBackColor = true;
             // 
+            // timer1
+            // 
+            timer1.Interval = 20;
+            timer1.Enabled = true;
+            timer1.Tick += Timer_Tick;
+            // 
             // Test1
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(1282, 953);
             Controls.Add(radioButton6);
             Controls.Add(radioButton5);
@@ -866,5 +868,6 @@ namespace GTKWinFormsApp
         private RadioButton radioButton4;
         private RadioButton radioButton5;
         private RadioButton radioButton6;
+        private Timer timer1;
     }
 }

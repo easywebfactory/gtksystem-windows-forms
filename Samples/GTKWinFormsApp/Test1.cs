@@ -14,7 +14,6 @@ namespace GTKWinFormsApp
 {
     public partial class Test1 : Form
     {
-        Timer timer = new Timer();
         public Test1()
         {
             InitializeComponent();
@@ -31,18 +30,14 @@ namespace GTKWinFormsApp
             }
              
             this.dataGridView1.DataSource = dt;
-
             dataGridView1.Click += DataGridView1_Click;
 
-            timer.Interval = 100;
-            timer.Enabled = true;
-            timer.Tick += Timer_Tick;
             this.FormClosing += Test1_FormClosing;
         }
         
         private void Test1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            timer.Stop();
+   
         }
  
         private void DataGridView1_Click(object? sender, EventArgs e)
@@ -57,7 +52,7 @@ namespace GTKWinFormsApp
             {
                 label16.Text = format;
             }
-            ticks +=0.01;
+            ticks +=0.005;
             pictureBox_PC1.Refresh();
             pictureBox_CC1.Refresh();
             pictureBox_chart.Refresh();
@@ -71,7 +66,8 @@ namespace GTKWinFormsApp
         
         private void button17_Click(object sender, EventArgs e)
         {
-
+            dataGridView1.Rows[0].Cells[0].Value = DateTime.Now.Second;
+            dataGridView1.Refresh();
         }
         private void pictureBox_PC1_Paint(object sender, PaintEventArgs e)
         {
