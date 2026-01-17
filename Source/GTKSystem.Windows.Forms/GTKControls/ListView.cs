@@ -27,7 +27,7 @@ namespace System.Windows.Forms
         internal Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
         internal Gtk.Box flowBoxContainer = new Gtk.Box(Gtk.Orientation.Vertical, 0);
         internal Gtk.Box header = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
-        internal Gtk.Layout headerView = new Gtk.Layout(null, null);
+        internal Gtk.ScrolledWindow headerView = new Gtk.ScrolledWindow();
         private int __headerheight = 30;
         public ListView() : base()
         {
@@ -37,25 +37,25 @@ namespace System.Windows.Forms
             _columns = new ColumnHeaderCollection(this);
             self.Realized += Control_Realized;
 
-            header.StyleContext.AddClass("ListViewHeader");
-            header.Spacing = 0;
-            header.BorderWidth = 0;
-            header.Halign = Gtk.Align.Fill;
-            header.Valign = Gtk.Align.Fill;
-            header.HeightRequest = 1;
-            header.Homogeneous = false;
             flowBoxContainer.Halign = Gtk.Align.Fill;
             flowBoxContainer.Valign = Gtk.Align.Start;
             scrolledWindow.Halign = Gtk.Align.Fill;
             scrolledWindow.Valign = Gtk.Align.Fill;
             scrolledWindow.Add(flowBoxContainer);
             scrolledWindow.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
+            
+            header.Spacing = 0;
+            header.BorderWidth = 0;
+            header.Halign = Gtk.Align.Start;
+            header.Valign = Gtk.Align.Fill;
+            header.Homogeneous = false;
             headerView.Halign = Gtk.Align.Fill;
             headerView.Valign = Gtk.Align.Start;
-            headerView.Hexpand = true;
-            headerView.Vexpand = false;
-            headerView.HeightRequest = 1;// __headerheight;
-            headerView.Width = 100000;
+            headerView.NoShowAll = true;
+            headerView.HeightRequest = __headerheight;
+            headerView.HscrollbarPolicy=PolicyType.External;
+            headerView.VscrollbarPolicy = PolicyType.Never;
+            headerView.StyleContext.AddClass("ListViewHeader");
             headerView.Add(header);
             self.box.PackStart(headerView, false, true, 0);
             self.box.PackStart(scrolledWindow, true, true, 0);
@@ -72,12 +72,10 @@ namespace System.Windows.Forms
             if (!Is_Control_Realized)
             {
                 Is_Control_Realized = true;
-                if (this.View == View.Details)
+                if (this.View == View.Details && HeaderStyle != ColumnHeaderStyle.None)
                 {
-                    header.NoShowAll = false;
-                    header.Visible = true;
-                    header.ShowAll();
-                    headerView.HeightRequest = __headerheight;
+                    headerView.NoShowAll = false;
+                    headerView.ShowAll();
                 }
                 foreach (ColumnHeader cheader in this.Columns)
                 {
@@ -96,6 +94,9 @@ namespace System.Windows.Forms
                 self.ShowAll();
             }
         }
+        public int VirtualListSize { get; set; }
+        public bool VirtualModel { get; set; } = true;
+        public bool AutoArrange { get; set; } = true;
         public bool Sorted { get; set; }
         public System.Windows.Forms.SortOrder Sorting { get; set; }
         public System.Windows.Forms.ListViewAlignment Alignment { get; set; }
@@ -216,25 +217,14 @@ namespace System.Windows.Forms
             {
                 LabelBase label = new LabelBase(col.Text) { Xalign = 0, Xpad = 5, MaxWidthChars = 0, Halign = Gtk.Align.Fill, Valign = Gtk.Align.End, Ellipsize = Pango.EllipsizeMode.End, Wrap = false, LineWrap = false };
                 label.TooltipText = col.Text;
-                label.Markup = col.Text;
                 label.Name = $"column_t_{col.Index}";
                 label.Drawn += Label_Drawn;
-                var columbt = new Gtk.Button(label) { MarginStart = 0, WidthRequest = col.Width, HeightRequest = __headerheight, Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill };
+                var columbt = new Gtk.Button(label) { MarginStart = 0, WidthRequest = col.Width, Halign = Gtk.Align.Fill, Valign = Gtk.Align.Fill };
                 columbt.Name = $"column_b_{col.Index}";
                 columbt.ActionTargetValue = new GLib.Variant(col.Index);
                 columbt.WidgetEvent += Columbt_WidgetEvent;
-                header.PackStart(columbt, false, false, 0);
+                header.PackStart(columbt, false, true, 0);
                 header.ReorderChild(columbt, col.Index);
-
-                if (this.View == View.Details)
-                {
-                    headerView.HeightRequest = __headerheight;
-                    headerView.ShowAll();
-                }
-                else
-                {
-                    headerView.HeightRequest = 1;
-                }
             }
         }
         private double sizex = 0;
@@ -543,7 +533,7 @@ namespace System.Windows.Forms
 
                 if (this.View == View.Details)
                 {
-                    header.Visible = true;
+                    headerView.ShowAll();
                     flowBox.MaxChildrenPerLine = 1;
                     if (this.SmallImageList != null)
                     {
@@ -613,7 +603,7 @@ namespace System.Windows.Forms
                 }
                 else
                 {
-                    header.Visible = false;
+                    headerView.Hide();
                     if (this.View == View.LargeIcon)
                     {
                         if (this.LargeImageList != null)
@@ -1347,7 +1337,7 @@ namespace System.Windows.Forms
             }
         }
 
-        public bool FullRowSelect { get; set; }
+        public bool FullRowSelect { get; set; } = true;
 
         public ListViewGroupCollection Groups
         {

@@ -193,9 +193,9 @@ namespace System.Windows.Forms
 .ListView checkbutton {padding:0px;}
 .ListView .Label{background-color:transparent;} 
 .ListView flowboxchild {padding:0px;}
-.ListView flowboxchild viewport{padding:0px;}
+.ListView flowboxchild viewport{padding:2px 0px;}
 .ListView .GridBorder viewport{box-shadow: inset -1px -1px #eeeeee;}
-.ListViewHeader {background-color:@theme_bg_color; opacity:0.88;padding:0px;min-height:6px; }
+.ListViewHeader {background-color:@theme_bg_color; padding:0px;min-height:6px; }
 .ListViewHeader button{box-shadow:inset -1px 0px @frame_color;border-width:0px; border-radius:0px; padding:0px 0px 5px 0px;min-height:20px;min-width:6px;margin:0px; }
 .ListViewHeader button.frame{border-width:0px;padding:0px 0px 0px 0px;margin:0px; }
 .ListView .GroupLine{border-top:inset 1px #6677bb;}
