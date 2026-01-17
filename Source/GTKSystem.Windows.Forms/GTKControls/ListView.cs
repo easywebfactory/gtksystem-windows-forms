@@ -11,6 +11,7 @@ using Pango;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
+using System.Reflection;
 
 namespace System.Windows.Forms
 {
@@ -26,7 +27,7 @@ namespace System.Windows.Forms
         internal Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
         internal Gtk.Box flowBoxContainer = new Gtk.Box(Gtk.Orientation.Vertical, 0);
         internal Gtk.Box header = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
-        internal Gtk.Layout headerView;
+        internal Gtk.Layout headerView = new Gtk.Layout(null, null);
         private int __headerheight = 30;
         public ListView() : base()
         {
@@ -49,7 +50,6 @@ namespace System.Windows.Forms
             scrolledWindow.Valign = Gtk.Align.Fill;
             scrolledWindow.Add(flowBoxContainer);
             scrolledWindow.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
-            headerView = new Gtk.Layout(null, null);
             headerView.Halign = Gtk.Align.Fill;
             headerView.Valign = Gtk.Align.Start;
             headerView.Hexpand = true;
@@ -214,7 +214,7 @@ namespace System.Windows.Forms
         {
             if (self.IsRealized)
             {
-                LabelBase label = new LabelBase(col.Text) { Xalign = 0, Xpad = 5, WidthRequest = col.Width, MaxWidthChars = 0, Halign = Gtk.Align.Start, Valign = Gtk.Align.End, Ellipsize = Pango.EllipsizeMode.End, Wrap = false, LineWrap = false };
+                LabelBase label = new LabelBase(col.Text) { Xalign = 0, Xpad = 5, MaxWidthChars = 0, Halign = Gtk.Align.Fill, Valign = Gtk.Align.End, Ellipsize = Pango.EllipsizeMode.End, Wrap = false, LineWrap = false };
                 label.TooltipText = col.Text;
                 label.Markup = col.Text;
                 label.Name = $"column_t_{col.Index}";
@@ -222,9 +222,8 @@ namespace System.Windows.Forms
                 var columbt = new Gtk.Button(label) { MarginStart = 0, WidthRequest = col.Width, HeightRequest = __headerheight, Halign = Gtk.Align.Start, Valign = Gtk.Align.Fill };
                 columbt.Name = $"column_b_{col.Index}";
                 columbt.ActionTargetValue = new GLib.Variant(col.Index);
-                columbt.Clicked += Columbt_Clicked;
+                columbt.WidgetEvent += Columbt_WidgetEvent;
                 header.PackStart(columbt, false, false, 0);
-
                 header.ReorderChild(columbt, col.Index);
 
                 if (this.View == View.Details)
@@ -236,6 +235,48 @@ namespace System.Windows.Forms
                 {
                     headerView.HeightRequest = 1;
                 }
+            }
+        }
+        private double sizex = 0;
+        private double startx = 0;
+        private void Columbt_WidgetEvent(object o, WidgetEventArgs args)
+        {
+            if(args.Event is Gdk.EventMotion motion)
+            {
+                if (motion.State.HasFlag(Gdk.ModifierType.Button1Mask))
+                {
+                    Gtk.Button title = (Gtk.Button)o;
+                    int actioncolumn = (int)title.ActionTargetValue;
+                    title.WidthRequest = (int)(Math.Max(30, sizex + motion.X));
+                    Columns[actioncolumn].Width = title.WidthRequest;
+                    foreach (Gtk.Box vbox in flowBoxContainer.Children)
+                    {
+                        foreach (var flow in vbox.Children)
+                        {
+                            if (flow is Gtk.FlowBox _flow)
+                            {
+                                int count = _flow.Children.Length;
+                                for (int i = 0; i < count; i++)
+                                {
+                                    FlowBoxChild child = _flow.GetChildAtIndex(i);
+                                    Gtk.Box box = (Gtk.Box)child.Child;
+                                    ((Gtk.Viewport)box.Children[actioncolumn]).Child.WidthRequest = title.WidthRequest;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else if (args.Event.Type == Gdk.EventType.ButtonPress && args.Event is Gdk.EventButton press)
+            {
+                Gtk.Button title = (Gtk.Button)o;
+                sizex = title.WidthRequest - press.X;
+                startx = press.X;
+            }
+            else if (args.Event.Type == Gdk.EventType.ButtonRelease && args.Event is Gdk.EventButton releas)
+            {
+                if (startx == releas.X)
+                    ColomnSort(o);
             }
         }
 
@@ -272,11 +313,11 @@ namespace System.Windows.Forms
             }
         }
 
-        private void Columbt_Clicked(object sender, EventArgs e)
+        private void ColomnSort(object sender)
         {
-            Gtk.Button btn = (Gtk.Button)sender;
             if (this.HeaderStyle == ColumnHeaderStyle.Clickable)
             {
+                Gtk.Button btn = (Gtk.Button)sender;
                 int actioncolumn = (int)btn.ActionTargetValue;
                 if (SelectedColumnIndex != actioncolumn)
                     Sorting = SortOrder.None;
@@ -315,7 +356,7 @@ namespace System.Windows.Forms
                 if (this.View == View.Details)
                 {
                     Gtk.Viewport viewport = box.Children[0] as Gtk.Viewport;
-                    Gtk.Layout layout = viewport.Child as Gtk.Layout;
+                    Gtk.Overlay layout = viewport.Child as Gtk.Overlay;
                     foreach (var lab in layout.Children)
                     {
                         if (lab is Gtk.Label label)
@@ -379,7 +420,7 @@ namespace System.Windows.Forms
                 if (this.View == View.Details)
                 {
                     Gtk.Viewport viewport = box.Children[0] as Gtk.Viewport;
-                    Gtk.Layout layout = viewport.Child as Gtk.Layout;
+                    Gtk.Overlay layout = viewport.Child as Gtk.Overlay;
                     foreach (var chk in layout.Children)
                     {
                         if (chk is Gtk.CheckButton chkbutton)
@@ -407,7 +448,6 @@ namespace System.Windows.Forms
             if (self.IsRealized)
             {
                 int padding = 5;
-               
                 Gtk.FlowBoxChild flowitem = new Gtk.FlowBoxChild();
                 flowitem.TooltipText = item.Text;
                 flowitem.Data.Add("ItemId", item.Index);
@@ -480,7 +520,7 @@ namespace System.Windows.Forms
                 if (checkboxself.Child is Gtk.Label label)
                 {
                     label.Halign = Gtk.Align.Start;
-                    label.Valign = Gtk.Align.Start;
+                    label.Valign = Gtk.Align.Fill;
                     if (item.ForeColor.HasValue)
                     {
                         label.Attributes = new Pango.AttrList();
@@ -504,6 +544,7 @@ namespace System.Windows.Forms
                 if (this.View == View.Details)
                 {
                     header.Visible = true;
+                    flowBox.MaxChildrenPerLine = 1;
                     if (this.SmallImageList != null)
                     {
                         int width = this.SmallImageList.ImageSize.Width;
