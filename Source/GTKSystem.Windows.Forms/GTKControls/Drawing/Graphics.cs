@@ -1,21 +1,26 @@
 
 using Cairo;
 using Gdk;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Xml.Linq;
+using static System.Windows.Forms.DataFormats;
 
 namespace System.Drawing
 {
     public sealed class Graphics : MarshalByRefObject, IDeviceContext, IDisposable
     {
+        static Graphics()
+        {
+            typeof(Graphics).GetMembers();
+        }
         public Cairo.Context context;
         private Gdk.Rectangle rectangle;
         private Gtk.Widget widget;
         private Image image;
-        private Cairo.Surface imagesurface;
         #region 用于输入与输出的数值调整差值
         internal double diff_left { get; set; }
         internal double diff_top { get; set; }
@@ -29,23 +34,6 @@ namespace System.Drawing
         internal Graphics(Image widget, Cairo.Context context, Gdk.Rectangle rectangle) : this(context, rectangle)
         {
             this.image = widget;
-        }
-        internal Graphics(Image widget)
-        {
-            int _width = widget.Width;
-            int _height = widget.Height;
-
-            if (_width < 1)
-                throw new ArgumentOutOfRangeException("Image.Width不能小于等于0");
-            if (_height < 1)
-                throw new ArgumentOutOfRangeException("Image.Height不能小于等于0");
-
-            this.image = widget;
-            this.rectangle = new Gdk.Rectangle(this.rectangle.X, this.rectangle.Y, _width, _height);
-            this.Clip = new Region(new Rectangle(this.rectangle.X, this.rectangle.Y, _width, _height));
-            imagesurface = new Cairo.ImageSurface(Cairo.Format.Argb32, _width, _height);
-            this.context = new Cairo.Context(imagesurface);
-            image.Pixbuf = new Pixbuf(imagesurface, 0, 0, _width, _height);
         }
         internal Graphics(Cairo.Context context, Gdk.Rectangle rectangle)
         {
@@ -1108,7 +1096,7 @@ namespace System.Drawing
             this.SetTranslateWithDifference(0, 0);
             this.SetSourcePen(pen, isfill);
             this.context.NewPath();
-            this.context.Rectangle(x + 2, y, width, height);
+            this.context.Rectangle(x, y, width, height);
             if (isfill)
                 this.context.Fill();
             else
@@ -1186,32 +1174,26 @@ namespace System.Drawing
                 }
                 else
                 {
-
-                    double hAlign = 0, vAlign = 0;
+                    double hAlign = desent / 2, vAlign = textext.Height;
                     if (format.Alignment == StringAlignment.Center)
-                        hAlign -= textext.Width / 2 + desent / 2;
-                    else if (format.Alignment == StringAlignment.Far && format.FormatFlags.HasFlag(StringFormatFlags.DirectionRightToLeft) == false)
-                        hAlign -= textext.Width;
+                        hAlign -= textext.Width / 2 + desent / 4;
+                    else if (format.Alignment == StringAlignment.Far)
+                        hAlign -= textext.Width + desent / 2;
 
                     if (format.LineAlignment == StringAlignment.Center)
-                        vAlign = textext.Height / 2 - desent / 2;
-                    else if (format.LineAlignment == StringAlignment.Far && format.FormatFlags.HasFlag(StringFormatFlags.DirectionVertical))
-                    {
-                        vAlign = textext.Height / 2 + desent + desent;
-                    }
+                        vAlign -= textext.Height / 2 + desent / 2;
                     else if (format.LineAlignment == StringAlignment.Far)
-                    {
-                        vAlign = -textext.Height / 2;
-                    }
+                        vAlign -= textext.Height + desent;
 
                     if (format.FormatFlags.HasFlag(StringFormatFlags.DirectionVertical))
                     {
+                        vAlign -= textext.Height/ 2 + desent / 2;
                         this.context.Rotate(90 * Math.PI / 180);
-                        this.SetTranslateWithDifference(layoutRectangle.Y + hAlign + 2, 0 - layoutRectangle.X + vAlign);
+                        this.SetTranslateWithDifference(layoutRectangle.X + hAlign, 0 - layoutRectangle.Y - vAlign);
                     }
                     else
                     {
-                        this.SetTranslateWithDifference(layoutRectangle.X + hAlign + 2, layoutRectangle.Y + vAlign);
+                        this.SetTranslateWithDifference(layoutRectangle.X + hAlign, layoutRectangle.Y + vAlign);
                     }
                 }
                 this.context.ShowText(text);
@@ -1543,14 +1525,30 @@ namespace System.Drawing
         {
             throw null;
         }
+        private static Cairo.ImageSurface imagesurface;
+        private static Cairo.Context imagecontext;
         /// <summary>
-        /// 使用此方法必须要在最后执行Flush()方法输出Image
+        /// 使用此方法必须要执行Flush()方法输出Image
         /// </summary>
         /// <param name="image"></param>
         /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static Graphics FromImage(Image image)
         {
-            return new Drawing.Graphics(image);
+            int _width = image.Width;
+            int _height = image.Height;
+
+            if (_width < 1)
+                throw new ArgumentOutOfRangeException("Image.Width不能小于等于0");
+            if (_height < 1)
+                throw new ArgumentOutOfRangeException("Image.Height不能小于等于0");
+
+            imagesurface?.Dispose();
+            imagesurface = new Cairo.ImageSurface(Cairo.Format.Argb32, _width, _height);
+            imagecontext?.Dispose();
+            imagecontext = new Cairo.Context(imagesurface);
+            image.Pixbuf = new Pixbuf(imagesurface, 0, 0, image.Width, image.Height);
+            return new Drawing.Graphics(image, imagecontext, new Gdk.Rectangle(0, 0, _width, _height));
         }
         public void Flush()
         {
@@ -1561,17 +1559,19 @@ namespace System.Drawing
         {
             try
             {
-                if (this.image != null && imagesurface != null && imagesurface.Status == Cairo.Status.Success)
+                if (this.image != null && Graphics.imagesurface != null && Graphics.imagesurface.Status == Cairo.Status.Success)
                 {
-                    this.image.Pixbuf = new Pixbuf(imagesurface, 0, 0, this.image.Width, this.image.Height);
+                    this.image.Pixbuf = new Pixbuf(Graphics.imagesurface, 0, 0, this.image.Width, this.image.Height);
                 }
             }
             finally
             {
                 if (intention == FlushIntention.Sync)
                 {
-                    imagesurface?.Dispose();
-                    context?.Dispose();
+                    Graphics.imagesurface?.Dispose();
+                    Graphics.imagesurface = null;
+                    Graphics.imagecontext?.Dispose();
+                    Graphics.imagecontext = null;
                 }
             }
         }
@@ -1688,17 +1688,27 @@ namespace System.Drawing
                 this.context.SelectFontFace(font.Name, font.Style.HasFlag(FontStyle.Italic) ? Cairo.FontSlant.Italic : Cairo.FontSlant.Normal, font.Style.HasFlag(FontStyle.Bold) ? Cairo.FontWeight.Bold : Cairo.FontWeight.Normal);
             }
             float fontheight = (float)this.context.FontExtents.Height;
+            double desent = this.context.FontExtents.Descent;
             TextExtents textext = this.context.TextExtents(text);
-            float width = (float)textext.Width;
+            float width = (float)(textext.Width + desent);
             float height = fontheight;
 
             this.context.Restore();
             SizeF result = new SizeF(width, height);
-            if (layoutArea.Width > -1)
-                result.Width = Math.Min(layoutArea.Width, width);
-            if (layoutArea.Height > -1)
-                result.Height = Math.Min(layoutArea.Height, height);
-
+            if (stringFormat.FormatFlags.HasFlag(StringFormatFlags.DirectionVertical))
+            {
+                if (layoutArea.Width > -1)
+                    result.Width = Math.Min(layoutArea.Width, height);
+                if (layoutArea.Height > -1)
+                    result.Height = Math.Min(layoutArea.Height, width);
+            }
+            else
+            {
+                if (layoutArea.Width > -1)
+                    result.Width = Math.Min(layoutArea.Width, width);
+                if (layoutArea.Height > -1)
+                    result.Height = Math.Min(layoutArea.Height, height);
+            }
             charactersFitted = text.Length;
             linesFilled = Math.Max(1, Convert.ToInt32(result.Height / fontheight));
             return result;
