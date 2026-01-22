@@ -220,16 +220,37 @@ namespace System.Windows.Forms
 .ContextMenuStrip button image{margin-left:-22px; }
 .ContextMenuStrip button image+label{margin-left:-2px; }
 .ContextMenuStrip checkbutton{margin-left:-22px;}
-.NumericUpDown{border-width:1px;padding:2px; }
-.NumericUpDown button.up{border-width:0px;padding:0px;}
-.NumericUpDown button.down{border-width:0px;padding:0px;}
-.NumericUpDown.horizontal entry{border-width:0px;padding:2px 3px; min-height:6px;min-width:6px;} 
-.NumericUpDown.vertical entry{border-width:0px;padding:2px 3px; min-height:6px;min-width:6px;} 
+.NumericUpDown{padding:1px; min-height:6px;min-width:6px; }
+.NumericUpDown button.up{padding:0px;}
+.NumericUpDown button.down{padding:0px;}
+.NumericUpDown.horizontal entry{margin:1px;border-width:0px;padding:2px 3px; min-height:6px;min-width:6px;} 
+.NumericUpDown.vertical entry{margin:1px;border-width:0px;padding:2px 3px; min-height:6px;min-width:6px;} 
 .TrackBar {border-width:0px;box-shadow:none;}
 .PrintPreviewBack{background-color:#cccccc; border-radius:0px;}
 .Paper{box-shadow: 0px 0px 3px 1px #999999;background:#ffffff; border-radius:0px;}
 .PropertyGrid {box-shadow:0px 0px 0px 1px @frame_color; background:#eeeeee;}
 .PropertyGrid button{background:#eeeeee;}
+
+tooltip {
+    background-color: #ffffff; 
+    color: #333333; 
+    border-radius: 0px; 
+    border: 1px solid #c9c9c9;
+    box-shadow: 3px 3px 2px #787878;
+}
+tooltip window,
+tooltip.background {
+    background-color: #ffffff; 
+    border-radius: 0px;
+}
+tooltip label {
+    padding: 0px 10px; 
+    color: #333333;
+}
+popover.background {
+    background-color: #ffffff; 
+    color: #333333; 
+}
 ";
 
                 string appdirectory = StartupPath;
