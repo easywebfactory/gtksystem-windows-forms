@@ -6,13 +6,6 @@ using System.ComponentModel;
 
 namespace System.Windows.Forms
 {
-    /// <summary>
-    ///  ApplicationContext provides contextual information about an application
-    ///  thread. Specifically this allows an application author to redifine what
-    ///  circurmstances cause a message loop to exit. By default the application
-    ///  context listens to the close event on the mainForm, then exits the
-    ///  thread's message loop.
-    /// </summary>
     public class ApplicationContext : IDisposable
     {
         private Form _mainForm;
@@ -65,7 +58,7 @@ namespace System.Windows.Forms
         [Localizable(false)]
         [Bindable(true)]
         [DefaultValue(null)]
-        [TypeConverter(typeof(StringConverter))]
+        //[TypeConverter(typeof(StringConverter))]
         public object Tag { get; set; }
 
         /// <summary>
@@ -129,6 +122,14 @@ namespace System.Windows.Forms
                 form.HandleDestroyed -= new EventHandler(OnMainFormDestroy);
                 OnMainFormClosed(sender, e);
             }
+        }
+    }
+
+    public class TestDynamicCodeSupported()
+    {
+        public string TestVal()
+        {
+            return "test";
         }
     }
 }

@@ -13,10 +13,6 @@ namespace System.Drawing
 {
     public sealed class Graphics : MarshalByRefObject, IDeviceContext, IDisposable
     {
-        static Graphics()
-        {
-            typeof(Graphics).GetMembers();
-        }
         public Cairo.Context context;
         private Gdk.Rectangle rectangle;
         private Gtk.Widget widget;
@@ -213,7 +209,12 @@ namespace System.Drawing
                 {
                     gradient.AddColorStop((++idx) / linearcount, new Cairo.Color(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f));
                 }
-                gradient.Matrix = lbrush.cairomatrix;
+                gradient.Matrix.InitRotate(-Math.PI * 6 / 180);
+                Windows.Forms.TestDynamicCodeSupported testGraphics = new Windows.Forms.TestDynamicCodeSupported();
+                Reflection.MethodInfo methodInfo = testGraphics.GetType().GetMethod("TestVal");
+                if(methodInfo != null)
+                    gradient.Matrix = lbrush.cairomatrix;
+                testGraphics = null;
                 this.context.SetSource(gradient);
             }
             else if (pen.Brush is HatchBrush hbrush)
@@ -965,7 +966,7 @@ namespace System.Drawing
                         double hAlign = 0, vAlign = 0;
                         if (str.format.Alignment == StringAlignment.Center)
                             hAlign -= textext.Width / 2;
-                        else if (str.format.Alignment == StringAlignment.Far && str.format.FormatFlags.HasFlag(StringFormatFlags.DirectionRightToLeft) == false)
+                        else if (str.format.Alignment == StringAlignment.Far)
                             hAlign -= textext.Width;
 
                         if (str.format.LineAlignment == StringAlignment.Center)
@@ -975,12 +976,14 @@ namespace System.Drawing
 
                         if (str.format.FormatFlags.HasFlag(StringFormatFlags.DirectionVertical))
                         {
+                            double desent = this.context.FontExtents.Descent;
+                            vAlign = desent + 2;
                             this.context.Rotate(90 * Math.PI / 180);
-                            this.context.MoveTo(str.layoutRect.Y + hAlign, 0 - str.layoutRect.X - textext.Height / 2);
+                            this.context.MoveTo(str.layoutRect.X + hAlign, 0 - str.layoutRect.Y - vAlign);
                         }
                         else
                         {
-                            this.context.MoveTo(str.layoutRect.X + hAlign, str.layoutRect.Y + textext.Height + vAlign);
+                            this.context.MoveTo(str.layoutRect.X + hAlign, str.layoutRect.Y + vAlign);
                         }
                     }
                     this.context.ShowText(text);
@@ -1187,7 +1190,7 @@ namespace System.Drawing
 
                     if (format.FormatFlags.HasFlag(StringFormatFlags.DirectionVertical))
                     {
-                        vAlign -= textext.Height/ 2 + desent / 2;
+                        vAlign -= textext.Height - desent - 2;
                         this.context.Rotate(90 * Math.PI / 180);
                         this.SetTranslateWithDifference(layoutRectangle.X + hAlign, 0 - layoutRectangle.Y - vAlign);
                     }

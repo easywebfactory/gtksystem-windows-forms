@@ -48,12 +48,7 @@ namespace System.Drawing.Drawing2D
 			set;
 		} = WrapMode.Tile;
         
-        //internal float angle;
         internal LinearGradientMode linearGradientMode;
-        //internal bool isAngleScaleable;
-        //internal PointF translate = new PointF();
-        //internal MatrixOrder order = MatrixOrder.Prepend;
-        //internal PointF scale = new PointF();
         internal Cairo.Matrix cairomatrix = new Cairo.Matrix();
         public LinearGradientBrush(PointF point1, PointF point2, Color color1, Color color2)
         {
