@@ -23,7 +23,7 @@ namespace System.Windows.Forms
 
     [ToolboxItemFilter("System.Windows.Forms")]
     [DefaultProperty(nameof(Images))]
-    [TypeConverter(typeof(ImageListConverter))]
+    //[TypeConverter(typeof(ImageListConverter))]
     public sealed partial class ImageList : Component//, IHandle<HIMAGELIST>
     {
         private static readonly Color s_fakeTransparencyColor = Color.FromArgb(0x0d, 0x0b, 0x0c);

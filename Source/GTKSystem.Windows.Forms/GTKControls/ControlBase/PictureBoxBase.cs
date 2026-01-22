@@ -1,6 +1,5 @@
-﻿
+﻿using Gtk;
 using System.Drawing;
-using System.Reflection;
 using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
@@ -62,34 +61,25 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         }
         public Size MaximumSize { get; set; }
         public Size MinimumSize { get; set; }
+        public Gtk.Overlay contaner = new Gtk.Overlay();
         public GtkControlOverride Override { get; set; }
         public PictureBoxBase() : base()
         {
             this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("PictureBox");
-            this.BorderWidth = 0;
-            this.ShadowType = Gtk.ShadowType.None;
+            this.StyleContext.AddClass("PictureBox");
             this.Events = Gdk.EventMask.AllEventsMask;
             this.Realized += PictureBoxBase_Realized;
+            Gtk.DrawingArea drawingArea = new Gtk.DrawingArea();
+            drawingArea.Drawn += DrawingArea_Drawn;
+            contaner.Add(drawingArea);
+            this.Add(contaner);
         }
 
-        private void PictureBoxBase_Realized(object sender, EventArgs e)
+        private void DrawingArea_Drawn(object o, Gtk.DrawnArgs args)
         {
-            ScaleBackgroundImage();
-            ScaleImage();
-        }
-
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
-        }
-        
-        protected override bool OnDrawn(Cairo.Context cr)
-        {
-            int width = this.AllocatedWidth;
-            int height = this.AllocatedHeight;
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, width, height);
+            Cairo.Context cr = args.Cr;
+            Cairo.Rectangle clip = cr.ClipExtents();
+            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, (int)clip.Width, (int)clip.Height);
             if (_drawBackgroundImage != null)
             {
                 cr.Save();
@@ -97,7 +87,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 cr.Paint();
                 cr.Restore();
             }
-            bool returndrawn = base.OnDrawn(cr);
             Override.OnPaint(cr, rec);
             if (_drawImage != null)
             {
@@ -106,7 +95,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 cr.Paint();
                 cr.Restore();
             }
-            return returndrawn;
+        }
+        private void PictureBoxBase_Realized(object sender, EventArgs e)
+        {
+            ScaleBackgroundImage();
+            ScaleImage();
         }
         private Gdk.Pixbuf ScaleDrawnSource(Gdk.Pixbuf image, PictureBoxSizeMode sizeMode, int width, int height)
         {
@@ -119,7 +112,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             else if (sizeMode == PictureBoxSizeMode.StretchImage)
             { 
                 //自由缩放取全图铺满
-                result = image.ScaleSimple(width, height, Gdk.InterpType.Nearest);
+                result = image.ScaleSimple(width, height, Gdk.InterpType.Hyper);
             }
             else if (sizeMode == PictureBoxSizeMode.CenterImage)
             {
@@ -140,31 +133,31 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 double scaleH = height * 1f / image.Height;
                 if (scaleW > scaleH)
                 {
-                    result = image.ScaleSimple((int)(image.Width * scaleH), height, Gdk.InterpType.Nearest);
+                    result = image.ScaleSimple((int)(image.Width * scaleH), height, Gdk.InterpType.Hyper);
                 }
                 else
                 {
-                    result = image.ScaleSimple(width, (int)(image.Height * scaleW), Gdk.InterpType.Nearest);
+                    result = image.ScaleSimple(width, (int)(image.Height * scaleW), Gdk.InterpType.Hyper);
                 }
             }
             else if (sizeMode == PictureBoxSizeMode.AutoSize)
             {
                 //原图不缩放，撑开PictureBox
                 if (MaximumSize.Width > 0 && MaximumSize.Height > 0 && image.Width > MaximumSize.Width && image.Height > MaximumSize.Height)
-                    result = image.ScaleSimple(MaximumSize.Width, MaximumSize.Height, Gdk.InterpType.Nearest);
+                    result = image.ScaleSimple(MaximumSize.Width, MaximumSize.Height, Gdk.InterpType.Hyper);
                 else if (MaximumSize.Width > 0 && image.Width > MaximumSize.Width)
-                    result = image.ScaleSimple(MaximumSize.Width, image.Height, Gdk.InterpType.Nearest);
+                    result = image.ScaleSimple(MaximumSize.Width, image.Height, Gdk.InterpType.Hyper);
                 else if (MaximumSize.Width > 0 && image.Height > MaximumSize.Height)
-                    result = image.ScaleSimple(image.Width, MaximumSize.Height, Gdk.InterpType.Nearest);
+                    result = image.ScaleSimple(image.Width, MaximumSize.Height, Gdk.InterpType.Hyper);
                 else
                     result = image;
 
                 if (MinimumSize.Width > 0 && MinimumSize.Height > 0 && result.Width < MinimumSize.Width && result.Height < MinimumSize.Height)
-                    result = result.ScaleSimple(MinimumSize.Width, MinimumSize.Height, Gdk.InterpType.Nearest);
+                    result = result.ScaleSimple(MinimumSize.Width, MinimumSize.Height, Gdk.InterpType.Hyper);
                 else if (MinimumSize.Width > 0 && result.Width < MinimumSize.Width)
-                    result = result.ScaleSimple(MinimumSize.Width, result.Height, Gdk.InterpType.Nearest);
+                    result = result.ScaleSimple(MinimumSize.Width, result.Height, Gdk.InterpType.Hyper);
                 else if (MinimumSize.Height > 0 && result.Height < MinimumSize.Height)
-                    result = result.ScaleSimple(result.Width, MinimumSize.Height, Gdk.InterpType.Nearest);
+                    result = result.ScaleSimple(result.Width, MinimumSize.Height, Gdk.InterpType.Hyper);
 
                 if (this.WidthRequest < result.Width)
                     this.WidthRequest = result.Width;
@@ -205,7 +198,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             }
             else if (layoutMode == ImageLayout.Stretch)
             { //自由缩放取全图铺满
-                result = image.ScaleSimple(width, height, Gdk.InterpType.Nearest);
+                result = image.ScaleSimple(width, height, Gdk.InterpType.Hyper);
             }
             else if (layoutMode == ImageLayout.Center)
             {
@@ -226,11 +219,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 double scaleH = height * 1f / image.Height;
                 if (scaleW > scaleH)
                 {
-                    result = image.ScaleSimple((int)(image.Width * scaleH), height, Gdk.InterpType.Nearest);
+                    result = image.ScaleSimple((int)(image.Width * scaleH), height, Gdk.InterpType.Hyper);
                 }
                 else
                 {
-                    result = image.ScaleSimple(width, (int)(image.Height * scaleW), Gdk.InterpType.Nearest);
+                    result = image.ScaleSimple(width, (int)(image.Height * scaleW), Gdk.InterpType.Hyper);
                 }
             }
             else if (layoutMode == ImageLayout.Tile)

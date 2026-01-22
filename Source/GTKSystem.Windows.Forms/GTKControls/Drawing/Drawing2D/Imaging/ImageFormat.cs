@@ -6,7 +6,7 @@ using System.Runtime.Versioning;
 namespace System.Drawing.Imaging
 {
 	/// <summary>Specifies the file format of the image. Not inheritable.</summary>
-	[TypeConverter(typeof(ImageFormatConverter))]
+	//[TypeConverter(typeof(ImageFormatConverter))]
 	public sealed class ImageFormat
 	{
 		private static readonly ImageFormat s_memoryBMP = new ImageFormat(new Guid("{b96b3caa-0728-11d3-9d7b-0000f81ef32e}"));

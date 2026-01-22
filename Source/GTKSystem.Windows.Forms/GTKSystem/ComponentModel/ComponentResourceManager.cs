@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Globalization;
 
@@ -14,7 +15,7 @@ namespace GTKSystem.ComponentModel
     {
         private Type formtype;
         private string formName;
-        public ComponentResourceManager(Type form) : base(form)
+        public ComponentResourceManager([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type form) : base(form)
         {
             formtype = form;
             formName = form.Name;

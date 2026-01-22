@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
@@ -231,26 +230,10 @@ namespace System.Windows.Forms
 .PropertyGrid {box-shadow:0px 0px 0px 1px @frame_color; background:#eeeeee;}
 .PropertyGrid button{background:#eeeeee;}
 
-tooltip {
-    background-color: #ffffff; 
-    color: #333333; 
-    border-radius: 0px; 
-    border: 1px solid #c9c9c9;
-    box-shadow: 3px 3px 2px #787878;
-}
-tooltip window,
-tooltip.background {
-    background-color: #ffffff; 
-    border-radius: 0px;
-}
-tooltip label {
-    padding: 0px 10px; 
-    color: #333333;
-}
-popover.background {
-    background-color: #ffffff; 
-    color: #333333; 
-}
+tooltip { background-color: #ffffff; color: #333333; border-radius: 0px; border: 1px solid #c9c9c9; box-shadow: 3px 3px 2px #787878;}
+tooltip window,tooltip.background {background-color: #ffffff;border-radius: 0px;}
+tooltip label {padding: 0px 10px; color: #333333;}
+popover.background {background-color: #ffffff;color: #333333; }
 ";
 
                 string appdirectory = StartupPath;
@@ -276,6 +259,7 @@ popover.background {
                 Gtk.Settings settings = Gtk.Settings.Default;
                 settings.SplitCursor = true;
                 settings.EnableAnimations = true;
+                settings.EnableTooltips = true;
                 string iconpath = Path.Combine(appdirectory, "icon.png");
                 if (File.Exists(iconpath))
                     Gtk.Window.SetDefaultIconFromFile(iconpath);

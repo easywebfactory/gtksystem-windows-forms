@@ -13,7 +13,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         bool VScroll { get; set; }
         event System.Windows.Forms.ScrollEventHandler Scroll;
         void Add(Widget child);
-        void AddClass(string cssClass);
         Gtk.ScrolledWindow ScrolledWindow { get; }
         bool ScrollView(double hscrollValue, double vscrollValue);
     }

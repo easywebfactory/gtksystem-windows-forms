@@ -6,7 +6,7 @@
         public LabelBase() : base()
         {
             this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("Label");
+            this.StyleContext.AddClass("Label");
             this.Xalign = 0.0f;
             this.Yalign = 0.0f;
             this.Valign = Gtk.Align.Start;
@@ -19,7 +19,7 @@
         public LabelBase(string text) : base(text)
         {
             this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("Label");
+            this.StyleContext.AddClass("Label");
             this.Xalign = 0.0f;
             this.Yalign = 0.0f;
             this.Valign = Gtk.Align.Start;
@@ -27,17 +27,13 @@
             this.Wrap = true;
             this.LineWrap = true;
             this.LineWrapMode = Pango.WrapMode.WordChar;
+            this.Drawn += LabelBase_Drawn;
         }
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
-        }
-        protected override bool OnDrawn(Cairo.Context cr)
+
+        private void LabelBase_Drawn(object o, Gtk.DrawnArgs args)
         {
             Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnPaint(cr, rec);
-            return base.OnDrawn(cr);
+            Override.OnPaint(args.Cr, rec);
         }
     }
 }

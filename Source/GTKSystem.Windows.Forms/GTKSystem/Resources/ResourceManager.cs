@@ -23,7 +23,7 @@ namespace GTKSystem.Resources
         private Assembly _assembly;
         private string _baseName;
         public ResourceInfo GetResourceInfo = new ResourceInfo();
-        public ResourceManager([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) : this(null, null, usingResourceSet)
+        public ResourceManager([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? usingResourceSet) : this(null, null, usingResourceSet)
         {
 
         }
@@ -31,7 +31,7 @@ namespace GTKSystem.Resources
         {
 
         }
-        public ResourceManager(string baseName, Assembly assembly, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type? usingResourceSet) : base(baseName, assembly, usingResourceSet)
+        public ResourceManager(string baseName, Assembly assembly, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? usingResourceSet) : base(baseName, assembly, usingResourceSet)
         {
             this._baseName = baseName;
             this._assembly = assembly;
@@ -153,18 +153,7 @@ namespace GTKSystem.Resources
         }
         public override object GetObject(string name, CultureInfo culture)
         {
-            object result = GetObject(name);
-            System.Diagnostics.StackFrame frame = new StackFrame(1);
-            System.Reflection.MethodInfo method = (System.Reflection.MethodInfo)frame.GetMethod();
-            if (method.ReturnType.Name == "Object" || method.ReturnType.Name.Equals(result.GetType().Name))
-            {
-                return result;
-            }
-            else
-            {
-                return null;
-            }
-
+            return GetObject(name);
         }
         public override object GetObject(string name)
         {

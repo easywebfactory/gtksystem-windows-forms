@@ -50,26 +50,29 @@ namespace System.Windows.Forms
         public void CancelAsync() { }
         public new void Load(string url)
         {
-            self.Child?.Destroy();
+            if(self.contaner.Children.Length > 1)
+                self.contaner.Children[1].Destroy();
             if (string.IsNullOrWhiteSpace(url))
             { return; }
             else if (url.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
             {
                 //支持动画，动画图片不缩放和定位
                 Gtk.Image image = new Gtk.Image(new Gdk.PixbufAnimation(url.Replace("\\\\", "/").Replace("\\", "/")));
-                self.Child = image;
+                image.Halign = Gtk.Align.Center;
+                image.Valign = Gtk.Align.Center;
+                self.contaner.AddOverlay(image);
             }
             else if (url.Contains("://") && Uri.TryCreate(url, UriKind.Absolute, out Uri result))
             {
                 GLib.IFile file = GLib.FileFactory.NewForUri(result);
                 GLib.FileInputStream stream = file.Read(new GLib.Cancellable());
                 Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(stream, new GLib.Cancellable());
-                this.Image = new Bitmap(0, 0) { Pixbuf = pixbuf };
+                this.Image = new Bitmap(pixbuf.Width, pixbuf.Height) { Pixbuf = pixbuf };
             }
             else
             {
                 Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(url.Replace("\\\\", "/").Replace("\\", "/"));
-                this.Image = new Bitmap(0, 0) { Pixbuf = pixbuf };
+                this.Image = new Bitmap(pixbuf.Width, pixbuf.Height) { Pixbuf = pixbuf };
             }
 
         }

@@ -8,7 +8,7 @@
         {
             this.Override = new GtkControlOverride(this);
             this.StyleContext.AddClass("view");
-            this.Override.AddClass("ListView");
+            this.StyleContext.AddClass("ListView");
             this.BorderWidth = 1;
             this.Add(box);
         }

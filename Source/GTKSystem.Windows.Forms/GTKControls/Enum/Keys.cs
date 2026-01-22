@@ -12,7 +12,7 @@ namespace System.Windows.Forms
     ///  Specifies key codes and modifiers.
     /// </summary>
     [Flags]
-    [TypeConverter(typeof(KeysConverter))]
+    //[TypeConverter(typeof(KeysConverter))]
    // [Editor("System.Windows.Forms.Design.ShortcutKeysEditor, " + AssemblyRef.SystemDesign, typeof(UITypeEditor))]
     [ComVisible(true)]
     public enum Keys

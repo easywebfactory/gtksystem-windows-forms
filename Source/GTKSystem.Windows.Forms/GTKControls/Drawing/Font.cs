@@ -8,7 +8,7 @@ namespace System.Drawing
     // 摘要:
     //     Defines a particular format for text, including font face, size, and style attributes.
     //     This class cannot be inherited.
-    [TypeConverter("System.Drawing.FontConverter, System.Windows.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51")]
+    //[TypeConverter("System.Drawing.FontConverter, System.Windows.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51")]
     public sealed class Font : MarshalByRefObject, ICloneable, IDisposable, ISerializable
     {
         //

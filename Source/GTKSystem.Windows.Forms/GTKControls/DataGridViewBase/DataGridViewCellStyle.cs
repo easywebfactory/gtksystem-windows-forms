@@ -19,7 +19,7 @@ namespace System.Windows.Forms
         public Color SelectionBackColor { get; set; }
         public Padding Padding { get; set; }
         [DefaultValue("")]
-        [TypeConverter(typeof(StringConverter))]
+        //[TypeConverter(typeof(StringConverter))]
         public object NullValue { get; set; }
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Advanced)]

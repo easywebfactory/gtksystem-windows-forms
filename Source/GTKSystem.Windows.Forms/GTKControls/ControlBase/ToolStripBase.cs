@@ -9,21 +9,12 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public ToolStripBase() : base()
         {
             this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("ToolStrip");
+            this.StyleContext.AddClass("ToolStrip");
             this.Hexpand = false;
             this.Vexpand = false;
             this.Valign = Gtk.Align.Start;
             this.Halign = Gtk.Align.Fill;
             this.ShowArrow = true;
-        }
-        public void AddClass(string cssClass)
-        {
-            this.Override.AddClass(cssClass);
-        }
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
         }
     }
 }

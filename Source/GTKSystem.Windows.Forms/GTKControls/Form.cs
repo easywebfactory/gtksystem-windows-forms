@@ -8,6 +8,7 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
+using System.Xml.Linq;
 
 namespace System.Windows.Forms
 {
@@ -20,7 +21,7 @@ namespace System.Windows.Forms
         public FormBase self = new FormBase();
         public override object GtkControl { get => self; }
         protected override IScrollableBoxBase scrollbase { get => self; set => base.scrollbase = value; }
-        private Gtk.Overlay contanter = new Gtk.Overlay();
+        private Gtk.Overlay contaner = new Gtk.Overlay();
         private ControlCollection _ObjectCollection;
         public Form() : base()
         {
@@ -33,17 +34,23 @@ namespace System.Windows.Forms
         }
         private void Init()
         {
-            contanter.Valign = Gtk.Align.Fill;
-            contanter.Halign = Gtk.Align.Fill;
-            Gtk.Viewport viewport = new Gtk.Viewport() { Halign = Align.Fill, Valign = Align.Fill, BorderWidth = 0 };
+            contaner.Valign = Gtk.Align.Fill;
+            contaner.Halign = Gtk.Align.Fill;
+            Gtk.Viewport viewport = new Gtk.Viewport() { BorderWidth = 0 };
             viewport.StyleContext.AddClass("Form");
-            contanter.Add(viewport);
-            self.ScrolledView.Child = contanter;
-            _ObjectCollection = new ControlCollection(this, contanter);
+            viewport.Drawn += Viewport_Drawn;
+            contaner.Add(viewport);
+            self.ScrolledView.Child = contaner;
+            _ObjectCollection = new ControlCollection(this, contaner);
             self.Shown += Control_Shown;
             self.CloseWindowEvent += Self_CloseWindowEvent;
         }
-
+        private void Viewport_Drawn(object o, DrawnArgs args)
+        {
+            Cairo.Rectangle clip = args.Cr.ClipExtents();
+            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, (int)clip.Width, (int)clip.Height);
+            self.Override.OnPaint(args.Cr, rec);
+        }
         private bool Self_CloseWindowEvent(object sender, EventArgs e)
         {
             FormClosingEventArgs closing = new FormClosingEventArgs(CloseReason.UserClosing, false);
@@ -268,10 +275,10 @@ namespace System.Windows.Forms
             set
             {
                 base.Padding = value;
-                contanter.MarginStart = value.Left;
-                contanter.MarginTop = value.Top;
-                contanter.MarginEnd = value.Right;
-                contanter.MarginBottom = value.Bottom;
+                contaner.MarginStart = value.Left;
+                contaner.MarginTop = value.Top;
+                contaner.MarginEnd = value.Right;
+                contaner.MarginBottom = value.Bottom;
             }
         }
         public bool MaximizeBox { get => self.MaximizeBox; set => self.MaximizeBox = value && _ControlBox; }

@@ -8,7 +8,7 @@ namespace System.Windows.Forms
         [Localizable(false)]
         [Bindable(true)]
         [DefaultValue(null)]
-        [TypeConverter(typeof(StringConverter))]
+        //[TypeConverter(typeof(StringConverter))]
         public object Tag { get; set; }
 
         public abstract GridItemCollection GridItems { get; }

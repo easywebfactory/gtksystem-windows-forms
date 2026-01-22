@@ -12,20 +12,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public MenuStripBase() : base()
         {
             this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("MenuStrip");
+            this.StyleContext.AddClass("MenuStrip");
             this.Hexpand = false;
             this.Vexpand = false;
             this.Valign = Gtk.Align.Start;
             this.Halign = Gtk.Align.Fill;
-        }
-        public void AddClass(string cssClass)
-        {
-            this.Override.AddClass(cssClass);
-        }
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
         }
     }
 }

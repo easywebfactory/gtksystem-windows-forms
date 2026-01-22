@@ -382,6 +382,10 @@ namespace System.Windows.Forms
         }
         private class CellRendererIcon : Gtk.CellRendererPixbuf
         {
+            static CellRendererIcon()
+            {
+                typeof(CellRendererIcon).GetMembers();
+            }
             public TreeView _treeView;
             public CellRendererIcon(TreeView treeView)
             {

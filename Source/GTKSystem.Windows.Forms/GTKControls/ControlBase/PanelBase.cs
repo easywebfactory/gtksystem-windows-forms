@@ -6,7 +6,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
     {
         public PanelBase() : base()
         {
-            this.Override.AddClass("Panel");
+            this.StyleContext.AddClass("Panel");
             this.ShadowType = Gtk.ShadowType.None;
             this.BorderWidth = 0;
         }

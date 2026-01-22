@@ -9,7 +9,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public TabPageBase() : base()
         {
             this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("TabPage");
+            this.StyleContext.AddClass("TabPage");
             this.BorderWidth = 0;
             this.Content.Margin = 0;
             this.Content.Halign = Align.Fill;
@@ -17,18 +17,17 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Content.Expand = false;
             base.Halign = Align.Fill;
             base.Valign = Align.Fill;
+
+            Gtk.Viewport viewport = new Gtk.Viewport() { BorderWidth = 0 };
+            viewport.Drawn += Viewport_Drawn;
+            Content.Add(viewport);
             base.Add(Content);
         }
-        protected override void OnShown()
+        private void Viewport_Drawn(object o, DrawnArgs args)
         {
-            Override.OnAddClass();
-            base.OnShown();
-        }
-        protected override bool OnDrawn(Cairo.Context cr)
-        {
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnPaint(cr, rec);
-            return base.OnDrawn(cr);
+            Cairo.Rectangle clip = args.Cr.ClipExtents();
+            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, (int)clip.Width, (int)clip.Height);
+            Override.OnPaint(args.Cr, rec);
         }
     }
 }

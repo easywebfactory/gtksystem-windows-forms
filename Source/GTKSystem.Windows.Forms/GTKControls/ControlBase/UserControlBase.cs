@@ -7,7 +7,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
     {
         public UserControlBase() : base()
         {
-            this.Override.AddClass("UserControl");
+            this.StyleContext.AddClass("UserControl");
             this.MarginStart = 0;
             this.MarginTop = 0;
             this.BorderWidth = 0;

@@ -10,8 +10,8 @@ using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using Pango;
 using System.Collections;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
-using System.Reflection;
 
 namespace System.Windows.Forms
 {
@@ -26,7 +26,7 @@ namespace System.Windows.Forms
         private ColumnHeaderCollection _columns;
         internal Gtk.ScrolledWindow scrolledWindow = new Gtk.ScrolledWindow();
         internal Gtk.Box flowBoxContainer = new Gtk.Box(Gtk.Orientation.Vertical, 0);
-        internal Gtk.Box header = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
+        internal Gtk.ButtonBox header = new Gtk.ButtonBox(Gtk.Orientation.Horizontal);
         internal Gtk.ScrolledWindow headerView = new Gtk.ScrolledWindow();
         private int __headerheight = 30;
         public ListView() : base()
@@ -43,12 +43,14 @@ namespace System.Windows.Forms
             scrolledWindow.Valign = Gtk.Align.Fill;
             scrolledWindow.Add(flowBoxContainer);
             scrolledWindow.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
-            
+
+            header.LayoutStyle = ButtonBoxStyle.Expand;
+            header.Homogeneous = false;
             header.Spacing = 0;
             header.BorderWidth = 0;
             header.Halign = Gtk.Align.Start;
             header.Valign = Gtk.Align.Fill;
-            header.Homogeneous = false;
+
             headerView.Halign = Gtk.Align.Fill;
             headerView.Valign = Gtk.Align.Start;
             headerView.NoShowAll = true;
@@ -215,7 +217,7 @@ namespace System.Windows.Forms
         {
             if (self.IsRealized)
             {
-                LabelBase label = new LabelBase(col.Text) { Xalign = 0, Xpad = 5, MaxWidthChars = 0, Halign = Gtk.Align.Fill, Valign = Gtk.Align.End, Ellipsize = Pango.EllipsizeMode.End, Wrap = false, LineWrap = false };
+                Gtk.Label label = new Gtk.Label(col.Text) { Xalign = 0, Xpad = 5, MaxWidthChars = 0, Halign = Gtk.Align.Fill, Valign = Gtk.Align.End, Ellipsize = Pango.EllipsizeMode.End, Wrap = false, LineWrap = false };
                 label.TooltipText = col.Text;
                 label.Name = $"column_t_{col.Index}";
                 label.Drawn += Label_Drawn;
@@ -229,7 +231,7 @@ namespace System.Windows.Forms
         }
         private double sizex = 0;
         private double startx = 0;
-        private void Columbt_WidgetEvent(object o, WidgetEventArgs args)
+        private void Columbt_WidgetEvent(object o, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] WidgetEventArgs args)
         {
             if(args.Event is Gdk.EventMotion motion)
             {
@@ -275,7 +277,7 @@ namespace System.Windows.Forms
             Cairo.Rectangle rec = args.Cr.ClipExtents();
             if (rec.Width > 10 && SortColumn != null)
             {
-                LabelBase ws = (LabelBase)o;
+                Gtk.Label ws = (Gtk.Label)o;
                 if (ws.Name == $"column_t_{SortColumn.Index}")
                 {
                     if (Sorting != SortOrder.None)
@@ -497,7 +499,7 @@ namespace System.Windows.Forms
                 else
                     fistcell.WidthRequest = Width - padding - padding;
                 CheckBox checkBox = new CheckBox();
-                Gtk.CheckButton checkboxself = checkBox.self;
+                CheckBoxBase checkboxself = checkBox.self;
                 checkboxself.Halign = Gtk.Align.Start;
                 checkboxself.Valign = Gtk.Align.Center;
                 checkboxself.BorderWidth = 0;
@@ -530,7 +532,6 @@ namespace System.Windows.Forms
                 viewport.BorderWidth = 0;
                 viewport.Add(fistcell);
                 hBox.PackStart(viewport, true, true, 0);
-
                 if (this.View == View.Details)
                 {
                     headerView.ShowAll();
@@ -672,12 +673,24 @@ namespace System.Windows.Forms
             if (args.Event.Type is Gdk.EventType.ButtonRelease && args.Event is Gdk.EventButton event2 && event2.Button == 1)
             {
                 Gtk.CheckButton checkButton = (Gtk.CheckButton)o;
-                checkButton.Active = !checkButton.Active;
                 if (event2.X < 25)
                 {
+                    checkButton.Active = !checkButton.Active;
                     OnCheckedChanged(checkButton.Data["Control"]);
-                    args.RetVal = true;
                 }
+                else
+                {
+                    Gtk.FlowBox flowbox = checkButton.Parent.Parent.Parent.Parent.Parent as Gtk.FlowBox;
+                    flowbox.ProcessEvent(args.Event);
+                }
+                args.RetVal = true;
+            }
+            else if (args.Event.Type is Gdk.EventType.ButtonPress)
+            {
+                Gtk.CheckButton checkButton = (Gtk.CheckButton)o;
+                Gtk.FlowBox flowbox = checkButton.Parent.Parent.Parent.Parent.Parent as Gtk.FlowBox;
+                flowbox.ProcessEvent(args.Event);
+                args.RetVal = true;
             }
         }
         private void OnCheckedChanged(object? sender)

@@ -6,7 +6,7 @@
         public DataGridViewBase() : base()
         {
             this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("DataGridView");
+            this.StyleContext.AddClass("DataGridView");
             this.Override.BackColor = System.Drawing.Color.White;
             this.BorderWidth = 0;
             this.ShadowType = Gtk.ShadowType.In;

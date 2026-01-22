@@ -8,7 +8,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 
         public TreeViewBase() : base()
         {
-            this.Override.AddClass("TreeView");
+            this.StyleContext.AddClass("TreeView");
             this.TreeView.Valign = Align.Fill;
             this.TreeView.Halign = Align.Fill;
             this.TreeView.BorderWidth = 1;

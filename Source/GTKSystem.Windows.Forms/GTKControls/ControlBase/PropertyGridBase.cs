@@ -18,7 +18,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public PropertyGridBase() : base(Gtk.Orientation.Vertical)
         {
             this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("PropertyGrid");
+            this.StyleContext.AddClass("PropertyGrid");
             this.Valign = Gtk.Align.Start;
             this.Halign = Gtk.Align.Start;
             this.WideHandle = true;
@@ -37,11 +37,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             titleLabel.Text = title;
             descriptionLabel.Text = description;
-        }
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
         }
     }
 }

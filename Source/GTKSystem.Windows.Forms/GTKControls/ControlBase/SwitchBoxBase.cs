@@ -8,14 +8,9 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public SwitchBoxBase() : base()
         {
             this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("SwitchBox");
+            this.StyleContext.AddClass("SwitchBox");
             base.Valign = Gtk.Align.Start;
             base.Halign = Gtk.Align.Start;
-        }
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
         }
     }
 }

@@ -13,31 +13,13 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public GroupBoxBase() : base()
         {
             this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("GroupBox");
+            this.StyleContext.AddClass("GroupBox");
             this.LabelXalign = 0.03f;
             base.Valign = Gtk.Align.Start;
             base.Halign = Gtk.Align.Start;
         }
 
         public event System.Windows.Forms.ScrollEventHandler Scroll;
-
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
-        }
-        protected override bool OnDrawn(Cairo.Context cr)
-        {
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnPaint(cr, rec);
-            return base.OnDrawn(cr);
-        }
-
-        public void AddClass(string cssClass)
-        {
-            this.Override.AddClass(cssClass);
-        }
-
         public void Pack(Widget child, Align align, bool expand)
         {
             child.Valign = align;

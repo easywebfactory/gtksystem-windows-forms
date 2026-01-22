@@ -121,7 +121,7 @@ namespace System.Windows.Forms
         [Browsable(false)]
         public ToolStripDropDownDirection DropDownDirection { get; set; }
       
-        [TypeConverter(typeof(ReferenceConverter))]
+        //[TypeConverter(typeof(ReferenceConverter))]
         public ToolStripDropDown DropDown { get; set; }
        
         protected internal virtual Point DropDownLocation { get; }

@@ -4,7 +4,7 @@
     {
         public CheckedListBoxBase() : base()
         {
-            this.Override.AddClass("CheckedListBox");
+            this.StyleContext.AddClass("CheckedListBox");
             this.BorderWidth = 1;
         }
     }

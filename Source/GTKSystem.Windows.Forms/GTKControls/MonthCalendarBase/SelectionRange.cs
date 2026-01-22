@@ -9,9 +9,9 @@ namespace System.Windows.Forms
     /// <summary>
     ///  This is a class that represents the date selection range of a MonthCalendar control.
     /// </summary>
-    [
-    TypeConverter(typeof(SelectionRangeConverter))
-    ]
+    //[
+    //TypeConverter(typeof(SelectionRangeConverter))
+    //]
     public sealed class SelectionRange
     {
         /// <summary>

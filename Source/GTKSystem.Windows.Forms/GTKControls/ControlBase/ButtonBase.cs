@@ -8,30 +8,28 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public ButtonBase() : base(new Gtk.Label() { MaxWidthChars = 0, Wrap = true, LineWrap = true, LineWrapMode = Pango.WrapMode.WordChar })
         {
             this.Override = new GtkControlOverride(this);
-            this.Override.AddClass("Button");
+            this.StyleContext.AddClass("Button");
             base.Valign = Gtk.Align.Start;
             base.Halign = Gtk.Align.Start;
+            base.ButtonReleaseEvent += ButtonBase_ButtonReleaseEvent;
+            base.Drawn += ButtonBase_Drawn;
         }
-        public System.Windows.Forms.DialogResult DialogResult { get; set; }
-        protected override bool OnButtonPressEvent(EventButton evnt)
+
+        private void ButtonBase_Drawn(object o, Gtk.DrawnArgs args)
+        {
+            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
+            Override.OnPaint(args.Cr, rec);
+        }
+
+        private void ButtonBase_ButtonReleaseEvent(object o, Gtk.ButtonReleaseEventArgs args)
         {
             if (this.Toplevel is FormBase form)
             {
                 ((System.Windows.Forms.Form)form.Data["Control"]).DialogResult = DialogResult;
             }
-            return base.OnButtonPressEvent(evnt);
         }
-        public new string Text { get => ((Gtk.Label)Child).Text; set => ((Gtk.Label)Child).Text = value; }
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
-        }
-        protected override bool OnDrawn(Cairo.Context cr)
-        {
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnPaint(cr, rec);
-            return base.OnDrawn(cr);
-        }
+
+        public System.Windows.Forms.DialogResult DialogResult { get; set; }
+        public string Text { get => ((Gtk.Label)Child).Text; set => ((Gtk.Label)Child).Text = value; }
     }
 }

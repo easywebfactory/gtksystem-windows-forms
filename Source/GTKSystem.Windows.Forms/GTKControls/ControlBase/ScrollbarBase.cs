@@ -10,6 +10,10 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public sealed class ScrollbarBase<T>: Gtk.Scrollbar, IControlGtk
     {
+        static ScrollbarBase()
+        {
+            typeof(ScrollbarBase<T>).GetMembers();
+        }
         public new static GType GType
         {
             get

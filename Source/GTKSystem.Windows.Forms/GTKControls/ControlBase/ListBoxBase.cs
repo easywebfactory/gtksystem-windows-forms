@@ -7,7 +7,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public Gtk.ListBox ListBox = new Gtk.ListBox();
         public ListBoxBase() : base()
         {
-            this.Override.AddClass("ListBox");
+            this.StyleContext.AddClass("ListBox");
             ListBox.BorderWidth = 1;
             ListBox.Margin = 0;
             ListBox.Hexpand = true;

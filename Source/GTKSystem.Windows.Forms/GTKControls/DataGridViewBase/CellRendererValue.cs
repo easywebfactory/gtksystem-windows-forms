@@ -12,6 +12,7 @@ namespace System.Windows.Forms.GtkRender
 {
     public interface ICellRenderer
     {
+        [Property("cellvalue")]
         DataGridViewRow CellValue { set; }
         DataGridViewCellStyle ColumnStyle { set; }
         Pango.WrapMode WrapMode { get; set; }
@@ -26,6 +27,10 @@ namespace System.Windows.Forms.GtkRender
 
     public class CellRendererValue : CellRendererText, ICellRenderer
     {
+        static CellRendererValue()
+        {
+            typeof(CellRendererValue).GetMembers();
+        }
         int ColumnIndex;
         private DataGridViewColumn Column;
         private CellReandererUtility utility;
@@ -51,6 +56,10 @@ namespace System.Windows.Forms.GtkRender
     }
     public class CellRendererToggleValue : CellRendererToggle, ICellRenderer
     {
+        static CellRendererToggleValue()
+        {
+            typeof(CellRendererToggleValue).GetMembers();
+        }
         int ColumnIndex;
         DataGridViewColumn Column;
         private CellReandererUtility utility;
@@ -80,6 +89,10 @@ namespace System.Windows.Forms.GtkRender
     }
     public class CellRendererComboValue : CellRendererCombo, ICellRenderer
     {
+        static CellRendererComboValue()
+        {
+            typeof(CellRendererComboValue).GetMembers();
+        }
         int ColumnIndex;
         DataGridViewColumn Column;
         private CellReandererUtility utility;
@@ -105,6 +118,10 @@ namespace System.Windows.Forms.GtkRender
     }
     public class CellRendererPixbufValue : CellRendererPixbuf, ICellRenderer
     {
+        static CellRendererPixbufValue()
+        {
+            typeof(CellRendererPixbufValue).GetMembers();
+        }
         int ColumnIndex;
         DataGridViewColumn Column;
         private CellReandererUtility utility;
@@ -160,6 +177,10 @@ namespace System.Windows.Forms.GtkRender
     }
     public class CellRendererButtonValue : CellRendererText, ICellRenderer
     {
+        static CellRendererButtonValue()
+        {
+            typeof(CellRendererButtonValue).GetMembers();
+        }
         int ColumnIndex;
         DataGridViewColumn Column;
         private CellReandererUtility utility;

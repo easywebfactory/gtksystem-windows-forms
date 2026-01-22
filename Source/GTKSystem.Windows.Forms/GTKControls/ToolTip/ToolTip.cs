@@ -1,10 +1,11 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-
+﻿/*
+ * 基于GTK组件开发，兼容原生C#控件winform界面的跨平台界面组件。
+ * 使用本组件GTKSystem.Windows.Forms代替Microsoft.WindowsDesktop.App.WindowsForms，一次编译，跨平台windows、linux、macos运行
+ * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
+ */
 using Gtk;
 using System.ComponentModel;
 using System.Drawing;
-using System.Reflection;
 
 namespace System.Windows.Forms;
 
@@ -264,12 +265,11 @@ public partial class ToolTip : Component, IExtenderProvider
     {
         TipInfo info = new(caption, TipInfo.Type.Auto);
         _tools.Add(control, info);
-        control.Widget.HasTooltip = true;
         control.Widget.TooltipMarkup = $"<span foreground=\"#0000ff\" size=\"large\">{ToolTipTitle}</span>{Environment.NewLine}<span foreground=\"#333333\" >{caption}</span>";
+        control.Widget.HasTooltip = true;
         control.Widget.EnterNotifyEvent += Widget_EnterNotifyEvent;
         control.Widget.LeaveNotifyEvent += Widget_LeaveNotifyEvent;
     }
-
     private void Widget_LeaveNotifyEvent(object o, LeaveNotifyEventArgs args)
     {
         isPoping = false;
@@ -290,6 +290,7 @@ public partial class ToolTip : Component, IExtenderProvider
                 else if (ToolTipIcon == ToolTipIcon.Error)
                     tooltiptitle = $"<span foreground=\"#ff0000\" size=\"large\">❌ {tooltiptitle}</span>";
 
+                tip.Key.Widget.HasTooltip = true;
                 tip.Key.Widget.TooltipMarkup = $"{tooltiptitle}{Environment.NewLine}<span foreground=\"#333333\" >{tip.Value.Caption}</span>";
             }
             else

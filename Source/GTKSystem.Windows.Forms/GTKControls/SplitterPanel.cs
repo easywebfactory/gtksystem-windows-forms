@@ -20,7 +20,7 @@ namespace System.Windows.Forms
         public SplitterPanel(SplitContainer owner) : base()
         {
             self.Override.sender = this;
-            self.Override.AddClass("SplitterPanel");
+            self.StyleContext.AddClass("SplitterPanel");
             Owner = owner;
             self.BorderWidth = 0;
             self.ShadowType = Gtk.ShadowType.None;

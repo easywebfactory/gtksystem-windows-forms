@@ -233,11 +233,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             }
             return isCloseWindow;
         }
-
-        public void AddClass(string cssClass)
-        {
-            this.StyleContext.AddClass(cssClass);
-        }
         public new void Add(Gtk.Widget child)
         {
             ScrolledView.Child = child;

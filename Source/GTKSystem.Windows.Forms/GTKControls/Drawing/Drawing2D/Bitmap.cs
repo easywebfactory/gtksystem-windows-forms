@@ -13,6 +13,11 @@ namespace System.Drawing
     [Serializable]
     public sealed class Bitmap : Image
     {
+        static Bitmap()
+        {
+            typeof(Image).GetMembers();
+            typeof(Bitmap).GetMembers();
+        }
         private static readonly Color s_defaultTransparentColor = Color.LightGray;
 
         internal Bitmap(byte[] pixbuf):base(pixbuf)

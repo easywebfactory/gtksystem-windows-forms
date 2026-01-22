@@ -28,7 +28,17 @@ namespace System.Windows.Forms
             contaner.Hexpand = false;
             contaner.Vexpand = false;
             contaner.BorderWidth = 0;
+            Gtk.Viewport viewport = new Gtk.Viewport() { BorderWidth = 0 };
+            viewport.Drawn += Viewport_Drawn;
+            contaner.Add(viewport);
             self.Add(contaner);
+        }
+
+        private void Viewport_Drawn(object o, DrawnArgs args)
+        {
+            Cairo.Rectangle clip = args.Cr.ClipExtents();
+            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, (int)clip.Width, (int)clip.Height);
+            self.Override.OnPaint(args.Cr, rec);
         }
         public override ControlCollection Controls => _controls;
         public override Padding Padding

@@ -1,12 +1,10 @@
-﻿using Gdk;
-using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public abstract class ScrollableBoxBase : Gtk.ScrolledWindow, IControlGtk, IScrollableBoxBase
     {
-        public event ScrollEventHandler Scroll;
+        public event System.Windows.Forms.ScrollEventHandler Scroll;
         public GtkControlOverride Override { get; set; }
         public ScrollableBoxBase() : base()
         {
@@ -22,7 +20,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             base.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
             base.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
         }
- 
         private void Vadjustment_ValueChanged(object sender, EventArgs e)
         {
             if (Scroll != null)
@@ -31,7 +28,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 Scroll(this, new System.Windows.Forms.ScrollEventArgs(ScrollEventType.ThumbTrack, (int)(adj.Value > adj.StepIncrement ? (adj.Value - adj.StepIncrement) : adj.Value), (int)adj.Value, ScrollOrientation.VerticalScroll));
             }
         }
-
         private void Hadjustment_ValueChanged(object sender, EventArgs e)
         {
             if (Scroll != null)
@@ -41,10 +37,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             }
         }
 
-        public void AddClass(string cssClass)
-        {
-            this.Override.AddClass(cssClass);
-        }
         public bool VScroll { get; set; } = true;
         public bool HScroll { get; set; } = true;
         public virtual bool AutoScroll
@@ -82,21 +74,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             }
 
             return res;
-        }
-        protected override void OnShown()
-        {
-            Override.OnAddClass();
-            base.OnShown();
-        }
-        protected virtual Gdk.Rectangle GetDrawRectangle()
-        {
-            return new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-        }
-        protected override bool OnDrawn(Cairo.Context cr)
-        {
-            Gdk.Rectangle rec = GetDrawRectangle();
-            Override.OnPaint(cr, rec);
-            return base.OnDrawn(cr);
         }
     }
 }

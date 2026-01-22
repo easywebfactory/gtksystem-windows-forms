@@ -1,8 +1,5 @@
 ﻿
 using Gtk;
-using GTKSystem.Windows.Forms.Utility;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -24,30 +21,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         public ImageLayout BackgroundImageLayout { get; set; }
         public System.Drawing.Image Image { get; set; }
         public System.Drawing.ContentAlignment ImageAlign { get; set; }
-
-        private List<string> cssList = new List<string>();
-        public void AddClass(string cssClass)
-        {
-            cssList.Add(cssClass);
-        }
-        public void RemoveClass(string cssClass)
-        {
-            cssList.Remove(cssClass);
-        }
-        public void OnAddClass()
-        {
-            foreach (string cssClass in cssList)
-            {
-                if(container.StyleContext.HasClass(cssClass))
-                    container.StyleContext.RemoveClass(cssClass);
-                container.StyleContext.AddClass(cssClass);
-            }
-            ClearNativeBackground();
-        }
-        public void ClearNativeBackground()
-        {
-        }
-
         public void DrawnBackColor(Cairo.Context cr, Gdk.Rectangle area)
         {
             if (BackColor.HasValue)

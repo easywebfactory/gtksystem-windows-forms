@@ -7,8 +7,6 @@
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
-using System.Drawing;
-using System.Xml.Linq;
 
 
 namespace System.Windows.Forms
@@ -21,7 +19,6 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         private Gtk.Overlay contaner;
         private ControlCollection _controls;
-
         public UserControl() : base()
         {
             self.Override.sender = this;
@@ -30,8 +27,19 @@ namespace System.Windows.Forms
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
             _controls = new ControlCollection(this, contaner);
+
+            Gtk.Viewport viewport = new Gtk.Viewport() { BorderWidth = 0 };
+            viewport.Drawn += Viewport_Drawn;
+            contaner.Add(viewport);
             self.Add(contaner);
             self.Shown += Self_Shown;
+        }
+
+        private void Viewport_Drawn(object o, DrawnArgs args)
+        {
+            Cairo.Rectangle clip = args.Cr.ClipExtents();
+            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, (int)clip.Width, (int)clip.Height);
+            self.Override.OnPaint(args.Cr, rec);
         }
         private bool Is_Control_Shown = false;
         private void Self_Shown(object sender, EventArgs e)

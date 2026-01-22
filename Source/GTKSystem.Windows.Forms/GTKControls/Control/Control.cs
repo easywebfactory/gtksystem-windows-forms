@@ -20,7 +20,7 @@ namespace System.Windows.Forms
     [DefaultProperty("Text")]
     [Designer(typeof(ControlDesigner))]
     [ToolboxItemFilter("System.Windows.Forms")]
-    public partial class Control : Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize, IArrangedElement, IBindableComponent
+    public partial class Control : Component, IControl, ISynchronizeInvoke, IComponent, IDisposable, ISupportInitialize, IArrangedElement, IBindableComponent, IWin32Window
     {
         public string unique_key { get; protected set; }
 
@@ -808,7 +808,6 @@ namespace System.Windows.Forms
             set
             {
                 ISelf.Override.BackColor = value;
-                ISelf.Override.OnAddClass();
                 UpdateStyle();
                 Refresh();
             }
@@ -1522,8 +1521,6 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null)
             {
-                if (ISelf != null)
-                    ISelf.Override.OnAddClass();
                 this.Widget.Window?.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
                 if (invalidateChildren == true && this.Widget is Gtk.Container container)
                 {
@@ -1543,8 +1540,6 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null)
             {
-                if (ISelf != null)
-                    ISelf.Override.OnAddClass();
                 this.Widget.Window?.InvalidateRect(Widget.Allocation, invalidateChildren);
             }
         }
@@ -1645,6 +1640,7 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null && this.Widget.IsVisible)
             {
+                this.Widget.SetStateFlags(StateFlags.Backdrop, true);
                 this.Widget.QueueDraw();
             }
         }
