@@ -1,8 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+
 	  <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
-      <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+
+	  <!--aot发布时使用TargetFramework指定单一sdk，net8.0及以上版本-->
+	  <!--
+	  <TargetFramework>net8.0</TargetFramework>
+	  -->
+	  <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	  <Authors>chenhongjin</Authors>
 	  <Company>gtkapp.com</Company>
 	  <Copyright>www.gtkapp.com，438865652@qq.com，chenhongjin</Copyright>

@@ -117,7 +117,7 @@ namespace System.Drawing.Imaging
 		{
             return new ImageCodecInfo() { FormatID = this._guid, MimeType = GetMimeType() };
         }
-		private string GetMimeType()
+        public string GetMimeType()
 		{
 
             if (Guid == s_memoryBMP.Guid)
@@ -158,7 +158,7 @@ namespace System.Drawing.Imaging
             }
             if (Guid == s_icon.Guid)
             {
-                return ".icon";
+                return ".ico";
             }
             if (Guid == s_heif.Guid)
             {

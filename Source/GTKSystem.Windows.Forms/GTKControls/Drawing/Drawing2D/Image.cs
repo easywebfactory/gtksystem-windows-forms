@@ -19,52 +19,81 @@ namespace System.Drawing
         private byte[] _PixbufData;
         //¡°jpeg¡±, ¡°tiff¡±, ¡°png¡±, ¡°ico¡± or ¡°bmp¡±.
         public byte[] PixbufData
-        {
-            get { 
-				if (_PixbufData == null && _Pixbuf != null) {
+		{
+			get
+			{
+				if (_PixbufData == null && _Pixbuf != null)
+				{
 					try
 					{
-						_PixbufData = _Pixbuf.SaveToBuffer("png");
+						string type = RawFormat.GetMimeType().Substring(1);
+						if ("png,jpeg,gif,icon,tiff,webp".Contains(type) == false)
+							type = "png";
+						_PixbufData = _Pixbuf.SaveToBuffer(type);
 					}
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                } 
-				return _PixbufData; }
-            set { 
-				_PixbufData = value; 
+					catch (Exception ex)
+					{
+						Console.WriteLine(ex.Message);
+					}
+				}
+				return _PixbufData;
+			}
+			set
+			{
+				_PixbufData = value;
 				try
 				{
-					_Pixbuf = new Gdk.Pixbuf(value);
+					RawFormat = DetectByFileHeader(_PixbufData);
+					Pixbuf = new Gdk.Pixbuf(_PixbufData);
 				}
 				catch (Exception ex)
 				{
 					Console.WriteLine(ex.Message);
 				}
 			}
-        }
+		}
         private Gdk.Pixbuf _Pixbuf;
         public Gdk.Pixbuf Pixbuf
         {
-            get {
-                if (_Pixbuf == null && _PixbufData != null) {
-                    try
-                    {
-                        _Pixbuf = new Gdk.Pixbuf(_PixbufData);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-                return _Pixbuf;
-            }
-            set { _Pixbuf = value; 
-				
+			get
+			{
+				if (_Pixbuf == null && _PixbufData != null)
+				{
+					try
+					{
+						_Pixbuf = new Gdk.Pixbuf(_PixbufData);
+					}
+					catch (Exception ex)
+					{
+						Console.WriteLine(ex.Message);
+					}
+				}
+				return _Pixbuf;
+			}
+            set { 
+				_Pixbuf = value; 
                 try
                 {
-                    _PixbufData = value.SaveToBuffer("png");
+					if (_Pixbuf != null)
+					{
+						this.Width = _Pixbuf.Width;
+						this.Height = _Pixbuf.Height;
+						string type = RawFormat.GetMimeType().Substring(1);
+						if ("png,jpeg,gif,icon,tiff,webp".Contains(type))
+						{
+							_PixbufData = value.SaveToBuffer(type);
+						}
+						else if (value.HasAlpha)
+						{
+							_PixbufData = value.SaveToBuffer("png");
+							RawFormat = ImageFormat.Png;
+						}
+						else
+						{
+							_PixbufData = value.SaveToBuffer("jpeg");
+							RawFormat = ImageFormat.Jpeg;
+						}
+					}
                 }
                 catch (Exception ex)
                 {
@@ -72,7 +101,70 @@ namespace System.Drawing
                 }
             }
         }
-		private string _fileName;
+        private System.Drawing.Imaging.ImageFormat DetectByFileHeader(Stream stream)
+        {
+            try
+            {
+                using (var reader = new BinaryReader(stream))
+                {
+                    byte[] header = reader.ReadBytes(16);
+                    return DetectByFileHeader(header);
+                }
+            }
+            catch
+            {
+                return System.Drawing.Imaging.ImageFormat.MemoryBmp;
+            }
+        }
+		private System.Drawing.Imaging.ImageFormat DetectByFileHeader(byte[] header)
+		{
+			try
+			{
+				if (header.Length < 15)
+					return System.Drawing.Imaging.ImageFormat.MemoryBmp;
+
+				// JPEG: FF D8
+				if (header[0] == 0xFF && header[1] == 0xD8)
+					return System.Drawing.Imaging.ImageFormat.Jpeg;
+
+				// PNG: 89 50 4E 47 0D 0A 1A 0A
+				if (header[0] == 0x89 && header[1] == 0x50 &&
+					header[2] == 0x4E && header[3] == 0x47 &&
+					header[4] == 0x0D && header[5] == 0x0A &&
+					header[6] == 0x1A && header[7] == 0x0A)
+					return System.Drawing.Imaging.ImageFormat.Png;
+
+				// GIF: GIF87a or GIF89a
+				if (header[0] == 0x47 && header[1] == 0x49 &&
+					header[2] == 0x46 && header[3] == 0x38 &&
+					(header[4] == 0x37 || header[4] == 0x39) &&
+					header[5] == 0x61)
+					return System.Drawing.Imaging.ImageFormat.Gif;
+
+				// TIFF: II or MM
+				if ((header[0] == 0x49 && header[1] == 0x49) ||
+					(header[0] == 0x4D && header[1] == 0x4D))
+					return System.Drawing.Imaging.ImageFormat.Tiff;
+
+				// WebP: RIFF + WEBP
+				if (header[0] == 0x52 && header[1] == 0x49 &&
+					header[2] == 0x46 && header[3] == 0x46 &&
+					header[8] == 0x57 && header[9] == 0x45 &&
+					header[10] == 0x42 && header[11] == 0x50)
+					return System.Drawing.Imaging.ImageFormat.Webp;
+
+                // BMP: BM
+                if (header[0] == 0x42 && header[1] == 0x4D)
+                    return System.Drawing.Imaging.ImageFormat.Bmp;
+
+                return System.Drawing.Imaging.ImageFormat.MemoryBmp;
+			}
+			catch
+			{
+				return System.Drawing.Imaging.ImageFormat.MemoryBmp;
+			}
+		}
+        private string _fileName;
         public string FileName { get=> _fileName; set { _fileName = value; Pixbuf = new Gdk.Pixbuf(value); } }
         #endregion
 
