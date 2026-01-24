@@ -74,6 +74,7 @@ namespace GTKWinFormsApp
             listView1.Font = new Font("Microsoft YaHei UI", 9F);
             listView1.FullRowSelect = true;
             listView1.GridLines = true;
+            listView1.HeaderStyle = ColumnHeaderStyle.Clickable;
             listViewItem1.StateImageIndex = 0;
             listViewItem2.StateImageIndex = 0;
             listViewItem3.StateImageIndex = 0;
@@ -87,10 +88,10 @@ namespace GTKWinFormsApp
             listView1.Name = "listView1";
             listView1.Size = new Size(1303, 267);
             listView1.SmallImageList = imageList1;
-            listView1.Sorting = SortOrder.Ascending;
             listView1.TabIndex = 13;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.View = View.Details;
+            listView1.VirtualListSize = 10;
             listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
             listView1.Click += listView1_Click;
             // 

@@ -1,6 +1,9 @@
+
 更多详细操作可访问https://www.gtkapp.com/formsdesigner/
 
-窗体设计管理方法，以GTKWinFormsApp工程为例：
+*** 窗体设计管理方法 ***
+
+以GTKWinFormsApp工程为例：
 
 【推荐】使用.net原生窗体应用工程来管理窗体，在原生工程下设计窗体，无任何限制，可同时使用。
 
@@ -20,3 +23,37 @@
 </Project>
 
 如有异常提示，只需删除obj文件夹，让vs自动重新生成即可。
+
+*** 支持AOT编译发布 ***
+
+工程Aot配置：
+
+	<PropertyGroup>
+		<PublishAot>true</PublishAot>
+		<PublishTrimmed>true</PublishTrimmed>
+		<IsAotCompatible>true</IsAotCompatible>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<RuntimeIdentifier>linux-musl-x64</RuntimeIdentifier>
+	</PropertyGroup>
+	<ItemGroup>
+		<RdXmlFile Include="rd.xml" />
+	</ItemGroup>
+
+rd.xml文件配置
+<Directives xmlns="http://schemas.microsoft.com/netcore/2013/01/metadata">
+	<Application>
+		<Assembly Name="GtkSharp" Dynamic="Required All" />
+		<Assembly Name="AtkSharp" Dynamic="Required All" />
+		<Assembly Name="GdkSharp" Dynamic="Required All" />
+		<Assembly Name="CairoSharp" Dynamic="Required All" />
+		<Assembly Name="PangoSharp" Dynamic="Required All" />
+		<Assembly Name="GLibSharp" Dynamic="Required All" />
+		<Assembly Name="GioSharp" Dynamic="Required All" />
+		<Assembly Name="GTKSystem.Windows.Forms" DataContractSerializer="Required All" DataContractJsonSerializer="Required All" XmlSerializer="Required All" />
+		
+		<Assembly Name="GTKWinFormsApp" DataContractSerializer="Required All" DataContractJsonSerializer="Required All" XmlSerializer="Required All" >
+
+		</Assembly>
+	</Application>
+</Directives>

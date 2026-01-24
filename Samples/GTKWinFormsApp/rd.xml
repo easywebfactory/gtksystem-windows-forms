@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Directives xmlns="http://schemas.microsoft.com/netcore/2013/01/metadata">
+	<Application>
+		<Assembly Name="GtkSharp" Dynamic="Required All" />
+		<Assembly Name="AtkSharp" Dynamic="Required All" />
+		<Assembly Name="GdkSharp" Dynamic="Required All" />
+		<Assembly Name="CairoSharp" Dynamic="Required All" />
+		<Assembly Name="PangoSharp" Dynamic="Required All" />
+		<Assembly Name="GLibSharp" Dynamic="Required All" />
+		<Assembly Name="GioSharp" Dynamic="Required All" />
+		<Assembly Name="GTKSystem.Windows.Forms" DataContractSerializer="Required All" DataContractJsonSerializer="Required All" XmlSerializer="Required All" />
+		
+		<Assembly Name="GTKWinFormsApp" DataContractSerializer="Required All" DataContractJsonSerializer="Required All" XmlSerializer="Required All" >
+			<Type Name="GTKWinFormsApp.TestEntity"  Dynamic="Required All"/>
+			<Type Name="GTKWinFormsApp.TestDataMode"  Dynamic="Required All"/>
+			<Type Name="System.Collections.Generic.List`1[[GTKWinFormsApp.TestDataMode,GTKWinFormsApp]]" Dynamic="Required All"/>
+		</Assembly>
+	</Application>
+</Directives>

@@ -1,4 +1,5 @@
 ﻿
+ 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,11 +19,12 @@ namespace GTKWinFormsApp
         public Form3()
         {
             InitializeComponent();
-
+ 
             UserControl11 userControl11 = new UserControl11();
-            //userControl11.Location = new Point(300, 300);
-            //userControl11.Size = new Size(200,500);
+            //userControl11.Location = new Point(30, 30);
+            //userControl11.Size = new Size(100, 500);
             panel5.Controls.Add(userControl11);
+
             // Controls.Add(userControl11);
             this.SizeChanged += Form3_SizeChanged;
 
@@ -41,6 +43,10 @@ namespace GTKWinFormsApp
             this.Load += Form3_Load;
 
             ddddToolStripMenuItem1.Click += DdddToolStripMenuItem1_Click;
+            this.WindowState = FormWindowState.Normal;
+            button3.Click += button3_Click;
+
+ 
         }
 
         private void DdddToolStripMenuItem1_Click(object? sender, EventArgs e)
@@ -72,6 +78,8 @@ namespace GTKWinFormsApp
 
         private void ToolStripMenuItem2_Click(object? sender, EventArgs e)
         {
+            //this.Location = new Point(100,100);
+            //this.TopMost = true;
             notifyIcon1.ShowBalloonTip(10000, "C# 桌面应用程序跨平台界面框架", "一次编译，跨平台运行，支持Windows、Linux、MacOS \n便于开发跨平台winform软件，便于将C# winform升级为跨平台软件", ToolTipIcon.Warning);
             this.WindowState = FormWindowState.Normal;
             this.Show();
@@ -129,18 +137,18 @@ namespace GTKWinFormsApp
 
         private void Form3_Load(object sender, EventArgs e)
         {
-            var result = this.BeginInvoke(new MethodInvoker(() =>
-            {
-                System.Threading.Thread.Sleep(1000);
-                for (int i = 1; i < 101; i++)
-                {
-                    progressBar1.Invoke(new MethodInvoker(() =>
-                    {
-                        progressBar1.Value = i;
-                    }));
-                    System.Threading.Thread.Sleep(20);
-                }
-            }));
+            //var result = this.BeginInvoke(new MethodInvoker(() =>
+            //{
+            //    System.Threading.Thread.Sleep(1000);
+            //    for (int i = 1; i < 101; i++)
+            //    {
+            //        progressBar1.Invoke(new MethodInvoker(() =>
+            //        {
+            //            progressBar1.Value = i;
+            //        }));
+            //        System.Threading.Thread.Sleep(20);
+            //    }
+            //}));
  
         }
 
@@ -150,7 +158,8 @@ namespace GTKWinFormsApp
             var g = e.Graphics;
 
             GraphicsPath path = new GraphicsPath();
-            path.AddEllipse(90, 25, 40, 20);
+
+            path.AddEllipse(90, 25, 90, 90);
 
             path.StartFigure();
             path.AddArc(5, 5, 6, 6, 180, 90);
@@ -165,18 +174,32 @@ namespace GTKWinFormsApp
             path.AddPie(-10, 20, 60, 60, 10, 100);
             //path.StartFigure();
             path.AddBezier(new Point(60, 70), new Point(80, 120), new Point(110, 20), new Point(160, 80));
-            path.AddRectangle(new Rectangle(30, 10, 190, 30));
+            path.AddRectangle(new Rectangle(30, 10, 70, 90));
             //path.CloseFigure();
 
+            StringFormat newStringFormat = new StringFormat();
+            newStringFormat.FormatFlags = StringFormatFlags.DirectionVertical;
+            path.AddString("test文本", new FontFamily(GenericFontFamilies.Serif), (int)FontStyle.Bold, 16, new Point(1, 1), newStringFormat);
 
-            path.AddString("test文本", new FontFamily(GenericFontFamilies.Serif), (int)FontStyle.Italic, 16, new Point(1, 1), new StringFormat(StringFormatFlags.NoWrap));
-
-            //path.CloseAllFigures();
 
             LinearGradientBrush brush = new LinearGradientBrush(new Point(0, 0), new Point(100, 30), Color.Red, Color.Blue);
+
+            //PathGradientBrush brush = new PathGradientBrush(new Point[] { new Point(0, 0), new Point(200, 100) });
+            //brush.CenterPoint = new Point(60, 60);
+            //brush.CenterColor = Color.Green;
+            //brush.SurroundColors = new Color[] { Color.Gold, Color.Blue, Color.Red };
+            g.DrawPath(new Pen(brush, 2), path);
+            //g.DrawPath(new Pen(new SolidBrush(Color.Black), 2), path);
+
+            //PathGradientBrush gradientBrush = new PathGradientBrush(path);
+            //gradientBrush.CenterColor = Color.Red;
+            //gradientBrush.SurroundColors = new Color[] { Color.Yellow, Color.Blue };
+            //g.DrawPath(new Pen(gradientBrush, 2), path);
+
+            //path.CloseAllFigures();
             //g.TranslateTransform(30, 0);
             //g.RotateTransform(20);
-            g.DrawPath(new Pen(brush, 2), path);
+
 
             //PathGradientBrush gradientBrush = new PathGradientBrush(path);
             //gradientBrush.CenterColor = Color.Red;
@@ -187,8 +210,10 @@ namespace GTKWinFormsApp
             Image image = new Bitmap(500,300);
             Graphics gg = Graphics.FromImage(image);
             gg.DrawString("test文本gggggggg", new Font(GenericFontFamilies.Serif.ToString(), 20), new SolidBrush(Color.Red), new PointF(10, 50));
-            gg.Flush();
 
+            gg.Flush(FlushIntention.Flush);
+            gg.DrawString("3333333333", new Font(GenericFontFamilies.Serif.ToString(), 20), new SolidBrush(Color.Red), new PointF(10, 10));
+            gg.Flush();
             g.DrawImageUnscaled(image, 0, 0);
         }
 
@@ -213,8 +238,15 @@ namespace GTKWinFormsApp
         private void button3_Click(object sender, EventArgs e)
         {
             //打印
+            //this.ScrollControlIntoView(label1);
+            Screen scr = Screen.FromControl(label1);
+          
+            Console.WriteLine($"{scr.WorkingArea.Width},{scr.WorkingArea.Height}");
+            Console.WriteLine(scr.DeviceName);
+            label1.Text = $"{scr.Bounds.Height},{scr.WorkingArea.Height}";
+  
         }
-
+ 
         private void button4_Click(object sender, EventArgs e)
         {
             Form2 f1 = new Form2();

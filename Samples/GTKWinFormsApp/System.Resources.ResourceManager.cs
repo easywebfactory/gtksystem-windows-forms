@@ -2,17 +2,14 @@
 //GTKSystem.Resources.ResourceManager实现了项目资源文件和图像文件读取。
 //如果项目里没有使用资源图像文件，可以不用新建此文件
 
-using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System.Resources;
-using System.Xml;
 
 namespace System.Resources
 {
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public class ResourceManager: GTKSystem.Resources.ResourceManager
     {
-        public ResourceManager(System.Type resourceSource) : base(null, null, resourceSource)
+        public ResourceManager([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] System.Type resourceSource) : base(null, null, resourceSource)
         {
 
         }
@@ -20,7 +17,7 @@ namespace System.Resources
         {
 
         }
-        public ResourceManager(string baseName, Assembly assembly, System.Type resourceSource) : base(baseName, assembly, resourceSource)
+        public ResourceManager(string baseName, Assembly assembly, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] System.Type resourceSource) : base(baseName, assembly, resourceSource)
         {
 
         }

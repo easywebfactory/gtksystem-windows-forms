@@ -2,13 +2,14 @@
 //GTKSystem.ComponentModel.ComponentResourceManager实现了项目资源文件和图像文件读取。
 //如果项目里没有使用资源图像文件，可以不用新建此文件
 
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace System.ComponentModel
 {
     public class ComponentResourceManager:GTKSystem.ComponentModel.ComponentResourceManager
     {
-        public ComponentResourceManager(Type form):base(form)
+        public ComponentResourceManager([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type form):base(form)
         {
 
         }

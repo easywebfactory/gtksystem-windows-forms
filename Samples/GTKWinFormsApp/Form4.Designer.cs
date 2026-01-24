@@ -65,6 +65,8 @@ namespace GTKWinFormsApp
             test22ToolStripMenuItem = new ToolStripMenuItem();
             test13ToolStripMenuItem = new ToolStripMenuItem();
             label1 = new Label();
+            toolTip1 = new ToolTip(components);
+            toolTip2 = new ToolTip(components);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -153,7 +155,7 @@ namespace GTKWinFormsApp
             // 
             // groupBox1
             // 
-            groupBox1.Anchor= AnchorStyles.Left| AnchorStyles.Right;
+            groupBox1.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             groupBox1.Controls.Add(button10);
             groupBox1.Location = new Point(107, 429);
             groupBox1.Margin = new Padding(3, 4, 3, 4);
@@ -177,16 +179,16 @@ namespace GTKWinFormsApp
             // 
             // hScrollBar1
             // 
-            hScrollBar1.Location = new Point(410, 343);
+            hScrollBar1.Location = new Point(298, 343);
             hScrollBar1.Name = "hScrollBar1";
-            hScrollBar1.Size = new Size(260, 26);
+            hScrollBar1.Size = new Size(372, 26);
             hScrollBar1.TabIndex = 8;
             // 
             // vScrollBar1
             // 
             vScrollBar1.Location = new Point(238, 177);
             vScrollBar1.Name = "vScrollBar1";
-            vScrollBar1.Size = new Size(26, 216);
+            vScrollBar1.Size = new Size(26, 162);
             vScrollBar1.TabIndex = 7;
             // 
             // button9
@@ -196,6 +198,7 @@ namespace GTKWinFormsApp
             button9.Size = new Size(94, 29);
             button9.TabIndex = 6;
             button9.Text = "警告消息";
+            toolTip2.SetToolTip(button9, "show tooltip2");
             button9.UseVisualStyleBackColor = true;
             button9.Click += button9_Click;
             // 
@@ -231,7 +234,6 @@ namespace GTKWinFormsApp
             // 
             // treeView1
             // 
-            treeView1.ImageKey = "img11.jpg";
             treeView1.ImageIndex = 0;
             treeView1.ImageList = imageList1;
             treeView1.Location = new Point(63, 181);
@@ -283,14 +285,14 @@ namespace GTKWinFormsApp
             // 
             // button4
             // 
-            button4.Location = new Point(62, 20);
+            button4.DialogResult = DialogResult.OK;
+            button4.Location = new Point(72, 43);
             button4.Name = "button4";
             button4.Size = new Size(94, 29);
             button4.TabIndex = 0;
             button4.Text = "button4";
+            toolTip1.SetToolTip(button4, "show tooltip1");
             button4.UseVisualStyleBackColor = true;
-            button4.DialogResult=DialogResult.OK;
-
             // 
             // button3
             // 
@@ -350,6 +352,18 @@ namespace GTKWinFormsApp
             label1.TabIndex = 1;
             label1.Text = "横幅栏";
             // 
+            // toolTip1
+            // 
+            toolTip1.IsBalloon = false;
+            toolTip1.ToolTipIcon = ToolTipIcon.Warning;
+            toolTip1.ToolTipTitle = "test title";
+            // 
+            // toolTip2
+            // 
+            toolTip2.IsBalloon = true;
+            toolTip2.ToolTipIcon = ToolTipIcon.Warning;
+            toolTip2.ToolTipTitle = "tip2";
+            // 
             // Form4
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
@@ -399,5 +413,7 @@ namespace GTKWinFormsApp
         private Button button11;
         private GroupBox groupBox1;
         private Button button10;
+        private ToolTip toolTip1;
+        private ToolTip toolTip2;
     }
 }

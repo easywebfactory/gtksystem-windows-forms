@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -8,25 +9,39 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Json;
+using System.Text.Json.Serialization;
 using System.Windows.Forms;
-
+ 
 namespace GTKWinFormsApp
 {
     public partial class Form1 : Form
     {
+        static Form1()
+        {
+            //typeof(TestDataMode).GetMembers();
+            //typeof(List<TestDataMode>).GetMembers();
+            //typeof(TestEntity).GetMembers(); 
+        }
         public Form1()
         {
-
             InitializeComponent();
             this.Load += Form1_Load;
-            //dataGridView1.Click += DataGridView1_Click;
+            dataGridView1.Click += DataGridView1_Click;
             //dataGridView1.DoubleClick += DataGridView1_DoubleClick;
             textBox1.KeyDown += textBox1_KeyDown;
+            textBox1.KeyUp += textBox1_KeyUp;
+            textBox1.KeyPress += textBox1_KeyPress;
             button6.Click += button6_Click;
-        }
+            //dataGridView1.UseModelFilter = true;
 
+        }
+        int ix = 0;
         private void DataGridView1_Click(object? sender, EventArgs e)
         {
+            //dataGridView1.FirstDisplayedScrollingRowIndex = 7;
+            ////dataGridView1.Columns[ix].DisplayIndex = 3;
+            ////ix++;
+            //Console.WriteLine(dataGridView1.Columns[ix].DisplayIndex);
             Console.WriteLine("DataGridView1_Click");
         }
 
@@ -35,18 +50,20 @@ namespace GTKWinFormsApp
             
             treeView1.Nodes.Clear();
             treeView1.CheckBoxes = true;
-            string jsontext = File.ReadAllText(Application.StartupPath + "/TestData1.json");
-            using (FileStream reader = new FileStream(Application.StartupPath + "/TestData1.json", FileMode.Open, FileAccess.Read))
+            string jsontext = File.ReadAllText("TestData1.json");
+            using (FileStream reader = new FileStream("TestData1.json", FileMode.Open, FileAccess.Read))
             {
                 DataContractJsonSerializer dataContractJson = new DataContractJsonSerializer(typeof(List<TestDataMode>));
-                List<TestDataMode> json = dataContractJson.ReadObject(reader) as List<TestDataMode>;
+                object obj = dataContractJson.ReadObject(reader);
+                List<TestDataMode> json = obj as List<TestDataMode>;
+
                 IEnumerable<TreeNode> childs = GetChild(null, json);
                 treeView1.Nodes.AddRange(childs.ToArray());
                 foreach (TreeNode child in treeView1.Nodes)
                     child.Expand();
 
-                treeView1.Nodes[0].Nodes[2].Nodes[3].Checked = true;
-                treeView1.SelectedNode = treeView1.Nodes[0].Nodes[2];
+                //treeView1.Nodes[0].Nodes[2].Nodes[3].Checked = true;
+                //treeView1.SelectedNode = treeView1.Nodes[0].Nodes[2];
             }
             TabPage tabPage=new TabPage();
             tabPage.Location = new System.Drawing.Point(4, 29);
@@ -75,23 +92,18 @@ namespace GTKWinFormsApp
             foreach (TestDataMode d in list)
             {
                 var node = new TreeNode(d.name) { Name = d.treeID };
-                IEnumerable<TreeNode> childs = GetChild(d.treeID, data);
-                if (childs.Count() > 0)
-                    node.Nodes.AddRange(childs.ToArray());
                 children.Add(node);
+                if (string.IsNullOrEmpty(d.treeID) == false)
+                {
+                    IEnumerable<TreeNode> childs = GetChild(d.treeID, data);
+                    if (childs.Count() > 0)
+                        node.Nodes.AddRange(childs.ToArray());
+                }
             }
             return children;
         }
-        public class TestDataMode
-        {
-            public string name { get; set; }
-            public string treeID { get; set; }
-            public string parent { get; set; }
-            public string treeName { get; set; }
-        }
 
         TestEntity b = new TestEntity();
-
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -107,11 +119,11 @@ namespace GTKWinFormsApp
             var createdate = "2012-09-14 12:32:33";
             data.Add(new TestEntity() { ID = 0, Title = "加载数据点yes加载数据\n点yes加载数据点yes加载数据点yes", Info = "sdfdf", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "face-smile-big" });
             data.Add(new TestEntity() { ID = 1, Title = "test2", Info = "yyyy2", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "" });
-            data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = Application.StartupPath + "/Resources/BindingNavigator.Delete.ico", PIC = Image.FromFile(Application.StartupPath + "/Resources/timg2.jpg") });
-            data.Add(new TestEntity() { ID = 4, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile(Application.StartupPath + "/Resources/timg2.jpg") });
+            data.Add(new TestEntity() { ID = 3, Title = "test3", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = Application.StartupPath + "Resources/BindingNavigator.Delete.ico", PIC = Image.FromFile(Application.StartupPath + "Resources/timg2.jpg") });
+            data.Add(new TestEntity() { ID = 4, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile(Application.StartupPath + "Resources/timg2.jpg") });
 
-            data.Add(new TestEntity() { ID = 5, Title = "网络图片异步加载", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://gitlab.gnome.org/uploads/-/system/project/avatar/13319/gi-docgen.png?width=48", PIC = Image.FromFile(Application.StartupPath + "/Resources/timg2.jpg") });
-            data.Add(new TestEntity() { ID = 6, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile(Application.StartupPath + "/Resources/timg2.jpg") });
+            data.Add(new TestEntity() { ID = 5, Title = "网络图片异步加载", Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://gitlab.gnome.org/uploads/-/system/project/avatar/13319/gi-docgen.png?width=48", PIC = Image.FromFile(Application.StartupPath + "Resources/timg2.jpg") });
+            data.Add(new TestEntity() { ID = 6, Title = "test4", Info = "yyyy", State = true, CreateDate = createdate, Operate = "编辑", PIC1 = "", PIC = Image.FromFile(Application.StartupPath + "Resources/timg2.jpg") });
             for (int i = 0; i < 10; i++)
                 data.Add(new TestEntity() { ID = i + 7, Title = "网络图片异步加载" + i.ToString(), Info = "ddds", State = false, CreateDate = createdate, Operate = "编辑", PIC1 = "https://www.baidu.com/img/flexible/logo/pc/result.png?" + i.ToString() });
 
@@ -124,7 +136,7 @@ namespace GTKWinFormsApp
             //this.comboBox1.DataSource = data;
             // dataGridView1.Columns[1].Visible = false;
 
-            this.dataGridView1.Columns.RemoveAt(this.dataGridView1.Columns.Count - 1);
+            //this.dataGridView1.Columns.RemoveAt(this.dataGridView1.Columns.Count - 1);
 
             //2、datatable数据源
             DataTable dt = new DataTable();
@@ -138,38 +150,21 @@ namespace GTKWinFormsApp
             //  this.dataGridView1.Columns.Clear();
 
             //this.dataGridView1.DataSource = dt;
-        }
-        public class TestEntity
-        {
-            public int ID { get; set; }
-            public string title;
-            public string Title { get { return title; } set { title = value; } }
-            public string Info { get; set; }
-            public bool State { get; set; }
-            public string CreateDate { get; set; }
-            public string Operate { get; set; }
-            public string PIC1 { get; set; }
-            public Image PIC { get; set; }
-        }
 
+            //DataGridViewRow row = new DataGridViewRow();
+            //row.Cells.AddRange(new DataGridViewTextBoxCell(), new DataGridViewTextBoxCell(), new DataGridViewTextBoxCell());
+            //this.dataGridView1.Rows.Add(row);
+        }
+       
 
         private void button2_Click(object sender, EventArgs e)
         {
             dataGridView1.EndEdit();
-            foreach (DataGridViewRow row in dataGridView1.SelectedRows)
-                Console.WriteLine(row.Cells[2].Value);
-            Console.WriteLine("====================");
-            foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
-                Console.WriteLine(cell.Value);
-
-            //DataGridViewTextBoxColumn column = new DataGridViewTextBoxColumn();
-            //column.HeaderText = "test1";
-            //column.MinimumWidth = 6;
-            //column.Name = "test1";
-            //column.Width = 225;
-            //column.DataPropertyName = "test1";
-
-            //dataGridView1.Columns.Add(column);
+            //foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+            //    Console.WriteLine(row.Cells[2].Value);
+            //Console.WriteLine("====================");
+            //foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
+            //    Console.WriteLine(cell.Value);
 
             ColorDialog cd = new ColorDialog();
             if (textBox1.Text.Length >= 6)
@@ -395,12 +390,13 @@ namespace GTKWinFormsApp
 
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            (sender as CheckBox).Text = "1234";
+ 
             checkedListBox1.Items[0] = DateTime.Now.ToString();
-            Console.WriteLine($"checkedListBox1_ItemCheck，{sender}: newvalue:{e.NewValue}-oldvalue:{e.CurrentValue}");
+
+            Console.WriteLine($"checkedListBox1_ItemCheck，{checkedListBox1.Items[0]}: newvalue:{e.NewValue}-oldvalue:{e.CurrentValue}");
             if (e.Index == 2)
             {
-                checkedListBox1.SetItemChecked(3, true);
+                //checkedListBox1.SetItemChecked(3, true);
                 foreach (var o in checkedListBox1.CheckedItems)
                 {
                     Console.WriteLine("ItemCheck，" + o.ToString());
@@ -410,42 +406,70 @@ namespace GTKWinFormsApp
 
         private void pictureBox2_Paint(object sender, PaintEventArgs e)
         {
+            Console.WriteLine("pictureBox2_Paint");
             var g = e.Graphics;
             g.Clear(Color.White);
 
-            g.FillRectangle(new SolidBrush(Color.AliceBlue), new Rectangle(0, 0, 100, 50));
-            // g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new Point(10, 10), new Point(50, 30));
-            List<PointF> Rps = new List<PointF>();
-            List<PointF> rps = new List<PointF>();
-            float R = 50;
-            double rad = Math.PI / 180;
-            float r = (float)(R * Math.Sin(18 * R) / Math.Cos(36 * R));
-            float x = pictureBox2.Width / 2;
-            float y = pictureBox2.Height / 2;
-            for (int k = 0; k < 5; k++)
-            {
-                Rps.Add(new PointF(x - (R * (float)Math.Cos((90 + k * 72) * rad)), y - (R * (float)Math.Sin((90 + k * 72) * rad))));
-                rps.Add(new PointF(x - (r * (float)Math.Cos((90 + k * 72 + 36) * rad)), y - (r * (float)Math.Sin((90 + k * 72 + 36) * rad))));
-            }
-            for (int i = 0; i < 5; i++)
-            {
-                //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), Rps[i], rps[i]);
-                //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), rps[i], new PointF(x, y));
-                //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new PointF(x, y), Rps[i]);
+            //g.FillRectangle(new SolidBrush(Color.AliceBlue), new Rectangle(0, 0, 100, 50));
+            //// g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new Point(10, 10), new Point(50, 30));
+            //List<PointF> Rps = new List<PointF>();
+            //List<PointF> rps = new List<PointF>();
+            //float R = 50;
+            //double rad = Math.PI / 180;
+            //float r = (float)(R * Math.Sin(18 * R) / Math.Cos(36 * R));
+            //float x = pictureBox2.Width / 2;
+            //float y = pictureBox2.Height / 2;
+            //for (int k = 0; k < 5; k++)
+            //{
+            //    Rps.Add(new PointF(x - (R * (float)Math.Cos((90 + k * 72) * rad)), y - (R * (float)Math.Sin((90 + k * 72) * rad))));
+            //    rps.Add(new PointF(x - (r * (float)Math.Cos((90 + k * 72 + 36) * rad)), y - (r * (float)Math.Sin((90 + k * 72 + 36) * rad))));
+            //}
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), Rps[i], rps[i]);
+            //    //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), rps[i], new PointF(x, y));
+            //    //g.DrawLine(new Pen(new SolidBrush(Color.Blue), 2), new PointF(x, y), Rps[i]);
 
-                g.DrawLines(new Pen(new SolidBrush(Color.Red), 2), new PointF[] { Rps[i], rps[i], new PointF(x, y), Rps[i] });
-            }
+            //    g.DrawLines(new Pen(new SolidBrush(Color.Red), 2), new PointF[] { Rps[i], rps[i], new PointF(x, y), Rps[i] });
+            //}
 
-            g.DrawString("这是Paint Graphics示例效果", new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 60);
-            g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2), new Rectangle(pictureBox2.Width / 2, pictureBox2.Height / 2, pictureBox2.Height, pictureBox2.Height), 0, 270);
+            //g.DrawString("这是Paint Graphics示例效果", new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), new SolidBrush(Color.Red), 0, 60);
+            //g.DrawArc(new Pen(new SolidBrush(Color.Blue), 2), new Rectangle(pictureBox2.Width / 2, pictureBox2.Height / 2, pictureBox2.Height, pictureBox2.Height), 0, 270);
 
-            g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(50, 60), new PointF(100, 80), new PointF(75, 100) });
-            g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(75, 100), new PointF(100, 120), new PointF(120, 100) });
-            g.DrawRectangle(new Pen((Color)Color.Red), new Rectangle(10, 10, 20, 20));
+            //g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(50, 60), new PointF(100, 80), new PointF(75, 100) });
+            //g.DrawCurve(new Pen(new SolidBrush(Color.Blue), 2), new PointF[] { new PointF(75, 100), new PointF(100, 120), new PointF(120, 100) });
+            //g.DrawRectangle(new Pen((Color)Color.Red), new Rectangle(10, 10, 20, 20));
+
+
+            // Set up string.
+            string measureString = "测量 S3量";
+          
+            Font stringFont = new Font("Microsoft Yahei", 26,FontStyle.Regular);
+            // Set maximum layout size.
+            SizeF layoutSize = new SizeF(900.0F, 550.0F);
+
+            // Set string format.
+            StringFormat newStringFormat = new StringFormat();
+            newStringFormat.FormatFlags = StringFormatFlags.DirectionVertical;
+            //newStringFormat.LineAlignment = StringAlignment.Center;
+            //newStringFormat.Alignment = StringAlignment.Center;
+            // Measure string.
+            SizeF stringSize = new SizeF();
+            stringSize = e.Graphics.MeasureString(measureString, stringFont, layoutSize, newStringFormat,out int charactersfitted,out int linesfilled);
+            Console.WriteLine(stringSize.Height);
+            textBox1.Text = $"{charactersfitted},{linesfilled}";
+            // Draw rectangle representing size of string.
+            e.Graphics.DrawRectangle(new Pen(Color.Red, 1), 2.0F, 0.0F, stringSize.Width, stringSize.Height);
+
+            // Draw string to screen.
+            e.Graphics.DrawString(measureString, stringFont, Brushes.Black, new PointF(0, 0), newStringFormat);
+            richTextBox1.AppendText(stringSize.Width.ToString());
+
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
+            Console.WriteLine(dataGridView1.Columns[1].DisplayIndex);
            // textBox1.InsertTextAtCursor("666溜");
             Console.WriteLine(textBox1.SelectionStart);
             Console.WriteLine(textBox1.SelectionLength);
@@ -484,21 +508,38 @@ namespace GTKWinFormsApp
         {
 
         }
-
+        int idx = 1;
+        int step = 1;
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
-        {
-            
+        { 
+            //dataGridView1.Rows.Clear();
+            //dataGridView1.Rows[idx].Visible = step<0;
+            //idx+= step;
+            //if (idx > 6 || idx<1)
+            //    step = -step;
             Console.WriteLine("textBox1_KeyDown");
+            richTextBox1.AppendText("textBox1_KeyDown");
+            //dataGridView1.FirstDisplayedScrollingRowIndex = 13;
+            //dataGridView1.FirstDisplayedScrollingColumnIndex = 4;
+            //TreeNode node = treeView1.Nodes[0].Nodes[22].Nodes[5];
+            //node.Checked = true;
+            //node.EnsureVisible();
+            //e.SuppressKeyPress = true;
+            e.Handled = true;
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
+     
             Console.WriteLine("textBox1_KeyPress");
+            richTextBox1.AppendText("textBox1_KeyPress");
         }
 
         private void textBox1_KeyUp(object sender, KeyEventArgs e)
         {
+            e.SuppressKeyPress = true;
             Console.WriteLine("textBox1_KeyUp");
+            richTextBox1.AppendText("textBox1_KeyUp");
         }
 
         private void tabPage2_Click(object sender, EventArgs e)

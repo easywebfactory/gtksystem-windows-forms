@@ -11,11 +11,28 @@ namespace GTKWinFormsApp
         public Form2()
         {
             InitializeComponent();
- 
+
             this.FormClosing += Form2_FormClosing;
             this.FormClosed += Form2_FormClosed;
             listView1.MouseDown += ListView1_MouseDown;
-            
+            listView1.ItemCheck += ListView1_ItemCheck;
+            listView1.ItemChecked += ListView1_ItemChecked;
+            listView1.ItemSelectionChanged += ListView1_SelectedIndexChanged;
+        }
+
+        private void ListView1_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            Console.WriteLine("ListView1_SelectedIndexChanged");
+        }
+
+        private void ListView1_ItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            Console.WriteLine(listView1.CheckedItems.Count);
+        }
+
+        private void ListView1_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            Console.WriteLine(listView1.CheckedItems.Count);
         }
 
         private void ListView1_MouseDown(object sender, MouseEventArgs e)
@@ -34,7 +51,7 @@ namespace GTKWinFormsApp
         {
             i++;
             listBox1.Items.Add($"异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}");
-            listBox1.TopIndex = i;
+            listBox1.TopIndex = 2;
 
 
             richTextBox1.AppendText($"异常警告{i} --- 机房空调运行监控事件 --- {DateTime.Now.Ticks} ------ {DateTime.Now.ToString()}\n");

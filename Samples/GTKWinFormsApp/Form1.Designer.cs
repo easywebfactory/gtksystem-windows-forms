@@ -152,7 +152,7 @@ namespace GTKWinFormsApp
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(154, 28);
             comboBox1.TabIndex = 1;
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDown;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.SelectedIndex = 0;
             // 
             // textBox1
@@ -208,6 +208,7 @@ namespace GTKWinFormsApp
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(500, 335);
             dataGridView1.TabIndex = 2;
+            //dataGridView1.ReadOnly = true;
             //dataGridView1.AutoSizeRowsMode= DataGridViewAutoSizeRowsMode.None;
             // 
             // ID
@@ -229,6 +230,7 @@ namespace GTKWinFormsApp
             State.Name = "State";
             State.Resizable = DataGridViewTriState.False;
             State.Width = 125;
+            State.ReadOnly = true;
             // 
             // Title
             // 
@@ -336,7 +338,7 @@ namespace GTKWinFormsApp
             // 
             // maskedTextBox2
             // 
-            maskedTextBox2.Location = new Point(63, 72);
+            maskedTextBox2.Location = new Point(63, 70);
             maskedTextBox2.Margin = new Padding(4);
             maskedTextBox2.Name = "maskedTextBox2";
             maskedTextBox2.PasswordChar = '*';
@@ -346,15 +348,20 @@ namespace GTKWinFormsApp
             // 
             // checkedListBox1
             // 
-            checkedListBox1.ColumnWidth = 50;
+            //checkedListBox1.MultiColumn = false;
+            checkedListBox1.ColumnWidth = 70;
             checkedListBox1.FormattingEnabled = true;
             checkedListBox1.Items.AddRange(new object[] { "北京市", "天津市", "河南省", "山西省", "内蒙古自治区", "辽宁省", "吉林省", "黑龙江省", "上海市", "江苏省", "浙江省", "安徽省", "福建省" });
+            //checkedListBox1.Items.AddRange(new object[] { "北京市", "天津市" });
+            //checkedListBox1.CheckOnClick = true;
             checkedListBox1.Location = new Point(677, 22);
             checkedListBox1.Margin = new Padding(4);
             checkedListBox1.MultiColumn = true;
             checkedListBox1.Name = "checkedListBox1";
             checkedListBox1.Size = new Size(270, 92);
             checkedListBox1.TabIndex = 13;
+            checkedListBox1.Click += (send, arg) => { textBox1.Text=("Click"); };
+            checkedListBox1.ItemCheck += checkedListBox1_ItemCheck;
             // 
             // radioButton3
             // 
@@ -452,6 +459,7 @@ namespace GTKWinFormsApp
             tabPage1.TabIndex = 0;
             tabPage1.Text = "数据表格示例";
             tabPage1.UseVisualStyleBackColor = true;
+            tabPage1.BackColor = Color.LightCoral;
             // 
             // tabControl1
             // 
@@ -467,6 +475,7 @@ namespace GTKWinFormsApp
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(1187, 459);
             tabControl1.TabIndex = 4;
+            tabControl1.BackColor = Color.LightCoral;
 
             // 
             // splitContainer1
@@ -672,18 +681,18 @@ namespace GTKWinFormsApp
             pictureBox1.Margin = new Padding(4);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(333, 220);
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.BackgroundImageLayout = ImageLayout.Tile;
             pictureBox1.TabIndex = 5;
             pictureBox1.TabStop = false;
             pictureBox1.ImageLocation = "./Resources/kenan.gif";
             // 
             // pictureBox2
             // 
-            pictureBox2.ImageLocation = "";
+            pictureBox2.ImageLocation = "./Resources/gitee.png";
             pictureBox2.Location = new Point(68, 27);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(286, 221);
-            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox2.SizeMode = PictureBoxSizeMode.CenterImage;
             pictureBox2.TabIndex = 14;
             pictureBox2.TabStop = false;
             pictureBox2.Paint += pictureBox2_Paint;
@@ -792,6 +801,8 @@ namespace GTKWinFormsApp
             // splitContainer2
             // 
             splitContainer2.Dock = DockStyle.Fill;
+            //splitContainer2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+
             splitContainer2.Location = new Point(0, 29);
             splitContainer2.Name = "splitContainer2";
             // 
@@ -809,6 +820,7 @@ namespace GTKWinFormsApp
             // 
             // Form1
             // 
+
             AutoScaleMode = AutoScaleMode.None;
             AutoScroll = true;
             ClientSize = new Size(1409, 689);
@@ -848,7 +860,6 @@ namespace GTKWinFormsApp
             splitContainer2.ResumeLayout(false);
             ResumeLayout(false);
         }
-
         #endregion
 
         private System.Windows.Forms.Button button1;

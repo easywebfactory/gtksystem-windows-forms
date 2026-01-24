@@ -12,11 +12,17 @@ namespace GTKWinFormsApp
             this.Shown += Form4_Shown;
 
             button4.Click += Button4_Click;
+            button10.Click += Button10_Click;
+        }
+
+        private void Button10_Click(object? sender, EventArgs e)
+        {
+      
         }
 
         private void Button4_Click(object sender, EventArgs e)
         {
-
+ 
         }
 
         Point panel1Location = new Point();
