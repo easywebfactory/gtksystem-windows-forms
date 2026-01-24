@@ -77,7 +77,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.TypeHint = Gdk.WindowTypeHint.Normal;
             this.Deletable = true;
             this.Decorated = true;
-            this.Drawn += FormBase_Drawn;
             this.Close += FormBase_Close;
             this.Response += FormBase_Response;
             this.DeleteEvent += FormBase_DeleteEvent;
@@ -188,11 +187,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                     }
                 }
             }
-        }
-        private void FormBase_Drawn(object o, DrawnArgs args)
-        {
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnPaint(args.Cr, rec);
         }
         private void Vadjustment_ValueChanged(object sender, EventArgs e)
         {

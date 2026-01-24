@@ -9,16 +9,15 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             this.Override = new GtkControlOverride(this);
             this.StyleContext.AddClass("Button");
-            base.Valign = Gtk.Align.Start;
-            base.Halign = Gtk.Align.Start;
-            base.ButtonReleaseEvent += ButtonBase_ButtonReleaseEvent;
-            base.Drawn += ButtonBase_Drawn;
+            this.Valign = Gtk.Align.Start;
+            this.Halign = Gtk.Align.Start;
+            this.ButtonReleaseEvent += ButtonBase_ButtonReleaseEvent;
+            this.Drawn += ButtonBase_Drawn;
         }
 
         private void ButtonBase_Drawn(object o, Gtk.DrawnArgs args)
         {
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnPaint(args.Cr, rec);
+            Override.OnPaint(args.Cr);
         }
 
         private void ButtonBase_ButtonReleaseEvent(object o, Gtk.ButtonReleaseEventArgs args)

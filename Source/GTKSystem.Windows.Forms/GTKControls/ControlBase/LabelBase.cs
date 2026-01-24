@@ -32,8 +32,7 @@
 
         private void LabelBase_Drawn(object o, Gtk.DrawnArgs args)
         {
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnPaint(args.Cr, rec);
+            Override.OnPaint(args.Cr);
         }
     }
 }

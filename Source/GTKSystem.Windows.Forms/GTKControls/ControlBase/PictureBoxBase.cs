@@ -78,8 +78,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         private void DrawingArea_Drawn(object o, Gtk.DrawnArgs args)
         {
             Cairo.Context cr = args.Cr;
-            Cairo.Rectangle clip = cr.ClipExtents();
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, (int)clip.Width, (int)clip.Height);
             if (_drawBackgroundImage != null)
             {
                 cr.Save();
@@ -87,7 +85,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 cr.Paint();
                 cr.Restore();
             }
-            Override.OnPaint(cr, rec);
+            Override.OnPaint(cr);
             if (_drawImage != null)
             {
                 cr.Save();

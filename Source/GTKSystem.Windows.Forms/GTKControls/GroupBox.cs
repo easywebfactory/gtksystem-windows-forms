@@ -34,9 +34,7 @@ namespace System.Windows.Forms
         }
         private void Viewport_Drawn(object o, DrawnArgs args)
         {
-            Cairo.Rectangle clip = args.Cr.ClipExtents();
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, (int)clip.Width, (int)clip.Height);
-            self.Override.OnPaint(args.Cr, rec);
+            self.Override.OnPaint(args.Cr);
         }
         public override string Text { get { return self.Label; } set { self.Label = value; } }
         public override ControlCollection Controls => _controls;

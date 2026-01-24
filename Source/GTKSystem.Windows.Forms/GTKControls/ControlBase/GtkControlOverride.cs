@@ -63,7 +63,23 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             if (Paint != null)
                 Paint(sender, new PaintEventArgs(new Graphics(container, cr, area), new Rectangle(area.X, area.Y, area.Width, area.Height)));
         }
-
+        public void OnPaint(Cairo.Context cr)
+        {
+            if (PaintGraphics != null)
+            {
+                if (Gdk.CairoHelper.GetClipRectangle(cr, out Gdk.Rectangle clipRect))
+                {
+                    cr.Save();
+                    PaintGraphics(cr, new Rectangle(0, 0, clipRect.Width, clipRect.Height));
+                    cr.Restore();
+                }
+            }
+            if (Paint != null)
+            {
+                if (Gdk.CairoHelper.GetClipRectangle(cr, out Gdk.Rectangle clipRect))
+                    Paint(sender, new PaintEventArgs(new Graphics(container, cr, clipRect), new Rectangle(0, 0, clipRect.Width, clipRect.Height)));
+            }
+        }
         public void SetDrawImage(Cairo.Context ctx, Gdk.Pixbuf img, Gdk.Rectangle rec, ContentAlignment ImageAlign)
         {
             ctx.Save();

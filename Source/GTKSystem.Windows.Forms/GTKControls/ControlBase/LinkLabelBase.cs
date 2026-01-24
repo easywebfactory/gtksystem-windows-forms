@@ -8,15 +8,14 @@
             this.Override = new GtkControlOverride(this);
             this.StyleContext.AddClass("LinkLabel");
             this.BorderWidth = 0;
-            base.Valign = Gtk.Align.Start;
-            base.Halign = Gtk.Align.Start;
-            base.Drawn += LinkLabelBase_Drawn;
+            this.Valign = Gtk.Align.Start;
+            this.Halign = Gtk.Align.Start;
+            this.Drawn += LinkLabelBase_Drawn;
         }
 
         private void LinkLabelBase_Drawn(object o, Gtk.DrawnArgs args)
         {
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, this.AllocatedWidth, this.AllocatedHeight);
-            Override.OnPaint(args.Cr, rec);
+            Override.OnPaint(args.Cr);
         }
     }
 }

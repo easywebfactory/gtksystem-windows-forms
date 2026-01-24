@@ -47,9 +47,7 @@ namespace System.Windows.Forms
         }
         private void Viewport_Drawn(object o, DrawnArgs args)
         {
-            Cairo.Rectangle clip = args.Cr.ClipExtents();
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, (int)clip.Width, (int)clip.Height);
-            self.Override.OnPaint(args.Cr, rec);
+            self.Override.OnPaint(args.Cr);
         }
         private bool Self_CloseWindowEvent(object sender, EventArgs e)
         {

@@ -15,19 +15,17 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Content.Halign = Align.Fill;
             this.Content.Valign = Align.Fill;
             this.Content.Expand = false;
-            base.Halign = Align.Fill;
-            base.Valign = Align.Fill;
+            this.Halign = Align.Fill;
+            this.Valign = Align.Fill;
 
             Gtk.Viewport viewport = new Gtk.Viewport() { BorderWidth = 0 };
             viewport.Drawn += Viewport_Drawn;
             Content.Add(viewport);
-            base.Add(Content);
+            this.Add(Content);
         }
         private void Viewport_Drawn(object o, DrawnArgs args)
         {
-            Cairo.Rectangle clip = args.Cr.ClipExtents();
-            Gdk.Rectangle rec = new Gdk.Rectangle(0, 0, (int)clip.Width, (int)clip.Height);
-            Override.OnPaint(args.Cr, rec);
+            Override.OnPaint(args.Cr);
         }
     }
 }
