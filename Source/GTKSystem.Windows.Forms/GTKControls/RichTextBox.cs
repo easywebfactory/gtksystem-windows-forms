@@ -17,7 +17,6 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         protected override void SetStyle(Widget widget)
         {
-            self.Override.sender = this;
             self.TextView.Name = this.Name;
             base.SetStyle(self.TextView);
             self.TextView.FocusVadjustment = self.Vadjustment;
@@ -25,6 +24,7 @@ namespace System.Windows.Forms
         }
         public RichTextBox():base()
         {
+            self.Override.sender = this;
             self.TextView.Buffer.Changed += Buffer_Changed;
             this.BorderStyle = BorderStyle.Fixed3D;
         }
