@@ -22,7 +22,6 @@ namespace System.Windows.Forms
     {
         public readonly ListBoxBase self = new ListBoxBase();
         public override object GtkControl => self;
-        public override IControlGtk ISelf { get => self; }
         protected override void SetStyle(Widget widget)
         {
             self.ListBox.Name = this.Name;
