@@ -305,6 +305,8 @@ namespace System.Windows.Forms
             if (Gdk.Display.Default.NMonitors > 0)
             {
                 Gdk.Rectangle rectangle = Gdk.Display.Default.GetMonitor(0).Workarea;
+                if (owner != null && Gdk.Display.Default.GetMonitorAtWindow(owner.Window) is Gdk.Monitor monitor)
+                    rectangle = monitor.Workarea;
                 maxwidth = rectangle.Width / 2;
             }
             var pag = content.CreatePangoLayout(text);
