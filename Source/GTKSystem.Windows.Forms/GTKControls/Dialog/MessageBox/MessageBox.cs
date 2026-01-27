@@ -223,7 +223,6 @@ namespace System.Windows.Forms
             int irun = 0;
             if (owner is System.Windows.Forms.Form control)
             {
-                //irun = ShowMessageDialogCore(control.self, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon, defaultButton, options, showHelp);
                 irun = ShowCore((Gtk.Window)control.Widget, Gtk.WindowPosition.CenterOnParent, text, caption, buttons, icon);
             }
             else
@@ -267,35 +266,6 @@ namespace System.Windows.Forms
                 return DialogResult.None;
         }
 
-        private static int ShowMessageDialogCore(Gtk.Window owner, Gtk.WindowPosition position, string text, string caption, MessageBoxButtons buttons, params object[] icon)
-        {
-            Gtk.ButtonsType buttonsType = Gtk.ButtonsType.Close;
-            if (buttons == MessageBoxButtons.OK)
-                buttonsType = Gtk.ButtonsType.Ok;
-            else if (buttons == MessageBoxButtons.OKCancel)
-                buttonsType = Gtk.ButtonsType.OkCancel;
-            else if (buttons == MessageBoxButtons.YesNo)
-                buttonsType = Gtk.ButtonsType.YesNo;
-            else if (buttons == MessageBoxButtons.YesNoCancel)
-                buttonsType = Gtk.ButtonsType.YesNo;
-            else if (buttons == MessageBoxButtons.AbortRetryIgnore)
-                buttonsType = Gtk.ButtonsType.OkCancel;
-            else if (buttons == MessageBoxButtons.RetryCancel)
-                buttonsType = Gtk.ButtonsType.OkCancel;
-
-
-            Gtk.MessageDialog dia = new Gtk.MessageDialog(owner, Gtk.DialogFlags.DestroyWithParent, Gtk.MessageType.Info, buttonsType, text);
-            dia.SetPosition(position);
-            dia.StyleContext.AddClass("DefaultThemeStyle");
-            dia.StyleContext.AddClass("MessageBox");
-            dia.BorderWidth = 10;
-            dia.KeepAbove = true;
-            dia.KeepBelow = false;
-            dia.Title = caption;
-            dia.Response += Dia_Response;
-            return dia.Run();
-        }
-
         private static int ShowCore(Gtk.Window owner, Gtk.WindowPosition position, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon, params object[] args)
         {
             Gtk.Dialog dia = new Gtk.Dialog(caption, owner, Gtk.DialogFlags.DestroyWithParent);
@@ -334,7 +304,7 @@ namespace System.Windows.Forms
             int maxwidth = 300;
             if (Gdk.Display.Default.NMonitors > 0)
             {
-                Gdk.Rectangle rectangle = Gdk.Display.Default.PrimaryMonitor.Workarea;
+                Gdk.Rectangle rectangle = Gdk.Display.Default.GetMonitor(0).Workarea;
                 maxwidth = rectangle.Width / 2;
             }
             var pag = content.CreatePangoLayout(text);
