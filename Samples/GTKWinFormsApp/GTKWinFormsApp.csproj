@@ -12,13 +12,16 @@
 
 		<PublishReadyToRun>true</PublishReadyToRun>
 		<SelfContained>false</SelfContained>
-		<!--
+		
 		<PublishAot>true</PublishAot>
 
 		<PublishTrimmed>true</PublishTrimmed>
 		<IsAotCompatible>true</IsAotCompatible>
 		<InvariantGlobalization>true</InvariantGlobalization>
 
+		
+		<!--
+		<RuntimeIdentifier>linux-x64</RuntimeIdentifier>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 		<RuntimeIdentifier>linux-musl-x64</RuntimeIdentifier>
 		<DebugType>embedded</DebugType>
@@ -55,10 +58,6 @@
 	  <Content Include="TestData1.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Include="PublishAotCross" Version="1.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
