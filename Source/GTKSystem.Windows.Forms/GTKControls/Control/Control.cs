@@ -296,12 +296,12 @@ namespace System.Windows.Forms
                     KeyEventArgs keyargs = new KeyEventArgs(keys);
                     OnKeyDown(keyargs);
                     KeyDown?.Invoke(this, keyargs);
-                    args.RetVal = keyargs.Handled;
+                    args.RetVal = keyargs.SuppressKeyPress;
                     if (!keyargs.SuppressKeyPress)
                     {
                         KeyPressEventArgs keypress = new KeyPressEventArgs(Convert.ToChar(keycode));
                         KeyPress?.Invoke(this, keypress);
-                        args.RetVal = keyargs.Handled || keypress.Handled;
+                        args.RetVal = keypress.Handled;
                     }
                 }
                 else if (args.Event.Type == Gdk.EventType.KeyRelease)

@@ -33,7 +33,28 @@ namespace System.Windows.Forms
         public string PlaceholderText { get { return self.PlaceholderText; } set { self.PlaceholderText = value ?? ""; } }
         public override string Text { get { return self.Text; } set { self.Text = value ?? ""; } }
         public virtual char PasswordChar { get => self.InvisibleChar; set { self.InvisibleChar = value; self.Visibility = false; } }
-        public virtual bool ReadOnly { get { return self.IsEditable == false; } set { self.IsEditable = value == false;  } }
+        public HorizontalAlignment TextAlign
+        {
+            get { return textAlign; }
+            set
+            {
+                textAlign = value;
+                if (value == HorizontalAlignment.Left)
+                {
+                    self.Xalign = 0.0f;
+                }
+                else if (value == HorizontalAlignment.Center)
+                {
+                    self.Xalign = 0.5f;
+                }
+                else if (value == HorizontalAlignment.Right)
+                {
+                    self.Xalign = 1.0f;
+                }
+            }
+        }
+        private HorizontalAlignment textAlign;
+        public virtual bool ReadOnly { get { return self.IsEditable == false; } set { self.IsEditable = value == false; } }
         public override event EventHandler TextChanged;
         public bool Multiline { get; set; }
         public int MaxLength { get => self.MaxLength; set => self.MaxLength = value; }
