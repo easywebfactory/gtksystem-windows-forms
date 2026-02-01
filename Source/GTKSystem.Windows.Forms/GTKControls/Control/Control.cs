@@ -951,10 +951,7 @@ namespace System.Windows.Forms
                 }
                 else
                 {
-                    //this.Widget.Window.Cursor = new Gdk.Cursor(this.Widget.Display, _Cursor.CursorType);
-                    //this.Widget.Window.Cursor = new Gdk.Cursor(this.Widget.Display, Gdk.CursorType.Watch);
-                    //this.Widget.Window.Cursor = new Gdk.Cursor(this.Widget.Display, new Gdk.Pixbuf("Cursors/progress.ani"), _Cursor.CursorsXY.X, _Cursor.CursorsXY.Y);
-                    this.Widget.Window.Cursor = new Gdk.Cursor(this.Widget.Display, "wait");
+                    this.Widget.Window.Cursor = new Gdk.Cursor(this.Widget.Display, _Cursor.CursorType);
                 }
 
             }
