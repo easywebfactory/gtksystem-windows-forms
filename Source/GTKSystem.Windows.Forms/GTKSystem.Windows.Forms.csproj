@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-
-	  <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
-
-	  <!--aot发布时使用TargetFramework指定单一sdk，net8.0及以上版本-->
 	  <!--
+	  <TargetFrameworks>netstandard2.0;net6.0;net8.0;net10.0</TargetFrameworks>
+-->
+	  <!--aot发布时使用TargetFramework指定单一sdk，net8.0及以上版本-->
+
 	  <TargetFramework>net8.0</TargetFramework>
-	  -->
+
 	  <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	  <Authors>chenhongjin</Authors>
 	  <Company>gtkapp.com</Company>
@@ -92,25 +92,37 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Cursors\aero_ew.cur" />
-    <None Remove="Resources\Cursors\aero_nesw.cur" />
-    <None Remove="Resources\Cursors\aero_ns.cur" />
-    <None Remove="Resources\Cursors\aero_nwse.cur" />
-    <None Remove="Resources\Cursors\aero_unavail.cur" />
-    <None Remove="Resources\Cursors\east.cur" />
-    <None Remove="Resources\Cursors\hsplit.cur" />
-    <None Remove="Resources\Cursors\ne.cur" />
-    <None Remove="Resources\Cursors\nomove2d.cur" />
-    <None Remove="Resources\Cursors\nomoveh.cur" />
-    <None Remove="Resources\Cursors\nomovev.cur" />
-    <None Remove="Resources\Cursors\north.cur" />
-    <None Remove="Resources\Cursors\no_l.cur" />
-    <None Remove="Resources\Cursors\nw.cur" />
-    <None Remove="Resources\Cursors\se.cur" />
-    <None Remove="Resources\Cursors\south.cur" />
-    <None Remove="Resources\Cursors\sw.cur" />
-    <None Remove="Resources\Cursors\vsplit.cur" />
-    <None Remove="Resources\Cursors\west.cur" />
+    <None Remove="Resources\Cursors\all-scroll.cur" />
+    <None Remove="Resources\Cursors\arrow.cur" />
+    <None Remove="Resources\Cursors\circle.cur" />
+    <None Remove="Resources\Cursors\col-resize.cur" />
+    <None Remove="Resources\Cursors\cross.cur" />
+    <None Remove="Resources\Cursors\default.cur" />
+    <None Remove="Resources\Cursors\e-resize.cur" />
+    <None Remove="Resources\Cursors\ew-resize.cur" />
+    <None Remove="Resources\Cursors\hand.cur" />
+    <None Remove="Resources\Cursors\help.cur" />
+    <None Remove="Resources\Cursors\move.cur" />
+    <None Remove="Resources\Cursors\n-resize.cur" />
+    <None Remove="Resources\Cursors\ne-resize.cur" />
+    <None Remove="Resources\Cursors\nesw-resize.cur" />
+    <None Remove="Resources\Cursors\not-allowed.cur" />
+    <None Remove="Resources\Cursors\ns-resize.cur" />
+    <None Remove="Resources\Cursors\nw-resize.cur" />
+    <None Remove="Resources\Cursors\nwse-resize.cur" />
+    <None Remove="Resources\Cursors\row-resize.cur" />
+    <None Remove="Resources\Cursors\s-resize.cur" />
+    <None Remove="Resources\Cursors\sb_down_arrow.cur" />
+    <None Remove="Resources\Cursors\sb_left_arrow.cur" />
+    <None Remove="Resources\Cursors\sb_right_arrow.cur" />
+    <None Remove="Resources\Cursors\sb_up_arrow.cur" />
+    <None Remove="Resources\Cursors\se-resize.cur" />
+    <None Remove="Resources\Cursors\size_all.cur" />
+    <None Remove="Resources\Cursors\size_hor.cur" />
+    <None Remove="Resources\Cursors\size_ver.cur" />
+    <None Remove="Resources\Cursors\sw-resize.cur" />
+    <None Remove="Resources\Cursors\w-resize.cur" />
+    <None Remove="Resources\Cursors\xterm.cur" />
     <None Remove="Resources\System\DateTimePicker.ico" />
     <None Remove="Resources\System\dialog-error.png" />
     <None Remove="Resources\System\dialog-information-symbolic.svg" />
@@ -132,6 +144,37 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Cursors\all-scroll.cur" />
+    <EmbeddedResource Include="Resources\Cursors\arrow.cur" />
+    <EmbeddedResource Include="Resources\Cursors\circle.cur" />
+    <EmbeddedResource Include="Resources\Cursors\col-resize.cur" />
+    <EmbeddedResource Include="Resources\Cursors\cross.cur" />
+    <EmbeddedResource Include="Resources\Cursors\default.cur" />
+    <EmbeddedResource Include="Resources\Cursors\e-resize.cur" />
+    <EmbeddedResource Include="Resources\Cursors\ew-resize.cur" />
+    <EmbeddedResource Include="Resources\Cursors\hand.cur" />
+    <EmbeddedResource Include="Resources\Cursors\help.cur" />
+    <EmbeddedResource Include="Resources\Cursors\move.cur" />
+    <EmbeddedResource Include="Resources\Cursors\n-resize.cur" />
+    <EmbeddedResource Include="Resources\Cursors\ne-resize.cur" />
+    <EmbeddedResource Include="Resources\Cursors\nesw-resize.cur" />
+    <EmbeddedResource Include="Resources\Cursors\not-allowed.cur" />
+    <EmbeddedResource Include="Resources\Cursors\ns-resize.cur" />
+    <EmbeddedResource Include="Resources\Cursors\nw-resize.cur" />
+    <EmbeddedResource Include="Resources\Cursors\nwse-resize.cur" />
+    <EmbeddedResource Include="Resources\Cursors\row-resize.cur" />
+    <EmbeddedResource Include="Resources\Cursors\s-resize.cur" />
+    <EmbeddedResource Include="Resources\Cursors\sb_down_arrow.cur" />
+    <EmbeddedResource Include="Resources\Cursors\sb_left_arrow.cur" />
+    <EmbeddedResource Include="Resources\Cursors\sb_right_arrow.cur" />
+    <EmbeddedResource Include="Resources\Cursors\sb_up_arrow.cur" />
+    <EmbeddedResource Include="Resources\Cursors\se-resize.cur" />
+    <EmbeddedResource Include="Resources\Cursors\size_all.cur" />
+    <EmbeddedResource Include="Resources\Cursors\size_hor.cur" />
+    <EmbeddedResource Include="Resources\Cursors\size_ver.cur" />
+    <EmbeddedResource Include="Resources\Cursors\sw-resize.cur" />
+    <EmbeddedResource Include="Resources\Cursors\w-resize.cur" />
+    <EmbeddedResource Include="Resources\Cursors\xterm.cur" />
     <EmbeddedResource Include="Resources\System\dialog-error.png" />
     <EmbeddedResource Include="Resources\System\dialog-information.png" />
     <EmbeddedResource Include="Resources\System\dialog-password.png" />
@@ -141,24 +184,6 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Cursors\aero_ew.cur" />
-    <EmbeddedResource Include="Resources\Cursors\aero_nesw.cur" />
-    <EmbeddedResource Include="Resources\Cursors\aero_ns.cur" />
-    <EmbeddedResource Include="Resources\Cursors\aero_nwse.cur" />
-    <EmbeddedResource Include="Resources\Cursors\aero_unavail.cur" />
-    <EmbeddedResource Include="Resources\Cursors\east.cur" />
-    <EmbeddedResource Include="Resources\Cursors\hsplit.cur" />
-    <EmbeddedResource Include="Resources\Cursors\ne.cur" />
-    <EmbeddedResource Include="Resources\Cursors\nomove2d.cur" />
-    <EmbeddedResource Include="Resources\Cursors\nomoveh.cur" />
-    <EmbeddedResource Include="Resources\Cursors\nomovev.cur" />
-    <EmbeddedResource Include="Resources\Cursors\north.cur" />
-    <EmbeddedResource Include="Resources\Cursors\nw.cur" />
-    <EmbeddedResource Include="Resources\Cursors\se.cur" />
-    <EmbeddedResource Include="Resources\Cursors\south.cur" />
-    <EmbeddedResource Include="Resources\Cursors\sw.cur" />
-    <EmbeddedResource Include="Resources\Cursors\vsplit.cur" />
-    <EmbeddedResource Include="Resources\Cursors\west.cur" />
     <EmbeddedResource Include="Resources\System\DateTimePicker.ico" />
     <EmbeddedResource Include="Resources\System\go-down-symbolic.png" />
     <EmbeddedResource Include="Resources\System\help-faq.png" />
