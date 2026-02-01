@@ -61,7 +61,7 @@ namespace System.Windows.Forms
         {
             _freeHandle = true;
             CursorType = Gdk.CursorType.CursorIsPixmap;
-            CursorPixbuf = new Gdk.Pixbuf(stream).ScaleSimple(48, 48, Gdk.InterpType.Tiles);
+            CursorPixbuf = new Gdk.Pixbuf(stream).ScaleSimple(38, 38, Gdk.InterpType.Hyper);
         }
 
         public static unsafe Rectangle Clip

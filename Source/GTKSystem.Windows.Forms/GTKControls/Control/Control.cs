@@ -4,7 +4,7 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
- 
+
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
@@ -224,7 +224,24 @@ namespace System.Windows.Forms
                 widget.SizeAllocated += Widget_SizeAllocated;
                 widget.ParentSet += Widget_ParentSet;
                 widget.WidgetEvent += Widget_WidgetEvent;
+                this.CursorChanged += Control_CursorChanged; ;
+                this.DockChanged += Control_DockChanged;
+                this.AnchorChanged += Control_AnchorChanged;
             }
+        }
+
+        private void Control_CursorChanged(object? sender, EventArgs e)
+        {
+            SetCursorStyle();
+        }
+        private void Control_AnchorChanged(object? sender, EventArgs e)
+        {
+            SetAnchorStyle(this.Widget, _anchor);
+        }
+
+        private void Control_DockChanged(object? sender, EventArgs e)
+        {
+            SetDockStyle(this.Widget, _dock);
         }
         #region events
         private bool WidgetRealized = false;
@@ -236,10 +253,11 @@ namespace System.Windows.Forms
                 InitStyle((Gtk.Widget)sender);
                 OnLoad(EventArgs.Empty);
                 Load?.Invoke(this, e);
+                CursorChanged(this, EventArgs.Empty);
                 if (_dock != DockStyle.None)
-                    SetDockStyles(this.Widget, _dock);
+                    DockChanged(this, EventArgs.Empty);
                 else if (_anchor != AnchorStyles.None)
-                    SetAnchorStyles(this.Widget, _anchor);
+                    AnchorChanged(this, EventArgs.Empty);
                 CheckResize(BoundsSpecified.All);
             }
         }
@@ -403,17 +421,6 @@ namespace System.Windows.Forms
                 }
                 else if (args.Event.Type == Gdk.EventType.EnterNotify)
                 {
-                    if (Cursor != null)
-                    {
-                        if (Cursor.CursorType == Gdk.CursorType.CursorIsPixmap)
-                        {
-                            this.Widget.Window.Cursor = new Gdk.Cursor(((Gtk.Widget)o).Display, Cursor.CursorPixbuf, Cursor.CursorsXY.X, Cursor.CursorsXY.Y);
-                        }
-                        else
-                        {
-                            this.Widget.Window.Cursor = new Gdk.Cursor(((Gtk.Widget)o).Display, Cursor.CursorType);
-                        }
-                    }
                     OnMouseEnter(EventArgs.Empty);
                     OnMouseHover(EventArgs.Empty);
                     Enter?.Invoke(this, EventArgs.Empty);
@@ -422,10 +429,6 @@ namespace System.Windows.Forms
                 }
                 else if (args.Event.Type == Gdk.EventType.LeaveNotify)
                 {
-                    if (Cursor != null && this.Widget.Window != null)
-                    {
-                        this.Widget.Window.Cursor = null;
-                    }
                     OnMouseLeave(EventArgs.Empty);
                     Leave?.Invoke(this, EventArgs.Empty);
                     MouseLeave?.Invoke(this, EventArgs.Empty);
@@ -485,7 +488,6 @@ namespace System.Windows.Forms
 
         private void Widget_ParentSet(object o, ParentSetArgs args)
         {
-            CheckResize(BoundsSpecified.All);
             OnParentChanged(EventArgs.Empty);
             ParentChanged?.Invoke(this, args);
         }
@@ -503,15 +505,13 @@ namespace System.Windows.Forms
                 size_width = args.Allocation.Width;
                 size_height = args.Allocation.Height;
                 OnSizeChanged(EventArgs.Empty);
-                if (SizeChanged != null)
-                    SizeChanged(this, EventArgs.Empty);
+                SizeChanged?.Invoke(this, EventArgs.Empty);
             }
             if (args.Allocation.X != location_x || args.Allocation.Y != location_y)
             {
                 location_x = args.Allocation.X;
                 location_y = args.Allocation.Y;
-                if (LocationChanged != null)
-                    LocationChanged(this, EventArgs.Empty);
+                LocationChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         #endregion
@@ -623,7 +623,7 @@ namespace System.Windows.Forms
                     string bgimgdir = Path.Combine("Resources", widget.WidgetPath.IterGetName(0)).Replace("\\", "/");
                     string bgimguri = $"{bgimgdir}/{widget.Name}_bgimage.png";
                     if (!File.Exists(bgimguri))
-                    { 
+                    {
                         if (!Directory.Exists(bgimgdir))
                             Directory.CreateDirectory(bgimgdir);
                         bgpixbuf.Save(bgimguri, "png");
@@ -795,7 +795,7 @@ namespace System.Windows.Forms
         private ImageLayout _backgroundImageLayout;
         public virtual ImageLayout BackgroundImageLayout { get => _backgroundImageLayout; set { _backgroundImageLayout = value; if (ISelf != null) { ISelf.Override.BackgroundImageLayout = value; } } }
         private Drawing.Image _backgroundImage;
-        public virtual Drawing.Image BackgroundImage { get => _backgroundImage; set { _backgroundImage = value; if (ISelf != null) { ISelf.Override.BackgroundImage = value;  } UpdateStyle(); } }
+        public virtual Drawing.Image BackgroundImage { get => _backgroundImage; set { _backgroundImage = value; if (ISelf != null) { ISelf.Override.BackgroundImage = value; } UpdateStyle(); } }
         public virtual Color BackColor
         {
             get
@@ -827,12 +827,10 @@ namespace System.Windows.Forms
             set
             {
                 _anchor = value;
-                SetAnchorStyles(Widget, _anchor);
-                if (AnchorChanged != null)
-                    AnchorChanged(this, EventArgs.Empty);
+                AnchorChanged(this, EventArgs.Empty);
             }
         }
-        private void SetAnchorStyles(Gtk.Widget widget, AnchorStyles anchorStyles)
+        private void SetAnchorStyle(Gtk.Widget widget, AnchorStyles anchorStyles)
         {
             if (widget.IsRealized && widget is not FormBase)
             {
@@ -895,8 +893,8 @@ namespace System.Windows.Forms
                         widget.Valign = Gtk.Align.Start;
                     }
                 }
+            }
         }
-    }
         public virtual Point AutoScrollOffset { get; set; }
         private bool _autoSize;
         public virtual bool AutoSize
@@ -927,8 +925,40 @@ namespace System.Windows.Forms
 
         public virtual bool Created => _Created;
         internal bool _Created;
+        private Cursor _Cursor;
+        public virtual Cursor Cursor
+        {
+            get => null;
+            set
+            {
+                _Cursor = value;
+                CursorChanged(this, EventArgs.Empty);
+            }
+        }
 
-        public virtual Cursor Cursor { get; set; }
+        private void SetCursorStyle()
+        {
+            if (this.Widget.IsRealized && this.Widget.Window != null)
+            {
+                if (_Cursor == null)
+                {
+                    if (this.Widget.Window.Cursor != null)
+                        this.Widget.Window.Cursor = null;
+                }
+                else if (_Cursor.CursorType == Gdk.CursorType.CursorIsPixmap)
+                {
+                    this.Widget.Window.Cursor = new Gdk.Cursor(this.Widget.Display, _Cursor.CursorPixbuf, _Cursor.CursorsXY.X, _Cursor.CursorsXY.Y);
+                }
+                else
+                {
+                    //this.Widget.Window.Cursor = new Gdk.Cursor(this.Widget.Display, _Cursor.CursorType);
+                    //this.Widget.Window.Cursor = new Gdk.Cursor(this.Widget.Display, Gdk.CursorType.Watch);
+                    //this.Widget.Window.Cursor = new Gdk.Cursor(this.Widget.Display, new Gdk.Pixbuf("Cursors/progress.ani"), _Cursor.CursorsXY.X, _Cursor.CursorsXY.Y);
+                    this.Widget.Window.Cursor = new Gdk.Cursor(this.Widget.Display, "wait");
+                }
+
+            }
+        }
 
         public virtual ControlBindingsCollection DataBindings { get; }
 
@@ -947,12 +977,10 @@ namespace System.Windows.Forms
             set
             {
                 _dock = value;
-                SetDockStyles(this.Widget, _dock);
-                if (DockChanged != null)
-                    DockChanged(this, EventArgs.Empty);
+                DockChanged(this, EventArgs.Empty);
             }
         }
-        private void SetDockStyles(Gtk.Widget widget, DockStyle dockStyle)
+        private void SetDockStyle(Gtk.Widget widget, DockStyle dockStyle)
         {
             if (widget.IsRealized && widget is not FormBase)
             {
@@ -962,7 +990,7 @@ namespace System.Windows.Forms
                     {
                         if (widget.WidthRequest + widget.MarginStart + widget.MarginStart > lay.AllocatedWidth)
                             widget.WidthRequest = Math.Max(10, lay.AllocatedWidth - widget.MarginStart - widget.MarginStart);
-                        if (widget.HeightRequest+ widget.MarginTop + widget.MarginTop > lay.AllocatedHeight)
+                        if (widget.HeightRequest + widget.MarginTop + widget.MarginTop > lay.AllocatedHeight)
                             widget.HeightRequest = Math.Max(10, lay.AllocatedHeight - widget.MarginTop - widget.MarginTop);
                         widget.MarginEnd = Math.Min(3, widget.MarginStart);
                         widget.MarginBottom = Math.Min(3, widget.MarginTop);
@@ -1019,7 +1047,8 @@ namespace System.Windows.Forms
             {
                 return _Font;
             }
-            set { 
+            set
+            {
                 _Font = value;
                 UpdateStyle();
             }
@@ -1054,10 +1083,6 @@ namespace System.Windows.Forms
             {
                 this.Widget.MarginTop = Math.Max(0, value + LocationOffset.Y);
                 CheckResize(BoundsSpecified.Height);
-                if (DockChanged != null)
-                    DockChanged(this, EventArgs.Empty);
-                if (AnchorChanged != null)
-                    AnchorChanged(this, EventArgs.Empty);
             }
         }
         public virtual int Left
@@ -1067,10 +1092,6 @@ namespace System.Windows.Forms
             {
                 this.Widget.MarginStart = Math.Max(0, value + LocationOffset.X);
                 CheckResize(BoundsSpecified.Width);
-                if (DockChanged != null)
-                    DockChanged(this, EventArgs.Empty);
-                if (AnchorChanged != null)
-                    AnchorChanged(this, EventArgs.Empty);
             }
         }
         public virtual int Right
@@ -1138,10 +1159,6 @@ namespace System.Windows.Forms
             {
                 this.Widget.HeightRequest = Math.Max(-1, value);
                 CheckResize(BoundsSpecified.Height);
-                if (DockChanged != null)
-                    DockChanged(this, EventArgs.Empty);
-                if (AnchorChanged != null)
-                    AnchorChanged(this, EventArgs.Empty);
             }
         }
         public virtual int Width
@@ -1158,10 +1175,6 @@ namespace System.Windows.Forms
             {
                 this.Widget.WidthRequest = Math.Max(-1, value);
                 CheckResize(BoundsSpecified.Width);
-                if (DockChanged != null)
-                    DockChanged(this, EventArgs.Empty);
-                if (AnchorChanged != null)
-                    AnchorChanged(this, EventArgs.Empty);
             }
         }
         public virtual int TabIndex { get; set; }
@@ -1275,7 +1288,7 @@ namespace System.Windows.Forms
         {
             System.Threading.Tasks.Task<object> task = System.Threading.Tasks.Task.Factory.StartNew(state =>
             {
-               return method.DynamicInvoke((object[])state);
+                return method.DynamicInvoke((object[])state);
             }, args);
 
             return task;
@@ -1401,6 +1414,7 @@ namespace System.Windows.Forms
         }
         private void Override_Paint(object sender, PaintEventArgs e)
         {
+            OnPaintBackground(e);
             OnPaint(e);
             handlerList[paintEventHandler_paint]?.DynamicInvoke(sender, e);
         }
@@ -1465,7 +1479,6 @@ namespace System.Windows.Forms
         public virtual Control GetNextControl(Control ctl, bool forward)
         {
             Control prev = null;
-            Control next = null;
             bool finded = false;
 
             foreach (var obj in this.Controls)
@@ -1473,22 +1486,12 @@ namespace System.Windows.Forms
                 if (obj is Control control)
                 {
                     if (finded == true)
-                        next = control;
-
-                    if (control.Widget.Handle == ctl.Widget.Handle)
+                        return control;
+                    else if (control.Widget.Handle == ctl.Widget.Handle)
                     {
                         finded = true;
-                    }
-                    if (finded == true)
-                    {
-                        if (forward == false && prev != null)
-                        {
+                        if (forward == false)
                             return prev;
-                        }
-                        else if (forward == true && next != null)
-                        {
-                            return next;
-                        }
                     }
                     prev = control;
                 }
@@ -1727,7 +1730,8 @@ namespace System.Windows.Forms
 
         public virtual void SendToBack()
         {
-
+            if (this.Widget.IsRealized)
+                this.Widget.Window.KeepBelow = true;
         }
 
         public virtual void SetBounds(int x, int y, int width, int height)
@@ -1816,9 +1820,12 @@ namespace System.Windows.Forms
                 this.Widget.ShowAll();
             }
         }
-        protected virtual void OnPaint(System.Windows.Forms.PaintEventArgs e)
+        protected virtual void OnPaint(PaintEventArgs pevent)
         {
-
+        }
+        protected virtual void OnPaintBackground(PaintEventArgs pevent)
+        {
+             
         }
         protected virtual void OnParentChanged(EventArgs e)
         {
@@ -1924,7 +1931,7 @@ namespace System.Windows.Forms
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         protected virtual void OnResize(EventArgs e)
         {
-            
+
         }
         public virtual void PerformClick()
         {
@@ -2013,12 +2020,12 @@ namespace System.Windows.Forms
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         protected virtual void OnMouseMove(MouseEventArgs e)
         {
-            
+
         }
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         protected virtual void OnMouseWheel(MouseEventArgs e)
         {
-            
+
         }
     }
 }
