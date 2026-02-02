@@ -28,14 +28,15 @@ namespace System.Windows.Forms
             contaner.Valign = Align.Fill;
             _controls = new ControlCollection(this, contaner);
 
-            Gtk.Viewport viewport = new Gtk.Viewport() { BorderWidth = 0 };
-            viewport.Drawn += Viewport_Drawn;
-            contaner.Add(viewport);
+            Gtk.DrawingArea background = new Gtk.DrawingArea();
+            background.Events = Gdk.EventMask.EnterNotifyMask;
+            background.Drawn += Background_Drawn;
+            contaner.Add(background);
             self.Add(contaner);
             self.Shown += Self_Shown;
         }
 
-        private void Viewport_Drawn(object o, DrawnArgs args)
+        private void Background_Drawn(object o, DrawnArgs args)
         {
             self.Override.OnPaint(args.Cr);
         }

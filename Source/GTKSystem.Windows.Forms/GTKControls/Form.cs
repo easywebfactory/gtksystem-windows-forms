@@ -35,16 +35,16 @@ namespace System.Windows.Forms
         {
             contaner.Valign = Gtk.Align.Fill;
             contaner.Halign = Gtk.Align.Fill;
-            Gtk.Viewport viewport = new Gtk.Viewport() { BorderWidth = 0 };
-            viewport.StyleContext.AddClass("Form");
-            viewport.Drawn += Viewport_Drawn;
-            contaner.Add(viewport);
+            Gtk.DrawingArea background = new Gtk.DrawingArea();
+            background.Events = Gdk.EventMask.EnterNotifyMask;
+            background.Drawn += Background_Drawn;
+            contaner.Add(background);
             self.ScrolledView.Child = contaner;
             _ObjectCollection = new ControlCollection(this, contaner);
             self.Shown += Control_Shown;
             self.CloseWindowEvent += Self_CloseWindowEvent;
         }
-        private void Viewport_Drawn(object o, DrawnArgs args)
+        private void Background_Drawn(object o, DrawnArgs args)
         {
             self.Override.OnPaint(args.Cr);
         }

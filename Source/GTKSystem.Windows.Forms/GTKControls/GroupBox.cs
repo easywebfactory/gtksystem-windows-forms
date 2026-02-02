@@ -27,12 +27,13 @@ namespace System.Windows.Forms
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
             overlay.AddOverlay(contaner);
-            Gtk.Viewport viewport = new Gtk.Viewport() { BorderWidth = 0 };
-            viewport.Drawn += Viewport_Drawn;
-            contaner.Add(viewport);
+            Gtk.DrawingArea background = new Gtk.DrawingArea();
+            background.Events = Gdk.EventMask.EnterNotifyMask;
+            background.Drawn += Background_Drawn;
+            contaner.Add(background);
             self.Child = overlay;
         }
-        private void Viewport_Drawn(object o, DrawnArgs args)
+        private void Background_Drawn(object o, DrawnArgs args)
         {
             self.Override.OnPaint(args.Cr);
         }

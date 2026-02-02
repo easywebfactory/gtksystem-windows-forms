@@ -33,7 +33,8 @@ namespace System.Windows.Forms
             popver.BorderWidth = 5;
             popver.Modal = true;
             popver.Position = PositionType.Bottom;
-
+            popver.ConstrainTo = PopoverConstraint.Window;
+            
             calendar.Halign = Gtk.Align.Fill;
             calendar.Valign = Gtk.Align.Fill;
             calendar.DaySelected += Calendar_DaySelected;

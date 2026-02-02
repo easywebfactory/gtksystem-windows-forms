@@ -18,12 +18,13 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Halign = Align.Fill;
             this.Valign = Align.Fill;
 
-            Gtk.Viewport viewport = new Gtk.Viewport() { BorderWidth = 0 };
-            viewport.Drawn += Viewport_Drawn;
-            Content.Add(viewport);
+            Gtk.DrawingArea background = new Gtk.DrawingArea();
+            background.Events = Gdk.EventMask.EnterNotifyMask;
+            background.Drawn += Background_Drawn;
+            Content.Add(background);
             this.Add(Content);
         }
-        private void Viewport_Drawn(object o, DrawnArgs args)
+        private void Background_Drawn(object o, DrawnArgs args)
         {
             Override.OnPaint(args.Cr);
         }

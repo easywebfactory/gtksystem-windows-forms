@@ -11,6 +11,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.StyleContext.AddClass("Button");
             this.Valign = Gtk.Align.Start;
             this.Halign = Gtk.Align.Start;
+            this.Events |= EventMask.PointerMotionMask;
+            this.Events |= EventMask.ButtonMotionMask;
             this.ButtonReleaseEvent += ButtonBase_ButtonReleaseEvent;
             this.Drawn += ButtonBase_Drawn;
         }
