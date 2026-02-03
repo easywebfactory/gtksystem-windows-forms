@@ -180,8 +180,7 @@ namespace System.Windows.Forms
 
 .DropDownList button{padding:2px;}
 .SplitContainer{padding:0px;border:0px;box-shadow:none;}
-/* 当有滚动条时，宽高小于60px有异常信息输出 */
-.SplitterPanel{padding:0px;margin:0px;border:0px;box-shadow:none;min-width:60px;min-height:60px;}
+.SplitterPanel{padding:0px;margin:0px;border:0px;box-shadow:none;min-width:20px;min-height:20px;}
 .SplitterPanel .frame{padding:0px;margin:0px;border:0px;box-shadow:none;}
 .SplitterPanel .flat{padding:0px;margin:0px;border:0px;box-shadow:none;}
 
