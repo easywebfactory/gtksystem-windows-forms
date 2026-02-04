@@ -430,7 +430,7 @@ namespace System.Windows.Forms
                     if (args.Args[0] is Gdk.EventTouchpadSwipe eventmotion)
                     {
                         int clicks = 0;
-                        MouseButtons button = MouseButtons.None;
+                        MouseButtons button = MouseButtons.Left;
                         owidget.Window.GetOrigin(out int x, out int y);
                         MouseEventArgs mouseArgs = new MouseEventArgs(button, clicks, (int)eventmotion.XRoot - x, (int)eventmotion.YRoot - y, 1);
                         OnMouseMove(mouseArgs);
