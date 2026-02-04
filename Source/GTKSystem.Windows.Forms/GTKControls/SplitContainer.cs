@@ -71,6 +71,7 @@ namespace System.Windows.Forms
                 ((Paned.PanedChild)self[_panel2.Widget]).Resize = !resize;
             } 
         }
+        public bool IsSplitterFixed {  get; set; }
     }
 
 }
