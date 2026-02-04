@@ -1,4 +1,6 @@
 ﻿
+using GTKSystem.Windows.Forms.Resources;
+
 namespace System.Windows.Forms
 {
     /// <summary>
@@ -35,33 +37,33 @@ namespace System.Windows.Forms
         private static Cursor? s_panWest;
         private static Cursor? s_hand;
 
-        public static Cursor AppStarting => s_appStarting ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.circle.cur", 0, 0);
-        public static Cursor Arrow => s_arrow ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.arrow.cur", 0, 0);
-        public static Cursor Cross => s_cross ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.cross.cur", 10, 10);
-        public static Cursor Default => s_defaultCursor ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.arrow.cur", 0, 0);
-        public static Cursor IBeam => s_iBeam ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.xterm.cur", 0, 0);
-        public static Cursor No => s_no ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.not-allowed.cur", 0, 0);
-        public static Cursor SizeAll => s_sizeAll ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.size_all.cur", 10, 10);
-        public static Cursor SizeNESW => s_sizeNESW ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.nesw-resize.cur", 10, 10);
-        public static Cursor SizeNS => s_sizeNS ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.ns-resize.cur", 0, 10);
-        public static Cursor SizeNWSE => s_sizeNWSE ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.nwse-resize.cur", 10, 10);
-        public static Cursor SizeWE => s_sizeWE ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.ew-resize.cur", 10, 0);
-        public static Cursor UpArrow => s_upArrow ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.sb_up_arrow.cur", 0, 0);
+        public static Cursor AppStarting => s_appStarting ??= new Cursor(AssemblyResources.ToCursorsUri("circle.cur"), 0, 0);
+        public static Cursor Arrow => s_arrow ??= new Cursor(AssemblyResources.ToCursorsUri("arrow.cur"), 0, 0);
+        public static Cursor Cross => s_cross ??= new Cursor(AssemblyResources.ToCursorsUri("cross.cur"), 10, 10);
+        public static Cursor Default => s_defaultCursor;
+        public static Cursor IBeam => s_iBeam ??= new Cursor(AssemblyResources.ToCursorsUri("xterm.cur"), 0, 0);
+        public static Cursor No => s_no ??= new Cursor(AssemblyResources.ToCursorsUri("not-allowed.cur"), 0, 0);
+        public static Cursor SizeAll => s_sizeAll ??= new Cursor(AssemblyResources.ToCursorsUri("size_all.cur"), 10, 10);
+        public static Cursor SizeNESW => s_sizeNESW ??= new Cursor(AssemblyResources.ToCursorsUri("nesw-resize.cur"), 10, 10);
+        public static Cursor SizeNS => s_sizeNS ??= new Cursor(AssemblyResources.ToCursorsUri("ns-resize.cur"), 0, 10);
+        public static Cursor SizeNWSE => s_sizeNWSE ??= new Cursor(AssemblyResources.ToCursorsUri("nwse-resize.cur"), 10, 10);
+        public static Cursor SizeWE => s_sizeWE ??= new Cursor(AssemblyResources.ToCursorsUri("ew-resize.cur"), 10, 0);
+        public static Cursor UpArrow => s_upArrow ??= new Cursor(AssemblyResources.ToCursorsUri("sb_up_arrow.cur"), 0, 0);
         public static Cursor WaitCursor => s_wait ??= new Cursor(Gdk.CursorType.Watch);
-        public static Cursor Help => s_help ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.help.cur", 0, 0);
-        public static Cursor Hand => s_hand ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.hand.cur", 0, 0);
-        public static Cursor HSplit => s_hSplit ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.size_ver.cur", 0, 10);
-        public static Cursor VSplit => s_vSplit ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.size_hor.cur", 10, 0);
-        public static Cursor NoMove2D => s_noMove2D ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.move.cur", 10, 10);
-        public static Cursor NoMoveHoriz => s_noMoveHoriz ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.size_ver.cur", 0, 10);
-        public static Cursor NoMoveVert => s_noMoveVert ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.size_hor.cur", 10, 0);
-        public static Cursor PanEast => s_panEast ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.e-resize.cur", 20, 0);
-        public static Cursor PanNE => s_panNE ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.ne-resize.cur", 20, 0);
-        public static Cursor PanNorth => s_panNorth ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.n-resize.cur", 10, 0);
-        public static Cursor PanNW => s_panNW ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.nw-resize.cur", 0, 0);
-        public static Cursor PanSE => s_panSE ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.se-resize.cur", 20, 20);
-        public static Cursor PanSouth => s_panSouth ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.s-resize.cur", 0, 20);
-        public static Cursor PanSW => s_panSW ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.sw-resize.cur", 0, 20);
-        public static Cursor PanWest => s_panWest ??= new Cursor("GTKSystem.Windows.Forms.Resources.Cursors.w-resize.cur", 0, 0);
+        public static Cursor Help => s_help ??= new Cursor(AssemblyResources.ToCursorsUri("help.cur"), 0, 0);
+        public static Cursor Hand => s_hand ??= new Cursor(AssemblyResources.ToCursorsUri("hand.cur"), 0, 0);
+        public static Cursor HSplit => s_hSplit ??= new Cursor(AssemblyResources.ToCursorsUri("size_ver.cur"), 0, 10);
+        public static Cursor VSplit => s_vSplit ??= new Cursor(AssemblyResources.ToCursorsUri("size_hor.cur"), 10, 0);
+        public static Cursor NoMove2D => s_noMove2D ??= new Cursor(AssemblyResources.ToCursorsUri("move.cur"), 10, 10);
+        public static Cursor NoMoveHoriz => s_noMoveHoriz ??= new Cursor(AssemblyResources.ToCursorsUri("size_ver.cur"), 0, 10);
+        public static Cursor NoMoveVert => s_noMoveVert ??= new Cursor(AssemblyResources.ToCursorsUri("size_hor.cur"), 10, 0);
+        public static Cursor PanEast => s_panEast ??= new Cursor(AssemblyResources.ToCursorsUri("e-resize.cur"), 20, 0);
+        public static Cursor PanNE => s_panNE ??= new Cursor(AssemblyResources.ToCursorsUri("ne-resize.cur"), 20, 0);
+        public static Cursor PanNorth => s_panNorth ??= new Cursor(AssemblyResources.ToCursorsUri("n-resize.cur"), 10, 0);
+        public static Cursor PanNW => s_panNW ??= new Cursor(AssemblyResources.ToCursorsUri("nw-resize.cur"), 0, 0);
+        public static Cursor PanSE => s_panSE ??= new Cursor(AssemblyResources.ToCursorsUri("se-resize.cur"), 20, 20);
+        public static Cursor PanSouth => s_panSouth ??= new Cursor(AssemblyResources.ToCursorsUri("s-resize.cur"), 0, 20);
+        public static Cursor PanSW => s_panSW ??= new Cursor(AssemblyResources.ToCursorsUri("sw-resize.cur"), 0, 20);
+        public static Cursor PanWest => s_panWest ??= new Cursor(AssemblyResources.ToCursorsUri("w-resize.cur"), 0, 0);
     }
 }

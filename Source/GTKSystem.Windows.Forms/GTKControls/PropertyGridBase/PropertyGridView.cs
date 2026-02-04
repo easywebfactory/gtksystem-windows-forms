@@ -9,6 +9,7 @@ using Cairo;
 using Gdk;
 using GLib;
 using Gtk;
+using GTKSystem.Windows.Forms.Resources;
 using System.ComponentModel;
 using System.Reflection;
 
@@ -36,7 +37,7 @@ internal sealed partial class PropertyGridView
         Gtk.Button button1 = column1.Button as Gtk.Button;
         if (button1.Child is Gtk.Box box1)
         {
-            Gtk.Image img = new Gtk.Image(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.PBCategory.ico");
+            Gtk.Image img = new Gtk.Image(AssemblyResources.CurrentAssembly, AssemblyResources.ToSystemUri("PBCategory.ico"));
             img.Visible = true;
             box1.PackStart(img, false, true, 1);
             box1.ReorderChild(img, 0);
@@ -60,7 +61,7 @@ internal sealed partial class PropertyGridView
         Gtk.Button button2 = column2.Button as Gtk.Button;
         if (button2.Child is Gtk.Box box)
         {
-            Gtk.Image img = new Gtk.Image(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.PBAlpha.ico");
+            Gtk.Image img = new Gtk.Image(AssemblyResources.CurrentAssembly, AssemblyResources.ToSystemUri("PBAlpha.ico"));
             img.Visible = true;
             box.PackStart(img, false, true, 1);
             box.ReorderChild(img, 0);

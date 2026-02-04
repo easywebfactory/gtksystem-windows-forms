@@ -1538,10 +1538,7 @@ namespace System.Windows.Forms
 
         public virtual void Invalidate(Drawing.Region region, bool invalidateChildren)
         {
-            if (this.Widget != null)
-            {
-                this.Widget.Window?.InvalidateRect(Widget.Allocation, invalidateChildren);
-            }
+            Invalidate(new Rectangle(this.Widget.Allocation.X, this.Widget.Allocation.Y, this.Widget.Allocation.Width, this.Widget.Allocation.Height), invalidateChildren);
         }
 
         public virtual object Invoke(Delegate method)
@@ -1642,6 +1639,11 @@ namespace System.Windows.Forms
             {
                 this.Widget.SetStateFlags(StateFlags.Backdrop, true);
                 this.Widget.QueueDraw();
+                GLib.Timeout.Add(50, () =>
+                {
+                    this.Widget.SetStateFlags(Gtk.StateFlags.Selected, true);
+                    return false;
+                });
             }
         }
 

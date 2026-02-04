@@ -548,17 +548,6 @@ namespace System.Windows.Forms
         {
             _Created = true;
         }
-        public override void Refresh()
-        {
-            GridView.UnsetStateFlags(Gtk.StateFlags.Selected);
-            GLib.Idle.Add(() =>
-            {
-                GridView.SetStateFlags(Gtk.StateFlags.Selected, true);
-                GridView.QueueDraw();
-                return false;
-            });
-            base.Refresh();
-        }
         public void ClearSelection()
         {
             GridView.Selection.UnselectAll();

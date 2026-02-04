@@ -6,9 +6,11 @@
  */
 
 using Gtk;
+using GTKSystem.Windows.Forms.Resources;
 using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace System.Windows.Forms
@@ -25,7 +27,7 @@ namespace System.Windows.Forms
 
             self.SecondaryIconActivatable = true;
             self.SecondaryIconStock= "open-menu";
-            self.SecondaryIconPixbuf = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.MonthCalendar.ico");
+            self.SecondaryIconPixbuf = new Gdk.Pixbuf(AssemblyResources.CurrentAssembly, AssemblyResources.ToSystemUri("MonthCalendar.ico"));
             self.IconRelease += DateTimePicker_IconRelease;
             self.Shown += Self_Shown;
 

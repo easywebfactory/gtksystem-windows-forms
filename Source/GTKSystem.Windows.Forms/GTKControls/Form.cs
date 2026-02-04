@@ -6,6 +6,7 @@
 
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
+using GTKSystem.Windows.Forms.Resources;
 using System.ComponentModel;
 using System.Drawing;
 
@@ -145,7 +146,7 @@ namespace System.Windows.Forms
                 }
                 catch
                 {
-                    self.Icon = new Gdk.Pixbuf(this.GetType().Assembly, "GTKSystem.Windows.Forms.Resources.System.image-missing16.png");
+                    self.Icon = new Gdk.Pixbuf(AssemblyResources.CurrentAssembly, AssemblyResources.ToSystemUri("image-missing16.png"));
                 }
             }
             else
