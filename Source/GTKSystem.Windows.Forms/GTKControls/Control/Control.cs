@@ -345,7 +345,7 @@ namespace System.Windows.Forms
                     KeyUp?.Invoke(this, keyargs);
                     args.RetVal = keyargs.Handled;
                 }
-                else if (args.Event.Type == Gdk.EventType.ButtonPress || args.Event.Type == Gdk.EventType.TouchBegin || args.Event.Type == Gdk.EventType.PadButtonPress)
+                else if (args.Event.Type == Gdk.EventType.ButtonPress)
                 {
                     Gdk.EventButton eventbutton = args.Event as Gdk.EventButton;
                     MouseButtons button = MouseButtons.None;
@@ -380,7 +380,7 @@ namespace System.Windows.Forms
                         DoubleClick?.Invoke(this, EventArgs.Empty);
                     }
                 }
-                else if (args.Event.Type == Gdk.EventType.ButtonRelease || args.Event.Type == Gdk.EventType.TouchEnd || args.Event.Type == Gdk.EventType.PadButtonRelease)
+                else if (args.Event.Type == Gdk.EventType.ButtonRelease)
                 {
                     Gdk.EventButton eventbutton = args.Event as Gdk.EventButton;
                     MouseButtons button = MouseButtons.None;
@@ -413,6 +413,72 @@ namespace System.Windows.Forms
                         }
                     }
                     Is_DoubleButtonPress = false;
+                }
+                else if (args.Event.Type == Gdk.EventType.TouchBegin)
+                {
+                    if (args.Args[0] is Gdk.EventTouch eventbutton)
+                    {
+                        MouseButtons button = MouseButtons.None;
+                        owidget.Window.GetOrigin(out int x, out int y);
+                        MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
+                        OnMouseDown(mouseArgs);
+                        MouseDown?.Invoke(this, mouseArgs);
+                    }
+                }
+                else if (args.Event.Type == Gdk.EventType.TouchpadSwipe)
+                {
+                    if (args.Args[0] is Gdk.EventTouchpadSwipe eventmotion)
+                    {
+                        int clicks = 0;
+                        MouseButtons button = MouseButtons.None;
+                        owidget.Window.GetOrigin(out int x, out int y);
+                        MouseEventArgs mouseArgs = new MouseEventArgs(button, clicks, (int)eventmotion.XRoot - x, (int)eventmotion.YRoot - y, 1);
+                        OnMouseMove(mouseArgs);
+                        MouseMove?.Invoke(this, mouseArgs);
+                    }
+                }
+                else if (args.Event.Type == Gdk.EventType.TouchEnd)
+                {
+                    if(args.Args[0] is Gdk.EventTouch eventbutton)
+                    {
+                        MouseButtons button = MouseButtons.None;
+                        owidget.Window.GetOrigin(out int x, out int y);
+                        OnClick(EventArgs.Empty);
+                        MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
+                        OnMouseClick(mouseArgs3);
+                        Click?.Invoke(this, EventArgs.Empty);
+                        MouseClick?.Invoke(this, mouseArgs3);
+                        MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
+                        OnMouseUp(mouseArgs);
+                        MouseUp?.Invoke(this, mouseArgs);
+                    }
+                }
+                else if (args.Event.Type == Gdk.EventType.PadButtonPress)
+                {
+                    if (args.Args[0] is Gdk.EventPadButton eventbutton)
+                    {
+                        MouseButtons button = MouseButtons.None;
+                        owidget.Window.GetOrigin(out int x, out int y);
+                        MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)x, (int)y, 0);
+                        OnMouseDown(mouseArgs);
+                        MouseDown?.Invoke(this, mouseArgs);
+                    }
+                }
+                else if (args.Event.Type == Gdk.EventType.PadButtonRelease)
+                {
+                    if (args.Args[0] is Gdk.EventPadButton eventbutton)
+                    {
+                        MouseButtons button = MouseButtons.None;
+                        owidget.Window.GetOrigin(out int x, out int y);
+                        OnClick(EventArgs.Empty);
+                        MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)x, (int)y, 0);
+                        OnMouseClick(mouseArgs3);
+                        Click?.Invoke(this, EventArgs.Empty);
+                        MouseClick?.Invoke(this, mouseArgs3);
+                        MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)x, (int)y, 0);
+                        OnMouseUp(mouseArgs);
+                        MouseUp?.Invoke(this, mouseArgs);
+                    }
                 }
                 else if (args.Event.Type == Gdk.EventType.Configure)
                 {
