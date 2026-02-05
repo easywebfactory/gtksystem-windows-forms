@@ -229,7 +229,6 @@ namespace System.Windows.Forms
                 this.AnchorChanged += Control_AnchorChanged;
             }
         }
-
         private void Control_CursorChanged(object? sender, EventArgs e)
         {
             SetCursorStyle();
