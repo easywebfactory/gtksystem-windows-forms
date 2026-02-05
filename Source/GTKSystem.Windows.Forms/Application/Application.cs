@@ -229,7 +229,7 @@ namespace System.Windows.Forms
 .PropertyGrid {box-shadow:0px 0px 0px 1px @frame_color; background:#eeeeee;}
 .PropertyGrid button{background:#eeeeee;}
 
-tooltip { background-color: #ffffff; color: #555555; border-radius: 0px; border: 1px solid #c9c9c9; box-shadow: 3px 3px 2px #787878;}
+tooltip { background-color: #ffffff; color: #555555; border: 1px solid #c9c9c9; box-shadow: 3px 3px 2px #787878;}
 tooltip window,tooltip.background {background-color: #ffffff;}
 tooltip label {padding: 0px 10px; color: #555555;}
 
