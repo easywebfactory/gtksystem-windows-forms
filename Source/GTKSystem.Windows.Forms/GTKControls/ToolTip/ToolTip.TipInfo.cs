@@ -21,7 +21,6 @@ public partial class ToolTip
                 _designerText = caption;
             }
         }
-        public Gtk.Popover popover;
         public string? Caption
         {
             get => ((TipType & (Type.Absolute | Type.SemiAbsolute)) != 0) ? _caption : _designerText;

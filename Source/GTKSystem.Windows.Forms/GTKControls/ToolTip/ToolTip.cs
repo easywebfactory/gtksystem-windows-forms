@@ -4,6 +4,7 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  */
 using Gtk;
+using GTKSystem.Windows.Forms.Resources;
 using System.ComponentModel;
 using System.Drawing;
 
@@ -267,84 +268,54 @@ public partial class ToolTip : Component, IExtenderProvider
         control.Widget.HasTooltip = true;
         control.Widget.QueryTooltip += Widget_QueryTooltip;
     }
-
     private void Widget_QueryTooltip(object o, QueryTooltipArgs args)
     {
         foreach (var tip in _tools)
         {
             if (IsBalloon == false)
             {
-                TooltipShow(tip.Key.Widget, tip.Value.Caption, this.AutomaticDelay, this.AutoPopDelay);
+                string tooltiptitle = ToolTipTitle;
+                if (!string.IsNullOrEmpty(tooltiptitle))
+                {
+                    if (ToolTipIcon == ToolTipIcon.Info)
+                        tooltiptitle = $"<span foreground=\"#0069ee\" size=\"large\">🔔 {tooltiptitle}</span>{Environment.NewLine}";
+                    else if (ToolTipIcon == ToolTipIcon.Warning)
+                        tooltiptitle = $"<span foreground=\"#e0a500\" size=\"large\">🔺 {tooltiptitle}</span>{Environment.NewLine}";
+                    else if (ToolTipIcon == ToolTipIcon.Error)
+                        tooltiptitle = $"<span foreground=\"#ff0000\" size=\"large\">🚫 {tooltiptitle}</span>{Environment.NewLine}";
+                    else
+                        tooltiptitle = $"<span foreground=\"#0069ee\" size=\"large\">{tooltiptitle}</span>{Environment.NewLine}";
+                }
+                args.Tooltip.Markup = $"{tooltiptitle}<span foreground=\"#555555\" >{tip.Value.Caption}</span>";
+                args.RetVal = true;
             }
             else
             {
-                TooltipShowBalloon(tip.Key.Widget, ref tip.Value.popover, tip.Value.Caption, this.AutomaticDelay, this.AutoPopDelay);
-            }
-        }
-    }
-    private void TooltipShowBalloon(Gtk.Widget widget, ref Gtk.Popover popover, string caption, int delay, int duration)
-    {
-        if (popover == null)
-        {
-            popover = new Gtk.Popover(widget);
-            Gtk.Box box = new Gtk.Box(Gtk.Orientation.Horizontal, 0);
-            box.Margin = 8;
-            string tooltiptitle = ToolTipTitle;
-            if (ToolTipIcon == ToolTipIcon.Info)
-            {
-                box.Add(new Gtk.Label() { Markup = "<span foreground=\"#0000ff\" size=\"x-large\">🔔</span>", Yalign = 0.5f });
-                tooltiptitle = $"<span foreground=\"#0000ff\" size=\"large\">{tooltiptitle}</span>";
-            }
-            else if (ToolTipIcon == ToolTipIcon.Warning)
-            {
-                box.Add(new Gtk.Label() { Markup = "<span foreground=\"#e0a500\" size=\"x-large\">⚡ </span>", Yalign = 0.5f });
-                tooltiptitle = $"<span foreground=\"#e0a500\" size=\"large\">{tooltiptitle}</span>";
-            }
-            else if (ToolTipIcon == ToolTipIcon.Error)
-            {
-                box.Add(new Gtk.Label() { Markup = "<span foreground=\"#ff0000\" size=\"x-large\">❌</span>", Yalign = 0.5f });
-                tooltiptitle = $"<span foreground=\"#ff0000\" size=\"large\">{tooltiptitle}</span>";
-            }
-
-            Gtk.Label titlelabel = new Gtk.Label();
-            titlelabel.Markup = $"{tooltiptitle}{Environment.NewLine}<span foreground=\"#333333\" >{caption}</span>";
-            box.Add(titlelabel);
-            box.ShowAll();
-            popover.Add(box);
-        }
-        if (popover.IsVisible == false)
-        {
-            Gtk.Popover popover1 = popover;
-            GLib.Timeout.Add((uint)delay, () =>
-            {
-                popover1?.ShowAll();
-                if (_showAlways == false)
+                string tooltiptitle = ToolTipTitle;
+                if (!string.IsNullOrEmpty(tooltiptitle))
                 {
-                    GLib.Timeout.Add((uint)duration, () =>
+                    if (ToolTipIcon == ToolTipIcon.Info)
                     {
-                        popover1?.Hide();
-                        return false;
-                    });
+                        args.Tooltip.Icon = new Gdk.Pixbuf(AssemblyResources.CurrentAssembly, AssemblyResources.ToSystemUri("dialog-question.png"));
+                        tooltiptitle = $"<span foreground=\"#0069ee\" size=\"large\">{tooltiptitle}</span>{Environment.NewLine}";
+                    }
+                    else if (ToolTipIcon == ToolTipIcon.Warning)
+                    {
+                        args.Tooltip.Icon = new Gdk.Pixbuf(AssemblyResources.CurrentAssembly, AssemblyResources.ToSystemUri("dialog-warning.png"));
+                        tooltiptitle = $"<span foreground=\"#e0a500\" size=\"large\">{tooltiptitle}</span>{Environment.NewLine}";
+                    }
+                    else if (ToolTipIcon == ToolTipIcon.Error)
+                    {
+                        args.Tooltip.Icon = new Gdk.Pixbuf(AssemblyResources.CurrentAssembly, AssemblyResources.ToSystemUri("dialog-error.png"));
+                        tooltiptitle = $"<span foreground=\"#ff0000\" size=\"large\">{tooltiptitle}</span>{Environment.NewLine}";
+                    }
+                    else
+                        tooltiptitle = $"<span foreground=\"#0069ee\" size=\"large\">{tooltiptitle}</span>{Environment.NewLine}";
                 }
-                return false;
-            });
+                args.Tooltip.Markup = $"{tooltiptitle}<span foreground=\"#555555\" >{tip.Value.Caption}</span>";
+                args.RetVal = true;
+            }
         }
-    }
-    private void TooltipShow(Gtk.Widget widget, string caption, int delay, int duration)
-    {
-        string tooltiptitle = ToolTipTitle;
-        if (ToolTipIcon == ToolTipIcon.Info)
-            tooltiptitle = $"<span foreground=\"#0000ff\" size=\"large\">🔔 {tooltiptitle}</span>";
-        else if (ToolTipIcon == ToolTipIcon.Warning)
-            tooltiptitle = $"<span foreground=\"#e0a500\" size=\"large\">⚡ {tooltiptitle}</span>";
-        else if (ToolTipIcon == ToolTipIcon.Error)
-            tooltiptitle = $"<span foreground=\"#ff0000\" size=\"large\">❌ {tooltiptitle}</span>";
-
-        GLib.Timeout.Add((uint)Math.Max(0, delay - 500), () =>
-        {
-            widget.TooltipMarkup = $"{tooltiptitle}{Environment.NewLine}<span foreground=\"#333333\" >{caption}</span>";
-            return false;
-        });
     }
     public void Show(string? text, IWin32Window window)
     {
@@ -380,27 +351,18 @@ public partial class ToolTip : Component, IExtenderProvider
         {
             foreach (var tip in _tools)
             {
-                Control con = tip.Key;
-                if (IsBalloon)
-                {
-                    TooltipShowBalloon(tip.Key.Widget, ref tip.Value.popover, tip.Value.Caption, this.AutomaticDelay, this.AutoPopDelay);
-                }
-                else
-                {
-                    TooltipShow(tip.Key.Widget, tip.Value.Caption, this.AutomaticDelay, duration);
-                }
+                tip.Key.Widget.TriggerTooltipQuery();
             }
         }
     }
     public void Hide(IWin32Window win)
     {
-        if (win is Control tool)
-        {
-            if (_tools.ContainsKey(tool))
-            {
-                _tools[tool].popover?.Hide();
-            }
-        }
+        //if (win is Control tool)
+        //{
+        //    if (_tools.ContainsKey(tool))
+        //    {
+        //    }
+        //}
     }
   
     private void TimerHandler(object? source, EventArgs args)
