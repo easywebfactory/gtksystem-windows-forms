@@ -60,6 +60,11 @@ namespace System.Windows.Forms
                 }
             }
         }
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            ((HandledMouseEventArgs)e).Handled = !_AutoScroll;
+            base.OnMouseWheel(e);
+        }
         //public VScrollProperties VerticalScroll { get; }
         //public DockPaddingEdges DockPadding { get; }
         //public HScrollProperties HorizontalScroll { get; }
