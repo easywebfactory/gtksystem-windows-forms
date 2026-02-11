@@ -27,10 +27,6 @@ namespace System.Windows.Forms
         {
             container.Add(this);
         }
-        private void TimersTimer_Elapsed(object sender, Timers.ElapsedEventArgs e)
-        {
-            OnTick(EventArgs.Empty);
-        }
         public event EventHandler Tick
         {
             add => _onTimer += value;
@@ -38,7 +34,8 @@ namespace System.Windows.Forms
         }
         protected virtual void OnTick(EventArgs e)
         {
-            _onTimer?.Invoke(this, EventArgs.Empty);
+            if (_enabled) 
+                _onTimer?.Invoke(this, EventArgs.Empty);
         }
         public object Tag { get; set; }
 
@@ -74,16 +71,13 @@ namespace System.Windows.Forms
         [DefaultValue(100)]
         public int Interval { get => (int)_interval; 
             set {
-                lock (_syncObj)
+                if (_interval != value)
                 {
-                    if (_interval != value)
+                    _interval = (uint)value;
+                    if (_enabled)
                     {
-                        _interval = (uint)value;
-                        if (_enabled)
-                        {
-                            Enabled = false;
-                            Enabled = true;
-                        }
+                        Enabled = false;
+                        Enabled = true;
                     }
                 }
             }

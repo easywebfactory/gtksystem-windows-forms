@@ -79,12 +79,13 @@ namespace System.Windows.Forms
                 mouseButtons = MouseButtons.Middle;
             else if (button == 3)
                 mouseButtons = MouseButtons.Right;
-
-            OnMouseUp(new MouseEventArgs(mouseButtons, 1, (int)args.Event.XRoot, (int)args.Event.YRoot, 1));
-            OnMouseClick(new MouseEventArgs(mouseButtons, 1, (int)args.Event.XRoot, (int)args.Event.YRoot, 1));
-            if (button == 3)
+            MouseEventArgs mouseargs = new MouseEventArgs(mouseButtons, 1, (int)args.Event.XRoot, (int)args.Event.YRoot, 1);
+            OnMouseUp(mouseargs);
+            OnMouseClick(mouseargs);
+            if (button == 3 && ContextMenuStrip != null)
             {
-                ContextMenuStrip?.self?.PopupAtPointer(args.Event);
+                args.Event.Device = Gdk.Display.Default.ListDevices()[0];
+                ContextMenuStrip.self.PopupAtPointer(args.Event);
             }
         }
 
@@ -100,7 +101,6 @@ namespace System.Windows.Forms
                 mouseButtons = MouseButtons.Right;
 
             OnMouseDown(new MouseEventArgs(mouseButtons, 1, (int)args.Event.XRoot, (int)args.Event.YRoot, 1));
-
             if (args.Event.Type == Gdk.EventType.TwoButtonPress || args.Event.Type == Gdk.EventType.DoubleButtonPress)
             {
                 MouseEventArgs mouseArgs2 = new MouseEventArgs(mouseButtons, 2, (int)args.Event.XRoot, (int)args.Event.YRoot, 0);

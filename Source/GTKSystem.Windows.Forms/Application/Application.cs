@@ -133,7 +133,7 @@ namespace System.Windows.Forms
             while (context.HasPendingEvents)
                 context.RunIteration(false);
 
-            while(Gtk.Application.EventsPending())
+            while (Gtk.Application.EventsPending())
                 Gtk.Application.RunIteration(false);
         }
         public static Gtk.Application App { get; private set; }
