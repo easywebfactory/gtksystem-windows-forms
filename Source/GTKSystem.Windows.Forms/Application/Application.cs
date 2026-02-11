@@ -129,6 +129,10 @@ namespace System.Windows.Forms
         }
         public static void DoEvents()
         {
+            var context = GLib.MainContext.Default;
+            while (context.HasPendingEvents)
+                context.RunIteration(false);
+
             while(Gtk.Application.EventsPending())
                 Gtk.Application.RunIteration(false);
         }

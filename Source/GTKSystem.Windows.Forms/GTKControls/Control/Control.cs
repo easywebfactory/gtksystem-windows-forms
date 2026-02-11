@@ -63,6 +63,7 @@ namespace System.Windows.Forms
                 { Gdk.Key.KP_Home,36},
                 { Gdk.Key.Left,37},
                 { Gdk.Key.KP_Left,37},
+                { Gdk.Key.Up,38},
                 { Gdk.Key.KP_Up,38},
                 { Gdk.Key.Right,39},
                 { Gdk.Key.KP_Right,39},
