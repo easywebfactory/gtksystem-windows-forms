@@ -19,7 +19,7 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         private Gtk.Overlay contaner = new Gtk.Overlay();
         private ControlCollection _controls = null;
-        Gtk.Fixed fixedcontaner = new Gtk.Fixed();
+        private Gtk.ScrolledWindow fixedcontaner = new Gtk.ScrolledWindow();
         public GroupBox() : base()
         {
             self.Override.sender = this;
@@ -31,15 +31,34 @@ namespace System.Windows.Forms
             background.Drawn += Background_Drawn;
             contaner.Add(background);
             fixedcontaner.SizeAllocated += Fixedcontaner_SizeAllocated;
-            fixedcontaner.Put(contaner, 0, -20);
+            fixedcontaner.WidgetEvent += Fixedcontaner_WidgetEvent;
+            fixedcontaner.HscrollbarPolicy = PolicyType.Never;
+            fixedcontaner.VscrollbarPolicy = PolicyType.External;
+            fixedcontaner.Add(contaner);
             self.Child = fixedcontaner;
+        }
+
+        private void Fixedcontaner_WidgetEvent(object o, WidgetEventArgs args)
+        {
+            fixedcontaner.Vadjustment.Value = 20;
+            args.RetVal = true;
         }
 
         private void Fixedcontaner_SizeAllocated(object o, SizeAllocatedArgs args)
         {
-            contaner.SetAllocation(new Gdk.Rectangle(0, 0, args.Allocation.Width, args.Allocation.Height + 20));
+            fixedcontaner.Vadjustment.Value = 20;
         }
-        public override Size Size { get => base.Size; set { base.Size = value; contaner.WidthRequest = Math.Max(1, value.Width - 5); contaner.HeightRequest = Math.Max(1, value.Height - 5); } }
+        public override Size Size
+        {
+            get => base.Size;
+            set
+            {
+                base.Size = value;
+                contaner.WidthRequest = Math.Max(1, value.Width - fixedcontaner.MarginStart - fixedcontaner.MarginEnd);
+                contaner.HeightRequest = Math.Max(1, value.Height - fixedcontaner.MarginTop - fixedcontaner.MarginBottom);
+                fixedcontaner.Vadjustment.Value = 20;
+            }
+        }
         private void Background_Drawn(object o, DrawnArgs args)
         {
             self.Override.OnPaint(args.Cr);

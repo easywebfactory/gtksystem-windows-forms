@@ -254,14 +254,24 @@ namespace System.Windows.Forms
                 OnLoad(EventArgs.Empty);
                 Load?.Invoke(this, e);
                 CursorChanged(this, EventArgs.Empty);
-                if (_dock != DockStyle.None)
-                    DockChanged(this, EventArgs.Empty);
-                else if (_anchor != AnchorStyles.None)
-                    AnchorChanged(this, EventArgs.Empty);
-                CheckResize(BoundsSpecified.All);
+                InitDockStyle();
             }
         }
+        private void Widget_ParentSet(object o, ParentSetArgs args)
+        {
+            InitDockStyle();
+            OnParentChanged(EventArgs.Empty);
+            ParentChanged?.Invoke(this, args);
+        }
 
+        private void InitDockStyle()
+        {
+            if (_dock != DockStyle.None)
+                DockChanged(this, EventArgs.Empty);
+            else if (_anchor != AnchorStyles.None)
+                AnchorChanged(this, EventArgs.Empty);
+            CheckResize(BoundsSpecified.All);
+        }
         private bool Is_DoubleButtonPress = false;
         private void Widget_WidgetEvent(object o, WidgetEventArgs args)
         {
@@ -563,12 +573,6 @@ namespace System.Windows.Forms
                     args.RetVal = mouseArgs.Handled;
                 }
             }
-        }
-
-        private void Widget_ParentSet(object o, ParentSetArgs args)
-        {
-            OnParentChanged(EventArgs.Empty);
-            ParentChanged?.Invoke(this, args);
         }
 
         private int size_width = 0;
@@ -1218,6 +1222,11 @@ namespace System.Windows.Forms
                     Width = value.Width;
                     Height = value.Height;
                 }
+                if (this.Widget.IsRealized && this.Widget.Parent is Gtk.Container con)
+                {
+                    con.QueueResize();
+                    con.ResizeChildren();
+                }
             }
         }
         public virtual int Height
@@ -1826,7 +1835,7 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null)
             {
-                Gdk.Rectangle rect = this.Widget.Clip;
+                Gdk.Rectangle rect = this.Widget.Allocation;
                 if (specified == BoundsSpecified.X)
                     rect.X = x;
                 else if (specified == BoundsSpecified.Y)
@@ -1852,7 +1861,9 @@ namespace System.Windows.Forms
                     rect.Width = width;
                     rect.Height = height;
                 }
-                this.Widget.SetClip(rect);
+                this.Left = rect.X;
+                this.Top = rect.Y;
+                this.Size = new Size(rect.Width, rect.Height);
             }
         }
         public virtual Rectangle ClientRectangle { get { this.Widget.GetAllocatedSize(out Gdk.Rectangle allocation, out int baseline); return new Rectangle(allocation.X, allocation.Y, allocation.Width, allocation.Height); } }
