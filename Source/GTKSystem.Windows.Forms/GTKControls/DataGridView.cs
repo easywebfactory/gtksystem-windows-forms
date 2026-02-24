@@ -116,7 +116,7 @@ namespace System.Windows.Forms
                     Store.SetSortColumnId(_sortedColumn.SortColumnId, _sortedColumn.SortOrder);
                 }
             }
-            this.Refresh();
+            this.Invalidate();
         }
         private void propertyNotity(object o, NotifyArgs args)
         {

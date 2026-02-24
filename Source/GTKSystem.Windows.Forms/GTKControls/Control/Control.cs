@@ -1225,11 +1225,17 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (this.Widget.IsMapped == false && this.Widget is Gtk.Window wnd)
+                if (this.Widget.IsMapped == false)
                 {
-                    return wnd.HeightRequest == -1 ? wnd.DefaultHeight : wnd.HeightRequest;
+                    if (this.Widget is Gtk.Window wnd)
+                        return wnd.HeightRequest == -1 ? wnd.DefaultHeight : wnd.HeightRequest;
+                    else
+                        return this.Widget.HeightRequest;
                 }
-                return this.Widget.HeightRequest == -1 ? this.Widget.AllocatedHeight : this.Widget.HeightRequest;
+                else if (this.Widget.Valign == Align.Fill)
+                    return this.Widget.AllocatedHeight;
+                else
+                    return this.Widget.HeightRequest == -1 ? this.Widget.AllocatedHeight : this.Widget.HeightRequest;
             }
             set
             {
@@ -1241,11 +1247,17 @@ namespace System.Windows.Forms
         {
             get
             {
-                if (this.Widget.IsMapped == false && this.Widget is Gtk.Window wnd)
+                if (this.Widget.IsMapped == false)
                 {
-                    return wnd.WidthRequest == -1 ? wnd.DefaultWidth : wnd.WidthRequest;
+                    if (this.Widget is Gtk.Window wnd)
+                        return wnd.WidthRequest == -1 ? wnd.DefaultHeight : wnd.WidthRequest;
+                    else
+                        return this.Widget.WidthRequest;
                 }
-                return this.Widget.WidthRequest == -1 ? this.Widget.AllocatedWidth : this.Widget.WidthRequest;
+                else if (this.Widget.Valign == Align.Fill)
+                    return this.Widget.AllocatedWidth;
+                else
+                    return this.Widget.WidthRequest == -1 ? this.Widget.AllocatedWidth : this.Widget.WidthRequest;
             }
             set
             {
@@ -1601,12 +1613,13 @@ namespace System.Windows.Forms
             if (this.Widget != null)
             {
                 this.Widget.Window?.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
-                if (invalidateChildren == true && this.Widget is Gtk.Container container)
+                this.Widget.SetStateFlags(StateFlags.Backdrop, true);
+                this.Widget.QueueDraw();
+                GLib.Timeout.Add(50, () =>
                 {
-                    foreach (var child in container.Children)
-                        child.Window?.InvalidateRect(child.Allocation, invalidateChildren);
-                }
-                Refresh();
+                    this.Widget.SetStateFlags(Gtk.StateFlags.Prelight, true);
+                    return false;
+                });
             }
         }
 
@@ -1716,13 +1729,7 @@ namespace System.Windows.Forms
         {
             if (this.Widget != null && this.Widget.IsVisible)
             {
-                this.Widget.SetStateFlags(StateFlags.Backdrop, true);
                 this.Widget.QueueDraw();
-                GLib.Timeout.Add(50, () =>
-                {
-                    this.Widget.SetStateFlags(Gtk.StateFlags.Selected, true);
-                    return false;
-                });
             }
         }
 
