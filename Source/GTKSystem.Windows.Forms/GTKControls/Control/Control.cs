@@ -9,7 +9,6 @@ using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Forms.Design;
 using System.Windows.Forms.Layout;
@@ -222,6 +221,7 @@ namespace System.Windows.Forms
                 widget.StyleContext.AddClass("DefaultThemeStyle");
                 widget.Realized += Widget_Realized;
                 ISelf.Override.PaintGraphics += Override_PaintGraphics;
+                ISelf.Override.Paint += Override_Paint;
                 widget.SizeAllocated += Widget_SizeAllocated;
                 widget.ParentSet += Widget_ParentSet;
                 widget.WidgetEvent += Widget_WidgetEvent;
@@ -1494,19 +1494,19 @@ namespace System.Windows.Forms
                 cr.Restore();
             }
         }
-        private object paintEventHandler_paint = new object();
-        public virtual event PaintEventHandler Paint
-        {
-            add { handlerList.AddHandler(paintEventHandler_paint, value); ISelf.Override.Paint += Override_Paint; }
-            remove { handlerList.RemoveHandler(paintEventHandler_paint, value); ISelf.Override.Paint -= Override_Paint; }
-        }
+
         private void Override_Paint(object sender, PaintEventArgs e)
         {
             OnPaintBackground(e);
             OnPaint(e);
             handlerList[paintEventHandler_paint]?.DynamicInvoke(sender, e);
         }
-
+        private object paintEventHandler_paint = new object();
+        public virtual event PaintEventHandler Paint
+        {
+            add { handlerList.AddHandler(paintEventHandler_paint, value); }
+            remove { handlerList.RemoveHandler(paintEventHandler_paint, value); }
+        }
         public virtual DragDropEffects DoDragDrop(object data, DragDropEffects allowedEffects)
         {
             return DragDropEffects.None;
@@ -1614,7 +1614,6 @@ namespace System.Windows.Forms
             {
                 this.Widget.Window?.InvalidateRect(new Gdk.Rectangle(rc.X, rc.Y, rc.Width, rc.Height), invalidateChildren);
                 this.Widget.SetStateFlags(StateFlags.Backdrop, true);
-                this.Widget.QueueDraw();
                 GLib.Timeout.Add(50, () =>
                 {
                     this.Widget.SetStateFlags(Gtk.StateFlags.Prelight, true);
@@ -1907,6 +1906,7 @@ namespace System.Windows.Forms
         }
         protected virtual void OnPaint(PaintEventArgs pevent)
         {
+
         }
         protected virtual void OnPaintBackground(PaintEventArgs pevent)
         {
