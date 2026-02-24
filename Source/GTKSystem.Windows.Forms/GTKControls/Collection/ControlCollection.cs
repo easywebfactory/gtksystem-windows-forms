@@ -28,6 +28,15 @@ namespace System.Windows.Forms
             {
                 __ownerControl = ownerContainer;
                 __owner = owner;
+                __ownerControl.Mapped += OwnerContainer_Mapped;
+            }
+
+            private void OwnerContainer_Mapped(object? sender, EventArgs e)
+            {
+                List<Control> _tabs = InnerList.ConvertAll<Control>(o => (Control)o);
+                _tabs.Sort(new Comparison<Control>((a, b) => { return a.TabIndex.CompareTo(b.TabIndex); }));
+                __ownerControl.ChildFocus(Gtk.DirectionType.TabForward);
+                __ownerControl.FocusChain = _tabs.Select(o => o.Widget).ToArray();
             }
             private void NativeAdd(object item)
             {
@@ -350,9 +359,9 @@ namespace System.Windows.Forms
                 _widget = widget;
             }
             public Gtk.Widget GetWidget { get => _widget; }
-            public Rectangle Bounds => throw new NotImplementedException();
+            public Drawing.Rectangle Bounds => throw new NotImplementedException();
 
-            public Rectangle DisplayRectangle => throw new NotImplementedException();
+            public Drawing.Rectangle DisplayRectangle => throw new NotImplementedException();
 
             public bool ParticipatesInLayout => throw new NotImplementedException();
 
@@ -385,7 +394,7 @@ namespace System.Windows.Forms
                 throw new NotImplementedException();
             }
 
-            public void SetBounds(Rectangle bounds, BoundsSpecified specified)
+            public void SetBounds(Drawing.Rectangle bounds, BoundsSpecified specified)
             {
                 throw new NotImplementedException();
             }
