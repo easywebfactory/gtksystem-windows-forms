@@ -5,7 +5,6 @@
  * author:chenhongjin
  */
 
-using Gtk;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
@@ -30,8 +29,6 @@ namespace System.Windows.Forms
                 __ownerControl = ownerContainer;
                 __owner = owner;
             }
-            internal Drawing.Point Offset = new Drawing.Point(0, 0);
-
             private void NativeAdd(object item)
             {
                 try
@@ -61,17 +58,12 @@ namespace System.Windows.Forms
                         }
                         else if (item is Control control)
                         {
-                            control.LocationOffset.Offset(Offset.X, Offset.Y);
-                            control.Widget.MarginTop = Math.Max(0, control.Widget.MarginTop + Offset.Y);
-                            control.Widget.MarginStart = Math.Max(0, control.Widget.MarginStart + Offset.X);
                             lay.AddOverlay(control.Widget);
                             if (control.Widget is Gtk.Label || control.Widget is Gtk.Button || control.Widget is Gtk.Entry || control.Widget is Gtk.TextView || control.Widget is Gtk.ScrolledWindow)
                                 lay.SetOverlayPassThrough(control.Widget, true);
                         }
                         else if (item is Gtk.Widget widget)
                         {
-                            widget.MarginTop = Math.Max(0, widget.MarginTop + Offset.Y);
-                            widget.MarginStart = Math.Max(0, widget.MarginStart + Offset.X);
                             lay.AddOverlay(widget);
                         }
                     }
@@ -79,22 +71,11 @@ namespace System.Windows.Forms
                     {
                         if (item is Control con)
                         {
-                            lay2.Put(con.Widget, Offset.X, Offset.Y);
+                            lay2.Put(con.Widget, 0, 0);
                         }
                         else if (item is Gtk.Widget widget)
                         {
-                            lay2.Put(widget, Offset.X, Offset.Y);
-                        }
-                    }
-                    else if (__ownerControl is Gtk.Layout lay3)
-                    {
-                        if (item is Control con)
-                        {
-                            lay3.Put(con.Widget, Offset.X, Offset.Y);
-                        }
-                        else if (item is Gtk.Widget widget)
-                        {
-                            lay3.Put(widget, Offset.X, Offset.Y);
+                            lay2.Put(widget, 0, 0);
                         }
                     }
                 }

@@ -1151,22 +1151,21 @@ namespace System.Windows.Forms
         public virtual bool IsMirrored { get; }
 
         public virtual LayoutEngine LayoutEngine { get; }
-        internal Drawing.Point LocationOffset = new Drawing.Point(0, 0);
         public virtual int Top
         {
-            get => Math.Max(0, this.Widget.MarginTop - LocationOffset.Y);
+            get => this.Widget.MarginTop;
             set
             {
-                this.Widget.MarginTop = Math.Max(0, value + LocationOffset.Y);
+                this.Widget.MarginTop = Math.Max(0, value);
                 CheckResize(BoundsSpecified.Height);
             }
         }
         public virtual int Left
         {
-            get => Math.Max(0, this.Widget.MarginStart - LocationOffset.X);
+            get => this.Widget.MarginStart;
             set
             {
-                this.Widget.MarginStart = Math.Max(0, value + LocationOffset.X);
+                this.Widget.MarginStart = Math.Max(0, value);
                 CheckResize(BoundsSpecified.Width);
             }
         }

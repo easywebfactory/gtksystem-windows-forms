@@ -8,6 +8,7 @@
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace System.Windows.Forms
 {
@@ -18,21 +19,27 @@ namespace System.Windows.Forms
         public override object GtkControl => self;
         private Gtk.Overlay contaner = new Gtk.Overlay();
         private ControlCollection _controls = null;
-        Gtk.Overlay overlay = new Gtk.Overlay();
+        Gtk.Fixed fixedcontaner = new Gtk.Fixed();
         public GroupBox() : base()
         {
             self.Override.sender = this;
             _controls = new ControlCollection(this, contaner);
-            _controls.Offset.Offset(0, -20);
             contaner.Halign = Align.Fill;
             contaner.Valign = Align.Fill;
-            overlay.AddOverlay(contaner);
             Gtk.DrawingArea background = new Gtk.DrawingArea();
             background.Events = Gdk.EventMask.EnterNotifyMask;
             background.Drawn += Background_Drawn;
             contaner.Add(background);
-            self.Child = overlay;
+            fixedcontaner.SizeAllocated += Fixedcontaner_SizeAllocated;
+            fixedcontaner.Put(contaner, 0, -20);
+            self.Child = fixedcontaner;
         }
+
+        private void Fixedcontaner_SizeAllocated(object o, SizeAllocatedArgs args)
+        {
+            contaner.SetAllocation(new Gdk.Rectangle(0, 0, args.Allocation.Width, args.Allocation.Height + 20));
+        }
+        public override Size Size { get => base.Size; set { base.Size = value; contaner.WidthRequest = Math.Max(1, value.Width - 5); contaner.HeightRequest = Math.Max(1, value.Height - 5); } }
         private void Background_Drawn(object o, DrawnArgs args)
         {
             self.Override.OnPaint(args.Cr);
@@ -45,10 +52,10 @@ namespace System.Windows.Forms
             set
             {
                 base.Padding = value;
-                overlay.MarginStart = value.Left;
-                overlay.MarginTop = value.Top;
-                overlay.MarginEnd = value.Right;
-                overlay.MarginBottom = value.Bottom;
+                fixedcontaner.MarginStart = value.Left;
+                fixedcontaner.MarginTop = value.Top;
+                fixedcontaner.MarginEnd = value.Right;
+                fixedcontaner.MarginBottom = value.Bottom;
             }
         }
         public override void SuspendLayout()
