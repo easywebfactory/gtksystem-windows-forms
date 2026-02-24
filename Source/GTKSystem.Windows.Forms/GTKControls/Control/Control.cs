@@ -1254,7 +1254,7 @@ namespace System.Windows.Forms
                     else
                         return this.Widget.WidthRequest;
                 }
-                else if (this.Widget.Valign == Align.Fill)
+                else if (this.Widget.Halign == Align.Fill)
                     return this.Widget.AllocatedWidth;
                 else
                     return this.Widget.WidthRequest == -1 ? this.Widget.AllocatedWidth : this.Widget.WidthRequest;
