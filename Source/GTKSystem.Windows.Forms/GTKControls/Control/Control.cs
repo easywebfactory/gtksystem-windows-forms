@@ -254,17 +254,17 @@ namespace System.Windows.Forms
                 OnLoad(EventArgs.Empty);
                 Load?.Invoke(this, e);
                 CursorChanged(this, EventArgs.Empty);
-                InitDockStyle();
+                InitDockAnchorStyle();
             }
         }
         private void Widget_ParentSet(object o, ParentSetArgs args)
         {
-            InitDockStyle();
+            InitDockAnchorStyle();
             OnParentChanged(EventArgs.Empty);
             ParentChanged?.Invoke(this, args);
         }
 
-        private void InitDockStyle()
+        private void InitDockAnchorStyle()
         {
             if (_dock != DockStyle.None)
                 DockChanged(this, EventArgs.Empty);
@@ -921,14 +921,11 @@ namespace System.Windows.Forms
                 {
                     int framewidth = lay.AllocatedWidth;
                     int frameheight = lay.AllocatedHeight;
-
+                    int widgetwidth = widget.WidthRequest > 1 ? widget.WidthRequest : widget.AllocatedWidth;
+                    int widgetheight = widget.HeightRequest > 1 ? widget.HeightRequest : widget.AllocatedHeight;
                     if (anchorStyles.HasFlag(AnchorStyles.Left) && anchorStyles.HasFlag(AnchorStyles.Right))
                     {
-                        if (widget.WidthRequest > 0)
-                            widget.MarginEnd = Math.Max(0, framewidth - widget.MarginStart - widget.WidthRequest);
-                        else
-                            widget.MarginEnd = 0;
-
+                        widget.MarginEnd = Math.Max(0, framewidth - widget.MarginStart - widgetwidth);
                         widget.Halign = Gtk.Align.Fill;
                     }
                     else if (anchorStyles.HasFlag(AnchorStyles.Left))
@@ -937,11 +934,7 @@ namespace System.Windows.Forms
                     }
                     else if (anchorStyles.HasFlag(AnchorStyles.Right))
                     {
-                        if (widget.WidthRequest > 0)
-                            widget.MarginEnd = Math.Max(0, framewidth - widget.MarginStart - widget.WidthRequest);
-                        else
-                            widget.MarginEnd = 0;
-
+                        widget.MarginEnd = Math.Max(0, framewidth - widget.MarginStart - widgetwidth);
                         widget.Halign = Gtk.Align.End;
                     }
                     else
@@ -951,11 +944,7 @@ namespace System.Windows.Forms
 
                     if (anchorStyles.HasFlag(AnchorStyles.Top) && anchorStyles.HasFlag(AnchorStyles.Bottom))
                     {
-                        if (widget.HeightRequest > 0)
-                            widget.MarginBottom = Math.Max(0, frameheight - widget.MarginTop - widget.HeightRequest);
-                        else
-                            widget.MarginBottom = 0;
-
+                        widget.MarginBottom = Math.Max(0, frameheight - widget.MarginTop - widgetheight);
                         widget.Valign = Gtk.Align.Fill;
                     }
                     else if (anchorStyles.HasFlag(AnchorStyles.Top))
@@ -964,11 +953,7 @@ namespace System.Windows.Forms
                     }
                     else if (anchorStyles.HasFlag(AnchorStyles.Bottom))
                     {
-                        if (widget.HeightRequest > 0)
-                            widget.MarginBottom = Math.Max(0, frameheight - widget.MarginTop - widget.HeightRequest);
-                        else
-                            widget.MarginBottom = 0;
-
+                        widget.MarginBottom = Math.Max(0, frameheight - widget.MarginTop - widgetheight);
                         widget.Valign = Gtk.Align.End;
                     }
                     else
@@ -986,7 +971,6 @@ namespace System.Windows.Forms
             set
             {
                 _autoSize = value;
-                if (_autoSize == false) { Size = _size; }
             }
         }
         public virtual BindingContext BindingContext { get; set; }
@@ -1217,11 +1201,8 @@ namespace System.Windows.Forms
             set
             {
                 _size = value;
-                if (AutoSize == false)
-                {
-                    Width = value.Width;
-                    Height = value.Height;
-                }
+                Width = value.Width;
+                Height = value.Height;
                 if (this.Widget.IsRealized && this.Widget.Parent is Gtk.Container con)
                 {
                     con.QueueResize();
