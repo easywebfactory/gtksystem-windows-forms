@@ -181,12 +181,13 @@ namespace System.Windows.Forms
         {
             get
             {
-                return new Size(self.AllocatedWidth, self.AllocatedHeight);
+                if (self.IsRealized)
+                    return new Size(self.ContentArea.AllocatedWidth, self.ContentArea.AllocatedHeight);
+                else
+                    return new Size(self.DefaultWidth, self.DefaultHeight);
             }
             set
             {
-                self.WidthRequest = -1;
-                self.HeightRequest = -1;
                 self.SetDefaultSize(value.Width, value.Height);
             }
         }

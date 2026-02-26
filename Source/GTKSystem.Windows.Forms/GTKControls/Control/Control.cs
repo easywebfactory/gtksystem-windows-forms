@@ -974,7 +974,7 @@ namespace System.Windows.Forms
             }
         }
         public virtual BindingContext BindingContext { get; set; }
-        public virtual Rectangle Bounds { get => new Rectangle(Widget.Clip.X, this.Widget.Clip.Y, this.Widget.Clip.Width, this.Widget.Clip.Height); set { SetBounds(value.X, value.Y, value.Width, value.Height); } }
+        public virtual Rectangle Bounds { get => new Rectangle(Left, Top, Width, Height); set { SetBounds(value.X, value.Y, value.Width, value.Height); } }
 
         public virtual bool CanFocus { get { return this.Widget.CanFocus; } }
 
