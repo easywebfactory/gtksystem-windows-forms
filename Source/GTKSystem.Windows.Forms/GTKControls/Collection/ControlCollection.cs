@@ -124,7 +124,7 @@ namespace System.Windows.Forms
             public void AddWidget(Gtk.Widget item, Control control)
             {
                 control.Parent = __owner;
-                InnerList.Add(new ArrangedElementWidget(item));
+                InnerList.Add(new ArrangedElementWidget(control));
             }
             public virtual void Add(Type itemType, Control item)
             {
@@ -254,8 +254,8 @@ namespace System.Windows.Forms
                 {
                     return;
                 }
-                InnerList.Remove(value);
-                __ownerControl.Remove(value.Widget);
+                if (InnerList.Remove(value))
+                    __ownerControl.Remove(value.Widget);
             }
 
             void IList.Remove(object? element)
@@ -354,49 +354,50 @@ namespace System.Windows.Forms
         internal class ArrangedElementWidget : IArrangedElement
         {
             Gtk.Widget _widget;
-            internal ArrangedElementWidget(Gtk.Widget widget)
+            Control _control;
+            internal ArrangedElementWidget(Control control)
             {
-                _widget = widget;
+                _widget = control.Widget;
+                _control = control;
             }
             public Gtk.Widget GetWidget { get => _widget; }
-            public Drawing.Rectangle Bounds => throw new NotImplementedException();
+            public Drawing.Rectangle Bounds => _control.Bounds;
 
-            public Drawing.Rectangle DisplayRectangle => throw new NotImplementedException();
+            public Drawing.Rectangle DisplayRectangle => _control.DisplayRectangle;
 
-            public bool ParticipatesInLayout => throw new NotImplementedException();
+            public bool ParticipatesInLayout => _control.ParticipatesInLayout;
 
-            public PropertyStore Properties => throw new NotImplementedException();
+            public PropertyStore Properties { get { PropertyStore property = new PropertyStore(); property.SetObject(_control.Handle.ToInt32(), this); return property; } }
 
-            public IArrangedElement Container => throw new NotImplementedException();
+            public IArrangedElement Container => _control.Parent;
 
-            public ArrangedElementCollection Children => throw new NotImplementedException();
+            public ArrangedElementCollection Children => _control.Children;
 
-            public ISite Site { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            public ISite Site { get => _control.Site; set => _control.Site = value; }
 
             public event EventHandler Disposed;
 
             public void Dispose()
             {
-                if (_widget != null)
+                if (_control != null)
                 {
-                    _widget.Dispose();
-                    _widget = null;
+                    _control.Dispose();
                 }
             }
 
             public Size GetPreferredSize(Size proposedSize)
             {
-                throw new NotImplementedException();
+                return _control.GetPreferredSize(proposedSize);
             }
 
             public void PerformLayout(IArrangedElement affectedElement, string propertyName)
             {
-                throw new NotImplementedException();
+                
             }
 
             public void SetBounds(Drawing.Rectangle bounds, BoundsSpecified specified)
             {
-                throw new NotImplementedException();
+                
             }
         }
     }

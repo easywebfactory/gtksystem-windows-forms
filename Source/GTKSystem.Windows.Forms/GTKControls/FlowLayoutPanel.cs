@@ -11,7 +11,7 @@ using System.ComponentModel;
 
 namespace System.Windows.Forms
 {
-	[ProvideProperty("FlowBreak", typeof(Control))]
+    [ProvideProperty("FlowBreak", typeof(Control))]
 	[DefaultProperty("FlowDirection")]
     [DesignerCategory("Component")]
     public partial class FlowLayoutPanel : Control, IExtenderProvider
@@ -26,7 +26,7 @@ namespace System.Windows.Forms
             self.Halign = Align.Start;
             self.Valign = Align.Start;
             self.MinChildrenPerLine = 1;
-            self.MaxChildrenPerLine = 999;
+            self.MaxChildrenPerLine = 30;
             self.ColumnSpacing = 0;
             self.BorderWidth = 0;
             _controls = new ObjectCollection(this);
@@ -82,6 +82,20 @@ namespace System.Windows.Forms
                 box.Add(widg);
                 _owner.self.Add(box);
                 base.AddWidget(box, control);
+
+            }
+            public override void Remove(Control control)
+            {
+                if (control is null)
+                {
+                    return;
+                }
+                int index = InnerList.FindIndex(o => ((ArrangedElementWidget)o).GetWidget.Handle == control.Widget.Handle);
+                if (index > -1)
+                {
+                    _owner.self.Remove(control.Widget.Parent);
+                    InnerList.RemoveAt(index);
+                }
             }
         }
     }

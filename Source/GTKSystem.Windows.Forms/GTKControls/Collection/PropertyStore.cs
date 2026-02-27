@@ -282,10 +282,8 @@ internal partial class PropertyStore
     /// </summary>
     private bool LocateObjectEntry(short entryKey, out int index)
     {
-
-            index = 0;
-            return false;
-        
+        index = Array.FindIndex(_objEntries,o=>o.Key == entryKey);
+        return (index > -1);
     }
 
     /// <summary>

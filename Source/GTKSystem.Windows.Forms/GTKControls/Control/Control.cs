@@ -449,7 +449,7 @@ namespace System.Windows.Forms
                 }
                 else if (args.Event.Type == Gdk.EventType.TouchEnd)
                 {
-                    if(args.Args[0] is Gdk.EventTouch eventbutton)
+                    if (args.Args[0] is Gdk.EventTouch eventbutton)
                     {
                         MouseButtons button = MouseButtons.Left;
                         owidget.Window.GetOrigin(out int x, out int y);
@@ -1901,7 +1901,7 @@ namespace System.Windows.Forms
         }
         protected virtual void OnPaintBackground(PaintEventArgs pevent)
         {
-             
+
         }
         protected virtual void OnParentChanged(EventArgs e)
         {
@@ -1976,13 +1976,10 @@ namespace System.Windows.Forms
         }
 
         public bool ParticipatesInLayout => false;
-
         PropertyStore IArrangedElement.Properties => throw new NotImplementedException();
+        IArrangedElement IArrangedElement.Container => this.Parent;
+        public ArrangedElementCollection Children => Controls;
 
-        IArrangedElement IArrangedElement.Container => throw new NotImplementedException();
-
-        private ArrangedElementCollection arrangedElementCollection;
-        public ArrangedElementCollection Children => arrangedElementCollection;
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         protected virtual void OnLoad(EventArgs e)
         {
