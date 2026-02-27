@@ -34,6 +34,18 @@ namespace System.Windows.Forms
             contaner.Add(background);
             self.Add(contaner);
         }
+        internal Panel(Gtk.Widget widget) : base()
+        {
+            self.Override.sender = this;
+            contaner.Margin = 0;
+            contaner.Halign = Align.Fill;
+            contaner.Valign = Align.Fill;
+            contaner.Hexpand = false;
+            contaner.Vexpand = false;
+            contaner.BorderWidth = 0;
+            contaner.Add(widget);
+            self.Add(contaner);
+        }
         private void Background_Drawn(object o, DrawnArgs args)
         {
             self.Override.OnPaint(args.Cr);
