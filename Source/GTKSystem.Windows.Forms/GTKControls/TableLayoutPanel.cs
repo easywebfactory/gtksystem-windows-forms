@@ -23,13 +23,10 @@ namespace System.Windows.Forms
         private TableLayoutControlCollection _controls;
 		private TableLayoutColumnStyleCollection _columnStyles;
 		private TableLayoutRowStyleCollection _rowStyles;
-        public TableLayoutPanelBase LayoutEngine { get; set; }
-        
-        public TableLayoutPanel():base(new TableLayoutPanelBase())
+        public TableLayoutPanelBase LayoutEngine = new TableLayoutPanelBase();
+        public TableLayoutPanel():base("TableLayoutPanel")
         {
             self.Override.sender = this;
-            self.StyleContext.AddClass("TableLayoutPanel");
-            LayoutEngine = (TableLayoutPanelBase)this.contaner.Child;
             LayoutEngine.Halign = Gtk.Align.Fill;
             LayoutEngine.Valign = Gtk.Align.Fill;
             LayoutEngine.SizeAllocated += Self_SizeAllocated;
@@ -37,6 +34,7 @@ namespace System.Windows.Forms
             _controls =new TableLayoutControlCollection(this);
 			_columnStyles = new TableLayoutColumnStyleCollection();
 			_rowStyles = new TableLayoutRowStyleCollection();
+            self.Add(LayoutEngine);
         }
         private bool Is_Self_Mapped;
         private void Self_Mapped(object sender, EventArgs e)

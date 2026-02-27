@@ -142,12 +142,9 @@ namespace System.Windows.Forms
             if (App == null)
             {
                 string css_style = @"
-
-/* 定义控件样式*/
-
-@define-color frame_color  alpha(@theme_fg_color, 0.2);
+@define-color frame_color  alpha(@theme_fg_color, 0.3);
 @define-color frame3d_color  alpha(@theme_fg_color, 0.2);
-
+@define-color frame3d_color5  alpha(@theme_fg_color, 0.4);
 @define-color line_color #ECECEC;
 @define-color separator_color1 #C6C5C4;
 @define-color separator_color2 #D6D7D8;
@@ -167,7 +164,7 @@ namespace System.Windows.Forms
 .ButtonNone.check,.ButtonNone check{padding-top:0px;padding-bottom:0px;;margin-top:0px;margin-bottom:0px;}
 .BorderNone{border-style:none;box-shadow:none;}
 .BorderFixedSingle{border-width:0px;border-style:none;padding:1px;box-shadow: inset 0px 0px 0px 1px @frame_color;}
-.BorderFixed3D{border-width:0px;border-style:none; padding:2px; box-shadow: inset 1px 1px 1px 2px @frame3d_color;}
+.BorderFixed3D{border-width:0px;border-style:none; padding:2px 1px 1px 2px;box-shadow: inset 0px 0px 0px 1px @frame3d_color, inset 2px 2px 0px 0px @frame3d_color5;}
 
 .DataGridView {border-width:1px;margin:-3px;}
 .GridViewCell-Button{ color:@theme_text_color; border:solid 1px @frame_color; background-color: shade(@theme_bg_color, 0.7);}

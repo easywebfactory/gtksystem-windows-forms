@@ -16,13 +16,11 @@ namespace System.Windows.Forms
     [DesignerCategory("Component")]
     public partial class FlowLayoutPanel : Panel, IExtenderProvider
     {
-        public FlowLayoutPanelBase LayoutEngine { get; set; }
+        public FlowLayoutPanelBase LayoutEngine = new FlowLayoutPanelBase();
         private ObjectCollection _controls;
-        public FlowLayoutPanel() : base(new FlowLayoutPanelBase())
+        public FlowLayoutPanel() : base("FlowLayoutPanel")
         {
             self.Override.sender = this;
-            self.StyleContext.AddClass("FlowLayoutPanel");
-            LayoutEngine = (FlowLayoutPanelBase)this.contaner.Child;
             LayoutEngine.Orientation = Gtk.Orientation.Horizontal;
             LayoutEngine.MinChildrenPerLine = 1;
             LayoutEngine.MaxChildrenPerLine = 30;
@@ -30,6 +28,7 @@ namespace System.Windows.Forms
             LayoutEngine.Halign = Align.Fill;
             LayoutEngine.Valign = Align.Start;
             _controls = new ObjectCollection(this, LayoutEngine);
+            self.Add(LayoutEngine);
         }
 
         private FlowDirection _FlowDirection;
