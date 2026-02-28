@@ -24,7 +24,7 @@ namespace System.Windows.Forms
             LayoutEngine.Orientation = Gtk.Orientation.Horizontal;
             LayoutEngine.MinChildrenPerLine = 1;
             LayoutEngine.MaxChildrenPerLine = 30;
-            LayoutEngine.ColumnSpacing = 0;
+            LayoutEngine.ColumnSpacing = 1;
             LayoutEngine.Halign = Align.Fill;
             LayoutEngine.Valign = Align.Start;
             _controls = new ObjectCollection(this, LayoutEngine);
@@ -37,8 +37,16 @@ namespace System.Windows.Forms
             get { return _FlowDirection; }
             set
             {
-                if (value == FlowDirection.LeftToRight || value == FlowDirection.RightToLeft) { LayoutEngine.Orientation = Gtk.Orientation.Horizontal; }
-                else if (value == FlowDirection.TopDown || value == FlowDirection.BottomUp) { LayoutEngine.Orientation = Gtk.Orientation.Vertical; }
+                if (value == FlowDirection.LeftToRight || value == FlowDirection.RightToLeft) { 
+                    LayoutEngine.Orientation = Gtk.Orientation.Horizontal;
+                    LayoutEngine.Halign = Align.Fill;
+                    LayoutEngine.Valign = Align.Start;
+                }
+                else if (value == FlowDirection.TopDown || value == FlowDirection.BottomUp) { 
+                    LayoutEngine.Orientation = Gtk.Orientation.Vertical;
+                    LayoutEngine.Halign = Align.Start;
+                    LayoutEngine.Valign = Align.Fill;
+                }
             }
         }
 
@@ -72,7 +80,6 @@ namespace System.Windows.Forms
                 Gtk.FlowBoxChild item = new FlowBoxChild();
                 item.Valign = Align.Start;
                 item.Halign = Align.Start;
-                item.Expand = false;
                 item.Add(control.Widget);
                 LayoutEngine.Add(item);
 

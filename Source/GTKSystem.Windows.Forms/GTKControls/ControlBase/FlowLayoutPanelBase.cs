@@ -5,7 +5,6 @@
         public FlowLayoutPanelBase() : base()
         {
             this.SelectionMode = Gtk.SelectionMode.None;
-            this.ActivateOnSingleClick = false;
         }
     }
 }
