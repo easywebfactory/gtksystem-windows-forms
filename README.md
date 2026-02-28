@@ -13,15 +13,16 @@ C#桌面应用程序跨平台（windows、linux、macos）开发框架，基于G
 ### 安装教程
 默认的情况下，visual studio从Nuget引用GtkSharp编译时，就会自动下载Gtk.zip运行时安装包，并自动解压安装。本开源项目下载包也包含Gtk.zip包，可手动安装。以下是2种环境安装方法：
 
-1）安装GtkSharp后，编译你的工程项目，手动从本项目下载运行时库安装，（Visual Studio开发环境必需）。
+#### 1）安装GtkSharp后，编译你的工程项目，手动从本项目下载运行时库安装，（Visual Studio开发环境必需）。
 安装GtkSharp后，编译你的工程项目时，会自动下载gtk.zip解压到目录$(LOCALAPPDATA)\Gtk\3.24.24配置Gtk环境，目前国内网络限制，可能会出现无法下载的错误。
-自动下载的库版本较低，本项目提供下载 [https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies](https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies)。
-也可以下载https://github.com/GtkSharp/Dependencies（版本比较旧，有bug），把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24目录即可。
-ps: $(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData\Local\Gtk\3.24.24
+- 自动下载的库版本较低，本项目提供下载 [https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies](https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies)。
+- 也可以下载https://github.com/GtkSharp/Dependencies（版本比较旧，有bug），把文件解压后放到$(LOCALAPPDATA)\Gtk\3.24.24目录即可。
+- $(LOCALAPPDATA)为电脑的AppData\Local文件夹,如：C:\Users\chj\AppData\Local\Gtk\3.24.24
 
-2）下载exe安装包安装
-本项目提供下载 [https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies](https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies)。
-获取最新版本安装：下载[https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer)，安装后配置电脑变量环境：
+#### 2）下载exe安装包安装
+- 本项目提供下载 [https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies](https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies)。
+- 获取最新版本安装：下载[https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer)，安装后配置电脑变量环境：
+- 安装后，打开电脑属性配置，或者执行以下.bat命令（自行修改安装目录）：
 ```
 你可以打开电脑属性配置，或者执行以下.bat命令（自行修改安装目录）：
 @set GTK3R_PREFIX=C:\Program Files\GTK3-Runtime Win64\bin
@@ -96,15 +97,15 @@ MacOS安装dotnet环境
 
 ### VisualStudio插件安装[可选装]
 
-工具一、从NuGet上安装GTKSystem.Windows.FormsDesigner类库，此类库可以在编译工程时修正窗体设计器。
+ - 工具一、从NuGet上安装GTKSystem.Windows.FormsDesigner类库，此类库可以在编译工程时修正窗体设计器。
 
-工具二、使用本项目插件工具（在项目下载包里），可以有效清理缓存、修正窗体设计器，关闭visual studio，直接双击GTKAppVSIX.vsix文件安装（本框架下的工程，Studio没有添加Form模板项，需要安装此插件）
+ - 工具二、使用本项目插件工具（在项目下载包里），可以有效清理缓存、修正窗体设计器，关闭visual studio，直接双击GTKAppVSIX.vsix文件安装（本框架下的工程，Studio没有添加Form模板项，需要安装此插件）
 
 插件会安装两个功能：
 
-1、新建项的Form窗体模板、用户控件模板。
+ 1、新建项的Form窗体模板、用户控件模板。
 
-2、修正窗体设计器。
+ 2、修正窗体设计器。
 
 ![输入图片说明](pic/vs_vsix.jpeg)
 
@@ -112,7 +113,7 @@ MacOS安装dotnet环境
 
 以下配置在你的项目工程里操作：
 
-1、GTKWinFormsApp.csproj<br/>
+#### 1、GTKWinFormsApp.csproj<br/>
 配置\<UseWindowsForms\>为false
 ```
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
@@ -122,10 +123,10 @@ MacOS安装dotnet环境
     <UseWindowsForms>false</UseWindowsForms>
 ```
 
-2、引用GTKSystem.Windows.Forms <br/>
-GTKSystem.Windows.Forms是必须引用
+#### 2、引用GTKSystem.Windows.Forms <br/>
+引用GTKSystem.Windows.Forms、GtkSharp(3.24.24.95)
 
-3、【可选项】新建添加配置文件Directory.Build.props，此配置是为了区分窗体设计工程的obj目录，
+#### 3、【可选项】新建添加配置文件Directory.Build.props，此配置是为了区分窗体设计工程的obj目录，
 <br/><b>此配置主要是用于双工程方法，用C#原生窗体工程管理窗体</b>，项目演示工程即使用此方法，详细的使用教程可以访问[https://www.gtkapp.com/formsdesigner](https://www.gtkapp.com/formsdesigner)  
 <br/>配置如下：
 ```
@@ -137,12 +138,12 @@ GTKSystem.Windows.Forms是必须引用
 </Project>
 ```
  
-4、【可选项】新建System.Resources.ResourceManager类<br/>
+#### 4、【可选项】新建System.Resources.ResourceManager类<br/>
 在项目下新建System.Resources.ResourceManager类，继承GTKSystem.Resources.ResourceManager，用于覆盖原生System.Resources.ResourceManager类。
 GTKSystem.Resources.ResourceManager实现了项目资源文件和图像文件读取。
 *如果项目里没有使用资源图像文件，可以不用新建此文件**。
 
-5、【可选项】新建System.ComponentModel.ComponentResourceManager类<br/>
+#### 5、【可选项】新建System.ComponentModel.ComponentResourceManager类<br/>
 在项目下新建System.ComponentModel.ComponentResourceManager类，继承GTKSystem.ComponentModel.ComponentResourceManager，用于覆盖原生System.ComponentModel.ComponentResourceManager类。<br/>
 GTKSystem.ComponentModel.ComponentResourceManager实现了项目资源文件和图像文件读取（调用GTKSystem.Resources.ResourceManager）。
 *如果项目里没有使用资源图像文件，可以不用新建此文件*。
@@ -172,6 +173,8 @@ QQ群：1011147488
 
 ### 常见问题
   为什么Form窗体设计器打不开？<br/>
+  如果你安装了GTKSystem.Windows.FormsDesigner  
+  打开工程右键菜单，执行 <b>[清理] -> [重新生成] ->打开窗体</b>，如果出现异常，重启VS。
   ```
   详细方法请访问[https://www.gtkapp.com/formsdesigner/](https://www.gtkapp.com/formsdesigner/)。 
 

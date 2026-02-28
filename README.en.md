@@ -23,15 +23,15 @@ Downloading and installing the latest libraries using an EXE installer is recomm
 - Download from: [https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies](https://gitee.com/easywebfactory/GTK-for-Windows/tree/master/Dependencies)
 - Alternative download: [https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer)
 - After installation, configure the system environment variables:
-  ```bat
+  ```
   @set GTK3R_PREFIX=C:\Program Files\GTK3-Runtime Win64
   @echo set PATH=%GTK3R_PREFIX%;%%PATH%%
   @set PATH=%GTK3R_PREFIX%;%PATH%
 
-//Using environment variables on Windows may cause exceptions in some cases, such as conflicts with zlib1.dll from Intel WiFi.  
-//Intel's environment variable PATH: C:\Program Files\Intel\WiFi\bin\  
-//Solution: Rename or delete the file C:\Program Files\Intel\WiFi\bin\zlib1.dll  
-//Note: Modifying this file may affect the normal operation of Intel WiFi  
+	//Using environment variables on Windows may cause exceptions in some cases, such as conflicts with zlib1.dll from Intel WiFi.  
+	//Intel's environment variable PATH: C:\Program Files\Intel\WiFi\bin\  
+	//Solution: Rename or delete the file C:\Program Files\Intel\WiFi\bin\zlib1.dll  
+	//Note: Modifying this file may affect the normal operation of Intel WiFi  
   ```
 
 #### 3. Installation via MSYS (For Latest Libraries)
@@ -142,6 +142,9 @@ Email: 438865652@qq.com
 
 ### Common Issues
 **Why Can't I Open the Form Designer?**
+
+If you have installed GTKSystem.Windows.Forms Designer 
+Open the contextmenu menu of the project, execute<b>[Clean] ->[regenerate] ->open the form</b>, if an exception occurs, restart VS.
 
 For detailed methods, please visit[ https://www.gtkapp.com/formsdesigner/ ]( https://www.gtkapp.com/formsdesigner/ £©.
 
