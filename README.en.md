@@ -143,7 +143,7 @@ Email: 438865652@qq.com
 ### Common Issues
 **Why Can't I Open the Form Designer?**
 
-If you have installed GTKSystem.Windows.Forms Designer 
+If you have installed GTKSystem.Windows.FormsDesigner 
 Open the contextmenu menu of the project, execute<b>[Clean] ->[regenerate] ->open the form</b>, if an exception occurs, restart VS.
 
 For detailed methods, please visit[ https://www.gtkapp.com/formsdesigner/ ]( https://www.gtkapp.com/formsdesigner/ £©.
