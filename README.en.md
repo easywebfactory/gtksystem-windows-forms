@@ -131,7 +131,7 @@ This configuration is designed to distinguish the obj directories of form design
 </Project>
 ```
 
-### Support and Resources
+### Appreciation and support
 - **Enterprise Services:** [https://www.gtkapp.com/vipservice](https://www.gtkapp.com/vipservice)
 
 ![Contact GTKSystem](pic/contact_weixin.png)
