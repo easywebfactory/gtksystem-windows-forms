@@ -1,5 +1,9 @@
 
 ## 更新日志
+
+ #### 2026/2/27 V1.3.26.88
+  	1. 修改去掉button文字的自动换行功能；
+	2. 更新FlowLayoutPanel；
  #### 2026/2/27 V1.3.26.87
   	1. 更新修正Control基础属性、方法；
 	2. 改造TableLayoutPanel、FlowLayoutPanel、GroupBox控件；
