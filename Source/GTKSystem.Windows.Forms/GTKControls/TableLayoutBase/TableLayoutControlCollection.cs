@@ -25,7 +25,7 @@ namespace System.Windows.Forms
             control.Widget.Halign = Align.Start;
             control.Widget.Hexpand = false;
             control.Widget.Vexpand = false;
-            if (Container.LayoutEngine.GetChildAt(column, row) is Gtk.Viewport view)
+            if (Container.layoutEngine.GetChildAt(column, row) is Gtk.Viewport view)
             {
                 view.Child = control.Widget;
             }
@@ -38,7 +38,7 @@ namespace System.Windows.Forms
                 viewport.VscrollPolicy = ScrollablePolicy.Minimum;
                 viewport.BorderWidth = 0;
                 viewport.Child = control.Widget;
-                Container.LayoutEngine.Attach(viewport, column, row, 1, 1);
+                Container.layoutEngine.Attach(viewport, column, row, 1, 1);
             }
             base.Add(control);
             Container.SetColumn(control, column);

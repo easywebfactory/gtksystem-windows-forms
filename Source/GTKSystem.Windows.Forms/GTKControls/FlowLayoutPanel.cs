@@ -16,20 +16,20 @@ namespace System.Windows.Forms
     [DesignerCategory("Component")]
     public partial class FlowLayoutPanel : Panel, IExtenderProvider
     {
-        public FlowLayoutPanelBase LayoutEngine = new FlowLayoutPanelBase();
+        public FlowLayoutPanelBase layoutEngine = new FlowLayoutPanelBase();
         private ObjectCollection _controls;
         public FlowLayoutPanel() : base("FlowLayoutPanel")
         {
             self.Override.sender = this;
-            LayoutEngine.Orientation = Gtk.Orientation.Horizontal;
-            LayoutEngine.MinChildrenPerLine = 1;
-            LayoutEngine.MaxChildrenPerLine = 30;
-            LayoutEngine.ColumnSpacing = 1;
-            LayoutEngine.Halign = Align.Fill;
-            LayoutEngine.Valign = Align.Start;
-            _controls = new ObjectCollection(this, LayoutEngine);
+            layoutEngine.Orientation = Gtk.Orientation.Horizontal;
+            layoutEngine.MinChildrenPerLine = 1;
+            layoutEngine.MaxChildrenPerLine = 30;
+            layoutEngine.ColumnSpacing = 1;
+            layoutEngine.Halign = Align.Fill;
+            layoutEngine.Valign = Align.Start;
+            _controls = new ObjectCollection(this, layoutEngine);
             Gtk.Viewport viewport = new Gtk.Viewport();
-            viewport.Add(LayoutEngine);
+            viewport.Add(layoutEngine);
             self.Add(viewport);
         }
 
@@ -41,14 +41,14 @@ namespace System.Windows.Forms
             {
                 _FlowDirection = value;
                 if (value == FlowDirection.LeftToRight || value == FlowDirection.RightToLeft) { 
-                    LayoutEngine.Orientation = Gtk.Orientation.Horizontal;
-                    LayoutEngine.Halign = Align.Fill;
-                    LayoutEngine.Valign = Align.Start;
+                    layoutEngine.Orientation = Gtk.Orientation.Horizontal;
+                    layoutEngine.Halign = Align.Fill;
+                    layoutEngine.Valign = Align.Start;
                 }
                 else if (value == FlowDirection.TopDown || value == FlowDirection.BottomUp) { 
-                    LayoutEngine.Orientation = Gtk.Orientation.Vertical;
-                    LayoutEngine.Halign = Align.Start;
-                    LayoutEngine.Valign = Align.Fill;
+                    layoutEngine.Orientation = Gtk.Orientation.Vertical;
+                    layoutEngine.Halign = Align.Start;
+                    layoutEngine.Valign = Align.Fill;
                 }
             }
         }
