@@ -28,15 +28,18 @@ namespace System.Windows.Forms
             LayoutEngine.Halign = Align.Fill;
             LayoutEngine.Valign = Align.Start;
             _controls = new ObjectCollection(this, LayoutEngine);
-            self.Add(LayoutEngine);
+            Gtk.Viewport viewport = new Gtk.Viewport();
+            viewport.Add(LayoutEngine);
+            self.Add(viewport);
         }
 
-        private FlowDirection _FlowDirection;
+        private FlowDirection _FlowDirection = FlowDirection.LeftToRight;
 		public FlowDirection FlowDirection
 		{
             get { return _FlowDirection; }
             set
             {
+                _FlowDirection = value;
                 if (value == FlowDirection.LeftToRight || value == FlowDirection.RightToLeft) { 
                     LayoutEngine.Orientation = Gtk.Orientation.Horizontal;
                     LayoutEngine.Halign = Align.Fill;

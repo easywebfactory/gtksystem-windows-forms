@@ -5,7 +5,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
     public sealed class ButtonBase: Gtk.Button, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        public ButtonBase() : base(new Gtk.Label() { MaxWidthChars = 0, Wrap = true, LineWrap = true, LineWrapMode = Pango.WrapMode.WordChar })
+        public ButtonBase() : base(new Gtk.Label() { MaxWidthChars = 0, Wrap = false, Ellipsize =Pango.EllipsizeMode.End })
         {
             this.Override = new GtkControlOverride(this);
             this.StyleContext.AddClass("Button");
