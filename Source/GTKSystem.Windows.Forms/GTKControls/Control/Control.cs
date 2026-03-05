@@ -1625,31 +1625,42 @@ namespace System.Windows.Forms
         {
             return Invoke(method, null);
         }
-
         public virtual object Invoke(Delegate method, params object[] args)
         {
-            object result = null;
-            Gdk.Threads.AddIdle(0, () => {
-                result = method?.DynamicInvoke(args);
-                return false;
-            });
-            return result;
+            lock (this)
+            {
+                object result = null;
+                GLib.Idle.Add(() =>
+                {
+                    result = method?.DynamicInvoke(args);
+                    return false;
+                }); 
+                return result;
+            }
         }
         public virtual void Invoke(Action method)
         {
-            Gdk.Threads.AddIdle(0, () => {
-                method?.Invoke();
-                return false;
-            });
+            lock (this)
+            {
+                GLib.Idle.Add(() =>
+                {
+                    method?.Invoke();
+                    return false;
+                });
+            }
         }
         public virtual ENTRY Invoke<ENTRY>(Func<ENTRY> method)
         {
-            ENTRY result = default(ENTRY);
-            Gdk.Threads.AddIdle(0, () => {
-                result = method.Invoke();
-                return false;
-            });
-            return result;
+            lock (this)
+            {
+                ENTRY result = default(ENTRY);
+                GLib.Idle.Add(() =>
+                {
+                    result = method.Invoke();
+                    return false;
+                });
+                return result;
+            }
         }
         public virtual int LogicalToDeviceUnits(int value)
         {

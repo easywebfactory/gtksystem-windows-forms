@@ -50,7 +50,7 @@ namespace System.Windows.Forms
                         _enabled = value;
                         if (value)
                         {
-                            _timerId = Gdk.Threads.AddTimeout(0, _interval, () =>
+                            _timerId = GLib.Timeout.Add(_interval, () =>
                             {
                                 OnTick(EventArgs.Empty);
                                 return true;
