@@ -67,6 +67,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             this.Override = new GtkControlOverride(this);
             this.StyleContext.AddClass("PictureBox");
+            this.BorderWidth = 0;
+            this.ShadowType = ShadowType.None;
             this.Realized += PictureBoxBase_Realized;
             Gtk.DrawingArea drawingArea = new Gtk.DrawingArea();
             drawingArea.Drawn += DrawingArea_Drawn;

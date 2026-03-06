@@ -33,7 +33,7 @@ namespace System.Windows.Forms
         public Size AutoScrollMinSize { get; set; }
         public Point AutoScrollPosition { get; set; }
         public Size AutoScrollMargin { get; set; }
-        private bool _AutoScroll;
+        private bool _AutoScroll = true;
         public virtual bool AutoScroll
         {
             get => _AutoScroll;

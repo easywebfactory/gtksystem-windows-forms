@@ -33,6 +33,7 @@ namespace System.Windows.Forms
             background.Drawn += Background_Drawn;
             contaner.Add(background);
             self.Add(contaner);
+            this.AutoScroll = false;
         }
         internal Panel(string type) : base()
         {
