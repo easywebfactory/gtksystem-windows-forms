@@ -71,7 +71,7 @@ namespace System.Windows.Forms
                     self.Entry.CanFocus = false;
                     self.Entry.NoShowAll = true;
                     self.Entry.WidthRequest = 1;
-                    ws.WidthRequest = self.AllocatedWidth;
+                    ws.WidthRequest = Math.Max(self.WidthRequest, self.AllocatedWidth);
                     ws.DrawIndicator = true;
                     ws.Drawn += Ws_Drawn;
                 }
@@ -81,7 +81,7 @@ namespace System.Windows.Forms
         {
             self.Entry.Visible = false;
             var ws = o as Gtk.ToggleButton;
-            ws.WidthRequest = self.AllocatedWidth;
+            ws.WidthRequest = Math.Max(self.WidthRequest, self.AllocatedWidth);
             string text = self.ActiveText;
             Pango.Layout layout = ws.CreatePangoLayout(text);
             args.Cr.Save();
