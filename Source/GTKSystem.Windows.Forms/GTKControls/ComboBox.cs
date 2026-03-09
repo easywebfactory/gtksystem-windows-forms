@@ -71,7 +71,7 @@ namespace System.Windows.Forms
                     self.Entry.CanFocus = false;
                     self.Entry.NoShowAll = true;
                     self.Entry.WidthRequest = 1;
-                    ws.WidthRequest = self.WidthRequest;
+                    ws.WidthRequest = self.AllocatedWidth;
                     ws.DrawIndicator = true;
                     ws.Drawn += Ws_Drawn;
                 }
@@ -81,6 +81,7 @@ namespace System.Windows.Forms
         {
             self.Entry.Visible = false;
             var ws = o as Gtk.ToggleButton;
+            ws.WidthRequest = self.AllocatedWidth;
             string text = self.ActiveText;
             Pango.Layout layout = ws.CreatePangoLayout(text);
             args.Cr.Save();
@@ -145,7 +146,6 @@ namespace System.Windows.Forms
             }
             else
             {
-                 
                 self.Append(value, text);
             }
         }
@@ -180,8 +180,6 @@ namespace System.Windows.Forms
                     LoadListSource(list);
                 }
             }
-            Gtk.Accessible obj = (Gtk.Accessible)self.PopupAccessible;
-            obj.Widget.ShowNow();
         }
         private void LoadDataTableSource(DataTable dtable)
         {
