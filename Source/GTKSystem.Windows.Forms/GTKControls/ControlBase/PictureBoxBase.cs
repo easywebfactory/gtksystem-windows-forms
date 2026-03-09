@@ -29,7 +29,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         private void ScaleImage()
         {
             if (_image != null && this.IsRealized)
-                _drawImage = ScaleDrawnSource(_image, _sizeMode, this.AllocatedWidth, this.AllocatedHeight);
+                _drawImage = ScaleDrawnSource(_image, _sizeMode, Math.Max(this.WidthRequest, this.AllocatedWidth), Math.Max(this.HeightRequest, this.AllocatedHeight));
             else
                 _drawImage = null;
         }
@@ -55,7 +55,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         private void ScaleBackgroundImage()
         {
             if (_backgroundImage != null && this.IsRealized)
-                _drawBackgroundImage = ScaleDrawnBackground(_backgroundImage, _backgroundImageLayout, this.AllocatedWidth, this.AllocatedHeight);
+                _drawBackgroundImage = ScaleDrawnBackground(_backgroundImage, _backgroundImageLayout, Math.Max(this.WidthRequest, this.AllocatedWidth), Math.Max(this.HeightRequest, this.AllocatedHeight));
             else
                 _drawBackgroundImage = null;
         }
@@ -98,6 +98,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         }
         private void PictureBoxBase_Realized(object sender, EventArgs e)
         {
+            Console.WriteLine($"PictureBoxBase_Realized {this.Name}");
             ScaleBackgroundImage();
             ScaleImage();
         }
@@ -133,11 +134,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 double scaleH = height * 1f / image.Height;
                 if (scaleW > scaleH)
                 {
-                    result = image.ScaleSimple((int)(image.Width * scaleH), height, Gdk.InterpType.Hyper);
+                    result = image.ScaleSimple((int)(Math.Max(1, image.Width * scaleH)), height, Gdk.InterpType.Hyper);
                 }
                 else
                 {
-                    result = image.ScaleSimple(width, (int)(image.Height * scaleW), Gdk.InterpType.Hyper);
+                    result = image.ScaleSimple(width, (int)(Math.Max(1, image.Height * scaleW)), Gdk.InterpType.Hyper);
                 }
             }
             else if (sizeMode == PictureBoxSizeMode.AutoSize)
@@ -219,11 +220,11 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 double scaleH = height * 1f / image.Height;
                 if (scaleW > scaleH)
                 {
-                    result = image.ScaleSimple((int)(image.Width * scaleH), height, Gdk.InterpType.Hyper);
+                    result = image.ScaleSimple((int)(Math.Max(1, image.Width * scaleH)), height, Gdk.InterpType.Hyper);
                 }
                 else
                 {
-                    result = image.ScaleSimple(width, (int)(image.Height * scaleW), Gdk.InterpType.Hyper);
+                    result = image.ScaleSimple(width, (int)(Math.Max(1, image.Height * scaleW)), Gdk.InterpType.Hyper);
                 }
             }
             else if (layoutMode == ImageLayout.Tile)
