@@ -166,7 +166,7 @@ namespace System.Windows.Forms
 .BorderFixedSingle{border-width:0px;border-style:none;padding:1px;box-shadow: 0px 0px 0px 1px @frame_color;}
 .BorderFixed3D{border-width:0px;border-style:none; padding:2px 1px 1px 2px;box-shadow: 0px 0px 0px 1px @frame3d_color, inset 2px 2px 0px 0px @frame3d_color5;}
 
-.DataGridView {border-width:1px;margin:-3px;}
+.DataGridView {margin:0px;}
 .GridViewCell-Button{ color:@theme_text_color; border:solid 1px @frame_color; background-color: shade(@theme_bg_color, 0.7);}
 .GridViewCell-Button:hover{background-color: shade(@theme_bg_color, 0.8);}
 .GridViewCell-Button:selected{ color:blue}
