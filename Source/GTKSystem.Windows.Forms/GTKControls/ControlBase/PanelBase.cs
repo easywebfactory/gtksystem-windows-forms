@@ -15,7 +15,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             contaner.Valign = Align.Fill;
             contaner.Hexpand = false;
             contaner.Vexpand = false;
-            contaner.BorderWidth = 0;
             Gtk.DrawingArea background = new Gtk.DrawingArea();
             background.Events = Gdk.EventMask.EnterNotifyMask;
             background.Drawn += Background_Drawn;

@@ -30,7 +30,7 @@ namespace System.Windows.Forms
                 viewport.Valign = Align.Fill;
                 viewport.Halign = Align.Fill;
                 viewport.BorderWidth = 0;
-                viewport.ShadowType = ShadowType.None;
+                viewport.ShadowType = ShadowType.In;
                 viewport.Add(control.Widget);
                 Container.layoutEngine.Attach(viewport, column, row, 1, 1);
             }
