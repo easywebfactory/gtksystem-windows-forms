@@ -10,6 +10,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             this.Override = new GtkControlOverride(this);
             this.BorderWidth = 1;
+            this.ShadowType = Gtk.ShadowType.None;
             this.Events = Gdk.EventMask.AllEventsMask;
             base.Halign = Gtk.Align.Start;
             base.Valign = Gtk.Align.Start;
