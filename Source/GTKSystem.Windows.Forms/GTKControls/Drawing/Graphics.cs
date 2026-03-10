@@ -1173,15 +1173,15 @@ namespace System.Drawing
                 TextExtents textext = this.context.TextExtents(text);
                 if (format == null)
                 {
-                    this.SetTranslateWithDifference(layoutRectangle.X + 5, layoutRectangle.Y + fontsize);
+                    this.SetTranslateWithDifference(layoutRectangle.X + desent / 2, layoutRectangle.Y + fontsize - desent);
                 }
                 else
                 {
                     double hAlign = desent / 2, vAlign = textext.Height;
                     if (format.Alignment == StringAlignment.Center)
-                        hAlign -= textext.Width / 2 + desent / 4;
+                        hAlign -= textext.Width / 2 + desent / 2;
                     else if (format.Alignment == StringAlignment.Far)
-                        hAlign -= textext.Width + desent / 2;
+                        hAlign -= textext.Width + desent;
 
                     if (format.LineAlignment == StringAlignment.Center)
                         vAlign -= textext.Height / 2 + desent / 2;
@@ -1190,7 +1190,7 @@ namespace System.Drawing
 
                     if (format.FormatFlags.HasFlag(StringFormatFlags.DirectionVertical))
                     {
-                        vAlign -= textext.Height - desent - 2;
+                        vAlign -= textext.Height - desent;
                         this.context.Rotate(90 * Math.PI / 180);
                         this.SetTranslateWithDifference(layoutRectangle.X + hAlign, 0 - layoutRectangle.Y - vAlign);
                     }

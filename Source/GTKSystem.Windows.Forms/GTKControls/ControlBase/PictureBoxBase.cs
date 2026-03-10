@@ -69,6 +69,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.StyleContext.AddClass("PictureBox");
             this.BorderWidth = 0;
             this.ShadowType = ShadowType.None;
+            this.Halign = Align.Start;
+            this.Valign = Align.Start;
             this.Events = Gdk.EventMask.AllEventsMask;
             this.Realized += PictureBoxBase_Realized;
             Gtk.DrawingArea drawingArea = new Gtk.DrawingArea();
@@ -98,7 +100,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         }
         private void PictureBoxBase_Realized(object sender, EventArgs e)
         {
-            Console.WriteLine($"PictureBoxBase_Realized {this.Name}");
             ScaleBackgroundImage();
             ScaleImage();
         }

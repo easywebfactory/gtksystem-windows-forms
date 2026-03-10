@@ -149,7 +149,7 @@ namespace System.Windows.Forms
 @define-color separator_color1 #C6C5C4;
 @define-color separator_color2 #D6D7D8;
 
-.DefaultThemeStyle{padding: 0px 2px; border-style:solid;min-height:6px;min-width:6px;}
+.DefaultThemeStyle{padding: 0px; border-style:solid;min-height:2px;min-width:2px;}
 .DefaultThemeStyle entry{
    padding: 4px 5px; border-width: 1px; border-style: solid; border-color:@frame_color;
    background-color: @theme_base_color; color: @theme_text_color;
@@ -163,8 +163,8 @@ namespace System.Windows.Forms
 .ButtonNone{padding:0px;margin:0px;border-radius:0px;border-style:none;box-shadow:none;}
 .ButtonNone.check,.ButtonNone check{padding-top:0px;padding-bottom:0px;;margin-top:0px;margin-bottom:0px;}
 .BorderNone{border-style:none;box-shadow:none;}
-.BorderFixedSingle{border-width:0px;border-style:none;padding:1px;box-shadow: inset 0px 0px 0px 1px @frame_color;}
-.BorderFixed3D{border-width:0px;border-style:none; padding:2px 1px 1px 2px;box-shadow: inset 0px 0px 0px 1px @frame3d_color, inset 2px 2px 0px 0px @frame3d_color5;}
+.BorderFixedSingle{border-width:0px;border-style:none;padding:1px;box-shadow: 0px 0px 0px 1px @frame_color;}
+.BorderFixed3D{border-width:0px;border-style:none; padding:2px 1px 1px 2px;box-shadow: 0px 0px 0px 1px @frame3d_color, inset 2px 2px 0px 0px @frame3d_color5;}
 
 .DataGridView {border-width:1px;margin:-3px;}
 .GridViewCell-Button{ color:@theme_text_color; border:solid 1px @frame_color; background-color: shade(@theme_bg_color, 0.7);}
@@ -230,7 +230,7 @@ namespace System.Windows.Forms
 .Paper{box-shadow: 0px 0px 3px 1px #999999;background:#ffffff; border-radius:0px;}
 .PropertyGrid {box-shadow:0px 0px 0px 1px @frame_color; background:#eeeeee;}
 .PropertyGrid button{background:#eeeeee;}
-
+.PictureBox {padding:0px;}
 tooltip { background-color: #ffffff; color: #555555; border: 1px solid #c9c9c9; box-shadow: 3px 3px 2px #787878;}
 tooltip window,tooltip.background {background-color: #ffffff;}
 tooltip label {padding: 0px 10px; color: #555555;}
