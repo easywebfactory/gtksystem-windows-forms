@@ -33,9 +33,12 @@ namespace System.Windows.Forms
             layoutEngine.Mapped += Self_Mapped;
             _controls =new TableLayoutControlCollection(this);
 			_columnStyles = new TableLayoutColumnStyleCollection();
-			_rowStyles = new TableLayoutRowStyleCollection();
+			_rowStyles = new TableLayoutRowStyleCollection();           
+            self.Remove(self.contaner);
+            self.contaner.Destroy();
             self.Add(layoutEngine);
         }
+
         private bool Is_Self_Mapped;
         private void Self_Mapped(object sender, EventArgs e)
         {

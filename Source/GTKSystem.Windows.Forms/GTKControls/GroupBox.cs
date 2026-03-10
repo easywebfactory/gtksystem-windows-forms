@@ -17,52 +17,25 @@ namespace System.Windows.Forms
     {
         public readonly GroupBoxBase self = new GroupBoxBase();
         public override object GtkControl => self;
-        private Gtk.Overlay contaner = new Gtk.Overlay();
         private ControlCollection _controls = null;
-        private Gtk.ScrolledWindow fixedcontaner = new Gtk.ScrolledWindow();
         public GroupBox() : base()
         {
             self.Override.sender = this;
-            _controls = new ControlCollection(this, contaner);
-            contaner.Halign = Align.Fill;
-            contaner.Valign = Align.Fill;
-            Gtk.DrawingArea background = new Gtk.DrawingArea();
-            background.Events = Gdk.EventMask.EnterNotifyMask;
-            background.Drawn += Background_Drawn;
-            contaner.Add(background);
-            fixedcontaner.SizeAllocated += Fixedcontaner_SizeAllocated;
-            fixedcontaner.WidgetEvent += Fixedcontaner_WidgetEvent;
-            fixedcontaner.HscrollbarPolicy = PolicyType.Never;
-            fixedcontaner.VscrollbarPolicy = PolicyType.External;
-            fixedcontaner.Add(contaner);
-            self.Child = fixedcontaner;
+            _controls = new ControlCollection(this, self.contaner);
         }
 
-        private void Fixedcontaner_WidgetEvent(object o, WidgetEventArgs args)
-        {
-            fixedcontaner.Vadjustment.Value = 20;
-            args.RetVal = true;
-        }
-
-        private void Fixedcontaner_SizeAllocated(object o, SizeAllocatedArgs args)
-        {
-            fixedcontaner.Vadjustment.Value = 20;
-        }
         public override Size Size
         {
             get => base.Size;
             set
             {
                 base.Size = value;
-                contaner.WidthRequest = Math.Max(1, value.Width - fixedcontaner.MarginStart - fixedcontaner.MarginEnd);
-                contaner.HeightRequest = Math.Max(1, value.Height - fixedcontaner.MarginTop - fixedcontaner.MarginBottom);
-                fixedcontaner.Vadjustment.Value = 20;
+                self.contaner.WidthRequest = Math.Max(1, value.Width - self.fixedcontaner.MarginStart - self.fixedcontaner.MarginEnd);
+                self.contaner.HeightRequest = Math.Max(1, value.Height - self.fixedcontaner.MarginTop - self.fixedcontaner.MarginBottom);
+                self.fixedcontaner.Vadjustment.Value = 20;
             }
         }
-        private void Background_Drawn(object o, DrawnArgs args)
-        {
-            self.Override.OnPaint(args.Cr);
-        }
+
         public override string Text { get { return self.Label; } set { self.Label = value; } }
         public override ControlCollection Controls => _controls;
         public override Padding Padding
@@ -71,10 +44,10 @@ namespace System.Windows.Forms
             set
             {
                 base.Padding = value;
-                fixedcontaner.MarginStart = value.Left;
-                fixedcontaner.MarginTop = value.Top;
-                fixedcontaner.MarginEnd = value.Right;
-                fixedcontaner.MarginBottom = value.Bottom;
+                self.fixedcontaner.MarginStart = value.Left;
+                self.fixedcontaner.MarginTop = value.Top;
+                self.fixedcontaner.MarginEnd = value.Right;
+                self.fixedcontaner.MarginBottom = value.Bottom;
             }
         }
         public override void SuspendLayout()

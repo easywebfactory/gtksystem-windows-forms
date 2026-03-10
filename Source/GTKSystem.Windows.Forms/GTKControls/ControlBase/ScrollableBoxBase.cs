@@ -16,8 +16,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             base.Valign = Gtk.Align.Start;
             base.Hexpand = false;
             base.Vexpand = false;
-            base.VscrollbarPolicy = Gtk.PolicyType.External;
-            base.HscrollbarPolicy = Gtk.PolicyType.External;
+            base.VscrollbarPolicy = Gtk.PolicyType.Never;
+            base.HscrollbarPolicy = Gtk.PolicyType.Never;
             base.Hadjustment.ValueChanged += Hadjustment_ValueChanged;
             base.Vadjustment.ValueChanged += Vadjustment_ValueChanged;
         }
@@ -54,8 +54,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 }
                 else
                 {
-                    base.VscrollbarPolicy = Gtk.PolicyType.External;
-                    base.HscrollbarPolicy = Gtk.PolicyType.External;
+                    base.VscrollbarPolicy = Gtk.PolicyType.Never;
+                    base.HscrollbarPolicy = Gtk.PolicyType.Never;
                 }
             }
         }

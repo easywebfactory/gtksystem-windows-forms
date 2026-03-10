@@ -2,6 +2,7 @@
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms.Layout;
 
 namespace System.Windows.Forms
@@ -40,8 +41,39 @@ namespace System.Windows.Forms
             set
             {
                 _AutoScroll = value;
-                if (AutoSize == false)
-                    if (scrollbase != null) { scrollbase.AutoScroll = value; }
+                if (AutoSize == false && scrollbase != null)
+                {
+                    scrollbase.AutoScroll = value;
+                }
+                if (this.Widget is Gtk.ScrolledWindow sw)
+                {
+                    Gtk.Widget widget = sw.Child;
+                    if (sw.Child is Gtk.Viewport view)
+                    {
+                        if (view.Child is Gtk.Overlay lay)
+                        {
+                            SetScrollLayout(lay);
+                        }
+                    }
+                    else if (sw.Child is Gtk.Overlay lay)
+                    {
+                        SetScrollLayout(lay);
+                    }
+                }
+            }
+        }
+        private void SetScrollLayout(Gtk.Overlay lay)
+        {
+            if (_AutoScroll == false)
+                lay.SetSizeRequest(-1, -1);
+            else
+            {
+                lay.SetSizeRequest(1, 1);
+                foreach (Gtk.Widget widget in lay.Children)
+                {
+                    lay.WidthRequest = Math.Max(lay.WidthRequest, widget.MarginStart + widget.WidthRequest);
+                    lay.HeightRequest = Math.Max(lay.HeightRequest, widget.MarginTop + widget.HeightRequest);
+                }
             }
         }
         public override bool AutoSize
@@ -59,11 +91,6 @@ namespace System.Windows.Forms
                     if (scrollbase != null) { scrollbase.AutoScroll = _AutoScroll; }
                 }
             }
-        }
-        protected override void OnMouseWheel(MouseEventArgs e)
-        {
-            ((HandledMouseEventArgs)e).Handled = !_AutoScroll;
-            base.OnMouseWheel(e);
         }
         //public VScrollProperties VerticalScroll { get; }
         //public DockPaddingEdges DockPadding { get; }

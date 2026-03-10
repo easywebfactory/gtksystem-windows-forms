@@ -17,28 +17,12 @@ namespace System.Windows.Forms
     {
         public readonly UserControlBase self = new UserControlBase();
         public override object GtkControl => self;
-        private Gtk.Overlay contaner;
         private ControlCollection _controls;
         public UserControl() : base()
         {
             self.Override.sender = this;
-            contaner = new Gtk.Overlay();
-            contaner.BorderWidth = 0;
-            contaner.Halign = Align.Fill;
-            contaner.Valign = Align.Fill;
-            _controls = new ControlCollection(this, contaner);
-
-            Gtk.DrawingArea background = new Gtk.DrawingArea();
-            background.Events = Gdk.EventMask.EnterNotifyMask;
-            background.Drawn += Background_Drawn;
-            contaner.Add(background);
-            self.Add(contaner);
+            _controls = new ControlCollection(this, self.contaner);
             self.Shown += Self_Shown;
-        }
-
-        private void Background_Drawn(object o, DrawnArgs args)
-        {
-            self.Override.OnPaint(args.Cr);
         }
         private bool Is_Control_Shown = false;
         private void Self_Shown(object sender, EventArgs e)
@@ -57,10 +41,10 @@ namespace System.Windows.Forms
             set
             {
                 base.Padding = value;
-                contaner.MarginStart = value.Left;
-                contaner.MarginTop = value.Top;
-                contaner.MarginEnd = value.Right;
-                contaner.MarginBottom = value.Bottom;
+                self.contaner.MarginStart = value.Left;
+                self.contaner.MarginTop = value.Top;
+                self.contaner.MarginEnd = value.Right;
+                self.contaner.MarginBottom = value.Bottom;
             }
         }
         public override event EventHandler Load;

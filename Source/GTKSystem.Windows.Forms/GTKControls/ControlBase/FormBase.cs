@@ -9,6 +9,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
     {
         public readonly Gtk.ScrolledWindow ScrolledView = new Gtk.ScrolledWindow();
         public GtkControlOverride Override { get; set; }
+        public Gtk.Overlay contaner = new Gtk.Overlay();
         public bool AutoScroll
         {
             get => ScrolledView.VscrollbarPolicy == Gtk.PolicyType.Automatic;
@@ -95,6 +96,18 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.ContentArea.Homogeneous = false;
             this.ContentArea.PackStart(ScrolledView, true, true, 0);
             this.ContentArea.StyleContext.AddClass("Form");
+
+            contaner.Valign = Gtk.Align.Fill;
+            contaner.Halign = Gtk.Align.Fill;
+            Gtk.DrawingArea background = new Gtk.DrawingArea();
+            background.Events = Gdk.EventMask.EnterNotifyMask;
+            background.Drawn += Background_Drawn;
+            contaner.Add(background);
+            ScrolledView.Child = contaner;
+        }
+        private void Background_Drawn(object o, DrawnArgs args)
+        {
+            Override.OnPaint(args.Cr);
         }
         private void FormBase_WindowStateEvent(object o, WindowStateEventArgs args)
         {

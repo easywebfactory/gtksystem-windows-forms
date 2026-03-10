@@ -270,7 +270,6 @@ namespace System.Windows.Forms
                 DockChanged(this, EventArgs.Empty);
             else if (_anchor != AnchorStyles.None)
                 AnchorChanged(this, EventArgs.Empty);
-            CheckResize(BoundsSpecified.All);
         }
         private bool Is_DoubleButtonPress = false;
         private void Widget_WidgetEvent(object o, WidgetEventArgs args)
@@ -600,18 +599,6 @@ namespace System.Windows.Forms
         #endregion
 
         //===================
-        internal void CheckResize(BoundsSpecified bounds)
-        {
-            Gtk.Widget widget = this.Widget;
-            if (widget.IsRealized && widget.Parent is Gtk.Overlay lay)
-            {
-                if (bounds.HasFlag(BoundsSpecified.Width) && lay.AllocatedWidth > 1 && lay.AllocatedWidth < widget.MarginStart + widget.WidthRequest && widget.Halign != Align.Fill)
-                    lay.WidthRequest = widget.MarginStart + widget.WidthRequest;
-
-                if (bounds.HasFlag(BoundsSpecified.Height) && lay.AllocatedHeight > 1 && lay.AllocatedHeight < widget.MarginTop + widget.HeightRequest && widget.Valign != Align.Fill)
-                    lay.HeightRequest = widget.MarginTop + widget.HeightRequest;
-            }
-        }
         protected virtual void InitStyle(Gtk.Widget widget)
         {
             SetStyle(widget);
@@ -1099,6 +1086,39 @@ namespace System.Windows.Forms
                         widget.Valign = Align.Start;
                     }
                 }
+                else if (widget.Parent is Gtk.Viewport view)
+                {
+                    if (dockStyle == DockStyle.Fill)
+                    {
+                        widget.Halign = Align.Fill;
+                        widget.Valign = Align.Fill;
+                    }
+                    else if (dockStyle == DockStyle.Left)
+                    {
+                        widget.Halign = Align.Start;
+                        widget.Valign = Align.Fill;
+                    }
+                    else if (dockStyle == DockStyle.Top)
+                    {
+                        widget.Halign = Align.Fill;
+                        widget.Valign = Align.Start;
+                    }
+                    else if (dockStyle == DockStyle.Right)
+                    {
+                        widget.Halign = Align.End;
+                        widget.Valign = Align.Fill;
+                    }
+                    else if (dockStyle == DockStyle.Bottom)
+                    {
+                        widget.Halign = Align.Fill;
+                        widget.Valign = Align.End;
+                    }
+                    else
+                    {
+                        widget.Halign = Align.Start;
+                        widget.Valign = Align.Start;
+                    }
+                }
             }
         }
         public virtual bool Enabled { get { return this.Widget.Sensitive; } set { this.Widget.Sensitive = value; } }
@@ -1145,7 +1165,6 @@ namespace System.Windows.Forms
             set
             {
                 this.Widget.MarginTop = Math.Max(0, value);
-                CheckResize(BoundsSpecified.Height);
             }
         }
         public virtual int Left
@@ -1154,7 +1173,6 @@ namespace System.Windows.Forms
             set
             {
                 this.Widget.MarginStart = Math.Max(0, value);
-                CheckResize(BoundsSpecified.Width);
             }
         }
         public virtual int Right
@@ -1229,7 +1247,6 @@ namespace System.Windows.Forms
             set
             {
                 this.Widget.HeightRequest = Math.Max(-1, value);
-                CheckResize(BoundsSpecified.Height);
             }
         }
         public virtual int Width
@@ -1251,7 +1268,6 @@ namespace System.Windows.Forms
             set
             {
                 this.Widget.WidthRequest = Math.Max(-1, value);
-                CheckResize(BoundsSpecified.Width);
             }
         }
         public virtual int TabIndex { get; set; }

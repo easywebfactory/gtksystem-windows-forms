@@ -21,7 +21,7 @@ namespace System.Windows.Forms
         private ControlCollection _controls;
         public TabPage() : base()
         {
-            _controls = new ControlCollection(this, self.Content);
+            _controls = new ControlCollection(this, self.contaner);
             _tabLabel.StyleContext.AddClass("tablabel");
             self.Halign = Gtk.Align.Fill; 
             self.Valign = Gtk.Align.Fill;
@@ -64,10 +64,10 @@ namespace System.Windows.Forms
             set
             {
                 base.Padding = value;
-                self.Content.MarginStart = value.Left;
-                self.Content.MarginTop = value.Top;
-                self.Content.MarginEnd = value.Right;
-                self.Content.MarginBottom = value.Bottom;
+                self.contaner.MarginStart = value.Left;
+                self.contaner.MarginTop = value.Top;
+                self.contaner.MarginEnd = value.Right;
+                self.contaner.MarginBottom = value.Bottom;
             }
         }
         public override Size Size { get; set; }

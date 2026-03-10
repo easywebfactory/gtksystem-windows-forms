@@ -21,9 +21,9 @@ namespace System.Windows.Forms
         {
             self.Override.sender = this;
             _panel1 = new SplitterPanel(this);
-            _panel1.contaner.Name = "Child1";
+            _panel1.self.contaner.Name = "Child1";
             _panel2 = new SplitterPanel(this);
-            _panel2.contaner.Name = "Child2";
+            _panel2.self.contaner.Name = "Child2";
             self.Pack1(_panel1.Widget, false, true);
             self.Pack2(_panel2.Widget, true, true);
         }

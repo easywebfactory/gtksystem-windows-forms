@@ -28,9 +28,9 @@ namespace System.Windows.Forms
             layoutEngine.Halign = Align.Fill;
             layoutEngine.Valign = Align.Start;
             _controls = new ObjectCollection(this, layoutEngine);
-            Gtk.Viewport viewport = new Gtk.Viewport();
-            viewport.Add(layoutEngine);
-            self.Add(viewport);
+            self.Remove(self.contaner);
+            self.contaner.Destroy();
+            self.Add(layoutEngine);
         }
 
         private FlowDirection _FlowDirection = FlowDirection.LeftToRight;

@@ -5,9 +5,11 @@
  * author:chenhongjin
  */
 
+using Gtk;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms.Layout;
 
 namespace System.Windows.Forms
@@ -29,14 +31,40 @@ namespace System.Windows.Forms
                 __ownerControl = ownerContainer;
                 __owner = owner;
                 __ownerControl.Mapped += OwnerContainer_Mapped;
+                __ownerControl.Removed += __ownerControl_Removed;
+            }
+
+            private void __ownerControl_Removed(object o, RemovedArgs args)
+            {
+                if (o is Gtk.Overlay lay && lay.HeightRequest > 0)
+                {
+                    lay.WidthRequest = 1;
+                    lay.HeightRequest = 1;
+                    foreach (Gtk.Widget widget in lay.Children)
+                    {
+                        lay.WidthRequest = Math.Max(lay.WidthRequest, widget.MarginStart + widget.WidthRequest);
+                        lay.HeightRequest = Math.Max(lay.HeightRequest, widget.MarginTop + widget.HeightRequest);
+                    }
+                }
             }
 
             private void OwnerContainer_Mapped(object? sender, EventArgs e)
             {
-                List<Control> _tabs = InnerList.ConvertAll<Control>(o => (Control)o);
-                _tabs.Sort(new Comparison<Control>((a, b) => { return a.TabIndex.CompareTo(b.TabIndex); }));
-                __ownerControl.ChildFocus(Gtk.DirectionType.TabForward);
-                __ownerControl.FocusChain = _tabs.Select(o => o.Widget).ToArray();
+                if (sender is Gtk.Overlay lay)
+                {
+                    if (lay.HeightRequest > 0)
+                    {
+                        foreach (Gtk.Widget widget in lay.Children)
+                        {
+                            lay.WidthRequest = Math.Max(lay.WidthRequest, widget.MarginStart + widget.WidthRequest);
+                            lay.HeightRequest = Math.Max(lay.HeightRequest, widget.MarginTop + widget.HeightRequest);
+                        }
+                    }
+                    List<Control> _tabs = InnerList.ConvertAll<Control>(o => (Control)o);
+                    _tabs.Sort(new Comparison<Control>((a, b) => { return a.TabIndex.CompareTo(b.TabIndex); }));
+                    lay.ChildFocus(Gtk.DirectionType.TabForward);
+                    lay.FocusChain = _tabs.Select(o => o.Widget).ToArray();
+                }
             }
             private void NativeAdd(object item)
             {

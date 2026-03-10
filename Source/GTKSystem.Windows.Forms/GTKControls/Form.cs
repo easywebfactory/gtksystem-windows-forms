@@ -21,7 +21,6 @@ namespace System.Windows.Forms
         public FormBase self = new FormBase();
         public override object GtkControl { get => self; }
         protected override IScrollableBoxBase scrollbase { get => self; set => base.scrollbase = value; }
-        private Gtk.Overlay contaner = new Gtk.Overlay();
         private ControlCollection _ObjectCollection;
         public Form() : base()
         {
@@ -34,20 +33,9 @@ namespace System.Windows.Forms
         }
         private void Init()
         {
-            contaner.Valign = Gtk.Align.Fill;
-            contaner.Halign = Gtk.Align.Fill;
-            Gtk.DrawingArea background = new Gtk.DrawingArea();
-            background.Events = Gdk.EventMask.EnterNotifyMask;
-            background.Drawn += Background_Drawn;
-            contaner.Add(background);
-            self.ScrolledView.Child = contaner;
-            _ObjectCollection = new ControlCollection(this, contaner);
+            _ObjectCollection = new ControlCollection(this, self.contaner);
             self.Shown += Control_Shown;
             self.CloseWindowEvent += Self_CloseWindowEvent;
-        }
-        private void Background_Drawn(object o, DrawnArgs args)
-        {
-            self.Override.OnPaint(args.Cr);
         }
         private bool Self_CloseWindowEvent(object sender, EventArgs e)
         {
@@ -274,10 +262,10 @@ namespace System.Windows.Forms
             set
             {
                 base.Padding = value;
-                contaner.MarginStart = value.Left;
-                contaner.MarginTop = value.Top;
-                contaner.MarginEnd = value.Right;
-                contaner.MarginBottom = value.Bottom;
+                self.contaner.MarginStart = value.Left;
+                self.contaner.MarginTop = value.Top;
+                self.contaner.MarginEnd = value.Right;
+                self.contaner.MarginBottom = value.Bottom;
             }
         }
         public bool MaximizeBox { get => self.MaximizeBox; set => self.MaximizeBox = value && _ControlBox; }

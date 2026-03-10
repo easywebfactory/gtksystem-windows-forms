@@ -16,32 +16,18 @@ namespace System.Windows.Forms
     {
         public readonly PanelBase self = new PanelBase();
         public override object GtkControl => self;
-        public Gtk.Overlay contaner = new Gtk.Overlay();
         private ControlCollection _controls;
         public Panel() : base()
         {
             self.Override.sender = this;
-            _controls = new ControlCollection(this, contaner);
-            contaner.Margin = 0;
-            contaner.Halign = Align.Fill;
-            contaner.Valign = Align.Fill;
-            contaner.Hexpand = false;
-            contaner.Vexpand = false;
-            contaner.BorderWidth = 0;
-            Gtk.DrawingArea background = new Gtk.DrawingArea();
-            background.Events = Gdk.EventMask.EnterNotifyMask;
-            background.Drawn += Background_Drawn;
-            contaner.Add(background);
-            self.Add(contaner);
+            _controls = new ControlCollection(this, self.contaner);
             this.AutoScroll = false;
         }
         internal Panel(string type) : base()
         {
+            self.Override.sender = this;
             self.StyleContext.AddClass(type);
-        }
-        private void Background_Drawn(object o, DrawnArgs args)
-        {
-            self.Override.OnPaint(args.Cr);
+            this.AutoScroll = false;
         }
         public override ControlCollection Controls => _controls;
         public override Padding Padding
@@ -50,10 +36,10 @@ namespace System.Windows.Forms
             set
             {
                 base.Padding = value;
-                contaner.MarginStart = value.Left;
-                contaner.MarginTop = value.Top;
-                contaner.MarginEnd = value.Right;
-                contaner.MarginBottom = value.Bottom;
+                self.contaner.MarginStart = value.Left;
+                self.contaner.MarginTop = value.Top;
+                self.contaner.MarginEnd = value.Right;
+                self.contaner.MarginBottom = value.Bottom;
             }
         }
     }

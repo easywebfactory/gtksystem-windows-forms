@@ -185,9 +185,8 @@ namespace System.Windows.Forms
 .SplitterPanel .frame{padding:0px;margin:0px;border:0px;box-shadow:none;}
 .SplitterPanel .flat{padding:0px;margin:0px;border:0px;box-shadow:none;}
 
-.TableLayoutPanel {box-shadow: inset -1px -1px 1px 0px @frame_color;padding:0px;}
-.TableLayoutPanel>viewport.frame {box-shadow: inset 1px 1px 1px 0 @frame_color;border-width:0px;}
-.TableCellBorder grid>viewport.frame {box-shadow: inset 1px 1px 1px 0 @frame_color;border-width:0px;}
+.TableLayoutPanel {box-shadow: 0px 0px 0px 1px @frame_color;padding:0px;}
+.TableCellBorder grid>viewport.frame {box-shadow: 1px 1px 1px 0 @frame_color;border-width:0px;}
 .ListView{border:inset 1px @frame_color;}
 .ListView .Label{background-color:transparent;} 
 .ListView checkbutton {padding:0px;}

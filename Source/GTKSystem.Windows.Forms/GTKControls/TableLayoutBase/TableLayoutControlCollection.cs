@@ -20,24 +20,18 @@ namespace System.Windows.Forms
             control.Location = new Drawing.Point(0, 0);
             control.LockLocation = true;
             control.Parent = Container;
-            control.Widget.Margin = 2;
-            control.Widget.Valign = Align.Start;
-            control.Widget.Halign = Align.Start;
-            control.Widget.Hexpand = false;
-            control.Widget.Vexpand = false;
             if (Container.layoutEngine.GetChildAt(column, row) is Gtk.Viewport view)
             {
-                view.Child = control.Widget;
+                view.Add(control.Widget);
             }
             else
             {
                 Gtk.Viewport viewport = new Gtk.Viewport();
                 viewport.Valign = Align.Fill;
                 viewport.Halign = Align.Fill;
-                viewport.HscrollPolicy = ScrollablePolicy.Minimum;
-                viewport.VscrollPolicy = ScrollablePolicy.Minimum;
                 viewport.BorderWidth = 0;
-                viewport.Child = control.Widget;
+                viewport.ShadowType = ShadowType.None;
+                viewport.Add(control.Widget);
                 Container.layoutEngine.Attach(viewport, column, row, 1, 1);
             }
             base.Add(control);
