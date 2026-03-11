@@ -1948,7 +1948,6 @@ namespace System.Windows.Forms
         {
             _Created = true;
         }
-
         public virtual void Update()
         {
             if (this.Widget != null && this.Widget.Window != null)
@@ -2109,7 +2108,8 @@ namespace System.Windows.Forms
 
         public void SetBounds(Rectangle bounds, BoundsSpecified specified)
         {
-            throw new NotImplementedException();
+            Location = bounds.Location;
+            Size = bounds.Size;
         }
 
         void IArrangedElement.PerformLayout(IArrangedElement affectedElement, string propertyName)

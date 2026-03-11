@@ -40,10 +40,9 @@ namespace System.Windows.Forms
                 {
                     lay.WidthRequest = 1;
                     lay.HeightRequest = 1;
-                    foreach (Gtk.Widget widget in lay.Children)
+                    if (__owner is ScrollableControl scrollableControl)
                     {
-                        lay.WidthRequest = Math.Max(lay.WidthRequest, widget.MarginStart + widget.WidthRequest);
-                        lay.HeightRequest = Math.Max(lay.HeightRequest, widget.MarginTop + widget.HeightRequest);
+                        scrollableControl.UpdatePerformLayout(lay, true);
                     }
                 }
             }
@@ -52,13 +51,9 @@ namespace System.Windows.Forms
             {
                 if (sender is Gtk.Overlay lay)
                 {
-                    if (lay.HeightRequest > 0)
+                    if (__owner is ScrollableControl scrollableControl)
                     {
-                        foreach (Gtk.Widget widget in lay.Children)
-                        {
-                            lay.WidthRequest = Math.Max(lay.WidthRequest, widget.MarginStart + widget.WidthRequest);
-                            lay.HeightRequest = Math.Max(lay.HeightRequest, widget.MarginTop + widget.HeightRequest);
-                        }
+                        scrollableControl.UpdatePerformLayout(lay, scrollableControl.AutoScroll);
                     }
                     List<Control> _tabs = InnerList.ConvertAll<Control>(o => (Control)o);
                     _tabs.Sort(new Comparison<Control>((a, b) => { return a.TabIndex.CompareTo(b.TabIndex); }));

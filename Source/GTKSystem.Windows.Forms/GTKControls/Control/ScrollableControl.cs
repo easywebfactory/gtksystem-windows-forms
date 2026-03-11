@@ -45,26 +45,32 @@ namespace System.Windows.Forms
                 {
                     scrollbase.AutoScroll = value;
                 }
-                if (this.Widget is Gtk.ScrolledWindow sw)
-                {
-                    Gtk.Widget widget = sw.Child;
-                    if (sw.Child is Gtk.Viewport view)
-                    {
-                        if (view.Child is Gtk.Overlay lay)
-                        {
-                            SetScrollLayout(lay);
-                        }
-                    }
-                    else if (sw.Child is Gtk.Overlay lay)
-                    {
-                        SetScrollLayout(lay);
-                    }
-                }
+                PerformLayout(this, "AutoScroll");
             }
         }
-        private void SetScrollLayout(Gtk.Overlay lay)
+       
+        public override void PerformLayout(Control affectedControl, string affectedProperty)
         {
-            if (_AutoScroll == false)
+            if (affectedProperty== "AutoScroll" && affectedControl.Widget is Gtk.ScrolledWindow sw)
+            {
+                Gtk.Widget widget = sw.Child;
+                if (sw.Child is Gtk.Viewport view)
+                {
+                    if (view.Child is Gtk.Overlay lay)
+                    {
+                        UpdatePerformLayout(lay, _AutoScroll);
+                    }
+                }
+                else if (sw.Child is Gtk.Overlay lay)
+                {
+                    UpdatePerformLayout(lay, _AutoScroll);
+                }
+            }
+            base.PerformLayout(affectedControl, affectedProperty);
+        }
+        internal void UpdatePerformLayout(Gtk.Overlay lay, bool autoscroll)
+        {
+            if (autoscroll == false)
                 lay.SetSizeRequest(-1, -1);
             else
             {
