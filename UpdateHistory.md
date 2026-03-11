@@ -1,12 +1,11 @@
 
 ## 更新日志
- #### 2026/3/9 V1.3.26.89
-  	1. 优化修正一些基础事件、属性；
-	2. 修正picturebox的事件和属性；
-	3. 【!】重大修改，重构容器结构和Dock/Anchor布局程序
- #### 2026/3/1 V1.3.26.88
+ #### 2026/3/11 V1.3.26.88
   	1. 修改去掉button文字的自动换行功能；
-	2. 更新FlowLayoutPanel；
+	2. 更新FlowLayoutPanel/TableLayoutPanel；
+  	3. 优化修正一些基础事件、属性；
+	4. 修正picturebox的事件和属性；
+	5. 【!】重大修改，重构容器结构和Dock/Anchor布局程序
  #### 2026/2/27 V1.3.26.87
   	1. 更新修正Control基础属性、方法；
 	2. 改造TableLayoutPanel、FlowLayoutPanel、GroupBox控件；
