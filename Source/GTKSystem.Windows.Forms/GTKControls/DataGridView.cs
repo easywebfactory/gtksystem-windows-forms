@@ -29,22 +29,22 @@ namespace System.Windows.Forms
         {
             self.Override.sender = this;
             this.BorderStyle = BorderStyle.FixedSingle;
-            GridView.Margin = 0;
-            GridView.MarginStart = 0;
-            GridView.MarginEnd = 0;
-            GridView.Selection.Mode = Gtk.SelectionMode.Multiple;
-            GridView.HeadersClickable = true;
-            GridView.HeadersVisible = true;
-            GridView.ActivateOnSingleClick = false;
+            self.GridView.Margin = 0;
+            self.GridView.MarginStart = 0;
+            self.GridView.MarginEnd = 0;
+            self.GridView.Selection.Mode = Gtk.SelectionMode.Multiple;
+            self.GridView.HeadersClickable = true;
+            self.GridView.HeadersVisible = true;
+            self.GridView.ActivateOnSingleClick = false;
 
             _columns = new DataGridViewColumnCollection(this);
             _rows = new DataGridViewRowCollection(this);
             _collect = new ControlBindingsCollection(this);
             self.Realized += Self_Realized;
-            GridView.Selection.Changed += Selection_Changed;
-            GridView.ColumnsChanged += GridView_ColumnsChanged;
-            GridView.ButtonReleaseEvent += GridView_ButtonReleaseEvent;
-            GridView.WidgetEvent += GridView_WidgetEvent;
+            self.GridView.Selection.Changed += Selection_Changed;
+            self.GridView.ColumnsChanged += GridView_ColumnsChanged;
+            self.GridView.ButtonReleaseEvent += GridView_ButtonReleaseEvent;
+            self.GridView.WidgetEvent += GridView_WidgetEvent;
         }
 
         private void GridView_WidgetEvent(object o, WidgetEventArgs args)
