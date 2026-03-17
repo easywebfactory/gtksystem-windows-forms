@@ -4,6 +4,7 @@
  * 技术支持438865652@qq.com，https://www.gtkapp.com, https://gitee.com/easywebfactory, https://github.com/easywebfactory
  * author:chenhongjin
  */
+using Gdk;
 using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
@@ -43,6 +44,15 @@ namespace System.Windows.Forms
             GridView.Selection.Changed += Selection_Changed;
             GridView.ColumnsChanged += GridView_ColumnsChanged;
             GridView.ButtonReleaseEvent += GridView_ButtonReleaseEvent;
+            GridView.WidgetEvent += GridView_WidgetEvent;
+        }
+
+        private void GridView_WidgetEvent(object o, WidgetEventArgs args)
+        {
+            if (args.Event.Type == Gdk.EventType.ButtonPress && args.Event is EventButton eb)
+            {
+                args.RetVal = eb.Button > 1;
+            }
         }
 
         private void GridView_ButtonReleaseEvent(object o, ButtonReleaseEventArgs args)
