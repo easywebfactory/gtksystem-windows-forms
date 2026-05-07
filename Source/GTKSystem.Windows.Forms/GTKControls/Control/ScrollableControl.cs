@@ -48,38 +48,59 @@ namespace System.Windows.Forms
                 PerformLayout(this, "AutoScroll");
             }
         }
-       
+
         public override void PerformLayout(Control affectedControl, string affectedProperty)
         {
-            if (affectedProperty== "AutoScroll" && affectedControl.Widget is Gtk.ScrolledWindow sw)
+            if (affectedProperty == "AutoScroll" && affectedControl.Widget is Gtk.ScrolledWindow sw)
             {
-                Gtk.Widget widget = sw.Child;
                 if (sw.Child is Gtk.Viewport view)
                 {
                     if (view.Child is Gtk.Overlay lay)
                     {
-                        UpdatePerformLayout(lay, _AutoScroll);
+                        UpdatePerformLayout(sw, lay, _AutoScroll);
                     }
                 }
                 else if (sw.Child is Gtk.Overlay lay)
                 {
-                    UpdatePerformLayout(lay, _AutoScroll);
+                    UpdatePerformLayout(sw, lay, _AutoScroll);
                 }
             }
             base.PerformLayout(affectedControl, affectedProperty);
         }
-        internal void UpdatePerformLayout(Gtk.Overlay lay, bool autoscroll)
+        internal void UpdatePerformLayout(Gtk.ScrolledWindow scrolled, Gtk.Overlay lay, bool autoscroll)
         {
+            if (lay == null || lay.Child == null || scrolled == null)
+                return;
             if (autoscroll == false)
                 lay.SetSizeRequest(-1, -1);
             else
             {
                 lay.SetSizeRequest(1, 1);
-                foreach (Gtk.Widget widget in lay.Children)
+                if (lay.IsRealized)
                 {
-                    lay.WidthRequest = Math.Max(lay.WidthRequest, widget.MarginStart + widget.WidthRequest);
-                    lay.HeightRequest = Math.Max(lay.HeightRequest, widget.MarginTop + widget.HeightRequest);
+                    foreach (Gtk.Widget widget in lay.Children)
+                    {
+                        if (lay.Child.Handle.Equals(widget.Handle))
+                        {
+                            lay.WidthRequest = Math.Max(lay.WidthRequest, widget.MarginStart + widget.WidthRequest + scrolled.Allocation.Left + 20);
+                            lay.HeightRequest = Math.Max(lay.HeightRequest, widget.MarginTop + widget.HeightRequest + scrolled.Allocation.Top + 20);
+                        }
+                        else
+                        {
+                            lay.WidthRequest = Math.Max(lay.WidthRequest, widget.MarginStart + widget.AllocatedWidth + scrolled.Allocation.Left + 20);
+                            lay.HeightRequest = Math.Max(lay.HeightRequest, widget.MarginTop + widget.AllocatedHeight + scrolled.Allocation.Top + 20);
+                        }
+                    }
                 }
+                else
+                {
+                    foreach (Gtk.Widget widget in lay.Children)
+                    {
+                        lay.WidthRequest = Math.Max(lay.WidthRequest, widget.MarginStart + widget.WidthRequest + scrolled.Allocation.Left + 20);
+                        lay.HeightRequest = Math.Max(lay.HeightRequest, widget.MarginTop + widget.HeightRequest + scrolled.Allocation.Top + 20);
+                    }
+                }
+                lay.QueueResize();
             }
         }
         public override bool AutoSize
@@ -126,8 +147,8 @@ namespace System.Windows.Forms
                             vvalue -= win.Titlebar.AllocatedHeight;
                     }
                     Gtk.ScrolledWindow scrolled = scrollbase.ScrolledWindow;
-                    scrollbase.ScrollView(hvalue + scrolled.Hadjustment.Value, vvalue + scrolled.Vadjustment.Value);
-
+                    if (scrolled != null)
+                        scrollbase.ScrollView(hvalue + scrolled.Hadjustment.Value, vvalue + scrolled.Vadjustment.Value);
                 }
             }
         }

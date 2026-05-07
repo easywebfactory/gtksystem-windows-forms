@@ -5,6 +5,7 @@
  * author:chenhongjin
  */
 
+using Gtk;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using Microsoft.Win32;
 using System.ComponentModel;
@@ -13,6 +14,7 @@ using System.Drawing;
 using System.Windows.Forms.ComponentModel.Com2Interop;
 using System.Windows.Forms.Design;
 using System.Windows.Forms.PropertyGridInternal;
+
 namespace System.Windows.Forms
 {
     /// <summary>
@@ -31,7 +33,7 @@ namespace System.Windows.Forms
         private static readonly object s_selectedObjectsChangedEvent = new();
         private object[] _selectedObjects;
         private readonly List<TabInfo> _tabs = new List<TabInfo>();
-
+        protected EventHandlerList PropertyEvents = new EventHandlerList();
         private PropertyGridView _propertyView;
         public PropertyGrid()
         {
@@ -40,16 +42,34 @@ namespace System.Windows.Forms
             self.child1.Add(_propertyView.tree);
             _propertyView.PropertyValueChanged += Self_PropertyValueChanged;
             _propertyView.SelectedGridItemChanged += Self_SelectedGridItemChanged;
+            _propertyView.tree.RowActivated += _propertyView_RowActivated;
         }
 
+        private void _propertyView_RowActivated(object o, Gtk.RowActivatedArgs args)
+        {
+            if (_propertyView.store.GetIter(out TreeIter iter, args.Path))
+            {
+                if (_propertyView.store.GetValue(iter, 0) is GridEntry ov)
+                {
+                    self.ShowDescription(ov.Label, ov.Description);
+                }
+            }
+            if (args.Column.XOffset > 50)
+            {
+                if (GridItemActivated != null)
+                {
+                    GridItemActivated(o, args);
+                }
+            }
+        }
         private void Self_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
         {
-            Events[s_selectedGridItemChangedEvent]?.DynamicInvoke(this, e);
+            PropertyEvents[s_selectedGridItemChangedEvent]?.DynamicInvoke(this, e);
         }
 
         private void Self_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
-            Events[s_propertyValueChangedEvent]?.DynamicInvoke(this, e);
+            PropertyEvents[s_propertyValueChangedEvent]?.DynamicInvoke(this, e);
         }
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -57,10 +77,13 @@ namespace System.Windows.Forms
         {
             get => _selectedObjects is null ? Array.Empty<object>() : (object[])_selectedObjects.Clone();
             set
-            {
+            {        
                 _selectedObjects = value is null ? Array.Empty<object>() : (object[])value.Clone();
                 //只支持一个对象
-                _propertyView.LoadPropertyInfo(_selectedObjects[0]);
+                if (_selectedObjects.Length == 0)
+                    _propertyView.LoadPropertyInfo(null);
+                else
+                    _propertyView.LoadPropertyInfo(_selectedObjects[0]);
             }
         }
         [DefaultValue(null)]
@@ -90,10 +113,9 @@ namespace System.Windows.Forms
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override bool AutoScroll { get; set; }
         public override Color BackColor { get; set; }
-#nullable disable
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override Image BackgroundImage { get; set; }
+        public override Drawing.Image BackgroundImage { get; set; }
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override ImageLayout BackgroundImageLayout { get; set; }
@@ -195,33 +217,35 @@ namespace System.Windows.Forms
         protected virtual Type DefaultTabType { get; }
         protected override Size DefaultSize { get; }
         protected internal override bool ShowFocusCues { get; }
+
+        public event EventHandler GridItemActivated;
         public event ComponentRenameEventHandler ComComponentNameChanged;
         public event EventHandler SelectedObjectsChanged
         {
-            add => Events.AddHandler(s_selectedObjectsChangedEvent, value);
-            remove => Events.RemoveHandler(s_selectedObjectsChangedEvent, value);
+            add => PropertyEvents.AddHandler(s_selectedObjectsChangedEvent, value);
+            remove => PropertyEvents.RemoveHandler(s_selectedObjectsChangedEvent, value);
         }
        
         public event SelectedGridItemChangedEventHandler SelectedGridItemChanged
         {
-            add => Events.AddHandler(s_selectedGridItemChangedEvent, value);
-            remove => Events.RemoveHandler(s_selectedGridItemChangedEvent, value);
+            add => PropertyEvents.AddHandler(s_selectedGridItemChangedEvent, value);
+            remove => PropertyEvents.RemoveHandler(s_selectedGridItemChangedEvent, value);
         }
         public event EventHandler PropertySortChanged
         {
-            add => Events.AddHandler(s_propertySortChangedEvent, value);
-            remove => Events.RemoveHandler(s_propertySortChangedEvent, value);
+            add => PropertyEvents.AddHandler(s_propertySortChangedEvent, value);
+            remove => PropertyEvents.RemoveHandler(s_propertySortChangedEvent, value);
         }
         public event PropertyValueChangedEventHandler PropertyValueChanged
         {
-            add => Events.AddHandler(s_propertyValueChangedEvent, value);
-            remove => Events.RemoveHandler(s_propertyValueChangedEvent, value);
+            add => PropertyEvents.AddHandler(s_propertyValueChangedEvent, value);
+            remove => PropertyEvents.RemoveHandler(s_propertyValueChangedEvent, value);
         }
 
         public event PropertyTabChangedEventHandler PropertyTabChanged
         {
-            add => Events.AddHandler(s_propertyTabChangedEvent, value);
-            remove => Events.RemoveHandler(s_propertyTabChangedEvent, value);
+            add => PropertyEvents.AddHandler(s_propertyTabChangedEvent, value);
+            remove => PropertyEvents.RemoveHandler(s_propertyTabChangedEvent, value);
         }
 
         [Browsable(false)]
@@ -244,6 +268,8 @@ namespace System.Windows.Forms
 
         public override void Refresh()
         {
+            _propertyView.tree.Selection.UnselectAll();
+            _propertyView.tree.QueueDraw();
         }
         public void RefreshTabs(PropertyTabScope tabScope)
         {

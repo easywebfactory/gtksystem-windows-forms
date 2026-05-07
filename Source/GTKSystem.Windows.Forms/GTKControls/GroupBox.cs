@@ -31,8 +31,8 @@ namespace System.Windows.Forms
             {
                 base.Size = value;
                 self.contaner.WidthRequest = Math.Max(1, value.Width - self.fixedcontaner.MarginStart - self.fixedcontaner.MarginEnd);
-                self.contaner.HeightRequest = Math.Max(1, value.Height - self.fixedcontaner.MarginTop - self.fixedcontaner.MarginBottom);
-                self.fixedcontaner.Vadjustment.Value = 20;
+                self.contaner.HeightRequest = Math.Max(1, value.Height - self.fixedcontaner.MarginStart - self.fixedcontaner.MarginEnd);
+                self.fixedcontaner.Vadjustment.Value = 24;
             }
         }
 

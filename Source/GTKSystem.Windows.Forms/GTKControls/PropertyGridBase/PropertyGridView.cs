@@ -11,6 +11,7 @@ using GLib;
 using Gtk;
 using GTKSystem.Windows.Forms.Resources;
 using System.ComponentModel;
+using System.Drawing.Imaging;
 using System.Reflection;
 
 namespace System.Windows.Forms.PropertyGridInternal;
@@ -96,14 +97,15 @@ internal sealed partial class PropertyGridView
         tree.LevelIndentation = 15;
         tree.Selection.Mode = Gtk.SelectionMode.Single;
         tree.ActivateOnSingleClick = true;
-        tree.RowActivated += Tree_RowActivated;
         tree.Selection.Changed += Selection_Changed;
-
         store.SetSortFunc(0, new TreeIterCompareFunc((model, iter1, iter2) =>
         {
             GridEntry val1 = model.GetValue(iter1, 0) as GridEntry;
             GridEntry val2 = model.GetValue(iter2, 0) as GridEntry;
-            return val1.Value.ToString().CompareTo(val2.Value.ToString());
+            if (val1.Label == null || val2.Label == null)
+                return 0;
+            else
+                return val1.Label.CompareTo(val2.Label);
         }));
 
         tree.Model = store;
@@ -111,7 +113,7 @@ internal sealed partial class PropertyGridView
     private GridEntry oldSelectedPropertyItem;
     private void Selection_Changed(object sender, EventArgs e)
     {
-        if (tree.Selection.GetSelected(out ITreeModel model, out Gtk.TreeIter oiter))
+        if (tree.IsSensitive && tree.Selection.GetSelected(out ITreeModel model, out Gtk.TreeIter oiter))
         {
             GridEntry propertyItem = store.GetValue(oiter, 0) as GridEntry;
             if (SelectedGridItemChanged != null)
@@ -119,19 +121,14 @@ internal sealed partial class PropertyGridView
             oldSelectedPropertyItem = propertyItem;
         }
     }
-    private void Tree_RowActivated(object o, RowActivatedArgs args)
-    {
-        Console.WriteLine(args.Path);
-        if (store.GetIter(out TreeIter iter, args.Path))
-        {
-            if (store.GetValue(iter, 0) is GridEntry ov)
-            {
-                OwnerGrid.self.ShowDescription(ov.Label, ov.Description);
-            }
-        }
-    }
     public void LoadPropertyInfo(object entryobj)
     {
+        tree.Selection.UnselectAll();
+        store.Clear();
+        if (entryobj == null)
+        {
+            return;
+        }
         _selectedObject = entryobj;
         List<GridEntry> categorys = new List<GridEntry>();
         PropertyInfo[] propertyInfos = entryobj.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
@@ -140,12 +137,15 @@ internal sealed partial class PropertyGridView
             var attri = propertyInfo.GetCustomAttributes(typeof(BrowsableAttribute));
             if (attri != null && attri.Count() > 0)
             {
-                //BrowsableAttribute
                 BrowsableAttribute attribute = (BrowsableAttribute)attri.FirstOrDefault();
                 if (attribute.Browsable == false)
                 {
                     continue;
                 }
+            }
+            else
+            {
+                continue;
             }
             string category = "【未分类组】";
             string description = "";
@@ -163,10 +163,11 @@ internal sealed partial class PropertyGridView
                 description = attribute.Description;
             }
 
-            GridEntry propertyItem = new GridEntry(null, GridItemType.Category, 0, category, category, description);
+            GridEntry propertyItem = new GridEntry(null, GridItemType.Category, 0, category, category, description) { Level = 0, Editable = false };
             propertyItem.PropertyInfo = propertyInfo;
             categorys.Add(propertyItem);
         }
+        
         var gs = categorys.GroupBy(o => o.Label).OrderBy(g => g.Key);
         if (gs.Count() == 1 && gs.First().Key == "【未分类组】")
         {
@@ -182,9 +183,9 @@ internal sealed partial class PropertyGridView
                 {
                     GetPropertyInfo(category1, value0, m.PropertyInfo, entryobj);
                 }
+                tree.ExpandToPath(store.GetPath(category1));
             }
         }
-        tree.ExpandAll();
     }
     private void GetPropertyInfos(Gtk.TreeIter? parent, GridEntry parentitem, object obj)
     {
@@ -195,19 +196,26 @@ internal sealed partial class PropertyGridView
             GetPropertyInfo(parent, parentitem, property, obj);
         }
     }
-    private bool GetPropertyInfo(Gtk.TreeIter? parent, GridEntry parentitem, PropertyInfo property, object obj)
+    private GridEntry GetPropertyInfo(Gtk.TreeIter? parent, GridEntry parentitem, PropertyInfo property, object obj)
     {
         if (property.CanRead == true)
         {
             var attri = property.GetCustomAttributes(typeof(BrowsableAttribute));
             if (attri != null && attri.Count() > 0)
             {
-                //BrowsableAttribute
                 BrowsableAttribute attribute = (BrowsableAttribute)attri.FirstOrDefault();
                 if (attribute.Browsable == false)
                 {
-                    return false;
+                    return null;
                 }
+            }
+            else if (parent == null)
+            {
+                return null;
+            }
+            if (parent != null && property.CanWrite == false)
+            {
+                return null;
             }
             string description = "";
             var attri3 = property.GetCustomAttributes(typeof(DescriptionAttribute));
@@ -216,39 +224,40 @@ internal sealed partial class PropertyGridView
                 DescriptionAttribute attribute = (DescriptionAttribute)attri3.FirstOrDefault();
                 description = attribute.Description;
             }
-            if (property.PropertyType.IsEnum)
+            if (property.PropertyType.IsEnum || property.PropertyType.Name == "String")
             {
-                object val = property.GetValue(obj);
-                GridEntry value1 = new GridEntry(parentitem, GridItemType.Property, 1, property.Name, val, description) { Editable = property.CanWrite, ValueType = property.PropertyType };
+                GridEntry value1 = new GridEntry(parentitem, GridItemType.Property, 1, property.Name, obj, description) { Editable = property.CanWrite, ValueType = property.PropertyType, PropertyInfo = property };
                 StoreValue(parent, value1);
+                return value1;
             }
             else if (property.PropertyType.IsValueType)
             {
-                object val = property.GetValue(obj);
                 if (property.PropertyType.IsPrimitive == false)
-                { //只有基元类型可以编辑
-                    GridEntry value1 = new GridEntry(parentitem, GridItemType.Property, 1, property.Name, val, description) { ValueType = property.PropertyType };
+                {
+                    GridEntry value1 = new GridEntry(parentitem, GridItemType.Property, 1, property.Name, obj, description) { ValueType = property.PropertyType, PropertyInfo = property };
                     Gtk.TreeIter node1 = StoreValue(parent, value1);
-                    GetPropertyInfos(node1, value1, val);
+                    object val = property.GetValue(obj);
+                    if(property.CanWrite)
+                        GetPropertyInfos(node1, value1, val);
+                    return value1;
                 }
                 else
                 {
-                    GridEntry value1 = new GridEntry(parentitem, GridItemType.Property, 1, property.Name, val, description) { Editable = property.CanWrite, ValueType = property.PropertyType };
+                    GridEntry value1 = new GridEntry(parentitem, GridItemType.Property, 1, property.Name, obj, description) { Editable = property.CanWrite, ValueType = property.PropertyType, PropertyInfo = property };
                     Gtk.TreeIter node1 = StoreValue(parent, value1);
+                    return value1;
                 }
             }
-            else if (property.PropertyType.IsArray)
+            else
             {
-                object val = property.GetValue(obj);
-                GridEntry value1 = new GridEntry(parentitem, GridItemType.Property, 1, property.Name, val, description) { Editable = false, ValueType = property.PropertyType };
+                GridEntry value1 = new GridEntry(parentitem, GridItemType.Property, 1, property.Name, obj, description) { Editable = false, ValueType = property.PropertyType, PropertyInfo = property };
                 Gtk.TreeIter node1 = StoreValue(parent, value1);
+                return value1;
             }
-            return true;
         }
-        else
-        {
-            return false;
-        }
+
+        return null;
+        
     }
     private Gtk.TreeIter StoreValue(Gtk.TreeIter? parent, object value)
     {
@@ -315,7 +324,7 @@ internal sealed partial class PropertyGridView
             this.EditingStarted += CellRendererText_EditingStarted;
             this.Edited += CellRendererText_Edited;
         }
-
+        
         private void CellRendererText_EditingStarted(object o, EditingStartedArgs args)
         {
             model.Clear();
@@ -348,33 +357,27 @@ internal sealed partial class PropertyGridView
                 object oldvalue = val.Value;
                 try
                 {
-                    if (path.Depth <= 2)
+                    if (path.Depth == 1)
                     {
-                        object obj = owner._selectedObject;
-                        PropertyInfo info = obj.GetType().GetProperty(val.Label);
-                        var value = info.GetValue(obj);
-                        if (info.CanWrite)
+                        if (val.PropertyInfo.CanWrite)
                         {
                             if (val.ValueType.IsEnum)
-                                val.value = Enum.Parse(info.PropertyType, args.NewText);
+                                val.PropertyInfo.SetValue(val.OwnerObj, Enum.Parse(val.PropertyInfo.PropertyType, args.NewText));
                             else
-                                val.value = Convert.ChangeType(args.NewText, info.PropertyType);
-                            info.SetValue(obj, val.value);
+                                val.PropertyInfo.SetValue(val.OwnerObj, Convert.ChangeType(args.NewText, val.PropertyInfo.PropertyType));
                         }
                     }
                     else
                     {
                         if (val.ValueType.IsEnum)
                         {
-                            object obj = owner._selectedObject;
-                            PropertyInfo info = obj.GetType().GetProperty(val.Label);
-                            if (info.CanWrite)
+                            if (val.PropertyInfo.CanWrite)
                             {
                                 if (val.ValueType.IsEnum)
-                                    val.value = Enum.Parse(info.PropertyType, args.NewText);
+                                    val.PropertyInfo.SetValue(val.OwnerObj, Enum.Parse(val.PropertyInfo.PropertyType, args.NewText));
                                 else
-                                    val.value = Convert.ChangeType(args.NewText, info.PropertyType);
-                                info.SetValue(obj, val.value);
+                                    val.PropertyInfo.SetValue(val.OwnerObj, Convert.ChangeType(args.NewText, val.PropertyInfo.PropertyType));
+
                             }
                         }
                         else
@@ -384,27 +387,19 @@ internal sealed partial class PropertyGridView
                                 object pcell = model.GetValue(piter, 0);
                                 if (pcell is GridEntry pval)
                                 {
-                                    object obj = owner._selectedObject;
-                                    Type otype = obj.GetType();
-                                    PropertyInfo pinfo = otype.GetProperty(pval.Label);
-                                    var pvalue = pinfo.GetValue(obj);
-                                    //从obj取当前对象，赋值
-                                    PropertyInfo info = pvalue.GetType().GetProperty(val.Label);
-                                    if (info.CanWrite)
+                                    if (val.PropertyInfo.CanWrite)
                                     {
                                         if (val.ValueType.IsEnum)
-                                            val.value = Enum.Parse(info.PropertyType, args.NewText);
+                                            val.PropertyInfo.SetValue(val.OwnerObj, Enum.Parse(val.PropertyInfo.PropertyType, args.NewText));
                                         else
-                                            val.value = Convert.ChangeType(args.NewText, info.PropertyType);
-                                        info.SetValue(pvalue, val.value);
-                                        pval.value = pvalue.ToString();
-                                    }
-                                    //修改父对象值
-                                    if (pinfo.CanWrite)
-                                    {
-                                        pinfo.SetValue(obj, pvalue);
-                                    }
+                                            val.PropertyInfo.SetValue(val.OwnerObj, Convert.ChangeType(args.NewText, val.PropertyInfo.PropertyType));
 
+                                        //修改父对象值
+                                        if (pval.PropertyInfo.CanWrite)
+                                        {
+                                            pval.PropertyInfo.SetValue(pval.OwnerObj, val.OwnerObj);
+                                        }
+                                    }
                                 }
                             }
                         }

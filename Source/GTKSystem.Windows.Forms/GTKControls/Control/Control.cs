@@ -302,6 +302,12 @@ namespace System.Windows.Forms
                     OnMouseMove(mouseArgs);
                     MouseMove?.Invoke(this, mouseArgs);
                 }
+                else if (owidget.GetAncestor(Gtk.Window.GType).Accessible.Role == Atk.Role.Ruler)
+                {
+                    if (args.Event.Type == Gdk.EventType.ButtonPress)
+                        if (owidget is Gtk.LinkButton || owidget is Gtk.RadioButton || owidget is Gtk.CheckButton)
+                            args.RetVal = true;
+                }
                 else if (args.Event.Type == Gdk.EventType.KeyPress)
                 {
                     Gdk.EventKey eventkey = args.Event as Gdk.EventKey;
@@ -392,36 +398,39 @@ namespace System.Windows.Forms
                 else if (args.Event.Type == Gdk.EventType.ButtonRelease)
                 {
                     Gdk.EventButton eventbutton = args.Event as Gdk.EventButton;
-                    MouseButtons button = MouseButtons.None;
-                    if (eventbutton.Button == 1)
-                        button = MouseButtons.Left;
-                    else if (eventbutton.Button == 2)
-                        button = MouseButtons.Middle;
-                    else if (eventbutton.Button == 3)
-                        button = MouseButtons.Right;
+                    if (owidget.Allocation.Contains((int)eventbutton.X, (int)eventbutton.Y))
+                    {
+                        MouseButtons button = MouseButtons.None;
+                        if (eventbutton.Button == 1)
+                            button = MouseButtons.Left;
+                        else if (eventbutton.Button == 2)
+                            button = MouseButtons.Middle;
+                        else if (eventbutton.Button == 3)
+                            button = MouseButtons.Right;
 
-                    owidget.Window.GetOrigin(out int x, out int y);
-                    if (eventbutton.Button == 1 && Is_DoubleButtonPress == false)
-                    {
-                        OnClick(EventArgs.Empty);
-                        MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
-                        OnMouseClick(mouseArgs3);
-                        Click?.Invoke(this, EventArgs.Empty);
-                        MouseClick?.Invoke(this, mouseArgs3);
-                    }
-                    MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
-                    OnMouseUp(mouseArgs);
-                    MouseUp?.Invoke(this, mouseArgs);
-                    if (eventbutton.Button == 3)
-                    {
-                        if (ContextMenuStrip != null)
+                        owidget.Window.GetOrigin(out int x, out int y);
+                        if (eventbutton.Button == 1 && Is_DoubleButtonPress == false)
                         {
-                            ContextMenuStrip.Widget.ShowAll();
-                            ((Gtk.Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
-                            args.RetVal = true;
+                            OnClick(EventArgs.Empty);
+                            MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
+                            OnMouseClick(mouseArgs3);
+                            Click?.Invoke(this, EventArgs.Empty);
+                            MouseClick?.Invoke(this, mouseArgs3);
                         }
+                        MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)eventbutton.XRoot - x, (int)eventbutton.YRoot - y, 0);
+                        OnMouseUp(mouseArgs);
+                        MouseUp?.Invoke(this, mouseArgs);
+                        if (eventbutton.Button == 3)
+                        {
+                            if (ContextMenuStrip != null)
+                            {
+                                ContextMenuStrip.Widget.ShowAll();
+                                ((Gtk.Menu)ContextMenuStrip.Widget).PopupAtPointer(args.Event);
+                                args.RetVal = true;
+                            }
+                        }
+                        Is_DoubleButtonPress = false;
                     }
-                    Is_DoubleButtonPress = false;
                 }
                 else if (args.Event.Type == Gdk.EventType.TouchBegin)
                 {
@@ -462,46 +471,6 @@ namespace System.Windows.Forms
                         MouseUp?.Invoke(this, mouseArgs);
                     }
                 }
-                //默认配置下，有些控件并不支持触摸板事件，需自行增加相关事件
-                //else if (args.Event.Type == Gdk.EventType.PadButtonPress)
-                //{
-                //    if (args.Args[0] is Gdk.EventPadButton eventbutton)
-                //    {
-                //        MouseButtons button = MouseButtons.Left;
-                //        owidget.Window.GetOrigin(out int x, out int y);
-                //        MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)x, (int)y, 0);
-                //        OnMouseDown(mouseArgs);
-                //        MouseDown?.Invoke(this, mouseArgs);
-                //    }
-                //}
-                //else if (args.Event.Type == Gdk.EventType.TouchpadSwipe)
-                //{
-                //    if (args.Args[0] is Gdk.EventTouchpadSwipe eventmotion)
-                //    {
-                //        int clicks = 0;
-                //        MouseButtons button = MouseButtons.Left;
-                //        owidget.Window.GetOrigin(out int x, out int y);
-                //        MouseEventArgs mouseArgs = new MouseEventArgs(button, clicks, (int)eventmotion.XRoot - x, (int)eventmotion.YRoot - y, 1);
-                //        OnMouseMove(mouseArgs);
-                //        MouseMove?.Invoke(this, mouseArgs);
-                //    }
-                //}
-                //else if (args.Event.Type == Gdk.EventType.PadButtonRelease)
-                //{
-                //    if (args.Args[0] is Gdk.EventPadButton eventbutton)
-                //    {
-                //        MouseButtons button = MouseButtons.Left;
-                //        owidget.Window.GetOrigin(out int x, out int y);
-                //        OnClick(EventArgs.Empty);
-                //        MouseEventArgs mouseArgs3 = new MouseEventArgs(button, 1, (int)x, (int)y, 0);
-                //        OnMouseClick(mouseArgs3);
-                //        Click?.Invoke(this, EventArgs.Empty);
-                //        MouseClick?.Invoke(this, mouseArgs3);
-                //        MouseEventArgs mouseArgs = new MouseEventArgs(button, 1, (int)x, (int)y, 0);
-                //        OnMouseUp(mouseArgs);
-                //        MouseUp?.Invoke(this, mouseArgs);
-                //    }
-                //}
                 else if (args.Event.Type == Gdk.EventType.Configure)
                 {
                     OnMove(EventArgs.Empty);
@@ -857,15 +826,25 @@ namespace System.Windows.Forms
 
         #region 背景
         private Drawing.Image _image;
+        [Browsable(true)]
+        [Description("控件显示的图像")]
         public virtual System.Drawing.Image Image { get => _image; set { _image = value; UpdateStyle(); } }
+        [Browsable(true)]
+        [Description("控件图像显示的定位方式")]
         public virtual System.Drawing.ContentAlignment ImageAlign { get; set; }
 
         public virtual bool UseVisualStyleBackColor { get; set; } = true;
         public virtual Color VisualStyleBackColor { get; }
         private ImageLayout _backgroundImageLayout;
+        [Browsable(true)]
+        [Description("控件背景图像显示的定位方式")]
         public virtual ImageLayout BackgroundImageLayout { get => _backgroundImageLayout; set { _backgroundImageLayout = value; if (ISelf != null) { ISelf.Override.BackgroundImageLayout = value; } } }
         private Drawing.Image _backgroundImage;
+        [Browsable(true)]
+        [Description("控件的背景图像")]
         public virtual Drawing.Image BackgroundImage { get => _backgroundImage; set { _backgroundImage = value; if (ISelf != null) { ISelf.Override.BackgroundImage = value; } UpdateStyle(); } }
+        [Browsable(true)]
+        [Description("控件的背景颜色")]
         public virtual Color BackColor
         {
             get
@@ -891,6 +870,8 @@ namespace System.Windows.Forms
         public virtual AccessibleRole AccessibleRole { get; set; }
         public virtual bool AllowDrop { get; set; }
         private AnchorStyles _anchor;
+        [Browsable(true)]
+        [Description("控件在父容器四边停靠的定位方式、边距")]
         public virtual AnchorStyles Anchor
         {
             get => _anchor;
@@ -952,6 +933,8 @@ namespace System.Windows.Forms
         }
         public virtual Point AutoScrollOffset { get; set; }
         private bool _autoSize;
+        [Browsable(true)]
+        [Description("控件大小是否自动调整")]
         public virtual bool AutoSize
         {
             get => _autoSize;
@@ -972,7 +955,8 @@ namespace System.Windows.Forms
         public virtual string CompanyName { get; }
 
         public virtual bool ContainsFocus { get; }
-
+        [Browsable(true)]
+        [Description("右键打开的上下文菜单")]
         public virtual ContextMenuStrip ContextMenuStrip { get; set; }
 
         public virtual ControlCollection Controls { get; }
@@ -1019,6 +1003,8 @@ namespace System.Windows.Forms
 
         public virtual bool Disposing { get; }
         private DockStyle _dock;
+        [Browsable(true)]
+        [Description("控件在父容器四边停靠的定位方式、边距")]
         public virtual DockStyle Dock
         {
             get
@@ -1121,10 +1107,14 @@ namespace System.Windows.Forms
                 }
             }
         }
+        [Browsable(true)]
+        [Description("控件是否可以操作、运行")]
         public virtual bool Enabled { get { return this.Widget.Sensitive; } set { this.Widget.Sensitive = value; } }
 
         public virtual bool Focused { get { return this.Widget.IsFocus; } }
         private Font _Font;
+        [Browsable(true)]
+        [Description("控件的字符所使用的字体")]
         public virtual Font Font
         {
             get
@@ -1138,6 +1128,8 @@ namespace System.Windows.Forms
             }
         }
         private Color _ForeColor;
+        [Browsable(true)]
+        [Description("控件的字符所使用的颜色")]
         public virtual Color ForeColor
         {
             get { return _ForeColor; }
@@ -1184,6 +1176,8 @@ namespace System.Windows.Forms
             get => this.Widget.MarginBottom;
         }
         internal bool LockLocation = false;//由于代码有顺序执行，特殊锁定
+        [Browsable(true)]
+        [Description("控件在父容器的位置")]
         public virtual Point Location
         {
             get
@@ -1200,6 +1194,8 @@ namespace System.Windows.Forms
             }
         }
         public virtual string Name { get { return this.Widget.Name; } set { this.Widget.Name = value; } }
+        [Browsable(true)]
+        [Description("控件内边距区域，控件内容与其边框之间的空间")]
         public virtual Padding Padding { get; set; }
         public virtual Control Parent { get; set; }
         public virtual Size PreferredSize { get; }
@@ -1210,6 +1206,8 @@ namespace System.Windows.Forms
 
         public virtual RightToLeft RightToLeft { get; set; }
         private Size _size;
+        [Browsable(true)]
+        [Description("控件面积的长宽")]
         public virtual Size Size
         {
             get
@@ -1273,6 +1271,8 @@ namespace System.Windows.Forms
         public virtual int TabIndex { get; set; }
         public virtual bool TabStop { get; set; }
         public virtual object Tag { get; set; }
+        [Browsable(true)]
+        [Description("控件显示的文本字符")]
         public virtual string Text { get; set; }
         public virtual Control TopLevelControl { get; }
         public virtual bool UseWaitCursor { get; set; }
@@ -1650,7 +1650,7 @@ namespace System.Windows.Forms
                 {
                     result = method?.DynamicInvoke(args);
                     return false;
-                }); 
+                });
                 return result;
             }
         }
@@ -2108,8 +2108,19 @@ namespace System.Windows.Forms
 
         public void SetBounds(Rectangle bounds, BoundsSpecified specified)
         {
-            Location = bounds.Location;
-            Size = bounds.Size;
+            if (specified.HasFlag(BoundsSpecified.Location) || specified.HasFlag(BoundsSpecified.All))
+                this.Location = bounds.Location;
+            else if (specified.HasFlag(BoundsSpecified.X))
+                this.Left = bounds.Left;
+            else if (specified.HasFlag(BoundsSpecified.Y))
+                this.Top = bounds.Top;
+
+            if (specified.HasFlag(BoundsSpecified.Size) || specified.HasFlag(BoundsSpecified.All))
+                this.Size = bounds.Size;
+            else if (specified.HasFlag(BoundsSpecified.Width))
+                this.Width = bounds.Width;
+            else if (specified.HasFlag(BoundsSpecified.Height))
+                this.Height = bounds.Height;
         }
 
         void IArrangedElement.PerformLayout(IArrangedElement affectedElement, string propertyName)

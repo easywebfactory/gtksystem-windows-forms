@@ -14,6 +14,8 @@
             this.Wrap = true;
             this.LineWrap = true;
             this.LineWrapMode = Pango.WrapMode.WordChar;
+            this.Selectable = true;
+            this.Drawn += LabelBase_Drawn;
         }
 
         public LabelBase(string text) : base(text)
@@ -27,6 +29,7 @@
             this.Wrap = true;
             this.LineWrap = true;
             this.LineWrapMode = Pango.WrapMode.WordChar;
+            this.Selectable = true;
             this.Drawn += LabelBase_Drawn;
         }
 

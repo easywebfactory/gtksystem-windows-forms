@@ -5,6 +5,7 @@
  * author:chenhongjin
  */
 
+using GLib;
 using Gtk;
 using System.Collections;
 using System.ComponentModel;
@@ -42,7 +43,7 @@ namespace System.Windows.Forms
                     lay.HeightRequest = 1;
                     if (__owner is ScrollableControl scrollableControl)
                     {
-                        scrollableControl.UpdatePerformLayout(lay, true);
+                        scrollableControl.PerformLayout(scrollableControl, nameof(scrollableControl.AutoScroll));
                     }
                 }
             }
@@ -53,7 +54,7 @@ namespace System.Windows.Forms
                 {
                     if (__owner is ScrollableControl scrollableControl)
                     {
-                        scrollableControl.UpdatePerformLayout(lay, scrollableControl.AutoScroll);
+                        scrollableControl.PerformLayout(scrollableControl, nameof(scrollableControl.AutoScroll));
                     }
                     List<Control> _tabs = InnerList.ConvertAll<Control>(o => (Control)o);
                     _tabs.Sort(new Comparison<Control>((a, b) => { return a.TabIndex.CompareTo(b.TabIndex); }));
@@ -277,7 +278,8 @@ namespace System.Windows.Forms
                 {
                     return;
                 }
-                if (InnerList.Remove(value))
+                InnerList.Remove(value);
+                if (__ownerControl.Children.Any(o => o.Equals(value.Widget)))
                     __ownerControl.Remove(value.Widget);
             }
 
@@ -302,7 +304,8 @@ namespace System.Windows.Forms
                 else if (element is ArrangedElementWidget widget)
                 {
                     InnerList.RemoveAt(index);
-                    __ownerControl.Remove(widget.GetWidget);
+                    if (__ownerControl.Children.Any(o => o.Equals(widget.GetWidget)))
+                        __ownerControl.Remove(widget.GetWidget);
                 }
             }
 
@@ -415,12 +418,12 @@ namespace System.Windows.Forms
 
             public void PerformLayout(IArrangedElement affectedElement, string propertyName)
             {
-                
+
             }
 
             public void SetBounds(Drawing.Rectangle bounds, BoundsSpecified specified)
             {
-                
+
             }
         }
     }

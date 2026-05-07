@@ -22,6 +22,9 @@ namespace System.Windows.Forms
         public abstract PropertyDescriptor PropertyDescriptor { get; }
 
         public abstract object Value { get; }
+        public virtual void SetValue(object val) {
+            
+        }
 
         public virtual bool Expandable => false;
 
