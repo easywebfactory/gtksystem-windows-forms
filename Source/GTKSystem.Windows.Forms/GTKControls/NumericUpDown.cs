@@ -22,7 +22,6 @@ namespace System.Windows.Forms
 
         private void Self_ValueChanged(object sender, EventArgs e)
         {
-            Console.WriteLine(self.WidgetPath.ToString());
             if (ValueChanged != null && self.IsVisible)
                 ValueChanged(this, e);
         }

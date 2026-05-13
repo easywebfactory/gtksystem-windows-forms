@@ -229,6 +229,7 @@ namespace System.Windows.Forms
                 this.DockChanged += Control_DockChanged;
                 this.AnchorChanged += Control_AnchorChanged;
             }
+            OnConstructorInit();
         }
         private void Control_CursorChanged(object? sender, EventArgs e)
         {
@@ -255,6 +256,7 @@ namespace System.Windows.Forms
                 Load?.Invoke(this, e);
                 CursorChanged(this, EventArgs.Empty);
                 InitDockAnchorStyle();
+                OnRealizedEvent();
             }
         }
         private void Widget_ParentSet(object o, ParentSetArgs args)
@@ -277,6 +279,7 @@ namespace System.Windows.Forms
             Gtk.Widget owidget = o as Gtk.Widget;
             if (owidget.IsRealized)
             {
+                OnWidgetEvent(owidget, args);
                 if (args.Event.Type == Gdk.EventType.MotionNotify)
                 {
                     int clicks = 0;
@@ -301,12 +304,6 @@ namespace System.Windows.Forms
                     MouseEventArgs mouseArgs = new MouseEventArgs(button, clicks, (int)eventmotion.XRoot - x, (int)eventmotion.YRoot - y, 1);
                     OnMouseMove(mouseArgs);
                     MouseMove?.Invoke(this, mouseArgs);
-                }
-                else if (owidget.GetAncestor(Gtk.Window.GType).Accessible.Role == Atk.Role.Ruler)
-                {
-                    if (args.Event.Type == Gdk.EventType.ButtonPress)
-                        if (owidget is Gtk.LinkButton || owidget is Gtk.RadioButton || owidget is Gtk.CheckButton)
-                            args.RetVal = true;
                 }
                 else if (args.Event.Type == Gdk.EventType.KeyPress)
                 {
@@ -567,6 +564,17 @@ namespace System.Windows.Forms
         }
         #endregion
 
+        #region 这些方法主要是方便上层类的扩展方法可以通过重载这个方法来启动
+
+        public virtual void OnConstructorInit()
+        {
+        }
+        public virtual void OnRealizedEvent() { 
+        }
+        public virtual void OnWidgetEvent(Gtk.Widget widget, WidgetEventArgs args)
+        {
+        }
+        #endregion
         //===================
         protected virtual void InitStyle(Gtk.Widget widget)
         {

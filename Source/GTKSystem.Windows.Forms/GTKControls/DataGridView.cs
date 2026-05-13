@@ -79,7 +79,6 @@ namespace System.Windows.Forms
                 if (row.TreeIter.Equals(iter))
                 {
                     return row;
-                    break;
                 }
                 else if (depth > 1 && row.Children.Count > 0)
                 {
@@ -264,6 +263,7 @@ namespace System.Windows.Forms
                 {
                     LoadListSource();
                 }
+                DataBindingComplete?.Invoke(this, new DataGridViewBindingCompleteEventArgs(ListChangedType.Reset));
             }
             _Created = true;
         }
@@ -651,7 +651,7 @@ namespace System.Windows.Forms
         public event EventHandler CellBorderStyleChanged;
         [Obsolete("此事件未实现，自行开发")]
         public event DataGridViewDataErrorEventHandler DataError;
-        [Obsolete("此事件未实现，自行开发")]
+
         public event DataGridViewBindingCompleteEventHandler DataBindingComplete;
         [Obsolete("此事件未实现，自行开发")]
         public event EventHandler CurrentCellDirtyStateChanged;

@@ -123,28 +123,49 @@ namespace System.Windows.Forms
             else if (!string.IsNullOrWhiteSpace(this.InitialDirectory))
                 fileDialog.SetCurrentFolder(this.InitialDirectory);
 
-
-            if (_filter != null)
+            if (!string.IsNullOrEmpty(_filter))
             {
                 string[] filters = _filter.Split('|');
                 for (int i = 1; i < filters.Length; i += 2)
                 {
                     string[] patterns = filters[i].Split(';');
+                    Gtk.FileFilter ffilter = new Gtk.FileFilter();
+                    ffilter.Name = $"{filters[i - 1]}（{filters[i]}）";
                     foreach (string pattern in patterns)
                     {
-                        Gtk.FileFilter ffilter = new Gtk.FileFilter();
                         string extand = pattern.TrimStart(new char[] { '*', ' ' });
                         if (MimeMapping.ContainsKey(extand))
                         {
                             ffilter.AddMimeType(MimeMapping[extand]);
                         }
                         ffilter.AddPattern(pattern);
-                        ffilter.Name = $"{filters[i - 1]}（{pattern}）";
-                        fileDialog.AddFilter(ffilter);
-                        if(pattern== DefaultExt)
+                    }
+                    fileDialog.AddFilter(ffilter);
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(DefaultExt))
+            {
+                string extand = DefaultExt.TrimStart(new char[] { '*', ' ' });
+                if (fileDialog.Filters.Length > 0)
+                {
+                    foreach (Gtk.FileFilter item in fileDialog.Filters)
+                    {
+                        if (item.Name.Contains(extand))
                         {
-                            fileDialog.Filter = ffilter;
+                            fileDialog.Filter = item;
+                            break;
                         }
+                    }
+                }
+                else
+                {
+                    if (MimeMapping.ContainsKey(extand))
+                    {
+                        Gtk.FileFilter ffilter = new Gtk.FileFilter();
+                        ffilter.Name = $"{DefaultExt}（{DefaultExt}）";
+                        ffilter.AddMimeType(MimeMapping[extand]);
+                        ffilter.AddPattern(extand);
+                        fileDialog.Filter = ffilter;
                     }
                 }
             }
