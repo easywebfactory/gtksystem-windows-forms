@@ -229,7 +229,7 @@ namespace System.Windows.Forms
                 this.DockChanged += Control_DockChanged;
                 this.AnchorChanged += Control_AnchorChanged;
             }
-            OnConstructorInit();
+            GetService(this.GetType());
         }
         private void Control_CursorChanged(object? sender, EventArgs e)
         {
@@ -256,7 +256,6 @@ namespace System.Windows.Forms
                 Load?.Invoke(this, e);
                 CursorChanged(this, EventArgs.Empty);
                 InitDockAnchorStyle();
-                OnRealizedEvent();
             }
         }
         private void Widget_ParentSet(object o, ParentSetArgs args)
@@ -279,7 +278,7 @@ namespace System.Windows.Forms
             Gtk.Widget owidget = o as Gtk.Widget;
             if (owidget.IsRealized)
             {
-                OnWidgetEvent(owidget, args);
+                WidgetEventDo?.Invoke(owidget, args);
                 if (args.Event.Type == Gdk.EventType.MotionNotify)
                 {
                     int clicks = 0;
@@ -564,16 +563,8 @@ namespace System.Windows.Forms
         }
         #endregion
 
-        #region 这些方法主要是方便上层类的扩展方法可以通过重载这个方法来启动
-
-        public virtual void OnConstructorInit()
-        {
-        }
-        public virtual void OnRealizedEvent() { 
-        }
-        public virtual void OnWidgetEvent(Gtk.Widget widget, WidgetEventArgs args)
-        {
-        }
+        #region 扩展方法
+        public Action<Gtk.Widget, WidgetEventArgs> WidgetEventDo;
         #endregion
         //===================
         protected virtual void InitStyle(Gtk.Widget widget)
