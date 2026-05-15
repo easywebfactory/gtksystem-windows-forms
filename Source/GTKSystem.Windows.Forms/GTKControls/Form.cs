@@ -293,7 +293,7 @@ namespace System.Windows.Forms
         }
         public bool TopMost { 
             get { return self.IsActive; } 
-            set { self.KeepAbove = value; self.Activate();} 
+            set { self.KeepAbove = value; self.Activate(); self.Window?.Raise(); }
         }
         public bool KeyPreview { get; set; }
         public MenuStrip MainMenuStrip { get; set; }

@@ -127,9 +127,9 @@ namespace System.Windows.Forms
         {
             if (node.Parent != null && node.Parent.Name != "__root__")
             {
-                paths.Add(node.Text);
                 GetFullPath(node.Parent, paths);
             }
+            paths.Add(node.Text);
         }
         private bool _IsSelected;
         public bool IsSelected

@@ -43,7 +43,9 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.Override = new GtkControlOverride(this);
             this.WindowPosition = Gtk.WindowPosition.Center;
             this.BorderWidth = 0;
-            if(Titlebar is Gtk.HeaderBar headerbar)
+            this.Valign = Gtk.Align.Start;
+            this.Halign = Gtk.Align.Start;
+            if (Titlebar is Gtk.HeaderBar headerbar)
             {
                 headerbar.DecorationLayout = "menu:close";
                 maximize = new Gtk.Button("window-maximize-symbolic", IconSize.SmallToolbar)
