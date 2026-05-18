@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GTKSystem.Windows.Forms.Resources;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -188,7 +189,7 @@ namespace GTKSystem.Resources
                         }
                         else
                         {
-                            Stream stream = typeof(GTKSystem.Resources.ResourceManager).Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.Panel.ico");
+                            Stream stream = typeof(GTKSystem.Resources.ResourceManager).Assembly.GetManifestResourceStream(AssemblyResources.ToSystemUri("Panel.ico"));
                             return new Icon(stream);
                         }
                     }
@@ -200,7 +201,7 @@ namespace GTKSystem.Resources
                         }
                         else
                         {
-                            Stream stream = typeof(GTKSystem.Resources.ResourceManager).Assembly.GetManifestResourceStream("GTKSystem.Windows.Forms.Resources.System.image-missing16.png");
+                            Stream stream = typeof(GTKSystem.Resources.ResourceManager).Assembly.GetManifestResourceStream(AssemblyResources.ToSystemUri("image-missing16.png"));
                             return new Bitmap(stream);
                         }
                     }

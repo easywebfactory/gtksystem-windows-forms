@@ -270,8 +270,8 @@ internal sealed partial class PropertyGridView
     public event SelectedGridItemChangedEventHandler SelectedGridItemChanged;
     public class CellRendererExpander : Gtk.CellRendererToggle
     {
-        Pixbuf gonextpixbuf = new Pixbuf(typeof(CellRendererExpander).Assembly, "GTKSystem.Windows.Forms.Resources.System.go-next-symbolic.png");
-        Pixbuf godownixbuf = new Pixbuf(typeof(CellRendererExpander).Assembly, "GTKSystem.Windows.Forms.Resources.System.go-down-symbolic.png");
+        Pixbuf gonextpixbuf = new Pixbuf(typeof(CellRendererExpander).Assembly, AssemblyResources.ToSystemUri("go-next-symbolic.png"));
+        Pixbuf godownixbuf = new Pixbuf(typeof(CellRendererExpander).Assembly, AssemblyResources.ToSystemUri("go-down-symbolic.png"));
         public CellRendererExpander(PropertyGridView owner)
         {
 

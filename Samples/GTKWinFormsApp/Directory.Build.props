@@ -3,4 +3,14 @@
 		<BaseIntermediateOutputPath>obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
 		<IntermediateOutputPath>$(BaseIntermediateOutputPath)\$(TargetFramework)</IntermediateOutputPath>
 	</PropertyGroup>
+	<ItemGroup Condition="('$(ImplicitUsings)' == 'true' or '$(ImplicitUsings)' == 'enable')">
+		<Using Include="System" />
+		<Using Include="System.Collections.Generic" />
+		<Using Include="System.Drawing" />
+		<Using Include="System.IO" />
+		<Using Include="System.Linq" />
+		<Using Include="System.Threading" />
+		<Using Include="System.Threading.Tasks" />
+		<Using Include="System.Windows.Forms" />
+	</ItemGroup>
 </Project>
