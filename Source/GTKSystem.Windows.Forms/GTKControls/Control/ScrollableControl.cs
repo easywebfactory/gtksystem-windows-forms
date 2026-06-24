@@ -1,4 +1,5 @@
 ﻿using Gtk;
+using GTKSystem.Windows.Forms;
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
 using System.ComponentModel;
 using System.Drawing;
@@ -48,10 +49,10 @@ namespace System.Windows.Forms
                 PerformLayout(this, "AutoScroll");
             }
         }
-
+       
         public override void PerformLayout(Control affectedControl, string affectedProperty)
         {
-            if (affectedProperty == "AutoScroll" && affectedControl.Widget is Gtk.ScrolledWindow sw)
+            if (affectedProperty== "AutoScroll" && affectedControl.Widget is Gtk.ScrolledWindow sw)
             {
                 if (sw.Child is Gtk.Viewport view)
                 {
@@ -147,7 +148,7 @@ namespace System.Windows.Forms
                             vvalue -= win.Titlebar.AllocatedHeight;
                     }
                     Gtk.ScrolledWindow scrolled = scrollbase.ScrolledWindow;
-                    if (scrolled != null)
+                    if(scrolled != null) 
                         scrollbase.ScrollView(hvalue + scrolled.Hadjustment.Value, vvalue + scrolled.Vadjustment.Value);
                 }
             }

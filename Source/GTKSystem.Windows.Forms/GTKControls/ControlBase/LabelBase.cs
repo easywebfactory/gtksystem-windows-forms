@@ -1,4 +1,7 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿using Gdk;
+using GLib;
+
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public sealed class LabelBase : Gtk.Label, IControlGtk
     {
@@ -17,7 +20,6 @@
             this.Selectable = true;
             this.Drawn += LabelBase_Drawn;
         }
-
         public LabelBase(string text) : base(text)
         {
             this.Override = new GtkControlOverride(this);

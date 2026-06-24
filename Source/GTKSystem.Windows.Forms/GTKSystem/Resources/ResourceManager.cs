@@ -1,18 +1,12 @@
 ﻿using GTKSystem.Windows.Forms.Resources;
-using System;
 using System.Collections;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Globalization;
-using System.IO;
 using System.Reflection;
-using System.Resources;
-using System.Runtime.Serialization;
 using System.Windows.Forms;
 using System.Xml;
-using System.Xml.Linq;
 
 namespace GTKSystem.Resources
 {
@@ -53,6 +47,8 @@ namespace GTKSystem.Resources
             {
                 string resourceDirctory = "Resources";
                 string filepath = Path.Combine(resourceDirctory, $"{Path.GetExtension(_baseName).TrimStart('.')}.resx");
+                if (!System.IO.File.Exists(filepath))
+                    filepath = $"{Path.GetExtension(_baseName).TrimStart('.')}.resx";
                 if (System.IO.File.Exists(filepath))
                 {
                     try
@@ -160,6 +156,8 @@ namespace GTKSystem.Resources
         {
             GetResourceInfo.ResourceName = name;
             object obj = ReadResourceData(name);
+            if (obj == null)
+                obj = ReadResourceFile(name);
             if (obj == null)
             {
                 if (name.EndsWith(".ImageStream"))

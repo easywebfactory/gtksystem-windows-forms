@@ -7,9 +7,9 @@ namespace GTKSystem
 {
     internal static class SR
 	{
-		private static ResourceManager s_resourceManager;
+		private static GTKSystem.Resources.ResourceManager s_resourceManager;
 
-		internal static ResourceManager ResourceManager => s_resourceManager ?? (s_resourceManager = new GTKSystem.Resources.ResourceManager(typeof(FxResources.System.Resources.Extensions.SR)));
+		internal static GTKSystem.Resources.ResourceManager ResourceManager => s_resourceManager ?? (s_resourceManager = new GTKSystem.Resources.ResourceManager(typeof(FxResources.System.Resources.Extensions.SR)));
 
 		internal static string ArgumentOutOfRange_StreamLength => GetResourceString("ArgumentOutOfRange_StreamLength");
 

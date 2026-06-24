@@ -20,6 +20,7 @@ namespace System.Windows.Forms
             self.ToolbarStyle = ToolbarStyle.BothHoriz;
             self.IconSize = IconSize.SmallToolbar;
             toolStripItemCollection = new ToolStripItemCollection(this);
+            Dock = DockStyle.Top;
         }
         public ToolStripItemCollection Items
         {
@@ -59,12 +60,9 @@ namespace System.Windows.Forms
                     self.ToolbarStyle = ToolbarStyle.BothHoriz;
                     self.IconSize = IconSize.SmallToolbar;
                 }
-                //if (value == TextImageRelation.Overlay )
-                //{
-                //    self.ToolbarStyle = ToolbarStyle.BothHoriz;
-                //    self.IconSize = IconSize.SmallToolbar;
-                //}
             }
         }
+        public ToolStripGripStyle GripStyle{ get; set; }
+        public ToolStripRenderMode RenderMode { get; set; }
     }
 }

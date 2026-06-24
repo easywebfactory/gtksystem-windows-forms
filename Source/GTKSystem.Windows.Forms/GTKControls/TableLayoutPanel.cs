@@ -80,11 +80,18 @@ namespace System.Windows.Forms
                     self.StyleContext.AddClass("TableCellBorder");
             }
         }
-		public new TableLayoutControlCollection Controls
+#if NET5_0_OR_GREATER
+        public override TableLayoutControlCollection Controls
+        {
+            get => _controls;
+        }
+#else
+        public new TableLayoutControlCollection Controls
 		{
 			get => _controls;
         }
-		private int _ColumnCount;
+#endif
+        private int _ColumnCount;
 		public int ColumnCount
 		{
             get => _ColumnCount;

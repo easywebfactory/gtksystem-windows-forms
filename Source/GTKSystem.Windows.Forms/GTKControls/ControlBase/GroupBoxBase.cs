@@ -1,7 +1,7 @@
 ﻿using Gdk;
-using GLib;
 using Gtk;
 using System;
+using System.Windows.Forms;
 
 namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
@@ -24,6 +24,8 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             contaner.Valign = Align.Fill;
             Gtk.DrawingArea background = new Gtk.DrawingArea();
             background.Events = Gdk.EventMask.EnterNotifyMask;
+            background.Events |= Gdk.EventMask.ButtonPressMask;
+            background.Events |= Gdk.EventMask.ButtonReleaseMask;
             background.Drawn += Background_Drawn;
             contaner.Add(background);
             fixedcontaner.Events &= EventMask.PointerMotionMask;
@@ -49,7 +51,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             fixedcontaner.Vadjustment.Value = 24;
         }
-
         public event System.Windows.Forms.ScrollEventHandler Scroll;
         public void Pack(Widget child, Align align, bool expand)
         {

@@ -255,7 +255,7 @@ namespace System.Drawing
         //     The string that represents this System.Drawing.FontFamily.
         public override string ToString()
         {
-            return Name;
+            return $"[{GetType().Name}: Name={Name}]";
         }
     }
 }

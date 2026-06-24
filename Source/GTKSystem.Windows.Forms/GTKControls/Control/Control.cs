@@ -843,7 +843,8 @@ namespace System.Windows.Forms
         [Description("控件的背景图像")]
         public virtual Drawing.Image BackgroundImage { get => _backgroundImage; set { _backgroundImage = value; if (ISelf != null) { ISelf.Override.BackgroundImage = value; } UpdateStyle(); } }
         [Browsable(true)]
-        [Description("控件的背景颜色")]
+        //[Description("控件的背景颜色")]
+        [SRDescription("控件的背景颜色")]
         public virtual Color BackColor
         {
             get
@@ -955,7 +956,8 @@ namespace System.Windows.Forms
 
         public virtual bool ContainsFocus { get; }
         [Browsable(true)]
-        [Description("右键打开的上下文菜单")]
+        //[Description("右键打开的上下文菜单")]
+        [SRDescription("右键打开的上下文菜单")]
         public virtual ContextMenuStrip ContextMenuStrip { get; set; }
 
         public virtual ControlCollection Controls { get; }
@@ -1988,6 +1990,7 @@ namespace System.Windows.Forms
             catch { }
             GC.SuppressFinalize(this);
             base.Dispose(disposing);
+            GtkControl = null;
         }
 
         protected virtual CreateParams CreateParams

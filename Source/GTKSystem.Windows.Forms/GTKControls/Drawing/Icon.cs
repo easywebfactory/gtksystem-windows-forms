@@ -1,8 +1,5 @@
 using Gdk;
-using GLib;
-using GTKSystem.Resources;
 using System.ComponentModel;
-using System.IO;
 using System.Runtime.Serialization;
 
 namespace System.Drawing

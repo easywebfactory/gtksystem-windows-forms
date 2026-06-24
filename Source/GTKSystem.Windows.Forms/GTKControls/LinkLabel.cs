@@ -22,7 +22,6 @@ namespace System.Windows.Forms
             self.Clicked += LinkLabel_Click;
             self.ActivateLink += LinkLabel_ActivateLink;
         }
-
         private void LinkLabel_ActivateLink(object o, Gtk.ActivateLinkArgs args)
         {
             if (LinkClicked != null)
@@ -33,7 +32,6 @@ namespace System.Windows.Forms
 
         private void LinkLabel_Click(object sender, EventArgs e)
         {
-            //Console.WriteLine("LinkLabel_Click");
             if (Click != null)
             {
                 Click(this, e);
@@ -45,7 +43,7 @@ namespace System.Windows.Forms
 
         public event LinkLabelLinkClickedEventHandler LinkClicked;
 
-        public bool LinkVisited { get; set; }
+        public bool LinkVisited { get => self.Visited; set => self.Visited = value; }
 
         public LinkCollection Links { get; }
 

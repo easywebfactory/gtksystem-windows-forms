@@ -639,6 +639,6 @@ namespace System.Drawing
         //
         // 返回结果:
         //     A string that represents this System.Drawing.Font.
-        public override string ToString() { return "Font"; }
+        public override string ToString() => FontFamily == null ? $"[{GetType().Name}: Empty]" : $"[{GetType().Name}: Name={FontFamily.Name}, Size={Size}, Units={Unit}, Style={Style}]";
     }
 }

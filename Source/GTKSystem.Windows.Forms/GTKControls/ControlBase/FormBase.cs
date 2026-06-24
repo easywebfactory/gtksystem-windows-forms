@@ -48,6 +48,21 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             if (Titlebar is Gtk.HeaderBar headerbar)
             {
                 headerbar.DecorationLayout = "menu:close";
+                headerbar.ShowCloseButton = false;
+                Gtk.Button close = new Gtk.Button("window-close-symbolic", IconSize.SmallToolbar)
+                {
+                    Name = "close",
+                    Visible = true,
+                    Relief = ReliefStyle.None,
+                    Valign = Align.Center,
+                    Halign = Align.Center,
+                    AlwaysShowImage = true
+                };
+                close.StyleContext.AddClass("close");
+                close.StyleContext.AddClass("titlebutton");
+                close.Clicked += Close_Clicked;
+                headerbar.PackEnd(close);
+
                 maximize = new Gtk.Button("window-maximize-symbolic", IconSize.SmallToolbar)
                 {
                     Name = "maximize",
@@ -76,7 +91,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 headerbar.PackEnd(minimize);
             }
           
-            this.SetDefaultSize(100, 100);
+            this.SetDefaultSize(100, 10);
             this.TypeHint = Gdk.WindowTypeHint.Normal;
             this.Deletable = true;
             this.Decorated = true;
@@ -98,7 +113,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.ContentArea.Homogeneous = false;
             this.ContentArea.PackStart(ScrolledView, true, true, 0);
             this.ContentArea.StyleContext.AddClass("Form");
-
             contaner.Valign = Gtk.Align.Fill;
             contaner.Halign = Gtk.Align.Fill;
             Gtk.DrawingArea background = new Gtk.DrawingArea();
@@ -107,6 +121,12 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             contaner.Add(background);
             ScrolledView.Child = contaner;
         }
+
+        private void Close_Clicked(object? sender, EventArgs e)
+        {
+            this.CloseWindow();
+        }
+
         private void Background_Drawn(object o, DrawnArgs args)
         {
             Override.OnPaint(args.Cr);
@@ -126,24 +146,58 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 maximize.StyleContext.RemoveClass("restore");
             }
         }
+        Size prevSize=new Size(0, 0);
         private void maximize_Clicked(object? sender, EventArgs e)
         {
             var maximize = sender as Gtk.Button;
             if (maximize.Name == "restore")
             {
-                this.Unmaximize();
+                if (this.IsToplevel)
+                {
+                    this.Unmaximize();
+                }
+                else
+                {
+                    this.Halign = Align.Start;
+                    this.Valign = Align.Start;
+                    this.SetSizeRequest(prevSize.Width, prevSize.Height);
+                }
                 maximize.Name = "maximize";
             }
             else
             {
-                this.Maximize();
+                if (this.IsToplevel)
+                {
+                    this.Maximize();
+                }
+                else
+                {
+                    prevSize.Width = this.AllocatedWidth;
+                    prevSize.Height = this.AllocatedHeight;
+                    this.Halign = Align.Fill;
+                    this.Valign = Align.Fill;
+                    this.SetSizeRequest(-1, -1);
+                }
                 maximize.Name = "restore";
             }
         }
 
         private void minimize_Clicked(object? sender, EventArgs e)
         {
-            this.Iconify();
+            if (this.IsToplevel)
+            {
+                this.Iconify();
+            }
+            else
+            {
+                maximize.Image = Gtk.Image.NewFromIconName("window-restore-symbolic", IconSize.SmallToolbar);
+                maximize.Name = "restore";
+                prevSize.Width = this.AllocatedWidth;
+                prevSize.Height = this.AllocatedHeight;
+                this.Halign = Align.Start;
+                this.Valign = Align.End;
+                this.SetSizeRequest(100, 50);
+            }
         }
         public bool MaximizeBox
         {
@@ -194,13 +248,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
         {
             if (args.ResponseId == ResponseType.DeleteEvent)
             {
-                if (this.Data["Control"] is Form from1)
-                {
-                    if (this.CloseWindow(true))
-                    {
-                        from1.Dispose();
-                    }
-                }
+                this.CloseWindow(true);
             }
         }
         private void Vadjustment_ValueChanged(object sender, EventArgs e)
@@ -227,11 +275,10 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             isCloseWindow = false;
             if (!CloseWindowEvent(this, EventArgs.Empty))
             {
-                this.Dispose();
-                this.Destroy();
                 if (this.Data["Control"] is Form from1)
                 {
                     from1.Dispose();
+                    this.Destroy();
                 }
                 isCloseWindow = true;
             }

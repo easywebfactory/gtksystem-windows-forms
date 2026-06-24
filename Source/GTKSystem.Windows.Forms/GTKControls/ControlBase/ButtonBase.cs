@@ -16,7 +16,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
             this.ButtonReleaseEvent += ButtonBase_ButtonReleaseEvent;
             this.Drawn += ButtonBase_Drawn;
         }
-
         private void ButtonBase_Drawn(object o, Gtk.DrawnArgs args)
         {
             Override.OnPaint(args.Cr);
@@ -29,7 +28,6 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
                 ((System.Windows.Forms.Form)form.Data["Control"]).DialogResult = DialogResult;
             }
         }
-
         public System.Windows.Forms.DialogResult DialogResult { get; set; }
         public string Text { get => ((Gtk.Label)Child).Text; set => ((Gtk.Label)Child).Text = value; }
     }

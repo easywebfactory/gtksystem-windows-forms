@@ -8,7 +8,7 @@ namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
     public sealed class BoxBase: Gtk.Box, IControlGtk
     {
         public GtkControlOverride Override { get; set; }
-        public BoxBase(Orientation orientation, int spacing) : base(orientation, spacing)
+        public BoxBase(Gtk.Orientation orientation, int spacing) : base(orientation, spacing)
         {
             this.Override = new GtkControlOverride(this);
             base.Valign = Gtk.Align.Start;

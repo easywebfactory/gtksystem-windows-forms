@@ -1,4 +1,6 @@
-﻿namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
+﻿using Gdk;
+
+namespace GTKSystem.Windows.Forms.GTKControls.ControlBase
 {
     public sealed class RadioButtonBase : Gtk.RadioButton, IControlGtk
     {

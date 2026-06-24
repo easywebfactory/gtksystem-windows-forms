@@ -6,10 +6,7 @@
  * date: 2024/1/3
  */
 using GTKSystem.Windows.Forms.GTKControls.ControlBase;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace System.Windows.Forms
 {
@@ -53,7 +50,7 @@ namespace System.Windows.Forms
         public override string Text { get { return _tabLabel.Text; } set { _tabLabel.Text = value; } }
         public Gtk.Label TabLabel { get { return _tabLabel; } }
 
-        public new ControlCollection Controls => _controls;
+        public override ControlCollection Controls => _controls;
 
         public int ImageIndex { get; set; }
         public string ImageKey { get; set; }

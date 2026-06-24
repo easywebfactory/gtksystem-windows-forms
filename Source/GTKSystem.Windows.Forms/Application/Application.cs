@@ -233,7 +233,8 @@ namespace System.Windows.Forms
 tooltip { background-color: #ffffff; color: #555555; border: 1px solid #c9c9c9; box-shadow: 3px 3px 2px #787878;}
 tooltip window,tooltip.background {background-color: #ffffff;}
 tooltip label {padding: 0px 10px; color: #555555;}
-
+.MDIForm{border-style:solid;border-width:0px 2px 2px 2px;border-color:#cccccc;}
+.MDIPanel{background-color:#c0c0c0; box-shadow: inset 3px 3px 0px 0px #787878;}
 ";
 
                 string appdirectory = StartupPath;

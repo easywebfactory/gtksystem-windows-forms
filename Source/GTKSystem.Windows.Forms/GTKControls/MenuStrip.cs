@@ -19,6 +19,7 @@ namespace System.Windows.Forms
         public MenuStrip() : base()
         {
             toolStripItemCollection = new ToolStripItemCollection(this);
+            this.Dock= DockStyle.Top;
         }
         public ToolStripItemCollection Items
         {
@@ -27,7 +28,6 @@ namespace System.Windows.Forms
                 return toolStripItemCollection;
             }
         }
-
         private Size _ImageScalingSize;
         public Size ImageScalingSize
         {

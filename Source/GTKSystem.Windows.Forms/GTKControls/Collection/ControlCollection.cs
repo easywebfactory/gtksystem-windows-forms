@@ -418,12 +418,12 @@ namespace System.Windows.Forms
 
             public void PerformLayout(IArrangedElement affectedElement, string propertyName)
             {
-
+                
             }
 
             public void SetBounds(Drawing.Rectangle bounds, BoundsSpecified specified)
             {
-
+                _control.SetBounds(bounds, specified);
             }
         }
     }

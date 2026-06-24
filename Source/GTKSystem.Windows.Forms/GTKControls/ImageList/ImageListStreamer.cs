@@ -3,12 +3,12 @@
 
 using System.IO;
 using System.IO.Compression;
+using System.Reflection;
 using System.Runtime.Serialization;
 using static GTKSystem.Resources.ResourceManager;
 
 namespace System.Windows.Forms
 {
-
     [Serializable] // This type is participating in resx serialization scenarios.
     public sealed class ImageListStreamer : ISerializable, IDisposable
     {
