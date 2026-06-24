@@ -52,7 +52,7 @@ namespace GTKWinFormsApp
             richTextBox1 = new RichTextBox();
             label1 = new Label();
             button1 = new Button();
-            timer1 = new Timer(components);
+            timer1 = new System.Windows.Forms.Timer(components);
             label2 = new Label();
             SuspendLayout();
             // 

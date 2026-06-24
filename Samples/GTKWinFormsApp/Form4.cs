@@ -34,7 +34,7 @@ namespace GTKWinFormsApp
         private void button3_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "图像文件|*.jpg;*.png|图像文件2|*.bmp";
+            //ofd.Filter = "图像文件|*.jpg;bang.png1|图像文件2|*.bmp";
             ofd.Multiselect = true;
             ofd.Title = "测试打开文件";
             ofd.DefaultExt = "*.png";

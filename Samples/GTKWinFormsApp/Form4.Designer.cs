@@ -33,11 +33,11 @@ namespace GTKWinFormsApp
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            TreeNode treeNode1 = new TreeNode("节点3");
-            TreeNode treeNode2 = new TreeNode("节点2", new TreeNode[] { treeNode1 });
-            TreeNode treeNode3 = new TreeNode("节点4");
-            TreeNode treeNode4 = new TreeNode("节点0", new TreeNode[] { treeNode2, treeNode3 });
-            TreeNode treeNode5 = new TreeNode("节点1");
+            TreeNode treeNode6 = new TreeNode("节点3");
+            TreeNode treeNode7 = new TreeNode("节点2", new TreeNode[] { treeNode6 });
+            TreeNode treeNode8 = new TreeNode("节点4");
+            TreeNode treeNode9 = new TreeNode("节点0", new TreeNode[] { treeNode7, treeNode8 });
+            TreeNode treeNode10 = new TreeNode("节点1");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form4));
             splitContainer1 = new SplitContainer();
             button2 = new Button();
@@ -93,6 +93,7 @@ namespace GTKWinFormsApp
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.AutoScroll = true;
             splitContainer1.Panel2.Controls.Add(groupBox2);
             splitContainer1.Panel2.Controls.Add(groupBox1);
             splitContainer1.Panel2.Controls.Add(hScrollBar1);
@@ -198,7 +199,7 @@ namespace GTKWinFormsApp
             button9.Size = new Size(94, 29);
             button9.TabIndex = 6;
             button9.Text = "警告消息";
-            toolTip2.SetToolTip(button9, "show tooltip2");
+            toolTip2.SetToolTip(button9, "show tooltip2警告消息警告消息");
             button9.UseVisualStyleBackColor = true;
             button9.Click += button9_Click;
             // 
@@ -238,19 +239,19 @@ namespace GTKWinFormsApp
             treeView1.ImageList = imageList1;
             treeView1.Location = new Point(63, 181);
             treeView1.Name = "treeView1";
-            treeNode1.Name = "节点3";
-            treeNode1.Text = "节点3";
-            treeNode2.ImageIndex = 1;
-            treeNode2.Name = "节点2";
-            treeNode2.Text = "节点2";
-            treeNode3.Name = "节点4";
-            treeNode3.Text = "节点4";
-            treeNode4.Name = "节点0";
-            treeNode4.Text = "节点0";
-            treeNode5.ImageKey = "img11.jpg";
-            treeNode5.Name = "节点1";
-            treeNode5.Text = "节点1";
-            treeView1.Nodes.AddRange(new TreeNode[] { treeNode4, treeNode5 });
+            treeNode6.Name = "节点3";
+            treeNode6.Text = "节点3";
+            treeNode7.ImageIndex = 1;
+            treeNode7.Name = "节点2";
+            treeNode7.Text = "节点2";
+            treeNode8.Name = "节点4";
+            treeNode8.Text = "节点4";
+            treeNode9.Name = "节点0";
+            treeNode9.Text = "节点0";
+            treeNode10.ImageKey = "img11.jpg";
+            treeNode10.Name = "节点1";
+            treeNode10.Text = "节点1";
+            treeView1.Nodes.AddRange(new TreeNode[] { treeNode9, treeNode10 });
             treeView1.SelectedImageIndex = 0;
             treeView1.Size = new Size(151, 188);
             treeView1.TabIndex = 2;
@@ -354,15 +355,14 @@ namespace GTKWinFormsApp
             // 
             // toolTip1
             // 
-            toolTip1.IsBalloon = false;
-            toolTip1.ToolTipIcon = ToolTipIcon.Warning;
+            toolTip1.ToolTipIcon = ToolTipIcon.Info;
             toolTip1.ToolTipTitle = "test title";
             // 
             // toolTip2
             // 
             toolTip2.IsBalloon = true;
-            toolTip2.ToolTipIcon = ToolTipIcon.Warning;
-            toolTip2.ToolTipTitle = "tip2";
+            toolTip2.ToolTipIcon = ToolTipIcon.Info;
+            toolTip2.ToolTipTitle = "tip2警告消息警告消息";
             // 
             // Form4
             // 

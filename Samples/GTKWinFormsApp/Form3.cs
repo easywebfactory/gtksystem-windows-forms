@@ -7,8 +7,10 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -19,7 +21,7 @@ namespace GTKWinFormsApp
         public Form3()
         {
             InitializeComponent();
- 
+
             UserControl11 userControl11 = new UserControl11();
             //userControl11.Location = new Point(30, 30);
             //userControl11.Size = new Size(100, 500);
@@ -31,6 +33,7 @@ namespace GTKWinFormsApp
             this.Shown += Form3_Shown;
             panel1.Click += Panel1_Click;
             panel1.DoubleClick += Panel1_DoubleClick;
+            panel1.MouseUp += Panel1_MouseUp;
             button5.Click += Button5_Click;
 
 
@@ -46,7 +49,40 @@ namespace GTKWinFormsApp
             this.WindowState = FormWindowState.Normal;
             button3.Click += button3_Click;
 
- 
+            button1.CursorChanged += Button1_CursorChanged;
+
+            ////panel1.MouseMove += Panel1_MouseMove;
+            //IconButton iconButton = new IconButton();
+            ////Image img = Image.FromFile("Resources/view-fullscreen.png");
+            ////iconButton.SetIcon(img);
+            //iconButton.SetIcon(Properties.Resources.timg);
+            //panel1.Controls.Add(iconButton);
+            panel5.Click += Panel5_Click;
+
+           
+        }
+
+        private void Panel5_Click(object? sender, EventArgs e)
+        {
+            var a = (Panel)sender;
+            //var b = a.self;
+
+            panel5.Controls.Remove(panel2);
+        }
+
+        private void Panel1_MouseMove(object? sender, MouseEventArgs e)
+        {
+            Console.WriteLine("Panel1_MouseMove");
+        }
+
+        private void Panel1_MouseUp(object? sender, MouseEventArgs e)
+        {
+            Console.WriteLine("Panel1_MouseUp");
+        }
+
+        private void Button1_CursorChanged(object? sender, EventArgs e)
+        {
+            Console.WriteLine("Button1_CursorChanged");
         }
 
         private void DdddToolStripMenuItem1_Click(object? sender, EventArgs e)
@@ -116,10 +152,10 @@ namespace GTKWinFormsApp
 
         private void Form3_SizeChanged(object sender, EventArgs e)
         {
-            panel1.Refresh();
-            //Console.WriteLine(Width);
-            // panel1.Refresh();
-            this.Refresh();
+            //panel1.Refresh();
+            ////Console.WriteLine(Width);
+            //// panel1.Refresh();
+            //this.Refresh();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -127,29 +163,56 @@ namespace GTKWinFormsApp
             //button1.ForeColor=Color.Red;
             //button1.BackColor=Color.Green;
             Form1 f = new Form1();
-            f.Show();
+            f.ShowDialog(this);
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             label1.Text = trackBar1.Value.ToString();
         }
-
+        private int temp;
         private void Form3_Load(object sender, EventArgs e)
         {
-            //var result = this.BeginInvoke(new MethodInvoker(() =>
-            //{
-            //    System.Threading.Thread.Sleep(1000);
-            //    for (int i = 1; i < 101; i++)
-            //    {
-            //        progressBar1.Invoke(new MethodInvoker(() =>
-            //        {
-            //            progressBar1.Value = i;
-            //        }));
-            //        System.Threading.Thread.Sleep(20);
-            //    }
-            //}));
- 
+
+            var result = this.BeginInvoke(new MethodInvoker(() =>
+            {
+                //System.Threading.Thread.Sleep(1000);
+                //for (int i = 1; i < 101; i++)
+                //{
+                //    progressBar1.Invoke(new MethodInvoker(() =>
+                //    {
+                //        progressBar1.Value = i;
+                //    }));
+                //    System.Threading.Thread.Sleep(20);
+                //}
+                //while (true)
+                //{
+                //    Gdk.Threads.AddIdle(0, () =>
+                //    {
+                //        label1.Text = DateTime.Now.ToString();
+                //        return false;
+                //    });
+                //    System.Threading.Thread.Sleep(130);
+
+                //}
+
+                //Thread th = new Thread(new ParameterizedThreadStart(o =>
+                //{
+                //    //while (true)
+                //    //{
+                //    Gdk.Threads.AddIdle(0, () =>
+                //    {
+                //        temp++;
+                //        label1.Text = DateTime.Now.ToString();
+                //        return false;
+                //    });
+                //    System.Threading.Thread.Sleep(2000);
+                //    //}
+
+                //}));
+                //th.Start();
+            }));
+
         }
 
         private void panel3_Paint(object sender, PaintEventArgs e)
@@ -207,7 +270,7 @@ namespace GTKWinFormsApp
             //g.DrawPath(new Pen(gradientBrush, 2), path);
 
             //g.FillPath(brush, path);
-            Image image = new Bitmap(500,300);
+            Image image = new Bitmap(500, 300);
             Graphics gg = Graphics.FromImage(image);
             gg.DrawString("test文本gggggggg", new Font(GenericFontFamilies.Serif.ToString(), 20), new SolidBrush(Color.Red), new PointF(10, 50));
 
@@ -238,15 +301,10 @@ namespace GTKWinFormsApp
         private void button3_Click(object sender, EventArgs e)
         {
             //打印
-            //this.ScrollControlIntoView(label1);
-            Screen scr = Screen.FromControl(label1);
-          
-            Console.WriteLine($"{scr.WorkingArea.Width},{scr.WorkingArea.Height}");
-            Console.WriteLine(scr.DeviceName);
-            label1.Text = $"{scr.Bounds.Height},{scr.WorkingArea.Height}";
-  
-        }
  
+ 
+        }
+
         private void button4_Click(object sender, EventArgs e)
         {
             Form2 f1 = new Form2();

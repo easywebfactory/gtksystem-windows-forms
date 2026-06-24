@@ -93,7 +93,7 @@ namespace GTKWinFormsApp
             radioButton4 = new RadioButton();
             radioButton5 = new RadioButton();
             radioButton6 = new RadioButton();
-            timer1 = new Timer(components);
+            timer1 = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             panel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -868,6 +868,6 @@ namespace GTKWinFormsApp
         private RadioButton radioButton4;
         private RadioButton radioButton5;
         private RadioButton radioButton6;
-        private Timer timer1;
+        private System.Windows.Forms.Timer timer1;
     }
 }
