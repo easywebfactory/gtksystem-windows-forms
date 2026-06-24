@@ -83,6 +83,8 @@ namespace System.Windows.Forms
                                 statusbar.self.MarginTop = 0;
                                 statusbar.self.MarginEnd = 0;
                                 statusbar.self.MarginBottom = 0;
+                                if (lay.IsRealized)
+                                    statusbar.self.ShowAll();
                                 Gtk.Overlay overlay = new Gtk.Overlay();
                                 overlay.HeightRequest = statusbar.Height;
                                 overlay.AddOverlay(statusbar.self);
@@ -91,12 +93,16 @@ namespace System.Windows.Forms
                         }
                         else if (item is Control control)
                         {
+                            if (lay.IsRealized)
+                                control.Widget.ShowAll();
                             lay.AddOverlay(control.Widget);
                             if (control.Widget is Gtk.Label || control.Widget is Gtk.Button || control.Widget is Gtk.Entry || control.Widget is Gtk.TextView || control.Widget is Gtk.ScrolledWindow)
                                 lay.SetOverlayPassThrough(control.Widget, true);
                         }
                         else if (item is Gtk.Widget widget)
                         {
+                            if (lay.IsRealized)
+                                widget.ShowAll();
                             lay.AddOverlay(widget);
                         }
                     }
@@ -104,10 +110,14 @@ namespace System.Windows.Forms
                     {
                         if (item is Control con)
                         {
+                            if (lay2.IsRealized)
+                                con.Widget.ShowAll();
                             lay2.Put(con.Widget, 0, 0);
                         }
                         else if (item is Gtk.Widget widget)
                         {
+                            if (lay2.IsRealized)
+                                widget.ShowAll();
                             lay2.Put(widget, 0, 0);
                         }
                     }
