@@ -1,5 +1,8 @@
 
 ## 更新日志
+ #### 2026/7/10 V1.3.26.89
+   	1. 更新control基础功能、propertygrid、groupbox、label
+ 	2. 修改优化控件基础程序，增加MDIForm控件功能。
  #### 2026/3/11 V1.3.26.88
   	1. 修改去掉button文字的自动换行功能；
 	2. 更新FlowLayoutPanel/TableLayoutPanel；

@@ -164,6 +164,9 @@
     <Compile Update="GTKControls\MenuStripBase\ToolStripStatusLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\NotifyIcon.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\Printing\PageSetupDialog.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -230,9 +233,6 @@
     <Compile Update="GTKControls\MenuStripBase\ToolStripTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="GTKControls\MenuStripBase\WidgetToolStrip.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Update="GTKControls\MonthCalendar.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -275,6 +275,18 @@
     <Compile Update="GTKControls\ToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="GTKControls\ToolTip\ToolTip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ToolTip\ToolTip.TipInfo.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ToolTip\ToolTip.TipInfo.Type.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="GTKControls\ToolTip\ToolTip.ToolTipTimer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="GTKControls\TrackBar.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -287,5 +299,10 @@
     <Compile Update="GTKControls\VScrollBar.cs">
       <SubType>Component</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
