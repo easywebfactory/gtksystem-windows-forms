@@ -66,7 +66,7 @@ namespace System.Windows.Forms
         public override event ScrollEventHandler Scroll
         {
             add { self.Scroll += value; }
-            remove { self.Scroll += value; }
+            remove { self.Scroll -= value; }
         }
         private void OnLoadHandler()
         {
