@@ -291,6 +291,7 @@ https://github.com/easywebfactory/gtksystem-windows-forms；
 
   <ItemGroup>
     <Folder Include="GTKControls\ControlExtensions\" />
+    <Folder Include="GTKSystem\Rendering\" />
     <Folder Include="obj\Debug\" />
   </ItemGroup>
 

@@ -3,6 +3,7 @@
  #### 2026/8/4 V1.3.26.90
    	1. 更新control基础功能、propertygrid、groupbox、label
  	2. 修改优化控件基础程序，增加MDIForm控件功能。
+	3. 增加TextRenderer、SendKeys功能方法。
  #### 2026/7/10 V1.3.26.89
    	1. 更新control基础功能、propertygrid、groupbox、label
  	2. 修改优化控件基础程序，增加MDIForm控件功能。

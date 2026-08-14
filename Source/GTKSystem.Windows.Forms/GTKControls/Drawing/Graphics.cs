@@ -286,6 +286,14 @@ namespace System.Drawing
 
         public void Dispose()
         {
+            Graphics.imagesurface?.Dispose();
+            Graphics.imagesurface = null;
+            Graphics.imagecontext?.Dispose();
+            Graphics.imagecontext = null;
+            this.image?.Pixbuf?.Dispose();
+
+            if (widget == null)
+                context?.Dispose();
         }
         private void DrawArcCore(Pen pen, float x, float y, float width, float height, float startAngle, float sweepAngle)
         {
